@@ -1,0 +1,640 @@
+import copy
+import functools
+import json
+import multiprocessing
+import typing
+import warnings
+from collections import Counter, defaultdict
+from functools import cached_property
+from typing import Callable
+
+import numpy as np
+import tqdm
+from jaxtyping import Int
+from muutils.json_serialize import (
+    JSONitem,
+    json_serialize,
+    serializable_dataclass,
+    serializable_field,
+)
+from muutils.json_serialize.util import safe_getsource, string_as_lines
+from muutils.misc import sanitize_fname, shorten_numerical_to_str, stable_hash
+from zanj.loading import LoaderHandler, load_item_recursive, register_loader_handler
+
+from maze_dataset.dataset.dataset import (
+    DatasetFilterProtocol,
+    GPTDataset,
+    GPTDatasetConfig,
+    register_dataset_filter,
+    register_filter_namespace_for_dataset,
+)
+from maze_dataset.generation.constants import SPECIAL_TOKENS, Coord, CoordTup
+from maze_dataset.generation.generators import GENERATORS_MAP
+from maze_dataset.generation.lattice_maze import (
+    LatticeMaze,
+    SolvedMaze,
+    coord_to_str,
+)
+from maze_dataset.utils.utils import corner_first_ndindex
+
+_MAZEDATASET_PROPERTIES_TO_SERIALIZE: list[str] = [
+    "padding_token_index",
+    "token_arr",
+    "tokenizer_map",
+    "grid_shape",
+    # "node_token_map", # doesn't work by default due to keys being tuples
+    "token_node_map",
+    "n_tokens",
+]
+
+# TODO: re-add later, depends on a feature coming in muutils 0.3.2
+__MAZEDATASET_PROPERTIES_TO_VALIDATE: list[str] = [
+    "token_arr",
+    "padding_token_index",
+    "tokenizer_map",
+    "grid_shape",
+    "token_node_map",
+    "n_tokens",
+]
+
+
+def _str_to_coord(coord_str: str) -> Coord:
+    return np.array(tuple(int(x) for x in coord_str.strip("() \t").split(",")))
+
+
+def _load_maze_ctor(maze_ctor_serialized: str | dict) -> Callable:
+    if isinstance(maze_ctor_serialized, dict):
+        # this is both the new and old version of the serialization
+        return GENERATORS_MAP[maze_ctor_serialized["__name__"]]
+    elif isinstance(maze_ctor_serialized, str):
+        # this is a version I switched to for a while but now we are switching back
+        warnings.warn(
+            f"you are loading an old model/config in `_load_maze_ctor()`!!! this should not be happening, please report to miv@knc.ai"
+        )
+        return GENERATORS_MAP[maze_ctor_serialized]
+    else:
+        raise ValueError(
+            f"maze_ctor_serialized is of type {type(maze_ctor_serialized)}, expected str or dict"
+        )
+
+
+@serializable_dataclass(
+    kw_only=True, properties_to_serialize=_MAZEDATASET_PROPERTIES_TO_SERIALIZE
+)
+class MazeDatasetConfig(GPTDatasetConfig):
+    """maze dataset configuration, including tokenizers"""
+
+    grid_n: int
+
+    # not comparing n_mazes is done primarily to avoid conflicts which happen during `from_config` when we have applied filters
+    n_mazes: int = serializable_field(compare=False)
+
+    maze_ctor: Callable = serializable_field(
+        default=GENERATORS_MAP["gen_dfs"],
+        serialization_fn=lambda gen_func: {
+            "__name__": gen_func.__name__,
+            "__module__": gen_func.__module__,
+            "__doc__": string_as_lines(gen_func.__doc__),
+            "source_code": safe_getsource(gen_func),
+        },
+        loading_fn=lambda data: _load_maze_ctor(data["maze_ctor"]),
+    )
+
+    maze_ctor_kwargs: dict = serializable_field(
+        default_factory=dict,
+        serialization_fn=lambda kwargs: kwargs,
+        loading_fn=lambda data: (
+            dict()
+            if data.get("maze_ctor_kwargs", None)
+            is None  # this should handle the backwards compatibility
+            else data["maze_ctor_kwargs"]
+        ),
+    )
+
+    @property
+    def grid_shape(self) -> CoordTup:
+        return (self.grid_n, self.grid_n)
+
+    @property
+    def grid_shape_np(self) -> Coord:
+        return np.array(self.grid_shape)
+
+    # TODO: use max grid shape for tokenization, have it be a property but then override it in collected dataset
+
+    @property
+    def max_grid_n(self) -> int:
+        return max(self.grid_shape)
+
+    @cached_property
+    def node_token_map(self) -> dict[CoordTup, str]:
+        """map from node to token"""
+        return {
+            tuple(coord): coord_to_str(coord)
+            for coord in corner_first_ndindex(self.max_grid_n)
+        }
+
+    @cached_property
+    def token_node_map(self) -> dict[str, CoordTup]:
+        """map from token to node"""
+        return {v: k for k, v in self.node_token_map.items()}
+
+    @cached_property
+    def token_arr(self) -> list[str]:
+        """map from index to token"""
+        return [
+            *list(SPECIAL_TOKENS.values()),
+            *list(self.node_token_map.values()),
+        ]
+
+    @property
+    def n_tokens(self) -> int:
+        return len(self.token_arr)
+
+    @cached_property
+    def padding_token_index(self) -> int:
+        return self.tokenizer_map[SPECIAL_TOKENS["padding"]]
+
+    def stable_hash_cfg(self) -> int:
+        return stable_hash(json.dumps(self.serialize()))
+
+    def to_fname(self) -> str:
+        return sanitize_fname(
+            f"{self.name}-g{self.grid_n}-n{shorten_numerical_to_str(self.n_mazes)}-a_{self.maze_ctor.__name__.removeprefix('gen_')}-h{self.stable_hash_cfg()%10**5}"
+        )
+
+    def summary(self) -> dict:
+        """return a summary of the config"""
+        super_summary: dict = super().summary()
+        self_ser: dict = self.serialize()
+        return {
+            **dict(
+                name=self.name,
+                fname=self.to_fname(),
+                sdc_hash=self.stable_hash_cfg(),
+                seed=self.seed,
+                seq_len_min=self.seq_len_min,
+                seq_len_max=self.seq_len_max,
+                padding_token_index=self.padding_token_index,
+                token_arr_joined=" ".join(self.token_arr),
+                applied_filters=self.applied_filters,
+            ),
+            **{
+                "grid_n": self_ser["grid_n"],
+                "grid_shape": self_ser["grid_shape"],
+                "n_mazes": self_ser["n_mazes"],
+                "maze_ctor_name": self_ser["maze_ctor"]["__name__"],
+                "maze_ctor_kwargs": self_ser["maze_ctor_kwargs"],
+            },
+        }
+
+
+def _generate_maze_helper(index: int) -> SolvedMaze:
+    maze: LatticeMaze = _GLOBAL_WORKER_CONFIG.maze_ctor(
+        grid_shape=_GLOBAL_WORKER_CONFIG.grid_shape_np,
+        **_GLOBAL_WORKER_CONFIG.maze_ctor_kwargs,
+    )
+    return SolvedMaze.from_lattice_maze(
+        lattice_maze=maze,
+        solution=maze.generate_random_path(),
+    )
+
+
+def _maze_gen_init_worker(config: MazeDatasetConfig):
+    global _GLOBAL_WORKER_CONFIG
+    _GLOBAL_WORKER_CONFIG = config
+
+    # HACK: this makes the generation depend both on whether parallelism is used, and on the number of processes. this is bad!
+    # only set numpy seed, since we do not use other random gens
+    process_id: tuple[int] = multiprocessing.current_process()._identity
+    if len(process_id) == 0:
+        # no multiprocessing, seed was already set
+        pass
+    elif len(process_id) == 1:
+        # multiprocessing, adjust seed based on process id
+        np.random.seed(_GLOBAL_WORKER_CONFIG.seed + process_id[0])
+    else:
+        raise ValueError(
+            f"unexpected process id: {process_id}\n{multiprocessing.Process()}"
+        )
+
+
+class MazeDataset(GPTDataset):
+    """maze dataset"""
+
+    def __init__(
+        self,
+        cfg: MazeDatasetConfig,
+        mazes: typing.Sequence[SolvedMaze],
+        generation_metadata_collected: dict | None = None,
+    ) -> None:
+        super().__init__()
+        self.cfg: MazeDatasetConfig = cfg
+        self.mazes: list[SolvedMaze] = list(mazes)
+        self.generation_metadata_collected: dict | None = generation_metadata_collected
+
+    def data_hash(self) -> int:
+        return hash(tuple(self.mazes))
+
+    def __getitem__(self, i: int) -> SolvedMaze:
+        return self.mazes[i]
+
+    def as_tokens(
+        self,
+        limit: int | None = None,
+        join_tokens_individual_maze: bool = False,
+    ) -> list[list[str]] | list[str]:
+        """return the dataset as tokens
+
+        if join_tokens_individual_maze is True, then the tokens of each maze are
+        joined with a space, and the result is a list of strings.
+        i.e.:
+        >>> dataset.as_tokens(join_tokens_individual_maze=False)
+        [["a", "b", "c"], ["d", "e", "f"]]
+        >>> dataset.as_tokens(join_tokens_individual_maze=True)
+        ["a b c", "d e f"]
+        """
+        if join_tokens_individual_maze:
+            return [
+                " ".join(maze.as_tokens(self.cfg.node_token_map))
+                for maze in self.mazes[:limit]
+            ]
+        else:
+            return [
+                maze.as_tokens(self.cfg.node_token_map) for maze in self.mazes[:limit]
+            ]
+
+    def __len__(self) -> int:
+        return len(self.mazes)
+
+    def __eq__(self, other: typing.Any) -> bool:
+        if not isinstance(other, MazeDataset):
+            return NotImplemented
+        return self.cfg == other.cfg and self.mazes == other.mazes
+
+    @classmethod
+    def generate(
+        cls,
+        cfg: MazeDatasetConfig,
+        gen_parallel: bool = False,
+        pool_kwargs: dict | None = None,
+        verbose: bool = False,
+    ) -> "MazeDataset":
+        """generate a maze dataset"""
+
+        # avoid copying since we dont want to pickle the staticmethod, just load/serialize it to avoid modifying the original config
+        cfg_cpy = MazeDatasetConfig.load(cfg.serialize())
+
+        if pool_kwargs is None:
+            pool_kwargs = dict()
+        mazes: list[SolvedMaze] = list()
+        maze_indexes: Int[np.int8, "maze_index"] = np.arange(cfg_cpy.n_mazes)
+
+        solved_mazes: list[SolvedMaze]
+        tqdm_kwargs: dict = dict(
+            total=cfg_cpy.n_mazes,
+            unit="maze",
+            desc="generating & solving mazes",
+            disable=not verbose,
+        )
+        if gen_parallel:
+            with multiprocessing.Pool(
+                **pool_kwargs,
+                initializer=_maze_gen_init_worker,
+                initargs=(cfg_cpy,),
+            ) as pool:
+                solved_mazes = list(
+                    tqdm.tqdm(
+                        pool.imap(
+                            _generate_maze_helper,
+                            maze_indexes,
+                        ),
+                        **tqdm_kwargs,
+                    )
+                )
+        else:
+            _maze_gen_init_worker(cfg_cpy)
+            solved_mazes = list(
+                tqdm.tqdm(
+                    map(
+                        _generate_maze_helper,
+                        maze_indexes,
+                    ),
+                    **tqdm_kwargs,
+                )
+            )
+        # reset seed to default value
+        np.random.seed(cfg_cpy.seed)
+
+        return cls(
+            cfg=cfg_cpy,
+            mazes=solved_mazes,
+        )
+
+    @classmethod
+    def download(cls, cfg: MazeDatasetConfig, **kwargs) -> "MazeDataset":
+        raise NotImplementedError("not implemented yet")
+
+    @classmethod
+    def load(cls, data: JSONitem) -> "MazeDataset":
+        """load from zanj/json"""
+        assert data["__format__"] == "MazeDataset"
+        return cls(
+            **{
+                key: load_item_recursive(data[key], tuple())
+                for key in ["cfg", "mazes", "generation_metadata_collected"]
+            }
+        )
+
+    def serialize(self) -> JSONitem:
+        """serialize to zanj/json"""
+        return {
+            "__format__": "MazeDataset",
+            "cfg": json_serialize(self.cfg),
+            "mazes": json_serialize(self.mazes),
+            "generation_metadata_collected": json_serialize(
+                self.generation_metadata_collected
+            ),
+        }
+
+    def update_self_config(self):
+        """update the config to match the current state of the dataset"""
+        self.cfg.n_mazes = len(self.mazes)
+
+    def custom_maze_filter(
+        self,
+        method: typing.Callable[[SolvedMaze], bool],
+        **kwargs,
+    ) -> "MazeDataset":
+        """filter the dataset using a custom method"""
+        output: MazeDataset = MazeDataset(
+            cfg=copy.deepcopy(self.cfg),
+            mazes=[m for m in self.mazes if method(m, **kwargs)],
+        )
+        output.cfg.applied_filters.append(
+            {
+                "name": f"__custom__:{method.__name__}",
+                "kwargs": kwargs,
+            }
+        )
+        output.update_self_config()
+        return output
+
+
+MazeDatasetConfig._dataset_class = property(lambda self: MazeDataset)
+register_loader_handler(
+    LoaderHandler(
+        check=lambda json_item, path=None, z=None: (
+            isinstance(json_item, typing.Mapping)
+            and "__format__" in json_item
+            and json_item["__format__"].startswith("MazeDataset")
+        ),
+        load=lambda json_item, path=None, z=None: MazeDataset.load(json_item),
+        uid="MazeDataset",
+        source_pckg="maze_dataset.generation.maze_dataset",
+        desc="MazeDataset",
+    )
+)
+
+
+def register_maze_filter(
+    method: typing.Callable[[SolvedMaze, typing.Any], bool]
+) -> DatasetFilterProtocol:
+    """register a maze filter, casting it to operate over the whole list of mazes
+
+    method should be a staticmethod of a namespace class registered with `register_filter_namespace_for_dataset`
+
+    this is a more restricted version of `register_dataset_filter` that removes the need for boilerplate for operating over the arrays
+    """
+
+    @functools.wraps(method)
+    def wrapper(dataset: MazeDataset, *args, **kwargs):
+        # copy and filter
+        new_dataset: MazeDataset = copy.deepcopy(
+            MazeDataset(
+                cfg=dataset.cfg,
+                mazes=[m for m in dataset.mazes if method(m, *args, **kwargs)],
+            )
+        )
+        # update the config
+        new_dataset.cfg.applied_filters.append(
+            dict(name=method.__name__, args=args, kwargs=kwargs)
+        )
+        new_dataset.update_self_config()
+        return new_dataset
+
+    return wrapper
+
+
+@register_filter_namespace_for_dataset(MazeDataset)
+class MazeDatasetFilters:
+    @register_maze_filter
+    @staticmethod
+    def path_length(maze: SolvedMaze, min_length: int) -> bool:
+        """filter out mazes with a solution length less than `min_length`"""
+        return len(maze.solution) >= min_length
+
+    @register_maze_filter
+    @staticmethod
+    def start_end_distance(maze: SolvedMaze, min_distance: int) -> bool:
+        """filter out datasets where the start and end pos are less than `min_distance` apart on the manhattan distance (ignoring walls)"""
+        return np.linalg.norm(maze.start_pos - maze.end_pos, 1) >= min_distance
+
+    @register_dataset_filter
+    @staticmethod
+    def cut_percentile_shortest(
+        # percentile is 1-100, not 0-1, as this is what np.percentile expects
+        dataset: MazeDataset,
+        percentile: float = 10.0,
+    ) -> MazeDataset:
+        """cut the shortest `percentile` of mazes from the dataset"""
+        lengths: np.ndarray = np.array([len(m.solution) for m in dataset])
+        cutoff: int = int(np.percentile(lengths, percentile))
+
+        filtered_mazes: list[SolvedMaze] = [
+            m for m in dataset if len(m.solution) > cutoff
+        ]
+        new_dataset: MazeDataset = MazeDataset(cfg=dataset.cfg, mazes=filtered_mazes)
+
+        return copy.deepcopy(new_dataset)
+
+    @register_dataset_filter
+    @staticmethod
+    def truncate_count(
+        dataset: MazeDataset,
+        max_count: int,
+    ) -> MazeDataset:
+        """truncate the dataset to be at most `max_count` mazes"""
+        new_dataset: MazeDataset = MazeDataset(
+            cfg=dataset.cfg, mazes=dataset.mazes[:max_count]
+        )
+        return copy.deepcopy(new_dataset)
+
+    @register_dataset_filter
+    @staticmethod
+    def remove_duplicates(
+        dataset: MazeDataset,
+        minimum_difference_connection_list: int | None = 1,
+        minimum_difference_solution: int | None = 1,
+    ) -> MazeDataset:
+        """remove duplicates from a dataset, keeping the **LAST** unique maze
+
+        set minimum either minimum difference to `None` to disable checking
+
+        if you want to avoid mazes which have more overlap, set the minimum difference to be greater
+
+        Gotchas:
+        - if two mazes are of different sizes, they will never be considered duplicates
+        - if two solutions are of different lengths, they will never be considered duplicates
+            TODO: check for overlap?
+        """
+        if len(dataset) > 1000:
+            raise ValueError(
+                "this method is currently very slow for large datasets, consider using `remove_duplicates_fast` instead"
+            )
+
+        unique_mazes: list[SolvedMaze] = list()
+
+        maze_a: SolvedMaze
+        maze_b: SolvedMaze
+        for i, maze_a in enumerate(dataset.mazes):
+            a_unique: bool = True
+            for maze_b in dataset.mazes[i + 1 :]:
+                # after all that nesting, more nesting to perform checks
+                if (minimum_difference_connection_list is not None) and (
+                    maze_a.connection_list.shape == maze_b.connection_list.shape
+                ):
+                    if (
+                        np.sum(maze_a.connection_list != maze_b.connection_list)
+                        <= minimum_difference_connection_list
+                    ):
+                        a_unique = False
+                        break
+
+                if (minimum_difference_solution is not None) and (
+                    maze_a.solution.shape == maze_b.solution.shape
+                ):
+                    if (
+                        np.sum(maze_a.solution != maze_b.solution)
+                        <= minimum_difference_solution
+                    ):
+                        a_unique = False
+                        break
+
+            if a_unique:
+                unique_mazes.append(maze_a)
+
+        return copy.deepcopy(MazeDataset(cfg=dataset.cfg, mazes=unique_mazes))
+
+    @register_dataset_filter
+    @staticmethod
+    def remove_duplicates_fast(dataset: MazeDataset) -> MazeDataset:
+        """remove duplicates from a dataset"""
+
+        unique_mazes = list(dict.fromkeys(dataset.mazes))
+        return copy.deepcopy(MazeDataset(cfg=dataset.cfg, mazes=unique_mazes))
+
+    @register_dataset_filter
+    @staticmethod
+    def strip_generation_meta(dataset: MazeDataset) -> MazeDataset:
+        """strip the generation meta from the dataset"""
+        new_dataset: MazeDataset = copy.deepcopy(dataset)
+        for maze in new_dataset:
+            # hacky because it's a frozen dataclass
+            maze.__dict__["generation_meta"] = None
+        return new_dataset
+
+    @register_dataset_filter
+    @staticmethod
+    def collect_generation_meta(
+        dataset: MazeDataset, clear_in_mazes: bool = True
+    ) -> MazeDataset:
+        new_dataset: MazeDataset = copy.deepcopy(dataset)
+
+        gen_meta_lists: dict = defaultdict(list)
+        for maze in new_dataset:
+            for key, value in maze.generation_meta.items():
+                if isinstance(value, (bool, int, float, str)):
+                    gen_meta_lists[key].append(value)
+
+                elif isinstance(value, set):
+                    # special case for visited_cells
+                    # HACK: this is ugly!!
+                    gen_meta_lists[key].extend([tuple(v) for v in value])
+
+                elif isinstance(value, np.ndarray):
+                    if (len(value.shape) == 1) and (value.shape[0] == maze.lattice_dim):
+                        # assume its a single coordinate
+                        gen_meta_lists[key].append(tuple(value))
+                    elif (len(value.shape) == 2) and (
+                        value.shape[1] == maze.lattice_dim
+                    ):
+                        # assume its a list of coordinates
+                        gen_meta_lists[key].extend([tuple(v) for v in value])
+                    else:
+                        raise ValueError(
+                            f"Cannot collect generation meta for {key} as it is an ndarray of shape {value.shape}",
+                            "expected either a coord of shape (2,) or a list of coords of shape (n, 2)",
+                        )
+                else:
+                    # print(type(value))
+                    raise ValueError(
+                        f"Cannot collect generation meta for {key} as it is of type '{str(type(value))}'",
+                        "expected either a basic type (bool, int, float, str), a numpy coord, or a numpy array of coords",
+                    )
+
+            # clear the data
+            if clear_in_mazes:
+                # hacky because it's a frozen dataclass
+                maze.__dict__["generation_meta"] = None
+
+        new_dataset.generation_metadata_collected = {
+            key: dict(Counter(value)) for key, value in gen_meta_lists.items()
+        }
+
+        return new_dataset
+
+        # the code below is for doing some smarter collecting and type checking. Probably will delete.
+        """
+        collect either the type at the field, or the shape of the field if it is an array
+        metadata_types: dict[str, set[type, tuple]] = dict()
+        for maze in new_dataset:
+            for key, value in maze.generation_meta.items():
+                if key not in metadata_types:
+                    metadata_types[key] = set()
+
+                if isinstance(value, np.ndarray):
+                    metadata_types[key].add(value.shape)
+                else:
+                    metadata_types[key].add(type(value))
+
+        # figure out what to do for each field
+        metadata_actions: dict[str, typing.Callable] = dict()
+        for key, key_type in metadata_types.items():
+            if all(isinstance(kt, tuple) for kt in key_type):
+                if all(kt == (2,) for kt in key_type):
+                    # its all coords, do a statcounter on those coords
+                    metadata_actions[key] = lambda vals: Counter(tuple(x) for x in vals)
+                elif all(
+                    (len(kt) == 2) and (kt[1] == 2) 
+                    for kt in key_type
+                ):
+                    # its a list of coords, do a statcounter on those coords
+                    metadata_actions[key] = lambda vals: Counter(
+                        tuple(x) for x in np.concatenate(vals)
+                    )
+                else:
+                    # its a list of something else, do a counter on those
+                    # TODO: throw except here?
+                    metadata_actions[key] = Counter
+                    
+            elif all(kt in (bool, int, float) for kt in key_type):
+                # statcounter for numeric types
+                metadata_actions[key] = StatCounter
+            elif all(kt == str for kt in key_type):
+                # counter for string types
+                metadata_actions[key] = Counter
+            else:
+                # counter for everything else
+                # TODO: throw except here?
+                metadata_actions[key] = Counter
+        """
