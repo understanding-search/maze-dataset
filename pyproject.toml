@@ -1,0 +1,55 @@
+[tool.poetry]
+name = "maze-dataset"
+version = "0.0.1"
+description = ""
+authors = ["Michael Ivanitskiy <miv@knc.ai>", "Dan Valentine <danvalentine256@gmail.com>", "Rusheb Shah <rusheb.shah@gmail.com>", "Lucia Quirke <luciaq@canva.com>", "Can Rager <can.rager@posteo.de>", "Alex Spies <alexfspies@gmail.com>", "Chris Mathwin <cwmathwin@gmail.com>", "Tilman Rauker <traeuker@googlemail.com>", "Guillaume Corlouer <guillaume.corlouer@gmail.com>"]
+readme = "README.md"
+packages = [{include = "maze_dataset"}]
+repository = "https://github.com/AISC-understanding-search/maze_dataset"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+torch = "^1.13.1"
+matplotlib = "^3.7.0"
+muutils = "^0.4.1"
+zanj = "^0.1.1"
+jupyter = "^1.0.0"
+ipykernel = "^6.22.0"
+jaxtyping = "^0.2.19"
+tqdm = "^4.65.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.3.1"
+pycln = "^2.1.3"
+isort = "^5.12.0"
+black = "^23.1.0"
+pytest-mock = "^3.10.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
+# Ignore numpy deprecation warnings triggered by muutils
+filterwarnings = [
+    # Warning from muutils: https://github.com/mivanit/muutils/issues/1
+    "ignore:`np\\.\\w*` is a deprecated alias for:DeprecationWarning",
+
+    # Warning from matplotlib. Issue: https://github.com/matplotlib/matplotlib/issues/25244
+    "ignore:Deprecated call to `pkg_resources.declare_namespace:DeprecationWarning"
+]
+testpaths = "tests"
+norecursedirs="maze_dataset/utils/test_helpers"
+
+[[tool.mypy.overrides]]
+module = "fire"
+ignore_missing_imports = true
+
+[tool.isort]
+profile = "black"
+known_third_party = "wandb"
+
+[tool.pyright]
+exclude = [".venv"]
+venvPath = "."
+venv = ".venv"
