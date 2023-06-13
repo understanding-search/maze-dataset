@@ -10,8 +10,8 @@ default: help
 .PHONY: lint
 lint: clean
 	@echo "run linting: mypy"
-	python -m mypy --config-file pyproject.toml maze_dataset/
-	python -m mypy --config-file pyproject.toml tests/
+	$(POETRY_RUN_PYTHON) -m mypy --config-file pyproject.toml maze_dataset/
+	$(POETRY_RUN_PYTHON) -m mypy --config-file pyproject.toml tests/
 
 
 .PHONY: format
