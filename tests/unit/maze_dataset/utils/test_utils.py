@@ -1,7 +1,6 @@
 from pathlib import Path
 
 import numpy as np
-import pytest
 
 from maze_dataset.utils.utils import (
     corner_first_ndindex,
@@ -10,9 +9,9 @@ from maze_dataset.utils.utils import (
 )
 
 
-@pytest.mark.usefixtures("temp_dir")
-def test_get_checkpoint_paths_for_run(temp_dir):
-    run_path = Path(temp_dir)
+def test_get_checkpoint_paths_for_run():
+    run_path = Path("tests/_temp/test_get_checkpoint_paths")
+    run_path.mkdir(parents=True, exist_ok=True)
     checkpoints_path = run_path / "checkpoints"
     checkpoint1_path = checkpoints_path / "model.iter_123.pt"
     checkpoint2_path = checkpoints_path / "model.iter_456.pt"

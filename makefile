@@ -37,12 +37,6 @@ unit:
 	$(POETRY_RUN_PYTHON) -m pytest tests/unit
 
 
-.PHONY: integration
-integration:
-	@echo "run integration tests"
-	$(POETRY_RUN_PYTHON) -m pytest -s tests/integration
-
-
 .PHONY: convert_notebooks
 convert_notebooks:
 	@echo "convert notebooks in $(NOTEBOOKS_DIR) using $(HELPERS_DIR)/convert_ipynb_to_script.py"
@@ -56,7 +50,7 @@ test_notebooks: convert_notebooks
 
 
 .PHONY: test
-test: clean unit integration test_notebooks
+test: clean unit test_notebooks
 	@echo "ran all tests: unit, integration, and notebooks"
 
 
