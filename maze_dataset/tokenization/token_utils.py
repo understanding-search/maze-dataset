@@ -1,6 +1,6 @@
 from typing import Any, Iterable, Literal
 
-from maze_dataset.generation.constants import SPECIAL_TOKENS, CoordTup
+from maze_dataset.constants import SPECIAL_TOKENS, CoordTup
 
 WhenMissing = Literal["except", "skip", "include"]
 

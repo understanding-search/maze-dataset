@@ -3,7 +3,7 @@ from typing import Any, Callable
 
 import numpy as np
 
-from maze_dataset.generation.constants import CoordArray
+from maze_dataset.constants import CoordArray
 from maze_dataset.generation.lattice_maze import (
     NEIGHBORS_MASK,
     ConnectionList,

@@ -21,6 +21,7 @@ from muutils.json_serialize.util import safe_getsource, string_as_lines
 from muutils.misc import sanitize_fname, shorten_numerical_to_str, stable_hash
 from zanj.loading import LoaderHandler, load_item_recursive, register_loader_handler
 
+from maze_dataset.constants import SPECIAL_TOKENS, Coord, CoordTup
 from maze_dataset.dataset.dataset import (
     DatasetFilterProtocol,
     GPTDataset,
@@ -28,7 +29,6 @@ from maze_dataset.dataset.dataset import (
     register_dataset_filter,
     register_filter_namespace_for_dataset,
 )
-from maze_dataset.generation.constants import SPECIAL_TOKENS, Coord, CoordTup
 from maze_dataset.generation.generators import GENERATORS_MAP
 from maze_dataset.generation.lattice_maze import LatticeMaze, SolvedMaze, coord_to_str
 from maze_dataset.utils import corner_first_ndindex

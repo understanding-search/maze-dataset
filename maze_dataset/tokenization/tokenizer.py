@@ -6,8 +6,8 @@ from muutils.tensor_utils import ATensor, NDArray
 from transformers import PreTrainedTokenizer
 from transformers.tokenization_utils import BatchEncoding
 
+from maze_dataset.constants import SPECIAL_TOKENS
 from maze_dataset.dataset.dataset import GPTDatasetConfig
-from maze_dataset.generation.constants import SPECIAL_TOKENS
 from maze_dataset.generation.lattice_maze import LatticeMaze
 from maze_dataset.plotting.plot_maze import MazePlot
 

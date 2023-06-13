@@ -14,7 +14,7 @@ from muutils.json_serialize.serializable_dataclass import (
 from muutils.misc import list_split
 from muutils.tensor_utils import NDArray
 
-from maze_dataset.generation.constants import (
+from maze_dataset.constants import (
     NEIGHBORS_MASK,
     SPECIAL_TOKENS,
     Coord,
