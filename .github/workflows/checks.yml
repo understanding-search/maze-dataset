@@ -1,0 +1,56 @@
+name: Checks
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: pycln
+        run: |
+          pip install pycln
+          pycln --check --all .
+
+      - name: isort
+        run: |
+          pip install isort
+          isort --check-only .
+
+      - name: black
+        run: |
+          pip install black
+          python -m black --check .
+  test:
+    name: Test
+    env:
+      WANDB_API_KEY: ${{ secrets.WANDB_API_KEY }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: |
+          curl -sSL https://install.python-poetry.org | python3 -
+          poetry lock --check
+          poetry install
+
+      - name: Unit tests
+        run: make unit
+
+      - name: Integration tests
+        run: make integration
+      
+      - name: Notebook tests
+        run: make test_notebooks
