@@ -78,3 +78,14 @@ def corner_first_ndindex(n: int, ndim: int = 2) -> list[tuple]:
     sorted_order = np.lexsort((*indices_copy.T, max_indices))
     return indices[sorted_order]
     """
+
+def adj_list_to_nested_set(adj_list: list) -> set:
+    """Used for comparison of adj_lists
+
+    Adj_list looks like [[[0, 1], [1, 1]], [[0, 0], [0, 1]], ...]
+    We don't care about order of coordinate pairs within
+    the adj_list or coordinates within each coordinate pair."""
+    return {
+        frozenset([tuple(start_coord), tuple(end_coord)])
+        for start_coord, end_coord in adj_list
+    }

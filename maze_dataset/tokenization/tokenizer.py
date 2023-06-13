@@ -7,12 +7,12 @@ from transformers import PreTrainedTokenizer
 from transformers.tokenization_utils import BatchEncoding
 
 from maze_dataset.dataset.dataset import GPTDatasetConfig
-from maze_dataset.evaluation.plot_maze import MazePlot
+from maze_dataset.plotting.plot_maze import MazePlot
 from maze_dataset.generation.constants import SPECIAL_TOKENS
 from maze_dataset.generation.lattice_maze import LatticeMaze
 
-if TYPE_CHECKING:
-    from maze_dataset.training.config import ConfigHolder
+# if TYPE_CHECKING:
+#     from maze_transformer.training.config import ConfigHolder
 
 # pylint: disable=unused-import, abstract-method
 

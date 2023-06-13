@@ -1,6 +1,6 @@
 import pytest
 
-import maze_dataset.utils.token_utils as token_utils
+import maze_dataset.tokenization.token_utils as token_utils
 from maze_dataset.dataset.maze_dataset import MazeDatasetConfig
 
 MAZE_TOKENS = "<ADJLIST_START> (0,1) <--> (1,1) ; (1,0) <--> (1,1) ; (0,1) <--> (0,0) ; <ADJLIST_END> <ORIGIN_START> (1,0) <ORIGIN_END> <TARGET_START> (1,1) <TARGET_END> <PATH_START> (1,0) (1,1) <PATH_END>".split()

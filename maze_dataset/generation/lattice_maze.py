@@ -21,7 +21,7 @@ from maze_dataset.generation.constants import (
     CoordArray,
     CoordTup,
 )
-from maze_dataset.utils.token_utils import (
+from maze_dataset.tokenization.token_utils import (
     get_adj_list_tokens,
     get_path_tokens,
     tokens_to_coords,

@@ -9,7 +9,7 @@ from maze_dataset.generation.lattice_maze import (
     TargetedLatticeMaze,
 )
 from maze_dataset.generation.utils import bool_array_from_string
-from maze_dataset.utils.test_helpers.utils import adj_list_to_nested_set
+from maze_dataset.generation.utils import adj_list_to_nested_set
 
 
 # thanks to gpt for these tests of _from_pixel_grid
