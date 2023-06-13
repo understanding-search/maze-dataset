@@ -2,7 +2,7 @@ import numpy as np
 import pytest
 from numpy.testing import assert_array_equal
 
-from maze_dataset.generation.utils import bool_array_from_string
+from maze_dataset.utils import bool_array_from_string
 
 
 def test_bool_array_from_string():

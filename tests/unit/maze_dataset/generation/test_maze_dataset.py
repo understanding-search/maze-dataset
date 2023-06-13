@@ -14,7 +14,7 @@ from maze_dataset.dataset.maze_dataset import (
 )
 from maze_dataset.generation.constants import CoordArray
 from maze_dataset.generation.lattice_maze import SolvedMaze
-from maze_dataset.generation.utils import bool_array_from_string
+from maze_dataset.utils import bool_array_from_string
 
 
 class TestMazeDatasetConfig:

@@ -1,6 +1,6 @@
 import numpy as np
 
-from maze_dataset.generation.utils import corner_first_ndindex
+from maze_dataset.utils import corner_first_ndindex
 
 
 def test_corner_first_ndindex():
