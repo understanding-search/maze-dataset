@@ -17,7 +17,7 @@ lint: clean
 .PHONY: format
 format: clean
 	@echo "run formatting: pycln, isort, and black"
-	$(POETRY_RUN_PYTHON) -m pycln --all .
+	$(POETRY_RUN_PYTHON) -m pycln --config pyproject.toml --all .
 	$(POETRY_RUN_PYTHON) -m isort format .
 	$(POETRY_RUN_PYTHON) -m black .
 
@@ -25,7 +25,7 @@ format: clean
 .PHONY: check-format
 check-format: clean
 	@echo "check formatting"
-	$(POETRY_RUN_PYTHON) -m pycln --check --all .
+	$(POETRY_RUN_PYTHON) -m pycln --config pyproject.toml --check --all .
 	$(POETRY_RUN_PYTHON) -m isort --check-only .
 	$(POETRY_RUN_PYTHON) -m black --check .
 

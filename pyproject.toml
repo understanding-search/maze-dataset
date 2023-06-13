@@ -49,6 +49,9 @@ ignore_missing_imports = true
 profile = "black"
 known_third_party = "wandb"
 
+[tool.pycln]
+disable-all-dunder-policy = true
+
 [tool.pyright]
 exclude = [".venv"]
 venvPath = "."

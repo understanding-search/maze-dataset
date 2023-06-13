@@ -4,16 +4,8 @@ from typing import Any, Callable
 import numpy as np
 
 from maze_dataset.constants import CoordArray
-from maze_dataset.maze import (
-    ConnectionList,
-    Coord,
-    LatticeMaze,
-    SolvedMaze,
-)
-from maze_dataset.maze.lattice_maze import (
-    NEIGHBORS_MASK,
-    _fill_edges_with_walls,
-)
+from maze_dataset.maze import ConnectionList, Coord, LatticeMaze, SolvedMaze
+from maze_dataset.maze.lattice_maze import NEIGHBORS_MASK, _fill_edges_with_walls
 
 
 def _random_start_coord(grid_shape: Coord, start_coord: Coord | None) -> Coord:

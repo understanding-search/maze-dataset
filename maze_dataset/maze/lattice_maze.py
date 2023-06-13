@@ -869,6 +869,7 @@ class TargetedLatticeMaze(LatticeMaze):
             generation_meta=lattice_maze.generation_meta,
         )
 
+
 @serializable_dataclass(frozen=True, kw_only=True)
 class SolvedMaze(TargetedLatticeMaze):
     """Stores a maze and a solution"""
@@ -962,6 +963,7 @@ class SolvedMaze(TargetedLatticeMaze):
             raise ValueError(f"Invalid solution: {solution = }") from e
 
         return cls.from_lattice_maze(lattice_maze=maze, solution=solution_np)
+
 
 def detect_pixels_type(data: PixelGrid) -> typing.Type[LatticeMaze]:
     """Detects the type of pixels data by checking for the presence of start and end pixels"""

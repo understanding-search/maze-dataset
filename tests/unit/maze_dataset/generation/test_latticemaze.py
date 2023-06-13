@@ -2,12 +2,7 @@ import numpy as np
 import pytest
 
 from maze_dataset.generation.generators import GENERATORS_MAP
-from maze_dataset.maze import (
-    LatticeMaze,
-    PixelColors,
-    SolvedMaze,
-    TargetedLatticeMaze,
-)
+from maze_dataset.maze import LatticeMaze, PixelColors, SolvedMaze, TargetedLatticeMaze
 from maze_dataset.utils import adj_list_to_nested_set, bool_array_from_string
 
 
