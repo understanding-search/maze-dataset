@@ -1,6 +1,11 @@
 from maze_dataset.maze.lattice_maze import (
-    LatticeMaze,
+    Coord,
+    CoordArray,
     ConnectionList,   
+    LatticeMaze,
+    TargetedLatticeMaze,
+    SolvedMaze,
+    coord_to_str,
+    PixelColors,
+    AsciiChars,
 )
-
-from maze_dataset.maze.solved_maze import SolvedMaze

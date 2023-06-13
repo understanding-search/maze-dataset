@@ -2,7 +2,7 @@ import pytest
 
 from maze_dataset.dataset.maze_dataset import MazeDatasetConfig
 from maze_dataset.generation.generators import get_maze_with_solution
-from maze_dataset.maze.lattice_maze import SolvedMaze
+from maze_dataset.maze import SolvedMaze
 
 
 @pytest.mark.skip(

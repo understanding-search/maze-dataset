@@ -5,7 +5,7 @@ from maze_dataset.generation.generators import (
     LatticeMazeGenerators,
     get_maze_with_solution,
 )
-from maze_dataset.maze.lattice_maze import Coord, SolvedMaze
+from maze_dataset.maze import Coord, SolvedMaze
 
 
 def test_gen_dfs_square():
