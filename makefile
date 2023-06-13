@@ -1,4 +1,3 @@
-HELPERS_DIR := maze_dataset/utils/test_helpers
 NOTEBOOKS_DIR := notebooks
 CONVERTED_NOTEBOOKS_TEMP_DIR := tests/_temp/notebooks
 POETRY_RUN_PYTHON := poetry run python
@@ -39,14 +38,14 @@ unit:
 
 .PHONY: convert_notebooks
 convert_notebooks:
-	@echo "convert notebooks in $(NOTEBOOKS_DIR) using $(HELPERS_DIR)/convert_ipynb_to_script.py"
-	python $(HELPERS_DIR)/convert_ipynb_to_script.py notebooks/ --output_dir $(CONVERTED_NOTEBOOKS_TEMP_DIR) --disable_plots
+	@echo "convert notebooks in $(NOTEBOOKS_DIR) using muutils.nbutils.convert_ipynb_to_script.py"
+	python -m muutils.nbutils.convert_ipynb_to_script notebooks/ --output_dir $(CONVERTED_NOTEBOOKS_TEMP_DIR) --disable_plots
 
 
 .PHONY: test_notebooks
 test_notebooks: convert_notebooks
-	@echo "run tests on converted notebooks in $(CONVERTED_NOTEBOOKS_TEMP_DIR) using $(HELPERS_DIR)/run_notebook_tests.py"
-	python $(HELPERS_DIR)/run_notebook_tests.py --notebooks-dir=$(NOTEBOOKS_DIR) --converted-notebooks-temp-dir=$(CONVERTED_NOTEBOOKS_TEMP_DIR)
+	@echo "run tests on converted notebooks in $(CONVERTED_NOTEBOOKS_TEMP_DIR) using muutils.nbutils.run_notebook_tests.py"
+	python -m muutils.nbutils.run_notebook_tests --notebooks-dir=$(NOTEBOOKS_DIR) --converted-notebooks-temp-dir=$(CONVERTED_NOTEBOOKS_TEMP_DIR)
 
 
 .PHONY: test
