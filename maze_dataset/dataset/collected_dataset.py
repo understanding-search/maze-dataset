@@ -21,8 +21,8 @@ from maze_dataset.dataset.maze_dataset import (
     MazeDatasetConfig,
 )
 from maze_dataset.generation.constants import SPECIAL_TOKENS, Coord, CoordTup
+from maze_dataset.generation.utils import corner_first_ndindex
 from maze_dataset.generation.lattice_maze import LatticeMaze, coord_to_str
-from maze_dataset.utils.utils import corner_first_ndindex
 
 
 @serializable_dataclass(
