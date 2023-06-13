@@ -1,5 +1,5 @@
 # Avoid circular import from training/config.py
-from typing import TYPE_CHECKING, Union  # need Union as "a" | "b" doesn't work
+from typing import Union  # need Union as "a" | "b" doesn't work
 
 import torch
 from muutils.tensor_utils import ATensor, NDArray
@@ -7,9 +7,9 @@ from transformers import PreTrainedTokenizer
 from transformers.tokenization_utils import BatchEncoding
 
 from maze_dataset.dataset.dataset import GPTDatasetConfig
-from maze_dataset.plotting.plot_maze import MazePlot
 from maze_dataset.generation.constants import SPECIAL_TOKENS
 from maze_dataset.generation.lattice_maze import LatticeMaze
+from maze_dataset.plotting.plot_maze import MazePlot
 
 # if TYPE_CHECKING:
 #     from maze_transformer.training.config import ConfigHolder

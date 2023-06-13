@@ -43,6 +43,7 @@ def bool_array_from_string(
     bools = [True if symbol == true_symbol else False for symbol in stripped]
     return np.array(bools).reshape(*shape)
 
+
 def corner_first_ndindex(n: int, ndim: int = 2) -> list[tuple]:
     """returns an array of indices, sorted by distance from the corner
 
@@ -78,6 +79,7 @@ def corner_first_ndindex(n: int, ndim: int = 2) -> list[tuple]:
     sorted_order = np.lexsort((*indices_copy.T, max_indices))
     return indices[sorted_order]
     """
+
 
 def adj_list_to_nested_set(adj_list: list) -> set:
     """Used for comparison of adj_lists
