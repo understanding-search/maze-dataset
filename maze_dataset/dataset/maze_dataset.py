@@ -30,7 +30,7 @@ from maze_dataset.dataset.dataset import (
     register_filter_namespace_for_dataset,
 )
 from maze_dataset.generation.generators import GENERATORS_MAP
-from maze_dataset.generation.lattice_maze import LatticeMaze, SolvedMaze, coord_to_str
+from maze_dataset.maze.lattice_maze import LatticeMaze, SolvedMaze, coord_to_str
 from maze_dataset.utils import corner_first_ndindex
 
 _MAZEDATASET_PROPERTIES_TO_SERIALIZE: list[str] = [

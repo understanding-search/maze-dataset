@@ -21,7 +21,7 @@ from maze_dataset.dataset.maze_dataset import (
     MazeDataset,
     MazeDatasetConfig,
 )
-from maze_dataset.generation.lattice_maze import LatticeMaze, coord_to_str
+from maze_dataset.maze.lattice_maze import LatticeMaze, coord_to_str
 from maze_dataset.utils import corner_first_ndindex
 
 

@@ -2,7 +2,7 @@ import numpy as np
 import pytest
 
 from maze_dataset.generation.generators import GENERATORS_MAP
-from maze_dataset.generation.lattice_maze import (
+from maze_dataset.maze.lattice_maze import (
     LatticeMaze,
     PixelColors,
     SolvedMaze,
