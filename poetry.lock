@@ -935,14 +935,14 @@ test = ["flaky", "pexpect", "pytest"]
 
 [[package]]
 name = "jupyter-core"
-version = "5.3.0"
+version = "5.3.1"
 description = "Jupyter core package. A base package on which Jupyter projects rely."
 category = "main"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "jupyter_core-5.3.0-py3-none-any.whl", hash = "sha256:d4201af84559bc8c70cead287e1ab94aeef3c512848dde077b7684b54d67730d"},
-    {file = "jupyter_core-5.3.0.tar.gz", hash = "sha256:6db75be0c83edbf1b7c9f91ec266a9a24ef945da630f3120e1a0046dc13713fc"},
+    {file = "jupyter_core-5.3.1-py3-none-any.whl", hash = "sha256:ae9036db959a71ec1cac33081eeb040a79e681f08ab68b0883e9a676c7a90dce"},
+    {file = "jupyter_core-5.3.1.tar.gz", hash = "sha256:5ba5c7938a7f97a6b0481463f7ff0dbac7c15ba48cf46fa4035ca6e838aa1aba"},
 ]
 
 [package.dependencies]
@@ -1336,14 +1336,14 @@ files = [
 
 [[package]]
 name = "muutils"
-version = "0.4.2"
+version = "0.4.3"
 description = "A collection of miscellaneous python utilities"
 category = "main"
 optional = false
 python-versions = ">=3.10,<4.0"
 files = [
-    {file = "muutils-0.4.2-py3-none-any.whl", hash = "sha256:43599f385289571d5b5623d79e994ccd7a3a1702830734de112f3db8014ff62f"},
-    {file = "muutils-0.4.2.tar.gz", hash = "sha256:3cd17e1528d81601010325367cffc9773a30f456c7e150ddcd9a78923ecacee1"},
+    {file = "muutils-0.4.3-py3-none-any.whl", hash = "sha256:92541d84ec3314096333ad7028906bc70d415c77e3823546d53fa909eeeab648"},
+    {file = "muutils-0.4.3.tar.gz", hash = "sha256:43d494fdb8ed13f6c9de1c20d0ee2ab39d90286233ee0b24ae11330e3dd61c63"},
 ]
 
 [package.dependencies]
@@ -2886,14 +2886,14 @@ files = [
 
 [[package]]
 name = "zanj"
-version = "0.1.1"
+version = "0.1.4"
 description = "save and load complex objects to disk without pickling"
 category = "main"
 optional = false
 python-versions = ">=3.10,<4.0"
 files = [
-    {file = "zanj-0.1.1-py3-none-any.whl", hash = "sha256:b53fb19a4bb0f9e915a73ba0f7c1b132abf2d94eaa096e3ee68c875d74547dd9"},
-    {file = "zanj-0.1.1.tar.gz", hash = "sha256:a428b9fced5824241280e66b706e02df71ac4db56dbf74c58d71a814b328c413"},
+    {file = "zanj-0.1.4-py3-none-any.whl", hash = "sha256:de689abb0f414faf158b2aa66b05d383a07d606ecd6634196a99eda361e14b0e"},
+    {file = "zanj-0.1.4.tar.gz", hash = "sha256:ce87222cd55e308f8bfc839bde341ba9941c1029989582f446cb87cfa61af862"},
 ]
 
 [package.dependencies]
@@ -2906,4 +2906,4 @@ torch = ">=1.13.1,<2.0.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "2a560b153f0377eeb61fec2c6ba6649c3e0923825eab491b37339b10446538be"
+content-hash = "fb6c2c7ab8a76303d5091440ad2ae04240d547b3de71082700f3a43a29bb5e63"
