@@ -11,6 +11,16 @@
 
 Generation, solving and processing of various mazes. Primarily build for the [maze-transformer](https://github.com/AISC-understanding-search/maze-transformer) project, which this repo is an offshoot of.
 
+
+|   |   |   |   |
+|---|---|---|---|
+| ![Maze generated via percolation](docs/maze_perc.png) |  ![Maze generated via constrained randomized depth first search](docs/maze_dfs_constrained.png)  |  ![Maze with random heatmap](docs/mazeplot_heatmap.png)  |  ![MazePlot with solution](docs/mazeplot_path.png)  |
+
+
+
+
+
+
 # Installation
 ```
 pip install git+ssh://git@github.com/aisc-understanding-search/maze-dataset.git
