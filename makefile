@@ -1,11 +1,14 @@
 NOTEBOOKS_DIR := notebooks
 CONVERTED_NOTEBOOKS_TEMP_DIR := tests/_temp/notebooks
 POETRY_RUN_PYTHON := poetry run python
+COVERAGE_REPORTS_DIR := docs/coverage
 
 
 .PHONY: default
 default: help
 
+# format and lint
+# --------------------------------------------------
 
 .PHONY: lint
 lint: clean
@@ -29,11 +32,13 @@ check-format: clean
 	$(POETRY_RUN_PYTHON) -m isort --check-only .
 	$(POETRY_RUN_PYTHON) -m black --check .
 
+# testing
+# --------------------------------------------------
 
 .PHONY: unit
 unit:
 	@echo "run unit tests"
-	$(POETRY_RUN_PYTHON) -m pytest tests/unit
+	$(POETRY_RUN_PYTHON) -m pytest --cov=. tests/unit
 
 
 .PHONY: convert_notebooks
@@ -52,6 +57,21 @@ test_notebooks: convert_notebooks
 test: clean unit test_notebooks
 	@echo "ran all tests: unit, integration, and notebooks"
 
+# coverage reports
+# --------------------------------------------------
+.PHONY: cov
+cov:
+	@echo "generate text coverage report"
+	$(POETRY_RUN_PYTHON) -m coverage report -m > $(COVERAGE_REPORTS_DIR)/coverage.txt
+	$(POETRY_RUN_PYTHON) -m coverage_badge -f -o $(COVERAGE_REPORTS_DIR)/coverage.svg
+
+.PHONY: cov-html
+cov-html:
+	@echo "generate html coverage report"
+	$(POETRY_RUN_PYTHON) -m coverage html	
+
+# general util
+# --------------------------------------------------
 
 .PHONY: clean
 clean:
