@@ -1,6 +1,6 @@
 Name                                                                Stmts   Miss  Cover   Missing
 -------------------------------------------------------------------------------------------------
-maze_dataset\__init__.py                                                0      0   100%
+maze_dataset\__init__.py                                                5      0   100%
 maze_dataset\constants.py                                               9      0   100%
 maze_dataset\dataset\__init__.py                                        3      0   100%
 maze_dataset\dataset\collected_dataset.py                              96      5    95%   43, 55, 59, 164-168
@@ -28,4 +28,4 @@ tests\unit\maze_dataset\generation\test_maze_dataset.py               100      0
 tests\unit\maze_dataset\generation\test_solved_maze.py                 13      7    46%   12-21
 tests\unit\maze_dataset\utils\test_token_utils.py                      52      0   100%
 -------------------------------------------------------------------------------------------------
-TOTAL                                                                1657    390    76%
+TOTAL                                                                1662    390    77%
