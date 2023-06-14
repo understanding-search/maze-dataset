@@ -44,7 +44,7 @@ unit:
 .PHONY: convert_notebooks
 convert_notebooks:
 	@echo "convert notebooks in $(NOTEBOOKS_DIR) using muutils.nbutils.convert_ipynb_to_script.py"
-	$(POETRY_RUN_PYTHON) -m muutils.nbutils.convert_ipynb_to_script notebooks/ --output_dir $(CONVERTED_NOTEBOOKS_TEMP_DIR) --disable_plots
+	$(POETRY_RUN_PYTHON) -m muutils.nbutils.convert_ipynb_to_script $(NOTEBOOKS_DIR) --output_dir $(CONVERTED_NOTEBOOKS_TEMP_DIR) --disable_plots
 
 
 .PHONY: test_notebooks
