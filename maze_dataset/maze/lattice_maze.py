@@ -95,7 +95,7 @@ def str_is_coord(coord_str: str) -> bool:
     )
 
 
-def coord_str_to_tuple(coord_str: str) -> CoordTup:
+def coord_str_to_tuple(coord_str: str) -> tuple[int, ...]:
     """convert a coordinate string to a tuple"""
 
     stripped: str = coord_str.lstrip("(").rstrip(")")
@@ -181,7 +181,7 @@ class LatticeMaze(SerializableDataclass):
             return False
         else:
             # test for wall
-            dim: int = np.argmax(np.abs(delta))
+            dim: int = int(np.argmax(np.abs(delta)))
             clist_node: Coord = a if (delta.sum() > 0) else b
             return self.connection_list[dim, clist_node[0], clist_node[1]]
 
@@ -213,8 +213,9 @@ class LatticeMaze(SerializableDataclass):
         visited: set[CoordTup] = set()
 
         while stack:
-            current_node = stack.pop()
-            visited.add(tuple(current_node.tolist()))
+            current_node: Coord = stack.pop()
+            # this is fine since we know current_node is a coord and thus of length 2
+            visited.add(tuple(current_node.tolist()))  # type: ignore[arg-type]
 
             # Get the neighbors of the current node
             neighbors = self.get_coord_neighbors(current_node)

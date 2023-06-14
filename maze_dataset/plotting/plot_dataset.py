@@ -1,4 +1,4 @@
-import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt  # type: ignore[import]
 
 from maze_dataset.dataset.maze_dataset import MazeDataset
 

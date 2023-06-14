@@ -1,12 +1,12 @@
 import math
 
 import numpy as np
-from muutils.tensor_utils import NDArray
+from jaxtyping import Bool
 
 
 def bool_array_from_string(
     string: str, shape: list[int], true_symbol: str = "T"
-) -> NDArray:
+) -> Bool[np.ndarray, "*shape"]:
     """Transform a string into an ndarray of bools.
 
     Parameters
@@ -20,8 +20,8 @@ def bool_array_from_string(
 
     Returns
     -------
-    NDArray
-        A ndarray with dtype bool.
+    np.ndarray
+        A ndarray with dtype bool of shape `shape`
 
     Examples
     --------
