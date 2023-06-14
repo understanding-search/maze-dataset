@@ -1,6 +1,25 @@
+<!-- [![PyPI](https://img.shields.io/pypi/v/muutils)](https://pypi.org/project/muutils/)
+![PyPI - Downloads](https://img.shields.io/pypi/dm/muutils) -->
+[![Checks](https://github.com/mivanit/muutils/actions/workflows/checks.yml/badge.svg)](https://github.com/mivanit/muutils/actions/workflows/checks.yml)
+[![Coverage](docs/coverage/coverage.svg)](docs/coverage/coverage.txt)
+![code size, bytes](https://img.shields.io/github/languages/code-size/mivanit/muutils)
+<!-- ![GitHub commit activity](https://img.shields.io/github/commit-activity/t/mivanit/muutils)
+![GitHub closed pull requests](https://img.shields.io/github/issues-pr-closed/mivanit/muutils) -->
+
+
 # Maze Dataset
 
 Generation, solving and processing of various mazes. Primarily build for the [maze-transformer](https://github.com/AISC-understanding-search/maze-transformer) project, which this repo is an offshoot of.
+
+
+|   |   |   |   |
+|---|---|---|---|
+| ![Maze generated via percolation](docs/maze_perc.png) |  ![Maze generated via constrained randomized depth first search](docs/maze_dfs_constrained.png)  |  ![Maze with random heatmap](docs/mazeplot_heatmap.png)  |  ![MazePlot with solution](docs/mazeplot_path.png)  |
+
+
+
+
+
 
 # Installation
 ```
@@ -51,7 +70,6 @@ Most of the functionality is demonstrated in the ipython notebooks in the `noteb
 
 - all tests via `make test`
     - unit tests via `make unit`
-    - integration tests via `make integration`
     - notebook tests via `make test_notebooks`
 
 - formatter (black, pycln, and isort) via `make format`

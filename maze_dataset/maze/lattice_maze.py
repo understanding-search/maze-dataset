@@ -14,14 +14,14 @@ from muutils.json_serialize.serializable_dataclass import (
 from muutils.misc import list_split
 from muutils.tensor_utils import NDArray
 
-from maze_dataset.generation.constants import (
+from maze_dataset.constants import (
     NEIGHBORS_MASK,
     SPECIAL_TOKENS,
     Coord,
     CoordArray,
     CoordTup,
 )
-from maze_dataset.utils.token_utils import (
+from maze_dataset.tokenization.token_utils import (
     get_adj_list_tokens,
     get_path_tokens,
     tokens_to_coords,
@@ -32,7 +32,6 @@ RGB = tuple[int, int, int]
 
 PixelGrid = Int[np.ndarray, "x y rgb"]
 BinaryPixelGrid = Bool[np.ndarray, "x y"]
-ConnectionList = Bool[np.ndarray, "lattice_dim x y"]
 
 
 def _fill_edges_with_walls(connection_list: ConnectionList) -> ConnectionList:
@@ -96,7 +95,7 @@ def str_is_coord(coord_str: str) -> bool:
     )
 
 
-def coord_str_to_tuple(coord_str: str) -> CoordTup:
+def coord_str_to_tuple(coord_str: str) -> tuple[int, ...]:
     """convert a coordinate string to a tuple"""
 
     stripped: str = coord_str.lstrip("(").rstrip(")")
@@ -182,7 +181,7 @@ class LatticeMaze(SerializableDataclass):
             return False
         else:
             # test for wall
-            dim: int = np.argmax(np.abs(delta))
+            dim: int = int(np.argmax(np.abs(delta)))
             clist_node: Coord = a if (delta.sum() > 0) else b
             return self.connection_list[dim, clist_node[0], clist_node[1]]
 
@@ -214,8 +213,9 @@ class LatticeMaze(SerializableDataclass):
         visited: set[CoordTup] = set()
 
         while stack:
-            current_node = stack.pop()
-            visited.add(tuple(current_node.tolist()))
+            current_node: Coord = stack.pop()
+            # this is fine since we know current_node is a coord and thus of length 2
+            visited.add(tuple(current_node.tolist()))  # type: ignore[arg-type]
 
             # Get the neighbors of the current node
             neighbors = self.get_coord_neighbors(current_node)

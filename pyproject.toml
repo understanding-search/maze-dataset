@@ -11,8 +11,8 @@ repository = "https://github.com/AISC-understanding-search/maze_dataset"
 python = "^3.10"
 torch = "^1.13.1"
 matplotlib = "^3.7.0"
-muutils = "^0.4.1"
-zanj = "^0.1.1"
+muutils = "^0.4.3"
+zanj = "^0.1.4"
 jupyter = "^1.0.0"
 ipykernel = "^6.22.0"
 jaxtyping = "^0.2.19"
@@ -24,6 +24,9 @@ pycln = "^2.1.3"
 isort = "^5.12.0"
 black = "^23.1.0"
 pytest-mock = "^3.10.0"
+mypy = "^1.0.1"
+pytest-cov = "^4.1.0"
+coverage-badge = "^1.1.0"
 
 [build-system]
 requires = ["poetry-core"]
@@ -48,6 +51,9 @@ ignore_missing_imports = true
 [tool.isort]
 profile = "black"
 known_third_party = "wandb"
+
+[tool.pycln]
+disable-all-dunder-policy = true # this doesn't seem to work... :/
 
 [tool.pyright]
 exclude = [".venv"]

@@ -1,6 +1,6 @@
 import pytest
 
-from maze_dataset.generation.lattice_maze import (
+from maze_dataset.maze.lattice_maze import (
     coord_str_to_tuple,
     coord_str_to_tuple_noneable,
     coord_to_str,

@@ -14,15 +14,15 @@ from muutils.json_serialize import (
 from muutils.misc import sanitize_fname, shorten_numerical_to_str, stable_hash
 from zanj.loading import LoaderHandler, load_item_recursive, register_loader_handler
 
+from maze_dataset.constants import SPECIAL_TOKENS, Coord, CoordTup
 from maze_dataset.dataset.dataset import GPTDataset, GPTDatasetConfig
 from maze_dataset.dataset.maze_dataset import (
     _MAZEDATASET_PROPERTIES_TO_SERIALIZE,
     MazeDataset,
     MazeDatasetConfig,
 )
-from maze_dataset.generation.constants import SPECIAL_TOKENS, Coord, CoordTup
-from maze_dataset.generation.lattice_maze import LatticeMaze, coord_to_str
-from maze_dataset.utils.utils import corner_first_ndindex
+from maze_dataset.maze import LatticeMaze, coord_to_str
+from maze_dataset.utils import corner_first_ndindex
 
 
 @serializable_dataclass(

@@ -15,11 +15,10 @@ from muutils.json_serialize import (
     serializable_field,
 )
 from muutils.misc import sanitize_fname, shorten_numerical_to_str
+from muutils.mlutils import DEFAULT_SEED, GLOBAL_SEED, set_reproducibility
 from muutils.tensor_utils import DTYPE_MAP
 from torch.utils.data import Dataset
 from zanj import ZANJ
-
-from maze_dataset.utils.utils import DEFAULT_SEED, GLOBAL_SEED, set_reproducibility
 
 
 def _dtype_serialization_fn(datatype: torch.dtype | np.dtype) -> str:

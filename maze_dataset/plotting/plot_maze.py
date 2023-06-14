@@ -11,8 +11,8 @@ from matplotlib.cm import ScalarMappable
 from matplotlib.colors import ListedColormap, Normalize
 from muutils.tensor_utils import NDArray
 
-from maze_dataset.generation.constants import Coord, CoordArray, CoordList
-from maze_dataset.generation.lattice_maze import (
+from maze_dataset.constants import Coord, CoordArray, CoordList
+from maze_dataset.maze import (
     Coord,
     CoordArray,
     LatticeMaze,
