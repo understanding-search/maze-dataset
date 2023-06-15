@@ -108,3 +108,8 @@ def coords_to_tokens(
     when_noncoord: WhenMissing = "skip",
 ) -> list[str]:
     return apply_mapping(coords, maze_data_cfg.node_token_map, when_noncoord)
+
+def remove_padding_from_token_str(token_str: str) -> str:
+    token_str = token_str.replace(f"{SPECIAL_TOKENS['padding']} ", "")
+    token_str = token_str.replace(f"{SPECIAL_TOKENS['padding']}", "")
+    return token_str
