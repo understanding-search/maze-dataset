@@ -32,7 +32,7 @@ class TestMazeDataset:
             assert maze.grid_shape == (3, 3)
 
     def test_generate_parallel(self):
-        dataset = MazeDataset.generate(self.config, gen_parallel=True, stdout_log=True)
+        dataset = MazeDataset.generate(self.config, gen_parallel=True, verbose=True)
 
         assert len(dataset) == 5
         for i, maze in enumerate(dataset):

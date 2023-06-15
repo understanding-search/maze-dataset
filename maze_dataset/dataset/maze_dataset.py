@@ -273,7 +273,7 @@ class MazeDataset(GPTDataset):
         cfg: MazeDatasetConfig,
         gen_parallel: bool = False,
         pool_kwargs: dict | None = None,
-        stdout_log: bool = False,
+        verbose: bool = False,
     ) -> "MazeDataset":
         """generate a maze dataset"""
 
@@ -290,7 +290,7 @@ class MazeDataset(GPTDataset):
             total=cfg_cpy.n_mazes,
             unit="maze",
             desc="generating & solving mazes",
-            disable=not stdout_log,
+            disable=not verbose,
         )
         if gen_parallel:
             with multiprocessing.Pool(

@@ -202,7 +202,7 @@ class GPTDataset(Dataset):
         do_download: bool = True,
         local_base_path: Path = Path("data/maze_dataset"),
         except_on_config_mismatch: bool = True,
-        stdout_log: bool = False,
+        verbose: bool = False,
         **kwargs,
     ) -> "GPTDataset":
         """base class for gpt datasets
@@ -214,7 +214,7 @@ class GPTDataset(Dataset):
 
         """
 
-        print_log: Callable = print if stdout_log else lambda *_a, **_kw: None
+        print_log: Callable = print if verbose else lambda *_a, **_kw: None
 
         local_base_path = Path(local_base_path)
         fname: Path = Path(f"{cfg.to_fname()}.zanj")
@@ -248,7 +248,7 @@ class GPTDataset(Dataset):
 
         if do_generate and output is None:
             print_log("generating dataset...")
-            output = cls.generate(cfg, stdout_log=stdout_log, **kwargs)
+            output = cls.generate(cfg, verbose=verbose, **kwargs)
             # only if we generated it, apply filters
             output = output._apply_filters_from_config()
 
