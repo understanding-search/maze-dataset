@@ -201,8 +201,8 @@ class GPTDataset(Dataset):
         zanj: ZANJ | None = None,
         do_download: bool = True,
         local_base_path: Path = Path("data/maze_dataset"),
-        verbose: bool = False,
         except_on_config_mismatch: bool = True,
+        stdout_log: bool = False,
         **kwargs,
     ) -> "GPTDataset":
         """base class for gpt datasets
@@ -213,6 +213,8 @@ class GPTDataset(Dataset):
         3. generate
 
         """
+
+        print_log: Callable = print if stdout_log else lambda *_a, **_kw: None
 
         local_base_path = Path(local_base_path)
         fname: Path = Path(f"{cfg.to_fname()}.zanj")
@@ -231,27 +233,22 @@ class GPTDataset(Dataset):
         # try loading
         if load_local:
             if dataset_path.exists():
-                if verbose:
-                    print(f"loading dataset from {dataset_path.as_posix()}")
+                print_log(f"loading dataset from {dataset_path.as_posix()}")
                 output = cls.read(dataset_path, zanj=zanj)
                 did_load_local = True
 
         if do_download and output is None:
-            if verbose:
-                print("seeing if we can download the dataset...")
+            print_log("seeing if we can download the dataset...")
             try:
                 output = cls.download(cfg, **kwargs)
-                if verbose:
-                    print("download successful!")
+                print_log("download successful!")
             except NotImplementedError:
-                if verbose:
-                    print("no download found, or download failed")
+                print_log("no download found, or download failed")
                 pass
 
         if do_generate and output is None:
-            if verbose:
-                print("generating dataset...")
-            output = cls.generate(cfg, verbose=verbose, **kwargs)
+            print_log("generating dataset...")
+            output = cls.generate(cfg, stdout_log=stdout_log, **kwargs)
             # only if we generated it, apply filters
             output = output._apply_filters_from_config()
 
@@ -267,14 +264,10 @@ class GPTDataset(Dataset):
                 warnings.warn(f"config mismatch: {cfg_diff = }")
 
         if save_local and not did_load_local:
-            if verbose:
-                print(f"saving dataset to {dataset_path}")
+            print_log(f"saving dataset to {dataset_path}")
             output.save(dataset_path, zanj=zanj)
 
-        if verbose:
-            print(
-                f"Got dataset {output.cfg.name} with {len(output)} items. {output.cfg.to_fname() = }"
-            )
+        print_log(f"Got dataset {output.cfg.name} with {len(output)} items. {output.cfg.to_fname() = }")
         return output
 
     def save(self, file_path: Path | str, zanj: ZANJ | None = None):
