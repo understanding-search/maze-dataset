@@ -267,7 +267,9 @@ class GPTDataset(Dataset):
             print_log(f"saving dataset to {dataset_path}")
             output.save(dataset_path, zanj=zanj)
 
-        print_log(f"Got dataset {output.cfg.name} with {len(output)} items. {output.cfg.to_fname() = }")
+        print_log(
+            f"Got dataset {output.cfg.name} with {len(output)} items. {output.cfg.to_fname() = }"
+        )
         return output
 
     def save(self, file_path: Path | str, zanj: ZANJ | None = None):
