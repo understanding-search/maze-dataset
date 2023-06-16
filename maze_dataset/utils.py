@@ -65,7 +65,7 @@ def corner_first_ndindex(n: int, ndim: int = 2) -> list[tuple]:
     unsorted: list = list(np.ndindex(tuple([n for _ in range(ndim)])))
     if not _FORCE_LEGACY_TOKENIZATION:
         return sorted(unsorted, key=lambda x: (max(x), x if x[0] % 2 == 0 else x[::-1]))
-    else:        
+    else:
         return unsorted
 
     # alternate numpy version from GPT-4:
