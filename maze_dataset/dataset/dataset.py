@@ -360,6 +360,7 @@ class GPTDataset(Dataset):
             )
         # update the config
         # TODO: some funny business with manually specified filters here?
+        # TODO: have this raise a custom exception which we can catch
         output.update_self_config()
         assert (
             output.cfg.applied_filters == applied_filters_old
