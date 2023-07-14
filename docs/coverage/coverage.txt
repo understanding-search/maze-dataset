@@ -1,11 +1,11 @@
 Name                                                                Stmts   Miss  Cover   Missing
 -------------------------------------------------------------------------------------------------
-maze_dataset\__init__.py                                                5      0   100%
+maze_dataset\__init__.py                                                6      0   100%
 maze_dataset\constants.py                                               9      0   100%
 maze_dataset\dataset\__init__.py                                        3      0   100%
 maze_dataset\dataset\collected_dataset.py                              96      5    95%   43, 55, 59, 164-168
 maze_dataset\dataset\configs.py                                         3      3     0%   1-4
-maze_dataset\dataset\dataset.py                                       178     55    69%   26-29, 56, 59, 67-68, 80, 84, 94, 98-103, 109, 115, 225, 233-237, 240-249, 253, 260, 264-267, 271, 275, 293, 296, 300, 305, 309, 317, 349-363, 395
+maze_dataset\dataset\dataset.py                                       192    118    39%   27-35, 45, 50, 59-74, 85-86, 89-90, 93-95, 99-121, 127, 198, 223, 230-253, 257-263, 266-270, 274, 279, 284, 291-297, 300-301, 305-306, 309-318, 324, 332-334, 338-342, 347-364, 372, 383-407, 432-434, 438-441, 460-470
 maze_dataset\dataset\maze_dataset.py                                  219     49    78%   58, 65-72, 154, 157, 163-165, 208-212, 232, 252-258, 266-268, 463-466, 487, 512-517, 536-540, 547-590
 maze_dataset\generation\__init__.py                                     2      0   100%
 maze_dataset\generation\generators.py                                 120      0   100%
@@ -15,8 +15,8 @@ maze_dataset\plotting\__init__.py                                       3      3
 maze_dataset\plotting\plot_dataset.py                                  22     22     0%   1-29
 maze_dataset\plotting\plot_maze.py                                    167    167     0%   1-445
 maze_dataset\tokenization\__init__.py                                   0      0   100%
-maze_dataset\tokenization\token_utils.py                               49      4    92%   32, 43, 92-93
-maze_dataset\utils.py                                                  16      0   100%
+maze_dataset\tokenization\token_utils.py                               53      7    87%   32, 43, 92-93, 114-116
+maze_dataset\utils.py                                                  19      1    95%   69
 setup.py                                                                3      3     0%   3-6
 tests\unit\maze_dataset\dataset\test_collected_dataset.py              45      0   100%
 tests\unit\maze_dataset\generation\test_bool_array_from_string.py      15      0   100%
@@ -28,4 +28,4 @@ tests\unit\maze_dataset\generation\test_maze_dataset.py               100      0
 tests\unit\maze_dataset\generation\test_solved_maze.py                 13      7    46%   12-21
 tests\unit\maze_dataset\utils\test_token_utils.py                      52      0   100%
 -------------------------------------------------------------------------------------------------
-TOTAL                                                                1662    390    77%
+TOTAL                                                                1684    457    73%
