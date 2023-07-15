@@ -5,7 +5,7 @@ from typing import Any, Iterable, Literal
 
 import numpy as np
 
-from maze_dataset.constants import SPECIAL_TOKENS, CoordTup
+from maze_dataset.constants import SPECIAL_TOKENS, Coord, CoordTup
 
 WhenMissing = Literal["except", "skip", "include"]
 
