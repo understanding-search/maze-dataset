@@ -9,6 +9,10 @@ CoordTup = tuple[int, int]
 CoordArray = Int8[np.ndarray, "coord x y"]
 CoordList = list[CoordTup]
 
+
+class SpecialTokensError(Exception):
+    pass
+
 @dataclass(frozen=True)
 class _SPECIAL_TOKENS_BASE:
     ADJLIST_START: str = "<ADJLIST_START>"
@@ -25,6 +29,9 @@ class _SPECIAL_TOKENS_BASE:
 
     def __getitem__(self, key: str) -> str:
         key_upper: str = key.upper()
+
+        if not isinstance(key, str):
+            raise TypeError(f"key must be str, not {type(key)}")
         
         # error checking for old lowercase format
         if not key == key_upper:

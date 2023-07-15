@@ -3,8 +3,6 @@ import math
 import numpy as np
 from jaxtyping import Bool
 
-_FORCE_LEGACY_TOKENIZATION: bool = False
-
 
 def bool_array_from_string(
     string: str, shape: list[int], true_symbol: str = "T"
@@ -63,10 +61,10 @@ def corner_first_ndindex(n: int, ndim: int = 2) -> list[tuple]:
     """
 
     unsorted: list = list(np.ndindex(tuple([n for _ in range(ndim)])))
-    if not _FORCE_LEGACY_TOKENIZATION:
-        return sorted(unsorted, key=lambda x: (max(x), x if x[0] % 2 == 0 else x[::-1]))
-    else:
-        return unsorted
+    return sorted(
+        unsorted, 
+        key=lambda x: (max(x), x if x[0] % 2 == 0 else x[::-1])
+    )
 
     # alternate numpy version from GPT-4:
     """

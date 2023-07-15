@@ -31,31 +31,10 @@ from maze_dataset.dataset.dataset import (
 )
 from maze_dataset.generation.generators import GENERATORS_MAP
 from maze_dataset.maze import LatticeMaze, SolvedMaze, coord_to_str
+from maze_dataset.tokenization.token_utils import MazeTokenizer
 from maze_dataset.utils import corner_first_ndindex
 
-_MAZEDATASET_PROPERTIES_TO_SERIALIZE: list[str] = [
-    "padding_token_index",
-    "token_arr",
-    "tokenizer_map",
-    "grid_shape",
-    # "node_token_map", # doesn't work by default due to keys being tuples
-    "token_node_map",
-    "n_tokens",
-]
 
-# TODO: re-add later, depends on a feature coming in muutils 0.3.2
-__MAZEDATASET_PROPERTIES_TO_VALIDATE: list[str] = [
-    "token_arr",
-    "padding_token_index",
-    "tokenizer_map",
-    "grid_shape",
-    "token_node_map",
-    "n_tokens",
-]
-
-
-def _str_to_coord(coord_str: str) -> Coord:
-    return np.array(tuple(int(x) for x in coord_str.strip("() \t").split(",")))
 
 
 def _load_maze_ctor(maze_ctor_serialized: str | dict) -> Callable:
@@ -75,7 +54,7 @@ def _load_maze_ctor(maze_ctor_serialized: str | dict) -> Callable:
 
 
 @serializable_dataclass(
-    kw_only=True, properties_to_serialize=_MAZEDATASET_PROPERTIES_TO_SERIALIZE
+    kw_only=True, properties_to_serialize=["grid_shape"]
 )
 class MazeDatasetConfig(GPTDatasetConfig):
     """maze dataset configuration, including tokenizers"""
@@ -115,40 +94,9 @@ class MazeDatasetConfig(GPTDatasetConfig):
     def grid_shape_np(self) -> Coord:
         return np.array(self.grid_shape)
 
-    # TODO: use max grid shape for tokenization, have it be a property but then override it in collected dataset
-
     @property
     def max_grid_n(self) -> int:
         return max(self.grid_shape)
-
-    @cached_property
-    def node_token_map(self) -> dict[CoordTup, str]:
-        """map from node to token"""
-        return {
-            tuple(coord): coord_to_str(coord)
-            for coord in corner_first_ndindex(self.max_grid_n)
-        }
-
-    @cached_property
-    def token_node_map(self) -> dict[str, CoordTup]:
-        """map from token to node"""
-        return {v: k for k, v in self.node_token_map.items()}
-
-    @cached_property
-    def token_arr(self) -> list[str]:
-        """map from index to token"""
-        return [
-            *list(SPECIAL_TOKENS.values()),
-            *list(self.node_token_map.values()),
-        ]
-
-    @property
-    def n_tokens(self) -> int:
-        return len(self.token_arr)
-
-    @cached_property
-    def padding_token_index(self) -> int:
-        return self.tokenizer_map[SPECIAL_TOKENS["padding"]]
 
     def stable_hash_cfg(self) -> int:
         return stable_hash(json.dumps(self.serialize()))
@@ -199,6 +147,7 @@ def _maze_gen_init_worker(config: MazeDatasetConfig):
     global _GLOBAL_WORKER_CONFIG
     _GLOBAL_WORKER_CONFIG = config
 
+    # TODO
     # HACK: this makes the generation depend both on whether parallelism is used, and on the number of processes. this is bad!
     # only set numpy seed, since we do not use other random gens
     process_id: tuple[int] = multiprocessing.current_process()._identity
@@ -229,13 +178,14 @@ class MazeDataset(GPTDataset):
         self.generation_metadata_collected: dict | None = generation_metadata_collected
 
     def data_hash(self) -> int:
-        return hash(tuple(self.mazes))
+        return stable_hash(tuple(self.mazes))
 
     def __getitem__(self, i: int) -> SolvedMaze:
         return self.mazes[i]
 
     def as_tokens(
         self,
+        maze_tokenizer: MazeTokenizer,
         limit: int | None = None,
         join_tokens_individual_maze: bool = False,
     ) -> list[list[str]] | list[str]:
@@ -249,15 +199,17 @@ class MazeDataset(GPTDataset):
         >>> dataset.as_tokens(join_tokens_individual_maze=True)
         ["a b c", "d e f"]
         """
+        output: list[list[str]] = [
+            maze.as_tokens(maze_tokenizer) 
+            for maze in self.mazes[:limit]
+        ]
         if join_tokens_individual_maze:
             return [
-                " ".join(maze.as_tokens(self.cfg.node_token_map))
-                for maze in self.mazes[:limit]
+                " ".join(tokens)
+                for tokens in output
             ]
         else:
-            return [
-                maze.as_tokens(self.cfg.node_token_map) for maze in self.mazes[:limit]
-            ]
+            return output
 
     def __len__(self) -> int:
         return len(self.mazes)
