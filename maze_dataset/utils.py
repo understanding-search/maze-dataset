@@ -61,10 +61,7 @@ def corner_first_ndindex(n: int, ndim: int = 2) -> list[tuple]:
     """
 
     unsorted: list = list(np.ndindex(tuple([n for _ in range(ndim)])))
-    return sorted(
-        unsorted, 
-        key=lambda x: (max(x), x if x[0] % 2 == 0 else x[::-1])
-    )
+    return sorted(unsorted, key=lambda x: (max(x), x if x[0] % 2 == 0 else x[::-1]))
 
     # alternate numpy version from GPT-4:
     """

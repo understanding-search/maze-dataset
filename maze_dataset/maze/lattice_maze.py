@@ -83,7 +83,6 @@ ASCII_PIXEL_PAIRINGS: dict[str, RGB] = {
 }
 
 
-
 @serializable_dataclass(
     frozen=True,
     kw_only=True,

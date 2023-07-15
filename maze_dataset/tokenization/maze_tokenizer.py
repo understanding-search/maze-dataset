@@ -1,16 +1,19 @@
 """TokenizationMode enum and the MazeTokenizer class"""
-import typing
-from typing import Any, Iterable, Literal, Callable
 from enum import Enum
 from functools import cached_property
-import warnings
+from typing import Callable, Iterable
 
 import numpy as np
-from muutils.json_serialize import SerializableDataclass, serializable_dataclass, serializable_field
+from muutils.json_serialize import (
+    SerializableDataclass,
+    serializable_dataclass,
+    serializable_field,
+)
 
 from maze_dataset.constants import SPECIAL_TOKENS, CoordTup
 from maze_dataset.tokenization.token_utils import coord_to_indexed_string, coord_to_str
 from maze_dataset.utils import corner_first_ndindex
+
 
 class TokenizationMode(Enum):
     """mode of tokenization
@@ -32,17 +35,16 @@ class TokenizationMode(Enum):
     AOTP_UT_uniform = "AOTP_UT_uniform"
     AOTP_indexed = "AOTP_indexed"
 
+
 _NDINDEX_FUNC_MAP: dict[
-     TokenizationMode, 
-     Callable[[int], Iterable[tuple[int, ...]]]
+    TokenizationMode, Callable[[int], Iterable[tuple[int, ...]]]
 ] = {
     TokenizationMode.AOTP_UT_rasterized: np.ndindex,
     TokenizationMode.AOTP_UT_uniform: corner_first_ndindex,
 }
 
 _MAZETOKENIZER_PROPERTIES_TO_SERIALIZE: list[str] = [
-    "name"
-    "grid_size",
+    "name" "grid_size",
     "padding_token_index",
     "token_arr",
     "tokenizer_map",
@@ -61,6 +63,7 @@ _MAZETOKENIZER_PROPERTIES_TO_SERIALIZE: list[str] = [
 #     "n_tokens",
 # ]
 
+
 @serializable_dataclass(properties_to_serialize=["name"])
 class MazeTokenizer(SerializableDataclass):
     tokenization_mode: TokenizationMode = serializable_field(
@@ -77,22 +80,25 @@ class MazeTokenizer(SerializableDataclass):
     @property
     def name(self) -> str:
         return f"maze_tokenizer-{self.tokenization_mode.value}-n{self.max_grid_size}"
-        
+
     @cached_property
     def node_token_map(self) -> dict[CoordTup, str]:
         """map from node to token"""
         if self.tokenization_mode in (
-            TokenizationMode.AOTP_UT_rasterized, 
+            TokenizationMode.AOTP_UT_rasterized,
             TokenizationMode.AOTP_UT_uniform,
         ):
             # if rasterized, use np.ndindex, if uniform use corner_first_ndindex
             return {
                 tuple(coord): coord_to_str(coord)
-                for coord in 
-                _NDINDEX_FUNC_MAP[self.tokenization_mode](self.max_grid_size)
+                for coord in _NDINDEX_FUNC_MAP[self.tokenization_mode](
+                    self.max_grid_size
+                )
             }
         elif self.tokenization_mode == TokenizationMode.AOTP_indexed:
-            raise NotImplementedError("AOTP_indexed mode not compatible with node_token_map")
+            raise NotImplementedError(
+                "AOTP_indexed mode not compatible with node_token_map"
+            )
         else:
             raise ValueError(
                 f"Invalid tokenization mode {self.tokenization_mode}",
@@ -102,13 +108,13 @@ class MazeTokenizer(SerializableDataclass):
     def map_coord_to_tokens(self, coord: CoordTup) -> list[str]:
         """map a coordinate to a token"""
         if self.tokenization_mode in (
-            TokenizationMode.AOTP_UT_rasterized, 
+            TokenizationMode.AOTP_UT_rasterized,
             TokenizationMode.AOTP_UT_uniform,
         ):
             return [self.node_token_map[coord]]
         elif self.tokenization_mode == TokenizationMode.AOTP_indexed:
             return coord_to_indexed_string(coord)
-    
+
     @cached_property
     def token_node_map(self) -> dict[str, CoordTup]:
         """map from token to node"""
@@ -121,22 +127,26 @@ class MazeTokenizer(SerializableDataclass):
         output: list[str] = list(SPECIAL_TOKENS.values())
 
         if self.tokenization_mode in (
-            TokenizationMode.AOTP_UT_rasterized, 
+            TokenizationMode.AOTP_UT_rasterized,
             TokenizationMode.AOTP_UT_uniform,
         ):
             output.extend(self.node_token_map.values())
         elif self.tokenization_mode == TokenizationMode.AOTP_indexed:
             # TODO: this is hacky, but we don't want to modify the original SPECIAL_TOKENS since that will break old models
-            output.extend([
-                "(", ",", ")", # new special chars
-                *map(str, range(self.max_grid_size)), # numbers
-            ])
+            output.extend(
+                [
+                    "(",
+                    ",",
+                    ")",  # new special chars
+                    *map(str, range(self.max_grid_size)),  # numbers
+                ]
+            )
         else:
             raise ValueError(
                 f"Invalid tokenization mode {self.tokenization_mode}",
                 f"expected one of {TokenizationMode.__members__}",
             )
-    
+
     @property
     def vocab_size(self) -> int:
         return len(self.token_arr)
@@ -145,7 +155,7 @@ class MazeTokenizer(SerializableDataclass):
     def n_tokens(self) -> int:
         # TODO: deprecate
         return self.vocab_size
-    
+
     @cached_property
     def padding_token_index(self) -> int:
         return self.tokenizer_map[SPECIAL_TOKENS["padding"]]

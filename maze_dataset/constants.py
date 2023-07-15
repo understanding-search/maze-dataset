@@ -1,5 +1,5 @@
-from dataclasses import dataclass
 import warnings
+from dataclasses import dataclass
 
 import numpy as np
 from jaxtyping import Int8
@@ -12,6 +12,7 @@ CoordList = list[CoordTup]
 
 class SpecialTokensError(Exception):
     pass
+
 
 @dataclass(frozen=True)
 class _SPECIAL_TOKENS_BASE:
@@ -32,7 +33,7 @@ class _SPECIAL_TOKENS_BASE:
 
         if not isinstance(key, str):
             raise TypeError(f"key must be str, not {type(key)}")
-        
+
         # error checking for old lowercase format
         if not key == key_upper:
             warnings.warn(
@@ -55,25 +56,25 @@ class _SPECIAL_TOKENS_BASE:
 
         # normal return
         return getattr(self, key.upper())
-    
+
     def __iter__(self):
         return iter(self.__dict__.keys())
-    
+
     def __len__(self):
         return len(self.__dict__.keys())
-    
+
     def __contains__(self, key: str) -> bool:
         return key in self.__dict__.keys()
-    
+
     def values(self):
         return self.__dict__.values()
-    
+
     def items(self):
         return self.__dict__.items()
-    
+
     def keys(self):
         return self.__dict__.keys()
-    
+
 
 SPECIAL_TOKENS: _SPECIAL_TOKENS_BASE = _SPECIAL_TOKENS_BASE()
 

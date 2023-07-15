@@ -1,18 +1,14 @@
 """a whole bunch of utilities for tokenization"""
 
 import typing
-from typing import Any, Iterable, Literal, Callable
-from enum import Enum
-from functools import cached_property
-import warnings
+from typing import Any, Iterable, Literal
 
 import numpy as np
-from muutils.json_serialize import SerializableDataclass, serializable_dataclass, serializable_field
 
 from maze_dataset.constants import SPECIAL_TOKENS, CoordTup
-from maze_dataset.utils import corner_first_ndindex
 
 WhenMissing = Literal["except", "skip", "include"]
+
 
 def str_is_coord(coord_str: str) -> bool:
     """return True if the string is a coordinate string, False otherwise"""
@@ -41,16 +37,18 @@ def coord_str_to_tuple_noneable(coord_str: str) -> CoordTup | None:
 
 
 def coord_to_str(coord: typing.Sequence[int]) -> str:
-    """convert a coordinate to a string: `(i,j)`->"(i,j)""""
+    """convert a coordinate to a string: `(i,j)`->"(i,j)" """
     return f"({','.join(str(c) for c in coord)})"
+
 
 def coord_to_indexed_string(coord: typing.Sequence[int]) -> list[str]:
     """convert a coordinate to a list of indexed strings: `(i,j)`->"(", "i", ",", "j", ")" """
     return [
-        "(", 
+        "(",
         *[str(c) for c in coord],
         ")",
     ]
+
 
 def tokens_between(
     tokens: list[str],
@@ -162,6 +160,6 @@ def remove_padding_from_token_str(token_str: str) -> str:
     token_str = token_str.replace(f"{SPECIAL_TOKENS['padding']}", "")
     return token_str
 
+
 def _str_to_coord(coord_str: str) -> Coord:
     return np.array(tuple(int(x) for x in coord_str.strip("() \t").split(",")))
-

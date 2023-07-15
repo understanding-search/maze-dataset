@@ -14,16 +14,15 @@ from muutils.json_serialize import (
 from muutils.misc import sanitize_fname, shorten_numerical_to_str, stable_hash
 from zanj.loading import LoaderHandler, load_item_recursive, register_loader_handler
 
-from maze_dataset.constants import SPECIAL_TOKENS, Coord, CoordTup
+from maze_dataset.constants import Coord, CoordTup
 from maze_dataset.dataset.dataset import GPTDataset, GPTDatasetConfig
 from maze_dataset.dataset.maze_dataset import (
     _MAZEDATASET_PROPERTIES_TO_SERIALIZE,
     MazeDataset,
     MazeDatasetConfig,
 )
-from maze_dataset.maze import LatticeMaze, coord_to_str
+from maze_dataset.maze import LatticeMaze
 from maze_dataset.tokenization.token_utils import MazeTokenizer
-from maze_dataset.utils import corner_first_ndindex
 
 
 @serializable_dataclass(
@@ -158,7 +157,7 @@ class MazeDatasetCollection(GPTDataset):
                 for key in ["cfg", "maze_datasets", "generation_metadata_collected"]
             }
         )
-    
+
     # TODO: remove duplication with MazeDatasetConfig().as_tokens() somehow?
     def as_tokens(
         self,
@@ -177,14 +176,10 @@ class MazeDatasetCollection(GPTDataset):
         ["a b c", "d e f"]
         """
         output: list[list[str]] = [
-            maze.as_tokens(maze_tokenizer) 
-            for maze in self.mazes[:limit]
+            maze.as_tokens(maze_tokenizer) for maze in self.mazes[:limit]
         ]
         if join_tokens_individual_maze:
-            return [
-                " ".join(tokens)
-                for tokens in output
-            ]
+            return [" ".join(tokens) for tokens in output]
         else:
             return output
 

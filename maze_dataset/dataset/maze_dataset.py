@@ -5,7 +5,6 @@ import multiprocessing
 import typing
 import warnings
 from collections import Counter, defaultdict
-from functools import cached_property
 from typing import Callable
 
 import numpy as np
@@ -21,7 +20,7 @@ from muutils.json_serialize.util import safe_getsource, string_as_lines
 from muutils.misc import sanitize_fname, shorten_numerical_to_str, stable_hash
 from zanj.loading import LoaderHandler, load_item_recursive, register_loader_handler
 
-from maze_dataset.constants import SPECIAL_TOKENS, Coord, CoordTup
+from maze_dataset.constants import Coord, CoordTup
 from maze_dataset.dataset.dataset import (
     DatasetFilterProtocol,
     GPTDataset,
@@ -30,11 +29,8 @@ from maze_dataset.dataset.dataset import (
     register_filter_namespace_for_dataset,
 )
 from maze_dataset.generation.generators import GENERATORS_MAP
-from maze_dataset.maze import LatticeMaze, SolvedMaze, coord_to_str
+from maze_dataset.maze import LatticeMaze, SolvedMaze
 from maze_dataset.tokenization.token_utils import MazeTokenizer
-from maze_dataset.utils import corner_first_ndindex
-
-
 
 
 def _load_maze_ctor(maze_ctor_serialized: str | dict) -> Callable:
@@ -53,9 +49,7 @@ def _load_maze_ctor(maze_ctor_serialized: str | dict) -> Callable:
         )
 
 
-@serializable_dataclass(
-    kw_only=True, properties_to_serialize=["grid_shape"]
-)
+@serializable_dataclass(kw_only=True, properties_to_serialize=["grid_shape"])
 class MazeDatasetConfig(GPTDatasetConfig):
     """maze dataset configuration, including tokenizers"""
 
@@ -200,14 +194,10 @@ class MazeDataset(GPTDataset):
         ["a b c", "d e f"]
         """
         output: list[list[str]] = [
-            maze.as_tokens(maze_tokenizer) 
-            for maze in self.mazes[:limit]
+            maze.as_tokens(maze_tokenizer) for maze in self.mazes[:limit]
         ]
         if join_tokens_individual_maze:
-            return [
-                " ".join(tokens)
-                for tokens in output
-            ]
+            return [" ".join(tokens) for tokens in output]
         else:
             return output
 
