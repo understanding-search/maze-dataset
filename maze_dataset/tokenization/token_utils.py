@@ -1,15 +1,53 @@
 from typing import Any, Iterable, Literal, Callable
 from enum import Enum
 from functools import cached_property
+import warnings
 
 import numpy as np
 from muutils.json_serialize import SerializableDataclass, serializable_dataclass, serializable_field
 
 from maze_dataset.constants import SPECIAL_TOKENS, CoordTup
-from maze_dataset.maze import coord_to_str
 from maze_dataset.utils import corner_first_ndindex
 
 WhenMissing = Literal["except", "skip", "include"]
+
+def str_is_coord(coord_str: str) -> bool:
+    """return True if the string is a coordinate string, False otherwise"""
+    return all(
+        [
+            coord_str.startswith("("),
+            coord_str.endswith(")"),
+            "," in coord_str,
+            all([x.isdigit() for x in coord_str.lstrip("(").rstrip(")").split(",")]),
+        ]
+    )
+
+
+def coord_str_to_tuple(coord_str: str) -> tuple[int, ...]:
+    """convert a coordinate string to a tuple"""
+
+    stripped: str = coord_str.lstrip("(").rstrip(")")
+    return tuple(int(x) for x in stripped.split(","))
+
+
+def coord_str_to_tuple_noneable(coord_str: str) -> CoordTup | None:
+    """convert a coordinate string to a tuple, or None if the string is not a coordinate string"""
+    if not str_is_coord(coord_str):
+        return None
+    return coord_str_to_tuple(coord_str)
+
+
+def coord_to_str(coord: typing.Sequence[int]) -> str:
+    """convert a coordinate to a string: `(i,j)`->"(i,j)""""
+    return f"({','.join(str(c) for c in coord)})"
+
+def coord_to_indexed_string(coord: typing.Sequence[int]) -> list[str]:
+    """convert a coordinate to a list of indexed strings: `(i,j)`->"(", "i", ",", "j", ")" """
+    return [
+        "(", 
+        *[str(c) for c in coord],
+        ")",
+    ]
 
 class TokenizationMode(Enum):
     """mode of tokenization
@@ -24,12 +62,12 @@ class TokenizationMode(Enum):
         example: for a 3x3 maze, token order is `(0,0), (0,1), (0,2), (1,0), (1,1), (1,2), (2,0), (2,1), (2,2)`
     - `AOTP_UT_uniform`: new mode, where a 3x3 tokenization scheme and 5x5 tokenizations scheme are compatible
         uses `corner_first_ndindex` function to order the tokens
-    - `AOTP_CTT`: each coordinate is a tuple of integers (not implemented)
+    - `AOTP_indexed`: each coordinate is a tuple of integers (not implemented)
     """
 
     AOTP_UT_rasterized = "AOTP_UT_rasterized"
     AOTP_UT_uniform = "AOTP_UT_uniform"
-    AOTP_CTT = "AOTP_CTT"
+    AOTP_indexed = "AOTP_indexed"
 
 _NDINDEX_FUNC_MAP: dict[
      TokenizationMode, 
@@ -69,14 +107,14 @@ class MazeTokenizer(SerializableDataclass):
     )
 
     # TODO: there could in principle be a way to avoid having to specify this,
-    # since it shouldn't matter for the `AOTP_UT_uniform` mode or the `AOTP_CTT` mode
+    # since it shouldn't matter for the `AOTP_UT_uniform` mode or the `AOTP_indexed` mode
     # but, this adds a lot of complexity. Just set it to a big value if you're not sure
     max_grid_size: int = serializable_field()
 
     @property
     def name(self) -> str:
         return f"maze_tokenizer-{self.tokenization_mode.value}-n{self.max_grid_size}"
-    
+        
     @cached_property
     def node_token_map(self) -> dict[CoordTup, str]:
         """map from node to token"""
@@ -90,28 +128,51 @@ class MazeTokenizer(SerializableDataclass):
                 for coord in 
                 _NDINDEX_FUNC_MAP[self.tokenization_mode](self.max_grid_size)
             }
-        elif self.tokenization_mode == TokenizationMode.AOTP_CTT:
-            raise NotImplementedError("AOTP_CTT mode not compatible with node_token_map")
+        elif self.tokenization_mode == TokenizationMode.AOTP_indexed:
+            raise NotImplementedError("AOTP_indexed mode not compatible with node_token_map")
         else:
             raise ValueError(
                 f"Invalid tokenization mode {self.tokenization_mode}",
                 f"expected one of {TokenizationMode.__members__}",
-            )        
+            )
+
+    def map_coord_to_tokens(self, coord: CoordTup) -> list[str]:
+        """map a coordinate to a token"""
+        if self.tokenization_mode in (
+            TokenizationMode.AOTP_UT_rasterized, 
+            TokenizationMode.AOTP_UT_uniform,
+        ):
+            return [self.node_token_map[coord]]
+        elif self.tokenization_mode == TokenizationMode.AOTP_indexed:
+            return coord_to_indexed_string(coord)
     
     @cached_property
     def token_node_map(self) -> dict[str, CoordTup]:
         """map from token to node"""
+        raise DeprecationWarning("this isn't used anywhere??")
         return {v: k for k, v in self.node_token_map.items()}
 
     @cached_property
     def token_arr(self) -> list[str]:
         """map from index to token"""
-        if self.tokenization_mode == TokenizationMode.AOTP_CTT:
-            raise NotImplementedError("AOTP_CTT mode not implemented yet!")
-        return [
-            *list(SPECIAL_TOKENS.values()), # special tokens first
-            *list(self.node_token_map.values()), # all other tokens
-        ]
+        output: list[str] = list(SPECIAL_TOKENS.values())
+
+        if self.tokenization_mode in (
+            TokenizationMode.AOTP_UT_rasterized, 
+            TokenizationMode.AOTP_UT_uniform,
+        ):
+            output.extend(self.node_token_map.values())
+        elif self.tokenization_mode == TokenizationMode.AOTP_indexed:
+            # TODO: this is hacky, but we don't want to modify the original SPECIAL_TOKENS since that will break old models
+            output.extend([
+                "(", ",", ")", # new special chars
+                *map(str, range(self.max_grid_size)), # numbers
+            ])
+        else:
+            raise ValueError(
+                f"Invalid tokenization mode {self.tokenization_mode}",
+                f"expected one of {TokenizationMode.__members__}",
+            )
     
     @property
     def vocab_size(self) -> int:

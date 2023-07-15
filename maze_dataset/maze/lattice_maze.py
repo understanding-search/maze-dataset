@@ -83,36 +83,6 @@ ASCII_PIXEL_PAIRINGS: dict[str, RGB] = {
 }
 
 
-def str_is_coord(coord_str: str) -> bool:
-    """return True if the string is a coordinate string, False otherwise"""
-    return all(
-        [
-            coord_str.startswith("("),
-            coord_str.endswith(")"),
-            "," in coord_str,
-            all([x.isdigit() for x in coord_str.lstrip("(").rstrip(")").split(",")]),
-        ]
-    )
-
-
-def coord_str_to_tuple(coord_str: str) -> tuple[int, ...]:
-    """convert a coordinate string to a tuple"""
-
-    stripped: str = coord_str.lstrip("(").rstrip(")")
-    return tuple(int(x) for x in stripped.split(","))
-
-
-def coord_str_to_tuple_noneable(coord_str: str) -> CoordTup | None:
-    """convert a coordinate string to a tuple, or None if the string is not a coordinate string"""
-    if not str_is_coord(coord_str):
-        return None
-    return coord_str_to_tuple(coord_str)
-
-
-def coord_to_str(coord: typing.Sequence[int]) -> str:
-    """convert a coordinate to a string"""
-    return f"({','.join(str(c) for c in coord)})"
-
 
 @serializable_dataclass(
     frozen=True,
