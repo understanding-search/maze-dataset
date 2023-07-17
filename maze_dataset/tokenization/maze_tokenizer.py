@@ -12,7 +12,7 @@ from muutils.json_serialize import (
 
 from maze_dataset.constants import SPECIAL_TOKENS, CoordTup
 from maze_dataset.tokenization.token_utils import coord_to_indexed_string, coord_to_str
-from maze_dataset.utils import corner_first_ndindex
+from maze_dataset.utils import corner_first_ndindex, WhenMissing, apply_mapping
 
 
 class TokenizationMode(Enum):
@@ -159,3 +159,19 @@ class MazeTokenizer(SerializableDataclass):
     @cached_property
     def padding_token_index(self) -> int:
         return self.tokenizer_map[SPECIAL_TOKENS["padding"]]
+    
+    
+    def tokens_to_coords(
+        self,
+        tokens: list[str],
+        when_noncoord: WhenMissing = "skip",
+    ) -> list[str | CoordTup]:
+        return apply_mapping(tokens, maze_data_cfg.token_node_map, when_noncoord)
+
+
+    def coords_to_tokens(
+        self,
+        coords: list[str | CoordTup],
+        when_noncoord: WhenMissing = "skip",
+    ) -> list[str]:
+        return apply_mapping(coords, maze_data_cfg.node_token_map, when_noncoord)
