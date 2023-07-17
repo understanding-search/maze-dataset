@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "maze-dataset"
-version = "0.1.1"
+version = "0.2.0"
 description = ""
 authors = ["Michael Ivanitskiy <miv@knc.ai>", "Dan Valentine <danvalentine256@gmail.com>", "Rusheb Shah <rusheb.shah@gmail.com>", "Lucia Quirke <luciaq@canva.com>", "Can Rager <can.rager@posteo.de>", "Alex Spies <alexfspies@gmail.com>", "Chris Mathwin <cwmathwin@gmail.com>", "Tilman Rauker <traeuker@googlemail.com>", "Guillaume Corlouer <guillaume.corlouer@gmail.com>"]
 readme = "README.md"
@@ -11,7 +11,7 @@ repository = "https://github.com/AISC-understanding-search/maze_dataset"
 python = "^3.10"
 torch = "^1.13.1"
 matplotlib = "^3.7.0"
-muutils = "^0.4.3"
+muutils = "^0.4.4"
 zanj = "^0.1.4"
 jupyter = "^1.0.0"
 ipykernel = "^6.22.0"
