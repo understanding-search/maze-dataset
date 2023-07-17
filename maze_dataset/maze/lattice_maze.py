@@ -24,7 +24,6 @@ from maze_dataset.constants import (
 from maze_dataset.tokenization.token_utils import (
     get_adj_list_tokens,
     get_path_tokens,
-    tokens_to_coords,
 )
 
 ConnectionList = Bool[np.ndarray, "lattice_dim x y"]
@@ -917,6 +916,7 @@ class SolvedMaze(TargetedLatticeMaze):
 
     @classmethod
     def from_tokens(cls, tokens: list[str] | str, data_cfg) -> "SolvedMaze":
+        raise NotImplementedError("wip")
         if type(tokens) == str:
             tokens = tokens.split(" ")
 

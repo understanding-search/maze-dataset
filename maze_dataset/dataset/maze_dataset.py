@@ -30,7 +30,6 @@ from maze_dataset.dataset.dataset import (
 )
 from maze_dataset.generation.generators import GENERATORS_MAP
 from maze_dataset.maze import LatticeMaze, SolvedMaze
-from maze_dataset.tokenization.token_utils import MazeTokenizer
 
 
 def _load_maze_ctor(maze_ctor_serialized: str | dict) -> Callable:
@@ -179,7 +178,7 @@ class MazeDataset(GPTDataset):
 
     def as_tokens(
         self,
-        maze_tokenizer: MazeTokenizer,
+        maze_tokenizer, # TODO: MazeTokenizer
         limit: int | None = None,
         join_tokens_individual_maze: bool = False,
     ) -> list[list[str]] | list[str]:

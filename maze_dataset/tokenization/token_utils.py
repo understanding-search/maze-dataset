@@ -2,11 +2,30 @@
 
 import typing
 from typing import Any, Iterable, Literal, Callable
+import re
 
 import numpy as np
 
 from maze_dataset.constants import SPECIAL_TOKENS, Coord, CoordTup
 from maze_dataset.utils import WhenMissing, apply_mapping
+
+
+
+# coordinate to tokens
+# ==================================================
+
+def _coord_to_tokens_UT(coord: typing.Sequence[int]) -> list[str]:
+    """convert a coordinate to a string: `(i,j)`->"(i,j)" """
+    return f"({','.join(str(c) for c in coord)})"
+
+
+def _coord_to_tokens_indexed(coord: typing.Sequence[int]) -> list[str]:
+    """convert a coordinate to a list of indexed strings: `(i,j)`->"(", "i", ",", "j", ")" """
+    return [
+        "(",
+        *[str(c) for c in coord],
+        ")",
+    ]
 
 
 # string to coordinate representation
@@ -53,23 +72,15 @@ def coord_str_to_tuple_noneable(coord_str: str) -> CoordTup | None:
         return None
     return coord_str_to_tuple(coord_str)
 
+def coords_string_split(coords: str) -> list[str]:
+    """Splits a list of tokens into a list containing the tokens for each coordinate
+
+    Non-whitespace portions of the input string not matched are preserved in the same list:
+    "(1,2) <SPECIAL_TOKEN> (5,6)" -> ["(1,2)", "<SPECIAL_TOKEN>", "(5,6)"]
+    """
+    return re.findall(r'\([^)]*\)|\S+', coords)
 
 
-# coordinate to tokens
-# ==================================================
-
-def _coord_to_tokens_UT(coord: typing.Sequence[int]) -> list[str]:
-    """convert a coordinate to a string: `(i,j)`->"(i,j)" """
-    return f"({','.join(str(c) for c in coord)})"
-
-
-def _coord_to_tokens_indexed(coord: typing.Sequence[int]) -> list[str]:
-    """convert a coordinate to a list of indexed strings: `(i,j)`->"(", "i", ",", "j", ")" """
-    return [
-        "(",
-        *[str(c) for c in coord],
-        ")",
-    ]
 
 
 # filtering things from a prompt or generated text
