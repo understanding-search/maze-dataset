@@ -11,15 +11,15 @@ from maze_dataset.utils import WhenMissing, apply_mapping
 
 
 
-# coordinate to tokens
+# coordinate to strings
 # ==================================================
 
-def _coord_to_tokens_UT(coord: typing.Sequence[int]) -> list[str]:
+def _coord_to_strings_UT(coord: typing.Sequence[int]) -> list[str]:
     """convert a coordinate to a string: `(i,j)`->"(i,j)" """
     return f"({','.join(str(c) for c in coord)})"
 
 
-def _coord_to_tokens_indexed(coord: typing.Sequence[int]) -> list[str]:
+def _coord_to_strings_indexed(coord: typing.Sequence[int]) -> list[str]:
     """convert a coordinate to a list of indexed strings: `(i,j)`->"(", "i", ",", "j", ")" """
     return [
         "(",
@@ -78,9 +78,64 @@ def coords_string_split(coords: str) -> list[str]:
     Non-whitespace portions of the input string not matched are preserved in the same list:
     "(1,2) <SPECIAL_TOKEN> (5,6)" -> ["(1,2)", "<SPECIAL_TOKEN>", "(5,6)"]
     """
+    # ty gpt4
     return re.findall(r'\([^)]*\)|\S+', coords)
 
 
+# back and forth in wrapped form
+# ==================================================
+def tokens_to_strings(
+    tokens: str|list[str],
+    when_noncoord: WhenMissing = "skip",
+) -> list[str | CoordTup]:
+    """converts a list of tokens to a list of coordinates
+    
+    returns list[CoordTup] if `when_noncoord` is "skip" or "error"
+    returns list[str | CoordTup] if `when_noncoord` is "include"
+    """
+    tokens_joined: str = tokens if isinstance(tokens, str) else " ".join(tokens)
+    tokens_processed: list[str] = coords_string_split(tokens_joined)
+    result: list[str] = list()
+    for token in tokens_processed:
+        coord: CoordTup | None = coord_str_to_tuple_noneable(token)
+        if coord is None:
+            if when_noncoord == "skip":
+                continue
+            elif when_noncoord == "error":
+                raise ValueError(f"Invalid non-coordinate token '{token}' in text: '{tokens}'")
+            elif when_noncoord == "include":
+                result.append(token)
+            else:
+                raise ValueError(f"Invalid when_noncoord value '{when_noncoord}'")
+        else:
+            result.append(coord)
+    return result
+
+
+def coords_to_strings(
+    coords: list[str | CoordTup],
+    coord_to_strings_func: Callable[[CoordTup], list[str]],
+    when_noncoord: WhenMissing = "skip",
+) -> list[str]:
+    """converts a list of coordinates to a list of strings (tokens)
+    
+    expects list[CoordTup] if `when_noncoord` is "error"
+    expects list[str | CoordTup] if `when_noncoord` is "include" or "skip"
+    """
+    result: list[str] = list()
+    for coord in coords:
+        if isinstance(coord, str):
+            if when_noncoord == "skip":
+                continue
+            elif when_noncoord == "error":
+                raise ValueError(f"Invalid non-coordinate '{coord}' in list of coords: '{coords}'")
+            elif when_noncoord == "include":
+                result.append(coord)
+            else:
+                raise ValueError(f"Invalid when_noncoord value '{when_noncoord}'")
+        else:
+            result.append(coord_to_strings_func(coord))
+    return result
 
 
 # filtering things from a prompt or generated text
