@@ -13,6 +13,20 @@ CoordList = list[CoordTup]
 class SpecialTokensError(Exception):
     pass
 
+_SPECIAL_TOKENS_ABBREVIATIONS: dict[str, str] = {
+    "<ADJLIST_START>": "<A_S>",
+    "<ADJLIST_END>": "<A_E>",
+    "<TARGET_START>": "<T_S>",
+    "<TARGET_END>": "<T_E>",
+    "<ORIGIN_START>": "<O_S>",
+    "<ORIGIN_END>": "<O_E>",
+    "<PATH_START>": "<P_S>",
+    "<PATH_END>": "<P_E>",
+    "<-->": "<-->",
+    ";": ";",
+    "<PADDING>": "<PAD>",
+}
+
 
 @dataclass(frozen=True)
 class _SPECIAL_TOKENS_BASE:
@@ -56,6 +70,9 @@ class _SPECIAL_TOKENS_BASE:
 
         # normal return
         return getattr(self, key.upper())
+
+    def get_abbrev(self, key: str) -> str:
+        return _SPECIAL_TOKENS_ABBREVIATIONS[self[key]]
 
     def __iter__(self):
         return iter(self.__dict__.keys())

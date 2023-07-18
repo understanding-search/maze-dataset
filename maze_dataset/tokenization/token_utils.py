@@ -7,8 +7,7 @@ import re
 import numpy as np
 
 from maze_dataset.constants import SPECIAL_TOKENS, Coord, CoordTup
-from maze_dataset.utils import WhenMissing, apply_mapping
-
+from maze_dataset.utils import WhenMissing
 
 
 # coordinate to strings
