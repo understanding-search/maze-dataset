@@ -54,19 +54,26 @@ def test_coord_str_to_tuple_noneable():
 
 def test_coords_string_split():
     assert coords_string_split("(1,2) <ADJLIST_START> (5,6)") == ["(1,2)", "<ADJLIST_START>", "(5,6)"]
-    assert coords_string_split("(1,2),(5,6)") == ["(1,2)", ",", "(5,6)"]
+    assert coords_string_split("(1,2) (5,6)") == ["(1,2)", "(5,6)"]
 
 def test_strings_to_coords():
-    assert strings_to_coords("(1,2) <ADJLIST_START> (5,6)") == [(1,2), "<ADJLIST_START>", (5,6)]
+    assert strings_to_coords("(1,2) <ADJLIST_START> (5,6)") == [(1,2), (5,6)]
     assert strings_to_coords("(1,2) <ADJLIST_START> (5,6)", when_noncoord="skip") == [(1,2), (5,6)]
+    assert strings_to_coords("(1,2) <ADJLIST_START> (5,6)", when_noncoord="include") == [(1,2), "<ADJLIST_START>", (5,6)]
     with pytest.raises(ValueError):
         strings_to_coords("(1,2) <ADJLIST_START> (5,6)", when_noncoord="error")
 
 def test_coords_to_strings():
-    assert coords_to_strings([(1,2), "<ADJLIST_START>", (5,6)], _coord_to_strings_UT) == ["(1,2)", "<ADJLIST_START>", "(5,6)"]
+    assert coords_to_strings([(1,2), "<ADJLIST_START>", (5,6)], _coord_to_strings_UT) == ["(1,2)", "(5,6)"]
     assert coords_to_strings([(1,2), "<ADJLIST_START>", (5,6)], _coord_to_strings_UT, when_noncoord="skip") == ["(1,2)", "(5,6)"]
+    assert coords_to_strings([(1,2), "<ADJLIST_START>", (5,6)], _coord_to_strings_UT, when_noncoord="include") == ["(1,2)", "<ADJLIST_START>", "(5,6)"]
     with pytest.raises(ValueError):
         coords_to_strings([(1,2), "<ADJLIST_START>", (5,6)], _coord_to_strings_UT, when_noncoord="error")
+
+    assert coords_to_strings([(1,2), "<ADJLIST_START>", (5,6)], _coord_to_strings_indexed) == ["(", "1", ",", "2", ")", "(", "5", ",", "6", ")"]
+    assert coords_to_strings([(1,2), "<ADJLIST_START>", (5,6)], _coord_to_strings_indexed, when_noncoord="skip") == ["(", "1", ",", "2", ")", "(", "5", ",", "6", ")"]
+    assert coords_to_strings([(1,2), "<ADJLIST_START>", (5,6)], _coord_to_strings_indexed, when_noncoord="include") == ["(", "1", ",", "2", ")", "<ADJLIST_START>", "(", "5", ",", "6", ")"]
+
 
 
 

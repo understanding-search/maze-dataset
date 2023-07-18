@@ -5,6 +5,7 @@ from typing import Any, Iterable, Literal, Callable
 import re
 
 import numpy as np
+from muutils.misc import list_join
 
 from maze_dataset.constants import SPECIAL_TOKENS, Coord, CoordTup
 from maze_dataset.utils import WhenMissing
@@ -15,14 +16,14 @@ from maze_dataset.utils import WhenMissing
 
 def _coord_to_strings_UT(coord: typing.Sequence[int]) -> list[str]:
     """convert a coordinate to a string: `(i,j)`->"(i,j)" """
-    return f"({','.join(str(c) for c in coord)})"
+    return [f"({','.join(str(c) for c in coord)})"]
 
 
 def _coord_to_strings_indexed(coord: typing.Sequence[int]) -> list[str]:
     """convert a coordinate to a list of indexed strings: `(i,j)`->"(", "i", ",", "j", ")" """
     return [
         "(",
-        *[str(c) for c in coord],
+        *list_join([str(c) for c in coord], lambda : ","),
         ")",
     ]
 
@@ -133,7 +134,7 @@ def coords_to_strings(
             else:
                 raise ValueError(f"Invalid when_noncoord value '{when_noncoord}'")
         else:
-            result.append(coord_to_strings_func(coord))
+            result.extend(coord_to_strings_func(coord))
     return result
 
 

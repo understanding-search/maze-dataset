@@ -29,13 +29,13 @@ def test_get_path_tokens():
     assert result_trim == ["(1,0)", "(1,1)"]
 
 
-def test_get_origin_token():
-    result = token_utils.get_origin_token(MAZE_TOKENS)
+def test_get_origin_tokens():
+    result = token_utils.get_origin_tokens(MAZE_TOKENS)
     assert result == "(1,0)"
 
 
 def test_get_target_token():
-    result = token_utils.get_target_token(MAZE_TOKENS)
+    result = token_utils.get_origin_tokens(MAZE_TOKENS)
     assert result == "(1,1)"
 
 
@@ -57,9 +57,9 @@ def test_tokens_to_coords():
     adj_list = token_utils.get_adj_list_tokens(MAZE_TOKENS)
     config = MazeDatasetConfig(name="test", grid_n=2, n_mazes=1)
 
-    skipped = token_utils.tokens_to_coords(adj_list, config, when_noncoord="skip")
+    skipped = token_utils.strings_to_coords(adj_list, config, when_noncoord="skip")
 
-    included = token_utils.tokens_to_coords(adj_list, config, when_noncoord="include")
+    included = token_utils.strings_to_coords(adj_list, config, when_noncoord="include")
 
     assert skipped == [
         (0, 1),
