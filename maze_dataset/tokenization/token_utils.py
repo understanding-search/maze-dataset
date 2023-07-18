@@ -84,8 +84,8 @@ def coords_string_split(coords: str) -> list[str]:
 
 # back and forth in wrapped form
 # ==================================================
-def tokens_to_strings(
-    tokens: str|list[str],
+def strings_to_coords(
+    text: str|list[str],
     when_noncoord: WhenMissing = "skip",
 ) -> list[str | CoordTup]:
     """converts a list of tokens to a list of coordinates
@@ -93,7 +93,7 @@ def tokens_to_strings(
     returns list[CoordTup] if `when_noncoord` is "skip" or "error"
     returns list[str | CoordTup] if `when_noncoord` is "include"
     """
-    tokens_joined: str = tokens if isinstance(tokens, str) else " ".join(tokens)
+    tokens_joined: str = text if isinstance(text, str) else " ".join(text)
     tokens_processed: list[str] = coords_string_split(tokens_joined)
     result: list[str] = list()
     for token in tokens_processed:
@@ -102,7 +102,7 @@ def tokens_to_strings(
             if when_noncoord == "skip":
                 continue
             elif when_noncoord == "error":
-                raise ValueError(f"Invalid non-coordinate token '{token}' in text: '{tokens}'")
+                raise ValueError(f"Invalid non-coordinate token '{token}' in text: '{text}'")
             elif when_noncoord == "include":
                 result.append(token)
             else:
