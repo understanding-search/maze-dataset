@@ -142,8 +142,8 @@ def coords_to_strings(
 # ==================================================
 
 def remove_padding_from_token_str(token_str: str) -> str:
-    token_str = token_str.replace(f"{SPECIAL_TOKENS['padding']} ", "")
-    token_str = token_str.replace(f"{SPECIAL_TOKENS['padding']}", "")
+    token_str = token_str.replace(f"{SPECIAL_TOKENS.PADDING} ", "")
+    token_str = token_str.replace(f"{SPECIAL_TOKENS.PADDING}", "")
     return token_str
 
 
@@ -153,9 +153,29 @@ def tokens_between(
     end_value: str,
     include_start: bool = False,
     include_end: bool = False,
+    except_when_tokens_not_unique: bool = False,
 ) -> list[str]:
-    start_idx = tokens.index(start_value) + int(not include_start)
-    end_idx = tokens.index(end_value) + int(include_end)
+    if start_value == end_value:
+        raise ValueError(f"start_value and end_value cannot be the same: {start_value = } {end_value = }")
+    if except_when_tokens_not_unique:
+        if (tokens.count(start_value) != 1) or (tokens.count(end_value) != 1):
+            raise ValueError(
+                "start_value or end_value is not unique in the input tokens:",
+                f"{tokens.count(start_value) = } {tokens.count(end_value) = }"
+                f"{start_value = } {end_value = }",
+                f"{tokens = }"
+            )
+    else:
+        if (tokens.count(start_value) < 1) or (tokens.count(end_value) < 1):
+            raise ValueError(
+                "start_value or end_value is not present in the input tokens:",
+                f"{tokens.count(start_value) = } {tokens.count(end_value) = }",
+                f"{start_value = } {end_value = }",
+                f"{tokens = }"
+            )
+
+    start_idx: int = tokens.index(start_value) + int(not include_start)
+    end_idx: int = tokens.index(end_value) + int(include_end)
 
     assert start_idx < end_idx, "Start must come before end"
 
@@ -164,28 +184,28 @@ def tokens_between(
 
 def get_adj_list_tokens(tokens: list[str]) -> list[str]:
     return tokens_between(
-        tokens, SPECIAL_TOKENS["adj_list_start"], SPECIAL_TOKENS["adj_list_end"]
+        tokens, SPECIAL_TOKENS.ADJLIST_START, SPECIAL_TOKENS.ADJLIST_END
     )
 
 
 def get_path_tokens(tokens: list[str], trim_end: bool = False) -> list[str]:
     """The path is considered everything from the first path coord to the path_end token, if it exists."""
-    if SPECIAL_TOKENS["path_start"] not in tokens:
+    if SPECIAL_TOKENS.PATH_START not in tokens:
         raise ValueError(
-            f"Path start token {SPECIAL_TOKENS['path_start']} not found in tokens:\n{tokens}"
+            f"Path start token {SPECIAL_TOKENS.PATH_START} not found in tokens:\n{tokens}"
         )
-    start_idx: int = tokens.index(SPECIAL_TOKENS["path_start"]) + int(trim_end)
+    start_idx: int = tokens.index(SPECIAL_TOKENS.PATH_START) + int(trim_end)
     end_idx: int | None = None
-    if trim_end and (SPECIAL_TOKENS["path_end"] in tokens):
-        end_idx = tokens.index(SPECIAL_TOKENS["path_end"])
+    if trim_end and (SPECIAL_TOKENS.PATH_END in tokens):
+        end_idx = tokens.index(SPECIAL_TOKENS.PATH_END)
     return tokens[start_idx:end_idx]
 
 
 def get_context_tokens(tokens: list[str]) -> list[str]:
     return tokens_between(
         tokens,
-        SPECIAL_TOKENS["adj_list_start"],
-        SPECIAL_TOKENS["path_start"],
+        SPECIAL_TOKENS.ADJLIST_START,
+        SPECIAL_TOKENS.PATH_START,
         include_start=True,
         include_end=True,
     )
@@ -193,20 +213,22 @@ def get_context_tokens(tokens: list[str]) -> list[str]:
 
 def get_origin_tokens(tokens: list[str]) -> list[str]:
     return tokens_between(
-        tokens, SPECIAL_TOKENS["origin_start"], SPECIAL_TOKENS["origin_end"]
+        tokens, SPECIAL_TOKENS.ORIGIN_START, SPECIAL_TOKENS.ORIGIN_END,
+        include_start=False, include_end=False,
     )
 
 
 def get_target_tokens(tokens: list[str]) -> list[str]:
     return tokens_between(
-        tokens, SPECIAL_TOKENS["target_start"], SPECIAL_TOKENS["target_end"]
+        tokens, SPECIAL_TOKENS.TARGET_START, SPECIAL_TOKENS.TARGET_END,
+        include_start=False, include_end=False,
     )
 
 
 def get_tokens_up_to_path_start(
     tokens: list[str], include_start_coord: bool = True
 ) -> list[str]:
-    path_start_idx: int = tokens.index(SPECIAL_TOKENS["path_start"]) + 1
+    path_start_idx: int = tokens.index(SPECIAL_TOKENS.PATH_START) + 1
     if include_start_coord:
         return tokens[: path_start_idx + 1]
     else:

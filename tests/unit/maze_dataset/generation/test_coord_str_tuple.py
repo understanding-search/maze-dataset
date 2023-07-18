@@ -15,11 +15,9 @@ from maze_dataset.tokenization.token_utils import (
 )
 
 def test_coord_to_strings():
-    # Test _coord_to_strings_UT
-    assert _coord_to_strings_UT((1,2)) == "(1,2)"
-    assert _coord_to_strings_UT((-1,0)) == "(-1,0)"
+    assert _coord_to_strings_UT((1,2)) == ["(1,2)"]
+    assert _coord_to_strings_UT((-1,0)) == ["(-1,0)"]
 
-    # Test _coord_to_strings_indexed
     assert _coord_to_strings_indexed((1,2)) == ["(", "1", ",", "2", ")"]
     assert _coord_to_strings_indexed((-1,0)) == ["(", "-1", ",", "0", ")"]
 
