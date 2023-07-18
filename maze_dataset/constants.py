@@ -13,6 +13,7 @@ CoordList = list[CoordTup]
 class SpecialTokensError(Exception):
     pass
 
+
 _SPECIAL_TOKENS_ABBREVIATIONS: dict[str, str] = {
     "<ADJLIST_START>": "<A_S>",
     "<ADJLIST_END>": "<A_E>",

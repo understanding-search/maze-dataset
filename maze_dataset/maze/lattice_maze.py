@@ -21,10 +21,7 @@ from maze_dataset.constants import (
     CoordArray,
     CoordTup,
 )
-from maze_dataset.tokenization.token_utils import (
-    get_adj_list_tokens,
-    get_path_tokens,
-)
+from maze_dataset.tokenization.token_utils import get_adj_list_tokens, get_path_tokens
 
 ConnectionList = Bool[np.ndarray, "lattice_dim x y"]
 RGB = tuple[int, int, int]

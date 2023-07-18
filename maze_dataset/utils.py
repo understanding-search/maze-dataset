@@ -1,12 +1,12 @@
-import typing
-from typing import Any, Iterable, Literal, Callable, Mapping
 import math
+import typing
+from typing import Iterable, Literal, Mapping
 
 import numpy as np
 from jaxtyping import Bool
 
-
 WhenMissing = Literal["except", "skip", "include"]
+
 
 def bool_array_from_string(
     string: str, shape: list[int], true_symbol: str = "T"
@@ -96,8 +96,10 @@ def adj_list_to_nested_set(adj_list: list) -> set:
         for start_coord, end_coord in adj_list
     }
 
+
 _AM_K = typing.TypeVar("_AM_K")
 _AM_V = typing.TypeVar("_AM_V")
+
 
 def apply_mapping(
     mapping: Mapping[_AM_K, _AM_V],
@@ -121,6 +123,7 @@ def apply_mapping(
             case _:
                 raise ValueError(f"invalid value for {when_missing = }")
     return output
+
 
 def apply_mapping_chain(
     mapping: Mapping[_AM_K, Iterable[_AM_V]],

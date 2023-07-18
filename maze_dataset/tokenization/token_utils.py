@@ -1,18 +1,18 @@
 """a whole bunch of utilities for tokenization"""
 
-import typing
-from typing import Any, Iterable, Literal, Callable
 import re
+import typing
+from typing import Callable
 
 import numpy as np
 from muutils.misc import list_join
 
-from maze_dataset.constants import SPECIAL_TOKENS, Coord, CoordTup
+from maze_dataset.constants import SPECIAL_TOKENS, CoordTup
 from maze_dataset.utils import WhenMissing
-
 
 # coordinate to strings
 # ==================================================
+
 
 def _coord_to_strings_UT(coord: typing.Sequence[int]) -> list[str]:
     """convert a coordinate to a string: `(i,j)`->"(i,j)" """
@@ -23,13 +23,14 @@ def _coord_to_strings_indexed(coord: typing.Sequence[int]) -> list[str]:
     """convert a coordinate to a list of indexed strings: `(i,j)`->"(", "i", ",", "j", ")" """
     return [
         "(",
-        *list_join([str(c) for c in coord], lambda : ","),
+        *list_join([str(c) for c in coord], lambda: ","),
         ")",
     ]
 
 
 # string to coordinate representation
 # ==================================================
+
 
 def str_is_coord(coord_str: str, allow_whitespace: bool = True) -> bool:
     """return True if the string represents a coordinate, False otherwise"""
@@ -43,34 +44,37 @@ def str_is_coord(coord_str: str, allow_whitespace: bool = True) -> bool:
             coord_str.startswith("("),
             coord_str.endswith(")"),
             "," in coord_str,
-            all([
-                strip_func(x).isdigit() 
-                for x in strip_func(
-                    coord_str.lstrip("(").rstrip(")")
-                ).split(",")
-            ]),
+            all(
+                [
+                    strip_func(x).isdigit()
+                    for x in strip_func(coord_str.lstrip("(").rstrip(")")).split(",")
+                ]
+            ),
         ]
     )
 
-def coord_str_to_tuple(coord_str: str, allow_whitespace: bool = True) -> tuple[int, ...]:
+
+def coord_str_to_tuple(
+    coord_str: str, allow_whitespace: bool = True
+) -> tuple[int, ...]:
     """convert a coordinate string to a tuple"""
     strip_func: Callable[[str], str] = lambda x: x.strip() if allow_whitespace else x
     coord_str = strip_func(coord_str)
     stripped: str = strip_func(coord_str.lstrip("(").rstrip(")"))
-    return tuple(
-        int(strip_func(x)) 
-        for x in stripped.split(",")
-    )
+    return tuple(int(strip_func(x)) for x in stripped.split(","))
+
 
 def coord_str_to_coord_np(coord_str: str, allow_whitespace: bool = True) -> np.ndarray:
     """convert a coordinate string to a numpy array"""
     return np.array(coord_str_to_tuple(coord_str, allow_whitespace=allow_whitespace))
+
 
 def coord_str_to_tuple_noneable(coord_str: str) -> CoordTup | None:
     """convert a coordinate string to a tuple, or None if the string is not a coordinate string"""
     if not str_is_coord(coord_str):
         return None
     return coord_str_to_tuple(coord_str)
+
 
 def coords_string_split(coords: str) -> list[str]:
     """Splits a list of tokens into a list containing the tokens for each coordinate
@@ -79,17 +83,17 @@ def coords_string_split(coords: str) -> list[str]:
     "(1,2) <SPECIAL_TOKEN> (5,6)" -> ["(1,2)", "<SPECIAL_TOKEN>", "(5,6)"]
     """
     # ty gpt4
-    return re.findall(r'\([^)]*\)|\S+', coords)
+    return re.findall(r"\([^)]*\)|\S+", coords)
 
 
 # back and forth in wrapped form
 # ==================================================
 def strings_to_coords(
-    text: str|list[str],
+    text: str | list[str],
     when_noncoord: WhenMissing = "skip",
 ) -> list[str | CoordTup]:
     """converts a list of tokens to a list of coordinates
-    
+
     returns list[CoordTup] if `when_noncoord` is "skip" or "error"
     returns list[str | CoordTup] if `when_noncoord` is "include"
     """
@@ -102,7 +106,9 @@ def strings_to_coords(
             if when_noncoord == "skip":
                 continue
             elif when_noncoord == "error":
-                raise ValueError(f"Invalid non-coordinate token '{token}' in text: '{text}'")
+                raise ValueError(
+                    f"Invalid non-coordinate token '{token}' in text: '{text}'"
+                )
             elif when_noncoord == "include":
                 result.append(token)
             else:
@@ -118,7 +124,7 @@ def coords_to_strings(
     when_noncoord: WhenMissing = "skip",
 ) -> list[str]:
     """converts a list of coordinates to a list of strings (tokens)
-    
+
     expects list[CoordTup] if `when_noncoord` is "error"
     expects list[str | CoordTup] if `when_noncoord` is "include" or "skip"
     """
@@ -128,7 +134,9 @@ def coords_to_strings(
             if when_noncoord == "skip":
                 continue
             elif when_noncoord == "error":
-                raise ValueError(f"Invalid non-coordinate '{coord}' in list of coords: '{coords}'")
+                raise ValueError(
+                    f"Invalid non-coordinate '{coord}' in list of coords: '{coords}'"
+                )
             elif when_noncoord == "include":
                 result.append(coord)
             else:
@@ -140,6 +148,7 @@ def coords_to_strings(
 
 # filtering things from a prompt or generated text
 # ==================================================
+
 
 def remove_padding_from_token_str(token_str: str) -> str:
     token_str = token_str.replace(f"{SPECIAL_TOKENS.PADDING} ", "")
@@ -156,14 +165,16 @@ def tokens_between(
     except_when_tokens_not_unique: bool = False,
 ) -> list[str]:
     if start_value == end_value:
-        raise ValueError(f"start_value and end_value cannot be the same: {start_value = } {end_value = }")
+        raise ValueError(
+            f"start_value and end_value cannot be the same: {start_value = } {end_value = }"
+        )
     if except_when_tokens_not_unique:
         if (tokens.count(start_value) != 1) or (tokens.count(end_value) != 1):
             raise ValueError(
                 "start_value or end_value is not unique in the input tokens:",
                 f"{tokens.count(start_value) = } {tokens.count(end_value) = }"
                 f"{start_value = } {end_value = }",
-                f"{tokens = }"
+                f"{tokens = }",
             )
     else:
         if (tokens.count(start_value) < 1) or (tokens.count(end_value) < 1):
@@ -171,7 +182,7 @@ def tokens_between(
                 "start_value or end_value is not present in the input tokens:",
                 f"{tokens.count(start_value) = } {tokens.count(end_value) = }",
                 f"{start_value = } {end_value = }",
-                f"{tokens = }"
+                f"{tokens = }",
             )
 
     start_idx: int = tokens.index(start_value) + int(not include_start)
@@ -213,15 +224,21 @@ def get_context_tokens(tokens: list[str]) -> list[str]:
 
 def get_origin_tokens(tokens: list[str]) -> list[str]:
     return tokens_between(
-        tokens, SPECIAL_TOKENS.ORIGIN_START, SPECIAL_TOKENS.ORIGIN_END,
-        include_start=False, include_end=False,
+        tokens,
+        SPECIAL_TOKENS.ORIGIN_START,
+        SPECIAL_TOKENS.ORIGIN_END,
+        include_start=False,
+        include_end=False,
     )
 
 
 def get_target_tokens(tokens: list[str]) -> list[str]:
     return tokens_between(
-        tokens, SPECIAL_TOKENS.TARGET_START, SPECIAL_TOKENS.TARGET_END,
-        include_start=False, include_end=False,
+        tokens,
+        SPECIAL_TOKENS.TARGET_START,
+        SPECIAL_TOKENS.TARGET_END,
+        include_start=False,
+        include_end=False,
     )
 
 

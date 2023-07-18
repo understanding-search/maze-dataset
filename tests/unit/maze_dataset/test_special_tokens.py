@@ -1,6 +1,7 @@
 import pytest
-import warnings
-from maze_dataset.constants import _SPECIAL_TOKENS_BASE, SPECIAL_TOKENS
+
+from maze_dataset.constants import SPECIAL_TOKENS
+
 
 def test_special_tokens_base():
     # Test the getitem method

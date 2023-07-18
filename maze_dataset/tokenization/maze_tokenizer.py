@@ -11,8 +11,15 @@ from muutils.json_serialize import (
 )
 
 from maze_dataset.constants import SPECIAL_TOKENS, CoordTup
-from maze_dataset.tokenization.token_utils import _coord_to_strings_UT, _coord_to_strings_indexed, coord_str_to_tuple_noneable, coord_to_indexed_string, coord_to_str, coords_string_split, coords_to_strings, strings_to_coords
-from maze_dataset.utils import corner_first_ndindex, WhenMissing, apply_mapping, apply_mapping_chain
+from maze_dataset.tokenization.token_utils import (
+    _coord_to_strings_indexed,
+    _coord_to_strings_UT,
+    coord_to_indexed_string,
+    coord_to_str,
+    coords_to_strings,
+    strings_to_coords,
+)
+from maze_dataset.utils import WhenMissing, corner_first_ndindex
 
 
 class TokenizationMode(Enum):
@@ -159,13 +166,12 @@ class MazeTokenizer(SerializableDataclass):
     @cached_property
     def padding_token_index(self) -> int:
         return self.tokenizer_map[SPECIAL_TOKENS["padding"]]
-    
-    def coords_to_strings(
-            self, 
-            coords: list[CoordTup],
-            when_noncoord: WhenMissing = "skip",
-        ) -> list[str]:
 
+    def coords_to_strings(
+        self,
+        coords: list[CoordTup],
+        when_noncoord: WhenMissing = "skip",
+    ) -> list[str]:
         if self.tokenization_mode in (
             TokenizationMode.AOTP_UT_rasterized,
             TokenizationMode.AOTP_UT_uniform,
@@ -191,7 +197,5 @@ class MazeTokenizer(SerializableDataclass):
     def strings_to_coords(
         text: str,
         when_noncoord: WhenMissing = "skip",
-    ) -> list[str|CoordTup]:
+    ) -> list[str | CoordTup]:
         return strings_to_coords(text=text, when_noncoord=when_noncoord)
-
-

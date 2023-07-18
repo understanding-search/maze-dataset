@@ -16,10 +16,7 @@ from zanj.loading import LoaderHandler, load_item_recursive, register_loader_han
 
 from maze_dataset.constants import Coord, CoordTup
 from maze_dataset.dataset.dataset import GPTDataset, GPTDatasetConfig
-from maze_dataset.dataset.maze_dataset import (
-    MazeDataset,
-    MazeDatasetConfig,
-)
+from maze_dataset.dataset.maze_dataset import MazeDataset, MazeDatasetConfig
 from maze_dataset.maze import LatticeMaze
 
 
@@ -157,7 +154,7 @@ class MazeDatasetCollection(GPTDataset):
     # TODO: remove duplication with MazeDatasetConfig().as_tokens() somehow?
     def as_tokens(
         self,
-        maze_tokenizer, # TODO: MazeTokenizer
+        maze_tokenizer,  # TODO: MazeTokenizer
         limit: int | None = None,
         join_tokens_individual_maze: bool = False,
     ) -> list[list[str]] | list[str]:
