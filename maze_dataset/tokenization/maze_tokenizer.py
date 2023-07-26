@@ -11,11 +11,9 @@ from muutils.json_serialize import (
 )
 
 from maze_dataset.constants import SPECIAL_TOKENS, CoordTup
-from maze_dataset.tokenization.token_utils import (
+from maze_dataset.tokenization.token_utils import (  # coord_to_indexed_string,; coord_to_str,
     _coord_to_strings_indexed,
     _coord_to_strings_UT,
-    # coord_to_indexed_string,
-    # coord_to_str,
     coords_to_strings,
     strings_to_coords,
 )
@@ -41,6 +39,7 @@ class TokenizationMode(Enum):
     AOTP_UT_rasterized = "AOTP_UT_rasterized"
     AOTP_UT_uniform = "AOTP_UT_uniform"
     AOTP_indexed = "AOTP_indexed"
+
 
 _NDINDEX_FUNC_MAP: dict[
     TokenizationMode, Callable[[int], Iterable[tuple[int, ...]]]
@@ -81,11 +80,13 @@ class MazeTokenizer(SerializableDataclass):
     # TODO: there could in principle be a way to avoid having to specify this,
     # since it shouldn't matter for the `AOTP_UT_uniform` mode or the `AOTP_indexed` mode
     # but, this adds a lot of complexity. Just set it to a big value if you're not sure
-    max_grid_size: int|None = serializable_field(default=None)
+    max_grid_size: int | None = serializable_field(default=None)
 
     @property
     def name(self) -> str:
-        max_grid_size_str: str = f"-g{self.max_grid_size}" if self.max_grid_size is not None else ""
+        max_grid_size_str: str = (
+            f"-g{self.max_grid_size}" if self.max_grid_size is not None else ""
+        )
         return f"maze_tokenizer-{self.tokenization_mode.value}{max_grid_size_str}"
 
     @cached_property
@@ -209,7 +210,6 @@ class MazeTokenizer(SerializableDataclass):
         when_noncoord: WhenMissing = "skip",
     ) -> list[str | CoordTup]:
         return strings_to_coords(text=text, when_noncoord=when_noncoord)
-
 
     def is_AOTP(self) -> bool:
         """returns true if a tokenization mode is Adjacency list, Origin, Target, Path"""

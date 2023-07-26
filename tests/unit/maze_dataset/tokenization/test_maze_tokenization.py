@@ -1,7 +1,11 @@
-import zanj
-
-from maze_dataset import SolvedMaze, LatticeMaze, MazeDataset, MazeDatasetConfig, LatticeMazeGenerators
+from maze_dataset import (
+    LatticeMazeGenerators,
+    MazeDataset,
+    MazeDatasetConfig,
+    SolvedMaze,
+)
 from maze_dataset.tokenization import MazeTokenizer, TokenizationMode
+
 
 def test_tokenization_roundtrip():
     dataset: MazeDataset = MazeDataset.from_config(
@@ -16,9 +20,11 @@ def test_tokenization_roundtrip():
         tokenization_mode=TokenizationMode.AOTP_UT_uniform,
         max_grid_size=20,
     )
-    
+
     dataset_tokenized: list[list[str]] = dataset.as_tokens(tokenizer)
-    dataset_tokenized_individual: list[list[str]] = [maze.as_tokens(tokenizer) for maze in dataset.mazes]
+    dataset_tokenized_individual: list[list[str]] = [
+        maze.as_tokens(tokenizer) for maze in dataset.mazes
+    ]
 
     mazes_roundtrip: list[SolvedMaze] = [
         SolvedMaze.from_tokens(
@@ -45,7 +51,8 @@ def test_tokenization_roundtrip():
     #     ), f"maze_tok: {' '.join(maze_tok)}, maze_tok_indiv: {' '.join(maze_tok_indiv)}"
 
     # test roundtrip
-    for maze, maze_rt, maze_rt_indiv in zip(dataset.mazes, mazes_roundtrip, mazes_roundtrip_individual):
+    for maze, maze_rt, maze_rt_indiv in zip(
+        dataset.mazes, mazes_roundtrip, mazes_roundtrip_individual
+    ):
         assert maze == maze_rt, f"maze: {maze}, maze_rt: {maze_rt}"
         assert maze == maze_rt_indiv, f"maze: {maze}, maze_rt_indiv: {maze_rt_indiv}"
-

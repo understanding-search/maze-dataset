@@ -2,7 +2,6 @@ import typing
 import warnings
 from dataclasses import dataclass
 from itertools import chain
-from typing import cast
 
 import numpy as np
 from jaxtyping import Bool, Int, Shaped
@@ -21,7 +20,11 @@ from maze_dataset.constants import (
     CoordArray,
     CoordTup,
 )
-from maze_dataset.tokenization import get_adj_list_tokens, get_path_tokens, MazeTokenizer
+from maze_dataset.tokenization import (
+    MazeTokenizer,
+    get_adj_list_tokens,
+    get_path_tokens,
+)
 from maze_dataset.tokenization.token_utils import get_origin_tokens, get_target_tokens
 
 ConnectionList = Bool[np.ndarray, "lattice_dim x y"]
@@ -398,7 +401,7 @@ class LatticeMaze(SerializableDataclass):
             connection_list=connection_list,
         )
 
-    def as_adj_list_tokens(self) -> list[str|CoordTup]:
+    def as_adj_list_tokens(self) -> list[str | CoordTup]:
         return [
             SPECIAL_TOKENS.ADJLIST_START,
             *chain.from_iterable(
@@ -414,8 +417,8 @@ class LatticeMaze(SerializableDataclass):
             ),
             SPECIAL_TOKENS.ADJLIST_END,
         ]
-    
-    def _as_coords_and_special_AOTP(self) -> list[CoordTup|str]:
+
+    def _as_coords_and_special_AOTP(self) -> list[CoordTup | str]:
         """turn the maze into adjacency list, origin, target, and solution -- keep coords as tuples"""
         output: list[str] = self.as_adj_list_tokens()
         # if getattr(self, "start_pos", None) is not None:
@@ -433,14 +436,18 @@ class LatticeMaze(SerializableDataclass):
     ) -> list[str]:
         """serialize maze and solution to tokens"""
         if maze_tokenizer.is_AOTP():
-            coords_raw: list[CoordTup|str] = self._as_coords_and_special_AOTP()
-            coords_processed: list[str] = maze_tokenizer.coords_to_strings(coords=coords_raw, when_noncoord="include")
+            coords_raw: list[CoordTup | str] = self._as_coords_and_special_AOTP()
+            coords_processed: list[str] = maze_tokenizer.coords_to_strings(
+                coords=coords_raw, when_noncoord="include"
+            )
             return coords_processed
         else:
             raise NotImplementedError("only AOTP tokenization is supported")
 
     @classmethod
-    def _from_tokens_AOTP(cls, tokens: list[str], maze_tokenizer: MazeTokenizer) -> "LatticeMaze":
+    def _from_tokens_AOTP(
+        cls, tokens: list[str], maze_tokenizer: MazeTokenizer
+    ) -> "LatticeMaze":
         """create a LatticeMaze from a list of tokens"""
 
         # figure out what input format
@@ -450,7 +457,9 @@ class LatticeMaze(SerializableDataclass):
         else:
             # If we're not getting a "complete" tokenized maze, assume it's just a the adjacency list tokens
             adj_list_tokens = tokens
-            warnings.warn("Assuming input is just adjacency list tokens, no special tokens found")
+            warnings.warn(
+                "Assuming input is just adjacency list tokens, no special tokens found"
+            )
 
         # process edges for adjacency list
         # ========================================
@@ -464,17 +473,24 @@ class LatticeMaze(SerializableDataclass):
             # skip last endline
             if len(e) != 0:
                 # convert to coords, split start and end
-                e_coords: list[str|CoordTup] = maze_tokenizer.strings_to_coords(e, when_noncoord="include")
+                e_coords: list[str | CoordTup] = maze_tokenizer.strings_to_coords(
+                    e, when_noncoord="include"
+                )
                 assert len(e_coords) == 3, f"invalid edge: {e = } {e_coords = }"
-                assert e_coords[1] == SPECIAL_TOKENS.CONNECTOR, f"invalid edge: {e = } {e_coords = }"
+                assert (
+                    e_coords[1] == SPECIAL_TOKENS.CONNECTOR
+                ), f"invalid edge: {e = } {e_coords = }"
                 coordinates.append((e_coords[0], e_coords[-1]))
 
         assert all(
-            len(c) == 2 
-            for c in coordinates
+            len(c) == 2 for c in coordinates
         ), f"invalid coordinates: {coordinates = }"
         adj_list: NDArray["conn start_end coord", np.int8] = np.array(coordinates)
-        assert tuple(adj_list.shape) == (len(coordinates), 2, 2), f"invalid adj_list: {adj_list.shape = } {coordinates = }"
+        assert tuple(adj_list.shape) == (
+            len(coordinates),
+            2,
+            2,
+        ), f"invalid adj_list: {adj_list.shape = } {coordinates = }"
 
         output_maze: LatticeMaze = cls.from_adj_list(adj_list)
 
@@ -482,14 +498,25 @@ class LatticeMaze(SerializableDataclass):
         # ========================================
         is_targeted: bool = False
         if all(
-            x in tokens 
-            for x in (SPECIAL_TOKENS.ORIGIN_START, SPECIAL_TOKENS.ORIGIN_END, SPECIAL_TOKENS.TARGET_START, SPECIAL_TOKENS.TARGET_END)
+            x in tokens
+            for x in (
+                SPECIAL_TOKENS.ORIGIN_START,
+                SPECIAL_TOKENS.ORIGIN_END,
+                SPECIAL_TOKENS.TARGET_START,
+                SPECIAL_TOKENS.TARGET_END,
+            )
         ):
-            start_pos_list: list[CoordTup] = maze_tokenizer.strings_to_coords(get_origin_tokens(tokens), when_noncoord="error")
-            end_pos_list: list[CoordTup] = maze_tokenizer.strings_to_coords(get_target_tokens(tokens), when_noncoord="error")
-            assert len(start_pos_list) == 1, f"invalid start_pos_list: {start_pos_list = }"
+            start_pos_list: list[CoordTup] = maze_tokenizer.strings_to_coords(
+                get_origin_tokens(tokens), when_noncoord="error"
+            )
+            end_pos_list: list[CoordTup] = maze_tokenizer.strings_to_coords(
+                get_target_tokens(tokens), when_noncoord="error"
+            )
+            assert (
+                len(start_pos_list) == 1
+            ), f"invalid start_pos_list: {start_pos_list = }"
             assert len(end_pos_list) == 1, f"invalid end_pos_list: {end_pos_list = }"
-            
+
             start_pos: CoordTup = start_pos_list[0]
             end_pos: CoordTup = end_pos_list[0]
 
@@ -502,12 +529,11 @@ class LatticeMaze(SerializableDataclass):
             is_targeted = True
 
         if all(
-            x in tokens
-            for x in (SPECIAL_TOKENS.PATH_START, SPECIAL_TOKENS.PATH_END)
+            x in tokens for x in (SPECIAL_TOKENS.PATH_START, SPECIAL_TOKENS.PATH_END)
         ):
             assert is_targeted, "maze must be targeted to have a solution"
             solution: list[CoordTup] = maze_tokenizer.strings_to_coords(
-                get_path_tokens(tokens, trim_end=True), 
+                get_path_tokens(tokens, trim_end=True),
                 when_noncoord="error",
             )
             output_maze = SolvedMaze.from_targeted_lattice_maze(
@@ -517,9 +543,10 @@ class LatticeMaze(SerializableDataclass):
 
         return output_maze
 
-    
     @classmethod
-    def from_tokens(cls, tokens: list[str], maze_tokenizer: MazeTokenizer) -> "LatticeMaze":
+    def from_tokens(
+        cls, tokens: list[str], maze_tokenizer: MazeTokenizer
+    ) -> "LatticeMaze":
         if isinstance(tokens, str):
             tokens = tokens.split()
 
@@ -860,14 +887,14 @@ class TargetedLatticeMaze(LatticeMaze):
                 f"end_pos {self.end_pos} is out of bounds for grid shape {self.grid_shape}"
             )
 
-    def get_start_pos_tokens(self) -> list[str|CoordTup]:
+    def get_start_pos_tokens(self) -> list[str | CoordTup]:
         return [
             SPECIAL_TOKENS.ORIGIN_START,
             tuple(self.start_pos),
             SPECIAL_TOKENS.ORIGIN_END,
         ]
 
-    def get_end_pos_tokens(self) -> list[str|CoordTup]:
+    def get_end_pos_tokens(self) -> list[str | CoordTup]:
         return [
             SPECIAL_TOKENS.TARGET_START,
             tuple(self.end_pos),
@@ -911,7 +938,7 @@ class SolvedMaze(TargetedLatticeMaze):
             end_pos=np.array(solution[-1]),
         )
         self.__dict__["solution"] = solution
-        
+
         if not allow_invalid:
             if start_pos is not None:
                 assert np.array_equal(
@@ -926,7 +953,7 @@ class SolvedMaze(TargetedLatticeMaze):
     def __hash__(self) -> int:
         return hash((self.connection_list.tobytes(), self.solution.tobytes()))
 
-    def get_solution_tokens(self) -> list[str|CoordTup]:
+    def get_solution_tokens(self) -> list[str | CoordTup]:
         return [
             SPECIAL_TOKENS.PATH_START,
             *[tuple(c) for c in self.solution],
@@ -954,9 +981,9 @@ class SolvedMaze(TargetedLatticeMaze):
 
     @classmethod
     def from_targeted_lattice_maze(
-        cls, 
+        cls,
         targeted_lattice_maze: TargetedLatticeMaze,
-        solution: list[CoordTup]|None = None,
+        solution: list[CoordTup] | None = None,
     ) -> "SolvedMaze":
         """solves the given targeted lattice maze and returns a SolvedMaze"""
         if solution is None:
@@ -969,6 +996,7 @@ class SolvedMaze(TargetedLatticeMaze):
             solution=np.array(solution),
             generation_meta=targeted_lattice_maze.generation_meta,
         )
+
 
 def detect_pixels_type(data: PixelGrid) -> typing.Type[LatticeMaze]:
     """Detects the type of pixels data by checking for the presence of start and end pixels"""
