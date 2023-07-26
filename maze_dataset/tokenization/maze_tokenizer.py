@@ -81,7 +81,7 @@ class MazeTokenizer(SerializableDataclass):
     # TODO: there could in principle be a way to avoid having to specify this,
     # since it shouldn't matter for the `AOTP_UT_uniform` mode or the `AOTP_indexed` mode
     # but, this adds a lot of complexity. Just set it to a big value if you're not sure
-    max_grid_size: int = serializable_field()
+    max_grid_size: int|None = serializable_field(default=None)
 
     @property
     def name(self) -> str:
@@ -91,6 +91,11 @@ class MazeTokenizer(SerializableDataclass):
     @cached_property
     def node_token_map(self) -> dict[CoordTup, str]:
         """map from node to token"""
+        if self.max_grid_size is None:
+            raise ValueError(
+                "max_grid_size must be specified to use node_token_map property"
+            )
+
         if self.tokenization_mode in (
             TokenizationMode.AOTP_UT_rasterized,
             TokenizationMode.AOTP_UT_uniform,
@@ -131,6 +136,11 @@ class MazeTokenizer(SerializableDataclass):
     @cached_property
     def token_arr(self) -> list[str]:
         """map from index to token"""
+        if self.max_grid_size is None:
+            raise ValueError(
+                "max_grid_size must be specified to use node_token_map property"
+            )
+
         output: list[str] = list(SPECIAL_TOKENS.values())
 
         if self.tokenization_mode in (

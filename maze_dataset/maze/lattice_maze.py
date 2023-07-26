@@ -467,7 +467,7 @@ class LatticeMaze(SerializableDataclass):
                 e_coords: list[str|CoordTup] = maze_tokenizer.strings_to_coords(e, when_noncoord="include")
                 assert len(e_coords) == 3, f"invalid edge: {e = } {e_coords = }"
                 assert e_coords[1] == SPECIAL_TOKENS.CONNECTOR, f"invalid edge: {e = } {e_coords = }"
-                coordinates.append(tuple(e_coords[0], e_coords[-1]))
+                coordinates.append((e_coords[0], e_coords[-1]))
 
         assert all(
             len(c) == 2 
@@ -485,8 +485,8 @@ class LatticeMaze(SerializableDataclass):
             x in tokens 
             for x in (SPECIAL_TOKENS.ORIGIN_START, SPECIAL_TOKENS.ORIGIN_END, SPECIAL_TOKENS.TARGET_START, SPECIAL_TOKENS.TARGET_END)
         ):
-            start_pos_list: list[CoordTup] = maze_tokenizer.strings_to_coords(get_origin_tokens(tokens), when_noncoord="except")
-            end_pos_list: list[CoordTup] = maze_tokenizer.strings_to_coords(get_target_tokens(tokens), when_noncoord="except")
+            start_pos_list: list[CoordTup] = maze_tokenizer.strings_to_coords(get_origin_tokens(tokens), when_noncoord="error")
+            end_pos_list: list[CoordTup] = maze_tokenizer.strings_to_coords(get_target_tokens(tokens), when_noncoord="error")
             assert len(start_pos_list) == 1, f"invalid start_pos_list: {start_pos_list = }"
             assert len(end_pos_list) == 1, f"invalid end_pos_list: {end_pos_list = }"
             
@@ -506,12 +506,15 @@ class LatticeMaze(SerializableDataclass):
             for x in (SPECIAL_TOKENS.PATH_START, SPECIAL_TOKENS.PATH_END)
         ):
             assert is_targeted, "maze must be targeted to have a solution"
-            solution: list[CoordTup] = maze_tokenizer.strings_to_coords(get_path_tokens(tokens), when_noncoord="except")
+            solution: list[CoordTup] = maze_tokenizer.strings_to_coords(
+                get_path_tokens(tokens, trim_end=True), 
+                when_noncoord="error",
+            )
             output_maze = SolvedMaze.from_targeted_lattice_maze(
                 targeted_lattice_maze=output_maze,
                 solution=solution,
             )
-            
+
         return output_maze
 
     
@@ -899,6 +902,7 @@ class SolvedMaze(TargetedLatticeMaze):
         generation_meta: dict | None = None,
         start_pos: Coord | None = None,
         end_pos: Coord | None = None,
+        allow_invalid: bool = False,
     ) -> None:
         super().__init__(
             connection_list=connection_list,
@@ -907,15 +911,17 @@ class SolvedMaze(TargetedLatticeMaze):
             end_pos=np.array(solution[-1]),
         )
         self.__dict__["solution"] = solution
-
-        if start_pos is not None:
-            assert np.array_equal(
-                np.array(start_pos), self.start_pos
-            ), f"when trying to create a SolvedMaze, the given start_pos does not match the one in the solution: given={start_pos}, solution={self.start_pos}"
-        if end_pos is not None:
-            assert np.array_equal(
-                np.array(end_pos), self.end_pos
-            ), f"when trying to create a SolvedMaze, the given end_pos does not match the one in the solution: given={end_pos}, solution={self.end_pos}"
+        
+        if not allow_invalid:
+            if start_pos is not None:
+                assert np.array_equal(
+                    np.array(start_pos), self.start_pos
+                ), f"when trying to create a SolvedMaze, the given start_pos does not match the one in the solution: given={start_pos}, solution={self.start_pos}"
+            if end_pos is not None:
+                assert np.array_equal(
+                    np.array(end_pos), self.end_pos
+                ), f"when trying to create a SolvedMaze, the given end_pos does not match the one in the solution: given={end_pos}, solution={self.end_pos}"
+            # TODO: assert the path does not backtrack, walk through walls, etc?
 
     def __hash__(self) -> int:
         return hash((self.connection_list.tobytes(), self.solution.tobytes()))
@@ -948,39 +954,21 @@ class SolvedMaze(TargetedLatticeMaze):
 
     @classmethod
     def from_targeted_lattice_maze(
-        cls, targeted_lattice_maze: TargetedLatticeMaze
+        cls, 
+        targeted_lattice_maze: TargetedLatticeMaze,
+        solution: list[CoordTup]|None = None,
     ) -> "SolvedMaze":
         """solves the given targeted lattice maze and returns a SolvedMaze"""
-        solution: list[CoordTup] = targeted_lattice_maze.find_shortest_path(
-            targeted_lattice_maze.start_pos,
-            targeted_lattice_maze.end_pos,
-        )
+        if solution is None:
+            solution = targeted_lattice_maze.find_shortest_path(
+                targeted_lattice_maze.start_pos,
+                targeted_lattice_maze.end_pos,
+            )
         return cls(
             connection_list=targeted_lattice_maze.connection_list,
             solution=np.array(solution),
             generation_meta=targeted_lattice_maze.generation_meta,
         )
-
-    @classmethod
-    def from_tokens(cls, tokens: list[str] | str, data_cfg) -> "SolvedMaze":
-        raise NotImplementedError("wip")
-        if type(tokens) == str:
-            tokens = tokens.split(" ")
-
-        maze: LatticeMaze = LatticeMaze.from_tokens(tokens)
-        path_tokens: list[str] = get_path_tokens(tokens)
-        solution: list[str | tuple[int, int]] = tokens_to_coords(path_tokens, data_cfg)
-
-        assert len(solution) > 0, f"No solution found: {solution = }"
-
-        try:
-            solution_cast: list[CoordTup] = cast(list[CoordTup], solution)
-            solution_np: CoordArray = np.array(solution_cast)
-        except ValueError as e:
-            raise ValueError(f"Invalid solution: {solution = }") from e
-
-        return cls.from_lattice_maze(lattice_maze=maze, solution=solution_np)
-
 
 def detect_pixels_type(data: PixelGrid) -> typing.Type[LatticeMaze]:
     """Detects the type of pixels data by checking for the presence of start and end pixels"""

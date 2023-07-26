@@ -144,7 +144,7 @@ def test_strings_to_coords():
     ]
 
     with pytest.raises(ValueError):
-        strings_to_coords(adj_list, when_noncoord="except")
+        strings_to_coords(adj_list, when_noncoord="error")
 
 
 def test_coords_to_strings():
@@ -185,5 +185,5 @@ def test_coords_to_strings():
 
     with pytest.raises(ValueError):
         coords_to_strings(
-            coords, coord_to_strings_func=_coord_to_strings_UT, when_noncoord="except"
+            coords, coord_to_strings_func=_coord_to_strings_UT, when_noncoord="error"
         )
