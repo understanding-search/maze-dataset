@@ -85,7 +85,8 @@ class MazeTokenizer(SerializableDataclass):
 
     @property
     def name(self) -> str:
-        return f"maze_tokenizer-{self.tokenization_mode.value}-n{self.max_grid_size}"
+        max_grid_size_str: str = f"-g{self.max_grid_size}" if self.max_grid_size is not None else ""
+        return f"maze_tokenizer-{self.tokenization_mode.value}{max_grid_size_str}"
 
     @cached_property
     def node_token_map(self) -> dict[CoordTup, str]:
@@ -177,13 +178,13 @@ class MazeTokenizer(SerializableDataclass):
         ):
             return coords_to_strings(
                 coords=coords,
-                coords_to_strings_func=_coord_to_strings_UT,
+                coord_to_strings_func=_coord_to_strings_UT,
                 when_noncoord=when_noncoord,
             )
         elif self.tokenization_mode == TokenizationMode.AOTP_indexed:
             return coords_to_strings(
                 coords=coords,
-                coords_to_strings_func=_coord_to_strings_indexed,
+                coord_to_strings_func=_coord_to_strings_indexed,
                 when_noncoord=when_noncoord,
             )
         else:
