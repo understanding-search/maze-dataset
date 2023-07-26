@@ -6,6 +6,7 @@ from maze_dataset.constants import SPECIAL_TOKENS
 def test_special_tokens_base():
     # Test the getitem method
     assert SPECIAL_TOKENS["ADJLIST_START"] == "<ADJLIST_START>"
+
     with pytest.raises(KeyError):
         SPECIAL_TOKENS["NON_EXISTENT_KEY"]
 

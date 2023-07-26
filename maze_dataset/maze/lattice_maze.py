@@ -400,19 +400,19 @@ class LatticeMaze(SerializableDataclass):
 
     def as_adj_list_tokens(self) -> list[str|CoordTup]:
         return [
-            SPECIAL_TOKENS["adj_list_start"],
+            SPECIAL_TOKENS.ADJLIST_START,
             *chain.from_iterable(
                 [
                     [
                         tuple(c_s),
-                        SPECIAL_TOKENS["connector"],
+                        SPECIAL_TOKENS.CONNECTOR,
                         tuple(c_e),
-                        SPECIAL_TOKENS["adjacency_endline"],
+                        SPECIAL_TOKENS.ADJACENCY_ENDLINE,
                     ]
                     for c_s, c_e in self.as_adj_list()
                 ]
             ),
-            SPECIAL_TOKENS["adj_list_end"],
+            SPECIAL_TOKENS.ADJLIST_END,
         ]
     
     def _as_coords_and_special_AOTP(self) -> list[CoordTup|str]:
@@ -862,16 +862,16 @@ class TargetedLatticeMaze(LatticeMaze):
 
     def get_start_pos_tokens(self) -> list[str|CoordTup]:
         return [
-            SPECIAL_TOKENS["origin_start"],
+            SPECIAL_TOKENS.ORIGIN_START,
             tuple(self.start_pos),
-            SPECIAL_TOKENS["origin_end"],
+            SPECIAL_TOKENS.ORIGIN_END,
         ]
 
     def get_end_pos_tokens(self) -> list[str|CoordTup]:
         return [
-            SPECIAL_TOKENS["target_start"],
+            SPECIAL_TOKENS.TARGET_START,
             tuple(self.end_pos),
-            SPECIAL_TOKENS["target_end"],
+            SPECIAL_TOKENS.TARGET_END,
         ]
 
     @classmethod
@@ -928,9 +928,9 @@ class SolvedMaze(TargetedLatticeMaze):
 
     def get_solution_tokens(self) -> list[str|CoordTup]:
         return [
-            SPECIAL_TOKENS["path_start"],
+            SPECIAL_TOKENS.PATH_START,
             *[tuple(c) for c in self.solution],
-            SPECIAL_TOKENS["path_end"],
+            SPECIAL_TOKENS.PATH_END,
         ]
 
     # for backwards compatibility

@@ -175,7 +175,7 @@ class MazeTokenizer(SerializableDataclass):
 
     @cached_property
     def padding_token_index(self) -> int:
-        return self.tokenizer_map[SPECIAL_TOKENS["padding"]]
+        return self.tokenizer_map[SPECIAL_TOKENS.PADDING]
 
     def coords_to_strings(
         self,
