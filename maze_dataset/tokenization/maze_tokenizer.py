@@ -42,7 +42,6 @@ class TokenizationMode(Enum):
     AOTP_UT_uniform = "AOTP_UT_uniform"
     AOTP_indexed = "AOTP_indexed"
 
-
 _NDINDEX_FUNC_MAP: dict[
     TokenizationMode, Callable[[int], Iterable[tuple[int, ...]]]
 ] = {
@@ -199,3 +198,12 @@ class MazeTokenizer(SerializableDataclass):
         when_noncoord: WhenMissing = "skip",
     ) -> list[str | CoordTup]:
         return strings_to_coords(text=text, when_noncoord=when_noncoord)
+
+
+    def is_AOTP(self) -> bool:
+        """returns true if a tokenization mode is Adjacency list, Origin, Target, Path"""
+        return self.tokenization_mode in (
+            TokenizationMode.AOTP_UT_rasterized,
+            TokenizationMode.AOTP_UT_uniform,
+            TokenizationMode.AOTP_indexed,
+        )
