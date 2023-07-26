@@ -14,8 +14,8 @@ from maze_dataset.constants import SPECIAL_TOKENS, CoordTup
 from maze_dataset.tokenization.token_utils import (
     _coord_to_strings_indexed,
     _coord_to_strings_UT,
-    coord_to_indexed_string,
-    coord_to_str,
+    # coord_to_indexed_string,
+    # coord_to_str,
     coords_to_strings,
     strings_to_coords,
 )
@@ -70,7 +70,7 @@ _MAZETOKENIZER_PROPERTIES_TO_SERIALIZE: list[str] = [
 # ]
 
 
-@serializable_dataclass(properties_to_serialize=["name"])
+@serializable_dataclass(properties_to_serialize=["name"], kw_only=True)
 class MazeTokenizer(SerializableDataclass):
     tokenization_mode: TokenizationMode = serializable_field(
         default=TokenizationMode.AOTP_UT_uniform,
@@ -96,7 +96,7 @@ class MazeTokenizer(SerializableDataclass):
         ):
             # if rasterized, use np.ndindex, if uniform use corner_first_ndindex
             return {
-                tuple(coord): coord_to_str(coord)
+                tuple(coord): _coord_to_strings_UT(coord)
                 for coord in _NDINDEX_FUNC_MAP[self.tokenization_mode](
                     self.max_grid_size
                 )
@@ -117,9 +117,9 @@ class MazeTokenizer(SerializableDataclass):
             TokenizationMode.AOTP_UT_rasterized,
             TokenizationMode.AOTP_UT_uniform,
         ):
-            return [self.node_token_map[coord]]
+            return _coord_to_strings_UT(coord)
         elif self.tokenization_mode == TokenizationMode.AOTP_indexed:
-            return coord_to_indexed_string(coord)
+            return _coord_to_strings_indexed(coord)
 
     @cached_property
     def token_node_map(self) -> dict[str, CoordTup]:
