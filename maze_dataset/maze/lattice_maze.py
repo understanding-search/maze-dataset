@@ -4,14 +4,13 @@ from dataclasses import dataclass
 from itertools import chain
 
 import numpy as np
-from jaxtyping import Bool, Int, Shaped
+from jaxtyping import Bool, Float, Int, Int8, Shaped
 from muutils.json_serialize.serializable_dataclass import (
     SerializableDataclass,
     serializable_dataclass,
     serializable_field,
 )
 from muutils.misc import list_split
-from muutils.tensor_utils import NDArray
 
 from maze_dataset.constants import (
     NEIGHBORS_MASK,
@@ -330,14 +329,14 @@ class LatticeMaze(SerializableDataclass):
     # ============================================================
     def as_adj_list(
         self, shuffle_d0: bool = True, shuffle_d1: bool = True
-    ) -> NDArray["conn start_end coord", np.int8]:
-        adj_list: NDArray["conn start_end coord", np.int8] = np.full(
+    ) -> Int8[np.ndarray, "conn start_end coord"]:
+        adj_list: Int8[np.ndarray, "conn start_end coord"] = np.full(
             (self.n_connections, 2, 2),
             -1,
         )
 
         if shuffle_d1:
-            flip_d1: NDArray["conn", np.float16] = np.random.rand(self.n_connections)
+            flip_d1: Float[np.array, "conn"] = np.random.rand(self.n_connections)
 
         # loop over all nonzero elements of the connection list
         i: int = 0
@@ -367,7 +366,7 @@ class LatticeMaze(SerializableDataclass):
     @classmethod
     def from_adj_list(
         cls,
-        adj_list: NDArray["conn start_end coord", np.int8],
+        adj_list: Int8[np.ndarray, "conn start_end coord"],
     ) -> "LatticeMaze":
         """create a LatticeMaze from a list of connections"""
 
@@ -485,7 +484,7 @@ class LatticeMaze(SerializableDataclass):
         assert all(
             len(c) == 2 for c in coordinates
         ), f"invalid coordinates: {coordinates = }"
-        adj_list: NDArray["conn start_end coord", np.int8] = np.array(coordinates)
+        adj_list: Int8[np.ndarray, "conn start_end coord"] = np.array(coordinates)
         assert tuple(adj_list.shape) == (
             len(coordinates),
             2,
