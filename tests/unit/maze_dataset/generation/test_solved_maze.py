@@ -1,21 +1,25 @@
-import pytest
-
-from maze_dataset.dataset.maze_dataset import MazeDatasetConfig
+from maze_dataset import SolvedMaze
 from maze_dataset.generation.generators import get_maze_with_solution
-from maze_dataset.maze import SolvedMaze
+from maze_dataset.tokenization import MazeTokenizer, TokenizationMode
 
 
-@pytest.mark.skip(
-    "Currently impossible to compare LatticeMazes - https://github.com/AISC-understanding-search/maze-transformer/issues/135"
-)
 def test_from_tokens():
-    maze_size = 2
-    maze, solution = get_maze_with_solution("gen_dfs", (maze_size, maze_size))
+    tokenizer: MazeTokenizer = MazeTokenizer(
+        tokenization_mode=TokenizationMode.AOTP_UT_uniform,
+        max_grid_size=20,
+    )
+    maze_size: int = 2
+    solved_maze: SolvedMaze = get_maze_with_solution("gen_dfs", (maze_size, maze_size))
 
-    # See https://github.com/AISC-understanding-search/maze-transformer/issues/77
-    config = MazeDatasetConfig(grid_n=maze_size, name="test", n_mazes=1)
-    tokenized_maze = maze.as_tokens(config.node_token_map)
+    tokenized_maze: list[str] = solved_maze.as_tokens(tokenizer)
 
-    new_maze, new_solution = SolvedMaze.from_tokens(tokenized_maze, config)
-    assert new_maze == maze
-    assert new_solution == solution
+    solved_maze_rt: SolvedMaze = SolvedMaze.from_tokens(tokenized_maze, tokenizer)
+    assert (
+        solved_maze == solved_maze_rt
+    ), f"solved_maze: {solved_maze}, solved_maze_rt: {solved_maze_rt}"
+    assert (
+        solved_maze.connection_list == solved_maze_rt.connection_list
+    ).all(), f"solved_maze.connection_list: {solved_maze.connection_list}, solved_maze_rt.connection_list: {solved_maze_rt.connection_list}"
+    assert (
+        solved_maze.solution == solved_maze_rt.solution
+    ).all(), f"solved_maze.solution: {solved_maze.solution}, solved_maze_rt.solution: {solved_maze_rt.solution}"

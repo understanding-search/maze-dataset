@@ -2,7 +2,6 @@ import functools
 import json
 import typing
 import warnings
-from functools import cached_property
 from pathlib import Path
 from typing import Callable, Type
 
@@ -35,10 +34,7 @@ def _dtype_serialization_fn(datatype: torch.dtype | np.dtype) -> str:
     return x_str
 
 
-@serializable_dataclass(
-    kw_only=True,
-    properties_to_serialize=["token_arr", "padding_token_index", "tokenizer_map"],
-)
+@serializable_dataclass(kw_only=True)
 class GPTDatasetConfig(SerializableDataclass):
     """base GPTDatasetConfig class"""
 
@@ -77,22 +73,7 @@ class GPTDatasetConfig(SerializableDataclass):
             seq_len_max=self.seq_len_max,
             seed=self.seed,
             applied_filters=self.applied_filters,
-            padding_token_index=self.padding_token_index,
-            token_arr_joined=" ".join(self.token_arr),
         )
-
-    @cached_property
-    def token_arr(self) -> list[str]:
-        raise NotImplementedError()
-
-    @cached_property
-    def padding_token_index(self) -> int:
-        raise NotImplementedError()
-
-    @cached_property
-    def tokenizer_map(self) -> dict[str, int]:
-        """map from token to index"""
-        return {t: i for i, t in enumerate(self.token_arr)}
 
     @classmethod
     @property
@@ -250,7 +231,6 @@ class GPTDataset(Dataset):
                 print_log("download successful!")
             except NotImplementedError:
                 print_log("no download found, or download failed")
-                pass
 
         if do_generate and output is None:
             print_log("generating dataset...")

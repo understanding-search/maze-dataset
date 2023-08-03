@@ -9,7 +9,6 @@ import numpy as np
 from jaxtyping import Bool, Float
 from matplotlib.cm import ScalarMappable
 from matplotlib.colors import ListedColormap, Normalize
-from muutils.tensor_utils import NDArray
 
 from maze_dataset.constants import Coord, CoordArray, CoordList
 from maze_dataset.maze import (
@@ -259,7 +258,7 @@ class MazePlot:
         self.ax.set_ylabel("row")
         self.ax.set_title(title)
 
-    def _rowcol_to_coord(self, point: Coord) -> NDArray:
+    def _rowcol_to_coord(self, point: Coord) -> np.ndarray:
         """Transform Point from MazeTransformer (row, column) notation to matplotlib default (x, y) notation where x is the horizontal axis."""
         point = np.array([point[1], point[0]])
         return self.unit_length * (point + 0.5)
@@ -354,7 +353,7 @@ class MazePlot:
             connection_values = scaled_node_values
 
         # Create background image (all pixels set to -1, walls everywhere)
-        img: NDArray["row col", float] = -np.ones(
+        img: Float[np.ndarray, "row col"] = -np.ones(
             (
                 self.maze.grid_shape[0] * self.unit_length + 1,
                 self.maze.grid_shape[1] * self.unit_length + 1,
@@ -392,8 +391,8 @@ class MazePlot:
             [self._rowcol_to_coord(coord) for coord in path_format.path]
         )
         if path_format.quiver_kwargs is not None:
-            x: NDArray = p_transformed[:, 0]
-            y: NDArray = p_transformed[:, 1]
+            x: np.ndarray = p_transformed[:, 0]
+            y: np.ndarray = p_transformed[:, 1]
             self.ax.quiver(
                 x[:-1],
                 y[:-1],
@@ -406,8 +405,8 @@ class MazePlot:
                 **path_format.quiver_kwargs,
             )
         else:
-            x: NDArray = p_transformed[:, 0]
-            y: NDArray = p_transformed[:, 1]
+            x: np.ndarray = p_transformed[:, 0]
+            y: np.ndarray = p_transformed[:, 1]
             self.ax.plot(
                 x,
                 y,

@@ -14,20 +14,13 @@ from muutils.json_serialize import (
 from muutils.misc import sanitize_fname, shorten_numerical_to_str, stable_hash
 from zanj.loading import LoaderHandler, load_item_recursive, register_loader_handler
 
-from maze_dataset.constants import SPECIAL_TOKENS, Coord, CoordTup
+from maze_dataset.constants import Coord, CoordTup
 from maze_dataset.dataset.dataset import GPTDataset, GPTDatasetConfig
-from maze_dataset.dataset.maze_dataset import (
-    _MAZEDATASET_PROPERTIES_TO_SERIALIZE,
-    MazeDataset,
-    MazeDatasetConfig,
-)
-from maze_dataset.maze import LatticeMaze, coord_to_str
-from maze_dataset.utils import corner_first_ndindex
+from maze_dataset.dataset.maze_dataset import MazeDataset, MazeDatasetConfig
+from maze_dataset.maze import LatticeMaze
 
 
-@serializable_dataclass(
-    kw_only=True, properties_to_serialize=_MAZEDATASET_PROPERTIES_TO_SERIALIZE
-)
+@serializable_dataclass(kw_only=True)
 class MazeDatasetCollectionConfig(GPTDatasetConfig):
     """maze dataset collection configuration, including tokenizers and shuffle"""
 
@@ -57,35 +50,6 @@ class MazeDatasetCollectionConfig(GPTDatasetConfig):
     @property
     def max_grid_shape_np(self) -> Coord:
         return np.array(self.max_grid_shape, dtype=np.int32)
-
-    @cached_property
-    def node_token_map(self) -> dict[CoordTup, str]:
-        """map from node to token"""
-        return {
-            tuple(coord): coord_to_str(coord)
-            for coord in corner_first_ndindex(self.max_grid_n)
-        }
-
-    @cached_property
-    def token_node_map(self) -> dict[str, CoordTup]:
-        """map from token to node"""
-        return {v: k for k, v in self.node_token_map.items()}
-
-    @cached_property
-    def token_arr(self) -> list[str]:
-        """map from index to token"""
-        return [
-            *list(SPECIAL_TOKENS.values()),
-            *list(self.node_token_map.values()),
-        ]
-
-    @cached_property
-    def padding_token_index(self) -> int:
-        return self.tokenizer_map[SPECIAL_TOKENS["padding"]]
-
-    @property
-    def n_tokens(self) -> int:
-        return len(self.token_arr)
 
     def stable_hash_cfg(self) -> int:
         return stable_hash(json.dumps(self.serialize()))
@@ -186,6 +150,31 @@ class MazeDatasetCollection(GPTDataset):
                 for key in ["cfg", "maze_datasets", "generation_metadata_collected"]
             }
         )
+
+    # TODO: remove duplication with MazeDatasetConfig().as_tokens() somehow?
+    def as_tokens(
+        self,
+        maze_tokenizer,  # TODO: MazeTokenizer
+        limit: int | None = None,
+        join_tokens_individual_maze: bool = False,
+    ) -> list[list[str]] | list[str]:
+        """return the dataset as tokens
+
+        if join_tokens_individual_maze is True, then the tokens of each maze are
+        joined with a space, and the result is a list of strings.
+        i.e.:
+        >>> dataset.as_tokens(join_tokens_individual_maze=False)
+        [["a", "b", "c"], ["d", "e", "f"]]
+        >>> dataset.as_tokens(join_tokens_individual_maze=True)
+        ["a b c", "d e f"]
+        """
+        output: list[list[str]] = [
+            maze.as_tokens(maze_tokenizer) for maze in self.mazes[:limit]
+        ]
+        if join_tokens_individual_maze:
+            return [" ".join(tokens) for tokens in output]
+        else:
+            return output
 
     def update_self_config(self) -> None:
         # TODO: why cant we set this directly? its not frozen, and it seems to work in a regular MazeDataset

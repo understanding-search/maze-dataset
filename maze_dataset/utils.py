@@ -1,9 +1,11 @@
 import math
+import typing
+from typing import Iterable, Literal, Mapping
 
 import numpy as np
 from jaxtyping import Bool
 
-_FORCE_LEGACY_TOKENIZATION: bool = False
+WhenMissing = Literal["except", "skip", "include"]
 
 
 def bool_array_from_string(
@@ -63,10 +65,7 @@ def corner_first_ndindex(n: int, ndim: int = 2) -> list[tuple]:
     """
 
     unsorted: list = list(np.ndindex(tuple([n for _ in range(ndim)])))
-    if not _FORCE_LEGACY_TOKENIZATION:
-        return sorted(unsorted, key=lambda x: (max(x), x if x[0] % 2 == 0 else x[::-1]))
-    else:
-        return unsorted
+    return sorted(unsorted, key=lambda x: (max(x), x if x[0] % 2 == 0 else x[::-1]))
 
     # alternate numpy version from GPT-4:
     """
@@ -96,3 +95,55 @@ def adj_list_to_nested_set(adj_list: list) -> set:
         frozenset([tuple(start_coord), tuple(end_coord)])
         for start_coord, end_coord in adj_list
     }
+
+
+_AM_K = typing.TypeVar("_AM_K")
+_AM_V = typing.TypeVar("_AM_V")
+
+
+def apply_mapping(
+    mapping: Mapping[_AM_K, _AM_V],
+    iter: Iterable[_AM_K],
+    when_missing: WhenMissing = "skip",
+) -> list[_AM_V]:
+    """Given an and a mapping, apply the mapping to the iterable with certain options"""
+    output: list[_AM_V] = list()
+    item: _AM_K
+    for item in iter:
+        if item in mapping:
+            output.append(mapping[item])
+            continue
+        match when_missing:
+            case "skip":
+                continue
+            case "include":
+                output.append(item)
+            case "except":
+                raise ValueError(f"item {item} is missing from mapping {mapping}")
+            case _:
+                raise ValueError(f"invalid value for {when_missing = }")
+    return output
+
+
+def apply_mapping_chain(
+    mapping: Mapping[_AM_K, Iterable[_AM_V]],
+    iter: Iterable[_AM_K],
+    when_missing: WhenMissing = "skip",
+) -> list[_AM_V]:
+    """Given a list and a mapping, apply the mapping to the list"""
+    output: list[_AM_V] = list()
+    item: _AM_K
+    for item in iter:
+        if item in mapping:
+            output.extend(mapping[item])
+            continue
+        match when_missing:
+            case "skip":
+                continue
+            case "include":
+                output.append(item)
+            case "except":
+                raise ValueError(f"item {item} is missing from mapping {mapping}")
+            case _:
+                raise ValueError(f"invalid value for {when_missing = }")
+    return output

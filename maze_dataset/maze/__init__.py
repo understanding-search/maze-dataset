@@ -7,7 +7,6 @@ from maze_dataset.maze.lattice_maze import (
     PixelColors,
     SolvedMaze,
     TargetedLatticeMaze,
-    coord_to_str,
 )
 
 __all__ = [
@@ -19,5 +18,4 @@ __all__ = [
     "PixelColors",
     "SolvedMaze",
     "TargetedLatticeMaze",
-    "coord_to_str",
 ]
