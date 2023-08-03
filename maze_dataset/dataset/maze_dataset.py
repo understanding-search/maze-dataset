@@ -111,7 +111,6 @@ class MazeDatasetConfig(GPTDatasetConfig):
                 seed=self.seed,
                 seq_len_min=self.seq_len_min,
                 seq_len_max=self.seq_len_max,
-                token_arr_joined=" ".join(self.token_arr),
                 applied_filters=self.applied_filters,
             ),
             **{
