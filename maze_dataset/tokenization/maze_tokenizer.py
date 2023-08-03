@@ -133,9 +133,15 @@ class MazeTokenizer(SerializableDataclass):
             TokenizationMode.AOTP_UT_rasterized,
             TokenizationMode.AOTP_UT_uniform,
         ):
-            return Kappa(
-                lambda coord: _coord_to_strings_UT(tuple(coord))[0],
-            )
+            # return Kappa(
+            #     lambda coord: _coord_to_strings_UT(tuple(coord))[0],
+            # )
+            return {
+                tuple(coord): _coord_to_strings_UT(tuple(coord))[0]
+                for coord in _NDINDEX_FUNC_MAP[self.tokenization_mode](
+                    self.max_grid_size
+                )
+            }
         elif self.tokenization_mode == TokenizationMode.AOTP_indexed:
             raise NotImplementedError(
                 "AOTP_indexed mode not compatible with node_token_map"
@@ -174,7 +180,7 @@ class MazeTokenizer(SerializableDataclass):
         """map from index to token"""
         if self.max_grid_size is None:
             raise ValueError(
-                "max_grid_size must be specified to use node_token_map property"
+                f"max_grid_size must be specified to use node_token_map property: {self.max_grid_size}"
             )
 
         output: list[str] = list(SPECIAL_TOKENS.values())
@@ -200,6 +206,8 @@ class MazeTokenizer(SerializableDataclass):
                 f"expected one of {TokenizationMode.__members__}",
             )
 
+        return output
+
     @cached_property
     def token_arr(self) -> list[str] | None:
         if self.max_grid_size is None:
@@ -209,7 +217,7 @@ class MazeTokenizer(SerializableDataclass):
     @cached_property
     def _tokenizer_map(self) -> dict[str, int]:
         """map from token to index"""
-        return {token: i for i, token in enumerate(self.token_arr)}
+        return {token: i for i, token in enumerate(self._token_arr)}
 
     @cached_property
     def tokenizer_map(self) -> dict[str, int] | None:
@@ -219,7 +227,7 @@ class MazeTokenizer(SerializableDataclass):
 
     @property
     def _vocab_size(self) -> int:
-        return len(self.token_arr)
+        return len(self._token_arr)
 
     @property
     def vocab_size(self) -> int | None:
@@ -230,7 +238,7 @@ class MazeTokenizer(SerializableDataclass):
     @property
     def _n_tokens(self) -> int:
         # TODO: deprecate
-        return self.vocab_size
+        return self._vocab_size
 
     @property
     def n_tokens(self) -> int | None:
@@ -284,6 +292,17 @@ class MazeTokenizer(SerializableDataclass):
     ) -> list[str | CoordTup]:
         return strings_to_coords(text=text, when_noncoord=when_noncoord)
 
+    # other
+    # ============================================================
+
+    def summary(self) -> dict:
+        """returns a summary of the tokenization mode"""
+        return {
+            "tokenization_mode": self.tokenization_mode.value,
+            "max_grid_size": self.max_grid_size,
+            "vocab_size": self.vocab_size,
+        }
+
     def is_AOTP(self) -> bool:
         """returns true if a tokenization mode is Adjacency list, Origin, Target, Path"""
         return self.tokenization_mode in (
@@ -291,3 +310,12 @@ class MazeTokenizer(SerializableDataclass):
             TokenizationMode.AOTP_UT_uniform,
             TokenizationMode.AOTP_indexed,
         )
+
+    def clear_cache(self):
+        """clears all cached properties"""
+        # delete the properties only if they exist
+        for name, prop in self.__class__.__dict__.items():
+            if isinstance(prop, cached_property):
+                # if the property exists, delete it
+                if hasattr(self, name):
+                    delattr(self, name)
