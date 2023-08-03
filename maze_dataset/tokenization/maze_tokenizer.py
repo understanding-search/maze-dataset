@@ -20,6 +20,9 @@ from maze_dataset.tokenization.token_utils import (  # coord_to_indexed_string,;
 )
 from maze_dataset.utils import WhenMissing, corner_first_ndindex
 
+class TokenError(ValueError):
+    """error for tokenization"""    
+    pass
 
 class TokenizationMode(Enum):
     """mode of tokenization
@@ -45,8 +48,8 @@ class TokenizationMode(Enum):
 _NDINDEX_FUNC_MAP: dict[
     TokenizationMode, Callable[[int], Iterable[tuple[int, ...]]]
 ] = {
-    TokenizationMode.AOTP_UT_rasterized: np.ndindex,
-    TokenizationMode.AOTP_UT_uniform: corner_first_ndindex,
+    TokenizationMode.AOTP_UT_rasterized: lambda n : list(np.ndindex(n,n)),
+    TokenizationMode.AOTP_UT_uniform: lambda n : corner_first_ndindex(n,2),
 }
 
 _MAZETOKENIZER_PROPERTIES_TO_SERIALIZE: list[str] = [
@@ -72,14 +75,14 @@ class MazeTokenizer(SerializableDataclass):
         maximum grid size. required for actually turning text tokens to numerical tokens, but not for moving between coordinates/mazes and text
 
     # Properties
-
-    ## Universal Properties
-     - `name: str`
-        auto-generated name of the tokenizer from mode and size
-     - `node_token_map: Mapping[CoordTup, str]`
-        map from node to token. This returns a `muutils.kappa.Kappa` object which you can use like a dictionary
+    - `name: str`
+        auto-generated name of the tokenizer from mode and size     
 
     ## Conditional Properties
+
+    - `node_strings_map: Mapping[CoordTup, str]`
+        map from node to string. This returns a `muutils.kappa.Kappa` object which you can use like a dictionary. returns `None` if not a `UT` mode
+
     these all return `None` if `max_grid_size` is `None`.
     Prepend `_` to the name to get a guaranteed type, and cause an exception if `max_grid_size` is `None`
 
@@ -111,7 +114,7 @@ class MazeTokenizer(SerializableDataclass):
 
     max_grid_size: int | None = serializable_field(default=None)
 
-    # universal properties
+    # properties
     # ============================================================
 
     @property
@@ -122,38 +125,7 @@ class MazeTokenizer(SerializableDataclass):
         return f"maze_tokenizer-{self.tokenization_mode.value}{max_grid_size_str}"
 
     @cached_property
-    def node_token_map(self) -> Mapping[CoordTup, str]:
-        """map from node to token"""
-        if self.max_grid_size is None:
-            raise ValueError(
-                "max_grid_size must be specified to use node_token_map property"
-            )
-
-        if self.tokenization_mode in (
-            TokenizationMode.AOTP_UT_rasterized,
-            TokenizationMode.AOTP_UT_uniform,
-        ):
-            # return Kappa(
-            #     lambda coord: _coord_to_strings_UT(tuple(coord))[0],
-            # )
-            return {
-                tuple(coord): _coord_to_strings_UT(tuple(coord))[0]
-                for coord in _NDINDEX_FUNC_MAP[self.tokenization_mode](
-                    self.max_grid_size
-                )
-            }
-        elif self.tokenization_mode == TokenizationMode.AOTP_indexed:
-            raise NotImplementedError(
-                "AOTP_indexed mode not compatible with node_token_map"
-            )
-        else:
-            raise ValueError(
-                f"Invalid tokenization mode {self.tokenization_mode}",
-                f"expected one of {TokenizationMode.__members__}",
-            )
-
-    @cached_property
-    def node_strings_map(self) -> Mapping[CoordTup, str]:
+    def _node_strings_map(self) -> Mapping[CoordTup, list[str]]:
         """map a coordinate to a token"""
         if self.tokenization_mode in (
             TokenizationMode.AOTP_UT_rasterized,
@@ -171,16 +143,28 @@ class MazeTokenizer(SerializableDataclass):
                 f"Invalid tokenization mode {self.tokenization_mode}",
                 f"expected one of {TokenizationMode.__members__}",
             )
+    
+    @cached_property
+    def node_strings_map(self) -> Mapping[CoordTup, list[str]] | None:
+        """map a coordinate to a token"""
+        if self.tokenization_mode in (
+            TokenizationMode.AOTP_UT_rasterized,
+            TokenizationMode.AOTP_UT_uniform,
+        ):
+            return None
+        else:
+            return self._node_strings_map
+
 
     # conditional properties (on max_grid_size existing)
-    # ============================================================
+    # ------------------------------------------------------------
 
     @cached_property
     def _token_arr(self) -> list[str]:
         """map from index to token"""
         if self.max_grid_size is None:
             raise ValueError(
-                f"max_grid_size must be specified to use node_token_map property: {self.max_grid_size}"
+                f"max_grid_size must be specified to use token_arr property: {self.max_grid_size = }"
             )
 
         output: list[str] = list(SPECIAL_TOKENS.values())
@@ -189,7 +173,10 @@ class MazeTokenizer(SerializableDataclass):
             TokenizationMode.AOTP_UT_rasterized,
             TokenizationMode.AOTP_UT_uniform,
         ):
-            output.extend(self.node_token_map.values())
+            output.extend([
+                self._node_strings_map[coord][0]
+                for coord in _NDINDEX_FUNC_MAP[self.tokenization_mode](self.max_grid_size)
+            ])
         elif self.tokenization_mode == TokenizationMode.AOTP_indexed:
             # TODO: this is hacky, but we don't want to modify the original SPECIAL_TOKENS since that will break old models
             output.extend(
@@ -294,13 +281,23 @@ class MazeTokenizer(SerializableDataclass):
     
     def encode(self, text: str|list[str]) -> list[int]:
         """encode a string or list of strings into a list of tokens"""
-        if isinstance(text, str):
-            text = text.split()
-        return [self.tokenizer_map[token] for token in text]
+        try:
+            if isinstance(text, str):
+                text = text.split()
+            return [self.tokenizer_map[token] for token in text]
+        except KeyError as e:
+            raise TokenError(
+                f"Token {e} not found",
+                f"in vocabulary of {self}:",
+                f"{self.token_arr}",
+            ) from e
     
     def decode(self, tokens: Sequence[int], joined_tokens: bool = False) -> list[str]|str:
         """decode a list of tokens into a string or list of strings"""
-        output: list[str] = [self.token_arr[token] for token in tokens]
+        try:
+            output: list[str] = [self.token_arr[token] for token in tokens]
+        except IndexError as e:
+            raise TokenError(f"Token index '{e}' not found in vocabulary of length {self.vocab_size}") from e
         if joined_tokens:
             return " ".join(output)
         else:
