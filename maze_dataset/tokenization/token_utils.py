@@ -15,7 +15,7 @@ from maze_dataset.utils import WhenMissing
 
 
 def _coord_to_strings_UT(coord: typing.Sequence[int]) -> list[str]:
-    """convert a coordinate to a string: `(i,j)`->"(i,j)" 
+    """convert a coordinate to a string: `(i,j)`->"(i,j)"
     always returns a list of length 1"""
     return [f"({','.join(str(c) for c in coord)})"]
 

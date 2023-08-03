@@ -52,17 +52,18 @@ _NDINDEX_FUNC_MAP: dict[
 _MAZETOKENIZER_PROPERTIES_TO_SERIALIZE: list[str] = [
     "name",
     "grid_size",
-    "padding_token_index",
     "token_arr",
     "tokenizer_map",
-    "token_node_map",
     "vocab_size",
+    "padding_token_index",
 ]
 
 
-@serializable_dataclass(properties_to_serialize=_MAZETOKENIZER_PROPERTIES_TO_SERIALIZE, kw_only=True)
+@serializable_dataclass(
+    properties_to_serialize=_MAZETOKENIZER_PROPERTIES_TO_SERIALIZE, kw_only=True
+)
 class MazeTokenizer(SerializableDataclass):
-    """Tokenizer for mazes 
+    """Tokenizer for mazes
 
     # Parameters:
      - `tokenization_mode: TokenizationMode`
@@ -70,11 +71,37 @@ class MazeTokenizer(SerializableDataclass):
     - `max_grid_size: int | None`
         maximum grid size. required for actually turning text tokens to numerical tokens, but not for moving between coordinates/mazes and text
 
-    # Properties:
+    # Properties
+
+    ## Universal Properties
      - `name: str`
         auto-generated name of the tokenizer from mode and size
-    - 
+     - `node_token_map: Mapping[CoordTup, str]`
+        map from node to token. This returns a `muutils.kappa.Kappa` object which you can use like a dictionary
+
+    ## Conditional Properties
+    these all return `None` if `max_grid_size` is `None`.
+    Prepend `_` to the name to get a guaranteed type, and cause an exception if `max_grid_size` is `None`
+
+    - `token_arr: list[str]`
+        list of tokens, in order of their indices in the vocabulary
+    - `tokenizer_map: Mapping[str, int]`
+        map from token to index
+    - `vocab_size: int`
+        size of the vocabulary
+    - `padding_token_index: int`
+        index of the padding token
+
+    # Methods
+    - `coords_to_strings(coords: list[CoordTup]) -> list[str]`
+        convert a list of coordinates to a list of tokens. Optionally except, skip, or ignore non-coordinates
+    - `strings_to_coords(strings: list[str]) -> list[CoordTup]`
+        convert a list of tokens to a list of coordinates. Optionally except, skip, or ignore non-coordinates
+
     """
+
+    # parameters
+    # ============================================================
 
     tokenization_mode: TokenizationMode = serializable_field(
         default=TokenizationMode.AOTP_UT_uniform,
@@ -83,6 +110,9 @@ class MazeTokenizer(SerializableDataclass):
     )
 
     max_grid_size: int | None = serializable_field(default=None)
+
+    # universal properties
+    # ============================================================
 
     @property
     def name(self) -> str:
@@ -115,7 +145,7 @@ class MazeTokenizer(SerializableDataclass):
                 f"Invalid tokenization mode {self.tokenization_mode}",
                 f"expected one of {TokenizationMode.__members__}",
             )
-    
+
     @cached_property
     def node_strings_map(self) -> Mapping[CoordTup, str]:
         """map a coordinate to a token"""
@@ -127,13 +157,17 @@ class MazeTokenizer(SerializableDataclass):
                 lambda coord: _coord_to_strings_UT(tuple(coord)),
             )
         elif self.tokenization_mode == TokenizationMode.AOTP_indexed:
-            return _coord_to_strings_indexed(coord)
+            return Kappa(
+                lambda coord: _coord_to_strings_indexed(tuple(coord)),
+            )
+        else:
+            raise ValueError(
+                f"Invalid tokenization mode {self.tokenization_mode}",
+                f"expected one of {TokenizationMode.__members__}",
+            )
 
-    @cached_property
-    def token_node_map(self) -> dict[str, CoordTup]:
-        """map from token to node"""
-        raise DeprecationWarning("this isn't used anywhere??")
-        return {v: k for k, v in self.node_token_map.items()}
+    # conditional properties (on max_grid_size existing)
+    # ============================================================
 
     @cached_property
     def _token_arr(self) -> list[str]:
@@ -165,20 +199,20 @@ class MazeTokenizer(SerializableDataclass):
                 f"Invalid tokenization mode {self.tokenization_mode}",
                 f"expected one of {TokenizationMode.__members__}",
             )
-    
+
     @cached_property
-    def token_arr(self) -> list[str]|None:
+    def token_arr(self) -> list[str] | None:
         if self.max_grid_size is None:
             return None
         return self._token_arr
-    
+
     @cached_property
     def _tokenizer_map(self) -> dict[str, int]:
         """map from token to index"""
         return {token: i for i, token in enumerate(self.token_arr)}
-    
+
     @cached_property
-    def tokenizer_map(self) -> dict[str, int]|None:
+    def tokenizer_map(self) -> dict[str, int] | None:
         if self.max_grid_size is None:
             return None
         return self._tokenizer_map
@@ -188,7 +222,7 @@ class MazeTokenizer(SerializableDataclass):
         return len(self.token_arr)
 
     @property
-    def vocab_size(self) -> int|None:
+    def vocab_size(self) -> int | None:
         if self.max_grid_size is None:
             return None
         return self._vocab_size
@@ -199,7 +233,7 @@ class MazeTokenizer(SerializableDataclass):
         return self.vocab_size
 
     @property
-    def n_tokens(self) -> int|None:
+    def n_tokens(self) -> int | None:
         if self.max_grid_size is None:
             return None
         return self._n_tokens
@@ -207,6 +241,15 @@ class MazeTokenizer(SerializableDataclass):
     @cached_property
     def _padding_token_index(self) -> int:
         return self.tokenizer_map[SPECIAL_TOKENS.PADDING]
+
+    @cached_property
+    def padding_token_index(self) -> int | None:
+        if self.max_grid_size is None:
+            return None
+        return self._padding_token_index
+
+    # conversion functions
+    # ============================================================
 
     def coords_to_strings(
         self,
