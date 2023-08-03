@@ -1,7 +1,7 @@
 """TokenizationMode enum and the MazeTokenizer class"""
 from enum import Enum
 from functools import cached_property
-from typing import Callable, Iterable, Mapping
+from typing import Callable, Iterable, Mapping, Sequence
 
 import numpy as np
 from muutils.json_serialize import (
@@ -291,6 +291,20 @@ class MazeTokenizer(SerializableDataclass):
         when_noncoord: WhenMissing = "skip",
     ) -> list[str | CoordTup]:
         return strings_to_coords(text=text, when_noncoord=when_noncoord)
+    
+    def encode(self, text: str|list[str]) -> list[int]:
+        """encode a string or list of strings into a list of tokens"""
+        if isinstance(text, str):
+            text = text.split()
+        return [self.tokenizer_map[token] for token in text]
+    
+    def decode(self, tokens: Sequence[int], joined_tokens: bool = False) -> list[str]|str:
+        """decode a list of tokens into a string or list of strings"""
+        output: list[str] = [self.token_arr[token] for token in tokens]
+        if joined_tokens:
+            return " ".join(output)
+        else:
+            return output
 
     # other
     # ============================================================
