@@ -134,13 +134,9 @@ class MazeTokenizer(SerializableDataclass):
             TokenizationMode.AOTP_UT_rasterized,
             TokenizationMode.AOTP_UT_uniform,
         ):
-            return Kappa(
-                lambda coord: _coord_to_strings_UT(tuple(coord)),
-            )
+            return Kappa(_coord_to_strings_UT)
         elif self.tokenization_mode == TokenizationMode.AOTP_indexed:
-            return Kappa(
-                lambda coord: _coord_to_strings_indexed(tuple(coord)),
-            )
+            return Kappa(_coord_to_strings_indexed)
         else:
             raise ValueError(
                 f"Invalid tokenization mode {self.tokenization_mode}",
