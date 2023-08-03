@@ -20,9 +20,12 @@ from maze_dataset.tokenization.token_utils import (  # coord_to_indexed_string,;
 )
 from maze_dataset.utils import WhenMissing, corner_first_ndindex
 
+
 class TokenError(ValueError):
-    """error for tokenization"""    
+    """error for tokenization"""
+
     pass
+
 
 class TokenizationMode(Enum):
     """mode of tokenization
@@ -48,8 +51,8 @@ class TokenizationMode(Enum):
 _NDINDEX_FUNC_MAP: dict[
     TokenizationMode, Callable[[int], Iterable[tuple[int, ...]]]
 ] = {
-    TokenizationMode.AOTP_UT_rasterized: lambda n : list(np.ndindex(n,n)),
-    TokenizationMode.AOTP_UT_uniform: lambda n : corner_first_ndindex(n,2),
+    TokenizationMode.AOTP_UT_rasterized: lambda n: list(np.ndindex(n, n)),
+    TokenizationMode.AOTP_UT_uniform: lambda n: corner_first_ndindex(n, 2),
 }
 
 _MAZETOKENIZER_PROPERTIES_TO_SERIALIZE: list[str] = [
@@ -76,7 +79,7 @@ class MazeTokenizer(SerializableDataclass):
 
     # Properties
     - `name: str`
-        auto-generated name of the tokenizer from mode and size     
+        auto-generated name of the tokenizer from mode and size
 
     ## Conditional Properties
 
@@ -143,7 +146,7 @@ class MazeTokenizer(SerializableDataclass):
                 f"Invalid tokenization mode {self.tokenization_mode}",
                 f"expected one of {TokenizationMode.__members__}",
             )
-    
+
     @cached_property
     def node_strings_map(self) -> Mapping[CoordTup, list[str]] | None:
         """map a coordinate to a token"""
@@ -154,7 +157,6 @@ class MazeTokenizer(SerializableDataclass):
             return None
         else:
             return self._node_strings_map
-
 
     # conditional properties (on max_grid_size existing)
     # ------------------------------------------------------------
@@ -173,10 +175,14 @@ class MazeTokenizer(SerializableDataclass):
             TokenizationMode.AOTP_UT_rasterized,
             TokenizationMode.AOTP_UT_uniform,
         ):
-            output.extend([
-                self._node_strings_map[coord][0]
-                for coord in _NDINDEX_FUNC_MAP[self.tokenization_mode](self.max_grid_size)
-            ])
+            output.extend(
+                [
+                    self._node_strings_map[coord][0]
+                    for coord in _NDINDEX_FUNC_MAP[self.tokenization_mode](
+                        self.max_grid_size
+                    )
+                ]
+            )
         elif self.tokenization_mode == TokenizationMode.AOTP_indexed:
             # TODO: this is hacky, but we don't want to modify the original SPECIAL_TOKENS since that will break old models
             output.extend(
@@ -278,8 +284,8 @@ class MazeTokenizer(SerializableDataclass):
         when_noncoord: WhenMissing = "skip",
     ) -> list[str | CoordTup]:
         return strings_to_coords(text=text, when_noncoord=when_noncoord)
-    
-    def encode(self, text: str|list[str]) -> list[int]:
+
+    def encode(self, text: str | list[str]) -> list[int]:
         """encode a string or list of strings into a list of tokens"""
         try:
             if isinstance(text, str):
@@ -291,13 +297,17 @@ class MazeTokenizer(SerializableDataclass):
                 f"in vocabulary of {self}:",
                 f"{self.token_arr}",
             ) from e
-    
-    def decode(self, tokens: Sequence[int], joined_tokens: bool = False) -> list[str]|str:
+
+    def decode(
+        self, tokens: Sequence[int], joined_tokens: bool = False
+    ) -> list[str] | str:
         """decode a list of tokens into a string or list of strings"""
         try:
             output: list[str] = [self.token_arr[token] for token in tokens]
         except IndexError as e:
-            raise TokenError(f"Token index '{e}' not found in vocabulary of length {self.vocab_size}") from e
+            raise TokenError(
+                f"Token index '{e}' not found in vocabulary of length {self.vocab_size}"
+            ) from e
         if joined_tokens:
             return " ".join(output)
         else:

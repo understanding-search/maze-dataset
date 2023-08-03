@@ -2,7 +2,6 @@ import functools
 import json
 import typing
 import warnings
-from functools import cached_property
 from pathlib import Path
 from typing import Callable, Type
 
@@ -232,7 +231,6 @@ class GPTDataset(Dataset):
                 print_log("download successful!")
             except NotImplementedError:
                 print_log("no download found, or download failed")
-                pass
 
         if do_generate and output is None:
             print_log("generating dataset...")

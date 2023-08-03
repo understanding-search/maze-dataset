@@ -21,6 +21,7 @@ from maze_dataset.constants import (
 )
 from maze_dataset.tokenization import (
     MazeTokenizer,
+    TokenizationMode,
     get_adj_list_tokens,
     get_path_tokens,
 )
@@ -431,9 +432,11 @@ class LatticeMaze(SerializableDataclass):
 
     def as_tokens(
         self,
-        maze_tokenizer: MazeTokenizer,
+        maze_tokenizer: MazeTokenizer | TokenizationMode,
     ) -> list[str]:
         """serialize maze and solution to tokens"""
+        if isinstance(maze_tokenizer, TokenizationMode):
+            maze_tokenizer = MazeTokenizer(maze_tokenizer)
         if maze_tokenizer.is_AOTP():
             coords_raw: list[CoordTup | str] = self._as_coords_and_special_AOTP()
             coords_processed: list[str] = maze_tokenizer.coords_to_strings(
@@ -544,8 +547,11 @@ class LatticeMaze(SerializableDataclass):
 
     @classmethod
     def from_tokens(
-        cls, tokens: list[str], maze_tokenizer: MazeTokenizer
+        cls, tokens: list[str], maze_tokenizer: MazeTokenizer | TokenizationMode
     ) -> "LatticeMaze":
+        if isinstance(maze_tokenizer, TokenizationMode):
+            maze_tokenizer = MazeTokenizer(maze_tokenizer)
+
         if isinstance(tokens, str):
             tokens = tokens.split()
 
