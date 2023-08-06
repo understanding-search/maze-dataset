@@ -9,7 +9,7 @@ repository = "https://github.com/AISC-understanding-search/maze_dataset"
 
 [tool.poetry.dependencies]
 python = "^3.10"
-torch = "^1.13.1"
+torch = ">=1.13.1"
 matplotlib = "^3.7.0"
 muutils = "^0.5.1"
 zanj = "^0.2.0"
