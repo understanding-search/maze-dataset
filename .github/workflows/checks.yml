@@ -36,14 +36,26 @@ jobs:
     env:
       WANDB_API_KEY: ${{ secrets.WANDB_API_KEY }}
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        versions:
+          - python: "3.10"
+            torch: "1.13.1"
+          - python: "3.10"
+            torch: "2.0.1"
+          - python: "3.11"
+            torch: "2.0.1"
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+        with:
+          python-version: ${{ matrix.python-version }}
 
       - name: Install dependencies
         run: |
           curl -sSL https://install.python-poetry.org | python3 -
           poetry lock --check
+          poetry add torch@${{ matrix.versions.torch }}+cpu --source torch_cpu
           poetry install
 
       - name: Unit tests

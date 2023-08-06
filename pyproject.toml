@@ -28,6 +28,11 @@ mypy = "^1.0.1"
 pytest-cov = "^4.1.0"
 coverage-badge = "^1.1.0"
 
+[[tool.poetry.source]]
+name = "torch_cpu"
+url = "https://download.pytorch.org/whl/cpu"
+priority = "explicit"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
