@@ -27,6 +27,7 @@ pytest-mock = "^3.10.0"
 mypy = "^1.0.1"
 pytest-cov = "^4.1.0"
 coverage-badge = "^1.1.0"
+seaborn = "^0.12.2" # only required for benchmarks lol
 
 [[tool.poetry.source]]
 name = "torch_cpu"
