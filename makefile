@@ -57,7 +57,7 @@ test_notebooks: convert_notebooks
 test: clean unit test_notebooks
 	@echo "ran all tests: unit, integration, and notebooks"
 
-# coverage reports
+# coverage reports & benchmarks
 # --------------------------------------------------
 .PHONY: cov
 cov:
@@ -69,6 +69,11 @@ cov:
 cov-html:
 	@echo "generate html coverage report"
 	$(POETRY_RUN_PYTHON) -m coverage html	
+
+.PHONY: benchmark
+benchmark:
+	@echo "run benchmarks"
+	$(POETRY_RUN_PYTHON) tests/benchmark_generation.py
 
 # general util
 # --------------------------------------------------
