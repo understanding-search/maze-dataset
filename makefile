@@ -73,7 +73,7 @@ cov-html:
 .PHONY: benchmark
 benchmark:
 	@echo "run benchmarks"
-	$(POETRY_RUN_PYTHON) tests/benchmark_generation.py
+	$(POETRY_RUN_PYTHON) docs/benchmarks/benchmark_generation.py
 
 # general util
 # --------------------------------------------------
