@@ -111,15 +111,17 @@ def time_generation(
 
     # time generation for each config
     times: list[dict] = list()
+    idx: int = 0
+    total: int = len(configs)
     for cfg in tqdm(
         configs,
         desc="Timing generation",
         unit="config",
-        total=len(configs),
+        total=total,
         disable=verbose,
     ):
         if verbose:
-            print(f"Timing generation for config: {cfg}")
+            print(f"Timing generation for config {idx}/{total}\n{cfg}")
 
         t: float = (
             timeit.timeit(
@@ -143,6 +145,8 @@ def time_generation(
                 time=t,
             )
         )
+        
+        idx += 1
 
     return times
 
@@ -151,7 +155,7 @@ def run_benchmark(
     save_path: str = "tests/_temp/benchmark_generation.jsonl",
     base_configs: list[dict] | None = None,
     grid_n_vals: list[int] = [2, 4, 8, 16, 32, 64],
-    n_mazes_vals: list[int] = [1, 10, 100, 1000],
+    n_mazes_vals: list[int] = [1, 10, 100],
     trials: int = 10,
 ):
     import pandas as pd
@@ -164,6 +168,7 @@ def run_benchmark(
         grid_n_vals=grid_n_vals,
         n_mazes_vals=n_mazes_vals,
         trials=trials,
+        verbose=True,
     )
 
     df: pd.DataFrame = pd.DataFrame(times)
