@@ -3,7 +3,7 @@ import timeit
 
 from tqdm import tqdm
 
-from maze_dataset import LatticeMazeGenerators, MazeDataset, MazeDatasetConfig
+from maze_dataset import MazeDataset, MazeDatasetConfig
 from maze_dataset.generation.default_generators import DEFAULT_GENERATORS
 from maze_dataset.generation.generators import GENERATORS_MAP
 
@@ -101,6 +101,7 @@ def run_benchmark(
     grid_n_vals: list[int] = [2, 3, 4, 5, 8, 10, 16, 25, 32],
     n_mazes_vals: list[int] = list(range(1, 12, 2)),
     trials: int = 10,
+    verbose: bool = True,
 ):
     import pandas as pd
 
@@ -112,7 +113,7 @@ def run_benchmark(
         grid_n_vals=grid_n_vals,
         n_mazes_vals=n_mazes_vals,
         trials=trials,
-        verbose=True,
+        verbose=verbose,
     )
 
     df: pd.DataFrame = pd.DataFrame(times)
