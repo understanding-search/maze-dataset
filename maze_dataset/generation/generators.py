@@ -181,7 +181,6 @@ class LatticeMazeGenerators:
         del start_coord
         
         while not visited.all():
-            print(f"main loop, {visited.sum()} visited")
             # Perform loop-erased random walk from another random cell
             
             # Choose walk_start only from unvisited cells
@@ -194,7 +193,6 @@ class LatticeMazeGenerators:
 
             # exit the loop once the current path hits a visited cell
             while not visited[*current]:
-                print(f"while current not visited: {current}")
                 # find a valid neighbor (one always exists on a lattice)
                 neighbors: CoordArray = get_neighbors_in_bounds(current, grid_shape)
                 next_cell: Coord = neighbors[np.random.choice(neighbors.shape[0])]
@@ -202,25 +200,21 @@ class LatticeMazeGenerators:
                 # Check for loop
                 loop_exit: int|None = None
                 for i, p in enumerate(path):
-                    print(f"\t\tloop check: {i=}, {p=}")
                     if np.array_equal(next_cell, p):
                         loop_exit = i
                         break                        
                 
                 # erase the loop, or continue the walk
                 if loop_exit is not None:
-                    print(f"\tloop found: {loop_exit=}")
                     # this removes everything after and including the loop start
                     path = path[:loop_exit + 1]
                     # reset current cell to end of path
                     current = path[-1]
                 else:
-                    print(f"\tno loop found")
                     path.append(next_cell)
                     current = next_cell
             
             # Add the path to the maze
-            print(f"adding path: {path}")
             for i in range(len(path) - 1):
                 c_1: Coord = path[i]
                 c_2: Coord = path[i + 1]
@@ -238,7 +232,7 @@ class LatticeMazeGenerators:
                 visited[*c_1] = True
                 # we dont add c_2 because the last c_2 will have already been visited
 
-        maze = LatticeMaze(
+        return LatticeMaze(
             connection_list=connection_list,
             generation_meta=dict(
                 func_name="gen_wilson",
@@ -246,9 +240,6 @@ class LatticeMazeGenerators:
                 fully_connected=True,
             ),
         )
-        print(maze.as_ascii())
-
-        return maze
 
     @staticmethod
     def gen_percolation(
