@@ -276,7 +276,7 @@ class LatticeMazeGenerators:
                 # if positive, down/right from current coord
                 # if negative, up/left from current coord (down/right from neighbor)
                 clist_node: Coord = c_1 if (delta.sum() > 0) else c_2
-                connection_list[dim, *clist_node] = True
+                connection_list[dim, clist_node[0], clist_node[1]] = True
                 visited[c_1[0], c_1[1]] = True
                 # we dont add c_2 because the last c_2 will have already been visited
 
