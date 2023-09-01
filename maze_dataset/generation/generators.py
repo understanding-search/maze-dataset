@@ -225,7 +225,7 @@ class LatticeMazeGenerators:
 
         # Choose a random cell and mark it as visited
         start_coord: Coord = _random_start_coord(grid_shape, None)
-        visited[*start_coord] = True
+        visited[start_coord[0], start_coord[1]] = True
         del start_coord
 
         while not visited.all():
@@ -242,7 +242,7 @@ class LatticeMazeGenerators:
             current: Coord = walk_start
 
             # exit the loop once the current path hits a visited cell
-            while not visited[*current]:
+            while not visited[current[0], current[1]]:
                 # find a valid neighbor (one always exists on a lattice)
                 neighbors: CoordArray = get_neighbors_in_bounds(current, grid_shape)
                 next_cell: Coord = neighbors[np.random.choice(neighbors.shape[0])]
@@ -277,7 +277,7 @@ class LatticeMazeGenerators:
                 # if negative, up/left from current coord (down/right from neighbor)
                 clist_node: Coord = c_1 if (delta.sum() > 0) else c_2
                 connection_list[dim, *clist_node] = True
-                visited[*c_1] = True
+                visited[c_1[0], c_1[1]] = True
                 # we dont add c_2 because the last c_2 will have already been visited
 
         return LatticeMaze(
