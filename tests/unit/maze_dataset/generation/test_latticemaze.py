@@ -1,5 +1,6 @@
 import numpy as np
 import pytest
+from maze_dataset.constants import CoordArray
 
 from maze_dataset.generation.generators import GENERATORS_MAP
 from maze_dataset.maze import LatticeMaze, PixelColors, SolvedMaze, TargetedLatticeMaze
@@ -181,71 +182,74 @@ def test_find_start_end_points_in_rgb_pixel_grid():
     assert out_positions["path"].shape == (0,)
 
 
-def test_pixels_ascii_roundtrip():
+@pytest.mark.parametrize("gfunc_name", GENERATORS_MAP.keys())
+def test_pixels_ascii_roundtrip(gfunc_name):
     """tests all generators work and can be written to/from ascii and pixels"""
     n: int = 5
-    for maze_gen_func in GENERATORS_MAP.values():
-        maze: LatticeMaze = maze_gen_func(np.array([n, n]))
+    maze_gen_func = GENERATORS_MAP[gfunc_name]
+    maze: LatticeMaze = maze_gen_func(np.array([n, n]))
 
-        maze_pixels: np.ndarray = maze.as_pixels()
-        maze_ascii: str = maze.as_ascii()
+    maze_pixels: np.ndarray = maze.as_pixels()
+    maze_ascii: str = maze.as_ascii()
 
-        assert maze == LatticeMaze.from_pixels(maze_pixels)
-        assert maze == LatticeMaze.from_ascii(maze_ascii)
+    assert maze == LatticeMaze.from_pixels(maze_pixels)
+    assert maze == LatticeMaze.from_ascii(maze_ascii)
 
-        expected_shape: tuple = (n * 2 + 1, n * 2 + 1, 3)
-        assert (
-            maze_pixels.shape == expected_shape
-        ), f"{maze_pixels.shape} != {expected_shape}"
-        assert all(
-            n * 2 + 1 == len(line) for line in maze_ascii.splitlines()
-        ), f"{maze_ascii}"
+    expected_shape: tuple = (n * 2 + 1, n * 2 + 1, 3)
+    assert (
+        maze_pixels.shape == expected_shape
+    ), f"{maze_pixels.shape} != {expected_shape}"
+    assert all(
+        n * 2 + 1 == len(line) for line in maze_ascii.splitlines()
+    ), f"{maze_ascii}"
 
 
-def test_targeted_solved_maze():
+@pytest.mark.parametrize(
+    "gfunc_name", 
+    # skip pure percolation because it will stochastically fail
+    list(set(GENERATORS_MAP.keys()) - {"gen_percolation"}), 
+)
+def test_targeted_solved_maze(gfunc_name):
     n: int = 5
 
-    for maze_gen_name, maze_gen_func in GENERATORS_MAP.items():
-        if maze_gen_name == "gen_percolation":
-            # skip pure percolation because it will stochastically fail
-            continue
-        maze: LatticeMaze = maze_gen_func(np.array([n, n]))
-        solution = maze.generate_random_path()
-        tgt_maze: TargetedLatticeMaze = TargetedLatticeMaze.from_lattice_maze(
-            maze,
-            solution[0],
-            solution[-1],
-        )
+    maze_gen_func = GENERATORS_MAP[gfunc_name]
+    maze: LatticeMaze = maze_gen_func(np.array([n, n]))
+    solution: CoordArray = maze.generate_random_path()
+    tgt_maze: TargetedLatticeMaze = TargetedLatticeMaze.from_lattice_maze(
+        maze,
+        solution[0],
+        solution[-1],
+    )
 
-        tgt_maze_pixels: np.ndarray = tgt_maze.as_pixels()
-        tgt_maze_ascii: str = tgt_maze.as_ascii()
+    tgt_maze_pixels: np.ndarray = tgt_maze.as_pixels()
+    tgt_maze_ascii: str = tgt_maze.as_ascii()
 
-        assert tgt_maze == TargetedLatticeMaze.from_pixels(tgt_maze_pixels)
-        assert tgt_maze == TargetedLatticeMaze.from_ascii(tgt_maze_ascii)
+    assert tgt_maze == TargetedLatticeMaze.from_pixels(tgt_maze_pixels)
+    assert tgt_maze == TargetedLatticeMaze.from_ascii(tgt_maze_ascii)
 
-        expected_shape: tuple = (n * 2 + 1, n * 2 + 1, 3)
-        assert (
-            tgt_maze_pixels.shape == expected_shape
-        ), f"{tgt_maze_pixels.shape} != {expected_shape}"
-        assert all(
-            n * 2 + 1 == len(line) for line in tgt_maze_ascii.splitlines()
-        ), f"{tgt_maze_ascii}"
+    expected_shape: tuple = (n * 2 + 1, n * 2 + 1, 3)
+    assert (
+        tgt_maze_pixels.shape == expected_shape
+    ), f"{tgt_maze_pixels.shape} != {expected_shape}"
+    assert all(
+        n * 2 + 1 == len(line) for line in tgt_maze_ascii.splitlines()
+    ), f"{tgt_maze_ascii}"
 
-        solved_maze: SolvedMaze = SolvedMaze.from_targeted_lattice_maze(tgt_maze)
+    solved_maze: SolvedMaze = SolvedMaze.from_targeted_lattice_maze(tgt_maze)
 
-        solved_maze_pixels: np.ndarray = solved_maze.as_pixels()
-        solved_maze_ascii: str = solved_maze.as_ascii()
+    solved_maze_pixels: np.ndarray = solved_maze.as_pixels()
+    solved_maze_ascii: str = solved_maze.as_ascii()
 
-        assert solved_maze == SolvedMaze.from_pixels(solved_maze_pixels)
-        assert solved_maze == SolvedMaze.from_ascii(solved_maze_ascii)
+    assert solved_maze == SolvedMaze.from_pixels(solved_maze_pixels)
+    assert solved_maze == SolvedMaze.from_ascii(solved_maze_ascii)
 
-        expected_shape: tuple = (n * 2 + 1, n * 2 + 1, 3)
-        assert (
-            tgt_maze_pixels.shape == expected_shape
-        ), f"{tgt_maze_pixels.shape} != {expected_shape}"
-        assert all(
-            n * 2 + 1 == len(line) for line in solved_maze_ascii.splitlines()
-        ), f"{solved_maze_ascii}"
+    expected_shape: tuple = (n * 2 + 1, n * 2 + 1, 3)
+    assert (
+        tgt_maze_pixels.shape == expected_shape
+    ), f"{tgt_maze_pixels.shape} != {expected_shape}"
+    assert all(
+        n * 2 + 1 == len(line) for line in solved_maze_ascii.splitlines()
+    ), f"{solved_maze_ascii}"
 
 
 def test_as_adj_list():
@@ -269,26 +273,33 @@ def test_as_adj_list():
     assert adj_list_to_nested_set(expected) == adj_list_to_nested_set(adj_list)
 
 
-def test_get_nodes():
-    for maze_gen_func in GENERATORS_MAP.values():
-        maze = maze_gen_func(np.array((3, 2)))
-        assert (
-            maze.get_nodes().tolist()
-            == np.array([(0, 0), (0, 1), (1, 0), (1, 1), (2, 0), (2, 1)]).tolist()
-        )
+@pytest.mark.parametrize("gfunc_name", GENERATORS_MAP.keys())
+def test_get_nodes(gfunc_name):
+    maze_gen_func = GENERATORS_MAP[gfunc_name]
+    maze = maze_gen_func(np.array((3, 2)))
+    assert (
+        maze.get_nodes().tolist()
+        == np.array([(0, 0), (0, 1), (1, 0), (1, 1), (2, 0), (2, 1)]).tolist()
+    )
 
 
-def test_generate_random_path():
-    for maze_gen_func in GENERATORS_MAP.values():
-        maze = maze_gen_func(np.array((2, 2)))
-        path = maze.generate_random_path()
+@pytest.mark.parametrize(
+    "gfunc_name", 
+    # skip pure percolation because it will stochastically fail
+    list(set(GENERATORS_MAP.keys()) - {"gen_percolation"}), 
+)
+def test_generate_random_path(gfunc_name):
+    maze_gen_func = GENERATORS_MAP[gfunc_name]
+    maze = maze_gen_func(np.array((2, 2)))
+    path = maze.generate_random_path()
 
-        # len > 1 ensures that we have unique start and end nodes
-        assert len(path) > 1
+    # len > 1 ensures that we have unique start and end nodes
+    assert len(path) > 1
 
 
-def test_generate_random_path_size_1():
-    for maze_gen_func in GENERATORS_MAP.values():
-        maze = maze_gen_func(np.array((1, 1)))
-        with pytest.raises(AssertionError):
-            maze.generate_random_path()
+@pytest.mark.parametrize("gfunc_name", GENERATORS_MAP.keys())
+def test_generate_random_path_size_1(gfunc_name):
+    maze_gen_func = GENERATORS_MAP[gfunc_name]
+    maze = maze_gen_func(np.array((1, 1)))
+    with pytest.raises(AssertionError):
+        maze.generate_random_path()

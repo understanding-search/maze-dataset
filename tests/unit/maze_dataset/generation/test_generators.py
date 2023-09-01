@@ -1,4 +1,5 @@
 import numpy as np
+import pytest
 
 from maze_dataset.generation.generators import (
     GENERATORS_MAP,
@@ -22,10 +23,10 @@ def test_gen_dfs_oblong():
     assert maze.connection_list.shape == (2, 3, 4)
 
 
-def test_get_maze_with_solution():
+@pytest.mark.parametrize("gfunc_name", GENERATORS_MAP.keys())
+def test_get_maze_with_solution(gfunc_name):
     three_by_three: Coord = np.array([3, 3])
-    for key in GENERATORS_MAP:
-        maze: SolvedMaze = get_maze_with_solution(key, three_by_three)
+    maze: SolvedMaze = get_maze_with_solution(gfunc_name, three_by_three)
 
-        assert maze.connection_list.shape == (2, 3, 3)
-        assert len(maze.solution[0]) == 2
+    assert maze.connection_list.shape == (2, 3, 3)
+    assert len(maze.solution[0]) == 2

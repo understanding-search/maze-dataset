@@ -299,7 +299,7 @@ class LatticeMaze(SerializableDataclass):
                 visited_cells_np: Int[np.ndarray, "N 2"] = np.array(list(visited_cells))
                 return visited_cells_np
 
-    def generate_random_path(self) -> CoordArray:
+    def generate_random_path(self, except_when_invalid: bool = True) -> CoordArray:
         """return a path between randomly chosen start and end nodes within the connected component"""
 
         # we can't create a "path" in a single-node maze
@@ -308,9 +308,11 @@ class LatticeMaze(SerializableDataclass):
         connected_component: CoordArray = self.get_connected_component()
         positions: Int[np.int8, "2 2"]
         if len(connected_component) < 2:
-            # warnings.warn(
-            #     f"maze has only one node in its connected component:\n{connected_component=}\n{self.as_ascii()}"
-            # )
+            if except_when_invalid:
+                raise ValueError(
+                    f"connected component has less than 2 nodes: {connected_component}",
+                    self.as_ascii(),
+                )
             assert len(connected_component) == 1
             # just connect it to itself
             positions = np.array([connected_component[0], connected_component[0]])
@@ -936,15 +938,26 @@ class SolvedMaze(TargetedLatticeMaze):
         end_pos: Coord | None = None,
         allow_invalid: bool = False,
     ) -> None:
-        solution_valid: bool = (solution is not None and len(solution) > 0)
+        # figure out the solution
+        solution_valid: bool = (solution is not None) and len(solution) > 1
+
+
+        # init the TargetedLatticeMaze
         super().__init__(
             connection_list=connection_list,
             generation_meta=generation_meta,
             start_pos=np.array(solution[0]) if solution_valid else None,
             end_pos=np.array(solution[-1]) if solution_valid else None,
         )
+            
+        if not solution_valid and not allow_invalid:
+            raise ValueError(
+                f"invalid solution: {solution = } {solution_valid = } {allow_invalid = }",
+                self.as_ascii(),
+            )
         self.__dict__["solution"] = solution
 
+        # adjust the endpoints
         if not allow_invalid:
             if start_pos is not None:
                 assert np.array_equal(

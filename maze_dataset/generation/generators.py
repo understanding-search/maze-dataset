@@ -20,6 +20,20 @@ def _random_start_coord(grid_shape: Coord, start_coord: Coord | None) -> Coord:
 
     return start_coord
 
+def get_neighbors_in_bounds(
+    coord: Coord,
+    grid_shape: Coord,
+) -> CoordArray:
+    
+    # get all neighbors
+    neighbors: CoordArray = coord + NEIGHBORS_MASK
+
+    # filter neighbors by being within grid bounds
+    neighbors_in_bounds: CoordArray = neighbors[
+        (neighbors >= 0).all(axis=1) & (neighbors < grid_shape).all(axis=1)
+    ]
+
+    return neighbors_in_bounds
 
 class LatticeMazeGenerators:
     """namespace for lattice maze generation algorithms"""
@@ -333,7 +347,7 @@ class LatticeMazeGenerators:
 # cant automatically populate this because it messes with pickling :(
 GENERATORS_MAP: dict[str, Callable[[Coord, Any], "LatticeMaze"]] = {
     "gen_dfs": LatticeMazeGenerators.gen_dfs,
-    "gen_wilson": LatticeMazeGenerators.gen_wilson,
+    # "gen_wilson": LatticeMazeGenerators.gen_wilson,
     "gen_percolation": LatticeMazeGenerators.gen_percolation,
     "gen_dfs_percolation": LatticeMazeGenerators.gen_dfs_percolation,
 }
