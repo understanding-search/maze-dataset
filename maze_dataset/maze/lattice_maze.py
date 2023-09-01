@@ -267,13 +267,12 @@ class LatticeMaze(SerializableDataclass):
                 source[neighbor] = c_current
                 g_score[neighbor] = g_temp
                 f_score[neighbor] = g_score[neighbor] + self.heuristic(neighbor, c_end)
-    
+
         raise ValueError(
             "A solution could not be found!",
             f"{c_start = }, {c_end = }",
             self.as_ascii(),
         )
-
 
     def get_nodes(self) -> CoordArray:
         """return a list of all nodes in the maze"""
@@ -969,7 +968,7 @@ class SolvedMaze(TargetedLatticeMaze):
             start_pos=np.array(solution[0]) if solution_valid else None,
             end_pos=np.array(solution[-1]) if solution_valid else None,
         )
-            
+
         self.__dict__["solution"] = solution
 
         # adjust the endpoints

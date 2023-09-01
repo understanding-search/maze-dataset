@@ -23,7 +23,9 @@ def plot_dataset_mazes(ds: MazeDataset, count: int | None = None) -> tuple:
         # "n_mazes": ds.cfg.n_mazes,
         **ds.cfg.maze_ctor_kwargs,
     }
-    fig.suptitle(f"{ds.cfg.to_fname()}\n{ds.cfg.maze_ctor.__name__}({', '.join(f'{k}={v}' for k, v in kwargs.items())})")
+    fig.suptitle(
+        f"{ds.cfg.to_fname()}\n{ds.cfg.maze_ctor.__name__}({', '.join(f'{k}={v}' for k, v in kwargs.items())})"
+    )
     # tight layout
     fig.tight_layout()
     # remove whitespace between title and subplots

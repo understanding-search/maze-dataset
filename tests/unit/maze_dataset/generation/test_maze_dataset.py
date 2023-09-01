@@ -32,7 +32,9 @@ class TestMazeDataset:
             assert maze.grid_shape == (3, 3)
 
     def test_generate_parallel(self):
-        dataset = MazeDataset.generate(self.config, gen_parallel=True, verbose=True, pool_kwargs=dict(processes=2))
+        dataset = MazeDataset.generate(
+            self.config, gen_parallel=True, verbose=True, pool_kwargs=dict(processes=2)
+        )
 
         assert len(dataset) == 5
         for i, maze in enumerate(dataset):
@@ -76,7 +78,10 @@ class TestMazeDataset:
         ) -> bool:
             return len(maze.solution) == solution_length
 
-        mazes = [SolvedMaze(connection_list=connection_list, solution=solution) for solution in solutions]
+        mazes = [
+            SolvedMaze(connection_list=connection_list, solution=solution)
+            for solution in solutions
+        ]
         dataset = MazeDataset(cfg=self.config, mazes=mazes)
 
         filtered_lambda = dataset.custom_maze_filter(lambda m: len(m.solution) == 1)
@@ -166,7 +171,10 @@ class TestMazeDatasetFilters:
             [[0, 0]],
         ]
 
-        mazes = [SolvedMaze(connection_list=self.connection_list, solution=solution) for solution in solutions]
+        mazes = [
+            SolvedMaze(connection_list=self.connection_list, solution=solution)
+            for solution in solutions
+        ]
         dataset = MazeDataset(cfg=self.config, mazes=mazes)
         filtered = dataset.filter_by.cut_percentile_shortest(49.0)
 

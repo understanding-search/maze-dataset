@@ -145,7 +145,7 @@ def time_generation(
                 time=t,
             )
         )
-        
+
         idx += 1
 
     return times

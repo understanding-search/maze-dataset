@@ -1,7 +1,7 @@
 import numpy as np
 import pytest
-from maze_dataset.constants import CoordArray
 
+from maze_dataset.constants import CoordArray
 from maze_dataset.generation.generators import GENERATORS_MAP
 from maze_dataset.maze import LatticeMaze, PixelColors, SolvedMaze, TargetedLatticeMaze
 from maze_dataset.utils import adj_list_to_nested_set, bool_array_from_string
@@ -205,9 +205,9 @@ def test_pixels_ascii_roundtrip(gfunc_name):
 
 
 @pytest.mark.parametrize(
-    "gfunc_name", 
+    "gfunc_name",
     # skip pure percolation because it will stochastically fail
-    list(set(GENERATORS_MAP.keys()) - {"gen_percolation"}), 
+    list(set(GENERATORS_MAP.keys()) - {"gen_percolation"}),
 )
 def test_targeted_solved_maze(gfunc_name):
     n: int = 5
@@ -284,9 +284,9 @@ def test_get_nodes(gfunc_name):
 
 
 @pytest.mark.parametrize(
-    "gfunc_name", 
+    "gfunc_name",
     # skip pure percolation because it will stochastically fail
-    list(set(GENERATORS_MAP.keys()) - {"gen_percolation"}), 
+    list(set(GENERATORS_MAP.keys()) - {"gen_percolation"}),
 )
 def test_generate_random_path(gfunc_name):
     maze_gen_func = GENERATORS_MAP[gfunc_name]

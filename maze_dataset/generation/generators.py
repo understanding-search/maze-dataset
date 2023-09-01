@@ -2,7 +2,7 @@ import random
 from typing import Any, Callable
 
 import numpy as np
-from jaxtyping import Bool, Float, Int, Int8, Shaped
+from jaxtyping import Bool
 
 from maze_dataset.constants import CoordArray
 from maze_dataset.maze import ConnectionList, Coord, LatticeMaze, SolvedMaze
@@ -21,11 +21,11 @@ def _random_start_coord(grid_shape: Coord, start_coord: Coord | None) -> Coord:
 
     return start_coord
 
+
 def get_neighbors_in_bounds(
     coord: Coord,
     grid_shape: Coord,
 ) -> CoordArray:
-    
     # get all neighbors
     neighbors: CoordArray = coord + NEIGHBORS_MASK
 
@@ -35,6 +35,7 @@ def get_neighbors_in_bounds(
     ]
 
     return neighbors_in_bounds
+
 
 class LatticeMazeGenerators:
     """namespace for lattice maze generation algorithms"""
@@ -76,26 +77,28 @@ class LatticeMazeGenerators:
         # Default values if no constraints have been passed
         grid_shape: Coord = np.array(grid_shape)
         n_total_cells: int = int(np.prod(grid_shape))
-        
+
         n_accessible_cells: int
         if accessible_cells is None:
             n_accessible_cells = n_total_cells
         elif isinstance(accessible_cells, float):
-            assert accessible_cells <= 1, (
-                f"accessible_cells must be an int (count) or a float in the range [0, 1] (proportion), got {accessible_cells}"
-            )
+            assert (
+                accessible_cells <= 1
+            ), f"accessible_cells must be an int (count) or a float in the range [0, 1] (proportion), got {accessible_cells}"
 
             n_accessible_cells = int(accessible_cells * n_total_cells)
         else:
             assert isinstance(accessible_cells, int)
             n_accessible_cells = accessible_cells
-        
+
         if max_tree_depth is None:
             max_tree_depth = (
                 2 * n_total_cells
             )  # We define max tree depth counting from the start coord in two directions. Therefore we divide by two in the if clause for neighboring sites later and multiply by two here.
         elif isinstance(max_tree_depth, float):
-            assert max_tree_depth <= 1, f"max_tree_depth must be an int (count) or a float in the range [0, 1] (proportion), got {max_tree_depth}"
+            assert (
+                max_tree_depth <= 1
+            ), f"max_tree_depth must be an int (count) or a float in the range [0, 1] (proportion), got {max_tree_depth}"
 
             max_tree_depth = int(max_tree_depth * np.sum(grid_shape))
 
@@ -177,14 +180,13 @@ class LatticeMazeGenerators:
                 # oh my god this took so long to track down. its almost 5am and I've spent like 2 hours on this bug
                 # it was checking that len(visited_cells) == n_accessible_cells, but this means that the maze is
                 # treated as fully connected even when it is most certainly not, causing solving the maze to break
-                fully_connected=bool(len(visited_cells) == n_total_cells), 
+                fully_connected=bool(len(visited_cells) == n_total_cells),
                 visited_cells={tuple(int(x) for x in coord) for coord in visited_cells},
             ),
         )
 
         return output
-        
-    
+
     @staticmethod
     def gen_prim(
         grid_shape: Coord,
@@ -217,22 +219,24 @@ class LatticeMazeGenerators:
         https://en.wikipedia.org/wiki/Maze_generation_algorithm#Wilson's_algorithm
         """
 
-        # Initialize grid and visited cells        
+        # Initialize grid and visited cells
         connection_list: ConnectionList = np.zeros((2, *grid_shape), dtype=np.bool_)
         visited: Bool[np.ndarray, "x y"] = np.zeros(grid_shape, dtype=np.bool_)
-        
+
         # Choose a random cell and mark it as visited
         start_coord: Coord = _random_start_coord(grid_shape, None)
         visited[*start_coord] = True
         del start_coord
-        
+
         while not visited.all():
             # Perform loop-erased random walk from another random cell
-            
+
             # Choose walk_start only from unvisited cells
             unvisited_coords: CoordArray = np.column_stack(np.where(~visited))
-            walk_start: Coord = unvisited_coords[np.random.choice(unvisited_coords.shape[0])]
-            
+            walk_start: Coord = unvisited_coords[
+                np.random.choice(unvisited_coords.shape[0])
+            ]
+
             # Perform the random walk
             path: list[Coord] = [walk_start]
             current: Coord = walk_start
@@ -242,38 +246,36 @@ class LatticeMazeGenerators:
                 # find a valid neighbor (one always exists on a lattice)
                 neighbors: CoordArray = get_neighbors_in_bounds(current, grid_shape)
                 next_cell: Coord = neighbors[np.random.choice(neighbors.shape[0])]
-                
+
                 # Check for loop
-                loop_exit: int|None = None
+                loop_exit: int | None = None
                 for i, p in enumerate(path):
                     if np.array_equal(next_cell, p):
                         loop_exit = i
-                        break                        
-                
+                        break
+
                 # erase the loop, or continue the walk
                 if loop_exit is not None:
                     # this removes everything after and including the loop start
-                    path = path[:loop_exit + 1]
+                    path = path[: loop_exit + 1]
                     # reset current cell to end of path
                     current = path[-1]
                 else:
                     path.append(next_cell)
                     current = next_cell
-            
+
             # Add the path to the maze
             for i in range(len(path) - 1):
                 c_1: Coord = path[i]
                 c_2: Coord = path[i + 1]
-                
+
                 # find the dimension of the connection
                 delta: Coord = c_2 - c_1
                 dim: int = np.argmax(np.abs(delta))
 
                 # if positive, down/right from current coord
                 # if negative, up/left from current coord (down/right from neighbor)
-                clist_node: Coord = (
-                    c_1 if (delta.sum() > 0) else c_2
-                )
+                clist_node: Coord = c_1 if (delta.sum() > 0) else c_2
                 connection_list[dim, *clist_node] = True
                 visited[*c_1] = True
                 # we dont add c_2 because the last c_2 will have already been visited
