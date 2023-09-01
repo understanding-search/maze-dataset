@@ -43,7 +43,7 @@ class LatticeMazeGenerators:
     def gen_dfs(
         grid_shape: Coord,
         lattice_dim: int = 2,
-        n_accessible_cells: int | float | None = None,
+        accessible_cells: int | float | None = None,
         max_tree_depth: int | float | None = None,
         do_forks: bool = True,
         randomized_stack: bool = False,
@@ -55,9 +55,9 @@ class LatticeMazeGenerators:
         - `grid_shape: Coord`: the shape of the grid
         - `lattice_dim: int`: the dimension of the lattice
           (default: `2`)
-        - `n_accessible_cells: int | float |None`: the number of accessible cells in the maze. If `None`, defaults to the total number of cells in the grid. if a float, asserts it is <= 1 and treats it as a proportion of **total cells**
+        - `accessible_cells: int | float |None`: the number of accessible cells in the maze. If `None`, defaults to the total number of cells in the grid. if a float, asserts it is <= 1 and treats it as a proportion of **total cells**
             (default: `None`)
-        - `max_tree_depth: int | float | None`: the maximum depth of the tree. If `None`, defaults to `2 * n_accessible_cells`. if a float, asserts it is <= 1 and treats it as a proportion of the **sum of the grid shape**
+        - `max_tree_depth: int | float | None`: the maximum depth of the tree. If `None`, defaults to `2 * accessible_cells`. if a float, asserts it is <= 1 and treats it as a proportion of the **sum of the grid shape**
             (default: `None`)
         - `do_forks: bool`: whether to allow forks in the maze. If `False`, the maze will be have no forks and will be a simple hallway.
         - `start_coord: Coord | None`: the starting coordinate of the generation algorithm. If `None`, defaults to a random coordinate.
@@ -77,14 +77,18 @@ class LatticeMazeGenerators:
         grid_shape: Coord = np.array(grid_shape)
         n_total_cells: int = int(np.prod(grid_shape))
         
-        if n_accessible_cells is None:
+        n_accessible_cells: int
+        if accessible_cells is None:
             n_accessible_cells = n_total_cells
-        elif isinstance(n_accessible_cells, float):
-            assert n_accessible_cells <= 1, (
-                f"n_accessible_cells must be an int (count) or a float in the range [0, 1] (proportion), got {n_accessible_cells}"
+        elif isinstance(accessible_cells, float):
+            assert accessible_cells <= 1, (
+                f"accessible_cells must be an int (count) or a float in the range [0, 1] (proportion), got {accessible_cells}"
             )
 
-            n_accessible_cells = int(n_accessible_cells * n_total_cells)
+            n_accessible_cells = int(accessible_cells * n_total_cells)
+        else:
+            assert isinstance(accessible_cells, int)
+            n_accessible_cells = accessible_cells
         
         if max_tree_depth is None:
             max_tree_depth = (
@@ -105,7 +109,7 @@ class LatticeMazeGenerators:
 
         # initialize the stack with the target coord
         visited_cells: set[tuple[int, int]] = set()
-        visited_cells.add(tuple(start_coord))
+        # visited_cells.add(tuple(start_coord)) # ????? this breaks when n_accessible_cells is set, took me so long to track down
         stack: list[Coord] = [start_coord]
 
         # initialize tree_depth_counter
@@ -162,7 +166,7 @@ class LatticeMazeGenerators:
             else:
                 current_tree_depth -= 1
 
-        return LatticeMaze(
+        output = LatticeMaze(
             connection_list=connection_list,
             generation_meta=dict(
                 func_name="gen_dfs",
@@ -170,16 +174,22 @@ class LatticeMazeGenerators:
                 start_coord=start_coord,
                 n_accessible_cells=int(n_accessible_cells),
                 max_tree_depth=int(max_tree_depth),
-                fully_connected=bool(len(visited_cells) == n_accessible_cells),
+                # oh my god this took so long to track down. its almost 5am and I've spent like 2 hours on this bug
+                # it was checking that len(visited_cells) == n_accessible_cells, but this means that the maze is
+                # treated as fully connected even when it is most certainly not, causing solving the maze to break
+                fully_connected=bool(len(visited_cells) == n_total_cells), 
                 visited_cells={tuple(int(x) for x in coord) for coord in visited_cells},
             ),
         )
+
+        return output
+        
     
     @staticmethod
     def gen_prim(
         grid_shape: Coord,
         lattice_dim: int = 2,
-        n_accessible_cells: int | float | None = None,
+        accessible_cells: int | float | None = None,
         max_tree_depth: int | float | None = None,
         do_forks: bool = True,
         start_coord: Coord | None = None,
@@ -187,7 +197,7 @@ class LatticeMazeGenerators:
         return LatticeMazeGenerators.gen_dfs(
             grid_shape=grid_shape,
             lattice_dim=lattice_dim,
-            n_accessible_cells=n_accessible_cells,
+            accessible_cells=accessible_cells,
             max_tree_depth=max_tree_depth,
             do_forks=do_forks,
             start_coord=start_coord,
@@ -198,14 +208,14 @@ class LatticeMazeGenerators:
     def gen_hallway(
         grid_shape: Coord,
         lattice_dim: int = 2,
-        n_accessible_cells: int | float | None = 0.5,
+        accessible_cells: int | float | None = 0.5,
         max_tree_depth: int | float | None = 0.5,
         start_coord: Coord | None = None,
     ) -> LatticeMaze:
         return LatticeMazeGenerators.gen_dfs(
             grid_shape=grid_shape,
             lattice_dim=lattice_dim,
-            n_accessible_cells=n_accessible_cells,
+            accessible_cells=accessible_cells,
             max_tree_depth=max_tree_depth,
             do_forks=True,
             start_coord=start_coord,
@@ -342,7 +352,7 @@ class LatticeMazeGenerators:
         grid_shape: Coord,
         p: float = 0.4,
         lattice_dim: int = 2,
-        n_accessible_cells: int | None = None,
+        accessible_cells: int | None = None,
         max_tree_depth: int | None = None,
         start_coord: Coord | None = None,
     ) -> LatticeMaze:
@@ -354,7 +364,7 @@ class LatticeMazeGenerators:
         maze: LatticeMaze = LatticeMazeGenerators.gen_dfs(
             grid_shape=grid_shape,
             lattice_dim=lattice_dim,
-            n_accessible_cells=n_accessible_cells,
+            accessible_cells=accessible_cells,
             max_tree_depth=max_tree_depth,
             start_coord=start_coord,
         )
