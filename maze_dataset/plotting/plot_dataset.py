@@ -8,7 +8,7 @@ def plot_dataset_mazes(ds: MazeDataset, count: int | None = None) -> tuple:
     if count == 0:
         print(f"No mazes to plot for dataset")
         return
-    fig, axes = plt.subplots(1, count, figsize=(15, 5))
+    fig, axes = plt.subplots(1, count, figsize=(count, 2))
     if count == 1:
         axes = [axes]
     for i in range(count):
@@ -18,7 +18,16 @@ def plot_dataset_mazes(ds: MazeDataset, count: int | None = None) -> tuple:
         axes[i].set_yticks([])
 
     # set title
-    fig.suptitle(ds.cfg.to_fname())
+    kwargs: dict = {
+        "grid_n": ds.cfg.grid_n,
+        # "n_mazes": ds.cfg.n_mazes,
+        **ds.cfg.maze_ctor_kwargs,
+    }
+    fig.suptitle(f"{ds.cfg.to_fname()}\n{ds.cfg.maze_ctor.__name__}({', '.join(f'{k}={v}' for k, v in kwargs.items())})")
+    # tight layout
+    fig.tight_layout()
+    # remove whitespace between title and subplots
+    fig.subplots_adjust(top=1.0)
 
     return fig, axes
 

@@ -205,24 +205,6 @@ class LatticeMazeGenerators:
         )
 
     @staticmethod
-    def gen_hallway(
-        grid_shape: Coord,
-        lattice_dim: int = 2,
-        accessible_cells: int | float | None = 0.5,
-        max_tree_depth: int | float | None = 0.5,
-        start_coord: Coord | None = None,
-    ) -> LatticeMaze:
-        return LatticeMazeGenerators.gen_dfs(
-            grid_shape=grid_shape,
-            lattice_dim=lattice_dim,
-            accessible_cells=accessible_cells,
-            max_tree_depth=max_tree_depth,
-            do_forks=True,
-            start_coord=start_coord,
-            randomized_stack=True,
-        )
-
-    @staticmethod
     def gen_wilson(
         grid_shape: Coord,
     ) -> LatticeMaze:
@@ -395,7 +377,6 @@ GENERATORS_MAP: dict[str, Callable[[Coord, Any], "LatticeMaze"]] = {
     "gen_percolation": LatticeMazeGenerators.gen_percolation,
     "gen_dfs_percolation": LatticeMazeGenerators.gen_dfs_percolation,
     "gen_prim": LatticeMazeGenerators.gen_prim,
-    "gen_hallway": LatticeMazeGenerators.gen_hallway,
 }
 
 
