@@ -11,7 +11,8 @@ def test_middle_point():
         [3, 2],
         [1, 2]
     ])
-    assert np.array_equal(get_neighbors_in_bounds(coord, grid_shape), expected_neighbors)
+    neighbors = get_neighbors_in_bounds(coord, grid_shape)
+    assert np.array_equal(neighbors, expected_neighbors), f"{neighbors} != {expected_neighbors}"
 
 def test_corner_point():
     coord = np.array([0, 0])
@@ -20,7 +21,8 @@ def test_corner_point():
         [0, 1],
         [1, 0]
     ])
-    assert np.array_equal(get_neighbors_in_bounds(coord, grid_shape), expected_neighbors)
+    neighbors = get_neighbors_in_bounds(coord, grid_shape)
+    assert np.array_equal(neighbors, expected_neighbors), f"{neighbors} != {expected_neighbors}"
 
 def test_edge_point():
     coord = np.array([0, 2])
@@ -30,10 +32,12 @@ def test_edge_point():
         [0, 1],
         [1, 2]
     ])
-    assert np.array_equal(get_neighbors_in_bounds(coord, grid_shape), expected_neighbors)
+    neighbors = get_neighbors_in_bounds(coord, grid_shape)
+    assert np.array_equal(neighbors, expected_neighbors), f"{neighbors} != {expected_neighbors}"
 
 def test_single_point_grid():
     coord = np.array([0, 0])
     grid_shape = np.array([1, 1])
-    expected_neighbors = np.array([])
-    assert np.array_equal(get_neighbors_in_bounds(coord, grid_shape), expected_neighbors)
+    expected_neighbors = np.empty((0, 2))
+    neighbors = get_neighbors_in_bounds(coord, grid_shape)
+    assert np.array_equal(neighbors, expected_neighbors), f"{neighbors} != {expected_neighbors}"

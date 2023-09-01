@@ -939,8 +939,18 @@ class SolvedMaze(TargetedLatticeMaze):
         allow_invalid: bool = False,
     ) -> None:
         # figure out the solution
-        solution_valid: bool = (solution is not None) and len(solution) > 1
+        solution_valid: bool = False
+        if solution is not None:
+            solution = np.array(solution)
+            # note that a path length of 1 here is valid, since the start and end pos could be the same
+            if (len(solution) > 0) and (solution.shape[1] == 2):
+                solution_valid = True
 
+        if not solution_valid and not allow_invalid:
+            raise ValueError(
+                f"invalid solution: {solution = } {solution_valid = } {allow_invalid = }",
+                f"{connection_list = }",
+            )
 
         # init the TargetedLatticeMaze
         super().__init__(
@@ -950,11 +960,6 @@ class SolvedMaze(TargetedLatticeMaze):
             end_pos=np.array(solution[-1]) if solution_valid else None,
         )
             
-        if not solution_valid and not allow_invalid:
-            raise ValueError(
-                f"invalid solution: {solution = } {solution_valid = } {allow_invalid = }",
-                self.as_ascii(),
-            )
         self.__dict__["solution"] = solution
 
         # adjust the endpoints
