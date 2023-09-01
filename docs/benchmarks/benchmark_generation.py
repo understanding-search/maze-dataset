@@ -154,8 +154,8 @@ def time_generation(
 def run_benchmark(
     save_path: str = "tests/_temp/benchmark_generation.jsonl",
     base_configs: list[dict] | None = None,
-    grid_n_vals: list[int] = [2, 4, 8, 16, 32, 64],
-    n_mazes_vals: list[int] = [1, 10, 100],
+    grid_n_vals: list[int] = [2, 3, 4, 5, 8, 10, 16, 25, 32],
+    n_mazes_vals: list[int] = list(range(1, 12, 2)),
     trials: int = 10,
 ):
     import pandas as pd

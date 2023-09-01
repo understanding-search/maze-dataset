@@ -308,9 +308,9 @@ class LatticeMaze(SerializableDataclass):
         connected_component: CoordArray = self.get_connected_component()
         positions: Int[np.int8, "2 2"]
         if len(connected_component) < 2:
-            warnings.warn(
-                f"maze has only one node in its connected component:\n{connected_component=}\n{self.as_ascii()}"
-            )
+            # warnings.warn(
+            #     f"maze has only one node in its connected component:\n{connected_component=}\n{self.as_ascii()}"
+            # )
             assert len(connected_component) == 1
             # just connect it to itself
             positions = np.array([connected_component[0], connected_component[0]])
@@ -936,11 +936,12 @@ class SolvedMaze(TargetedLatticeMaze):
         end_pos: Coord | None = None,
         allow_invalid: bool = False,
     ) -> None:
+        solution_valid: bool = (solution is not None and len(solution) > 0)
         super().__init__(
             connection_list=connection_list,
             generation_meta=generation_meta,
-            start_pos=np.array(solution[0]),
-            end_pos=np.array(solution[-1]),
+            start_pos=np.array(solution[0]) if solution_valid else None,
+            end_pos=np.array(solution[-1]) if solution_valid else None,
         )
         self.__dict__["solution"] = solution
 

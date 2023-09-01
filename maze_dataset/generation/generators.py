@@ -186,51 +186,57 @@ class LatticeMazeGenerators:
 
         cells_left: int = rows * cols - 1
         while cells_left > 0:
-            current: Coord = np.array(
-                [random.randint(0, rows - 1), random.randint(0, cols - 1)]
-            )
-            start: Coord = current
+            visited = set()
+
+            # Start from an unconnected cell
+            while True:
+                current = np.array([random.randint(0, rows - 1), random.randint(0, cols - 1)])
+                if not connected[tuple(current)]:
+                    break
+
+            start = current
 
             # Random walk through the maze while recording path taken until a connected cell is found
-            while not connected[current[0]][current[1]]:
-                # Find a valid neighboring cell by checking in a random direction then rotating clockwise
-                direction: int = random.randint(0, 4)
-                next: Coord = neighbor(current, direction)
+            while not connected[tuple(current)]:
+                if tuple(current) in visited:
+                    # Loop detected: Break out of the loop
+                    break
 
-                while next is None:
-                    direction += 1
-                    if direction > 3:
-                        direction = 0
-                    next = neighbor(current, direction)
+                visited.add(tuple(current))
 
-                # Keep track of the random path
-                direction_matrix[current[0]][current[1]] = direction
-                # Move to the neighboring cell
-                current = next
+                direction = random.randint(0, 3)
+                next_cell = neighbor(current, direction)
 
-            direction_matrix[current[0]][current[1]] = 4
+                while next_cell is None:
+                    direction = (direction + 1) % 4
+                    next_cell = neighbor(current, direction)
+
+                direction_matrix[tuple(current)] = direction
+                current = next_cell
+
+            direction_matrix[tuple(current)] = 4
 
             # Return to the start and retrace our path, connecting cells as we go
             current = start
-            while not connected[current[0]][current[1]]:
-                direction = direction_matrix[current[0]][current[1]]
-                connected[current[0]][current[1]] = True
+            while not connected[tuple(current)] and current is not None:
+                direction = direction_matrix[tuple(current)]
+                connected[tuple(current)] = True
                 cells_left -= 1
 
-                next = neighbor(current, direction)
-                # Connect the current and next cell
-                # todo(luciaq) update LatticeMaze to take an adjacency list instead of a connection list for a more
-                # natural connection update here
-                if direction == 0:  # Left
-                    connection_list[1][next[0]][next[1]] = True
-                elif direction == 1:  # Right
-                    connection_list[1][current[0]][current[1]] = True
-                elif direction == 2:  # Up
-                    connection_list[0][next[0]][next[1]] = True
-                elif direction == 3:  # Down
-                    connection_list[0][current[0]][current[1]] = True
+                next_cell = neighbor(current, direction)
+                if next_cell is None:
+                    break
 
-                current = next
+                if direction == 0:  # Left
+                    connection_list[1][tuple(next_cell)] = True
+                elif direction == 1:  # Right
+                    connection_list[1][tuple(current)] = True
+                elif direction == 2:  # Up
+                    connection_list[0][tuple(next_cell)] = True
+                elif direction == 3:  # Down
+                    connection_list[0][tuple(current)] = True
+
+                current = next_cell
 
         return LatticeMaze(
             connection_list=connection_list,
