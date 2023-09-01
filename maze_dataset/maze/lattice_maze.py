@@ -236,7 +236,10 @@ class LatticeMaze(SerializableDataclass):
                 while p_current in source:
                     p_current = source[p_current]
                     path.append(p_current)
+                # ----------------------------------------------------------------------
+                # this is the only return statement
                 return np.array(path[::-1])
+                # ----------------------------------------------------------------------
 
             # close current node
             closed_vtx.add(c_current)
@@ -264,6 +267,13 @@ class LatticeMaze(SerializableDataclass):
                 source[neighbor] = c_current
                 g_score[neighbor] = g_temp
                 f_score[neighbor] = g_score[neighbor] + self.heuristic(neighbor, c_end)
+    
+        raise ValueError(
+            "A solution could not be found!",
+            f"{c_start = }, {c_end = }",
+            self.as_ascii(),
+        )
+
 
     def get_nodes(self) -> CoordArray:
         """return a list of all nodes in the maze"""
@@ -943,12 +953,12 @@ class SolvedMaze(TargetedLatticeMaze):
         if solution is not None:
             solution = np.array(solution)
             # note that a path length of 1 here is valid, since the start and end pos could be the same
-            if (len(solution) > 0) and (solution.shape[1] == 2):
+            if (solution.shape[0] > 0) and (solution.shape[1] == 2):
                 solution_valid = True
 
         if not solution_valid and not allow_invalid:
             raise ValueError(
-                f"invalid solution: {solution = } {solution_valid = } {allow_invalid = }",
+                f"invalid solution: {solution.shape = } {solution = } {solution_valid = } {allow_invalid = }",
                 f"{connection_list = }",
             )
 

@@ -123,14 +123,20 @@ class MazeDatasetConfig(GPTDatasetConfig):
         }
 
 
+# TODO: don't use this unless generating in parallel!
 def _generate_maze_helper(index: int) -> SolvedMaze:
     maze: LatticeMaze = _GLOBAL_WORKER_CONFIG.maze_ctor(
         grid_shape=_GLOBAL_WORKER_CONFIG.grid_shape_np,
         **_GLOBAL_WORKER_CONFIG.maze_ctor_kwargs,
     )
+    solution = maze.generate_random_path()
+    assert solution is not None, f"{solution = }"
+    assert len(solution) > 0, f"{solution = }"
+    assert isinstance(solution, np.ndarray), f"{solution = }"
+    assert len(solution.shape) == 2, f"{solution = }"
     return SolvedMaze.from_lattice_maze(
         lattice_maze=maze,
-        solution=maze.generate_random_path(),
+        solution=solution,
     )
 
 
@@ -231,6 +237,7 @@ class MazeDataset(GPTDataset):
             desc="generating & solving mazes",
             disable=not verbose,
         )
+        # TODO: don't use the global unless generating in parallel!
         if gen_parallel:
             with multiprocessing.Pool(
                 **pool_kwargs,

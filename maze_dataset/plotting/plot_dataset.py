@@ -17,6 +17,9 @@ def plot_dataset_mazes(ds: MazeDataset, count: int | None = None) -> tuple:
         axes[i].set_xticks([])
         axes[i].set_yticks([])
 
+    # set title
+    fig.suptitle(ds.cfg.to_fname())
+
     return fig, axes
 
 

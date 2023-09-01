@@ -384,6 +384,8 @@ GENERATORS_MAP: dict[str, Callable[[Coord, Any], "LatticeMaze"]] = {
     "gen_wilson": LatticeMazeGenerators.gen_wilson,
     "gen_percolation": LatticeMazeGenerators.gen_percolation,
     "gen_dfs_percolation": LatticeMazeGenerators.gen_dfs_percolation,
+    "gen_prim": LatticeMazeGenerators.gen_prim,
+    "gen_hallway": LatticeMazeGenerators.gen_hallway,
 }
 
 

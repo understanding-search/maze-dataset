@@ -210,6 +210,8 @@ class GPTDataset(Dataset):
         if zanj is None:
             zanj = ZANJ()
 
+        print_log(f"trying to get the dataset '{cfg.to_fname()}'")
+
         if not (load_local or do_download or do_generate):
             raise ValueError(
                 "no way to load dataset! you said not to load local, not to download, and not to generate"
