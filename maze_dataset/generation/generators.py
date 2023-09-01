@@ -2,6 +2,7 @@ import random
 from typing import Any, Callable
 
 import numpy as np
+from jaxtyping import Bool, Float, Int, Int8, Shaped
 
 from maze_dataset.constants import CoordArray
 from maze_dataset.maze import ConnectionList, Coord, LatticeMaze, SolvedMaze
@@ -170,89 +171,74 @@ class LatticeMazeGenerators:
         https://en.wikipedia.org/wiki/Maze_generation_algorithm#Wilson's_algorithm
         """
 
-        def neighbor(current: Coord, direction: int) -> Coord:
-            row, col = current
+        # Initialize grid and visited cells        
+        connection_list: ConnectionList = np.zeros((2, *grid_shape), dtype=np.bool_)
+        visited: Bool[np.ndarray, "x y"] = np.zeros(grid_shape, dtype=np.bool_)
+        
+        # Choose a random cell and mark it as visited
+        start_coord: Coord = _random_start_coord(grid_shape, None)
+        visited[*start_coord] = True
+        del start_coord
+        
+        while not visited.all():
+            print(f"main loop, {visited.sum()} visited")
+            # Perform loop-erased random walk from another random cell
+            
+            # Choose walk_start only from unvisited cells
+            unvisited_coords: CoordArray = np.column_stack(np.where(~visited))
+            walk_start: Coord = unvisited_coords[np.random.choice(unvisited_coords.shape[0])]
+            
+            # Perform the random walk
+            path: list[Coord] = [walk_start]
+            current: Coord = walk_start
 
-            if direction == 0:
-                col -= 1  # Left
-            elif direction == 1:
-                col += 1  # Right
-            elif direction == 2:
-                row -= 1  # Up
-            elif direction == 3:
-                row += 1  # Down
-            else:
-                return None
+            # exit the loop once the current path hits a visited cell
+            while not visited[*current]:
+                print(f"while current not visited: {current}")
+                # find a valid neighbor (one always exists on a lattice)
+                neighbors: CoordArray = get_neighbors_in_bounds(current, grid_shape)
+                next_cell: Coord = neighbors[np.random.choice(neighbors.shape[0])]
+                
+                # Check for loop
+                loop_exit: int|None = None
+                for i, p in enumerate(path):
+                    print(f"\t\tloop check: {i=}, {p=}")
+                    if np.array_equal(next_cell, p):
+                        loop_exit = i
+                        break                        
+                
+                # erase the loop, or continue the walk
+                if loop_exit is not None:
+                    print(f"\tloop found: {loop_exit=}")
+                    # this removes everything after and including the loop start
+                    path = path[:loop_exit + 1]
+                    # reset current cell to end of path
+                    current = path[-1]
+                else:
+                    print(f"\tno loop found")
+                    path.append(next_cell)
+                    current = next_cell
+            
+            # Add the path to the maze
+            print(f"adding path: {path}")
+            for i in range(len(path) - 1):
+                c_1: Coord = path[i]
+                c_2: Coord = path[i + 1]
+                
+                # find the dimension of the connection
+                delta: Coord = c_2 - c_1
+                dim: int = np.argmax(np.abs(delta))
 
-            return np.array([row, col]) if 0 <= row < rows and 0 <= col < cols else None
+                # if positive, down/right from current coord
+                # if negative, up/left from current coord (down/right from neighbor)
+                clist_node: Coord = (
+                    c_1 if (delta.sum() > 0) else c_2
+                )
+                connection_list[dim, *clist_node] = True
+                visited[*c_1] = True
+                # we dont add c_2 because the last c_2 will have already been visited
 
-        rows, cols = grid_shape
-
-        # A connection list only contains two elements: one boolean matrix indicating all the
-        # downwards connections in the maze, and one boolean matrix indicating the rightwards connections.
-        connection_list: np.ndarray = np.zeros((2, rows, cols), dtype=np.bool_)
-
-        connected = np.zeros(grid_shape, dtype=np.bool_)
-        direction_matrix = np.zeros(grid_shape, dtype=int)
-
-        # Mark a random cell as connected
-        connected[random.randint(0, rows - 1)][random.randint(0, cols - 1)] = True
-
-        cells_left: int = rows * cols - 1
-        while cells_left > 0:
-            visited = set()
-
-            # Start from an unconnected cell
-            while True:
-                current = np.array([random.randint(0, rows - 1), random.randint(0, cols - 1)])
-                if not connected[tuple(current)]:
-                    break
-
-            start = current
-
-            # Random walk through the maze while recording path taken until a connected cell is found
-            while not connected[tuple(current)]:
-                if tuple(current) in visited:
-                    # Loop detected: Break out of the loop
-                    break
-
-                visited.add(tuple(current))
-
-                direction = random.randint(0, 3)
-                next_cell = neighbor(current, direction)
-
-                while next_cell is None:
-                    direction = (direction + 1) % 4
-                    next_cell = neighbor(current, direction)
-
-                direction_matrix[tuple(current)] = direction
-                current = next_cell
-
-            direction_matrix[tuple(current)] = 4
-
-            # Return to the start and retrace our path, connecting cells as we go
-            current = start
-            while not connected[tuple(current)] and current is not None:
-                direction = direction_matrix[tuple(current)]
-                connected[tuple(current)] = True
-                cells_left -= 1
-
-                next_cell = neighbor(current, direction)
-                if next_cell is None:
-                    break
-
-                if direction == 0:  # Left
-                    connection_list[1][tuple(next_cell)] = True
-                elif direction == 1:  # Right
-                    connection_list[1][tuple(current)] = True
-                elif direction == 2:  # Up
-                    connection_list[0][tuple(next_cell)] = True
-                elif direction == 3:  # Down
-                    connection_list[0][tuple(current)] = True
-
-                current = next_cell
-
-        return LatticeMaze(
+        maze = LatticeMaze(
             connection_list=connection_list,
             generation_meta=dict(
                 func_name="gen_wilson",
@@ -260,6 +246,9 @@ class LatticeMazeGenerators:
                 fully_connected=True,
             ),
         )
+        print(maze.as_ascii())
+
+        return maze
 
     @staticmethod
     def gen_percolation(
@@ -347,7 +336,7 @@ class LatticeMazeGenerators:
 # cant automatically populate this because it messes with pickling :(
 GENERATORS_MAP: dict[str, Callable[[Coord, Any], "LatticeMaze"]] = {
     "gen_dfs": LatticeMazeGenerators.gen_dfs,
-    # "gen_wilson": LatticeMazeGenerators.gen_wilson,
+    "gen_wilson": LatticeMazeGenerators.gen_wilson,
     "gen_percolation": LatticeMazeGenerators.gen_percolation,
     "gen_dfs_percolation": LatticeMazeGenerators.gen_dfs_percolation,
 }
