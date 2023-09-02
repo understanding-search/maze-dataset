@@ -3,12 +3,16 @@ import matplotlib.pyplot as plt  # type: ignore[import]
 from maze_dataset.dataset.maze_dataset import MazeDataset
 
 
-def plot_dataset_mazes(ds: MazeDataset, count: int | None = None) -> tuple:
+def plot_dataset_mazes(
+        ds: MazeDataset, 
+        count: int | None = None, 
+        figsize_mult: tuple[float, float] = (1.0, 2.0),
+    ) -> tuple:
     count = count or len(ds)
     if count == 0:
         print(f"No mazes to plot for dataset")
         return
-    fig, axes = plt.subplots(1, count, figsize=(count, 2))
+    fig, axes = plt.subplots(1, count, figsize=(count * figsize_mult[0], figsize_mult[1]))
     if count == 1:
         axes = [axes]
     for i in range(count):
