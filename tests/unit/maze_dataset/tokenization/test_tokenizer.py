@@ -1,10 +1,9 @@
 from typing import Iterable
 
-from maze_dataset import SolvedMaze, MazeDataset, MazeDatasetConfig
+from maze_dataset import MazeDataset, MazeDatasetConfig, SolvedMaze
 from maze_dataset.generation import LatticeMazeGenerators
-
+from maze_dataset.plotting.print_tokens import color_maze_tokens_AOTP
 from maze_dataset.tokenization import MazeTokenizer, TokenizationMode
-from maze_dataset.plotting.print_tokens import  color_maze_tokens_AOTP
 
 
 def test_tokenizer():
@@ -24,10 +23,15 @@ def test_tokenizer():
         verbose=True,
         gen_parallel=False,
     )
-    
 
-    for mode in (TokenizationMode.AOTP_UT_rasterized, TokenizationMode.AOTP_UT_uniform, TokenizationMode.AOTP_indexed):
-        tokenizer: MazeTokenizer = MazeTokenizer(tokenization_mode=mode, max_grid_size=100)
+    for mode in (
+        TokenizationMode.AOTP_UT_rasterized,
+        TokenizationMode.AOTP_UT_uniform,
+        TokenizationMode.AOTP_indexed,
+    ):
+        tokenizer: MazeTokenizer = MazeTokenizer(
+            tokenization_mode=mode, max_grid_size=100
+        )
 
         assert tokenizer.name == f"maze_tokenizer-{mode.name}-g{100}"
 
@@ -39,19 +43,17 @@ def test_tokenizer():
             # assert tokenizer.node_strings_map is not None
             # assert len(tokenizer.node_strings_map) == 100
             assert tokenizer.vocab_size > 100
-        
+
         assert isinstance(tokenizer.token_arr, Iterable)
         assert all(isinstance(token, str) for token in tokenizer.token_arr)
         assert len(tokenizer.token_arr) == tokenizer.vocab_size
 
         print(tokenizer.summary())
 
-
         for maze in dataset:
-            
             # clear the cache here so we test if it works fine on the next loop
             tokenizer.clear_cache()
-        
+
             maze_tok = maze.as_tokens(maze_tokenizer=tokenizer)
 
             # you can view the tokens directly
