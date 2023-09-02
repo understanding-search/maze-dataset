@@ -7,6 +7,7 @@ def plot_dataset_mazes(
     ds: MazeDataset,
     count: int | None = None,
     figsize_mult: tuple[float, float] = (1.0, 2.0),
+    title: bool = True,
 ) -> tuple:
     count = count or len(ds)
     if count == 0:
@@ -24,14 +25,16 @@ def plot_dataset_mazes(
         axes[i].set_yticks([])
 
     # set title
-    kwargs: dict = {
-        "grid_n": ds.cfg.grid_n,
-        # "n_mazes": ds.cfg.n_mazes,
-        **ds.cfg.maze_ctor_kwargs,
-    }
-    fig.suptitle(
-        f"{ds.cfg.to_fname()}\n{ds.cfg.maze_ctor.__name__}({', '.join(f'{k}={v}' for k, v in kwargs.items())})"
-    )
+    if title:
+        kwargs: dict = {
+            "grid_n": ds.cfg.grid_n,
+            # "n_mazes": ds.cfg.n_mazes,
+            **ds.cfg.maze_ctor_kwargs,
+        }
+        fig.suptitle(
+            f"{ds.cfg.to_fname()}\n{ds.cfg.maze_ctor.__name__}({', '.join(f'{k}={v}' for k, v in kwargs.items())})"
+        )
+
     # tight layout
     fig.tight_layout()
     # remove whitespace between title and subplots
