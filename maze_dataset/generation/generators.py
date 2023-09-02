@@ -112,7 +112,7 @@ class LatticeMazeGenerators:
 
         # initialize the stack with the target coord
         visited_cells: set[tuple[int, int]] = set()
-        visited_cells.add(tuple(start_coord)) # this wasnt a bug after all lol
+        visited_cells.add(tuple(start_coord))  # this wasnt a bug after all lol
         stack: list[Coord] = [start_coord]
 
         # initialize tree_depth_counter
