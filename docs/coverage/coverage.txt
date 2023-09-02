@@ -17,7 +17,7 @@ maze_dataset\plotting\plot_dataset.py                                  27     23
 maze_dataset\plotting\plot_maze.py                                    166     10    94%   43, 84, 94, 100, 104, 147-151, 244, 440
 maze_dataset\plotting\print_tokens.py                                  53     16    70%   40, 53-54, 80-88, 132, 139-140, 148-149, 155-156
 maze_dataset\tokenization\__init__.py                                   3      0   100%
-maze_dataset\tokenization\maze_tokenizer.py                           118     25    79%   141, 164, 193, 203, 214, 224, 230, 234-236, 245, 272, 286-291, 301-310
+maze_dataset\tokenization\maze_tokenizer.py                           118     18    85%   141, 164, 193, 203, 214, 224, 230, 234-236, 245, 272, 288, 290-291, 303-304, 308
 maze_dataset\tokenization\token_utils.py                               94      7    93%   116, 144, 155-157, 206, 217
 maze_dataset\utils.py                                                  53     30    43%   110-125, 134-149
 setup.py                                                                3      3     0%   3-6
@@ -35,6 +35,6 @@ tests\unit\maze_dataset\tokenization\test_coords_string_split.py       30      0
 tests\unit\maze_dataset\tokenization\test_maze_tokenization.py         12      0   100%
 tests\unit\maze_dataset\tokenization\test_special_tokens.py            12      0   100%
 tests\unit\maze_dataset\tokenization\test_token_utils.py               70      0   100%
-tests\unit\maze_dataset\tokenization\test_tokenizer.py                 31      0   100%
+tests\unit\maze_dataset\tokenization\test_tokenizer.py                 34      0   100%
 -------------------------------------------------------------------------------------------------
-TOTAL                                                                2193    285    87%
+TOTAL                                                                2196    278    87%

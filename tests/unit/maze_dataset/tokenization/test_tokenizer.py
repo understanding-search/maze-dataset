@@ -56,6 +56,11 @@ def test_tokenizer():
 
             maze_tok = maze.as_tokens(maze_tokenizer=tokenizer)
 
+            maze_encoded = tokenizer.encode(maze_tok)
+            maze_decoded = tokenizer.decode(maze_encoded)
+
+            assert maze_tok == maze_decoded
+
             # you can view the tokens directly
             print("\nRaw tokens:\n")
             print(" ".join(maze_tok))
