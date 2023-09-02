@@ -236,7 +236,10 @@ class LatticeMaze(SerializableDataclass):
                 while p_current in source:
                     p_current = source[p_current]
                     path.append(p_current)
+                # ----------------------------------------------------------------------
+                # this is the only return statement
                 return np.array(path[::-1])
+                # ----------------------------------------------------------------------
 
             # close current node
             closed_vtx.add(c_current)
@@ -264,6 +267,12 @@ class LatticeMaze(SerializableDataclass):
                 source[neighbor] = c_current
                 g_score[neighbor] = g_temp
                 f_score[neighbor] = g_score[neighbor] + self.heuristic(neighbor, c_end)
+
+        raise ValueError(
+            "A solution could not be found!",
+            f"{c_start = }, {c_end = }",
+            self.as_ascii(),
+        )
 
     def get_nodes(self) -> CoordArray:
         """return a list of all nodes in the maze"""
@@ -299,7 +308,7 @@ class LatticeMaze(SerializableDataclass):
                 visited_cells_np: Int[np.ndarray, "N 2"] = np.array(list(visited_cells))
                 return visited_cells_np
 
-    def generate_random_path(self) -> CoordArray:
+    def generate_random_path(self, except_when_invalid: bool = True) -> CoordArray:
         """return a path between randomly chosen start and end nodes within the connected component"""
 
         # we can't create a "path" in a single-node maze
@@ -308,9 +317,11 @@ class LatticeMaze(SerializableDataclass):
         connected_component: CoordArray = self.get_connected_component()
         positions: Int[np.int8, "2 2"]
         if len(connected_component) < 2:
-            warnings.warn(
-                f"maze has only one node in its connected component:\n{connected_component=}\n{self.as_ascii()}"
-            )
+            if except_when_invalid:
+                raise ValueError(
+                    f"connected component has less than 2 nodes: {connected_component}",
+                    self.as_ascii(),
+                )
             assert len(connected_component) == 1
             # just connect it to itself
             positions = np.array([connected_component[0], connected_component[0]])
@@ -936,14 +947,31 @@ class SolvedMaze(TargetedLatticeMaze):
         end_pos: Coord | None = None,
         allow_invalid: bool = False,
     ) -> None:
+        # figure out the solution
+        solution_valid: bool = False
+        if solution is not None:
+            solution = np.array(solution)
+            # note that a path length of 1 here is valid, since the start and end pos could be the same
+            if (solution.shape[0] > 0) and (solution.shape[1] == 2):
+                solution_valid = True
+
+        if not solution_valid and not allow_invalid:
+            raise ValueError(
+                f"invalid solution: {solution.shape = } {solution = } {solution_valid = } {allow_invalid = }",
+                f"{connection_list = }",
+            )
+
+        # init the TargetedLatticeMaze
         super().__init__(
             connection_list=connection_list,
             generation_meta=generation_meta,
-            start_pos=np.array(solution[0]),
-            end_pos=np.array(solution[-1]),
+            start_pos=np.array(solution[0]) if solution_valid else None,
+            end_pos=np.array(solution[-1]) if solution_valid else None,
         )
+
         self.__dict__["solution"] = solution
 
+        # adjust the endpoints
         if not allow_invalid:
             if start_pos is not None:
                 assert np.array_equal(

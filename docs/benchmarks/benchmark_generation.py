@@ -3,72 +3,14 @@ import timeit
 
 from tqdm import tqdm
 
-from maze_dataset import LatticeMazeGenerators, MazeDataset, MazeDatasetConfig
+from maze_dataset import MazeDataset, MazeDatasetConfig
+from maze_dataset.generation.default_generators import DEFAULT_GENERATORS
+from maze_dataset.generation.generators import GENERATORS_MAP
 
 _BASE_CFG_KWARGS: dict = dict(
     grid_n=None,
     n_mazes=None,
 )
-
-# benchmark configs, not including sizes
-BENCHMARK_CONFIGS_BASE: list[dict] = [
-    dict(
-        name="bk-dfs",
-        maze_ctor=LatticeMazeGenerators.gen_dfs,
-        maze_ctor_kwargs=dict(),
-    ),
-    dict(
-        name="bk-dfs_forkless",
-        maze_ctor=LatticeMazeGenerators.gen_dfs,
-        maze_ctor_kwargs=dict(do_forks=False),
-    ),
-    dict(
-        name="bk-dfs_td_5",
-        maze_ctor=LatticeMazeGenerators.gen_dfs,
-        maze_ctor_kwargs=dict(max_tree_depth=5),
-    ),
-    dict(
-        name="bk-dfs_td_10",
-        maze_ctor=LatticeMazeGenerators.gen_dfs,
-        maze_ctor_kwargs=dict(max_tree_depth=10),
-    ),
-    dict(
-        name="bk-wilson",
-        maze_ctor=LatticeMazeGenerators.gen_wilson,
-        maze_ctor_kwargs=dict(),
-    ),
-    dict(
-        name="bk-perc_0.0",
-        maze_ctor=LatticeMazeGenerators.gen_percolation,
-        maze_ctor_kwargs=dict(p=0.0),
-    ),
-    dict(
-        name="bk-perc_0.1",
-        maze_ctor=LatticeMazeGenerators.gen_percolation,
-        maze_ctor_kwargs=dict(p=0.1),
-    ),
-    dict(
-        name="bk-perc_0.5",
-        maze_ctor=LatticeMazeGenerators.gen_percolation,
-        maze_ctor_kwargs=dict(p=0.5),
-    ),
-    dict(
-        name="bk-dfs_perc_0.0",
-        maze_ctor=LatticeMazeGenerators.gen_dfs_percolation,
-        maze_ctor_kwargs=dict(p=0.0),
-    ),
-    dict(
-        name="bk-dfs_perc_0.1",
-        maze_ctor=LatticeMazeGenerators.gen_dfs_percolation,
-        maze_ctor_kwargs=dict(p=0.1),
-    ),
-    dict(
-        name="bk-dfs_perc_0.5",
-        maze_ctor=LatticeMazeGenerators.gen_dfs_percolation,
-        maze_ctor_kwargs=dict(p=0.5),
-    ),
-]
-
 
 _GENERATE_KWARGS: dict = dict(
     gen_parallel=False,
@@ -86,7 +28,7 @@ _GENERATE_KWARGS: dict = dict(
 
 
 def time_generation(
-    base_configs: list[dict],
+    base_configs: list[tuple[str, dict]],
     grid_n_vals: list[int],
     n_mazes_vals: list[int],
     trials: int = 10,
@@ -100,9 +42,11 @@ def time_generation(
             for n_mazes in n_mazes_vals:
                 configs.append(
                     MazeDatasetConfig(
-                        **cfg,
+                        name="benchmark",
                         grid_n=grid_n,
                         n_mazes=n_mazes,
+                        maze_ctor=GENERATORS_MAP[cfg[0]],
+                        maze_ctor_kwargs=cfg[1],
                     )
                 )
 
@@ -145,7 +89,7 @@ def time_generation(
                 time=t,
             )
         )
-        
+
         idx += 1
 
     return times
@@ -153,22 +97,23 @@ def time_generation(
 
 def run_benchmark(
     save_path: str = "tests/_temp/benchmark_generation.jsonl",
-    base_configs: list[dict] | None = None,
-    grid_n_vals: list[int] = [2, 4, 8, 16, 32, 64],
-    n_mazes_vals: list[int] = [1, 10, 100],
+    base_configs: list[tuple[str, dict]] | None = None,
+    grid_n_vals: list[int] = [2, 3, 4, 5, 8, 10, 16, 25, 32],
+    n_mazes_vals: list[int] = list(range(1, 12, 2)),
     trials: int = 10,
+    verbose: bool = True,
 ):
     import pandas as pd
 
     if base_configs is None:
-        base_configs = BENCHMARK_CONFIGS_BASE
+        base_configs = DEFAULT_GENERATORS
 
     times: list[dict] = time_generation(
         base_configs=base_configs,
         grid_n_vals=grid_n_vals,
         n_mazes_vals=n_mazes_vals,
         trials=trials,
-        verbose=True,
+        verbose=verbose,
     )
 
     df: pd.DataFrame = pd.DataFrame(times)

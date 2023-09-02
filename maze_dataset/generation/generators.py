@@ -2,6 +2,7 @@ import random
 from typing import Any, Callable
 
 import numpy as np
+from jaxtyping import Bool
 
 from maze_dataset.constants import CoordArray
 from maze_dataset.maze import ConnectionList, Coord, LatticeMaze, SolvedMaze
@@ -21,6 +22,21 @@ def _random_start_coord(grid_shape: Coord, start_coord: Coord | None) -> Coord:
     return start_coord
 
 
+def get_neighbors_in_bounds(
+    coord: Coord,
+    grid_shape: Coord,
+) -> CoordArray:
+    # get all neighbors
+    neighbors: CoordArray = coord + NEIGHBORS_MASK
+
+    # filter neighbors by being within grid bounds
+    neighbors_in_bounds: CoordArray = neighbors[
+        (neighbors >= 0).all(axis=1) & (neighbors < grid_shape).all(axis=1)
+    ]
+
+    return neighbors_in_bounds
+
+
 class LatticeMazeGenerators:
     """namespace for lattice maze generation algorithms"""
 
@@ -28,9 +44,10 @@ class LatticeMazeGenerators:
     def gen_dfs(
         grid_shape: Coord,
         lattice_dim: int = 2,
-        n_accessible_cells: int | None = None,
-        max_tree_depth: int | None = None,
+        accessible_cells: int | float | None = None,
+        max_tree_depth: int | float | None = None,
         do_forks: bool = True,
+        randomized_stack: bool = False,
         start_coord: Coord | None = None,
     ) -> LatticeMaze:
         """generate a lattice maze using depth first search, iterative
@@ -39,13 +56,12 @@ class LatticeMazeGenerators:
         - `grid_shape: Coord`: the shape of the grid
         - `lattice_dim: int`: the dimension of the lattice
           (default: `2`)
-        - `n_accessible_cells: int | None`: the number of accessible cells in the maze. If `None`, defaults to the total number of cells in the grid.
+        - `accessible_cells: int | float |None`: the number of accessible cells in the maze. If `None`, defaults to the total number of cells in the grid. if a float, asserts it is <= 1 and treats it as a proportion of **total cells**
             (default: `None`)
-        - `max_tree_depth: int | None`: the maximum depth of the tree. If `None`, defaults to `2 * n_accessible_cells`.
+        - `max_tree_depth: int | float | None`: the maximum depth of the tree. If `None`, defaults to `2 * accessible_cells`. if a float, asserts it is <= 1 and treats it as a proportion of the **sum of the grid shape**
             (default: `None`)
         - `do_forks: bool`: whether to allow forks in the maze. If `False`, the maze will be have no forks and will be a simple hallway.
         - `start_coord: Coord | None`: the starting coordinate of the generation algorithm. If `None`, defaults to a random coordinate.
-
 
         # algorithm
         1. Choose the initial cell, mark it as visited and push it to the stack
@@ -61,13 +77,32 @@ class LatticeMazeGenerators:
         # Default values if no constraints have been passed
         grid_shape: Coord = np.array(grid_shape)
         n_total_cells: int = int(np.prod(grid_shape))
-        if n_accessible_cells is None:
+
+        n_accessible_cells: int
+        if accessible_cells is None:
             n_accessible_cells = n_total_cells
+        elif isinstance(accessible_cells, float):
+            assert (
+                accessible_cells <= 1
+            ), f"accessible_cells must be an int (count) or a float in the range [0, 1] (proportion), got {accessible_cells}"
+
+            n_accessible_cells = int(accessible_cells * n_total_cells)
+        else:
+            assert isinstance(accessible_cells, int)
+            n_accessible_cells = accessible_cells
+
         if max_tree_depth is None:
             max_tree_depth = (
                 2 * n_total_cells
             )  # We define max tree depth counting from the start coord in two directions. Therefore we divide by two in the if clause for neighboring sites later and multiply by two here.
+        elif isinstance(max_tree_depth, float):
+            assert (
+                max_tree_depth <= 1
+            ), f"max_tree_depth must be an int (count) or a float in the range [0, 1] (proportion), got {max_tree_depth}"
 
+            max_tree_depth = int(max_tree_depth * np.sum(grid_shape))
+
+        # choose a random start coord
         start_coord = _random_start_coord(grid_shape, start_coord)
 
         # initialize the maze with no connections
@@ -77,7 +112,7 @@ class LatticeMazeGenerators:
 
         # initialize the stack with the target coord
         visited_cells: set[tuple[int, int]] = set()
-        visited_cells.add(tuple(start_coord))
+        visited_cells.add(tuple(start_coord))  # this wasnt a bug after all lol
         stack: list[Coord] = [start_coord]
 
         # initialize tree_depth_counter
@@ -86,7 +121,11 @@ class LatticeMazeGenerators:
         # loop until the stack is empty or n_connected_cells is reached
         while stack and (len(visited_cells) < n_accessible_cells):
             # get the current coord from the stack
-            current_coord: Coord = stack.pop()
+            current_coord: Coord
+            if randomized_stack:
+                current_coord = stack.pop(random.randint(0, len(stack) - 1))
+            else:
+                current_coord = stack.pop()
 
             # filter neighbors by being within grid bounds and being unvisited
             unvisited_neighbors_deltas: list[tuple[Coord, Coord]] = [
@@ -130,7 +169,7 @@ class LatticeMazeGenerators:
             else:
                 current_tree_depth -= 1
 
-        return LatticeMaze(
+        output = LatticeMaze(
             connection_list=connection_list,
             generation_meta=dict(
                 func_name="gen_dfs",
@@ -138,9 +177,33 @@ class LatticeMazeGenerators:
                 start_coord=start_coord,
                 n_accessible_cells=int(n_accessible_cells),
                 max_tree_depth=int(max_tree_depth),
-                fully_connected=bool(len(visited_cells) == n_accessible_cells),
+                # oh my god this took so long to track down. its almost 5am and I've spent like 2 hours on this bug
+                # it was checking that len(visited_cells) == n_accessible_cells, but this means that the maze is
+                # treated as fully connected even when it is most certainly not, causing solving the maze to break
+                fully_connected=bool(len(visited_cells) == n_total_cells),
                 visited_cells={tuple(int(x) for x in coord) for coord in visited_cells},
             ),
+        )
+
+        return output
+
+    @staticmethod
+    def gen_prim(
+        grid_shape: Coord,
+        lattice_dim: int = 2,
+        accessible_cells: int | float | None = None,
+        max_tree_depth: int | float | None = None,
+        do_forks: bool = True,
+        start_coord: Coord | None = None,
+    ) -> LatticeMaze:
+        return LatticeMazeGenerators.gen_dfs(
+            grid_shape=grid_shape,
+            lattice_dim=lattice_dim,
+            accessible_cells=accessible_cells,
+            max_tree_depth=max_tree_depth,
+            do_forks=do_forks,
+            start_coord=start_coord,
+            randomized_stack=True,
         )
 
     @staticmethod
@@ -156,81 +219,66 @@ class LatticeMazeGenerators:
         https://en.wikipedia.org/wiki/Maze_generation_algorithm#Wilson's_algorithm
         """
 
-        def neighbor(current: Coord, direction: int) -> Coord:
-            row, col = current
+        # Initialize grid and visited cells
+        connection_list: ConnectionList = np.zeros((2, *grid_shape), dtype=np.bool_)
+        visited: Bool[np.ndarray, "x y"] = np.zeros(grid_shape, dtype=np.bool_)
 
-            if direction == 0:
-                col -= 1  # Left
-            elif direction == 1:
-                col += 1  # Right
-            elif direction == 2:
-                row -= 1  # Up
-            elif direction == 3:
-                row += 1  # Down
-            else:
-                return None
+        # Choose a random cell and mark it as visited
+        start_coord: Coord = _random_start_coord(grid_shape, None)
+        visited[start_coord[0], start_coord[1]] = True
+        del start_coord
 
-            return np.array([row, col]) if 0 <= row < rows and 0 <= col < cols else None
+        while not visited.all():
+            # Perform loop-erased random walk from another random cell
 
-        rows, cols = grid_shape
+            # Choose walk_start only from unvisited cells
+            unvisited_coords: CoordArray = np.column_stack(np.where(~visited))
+            walk_start: Coord = unvisited_coords[
+                np.random.choice(unvisited_coords.shape[0])
+            ]
 
-        # A connection list only contains two elements: one boolean matrix indicating all the
-        # downwards connections in the maze, and one boolean matrix indicating the rightwards connections.
-        connection_list: np.ndarray = np.zeros((2, rows, cols), dtype=np.bool_)
+            # Perform the random walk
+            path: list[Coord] = [walk_start]
+            current: Coord = walk_start
 
-        connected = np.zeros(grid_shape, dtype=np.bool_)
-        direction_matrix = np.zeros(grid_shape, dtype=int)
+            # exit the loop once the current path hits a visited cell
+            while not visited[current[0], current[1]]:
+                # find a valid neighbor (one always exists on a lattice)
+                neighbors: CoordArray = get_neighbors_in_bounds(current, grid_shape)
+                next_cell: Coord = neighbors[np.random.choice(neighbors.shape[0])]
 
-        # Mark a random cell as connected
-        connected[random.randint(0, rows - 1)][random.randint(0, cols - 1)] = True
+                # Check for loop
+                loop_exit: int | None = None
+                for i, p in enumerate(path):
+                    if np.array_equal(next_cell, p):
+                        loop_exit = i
+                        break
 
-        cells_left: int = rows * cols - 1
-        while cells_left > 0:
-            current: Coord = np.array(
-                [random.randint(0, rows - 1), random.randint(0, cols - 1)]
-            )
-            start: Coord = current
+                # erase the loop, or continue the walk
+                if loop_exit is not None:
+                    # this removes everything after and including the loop start
+                    path = path[: loop_exit + 1]
+                    # reset current cell to end of path
+                    current = path[-1]
+                else:
+                    path.append(next_cell)
+                    current = next_cell
 
-            # Random walk through the maze while recording path taken until a connected cell is found
-            while not connected[current[0]][current[1]]:
-                # Find a valid neighboring cell by checking in a random direction then rotating clockwise
-                direction: int = random.randint(0, 4)
-                next: Coord = neighbor(current, direction)
+            # Add the path to the maze
+            for i in range(len(path) - 1):
+                c_1: Coord = path[i]
+                c_2: Coord = path[i + 1]
 
-                while next is None:
-                    direction += 1
-                    if direction > 3:
-                        direction = 0
-                    next = neighbor(current, direction)
+                # find the dimension of the connection
+                delta: Coord = c_2 - c_1
+                dim: int = np.argmax(np.abs(delta))
 
-                # Keep track of the random path
-                direction_matrix[current[0]][current[1]] = direction
-                # Move to the neighboring cell
-                current = next
-
-            direction_matrix[current[0]][current[1]] = 4
-
-            # Return to the start and retrace our path, connecting cells as we go
-            current = start
-            while not connected[current[0]][current[1]]:
-                direction = direction_matrix[current[0]][current[1]]
-                connected[current[0]][current[1]] = True
-                cells_left -= 1
-
-                next = neighbor(current, direction)
-                # Connect the current and next cell
-                # todo(luciaq) update LatticeMaze to take an adjacency list instead of a connection list for a more
-                # natural connection update here
-                if direction == 0:  # Left
-                    connection_list[1][next[0]][next[1]] = True
-                elif direction == 1:  # Right
-                    connection_list[1][current[0]][current[1]] = True
-                elif direction == 2:  # Up
-                    connection_list[0][next[0]][next[1]] = True
-                elif direction == 3:  # Down
-                    connection_list[0][current[0]][current[1]] = True
-
-                current = next
+                # if positive, down/right from current coord
+                # if negative, up/left from current coord (down/right from neighbor)
+                clist_node: Coord = c_1 if (delta.sum() > 0) else c_2
+                connection_list[dim, clist_node[0], clist_node[1]] = True
+                visited[c_1[0], c_1[1]] = True
+                # we dont add c_2 because the last c_2 will have already been visited
 
         return LatticeMaze(
             connection_list=connection_list,
@@ -288,7 +336,7 @@ class LatticeMazeGenerators:
         grid_shape: Coord,
         p: float = 0.4,
         lattice_dim: int = 2,
-        n_accessible_cells: int | None = None,
+        accessible_cells: int | None = None,
         max_tree_depth: int | None = None,
         start_coord: Coord | None = None,
     ) -> LatticeMaze:
@@ -300,7 +348,7 @@ class LatticeMazeGenerators:
         maze: LatticeMaze = LatticeMazeGenerators.gen_dfs(
             grid_shape=grid_shape,
             lattice_dim=lattice_dim,
-            n_accessible_cells=n_accessible_cells,
+            accessible_cells=accessible_cells,
             max_tree_depth=max_tree_depth,
             start_coord=start_coord,
         )
@@ -330,6 +378,7 @@ GENERATORS_MAP: dict[str, Callable[[Coord, Any], "LatticeMaze"]] = {
     "gen_wilson": LatticeMazeGenerators.gen_wilson,
     "gen_percolation": LatticeMazeGenerators.gen_percolation,
     "gen_dfs_percolation": LatticeMazeGenerators.gen_dfs_percolation,
+    "gen_prim": LatticeMazeGenerators.gen_prim,
 }
 
 

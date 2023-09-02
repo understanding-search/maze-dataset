@@ -1,5 +1,5 @@
 import html
-from typing import Sequence
+from typing import Literal, Sequence
 
 import matplotlib
 import numpy as np
@@ -11,23 +11,62 @@ from maze_dataset.tokenization import tokens_between
 
 RGBArray = UInt8[np.ndarray, "n 3"]
 
-_DEFAULT_TEMPLATE: str = (
-    '<span style="color: black; background-color: rgb{clr}">&nbsp{tok}&nbsp</span>'
-)
+FormatType = Literal["html", "latex", "terminal", None]
+
+TEMPLATES: dict[FormatType, str] = {
+    "html": '<span style="color: black; background-color: rgb({clr})">&nbsp{tok}&nbsp</span>',
+    "latex": "\\colorbox[RGB]{{ {clr} }}{{ \\texttt{{ {tok} }} }}",
+    "terminal": "\033[30m\033[48;2;{clr}m{tok}\033[0m",
+}
+
+_COLOR_JOIN: dict[FormatType, str] = {
+    "html": ",",
+    "latex": ",",
+    "terminal": ";",
+}
+
+
+def _escape_tok(
+    tok: str,
+    fmt: FormatType,
+) -> str:
+    if fmt == "html":
+        return html.escape(tok)
+    elif fmt == "latex":
+        return tok.replace("_", "\\_").replace("#", "\\#")
+    elif fmt == "terminal":
+        return tok
+    else:
+        raise ValueError(f"Unexpected format: {fmt}")
 
 
 def color_tokens_rgb(
-    tokens: list[str],
-    colors: RGBArray,
-    template: str = _DEFAULT_TEMPLATE,
-):
-    output: list[str] = [
+    tokens: list,
+    colors: Sequence[Sequence[int]],
+    fmt: FormatType = "html",
+    template: str | None = None,
+    clr_join: str | None = None,
+) -> str:
+    """tokens will not be escaped if `fmt` is None"""
+    # process format
+    if fmt is None:
+        assert template is not None
+        assert clr_join is not None
+    else:
+        assert template is None
+        assert clr_join is None
+        template = TEMPLATES[fmt]
+        clr_join = _COLOR_JOIN[fmt]
+
+    # put everything together
+    output = [
         template.format(
-            tok=html.escape(tok),
-            clr=tuple(np.array(clr, dtype=np.uint8)),
+            clr=clr_join.join(map(str, map(int, clr))),
+            tok=_escape_tok(tok, fmt),
         )
         for tok, clr in zip(tokens, colors)
     ]
+
     return " ".join(output)
 
 
@@ -35,6 +74,8 @@ def color_tokens_cmap(
     tokens: list[str],
     weights: Sequence[float],
     cmap: str | matplotlib.colors.Colormap = "Blues",
+    fmt: FormatType = "html",
+    template: str | None = None,
 ):
     assert len(tokens) == len(weights)
     weights = np.array(weights)
@@ -44,7 +85,12 @@ def color_tokens_cmap(
 
     colors: RGBArray = cmap(weights)[:, :3] * 255
 
-    return color_tokens_rgb(tokens, colors)
+    return color_tokens_rgb(
+        tokens=tokens,
+        colors=colors,
+        fmt=fmt,
+        template=template,
+    )
 
 
 # these colors are to match those from the original understanding-search talk at the conclusion of AISC 2023
@@ -58,6 +104,8 @@ _MAZE_TOKENS_DEFAULT_COLORS: dict[tuple[str, str], tuple[int, int, int]] = {
 
 def color_maze_tokens_AOTP(
     tokens: list[str],
+    fmt: FormatType = "html",
+    template: str | None = None,
 ) -> str:
     output: list[str] = [
         " ".join(
@@ -72,7 +120,12 @@ def color_maze_tokens_AOTP(
         list(_MAZE_TOKENS_DEFAULT_COLORS.values()), dtype=np.uint8
     )
 
-    return color_tokens_rgb(output, colors)
+    return color_tokens_rgb(
+        tokens=output,
+        colors=colors,
+        fmt=fmt,
+        template=template,
+    )
 
 
 def display_html(html: str):
@@ -82,9 +135,8 @@ def display_html(html: str):
 def display_color_tokens_rgb(
     tokens: list[str],
     colors: RGBArray,
-    template: str = _DEFAULT_TEMPLATE,
 ) -> None:
-    html: str = color_tokens_rgb(tokens, colors, template)
+    html: str = color_tokens_rgb(tokens, colors, fmt="html")
     display_html(html)
 
 
