@@ -1,5 +1,5 @@
 import html
-from typing import Sequence, Literal
+from typing import Literal, Sequence
 
 import matplotlib
 import numpy as np
@@ -16,7 +16,7 @@ FormatType = Literal["html", "latex", "terminal", None]
 TEMPLATES: dict[FormatType, str] = {
     "html": '<span style="color: black; background-color: rgb({clr})">&nbsp{tok}&nbsp</span>',
     "latex": "\\colorbox[RGB]{{ {clr} }}{{ \\texttt{{ {tok} }} }}",
-    "terminal": "\033[30m\033[48;2;{clr}m{tok}\033[0m"
+    "terminal": "\033[30m\033[48;2;{clr}m{tok}\033[0m",
 }
 
 _COLOR_JOIN: dict[FormatType, str] = {
@@ -33,18 +33,19 @@ def _escape_tok(
     if fmt == "html":
         return html.escape(tok)
     elif fmt == "latex":
-        return tok.replace('_', '\\_').replace('#', '\\#')
+        return tok.replace("_", "\\_").replace("#", "\\#")
     elif fmt == "terminal":
         return tok
     else:
         raise ValueError(f"Unexpected format: {fmt}")
 
+
 def color_tokens_rgb(
     tokens: list,
     colors: Sequence[Sequence[int]],
     fmt: FormatType = "html",
-    template: str|None = None,
-    clr_join: str|None = None,
+    template: str | None = None,
+    clr_join: str | None = None,
 ) -> str:
     """tokens will not be escaped if `fmt` is None"""
     # process format
@@ -60,12 +61,12 @@ def color_tokens_rgb(
     # put everything together
     output = [
         template.format(
-            clr = clr_join.join(map(str, map(int, clr))),
-            tok = _escape_tok(tok, fmt),
+            clr=clr_join.join(map(str, map(int, clr))),
+            tok=_escape_tok(tok, fmt),
         )
         for tok, clr in zip(tokens, colors)
     ]
-    
+
     return " ".join(output)
 
 
@@ -74,7 +75,7 @@ def color_tokens_cmap(
     weights: Sequence[float],
     cmap: str | matplotlib.colors.Colormap = "Blues",
     fmt: FormatType = "html",
-    template: str|None = None,
+    template: str | None = None,
 ):
     assert len(tokens) == len(weights)
     weights = np.array(weights)
@@ -104,7 +105,7 @@ _MAZE_TOKENS_DEFAULT_COLORS: dict[tuple[str, str], tuple[int, int, int]] = {
 def color_maze_tokens_AOTP(
     tokens: list[str],
     fmt: FormatType = "html",
-    template: str|None = None,
+    template: str | None = None,
 ) -> str:
     output: list[str] = [
         " ".join(
