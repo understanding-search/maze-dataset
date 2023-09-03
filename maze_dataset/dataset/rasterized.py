@@ -158,14 +158,18 @@ class RasterizedMazeDataset(MazeDataset):
             problem_maze = _extend_pixels(problem_maze)
             solution_maze = _extend_pixels(solution_maze)
 
-        return torch.tensor(problem_maze), torch.tensor(solution_maze)
+        return torch.tensor([problem_maze, solution_maze])
     
-    def get_batch(self, idxs: list[int]|None) -> tuple[torch.Tensor, torch.Tensor]:
+    def get_batch(self, idxs: list[int]|None) -> Float[torch.Tensor, "item in/tgt=2 x y rgb=3"]:
         if idxs is None:
             idxs = list(range(len(self)))
         batch: list[tuple[torch.Tensor, torch.Tensor]] = [self[i] for i in idxs]
 
-        return tuple(torch.stack(x) for x in zip(*batch))
+        # return torch.stack([x[0] for x in batch]), torch.stack([x[1] for x in batch])
+        return torch.cat([
+            torch.stack([x[0] for x in batch]),
+            torch.stack([x[1] for x in batch]),
+        ])
 
     @classmethod
     def from_config_augmented(
@@ -285,7 +289,8 @@ def make_numpy_collection(
             key_fmt.format(size=size): dataset.cfg for size, dataset in datasets.items()
         },
         arrays={
-            key_fmt.format(size=size): dataset.mazes
+            # get_batch(None) returns a single tensor of shape (n, 2, x, y, 3)
+            key_fmt.format(size=size): dataset.get_batch(None).cpu().numpy()
             for size, dataset in datasets.items()
         },
     )
