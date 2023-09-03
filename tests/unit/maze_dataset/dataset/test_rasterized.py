@@ -1,3 +1,5 @@
+from itertools import product
+
 import numpy as np
 import pytest
 
@@ -10,18 +12,13 @@ from maze_dataset.dataset.rasterized import (
 )
 
 _PARAMTETRIZATION = (
-    "remove_isolated_cells, extend_pixels",
-    [
-        (True, True),
-        (True, False),
-        (False, True),
-        (False, False),
-    ],
+    "remove_isolated_cells, extend_pixels, endpoints_as_open",
+    list(product([True, False], repeat=3)),
 )
 
 
 @pytest.mark.parametrize(*_PARAMTETRIZATION)
-def test_rasterized_new(remove_isolated_cells, extend_pixels):
+def test_rasterized_new(remove_isolated_cells, extend_pixels, endpoints_as_open):
     cfg: RasterizedMazeDatasetConfig = RasterizedMazeDatasetConfig(
         name="test",
         grid_n=5,
@@ -30,6 +27,7 @@ def test_rasterized_new(remove_isolated_cells, extend_pixels):
         maze_ctor_kwargs=dict(p=0.4),
         remove_isolated_cells=remove_isolated_cells,
         extend_pixels=extend_pixels,
+        endpoints_as_open=endpoints_as_open,
     )
     dataset: RasterizedMazeDataset = RasterizedMazeDataset.from_config_augmented(
         cfg, load_local=False
@@ -40,7 +38,7 @@ def test_rasterized_new(remove_isolated_cells, extend_pixels):
 
 
 @pytest.mark.parametrize(*_PARAMTETRIZATION)
-def test_rasterized_from_mazedataset(remove_isolated_cells, extend_pixels):
+def test_rasterized_from_mazedataset(remove_isolated_cells, extend_pixels, endpoints_as_open):
     cfg: MazeDatasetConfig = MazeDatasetConfig(
         name="test",
         grid_n=5,
@@ -54,12 +52,13 @@ def test_rasterized_from_mazedataset(remove_isolated_cells, extend_pixels):
         added_params=dict(
             remove_isolated_cells=remove_isolated_cells,
             extend_pixels=extend_pixels,
+            endpoints_as_open=endpoints_as_open,
         ),
     )
 
 
 @pytest.mark.parametrize(*_PARAMTETRIZATION)
-def test_make_numpy_collection(remove_isolated_cells, extend_pixels):
+def test_make_numpy_collection(remove_isolated_cells, extend_pixels, endpoints_as_open):
     cfg: RasterizedMazeDatasetConfig = RasterizedMazeDatasetConfig(
         name="test",
         grid_n=5,
@@ -68,6 +67,7 @@ def test_make_numpy_collection(remove_isolated_cells, extend_pixels):
         maze_ctor_kwargs=dict(p=0.4),
         remove_isolated_cells=remove_isolated_cells,
         extend_pixels=extend_pixels,
+        endpoints_as_open=endpoints_as_open,
     )
 
     output = make_numpy_collection(

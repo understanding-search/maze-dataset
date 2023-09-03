@@ -99,6 +99,7 @@ def _extend_pixels(
 _RASTERIZED_CFG_ADDED_PARAMS: list[str] = [
     "remove_isolated_cells",
     "extend_pixels",
+    "endpoints_as_open",
 ]
 
 
