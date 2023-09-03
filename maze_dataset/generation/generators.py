@@ -1,4 +1,5 @@
 import random
+import warnings
 from typing import Any, Callable
 
 import numpy as np
@@ -196,6 +197,9 @@ class LatticeMazeGenerators:
         do_forks: bool = True,
         start_coord: Coord | None = None,
     ) -> LatticeMaze:
+        warnings.warn(
+            "gen_prim does not correctly implement prim's algorithm, see issue: https://github.com/AISC-understanding-search/maze-dataset/issues/12",
+        )
         return LatticeMazeGenerators.gen_dfs(
             grid_shape=grid_shape,
             lattice_dim=lattice_dim,
