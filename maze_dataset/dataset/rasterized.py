@@ -1,24 +1,14 @@
-from pathlib import Path
 import typing
-import warnings
 
 import numpy as np
 import torch
-import torch.nn as nn
-import tqdm
-from jaxtyping import Int, Float
-from muutils.json_serialize import (
-    serializable_dataclass,
-    serializable_field,
-)
-from zanj import ZANJ
-from zanj.torchutil import num_params
-from torch.utils.data import DataLoader, Dataset
+from jaxtyping import Float, Int
+from muutils.json_serialize import serializable_dataclass, serializable_field
+from torch.utils.data import Dataset
 
 from maze_dataset import MazeDataset, MazeDatasetConfig
-from maze_dataset.maze import SolvedMaze, PixelColors
+from maze_dataset.maze import PixelColors, SolvedMaze
 from maze_dataset.maze.lattice_maze import PixelGrid
-
 
 _RIC_PADS: dict = {
     "left": ((1, 0), (0, 0)),
@@ -144,7 +134,9 @@ class RasterizedMazeDataset(MazeDataset):
             (solution_maze == PixelColors.OPEN).all(axis=-1)
         ] = PixelColors.WALL
         # wherever it is solution, set it to PixelColors.OPEN
-        solution_maze[(solution_maze == PixelColors.PATH).all(axis=-1)] = PixelColors.OPEN
+        solution_maze[
+            (solution_maze == PixelColors.PATH).all(axis=-1)
+        ] = PixelColors.OPEN
         if self.cfg.endpoints_as_open:
             for color in (PixelColors.START, PixelColors.END):
                 solution_maze[(solution_maze == color).all(axis=-1)] = PixelColors.OPEN
@@ -159,17 +151,21 @@ class RasterizedMazeDataset(MazeDataset):
             solution_maze = _extend_pixels(solution_maze)
 
         return torch.tensor([problem_maze, solution_maze])
-    
-    def get_batch(self, idxs: list[int]|None) -> Float[torch.Tensor, "item in/tgt=2 x y rgb=3"]:
+
+    def get_batch(
+        self, idxs: list[int] | None
+    ) -> Float[torch.Tensor, "item in/tgt=2 x y rgb=3"]:
         if idxs is None:
             idxs = list(range(len(self)))
         batch: list[tuple[torch.Tensor, torch.Tensor]] = [self[i] for i in idxs]
 
         # return torch.stack([x[0] for x in batch]), torch.stack([x[1] for x in batch])
-        return torch.cat([
-            torch.stack([x[0] for x in batch]),
-            torch.stack([x[1] for x in batch]),
-        ])
+        return torch.cat(
+            [
+                torch.stack([x[0] for x in batch]),
+                torch.stack([x[1] for x in batch]),
+            ]
+        )
 
     @classmethod
     def from_config_augmented(
@@ -192,7 +188,7 @@ class RasterizedMazeDataset(MazeDataset):
     def from_base_MazeDataset(
         cls,
         base_dataset: MazeDataset,
-        added_params: dict|None = None,
+        added_params: dict | None = None,
     ) -> Dataset:
         """loads either a maze transformer dataset or an easy_2_hard dataset"""
         if added_params is None:
@@ -237,6 +233,7 @@ class RasterizedMazeDataset(MazeDataset):
             plt.show()
 
         return fig, axes
+
 
 def make_numpy_collection(
     base_cfg: RasterizedMazeDatasetConfig,
