@@ -145,7 +145,7 @@ class LatticeMazeGenerators:
                 current_tree_depth <= max_tree_depth / 2
             ):
                 # if we want a maze without forks, simply don't add the current coord back to the stack
-                if do_forks:
+                if do_forks and (len(unvisited_neighbors_deltas) > 1):
                     stack.append(current_coord)
 
                 # choose one of the unvisited neighbors
