@@ -38,7 +38,9 @@ def test_rasterized_new(remove_isolated_cells, extend_pixels, endpoints_as_open)
 
 
 @pytest.mark.parametrize(*_PARAMTETRIZATION)
-def test_rasterized_from_mazedataset(remove_isolated_cells, extend_pixels, endpoints_as_open):
+def test_rasterized_from_mazedataset(
+    remove_isolated_cells, extend_pixels, endpoints_as_open
+):
     cfg: MazeDatasetConfig = MazeDatasetConfig(
         name="test",
         grid_n=5,
