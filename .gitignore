@@ -4,6 +4,9 @@ tests/_temp/**
 .coverage
 htmlcov/
 
+.pypi-token
+.commit_log
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
