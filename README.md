@@ -23,7 +23,7 @@ Generation, solving and processing of various mazes. Primarily build for the [ma
 
 # Installation
 ```
-pip install git+ssh://git@github.com/aisc-understanding-search/maze-dataset.git
+pip install maze-dataset
 ```
 
 You can run all tests via
