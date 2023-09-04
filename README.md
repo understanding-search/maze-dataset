@@ -1,10 +1,10 @@
-<!-- [![PyPI](https://img.shields.io/pypi/v/TODO)](https://pypi.org/project/TODO/)
-![PyPI - Downloads](https://img.shields.io/pypi/dm/TODO) -->
+[![PyPI](https://img.shields.io/pypi/v/maze-dataset)](https://pypi.org/project/maze-dataset/)
+![PyPI - Downloads](https://img.shields.io/pypi/dm/maze-dataset)
 [![Checks](https://github.com/AISC-understanding-search/maze-dataset/actions/workflows/checks.yml/badge.svg)](https://github.com/AISC-understanding-search/maze-dataset/actions/workflows/checks.yml)
 [![Coverage](docs/coverage/coverage.svg)](docs/coverage/coverage.txt)
 ![code size, bytes](https://img.shields.io/github/languages/code-size/AISC-understanding-search/maze-dataset)
-<!-- ![GitHub commit activity](https://img.shields.io/github/commit-activity/t/AISC-understanding-search/maze-dataset)
-![GitHub closed pull requests](https://img.shields.io/github/issues-pr-closed/AISC-understanding-search/maze-dataset) -->
+![GitHub commit activity](https://img.shields.io/github/commit-activity/t/AISC-understanding-search/maze-dataset)
+![GitHub closed pull requests](https://img.shields.io/github/issues-pr-closed/AISC-understanding-search/maze-dataset)
 
 
 # Maze Dataset
