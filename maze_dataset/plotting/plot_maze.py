@@ -7,8 +7,6 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
 from jaxtyping import Bool, Float
-from matplotlib.cm import ScalarMappable
-from matplotlib.colors import ListedColormap, Normalize
 
 from maze_dataset.constants import Coord, CoordArray, CoordList
 from maze_dataset.maze import (
@@ -19,7 +17,7 @@ from maze_dataset.maze import (
     TargetedLatticeMaze,
 )
 
-MAX_NODE_VALUE_EPSILON: float = 1e-10
+LARGE_NEGATIVE_NUMBER: float = -1e10
 
 
 @dataclass(kw_only=True)
@@ -131,7 +129,6 @@ class MazePlot:
         self.predicted_paths: list[StyledPath] = []
         self.node_values: Float[np.ndarray, "grid_n grid_n"] = None
         self.custom_node_value_flag: bool = False
-        self.max_node_value: float = 1
         self.node_color_map: str = "Blues"
         self.target_token_coord: Coord = None
         self.preceding_tokens_coords: CoordArray = None
@@ -217,13 +214,12 @@ class MazePlot:
         assert (
             node_values.shape == self.maze.grid_shape
         ), "Please pass node values of the same sape as LatticeMaze.grid_shape"
-        assert np.min(node_values) >= 0, "Please pass non-negative node values only."
+        # assert np.min(node_values) >= 0, "Please pass non-negative node values only."
 
         self.node_values = node_values
         # Set flag for choosing cmap while plotting maze
         self.custom_node_value_flag = True
         # Retrieve Max node value for plotting, +1e-10 to avoid division by zero
-        self.max_node_value = np.max(node_values) + MAX_NODE_VALUE_EPSILON
         self.node_color_map = color_map
         if target_token_coord is not None:
             self.target_token_coord = target_token_coord
@@ -266,10 +262,8 @@ class MazePlot:
     def _plot_maze(self) -> None:
         """
         Define Colormap and plot maze.
-        Colormap: x < 0: black
-                  0 <= x <= self.max_node_value:
-                        fade from dark blue to white,
-                        upper bound adaptive to max node value
+        Colormap: x is -inf: black
+                  else: use colormap
         """
         img = self._lattice_maze_to_img()
 
@@ -294,30 +288,39 @@ class MazePlot:
                     ms=12,
                 )
 
+        # if no node_values have been passed (no colormap)
         if self.custom_node_value_flag is False:
             self.ax.imshow(img, cmap="gray", vmin=-1, vmax=1)
 
-        else:  # if custom node_values have been passed
-            resampled = mpl.colormaps[self.node_color_map].resampled(
-                256
-            )  # load colormap
-            colors = resampled(np.linspace(0, 1, 256))
-            black = np.full(
-                (256, 4), [0, 0, 0, 1]
-            )  # define black color "constant spectrum" of same size as colormap
-            stacked_colors = np.vstack(
-                (black, colors)
-            )  # stack spectra and define colormap
-            cmap = ListedColormap(stacked_colors)
+        else:
+            assert self.node_values is not None, "Please pass node values."
+            assert not np.isnan(
+                self.node_values
+            ).any(), "Please pass node values, they cannot be nan."
 
-            # Create truncated colorbar that only respects interval [0,1]
-            ticks = np.linspace(0, self.max_node_value, 3)
-            norm = Normalize(vmin=0, vmax=self.max_node_value)
-            scalar_mappable = ScalarMappable(norm=norm, cmap=self.node_color_map)
-            cbar = self.fig.colorbar(scalar_mappable, ax=self.ax, ticks=ticks)
-            cbar.ax.set_yticklabels(np.round(ticks, 4))
+            vals_min: float = np.nanmin(self.node_values)
+            vals_max: float = np.nanmax(self.node_values)
+            if vals_min < 0:
+                vals_extreme: float = max(abs(vals_min), abs(vals_max))
+                vals_min = -vals_extreme
+                vals_max = vals_extreme
 
-            self.ax.imshow(img, cmap=cmap, vmin=-1, vmax=1)
+            # Create the plot
+            cmap = mpl.colormaps[self.node_color_map]
+            # TODO: this is a hack, we make the walls black (while still allowing negative values) by setting the nan color to black
+            cmap.set_bad(color="black")
+
+            _plotted = self.ax.imshow(img, cmap=cmap, vmin=vals_min, vmax=vals_max)
+
+            # Add colorbar
+            cbar = plt.colorbar(
+                _plotted,
+                ticks=np.linspace(vals_min, vals_max, 5),
+            )
+
+            # make the boundaries of the image thicker (walls look weird without this)
+            for axis in ["top", "bottom", "left", "right"]:
+                self.ax.spines[axis].set_linewidth(2)
 
     def _lattice_maze_to_img(
         self,
@@ -343,14 +346,19 @@ class MazePlot:
         Returns a matrix of side length (ul) * n + 1 where n is the number of nodes.
         """
 
+        # TODO: this is a hack, but if you add 1 always then non-node valued plots have their walls dissapear. if you dont add 1, you get ugly colors between nodes when they are colored
+        node_bdry_hack: int
         # Set node and connection values
         if self.node_values is None:
             scaled_node_values = np.ones(self.maze.grid_shape)
             connection_values = scaled_node_values * connection_val_scale
+            node_bdry_hack = 0
         else:
-            # Normalizing node colors to match color_map running in (-1, 1) (defined in ._plot_maze()).
-            scaled_node_values = self.node_values / self.max_node_value
-            connection_values = scaled_node_values
+            # TODO: hack
+            scaled_node_values = self.node_values
+            # connection_values = scaled_node_values
+            connection_values = np.full_like(scaled_node_values, np.nan)
+            node_bdry_hack = 1
 
         # Create background image (all pixels set to -1, walls everywhere)
         img: Float[np.ndarray, "row col"] = -np.ones(
@@ -366,8 +374,12 @@ class MazePlot:
             for col in range(self.maze.grid_shape[1]):
                 # Draw node
                 img[
-                    row * self.unit_length + 1 : (row + 1) * self.unit_length,
-                    col * self.unit_length + 1 : (col + 1) * self.unit_length,
+                    row * self.unit_length
+                    + 1 : (row + 1) * self.unit_length
+                    + node_bdry_hack,
+                    col * self.unit_length
+                    + 1 : (col + 1) * self.unit_length
+                    + node_bdry_hack,
                 ] = scaled_node_values[row, col]
 
                 # Down connection
