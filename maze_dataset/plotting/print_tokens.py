@@ -109,7 +109,7 @@ def color_tokens_cmap(
             else:
                 weight_str = weight_str.ljust(len(tok))
             output += f"{weight_str} "
-    
+
     return output
 
 
