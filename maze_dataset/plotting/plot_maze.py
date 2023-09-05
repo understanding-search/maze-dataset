@@ -318,9 +318,9 @@ class MazePlot:
                 ticks=np.linspace(vals_min, vals_max, 5),
             )
 
-            # make the boundaries of the image thicker (walls look weird without this)
-            for axis in ["top", "bottom", "left", "right"]:
-                self.ax.spines[axis].set_linewidth(2)
+        # make the boundaries of the image thicker (walls look weird without this)
+        for axis in ["top", "bottom", "left", "right"]:
+            self.ax.spines[axis].set_linewidth(2)
 
     def _lattice_maze_to_img(
         self,
@@ -348,17 +348,22 @@ class MazePlot:
 
         # TODO: this is a hack, but if you add 1 always then non-node valued plots have their walls dissapear. if you dont add 1, you get ugly colors between nodes when they are colored
         node_bdry_hack: int
+        connection_list_processed: Float[np.ndarray, "dim row col"]
         # Set node and connection values
         if self.node_values is None:
             scaled_node_values = np.ones(self.maze.grid_shape)
             connection_values = scaled_node_values * connection_val_scale
             node_bdry_hack = 0
+            # TODO: hack
+            # invert connection list
+            connection_list_processed = np.logical_not(self.maze.connection_list)
         else:
             # TODO: hack
             scaled_node_values = self.node_values
             # connection_values = scaled_node_values
             connection_values = np.full_like(scaled_node_values, np.nan)
             node_bdry_hack = 1
+            connection_list_processed = self.maze.connection_list
 
         # Create background image (all pixels set to -1, walls everywhere)
         img: Float[np.ndarray, "row col"] = -np.ones(
@@ -383,14 +388,14 @@ class MazePlot:
                 ] = scaled_node_values[row, col]
 
                 # Down connection
-                if self.maze.connection_list[0, row, col]:
+                if not connection_list_processed[0, row, col]:
                     img[
                         (row + 1) * self.unit_length,
                         col * self.unit_length + 1 : (col + 1) * self.unit_length,
                     ] = connection_values[row, col]
 
                 # Right connection
-                if self.maze.connection_list[1, row, col]:
+                if not connection_list_processed[1, row, col]:
                     img[
                         row * self.unit_length + 1 : (row + 1) * self.unit_length,
                         (col + 1) * self.unit_length,
