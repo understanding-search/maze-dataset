@@ -112,8 +112,8 @@ test: clean unit test_notebooks
 	@echo "ran all tests: unit, integration, and notebooks"
 
 .PHONY: check
-check: clean check-format clean test cov
-	@echo "run format check, test, and coverage report"
+check: clean check-format clean test
+	@echo "run format check and test"
 
 
 # build and publish
