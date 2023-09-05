@@ -76,21 +76,41 @@ def color_tokens_cmap(
     cmap: str | matplotlib.colors.Colormap = "Blues",
     fmt: FormatType = "html",
     template: str | None = None,
+    labels: bool = False,
 ):
-    assert len(tokens) == len(weights)
+    assert len(tokens) == len(weights), f"{len(tokens)} != {len(weights)}"
     weights = np.array(weights)
+    # normalize weights to [0, 1]
+    weights_norm = matplotlib.colors.Normalize()(weights)
 
     if isinstance(cmap, str):
         cmap = matplotlib.cm.get_cmap(cmap)
 
-    colors: RGBArray = cmap(weights)[:, :3] * 255
+    colors: RGBArray = cmap(weights_norm)[:, :3] * 255
 
-    return color_tokens_rgb(
+    output: str = color_tokens_rgb(
         tokens=tokens,
         colors=colors,
         fmt=fmt,
         template=template,
     )
+
+    if labels:
+        if fmt != "terminal":
+            raise NotImplementedError("labels only supported for terminal")
+        # align labels with the tokens
+        output += "\n"
+        for tok, weight in zip(tokens, weights):
+            # 2 decimal points, left-aligned and trailing spaces to match token length
+            weight_str: str = f"{weight:.1f}"
+            # omit if longer than token
+            if len(weight_str) > len(tok):
+                weight_str = " " * len(tok)
+            else:
+                weight_str = weight_str.ljust(len(tok))
+            output += f"{weight_str} "
+    
+    return output
 
 
 # these colors are to match those from the original understanding-search talk at the conclusion of AISC 2023
