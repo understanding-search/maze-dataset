@@ -132,6 +132,7 @@ class MazePlot:
         self.node_color_map: str = "Blues"
         self.target_token_coord: Coord = None
         self.preceding_tokens_coords: CoordArray = None
+        self.colormap_center: float | None = None
 
         if isinstance(maze, TargetedLatticeMaze):
             self.add_true_path(SolvedMaze.from_targeted_lattice_maze(maze).solution)
@@ -210,6 +211,7 @@ class MazePlot:
         color_map: str = "Blues",
         target_token_coord: Coord | None = None,
         preceeding_tokens_coords: CoordArray = None,
+        colormap_center: float | None = None,
     ) -> MazePlot:
         assert (
             node_values.shape == self.maze.grid_shape
@@ -224,6 +226,7 @@ class MazePlot:
         if target_token_coord is not None:
             self.target_token_coord = target_token_coord
         self.preceding_tokens_coords = preceeding_tokens_coords
+        self.colormap_center = colormap_center
         return self
 
     def plot(
@@ -300,23 +303,50 @@ class MazePlot:
 
             vals_min: float = np.nanmin(self.node_values)
             vals_max: float = np.nanmax(self.node_values)
-            # TODO: re-add this as an option?
-            # if vals_min < 0:
-            #     vals_extreme: float = max(abs(vals_min), abs(vals_max))
-            #     vals_min = -vals_extreme
-            #     vals_max = vals_extreme
 
             # Create the plot
             cmap = mpl.colormaps[self.node_color_map]
             # TODO: this is a hack, we make the walls black (while still allowing negative values) by setting the nan color to black
             cmap.set_bad(color="black")
 
-            _plotted = self.ax.imshow(img, cmap=cmap, vmin=vals_min, vmax=vals_max)
+            if (self.colormap_center is not None):
+                if not (vals_min < self.colormap_center < vals_max):
+                    if vals_min == self.colormap_center:
+                        vals_min -= 1e-10
+                    elif vals_max == self.colormap_center:
+                        vals_max += 1e-10
+                    else:
+                        raise ValueError(
+                            f"Please pass colormap_center value between {vals_min} and {vals_max}"
+                        )
+
+                norm = mpl.colors.TwoSlopeNorm(
+                    vmin=vals_min,
+                    vcenter=self.colormap_center,
+                    vmax=vals_max,
+                )
+                _plotted = self.ax.imshow(img, cmap=cmap, norm=norm)
+            else:
+                _plotted = self.ax.imshow(img, cmap=cmap, vmin=vals_min, vmax=vals_max)
 
             # Add colorbar
+            ticks = np.linspace(vals_min, vals_max, 5)
+            # insert 0
+            if (vals_min < 0.0 < vals_max) and (0.0 not in ticks):
+                ticks = np.insert(ticks, np.searchsorted(ticks, 0.0), 0.0)
+            # insert self.colormap_center
+            if (
+                (self.colormap_center is not None) 
+                and (self.colormap_center not in ticks) 
+                and (vals_min < self.colormap_center < vals_max)
+            ):
+                ticks = np.insert(
+                    ticks, np.searchsorted(ticks, self.colormap_center), self.colormap_center
+                )
+
             cbar = plt.colorbar(
                 _plotted,
-                ticks=np.linspace(vals_min, vals_max, 5),
+                ticks=ticks,
             )
 
         # make the boundaries of the image thicker (walls look weird without this)
