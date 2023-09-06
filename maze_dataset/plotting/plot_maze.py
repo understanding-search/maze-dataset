@@ -309,7 +309,7 @@ class MazePlot:
             # TODO: this is a hack, we make the walls black (while still allowing negative values) by setting the nan color to black
             cmap.set_bad(color="black")
 
-            if (self.colormap_center is not None):
+            if self.colormap_center is not None:
                 if not (vals_min < self.colormap_center < vals_max):
                     if vals_min == self.colormap_center:
                         vals_min -= 1e-10
@@ -336,12 +336,14 @@ class MazePlot:
                 ticks = np.insert(ticks, np.searchsorted(ticks, 0.0), 0.0)
             # insert self.colormap_center
             if (
-                (self.colormap_center is not None) 
-                and (self.colormap_center not in ticks) 
+                (self.colormap_center is not None)
+                and (self.colormap_center not in ticks)
                 and (vals_min < self.colormap_center < vals_max)
             ):
                 ticks = np.insert(
-                    ticks, np.searchsorted(ticks, self.colormap_center), self.colormap_center
+                    ticks,
+                    np.searchsorted(ticks, self.colormap_center),
+                    self.colormap_center,
                 )
 
             cbar = plt.colorbar(
