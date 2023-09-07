@@ -103,6 +103,45 @@ _RASTERIZED_CFG_ADDED_PARAMS: list[str] = [
 ]
 
 
+def process_maze_rasterized_input_target(
+        maze: SolvedMaze,
+        remove_isolated_cells: bool = True,
+        extend_pixels: bool = True,
+        endpoints_as_open: bool = False,
+    ) -> Float[torch.Tensor, "in/tgt=2 x y rgb=3"]:
+    # problem and solution mazes
+    maze_pixels: PixelGrid = maze.as_pixels(
+        show_endpoints=True, show_solution=True
+    )
+    problem_maze: PixelGrid = maze_pixels.copy()
+    solution_maze: PixelGrid = maze_pixels.copy()
+
+    # in problem maze, set path to open
+    problem_maze[(problem_maze == PixelColors.PATH).all(axis=-1)] = PixelColors.OPEN
+
+    # wherever solution maze is PixelColors.OPEN, set it to PixelColors.WALL
+    solution_maze[
+        (solution_maze == PixelColors.OPEN).all(axis=-1)
+    ] = PixelColors.WALL
+    # wherever it is solution, set it to PixelColors.OPEN
+    solution_maze[
+        (solution_maze == PixelColors.PATH).all(axis=-1)
+    ] = PixelColors.OPEN
+    if endpoints_as_open:
+        for color in (PixelColors.START, PixelColors.END):
+            solution_maze[(solution_maze == color).all(axis=-1)] = PixelColors.OPEN
+
+    # postprocess to match original easy_2_hard dataset
+    if remove_isolated_cells:
+        problem_maze = _remove_isolated_cells(problem_maze)
+        solution_maze = _remove_isolated_cells(solution_maze)
+
+    if extend_pixels:
+        problem_maze = _extend_pixels(problem_maze)
+        solution_maze = _extend_pixels(solution_maze)
+
+    return torch.tensor([problem_maze, solution_maze])
+
 @serializable_dataclass
 class RasterizedMazeDatasetConfig(MazeDatasetConfig):
     """
@@ -116,42 +155,17 @@ class RasterizedMazeDatasetConfig(MazeDatasetConfig):
 
 
 class RasterizedMazeDataset(MazeDataset):
-    def __getitem__(self, idx: int) -> tuple[torch.Tensor, torch.Tensor]:
+    def __getitem__(self, idx: int) -> Float[torch.Tensor, "item in/tgt=2 x y rgb=3"]:
         # get the solved maze
         solved_maze: SolvedMaze = self.mazes[idx]
 
-        # problem and solution mazes
-        maze_pixels: PixelGrid = solved_maze.as_pixels(
-            show_endpoints=True, show_solution=True
+        return process_maze_rasterized_input_target(
+            maze=solved_maze,
+            remove_isolated_cells=self.cfg.remove_isolated_cells,
+            extend_pixels=self.cfg.extend_pixels,
+            endpoints_as_open=self.cfg.endpoints_as_open,
         )
-        problem_maze: PixelGrid = maze_pixels.copy()
-        solution_maze: PixelGrid = maze_pixels.copy()
-
-        # in problem maze, set path to open
-        problem_maze[(problem_maze == PixelColors.PATH).all(axis=-1)] = PixelColors.OPEN
-
-        # wherever solution maze is PixelColors.OPEN, set it to PixelColors.WALL
-        solution_maze[
-            (solution_maze == PixelColors.OPEN).all(axis=-1)
-        ] = PixelColors.WALL
-        # wherever it is solution, set it to PixelColors.OPEN
-        solution_maze[
-            (solution_maze == PixelColors.PATH).all(axis=-1)
-        ] = PixelColors.OPEN
-        if self.cfg.endpoints_as_open:
-            for color in (PixelColors.START, PixelColors.END):
-                solution_maze[(solution_maze == color).all(axis=-1)] = PixelColors.OPEN
-
-        # postprocess to match original easy_2_hard dataset
-        if self.cfg.remove_isolated_cells:
-            problem_maze = _remove_isolated_cells(problem_maze)
-            solution_maze = _remove_isolated_cells(solution_maze)
-
-        if self.cfg.extend_pixels:
-            problem_maze = _extend_pixels(problem_maze)
-            solution_maze = _extend_pixels(solution_maze)
-
-        return torch.tensor([problem_maze, solution_maze])
+        
 
     def get_batch(
         self, idxs: list[int] | None
