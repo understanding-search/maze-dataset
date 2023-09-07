@@ -104,15 +104,13 @@ _RASTERIZED_CFG_ADDED_PARAMS: list[str] = [
 
 
 def process_maze_rasterized_input_target(
-        maze: SolvedMaze,
-        remove_isolated_cells: bool = True,
-        extend_pixels: bool = True,
-        endpoints_as_open: bool = False,
-    ) -> Float[torch.Tensor, "in/tgt=2 x y rgb=3"]:
+    maze: SolvedMaze,
+    remove_isolated_cells: bool = True,
+    extend_pixels: bool = True,
+    endpoints_as_open: bool = False,
+) -> Float[torch.Tensor, "in/tgt=2 x y rgb=3"]:
     # problem and solution mazes
-    maze_pixels: PixelGrid = maze.as_pixels(
-        show_endpoints=True, show_solution=True
-    )
+    maze_pixels: PixelGrid = maze.as_pixels(show_endpoints=True, show_solution=True)
     problem_maze: PixelGrid = maze_pixels.copy()
     solution_maze: PixelGrid = maze_pixels.copy()
 
@@ -120,13 +118,9 @@ def process_maze_rasterized_input_target(
     problem_maze[(problem_maze == PixelColors.PATH).all(axis=-1)] = PixelColors.OPEN
 
     # wherever solution maze is PixelColors.OPEN, set it to PixelColors.WALL
-    solution_maze[
-        (solution_maze == PixelColors.OPEN).all(axis=-1)
-    ] = PixelColors.WALL
+    solution_maze[(solution_maze == PixelColors.OPEN).all(axis=-1)] = PixelColors.WALL
     # wherever it is solution, set it to PixelColors.OPEN
-    solution_maze[
-        (solution_maze == PixelColors.PATH).all(axis=-1)
-    ] = PixelColors.OPEN
+    solution_maze[(solution_maze == PixelColors.PATH).all(axis=-1)] = PixelColors.OPEN
     if endpoints_as_open:
         for color in (PixelColors.START, PixelColors.END):
             solution_maze[(solution_maze == color).all(axis=-1)] = PixelColors.OPEN
@@ -141,6 +135,7 @@ def process_maze_rasterized_input_target(
         solution_maze = _extend_pixels(solution_maze)
 
     return torch.tensor([problem_maze, solution_maze])
+
 
 @serializable_dataclass
 class RasterizedMazeDatasetConfig(MazeDatasetConfig):
@@ -165,7 +160,6 @@ class RasterizedMazeDataset(MazeDataset):
             extend_pixels=self.cfg.extend_pixels,
             endpoints_as_open=self.cfg.endpoints_as_open,
         )
-        
 
     def get_batch(
         self, idxs: list[int] | None

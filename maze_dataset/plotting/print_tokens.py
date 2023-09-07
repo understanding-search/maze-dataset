@@ -115,10 +115,14 @@ def color_tokens_cmap(
 
 # these colors are to match those from the original understanding-search talk at the conclusion of AISC 2023
 _MAZE_TOKENS_DEFAULT_COLORS: dict[tuple[str, str], tuple[int, int, int]] = {
-    (SPECIAL_TOKENS.ADJLIST_START, SPECIAL_TOKENS.ADJLIST_END): (217,210,233),  # purple
-    (SPECIAL_TOKENS.ORIGIN_START, SPECIAL_TOKENS.ORIGIN_END): (217,234,211),  # green
-    (SPECIAL_TOKENS.TARGET_START, SPECIAL_TOKENS.TARGET_END): (234,209,220),  # red
-    (SPECIAL_TOKENS.PATH_START, SPECIAL_TOKENS.PATH_END): (207,226,243),  # blue
+    (SPECIAL_TOKENS.ADJLIST_START, SPECIAL_TOKENS.ADJLIST_END): (
+        217,
+        210,
+        233,
+    ),  # purple
+    (SPECIAL_TOKENS.ORIGIN_START, SPECIAL_TOKENS.ORIGIN_END): (217, 234, 211),  # green
+    (SPECIAL_TOKENS.TARGET_START, SPECIAL_TOKENS.TARGET_END): (234, 209, 220),  # red
+    (SPECIAL_TOKENS.PATH_START, SPECIAL_TOKENS.PATH_END): (207, 226, 243),  # blue
 }
 
 
