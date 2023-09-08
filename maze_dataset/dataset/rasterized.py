@@ -134,7 +134,7 @@ def process_maze_rasterized_input_target(
         problem_maze = _extend_pixels(problem_maze)
         solution_maze = _extend_pixels(solution_maze)
 
-    return torch.tensor([problem_maze, solution_maze])
+    return torch.tensor(np.array([problem_maze, solution_maze]))
 
 
 @serializable_dataclass
@@ -142,6 +142,7 @@ class RasterizedMazeDatasetConfig(MazeDatasetConfig):
     """
     - `remove_isolated_cells: bool` whether to set isolated cells to walls
     - `extend_pixels: bool` whether to extend pixels to match easy_2_hard dataset (2x2 cells, extra 1 pixel row of wall around maze)
+    - `endpoints_as_open: bool` whether to set endpoints to open
     """
 
     remove_isolated_cells: bool = serializable_field(default=True)
