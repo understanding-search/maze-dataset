@@ -112,8 +112,7 @@ def color_tokens_cmap(
 
     return output
 
-
-# these colors are to match those from the original understanding-search talk at the conclusion of AISC 2023
+# colors roughly made to be similar to visual representation
 _MAZE_TOKENS_DEFAULT_COLORS: dict[tuple[str, str], tuple[int, int, int]] = {
     (SPECIAL_TOKENS.ADJLIST_START, SPECIAL_TOKENS.ADJLIST_END): (
         217,
