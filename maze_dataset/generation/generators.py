@@ -198,7 +198,7 @@ class LatticeMazeGenerators:
         start_coord: Coord | None = None,
     ) -> LatticeMaze:
         warnings.warn(
-            "gen_prim does not correctly implement prim's algorithm, see issue: https://github.com/AISC-understanding-search/maze-dataset/issues/12",
+            "gen_prim does not correctly implement prim's algorithm, see issue: https://github.com/understanding-search/maze-dataset/issues/12",
         )
         return LatticeMazeGenerators.gen_dfs(
             grid_shape=grid_shape,
