@@ -163,19 +163,20 @@ class RasterizedMazeDataset(MazeDataset):
         )
 
     def get_batch(
-        self, idxs: list[int] | None
-    ) -> Float[torch.Tensor, "item in/tgt=2 x y rgb=3"]:
+        self, 
+        idxs: list[int] | None
+    ) -> Float[torch.Tensor, "in/tgt=2 item x y rgb=3"]:
         if idxs is None:
             idxs = list(range(len(self)))
-        batch: list[tuple[torch.Tensor, torch.Tensor]] = [self[i] for i in idxs]
 
-        # return torch.stack([x[0] for x in batch]), torch.stack([x[1] for x in batch])
-        return torch.cat(
-            [
-                torch.stack([x[0] for x in batch]),
-                torch.stack([x[1] for x in batch]),
-            ]
-        )
+        inputs: list[Float[torch.Tensor, "x y rgb=3"]]
+        targets: list[Float[torch.Tensor, "x y rgb=3"]]
+        inputs, targets = zip(*[self[i] for i in idxs])
+
+        return torch.stack([
+            torch.stack(inputs),
+            torch.stack(targets)
+        ])
 
     @classmethod
     def from_config_augmented(
