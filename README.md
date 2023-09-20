@@ -11,7 +11,7 @@
 
 This package provides utilities for generation, filtering, solving, visualizing, and processing of mazes for training ML systems. Primarily built for the [maze-transformer interpretability](https://github.com/understanding-search/maze-transformer) project. You can find our paper on it here: http://arxiv.org/abs/2309.10498
 
-This package provides a variety of [maze generation algorithms](maze_dataset/generation/generators.py), ways to filter them, and ways to convert them to representations useful for training.
+This package includes a variety of [maze generation algorithms](maze_dataset/generation/generators.py), including randomized depth first search, Wilson's algorithm for uniform spanning trees, and percolation. Datasets can be filtered to select mazes of a certain length or complexity, remove duplicates, and satisfy custom properties. A variety of output formats for visualization and training ML models are provided.
 
 |   |   |   |   |
 |---|---|---|---|
@@ -26,6 +26,7 @@ Most of the functionality is demonstrated in the ipython notebooks in the `noteb
 - [`demo_tokenization.ipynb`](notebooks/demo_tokenization.ipynb) converting mazes to and from textual representations, as well as utilities for working with them.
 - [`demo_latticemaze.ipynb`](notebooks/demo_latticemaze.ipynb) internals of the `LatticeMaze` and `SolvedMaze` objects, and advanced visualization.
 
+## Creating a dataset
 
 To create a `MazeDataset`, which inherits from `torch.utils.data.Dataset`, you first create a `MazeDatasetConfig`:
 
@@ -57,6 +58,8 @@ dataset: MazeDataset = MazeDataset.from_config(
 ```
 
 This method can search for whether a dataset with matching config hash already exists on your filesystem in the expected location, and load it if so. It can also generate a dataset on the fly if needed.
+
+## Conversions to useful formats
 
 The elements of the dataset are [`SolvedMaze`](maze_dataset/maze/lattice_maze.py) objects:
 ```python
