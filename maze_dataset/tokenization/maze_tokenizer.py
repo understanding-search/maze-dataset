@@ -378,5 +378,7 @@ class MazeTokenizer(SerializableDataclass):
         for name, prop in self.__class__.__dict__.items():
             if isinstance(prop, cached_property):
                 # if the property exists, delete it
-                if hasattr(self, name):
+                try:
                     delattr(self, name)
+                except AttributeError as e:
+                    pass
