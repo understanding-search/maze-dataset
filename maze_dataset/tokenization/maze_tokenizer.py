@@ -309,6 +309,44 @@ class MazeTokenizer(SerializableDataclass):
         else:
             return output
 
+    # UT-only coordinate stuff
+    # ============================================================
+
+    @cached_property
+    def coordinate_tokens_coords(self) -> dict[CoordTup, int]:
+        print(f"{self.tokenization_mode = }")
+        if not self.is_UT():
+            raise ValueError(
+                f"coordinate_tokens_coords is only valid for UT tokenization modes, got {self.tokenization_mode = }"
+            )
+        if self.max_grid_size is None:
+            raise ValueError(
+                f"max_grid_size must be specified to use coordinate_tokens: {self.max_grid_size = }"
+            )
+
+        raw_converted: list[CoordTup | str] = self.strings_to_coords(
+            self.token_arr, when_noncoord="include"
+        )
+
+        # filter out non-coordinates
+        return {
+            coord: i
+            for i, coord in enumerate(raw_converted)
+            if not isinstance(coord, str)
+        }
+
+    @cached_property
+    def coordinate_tokens_ids(self) -> dict[str, int]:
+        # checks performed in call
+        output: dict[str, int] = dict()
+
+        for coord, index in self.coordinate_tokens_coords.items():
+            _for_key: list[str] = self.coords_to_strings([coord])
+            assert len(_for_key) == 1
+            output[_for_key[0]] = index
+
+        return output
+
     # other
     # ============================================================
 
@@ -326,6 +364,12 @@ class MazeTokenizer(SerializableDataclass):
             TokenizationMode.AOTP_UT_rasterized,
             TokenizationMode.AOTP_UT_uniform,
             TokenizationMode.AOTP_indexed,
+        )
+
+    def is_UT(self) -> bool:
+        return self.tokenization_mode in (
+            TokenizationMode.AOTP_UT_rasterized,
+            TokenizationMode.AOTP_UT_uniform,
         )
 
     def clear_cache(self):
