@@ -303,6 +303,11 @@ class MazePlot:
 
             vals_min: float = np.nanmin(self.node_values)
             vals_max: float = np.nanmax(self.node_values)
+            # if both are negative or both are positive, set max/min to 0
+            if vals_max < 0.0:
+                vals_max = 0.0
+            elif vals_min > 0.0:
+                vals_min = 0.0
 
             # Create the plot
             cmap = mpl.colormaps[self.node_color_map]
