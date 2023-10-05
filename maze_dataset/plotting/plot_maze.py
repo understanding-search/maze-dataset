@@ -27,6 +27,7 @@ class PathFormat:
     label: str | None = None
     fmt: str = "o"
     color: str | None = None
+    cmap: str | None = None
     line_width: float | None = None
     quiver_kwargs: dict | None = None
 
@@ -448,6 +449,15 @@ class MazePlot:
         if path_format.quiver_kwargs is not None:
             x: np.ndarray = p_transformed[:, 0]
             y: np.ndarray = p_transformed[:, 1]
+
+            # Generate colors from the colormap
+            if path_format.cmap is not None:
+                n = len(x) - 1  # Number of arrows
+                cmap = plt.get_cmap(path_format.cmap)
+                colors = [cmap(i / n) for i in range(n)]
+            else:
+                colors = path_format.color
+
             self.ax.quiver(
                 x[:-1],
                 y[:-1],
@@ -456,7 +466,7 @@ class MazePlot:
                 scale_units="xy",
                 angles="xy",
                 scale=1,
-                color=path_format.color,
+                color=colors,
                 **path_format.quiver_kwargs,
             )
         else:
