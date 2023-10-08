@@ -134,9 +134,6 @@ class MazePlot:
         self.target_token_coord: Coord = None
         self.preceding_tokens_coords: CoordArray = None
         self.colormap_center: float | None = None
-        grid_len = maze.generation_meta['grid_shape'][0]
-        self.marker_size_start: int = 20 * 3 / grid_len
-        self.marker_size_end: int = 30 * 3 / grid_len
 
         if isinstance(maze, TargetedLatticeMaze):
             self.add_true_path(SolvedMaze.from_targeted_lattice_maze(maze).solution)
@@ -238,7 +235,6 @@ class MazePlot:
         dpi: int = 100,
         title: str = "",
         fig_ax: tuple | None = None,
-        only_plot_endpoints: bool = False,
     ) -> MazePlot:
         """Plot the maze and paths."""
         if fig_ax is None:
@@ -250,15 +246,9 @@ class MazePlot:
         self._plot_maze()
 
         if self.true_path is not None:
-            if only_plot_endpoints:
-                self._plot_endpoints(self.true_path)
-            else:
-                self._plot_path(self.true_path)
+            self._plot_path(self.true_path)
         for path in self.predicted_paths:
-            if only_plot_endpoints:
-                self._plot_endpoints(path)
-            else:
-                self._plot_path(path)
+            self._plot_path(path)
 
         # Plot labels
         tick_arr = np.arange(self.maze.grid_shape[0])
@@ -496,34 +486,14 @@ class MazePlot:
             [p_transformed[0][1]],
             "o",
             color=path_format.color,
-            ms=self.marker_size_start,
+            ms=10,
         )
         self.ax.plot(
             [p_transformed[-1][0]],
             [p_transformed[-1][1]],
-            "*",
+            "x",
             color=path_format.color,
-            ms=self.marker_size_end,
-        )
-        
-    def _plot_endpoints(self, path_format: PathFormat) -> None:
-        p_transformed = np.array(
-            [self._rowcol_to_coord(coord) for coord in path_format.path]
-        )
-        # mark endpoints
-        self.ax.plot(
-            [p_transformed[0][0]],
-            [p_transformed[0][1]],
-            "o",
-            color=path_format.color,
-            ms=self.marker_size_start,
-        )
-        self.ax.plot(
-            [p_transformed[-1][0]],
-            [p_transformed[-1][1]],
-            "*",
-            color=path_format.color,
-            ms=self.marker_size_end,
+            ms=10,
         )
 
     def to_ascii(
