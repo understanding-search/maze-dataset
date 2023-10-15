@@ -137,6 +137,8 @@ class MazePlot:
         grid_len = maze.generation_meta['grid_shape'][0]
         self.marker_size_start: int = 20 * 3 / grid_len
         self.marker_size_end: int = 30 * 3 / grid_len
+        self.marker_start_type: str = "o"
+        self.marker_end_type: str = "*"
 
         if isinstance(maze, TargetedLatticeMaze):
             self.add_true_path(SolvedMaze.from_targeted_lattice_maze(maze).solution)
@@ -494,14 +496,14 @@ class MazePlot:
         self.ax.plot(
             [p_transformed[0][0]],
             [p_transformed[0][1]],
-            "o",
+            self.marker_start_type,
             color=path_format.color,
             ms=self.marker_size_start,
         )
         self.ax.plot(
             [p_transformed[-1][0]],
             [p_transformed[-1][1]],
-            "*",
+            self.marker_end_type,
             color=path_format.color,
             ms=self.marker_size_end,
         )
@@ -514,14 +516,14 @@ class MazePlot:
         self.ax.plot(
             [p_transformed[0][0]],
             [p_transformed[0][1]],
-            "o",
+            self.marker_start_type,
             color=path_format.color,
             ms=self.marker_size_start,
         )
         self.ax.plot(
             [p_transformed[-1][0]],
             [p_transformed[-1][1]],
-            "*",
+            self.marker_end_type,
             color=path_format.color,
             ms=self.marker_size_end,
         )
