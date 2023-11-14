@@ -131,6 +131,11 @@ class LatticeMaze(SerializableDataclass):
     grid_shape = property(lambda self: self.connection_list.shape[1:])
     n_connections = property(lambda self: self.connection_list.sum())
 
+    @property
+    def grid_n(self) -> int:
+        assert self.grid_shape[0] == self.grid_shape[1], "only square mazes supported"
+        return self.grid_shape[0]
+
     # ============================================================
     # basic methods
     # ============================================================
@@ -153,6 +158,13 @@ class LatticeMaze(SerializableDataclass):
             dim: int = int(np.argmax(np.abs(delta)))
             clist_node: Coord = a if (delta.sum() > 0) else b
             return self.connection_list[dim, clist_node[0], clist_node[1]]
+
+    def is_valid_path(self, path: CoordArray) -> bool:
+        """check if a path is valid"""
+        for i in range(len(path) - 1):
+            if not self.nodes_connected(path[i], path[i + 1]):
+                return False
+        return True
 
     def get_coord_neighbors(self, c: Coord) -> CoordArray:
         neighbors: list[Coord] = [
