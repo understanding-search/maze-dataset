@@ -159,8 +159,20 @@ class LatticeMaze(SerializableDataclass):
             clist_node: Coord = a if (delta.sum() > 0) else b
             return self.connection_list[dim, clist_node[0], clist_node[1]]
 
-    def is_valid_path(self, path: CoordArray) -> bool:
+    def is_valid_path(self, path: CoordArray, empty_is_valid: bool = False) -> bool:
         """check if a path is valid"""
+        # check path is not empty
+        if len(path) == 0:
+            if not empty_is_valid:
+                return False
+            else:
+                return True
+
+        # check all coords in bounds of maze
+        if not np.all((0 <= path) & (path < self.grid_shape)):
+            return False
+
+        # check all nodes connected
         for i in range(len(path) - 1):
             if not self.nodes_connected(path[i], path[i + 1]):
                 return False
