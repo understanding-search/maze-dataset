@@ -346,17 +346,16 @@ class MazePlot:
 
             # Add colorbar based on the condition of self.hide_colorbar
             if not self.hide_colorbar:
-                
                 ticks = np.linspace(vals_min, vals_max, 5)
-                
+
                 if (vals_min < 0.0 < vals_max) and (0.0 not in ticks):
                     ticks = np.insert(ticks, np.searchsorted(ticks, 0.0), 0.0)
 
                 if (
-                    self.colormap_center is not None 
-                    and self.colormap_center not in ticks 
+                    self.colormap_center is not None
+                    and self.colormap_center not in ticks
                     and vals_min < self.colormap_center < vals_max
-                ):  
+                ):
                     ticks = np.insert(
                         ticks,
                         np.searchsorted(ticks, self.colormap_center),
