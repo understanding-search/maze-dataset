@@ -134,6 +134,18 @@ class MazePlot:
         self.target_token_coord: Coord = None
         self.preceding_tokens_coords: CoordArray = None
         self.colormap_center: float | None = None
+        self.cbar_ax = None
+
+        self.marker_kwargs_current: dict = dict(
+            marker="s",
+            color="green",
+            ms=12,
+        )
+        self.marker_kwargs_next: dict = dict(
+            marker="P",
+            color="green",
+            ms=12,
+        )
 
         if isinstance(maze, TargetedLatticeMaze):
             self.add_true_path(SolvedMaze.from_targeted_lattice_maze(maze).solution)
@@ -213,6 +225,8 @@ class MazePlot:
         target_token_coord: Coord | None = None,
         preceeding_tokens_coords: CoordArray = None,
         colormap_center: float | None = None,
+        colormap_max: float | None = None,
+        hide_colorbar: bool = False,
     ) -> MazePlot:
         assert (
             node_values.shape == self.maze.grid_shape
@@ -228,6 +242,8 @@ class MazePlot:
             self.target_token_coord = target_token_coord
         self.preceding_tokens_coords = preceeding_tokens_coords
         self.colormap_center = colormap_center
+        self.colormap_max = colormap_max
+        self.hide_colorbar = hide_colorbar
         return self
 
     def plot(
@@ -235,6 +251,7 @@ class MazePlot:
         dpi: int = 100,
         title: str = "",
         fig_ax: tuple | None = None,
+        plain: bool = False,
     ) -> MazePlot:
         """Plot the maze and paths."""
         if fig_ax is None:
@@ -251,12 +268,13 @@ class MazePlot:
             self._plot_path(path)
 
         # Plot labels
-        tick_arr = np.arange(self.maze.grid_shape[0])
-        self.ax.set_xticks(self.unit_length * (tick_arr + 0.5), tick_arr)
-        self.ax.set_yticks(self.unit_length * (tick_arr + 0.5), tick_arr)
-        self.ax.set_xlabel("col")
-        self.ax.set_ylabel("row")
-        self.ax.set_title(title)
+        if not plain:
+            tick_arr = np.arange(self.maze.grid_shape[0])
+            self.ax.set_xticks(self.unit_length * (tick_arr + 0.5), tick_arr)
+            self.ax.set_yticks(self.unit_length * (tick_arr + 0.5), tick_arr)
+            self.ax.set_xlabel("col")
+            self.ax.set_ylabel("row")
+            self.ax.set_title(title)
 
     def _rowcol_to_coord(self, point: Coord) -> np.ndarray:
         """Transform Point from MazeTransformer (row, column) notation to matplotlib default (x, y) notation where x is the horizontal axis."""
@@ -273,24 +291,12 @@ class MazePlot:
 
         if self.target_token_coord is not None:
             x, y = self._rowcol_to_coord(self.target_token_coord)
-            self.ax.plot(
-                x,
-                y,
-                "*",
-                color="black",
-                ms=20,
-            )
+            self.ax.plot(x, y, **self.marker_kwargs_next)
 
         if self.preceding_tokens_coords is not None:
             for coord in self.preceding_tokens_coords:
                 x, y = self._rowcol_to_coord(coord)
-                self.ax.plot(
-                    x,
-                    y,
-                    "+",
-                    color="black",
-                    ms=12,
-                )
+                self.ax.plot(x, y, **self.marker_kwargs_current)
 
         # if no node_values have been passed (no colormap)
         if self.custom_node_value_flag is False:
@@ -310,7 +316,10 @@ class MazePlot:
             elif vals_min > 0.0:
                 vals_min = 0.0
 
-            # Create the plot
+            # adjust vals_max, in case you need consistent colorbar across multiple plots
+            vals_max: float = self.colormap_max or vals_max
+
+            # create colormap
             cmap = mpl.colormaps[self.node_color_map]
             # TODO: this is a hack, we make the walls black (while still allowing negative values) by setting the nan color to black
             cmap.set_bad(color="black")
@@ -335,27 +344,31 @@ class MazePlot:
             else:
                 _plotted = self.ax.imshow(img, cmap=cmap, vmin=vals_min, vmax=vals_max)
 
-            # Add colorbar
-            ticks = np.linspace(vals_min, vals_max, 5)
-            # insert 0
-            if (vals_min < 0.0 < vals_max) and (0.0 not in ticks):
-                ticks = np.insert(ticks, np.searchsorted(ticks, 0.0), 0.0)
-            # insert self.colormap_center
-            if (
-                (self.colormap_center is not None)
-                and (self.colormap_center not in ticks)
-                and (vals_min < self.colormap_center < vals_max)
-            ):
-                ticks = np.insert(
-                    ticks,
-                    np.searchsorted(ticks, self.colormap_center),
-                    self.colormap_center,
-                )
+            # Add colorbar based on the condition of self.hide_colorbar
+            if not self.hide_colorbar:
+                ticks = np.linspace(vals_min, vals_max, 5)
 
-            cbar = plt.colorbar(
-                _plotted,
-                ticks=ticks,
-            )
+                if (vals_min < 0.0 < vals_max) and (0.0 not in ticks):
+                    ticks = np.insert(ticks, np.searchsorted(ticks, 0.0), 0.0)
+
+                if (
+                    self.colormap_center is not None
+                    and self.colormap_center not in ticks
+                    and vals_min < self.colormap_center < vals_max
+                ):
+                    ticks = np.insert(
+                        ticks,
+                        np.searchsorted(ticks, self.colormap_center),
+                        self.colormap_center,
+                    )
+
+                cbar = plt.colorbar(
+                    _plotted,
+                    ticks=ticks,
+                    ax=self.ax,
+                    cax=self.cbar_ax,
+                )
+                self.cbar_ax = cbar.ax
 
         # make the boundaries of the image thicker (walls look weird without this)
         for axis in ["top", "bottom", "left", "right"]:
