@@ -134,6 +134,18 @@ class MazePlot:
         self.target_token_coord: Coord = None
         self.preceding_tokens_coords: CoordArray = None
         self.colormap_center: float | None = None
+        self.cbar_ax = None
+
+        self.marker_kwargs_current: dict = dict(
+            marker="s",
+            color="green",
+            ms=12,
+        )
+        self.marker_kwargs_next: dict = dict(
+            marker="P",
+            color="green",
+            ms=12,
+        )
 
         if isinstance(maze, TargetedLatticeMaze):
             self.add_true_path(SolvedMaze.from_targeted_lattice_maze(maze).solution)
@@ -279,24 +291,12 @@ class MazePlot:
 
         if self.target_token_coord is not None:
             x, y = self._rowcol_to_coord(self.target_token_coord)
-            self.ax.plot(
-                x,
-                y,
-                "+",
-                color="green",
-                ms=20,
-            )
+            self.ax.plot(x, y, **self.marker_kwargs_next)
 
         if self.preceding_tokens_coords is not None:
             for coord in self.preceding_tokens_coords:
                 x, y = self._rowcol_to_coord(coord)
-                self.ax.plot(
-                    x,
-                    y,
-                    "s",
-                    color="green",
-                    ms=12,
-                )
+                self.ax.plot(x, y, **self.marker_kwargs_current)
 
         # if no node_values have been passed (no colormap)
         if self.custom_node_value_flag is False:
@@ -345,7 +345,6 @@ class MazePlot:
                 _plotted = self.ax.imshow(img, cmap=cmap, vmin=vals_min, vmax=vals_max)
 
             # Add colorbar based on the condition of self.hide_colorbar
-            print(f"{self.hide_colorbar = }")
             if not self.hide_colorbar:
                 
                 ticks = np.linspace(vals_min, vals_max, 5)
@@ -367,7 +366,10 @@ class MazePlot:
                 cbar = plt.colorbar(
                     _plotted,
                     ticks=ticks,
+                    ax=self.ax,
+                    cax=self.cbar_ax,
                 )
+                self.cbar_ax = cbar.ax
 
         # make the boundaries of the image thicker (walls look weird without this)
         for axis in ["top", "bottom", "left", "right"]:
