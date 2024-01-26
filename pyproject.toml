@@ -9,7 +9,7 @@ repository = "https://github.com/understanding-search/maze-dataset"
 
 [tool.poetry.dependencies]
 python = "^3.10"
-torch = ">=1.13.1"
+torch = { version = ">=1.13.1", source = "torch_cpu" }
 matplotlib = "^3.7.0"
 muutils = "^0.5.1"
 zanj = "^0.2.0"
