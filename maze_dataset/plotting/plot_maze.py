@@ -57,9 +57,10 @@ class StyledPath(PathFormat):
 DEFAULT_FORMATS: dict[str, PathFormat] = {
     "true": PathFormat(
         label="true path",
-        fmt="--",
+        # fmt="--",
+        fmt="-",
         color="red",
-        line_width=2.5,
+        line_width=3.5,
         quiver_kwargs=None,
     ),
     "predicted": PathFormat(
@@ -135,8 +136,13 @@ class MazePlot:
         self.preceding_tokens_coords: CoordArray = None
         self.colormap_center: float | None = None
         grid_len = maze.generation_meta['grid_shape'][0]
-        self.marker_size_start: int = 20 * 3 / grid_len
-        self.marker_size_end: int = 30 * 3 / grid_len
+        self.grid_len = grid_len
+        if grid_len > 2:
+            self.marker_size_start: int = 20 * 3 / grid_len
+            self.marker_size_end: int = 30 * 3 / grid_len
+        else:
+            self.marker_size_start: int = 20
+            self.marker_size_end: int = 30
         self.marker_start_type: str = "o"
         self.marker_end_type: str = "*"
 
@@ -252,11 +258,15 @@ class MazePlot:
         self._plot_maze()
 
         if self.true_path is not None:
+            # if self.grid_len == 2:
+            #     self.true_path.line_width += 0.5
             if only_plot_endpoints:
                 self._plot_endpoints(self.true_path)
             else:
                 self._plot_path(self.true_path)
         for path in self.predicted_paths:
+            # if self.grid_len == 2:
+            #     path.line_width += 0.5
             if only_plot_endpoints:
                 self._plot_endpoints(path)
             else:
