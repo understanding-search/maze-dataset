@@ -2,6 +2,7 @@ import numpy as np
 import pytest
 
 from maze_dataset.constants import CoordArray
+from maze_dataset.generation.default_generators import DEFAULT_GENERATORS
 from maze_dataset.generation.generators import GENERATORS_MAP
 from maze_dataset.maze import LatticeMaze, PixelColors, SolvedMaze, TargetedLatticeMaze
 from maze_dataset.utils import adj_list_to_nested_set, bool_array_from_string
@@ -182,12 +183,12 @@ def test_find_start_end_points_in_rgb_pixel_grid():
     assert out_positions["path"].shape == (0,)
 
 
-@pytest.mark.parametrize("gfunc_name", GENERATORS_MAP.keys())
-def test_pixels_ascii_roundtrip(gfunc_name):
+@pytest.mark.parametrize("gfunc_name, kwargs", DEFAULT_GENERATORS)
+def test_pixels_ascii_roundtrip(gfunc_name, kwargs):
     """tests all generators work and can be written to/from ascii and pixels"""
     n: int = 5
     maze_gen_func = GENERATORS_MAP[gfunc_name]
-    maze: LatticeMaze = maze_gen_func(np.array([n, n]))
+    maze: LatticeMaze = maze_gen_func(np.array([n, n]), **kwargs)
 
     maze_pixels: np.ndarray = maze.as_pixels()
     maze_ascii: str = maze.as_ascii()
@@ -204,16 +205,11 @@ def test_pixels_ascii_roundtrip(gfunc_name):
     ), f"{maze_ascii}"
 
 
-@pytest.mark.parametrize(
-    "gfunc_name",
-    # skip pure percolation because it will stochastically fail
-    list(set(GENERATORS_MAP.keys()) - {"gen_percolation"}),
-)
-def test_targeted_solved_maze(gfunc_name):
+@pytest.mark.parametrize("gfunc_name, kwargs", DEFAULT_GENERATORS)
+def test_targeted_solved_maze(gfunc_name, kwargs):
     n: int = 5
-
     maze_gen_func = GENERATORS_MAP[gfunc_name]
-    maze: LatticeMaze = maze_gen_func(np.array([n, n]))
+    maze: LatticeMaze = maze_gen_func(np.array([n, n]), **kwargs)
     solution: CoordArray = maze.generate_random_path()
     tgt_maze: TargetedLatticeMaze = TargetedLatticeMaze.from_lattice_maze(
         maze,
@@ -273,33 +269,29 @@ def test_as_adj_list():
     assert adj_list_to_nested_set(expected) == adj_list_to_nested_set(adj_list)
 
 
-@pytest.mark.parametrize("gfunc_name", GENERATORS_MAP.keys())
-def test_get_nodes(gfunc_name):
+@pytest.mark.parametrize("gfunc_name, kwargs", DEFAULT_GENERATORS)
+def test_get_nodes(gfunc_name, kwargs):
     maze_gen_func = GENERATORS_MAP[gfunc_name]
-    maze = maze_gen_func(np.array((3, 2)))
+    maze = maze_gen_func(np.array((3, 2)), **kwargs)
     assert (
         maze.get_nodes().tolist()
         == np.array([(0, 0), (0, 1), (1, 0), (1, 1), (2, 0), (2, 1)]).tolist()
     )
 
 
-@pytest.mark.parametrize(
-    "gfunc_name",
-    # skip pure percolation because it will stochastically fail
-    list(set(GENERATORS_MAP.keys()) - {"gen_percolation"}),
-)
-def test_generate_random_path(gfunc_name):
+@pytest.mark.parametrize("gfunc_name, kwargs", DEFAULT_GENERATORS)
+def test_generate_random_path(gfunc_name, kwargs):
     maze_gen_func = GENERATORS_MAP[gfunc_name]
-    maze = maze_gen_func(np.array((2, 2)))
+    maze = maze_gen_func(np.array((2, 2)), **kwargs)
     path = maze.generate_random_path()
 
     # len > 1 ensures that we have unique start and end nodes
     assert len(path) > 1
 
 
-@pytest.mark.parametrize("gfunc_name", GENERATORS_MAP.keys())
-def test_generate_random_path_size_1(gfunc_name):
+@pytest.mark.parametrize("gfunc_name, kwargs", DEFAULT_GENERATORS)
+def test_generate_random_path_size_1(gfunc_name, kwargs):
     maze_gen_func = GENERATORS_MAP[gfunc_name]
-    maze = maze_gen_func(np.array((1, 1)))
+    maze = maze_gen_func(np.array((1, 1)), **kwargs)
     with pytest.raises(AssertionError):
         maze.generate_random_path()
