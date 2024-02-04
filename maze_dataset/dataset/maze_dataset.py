@@ -297,6 +297,29 @@ class MazeDataset(GPTDataset):
                 self.generation_metadata_collected
             ),
         }
+    
+    def serialize_minimal(self) -> JSONitem:
+        raise NotImplementedError("not implemented yet")
+        # TODO: ensure that we run the metadata collection filter, since we throw it out per maze
+
+        max_solution_len: int = max(len(m.solution) for m in self.mazes)   
+        return dict(
+            __format__="MazeDataset",
+            cfg=json_serialize(self.cfg),
+            generation_metadata_collected=json_serialize(
+                self.generation_metadata_collected
+            ),
+            maze_connection_lists=None, # TODO: concatenated tensor of k * 2 * n * n
+            maze_endpoints=None, # TODO: concatenated tensor of k * 2 * 2
+            maze_solution_lengths=None, # TODO: tensor of k * 1
+            maze_solutions=None, # TODO: concatenated tensor of k * max_solution_len * 2
+        )
+    
+    def load_minimal(self, data: JSONitem) -> "MazeDataset":
+        raise NotImplementedError("not implemented yet")
+        pass
+
+
 
     def update_self_config(self):
         """update the config to match the current state of the dataset"""
