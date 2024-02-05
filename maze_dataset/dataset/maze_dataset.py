@@ -279,6 +279,8 @@ class MazeDataset(GPTDataset):
     @classmethod
     def load(cls, data: JSONitem) -> "MazeDataset":
         """load from zanj/json"""
+        if data["__format__"] == "MazeDatasetMinimal":
+            return cls.load_minimal(data)
         assert data["__format__"] == "MazeDataset"
         return cls(
             **{
@@ -306,7 +308,7 @@ class MazeDataset(GPTDataset):
 
         max_solution_len: int = max(len(m.solution) for m in self.mazes)   
         return dict(
-            __format__="MazeDataset",
+            __format__="MazeDatasetMinimal",
             cfg=json_serialize(self.cfg),
             generation_metadata_collected=json_serialize(
                 self.generation_metadata_collected
@@ -323,7 +325,7 @@ class MazeDataset(GPTDataset):
     
     @classmethod
     def load_minimal(cls, data: JSONitem) -> "MazeDataset":
-        assert data["__format__"] == "MazeDataset"
+        assert data["__format__"] == "MazeDatasetMinimal"
         return cls(
             **{
                 'cfg': load_item_recursive(data["cfg"], tuple()),
