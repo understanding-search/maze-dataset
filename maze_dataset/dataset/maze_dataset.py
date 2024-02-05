@@ -299,7 +299,10 @@ class MazeDataset(GPTDataset):
         }
     
     def serialize_minimal(self) -> JSONitem:
-        raise NotImplementedError("not implemented yet")
+        """
+        Serialize to zanj/json `np.stack`ing data across mazes.
+        """
+        # raise NotImplementedError("not implemented yet")
         # TODO: ensure that we run the metadata collection filter, since we throw it out per maze
 
         max_solution_len: int = max(len(m.solution) for m in self.mazes)   
@@ -309,15 +312,23 @@ class MazeDataset(GPTDataset):
             generation_metadata_collected=json_serialize(
                 self.generation_metadata_collected
             ),
-            maze_connection_lists=None, # TODO: concatenated tensor of k * 2 * n * n
-            maze_endpoints=None, # TODO: concatenated tensor of k * 2 * 2
-            maze_solution_lengths=None, # TODO: tensor of k * 1
-            maze_solutions=None, # TODO: concatenated tensor of k * max_solution_len * 2
+            maze_connection_lists=
+                np.stack([m.connection_list for m in self.mazes]), # concatenated tensor of k * 2 * n * n
+            maze_endpoints=
+                np.stack([np.array([m.start_pos, m.end_pos]) for m in self.mazes]), # concatenated tensor of k * 2 * 2
+            maze_solution_lengths=
+                np.fromiter((m.solution.shape[0] for m in self.mazes), count=len(self) , dtype = np.uint16), # tensor of k * 1
+            maze_solutions=
+                np.stack([np.pad(m.solution, ((0,max_solution_len - len(m.solution)),(0,0)), constant_values=-1) for m in self.mazes]), # concatenated tensor of k * max_solution_len * 2
         )
     
     def load_minimal(self, data: JSONitem) -> "MazeDataset":
         raise NotImplementedError("not implemented yet")
-        pass
+        assert data["__format__"] == "MazeDataset"
+        nonmaze_data = {
+            key: load_item_recursive(data[key], tuple())
+            for key in ["cfg"]
+        }
 
 
 
