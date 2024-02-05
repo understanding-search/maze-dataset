@@ -280,13 +280,30 @@ class MazeDataset(GPTDataset):
     def load(cls, data: JSONitem) -> "MazeDataset":
         """load from zanj/json"""
         if data["__format__"] == "MazeDatasetMinimal":
-            return cls.load_minimal(data)
+            return cls._load_minimal(data)
         assert data["__format__"] == "MazeDataset"
         return cls(
             **{
                 key: load_item_recursive(data[key], tuple())
                 for key in ["cfg", "mazes", "generation_metadata_collected"]
             }
+        )
+
+    @classmethod
+    def _load_minimal(cls, data: JSONitem) -> "MazeDataset":
+        assert data["__format__"] == "MazeDatasetMinimal"
+        return cls(
+            **{
+                'cfg': load_item_recursive(data["cfg"], tuple()),
+                'generation_metadata_collected': None,
+                'mazes': (SolvedMaze(clist, soln[:slen,...], None, endpts[0,:], endpts[1,:]) 
+                        for clist, endpts, slen, soln in zip(
+                            data["maze_connection_lists"], 
+                            data["maze_endpoints"], 
+                            data["maze_solution_lengths"], 
+                            data["maze_solutions"])
+                ),
+            }   
         )
 
     def serialize(self) -> JSONitem:
@@ -323,25 +340,6 @@ class MazeDataset(GPTDataset):
                 np.stack([np.pad(m.solution, ((0, max_solution_len - len(m.solution)), (0, 0)), constant_values=-1) for m in self.mazes]), # shape(k,max_solution_len,2)
         )
     
-    @classmethod
-    def load_minimal(cls, data: JSONitem) -> "MazeDataset":
-        assert data["__format__"] == "MazeDatasetMinimal"
-        return cls(
-            **{
-                'cfg': load_item_recursive(data["cfg"], tuple()),
-                'generation_metadata_collected': None,
-                'mazes': (SolvedMaze(clist, soln[:slen,...], None, endpts[0,:], endpts[1,:]) 
-                        for clist, endpts, slen, soln in zip(
-                            data["maze_connection_lists"], 
-                            data["maze_endpoints"], 
-                            data["maze_solution_lengths"], 
-                            data["maze_solutions"])
-                ),
-            }   
-        )
-
-
-
     def update_self_config(self):
         """update the config to match the current state of the dataset"""
         self.cfg.n_mazes = len(self.mazes)
