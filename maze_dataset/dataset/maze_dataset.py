@@ -302,7 +302,6 @@ class MazeDataset(GPTDataset):
         """
         Serialize to zanj/json `np.stack`ing data across mazes.
         """
-        # raise NotImplementedError("not implemented yet")
         # TODO: ensure that we run the metadata collection filter, since we throw it out per maze
 
         max_solution_len: int = max(len(m.solution) for m in self.mazes)   
@@ -313,22 +312,31 @@ class MazeDataset(GPTDataset):
                 self.generation_metadata_collected
             ),
             maze_connection_lists=
-                np.stack([m.connection_list for m in self.mazes]), # concatenated tensor of k * 2 * n * n
+                np.stack([m.connection_list for m in self.mazes]), # shape(k,2,n,n)
             maze_endpoints=
-                np.stack([np.array([m.start_pos, m.end_pos]) for m in self.mazes]), # concatenated tensor of k * 2 * 2
+                np.stack([np.array([m.start_pos, m.end_pos]) for m in self.mazes]), # shape(k,2,2)
             maze_solution_lengths=
-                np.fromiter((m.solution.shape[0] for m in self.mazes), count=len(self) , dtype = np.uint16), # tensor of k * 1
+                np.fromiter((m.solution.shape[0] for m in self.mazes), count=len(self) , dtype=np.uint16), # shape(k)
             maze_solutions=
-                np.stack([np.pad(m.solution, ((0,max_solution_len - len(m.solution)),(0,0)), constant_values=-1) for m in self.mazes]), # concatenated tensor of k * max_solution_len * 2
+                np.stack([np.pad(m.solution, ((0, max_solution_len - len(m.solution)), (0, 0)), constant_values=-1) for m in self.mazes]), # shape(k,max_solution_len,2)
         )
     
-    def load_minimal(self, data: JSONitem) -> "MazeDataset":
-        raise NotImplementedError("not implemented yet")
+    @classmethod
+    def load_minimal(cls, data: JSONitem) -> "MazeDataset":
         assert data["__format__"] == "MazeDataset"
-        nonmaze_data = {
-            key: load_item_recursive(data[key], tuple())
-            for key in ["cfg"]
-        }
+        return cls(
+            **{
+                'cfg': load_item_recursive(data["cfg"], tuple()),
+                'generation_metadata_collected': None,
+                'mazes': (SolvedMaze(clist, soln[:slen,...], None, endpts[0,:], endpts[1,:]) 
+                        for clist, endpts, slen, soln in zip(
+                            data["maze_connection_lists"], 
+                            data["maze_endpoints"], 
+                            data["maze_solution_lengths"], 
+                            data["maze_solutions"])
+                ),
+            }   
+        )
 
 
 
