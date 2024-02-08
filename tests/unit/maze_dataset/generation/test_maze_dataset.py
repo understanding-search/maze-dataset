@@ -15,6 +15,7 @@ from maze_dataset.dataset.maze_dataset import (
 )
 from maze_dataset.maze import SolvedMaze
 from maze_dataset.utils import bool_array_from_string
+from maze_dataset.generation.generators import GENERATORS_MAP
 
 
 class TestMazeDatasetConfig:
@@ -55,6 +56,20 @@ class TestMazeDataset:
         assert dataset.cfg == dataset_copy.cfg
         for maze, maze_copy in zip(dataset, dataset_copy):
             assert maze == maze_copy
+
+    def test_serialize_load_minimal(self):
+        cfgs = [MazeDatasetConfig(name="test", grid_n=grid_n, n_mazes=n_mazes, maze_ctor=maze_ctor, maze_ctor_kwargs=maze_ctor_kwargs) 
+            for grid_n, n_mazes, maze_ctor, maze_ctor_kwargs in [
+                (3, 1, GENERATORS_MAP['gen_dfs'], {}), 
+                (5, 3, GENERATORS_MAP['gen_dfs'], dict(do_forks=False)), 
+                (10, 3, GENERATORS_MAP['gen_dfs'], {}), 
+                (5, 100, GENERATORS_MAP['gen_dfs'], dict(do_forks=False)), 
+                (6, 1000, GENERATORS_MAP['gen_dfs'], {}),
+                ]
+            ]
+        for c in cfgs:
+            d = MazeDataset.generate(c, gen_parallel=False)
+            assert MazeDataset.load(d.serialize_minimal()) == d
 
     def test_custom_maze_filter(self):
         connection_list = bool_array_from_string(

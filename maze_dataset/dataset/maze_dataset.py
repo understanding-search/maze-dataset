@@ -323,21 +323,22 @@ class MazeDataset(GPTDataset):
         """
         # TODO: ensure that we run the metadata collection filter, since we throw it out per maze
 
-        max_solution_len: int = max(len(m.solution) for m in self.mazes)   
+        filtered_meta = self.filter_by.collect_generation_meta()
+        max_solution_len: int = max(len(m.solution) for m in filtered_meta.mazes)   
         return dict(
             __format__="MazeDatasetMinimal",
-            cfg=json_serialize(self.cfg),
+            cfg=json_serialize(filtered_meta.cfg),
             generation_metadata_collected=json_serialize(
-                self.generation_metadata_collected
+                filtered_meta.generation_metadata_collected
             ),
             maze_connection_lists=
-                np.stack([m.connection_list for m in self.mazes]), # shape(k,2,n,n)
+                np.stack([m.connection_list for m in filtered_meta.mazes]), # shape(k,2,n,n)
             maze_endpoints=
-                np.stack([np.array([m.start_pos, m.end_pos]) for m in self.mazes]), # shape(k,2,2)
+                np.stack([np.array([m.start_pos, m.end_pos]) for m in filtered_meta.mazes]), # shape(k,2,2)
             maze_solution_lengths=
-                np.fromiter((m.solution.shape[0] for m in self.mazes), count=len(self) , dtype=np.uint16), # shape(k)
+                np.fromiter((m.solution.shape[0] for m in filtered_meta.mazes), count=len(self) , dtype=np.uint16), # shape(k)
             maze_solutions=
-                np.stack([np.pad(m.solution, ((0, max_solution_len - len(m.solution)), (0, 0)), constant_values=-1) for m in self.mazes]), # shape(k,max_solution_len,2)
+                np.stack([np.pad(m.solution, ((0, max_solution_len - len(m.solution)), (0, 0)), constant_values=-1) for m in filtered_meta.mazes]), # shape(k,max_solution_len,2)
         )
     
     def update_self_config(self):
