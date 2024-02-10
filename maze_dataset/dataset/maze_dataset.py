@@ -78,6 +78,10 @@ class MazeDatasetConfig(GPTDatasetConfig):
             else data["maze_ctor_kwargs"]
         ),
     )
+    
+    # If `n_mazes>=serialize_minimal_threshold`, then the MazeDataset will use `serialize_minimal`.
+    # Setting to None means that `serialize_minimal` will never be used.
+    serialize_minimal_threshold: int|None = 10
 
     @property
     def grid_shape(self) -> CoordTup:
@@ -308,6 +312,9 @@ class MazeDataset(GPTDataset):
 
     def serialize(self) -> JSONitem:
         """serialize to zanj/json"""
+        if self.cfg.serialize_minimal_threshold is not None and len(self) >= self.cfg.serialize_minimal_threshold:
+            return self.serialize_minimal()
+        print(f'serialize regular')
         return {
             "__format__": "MazeDataset",
             "cfg": json_serialize(self.cfg),
@@ -321,8 +328,7 @@ class MazeDataset(GPTDataset):
         """
         Serialize to zanj/json `np.stack`ing data across mazes.
         """
-        # TODO: ensure that we run the metadata collection filter, since we throw it out per maze
-
+        print(f'serialize_minimal')
         filtered_meta = self.filter_by.collect_generation_meta()
         max_solution_len: int = max(len(m.solution) for m in filtered_meta.mazes)   
         return dict(
