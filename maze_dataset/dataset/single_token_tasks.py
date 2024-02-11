@@ -141,18 +141,20 @@ def forking_points(
         path_start_idx: int = get_token_first_index(SPECIAL_TOKENS.PATH_START, tokens)
         split_positions_in_solution: list[int]
         if forks_not_paths:
-            split_positions_in_solution = maze.get_solution_forking_points()
+            split_positions_in_solution, _ = maze.get_solution_forking_points()
         else:
-            split_positions_in_solution = maze.get_solution_path_following_points()
+            split_positions_in_solution, _ = maze.get_solution_path_following_points()
 
         for soln_split in split_positions_in_solution:
-            prompt_split: int = path_start_idx + soln_split
+            prompt_split: int = path_start_idx + soln_split + 2
             prompts.append(tokens[:prompt_split])
             targets.append(tokens[prompt_split])
 
     return TaskSetup(prompts=prompts, targets=targets)
 
 
+
+# TODO: rework this to be conditioned on the tokenization mode
 SINGLE_TOKEN_TASKS: dict[str, TaskCreatorProtocolFixed] = {
     "path_start": functools.partial(
         token_after_fixed_start_token, start_token=SPECIAL_TOKENS.PATH_START, offset=0

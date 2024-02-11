@@ -1059,6 +1059,7 @@ class SolvedMaze(TargetedLatticeMaze):
         - if the start point is not a dead end, this counts as a fork
         - if the end point is not a dead end, this counts as a fork
         """
+        # TODO: option for excluding endpoints
         output_idxs: list[int] = list()
         output_coords: list[CoordTup] = list()
 

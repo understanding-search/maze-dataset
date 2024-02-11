@@ -67,7 +67,7 @@ _MAZETOKENIZER_PROPERTIES_TO_SERIALIZE: list[str] = [
 
 
 @serializable_dataclass(
-    properties_to_serialize=_MAZETOKENIZER_PROPERTIES_TO_SERIALIZE, kw_only=True
+    properties_to_serialize=_MAZETOKENIZER_PROPERTIES_TO_SERIALIZE
 )
 class MazeTokenizer(SerializableDataclass):
     """Tokenizer for mazes

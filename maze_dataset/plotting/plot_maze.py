@@ -301,6 +301,8 @@ class MazePlot:
         for coord in coords:
             self.marked_coords.append((coord, kwargs))
 
+        return self
+
     def _place_marked_coords(
         self, coords: CoordArray | list[Coord], **kwargs
     ) -> MazePlot:
