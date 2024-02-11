@@ -3,7 +3,8 @@ import typing
 
 import numpy as np
 from jaxtyping import Float
-from maze_dataset import SPECIAL_TOKENS
+from maze_dataset import SolvedMaze, SPECIAL_TOKENS
+from maze_dataset.tokenization import MazeTokenizer, TokenizationMode
 
 
 def get_token_first_index(search_token: str, token_list: list[str]) -> int:
@@ -116,6 +117,41 @@ def rand_token_in_range(
 
     return TaskSetup(prompts=prompts, targets=targets)
 
+def forking_points(
+    dataset_tokens: list[list[str]],
+    forks_not_paths: bool = True,
+    all_from_example: bool = True,
+    maze_tokenizer: MazeTokenizer = MazeTokenizer(TokenizationMode.AOTP_UT_uniform),
+) -> TaskSetup:
+    """predict tokens from forks
+    
+    if `forks_not_paths` is `True`, then we give prompts where there is a fork
+    if `forks_not_paths` is `False`, then we give prompts where there is only path following (no forks, excluding backtracking)
+    """
+    assert all_from_example, "'all_from_example==False' not implemented yet"
+
+    dataset_mazes: list[SolvedMaze] = [
+        SolvedMaze.from_tokens(tokens, maze_tokenizer) for tokens in dataset_tokens
+    ]
+
+    prompts: list[list[str]] = list()
+    targets: list[str] = list()
+
+    for tokens, maze in zip(dataset_tokens, dataset_mazes):
+        path_start_idx: int = get_token_first_index(SPECIAL_TOKENS.PATH_START, tokens)
+        split_positions_in_solution: list[int]
+        if forks_not_paths:
+            split_positions_in_solution = maze.get_solution_forking_points()
+        else:
+            split_positions_in_solution = maze.get_solution_path_following_points()
+
+        for soln_split in split_positions_in_solution:
+            prompt_split: int = path_start_idx + soln_split
+            prompts.append(tokens[:prompt_split])
+            targets.append(tokens[prompt_split])
+
+    return TaskSetup(prompts=prompts, targets=targets)
+
 
 SINGLE_TOKEN_TASKS: dict[str, TaskCreatorProtocolFixed] = {
     "path_start": functools.partial(
@@ -146,5 +182,11 @@ SINGLE_TOKEN_TASKS: dict[str, TaskCreatorProtocolFixed] = {
         end_token=SPECIAL_TOKENS.PATH_END,
         start_offset=3,
         end_offset=-2,
+    ),
+    "forking_choices": functools.partial(
+        forking_points, forks_not_paths=True, all_from_example=True
+    ),
+    "path_following": functools.partial(
+        forking_points, forks_not_paths=False, all_from_example=True
     ),
 }
