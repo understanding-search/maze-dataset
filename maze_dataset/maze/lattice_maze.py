@@ -884,6 +884,7 @@ class LatticeMaze(SerializableDataclass):
     @classmethod
     def from_ascii(cls, ascii_str: str) -> "LatticeMaze":
         lines: list[str] = ascii_str.strip().split("\n")
+        lines = [line.strip() for line in lines]
         ascii_grid: Shaped[np.ndarray, "x y"] = np.array(
             [list(line) for line in lines], dtype=str
         )
@@ -1050,6 +1051,36 @@ class SolvedMaze(TargetedLatticeMaze):
             connection_list=targeted_lattice_maze.connection_list,
             solution=np.array(solution),
             generation_meta=targeted_lattice_maze.generation_meta,
+        )
+
+    def get_solution_forking_points(self) -> tuple[list[int], CoordArray]:
+        """coordinates and their indicies from the solution where a fork is present
+
+        - if the start point is not a dead end, this counts as a fork
+        - if the end point is not a dead end, this counts as a fork
+        """
+        output_idxs: list[int] = list()
+        output_coords: list[CoordTup] = list()
+
+        for idx, coord in enumerate(self.solution):
+            # more than one choice for first coord, or more than 2 for any other
+            # since the previous coord doesn't count as a choice
+            is_endpoint: bool = idx == 0 or idx == self.solution.shape[0] - 1
+            theshold: int = 1 if is_endpoint else 2
+            if self.get_coord_neighbors(coord).shape[0] > theshold:
+                output_idxs.append(idx)
+                output_coords.append(coord)
+
+        return output_idxs, np.array(output_coords)
+
+    def get_solution_path_following_points(self) -> tuple[list[int], CoordArray]:
+        """coordinates from the solution where there is only a single (non-backtracking) point to move to
+
+        returns the complement of `get_solution_forking_points` from the path"""
+        forks_idxs, _ = self.get_solution_forking_points()
+        return (
+            np.delete(np.arange(self.solution.shape[0]), forks_idxs, axis=0),
+            np.delete(self.solution, forks_idxs, axis=0),
         )
 
 
