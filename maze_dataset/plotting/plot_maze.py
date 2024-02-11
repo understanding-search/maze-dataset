@@ -154,7 +154,6 @@ class MazePlot:
             if isinstance(maze, TargetedLatticeMaze):
                 self.add_true_path(SolvedMaze.from_targeted_lattice_maze(maze).solution)
 
-
     @property
     def solved_maze(self) -> SolvedMaze:
         if self.true_path is None:
@@ -293,8 +292,8 @@ class MazePlot:
         """Transform Point from MazeTransformer (row, column) notation to matplotlib default (x, y) notation where x is the horizontal axis."""
         point = np.array([point[1], point[0]])
         return self.unit_length * (point + 0.5)
-    
-    def mark_coords(self, coords: CoordArray|list[Coord], **kwargs) -> MazePlot:
+
+    def mark_coords(self, coords: CoordArray | list[Coord], **kwargs) -> MazePlot:
         kwargs = {
             **dict(marker="+", color="blue"),
             **kwargs,
@@ -302,7 +301,9 @@ class MazePlot:
         for coord in coords:
             self.marked_coords.append((coord, kwargs))
 
-    def _place_marked_coords(self, coords: CoordArray|list[Coord], **kwargs) -> MazePlot:
+    def _place_marked_coords(
+        self, coords: CoordArray | list[Coord], **kwargs
+    ) -> MazePlot:
         coords_tp = np.array([self._rowcol_to_coord(coord) for coord in coords])
         self.ax.plot(coords_tp[:, 0], coords_tp[:, 1], **kwargs)
 

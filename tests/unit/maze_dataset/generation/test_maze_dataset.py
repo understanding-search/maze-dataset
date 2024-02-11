@@ -106,7 +106,8 @@ class TestMazeDatasetFilters:
     )
 
     def test_filters(self):
-        class TestDataset(MazeDataset): ...
+        class TestDataset(MazeDataset):
+            ...
 
         @register_filter_namespace_for_dataset(TestDataset)
         class TestFilters:

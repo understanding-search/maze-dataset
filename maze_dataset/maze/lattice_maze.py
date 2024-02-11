@@ -229,9 +229,9 @@ class LatticeMaze(SerializableDataclass):
         c_start = tuple(c_start)
         c_end = tuple(c_end)
 
-        g_score: dict[CoordTup, float] = (
-            dict()
-        )  # cost of cheapest path to node from start currently known
+        g_score: dict[
+            CoordTup, float
+        ] = dict()  # cost of cheapest path to node from start currently known
         f_score: dict[CoordTup, float] = {
             c_start: 0.0
         }  # estimated total cost of path thru a node: f_score[c] := g_score[c] + heuristic(c, c_end)
@@ -242,7 +242,9 @@ class LatticeMaze(SerializableDataclass):
 
         closed_vtx: set[CoordTup] = set()  # nodes already evaluated
         open_vtx: set[CoordTup] = set([c_start])  # nodes to be evaluated
-        source: dict[CoordTup, CoordTup] = (
+        source: dict[
+            CoordTup, CoordTup
+        ] = (
             dict()
         )  # node immediately preceding each node in the path (currently known shortest path)
 
@@ -642,12 +644,12 @@ class LatticeMaze(SerializableDataclass):
         # set endpoints for TargetedLatticeMaze
         if self.__class__ == TargetedLatticeMaze:
             if show_endpoints:
-                pixel_grid[self.start_pos[0] * 2 + 1, self.start_pos[1] * 2 + 1] = (
-                    PixelColors.START
-                )
-                pixel_grid[self.end_pos[0] * 2 + 1, self.end_pos[1] * 2 + 1] = (
-                    PixelColors.END
-                )
+                pixel_grid[
+                    self.start_pos[0] * 2 + 1, self.start_pos[1] * 2 + 1
+                ] = PixelColors.START
+                pixel_grid[
+                    self.end_pos[0] * 2 + 1, self.end_pos[1] * 2 + 1
+                ] = PixelColors.END
             return pixel_grid
 
         # set solution
@@ -669,12 +671,12 @@ class LatticeMaze(SerializableDataclass):
                 ] = PixelColors.PATH
 
             # set endpoints (again, since path would overwrite them)
-            pixel_grid[self.start_pos[0] * 2 + 1, self.start_pos[1] * 2 + 1] = (
-                PixelColors.START
-            )
-            pixel_grid[self.end_pos[0] * 2 + 1, self.end_pos[1] * 2 + 1] = (
-                PixelColors.END
-            )
+            pixel_grid[
+                self.start_pos[0] * 2 + 1, self.start_pos[1] * 2 + 1
+            ] = PixelColors.START
+            pixel_grid[
+                self.end_pos[0] * 2 + 1, self.end_pos[1] * 2 + 1
+            ] = PixelColors.END
 
         return pixel_grid
 
@@ -1052,16 +1054,16 @@ class SolvedMaze(TargetedLatticeMaze):
             solution=np.array(solution),
             generation_meta=targeted_lattice_maze.generation_meta,
         )
-    
+
     def get_solution_forking_points(self) -> tuple[list[int], CoordArray]:
         """coordinates and their indicies from the solution where a fork is present
-        
+
         - if the start point is not a dead end, this counts as a fork
         - if the end point is not a dead end, this counts as a fork
         """
         output_idxs: list[int] = list()
         output_coords: list[CoordTup] = list()
-        
+
         for idx, coord in enumerate(self.solution):
             # more than one choice for first coord, or more than 2 for any other
             # since the previous coord doesn't count as a choice
@@ -1072,7 +1074,7 @@ class SolvedMaze(TargetedLatticeMaze):
                 output_coords.append(coord)
 
         return output_idxs, np.array(output_coords)
-    
+
     def get_solution_path_following_points(self) -> tuple[list[int], CoordArray]:
         """coordinates from the solution where there is only a single (non-backtracking) point to move to
 

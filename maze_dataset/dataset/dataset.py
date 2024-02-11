@@ -47,9 +47,9 @@ class GPTDatasetConfig(SerializableDataclass):
     # --------------------------------------------------
 
     seed: int | None = serializable_field(default=DEFAULT_SEED)
-    applied_filters: list[dict[typing.Literal["name", "kwargs"], str | dict]] = (
-        serializable_field(default_factory=list)
-    )
+    applied_filters: list[
+        dict[typing.Literal["name", "kwargs"], str | dict]
+    ] = serializable_field(default_factory=list)
 
     def __post_init__(self):
         assert self.seq_len_min <= self.seq_len_max
@@ -425,7 +425,8 @@ class DatasetFilterProtocol(typing.Protocol):
         self,
         dataset: GPTDataset,
         **kwargs,
-    ) -> GPTDataset: ...
+    ) -> GPTDataset:
+        ...
 
 
 def register_dataset_filter(
