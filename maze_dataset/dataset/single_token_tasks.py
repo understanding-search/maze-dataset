@@ -14,7 +14,7 @@ TaskSetup = typing.NamedTuple(
     "TaskSetup",
     [
         ("prompts", list[list[str]]),
-        ("targets", str),
+        ("targets", list[str]),
     ],
 )
 
@@ -78,28 +78,41 @@ def rand_token_in_range(
     end_token: str = SPECIAL_TOKENS.PATH_END,
     start_offset: int = 1,
     end_offset: int = -1,
+    all_from_example: bool = True,
 ) -> TaskSetup:
-    """predict some random token between (non-inclusive) `start_token` and `end_token`"""
+    """predict some random token between (non-inclusive) `start_token` and `end_token`
+    
+    if `all_from_example` is `True`, then all possible tokens are selected from the same example
+    if `all_from_example` is `False`, then for each example we select a single random token
+    """
     n_samples: int = len(dataset_tokens)
 
     prompts: list[list[str]] = list()
     targets: list[str] = list()
-    positions_p: Float[np.ndarray, "n_samples"] = np.random.uniform(size=(n_samples,))
+    if all_from_example:
+        positions_p: Float[np.ndarray, "n_samples"] = np.random.uniform(size=(n_samples,))
 
     for i, sample_tokens in enumerate(dataset_tokens):
+        # find start and end token indecies
         start_idx: int = (
             get_token_first_index(start_token, sample_tokens) + start_offset
         )
         end_idx: int = get_token_first_index(end_token, sample_tokens) + end_offset
 
-        selected_token_idx: int
-        if start_idx < end_idx:
-            selected_token_idx = int(positions_p[i] * (end_idx - start_idx) + start_idx)
+        # decide which token(s) to select
+        selected_token_indecies: list[int]
+        if start_idx > end_idx:
+            selected_token_indecies = [start_idx]
         else:
-            selected_token_idx = start_idx
+            if all_from_example:
+                selected_token_indecies = list[range(start_idx, end_idx)]
+            else:          
+                selected_token_indecies = [int(positions_p[i] * (end_idx - start_idx) + start_idx)]
 
-        prompts.append(sample_tokens[:selected_token_idx])
-        targets.append(sample_tokens[selected_token_idx])
+        # add the selected tokens to the prompts and targets
+        for selected_token_idx in selected_token_indecies:
+            prompts.append(sample_tokens[:selected_token_idx])
+            targets.append(sample_tokens[selected_token_idx])
 
     return TaskSetup(prompts=prompts, targets=targets)
 
