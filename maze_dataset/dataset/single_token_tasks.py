@@ -19,14 +19,14 @@ TaskSetup = typing.NamedTuple(
 )
 
 
-class DLAProtocol(typing.Protocol):
+class TaskCreatorProtocol(typing.Protocol):
     """should take a dataset's tokens, and return a tuple of (prompts, targets)"""
 
     def __call__(self, dataset_tokens: list[list[str]], **kwargs) -> TaskSetup:
         ...
 
 
-class DLAProtocolFixed(typing.Protocol):
+class TaskCreatorProtocolFixed(typing.Protocol):
     """should take a dataset's tokens, and return a tuple of (prompts, targets)
 
     this variant signifies it's ready to be used -- no keyword arguments are needed
@@ -104,7 +104,7 @@ def rand_token_in_range(
     return TaskSetup(prompts=prompts, targets=targets)
 
 
-LOGIT_ATTRIB_TASKS: dict[str, DLAProtocolFixed] = {
+SINGLE_TOKEN_TASKS: dict[str, TaskCreatorProtocolFixed] = {
     "path_start": functools.partial(
         token_after_fixed_start_token, start_token=SPECIAL_TOKENS.PATH_START, offset=0
     ),
