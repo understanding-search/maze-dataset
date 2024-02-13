@@ -81,7 +81,7 @@ class MazeDatasetConfig(GPTDatasetConfig):
     
     # If `n_mazes>=serialize_minimal_threshold`, then the MazeDataset will use `serialize_minimal`.
     # Setting to None means that `serialize_minimal` will never be used.
-    serialize_minimal_threshold: int|None = 10
+    serialize_minimal_threshold: int|None = serializable_field(default=None)
 
     @property
     def grid_shape(self) -> CoordTup:
