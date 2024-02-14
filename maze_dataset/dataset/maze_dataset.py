@@ -329,6 +329,7 @@ class MazeDataset(GPTDataset):
         Serialize to zanj/json `np.stack`ing data across mazes.
         """
         print(f'serialize_minimal')
+        # TODO: if metadata is already collected, don't call the filter
         filtered_meta = self.filter_by.collect_generation_meta()
         max_solution_len: int = max(len(m.solution) for m in filtered_meta.mazes)   
         return dict(
@@ -540,6 +541,8 @@ class MazeDatasetFilters:
         dataset: MazeDataset, clear_in_mazes: bool = True
     ) -> MazeDataset:
         new_dataset: MazeDataset = copy.deepcopy(dataset)
+
+        # TODO: ensure this function is idempotent -- if the generation meta is already collected, don't collect it again, do nothing
 
         gen_meta_lists: dict = defaultdict(list)
         for maze in new_dataset:
