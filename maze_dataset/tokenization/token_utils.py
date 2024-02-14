@@ -156,7 +156,7 @@ def remove_padding_from_token_str(token_str: str) -> str:
     token_str = token_str.replace(f"{SPECIAL_TOKENS.PADDING}", "")
     return token_str
 
-
+# TODO: allow `None` as start or end value, meaning to the start or end of the sequence
 def tokens_between(
     tokens: list[str],
     start_value: str,
