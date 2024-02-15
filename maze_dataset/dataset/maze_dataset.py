@@ -314,7 +314,6 @@ class MazeDataset(GPTDataset):
         """serialize to zanj/json"""
         if self.cfg.serialize_minimal_threshold is not None and len(self) >= self.cfg.serialize_minimal_threshold:
             return self.serialize_minimal()
-        print(f'serialize regular')
         return {
             "__format__": "MazeDataset",
             "cfg": json_serialize(self.cfg),
@@ -328,7 +327,6 @@ class MazeDataset(GPTDataset):
         """
         Serialize to zanj/json `np.stack`ing data across mazes.
         """
-        print(f'serialize_minimal')
         # TODO: if metadata is already collected, don't call the filter
         filtered_meta = self.filter_by.collect_generation_meta()
         max_solution_len: int = max(len(m.solution) for m in filtered_meta.mazes)   
