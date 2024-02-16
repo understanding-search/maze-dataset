@@ -1,6 +1,7 @@
 import math
 import typing
-from typing import Iterable, Literal, Mapping
+from typing import Iterable, Literal, Mapping, Callable, TypeVar
+import timeit
 
 import numpy as np
 from jaxtyping import Bool
@@ -147,3 +148,36 @@ def apply_mapping_chain(
             case _:
                 raise ValueError(f"invalid value for {when_missing = }")
     return output
+
+T = TypeVar('T')
+
+def timeit_fancy(
+    cmd: Callable[[], T] | str, 
+    setup:str = lambda: None, 
+    repeats:int = 5, 
+    total_runtime:float = 1.0, 
+    namespace:dict[str, any] | None=None, 
+    get_return=False
+    )-> None | tuple[float, T]: 
+    """
+    Wrapper for `timeit` to get the fastest run of a callable with more customization options.
+    
+    Approximates the functionality of the %timeit magic or command line interface in a Python callable.
+    `total_runtime`: Indication of the rough total wall clock time in seconds the call to `quicktimeit` should take.
+    If a single execution of `cmd` takes longer than `total_runtime/repeats`, then `total_rutime` may still be greatly exceeded.
+    `namespace`: Passed to `timeit.Timer` constructor. 
+    If `cmd` or `setup` use local or global variables, they must be passed here. See `timeit` documentation for details.
+    `get_return`: Whether to pass the value returned from `cmd`. If True, the return value will be appended in a tuple with execution time.
+    This is for speed and convenience so that `cmd` doesn't need to be run again in the calling scope if the return values are needed.
+    `get_return` is only supported
+    """
+    timer = timeit.Timer(cmd, setup, globals=namespace)
+    n, _ = timer.autorange()
+    num = max(round(n/(0.2/(total_runtime/repeats))),1)  # 0.2 sec is the default time per repeat used in `timeit.autorange`.
+    min_time = min([t/num for t in timer.repeat(repeats, num)]) # timeit documentation recommends using the fastest run, ignoring 
+    if get_return:
+        if isinstance(cmd, str):
+            raise TypeError(f'`cmd` must be a callable if `get_return=True`, not type {type(cmd)}.')
+            # Support for `str` types could be added if it were allowable to use the `exec` command.
+        return min_time, cmd()
+    return min_time

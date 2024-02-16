@@ -538,9 +538,10 @@ class MazeDatasetFilters:
     def collect_generation_meta(
         dataset: MazeDataset, clear_in_mazes: bool = True
     ) -> MazeDataset:
+        if dataset.generation_metadata_collected is not None: return dataset
+        # if the generation meta is already collected, don't collect it again, do nothing
+        
         new_dataset: MazeDataset = copy.deepcopy(dataset)
-
-        # TODO: ensure this function is idempotent -- if the generation meta is already collected, don't collect it again, do nothing
 
         gen_meta_lists: dict = defaultdict(list)
         for maze in new_dataset:
