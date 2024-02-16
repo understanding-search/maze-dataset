@@ -299,13 +299,13 @@ class MazeDataset(GPTDataset):
         return cls(
             **{
                 'cfg': load_item_recursive(data["cfg"], tuple()),
-                'generation_metadata_collected': None,
+                'generation_metadata_collected': load_item_recursive(data['generation_metadata_collected'], tuple()),
                 'mazes': [SolvedMaze(clist, soln[:slen,...], None, endpts[0,:], endpts[1,:]) 
                         for clist, endpts, slen, soln in zip(
-                            data["maze_connection_lists"], 
-                            data["maze_endpoints"], 
-                            data["maze_solution_lengths"], 
-                            data["maze_solutions"])
+                            load_item_recursive(data["maze_connection_lists"], tuple()), 
+                            load_item_recursive(data["maze_endpoints"], tuple()), 
+                            load_item_recursive(data["maze_solution_lengths"], tuple()), 
+                            load_item_recursive(data["maze_solutions"], tuple()))
                 ],
             }   
         )
@@ -341,7 +341,7 @@ class MazeDataset(GPTDataset):
             maze_endpoints=
                 np.stack([np.array([m.start_pos, m.end_pos]) for m in filtered_meta.mazes]), # shape(k,2,2)
             maze_solution_lengths=
-                np.fromiter((m.solution.shape[0] for m in filtered_meta.mazes), count=len(self) , dtype=np.uint16), # shape(k)
+                np.fromiter((m.solution.shape[0] for m in filtered_meta.mazes), count=len(self) , dtype=np.int32), # shape(k)
             maze_solutions=
                 np.stack([np.pad(m.solution, ((0, max_solution_len - len(m.solution)), (0, 0)), constant_values=-1) for m in filtered_meta.mazes]), # shape(k,max_solution_len,2)
         )
