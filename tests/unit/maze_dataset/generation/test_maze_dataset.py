@@ -14,9 +14,9 @@ from maze_dataset.dataset.maze_dataset import (
     MazeDatasetConfig,
     register_maze_filter,
 )
+from maze_dataset.generation.generators import GENERATORS_MAP
 from maze_dataset.maze import SolvedMaze
 from maze_dataset.utils import bool_array_from_string
-from maze_dataset.generation.generators import GENERATORS_MAP
 
 
 class TestMazeDatasetConfig:
@@ -60,27 +60,49 @@ class TestMazeDataset:
 
     def test_serialize_load_minimal(self):
         cfgs = [self.config]
-        cfgs.extend([MazeDatasetConfig(name="test", grid_n=grid_n, n_mazes=n_mazes, maze_ctor=maze_ctor, maze_ctor_kwargs=maze_ctor_kwargs, serialize_minimal_threshold=srz_threshold) 
-        for grid_n, n_mazes, maze_ctor, maze_ctor_kwargs, srz_threshold in [
-                (3, 1, GENERATORS_MAP['gen_dfs'], {}, 1), 
-                (5, 5, GENERATORS_MAP['gen_dfs'], dict(do_forks=False), 4), 
+        cfgs.extend(
+            [
+                MazeDatasetConfig(
+                    name="test",
+                    grid_n=grid_n,
+                    n_mazes=n_mazes,
+                    maze_ctor=maze_ctor,
+                    maze_ctor_kwargs=maze_ctor_kwargs,
+                    serialize_minimal_threshold=srz_threshold,
+                )
+                for grid_n, n_mazes, maze_ctor, maze_ctor_kwargs, srz_threshold in [
+                    (3, 1, GENERATORS_MAP["gen_dfs"], {}, 1),
+                    (5, 5, GENERATORS_MAP["gen_dfs"], dict(do_forks=False), 4),
                 ]
-            ])
+            ]
+        )
         for c in cfgs:
             d = MazeDataset.generate(c, gen_parallel=False)
             assert MazeDataset.load(d.serialize_minimal()) == d
-            
+
     def test_save_read_minimal(self):
         cfgs = [self.config]
-        cfgs.extend([MazeDatasetConfig(name="test", grid_n=grid_n, n_mazes=n_mazes, maze_ctor=maze_ctor, maze_ctor_kwargs=maze_ctor_kwargs, serialize_minimal_threshold=srz_threshold) 
-        for grid_n, n_mazes, maze_ctor, maze_ctor_kwargs, srz_threshold in [
-                (3, 1, GENERATORS_MAP['gen_dfs'], {}, 1), 
-                (5, 5, GENERATORS_MAP['gen_dfs'], dict(do_forks=False), 4), 
+        cfgs.extend(
+            [
+                MazeDatasetConfig(
+                    name="test",
+                    grid_n=grid_n,
+                    n_mazes=n_mazes,
+                    maze_ctor=maze_ctor,
+                    maze_ctor_kwargs=maze_ctor_kwargs,
+                    serialize_minimal_threshold=srz_threshold,
+                )
+                for grid_n, n_mazes, maze_ctor, maze_ctor_kwargs, srz_threshold in [
+                    (3, 1, GENERATORS_MAP["gen_dfs"], {}, 1),
+                    (5, 5, GENERATORS_MAP["gen_dfs"], dict(do_forks=False), 4),
                 ]
-            ])
+            ]
+        )
         for c in cfgs:
             d = MazeDataset.generate(c, gen_parallel=False)
-            p = os.path.abspath(os.path.join(os.getcwd(), '..', 'data',d.cfg.to_fname()+'.zanj'))
+            p = os.path.abspath(
+                os.path.join(os.getcwd(), "..", "data", d.cfg.to_fname() + ".zanj")
+            )
             d.save(file_path=p)
             roundtrip = MazeDataset.read(file_path=p)
             assert roundtrip == d
@@ -135,8 +157,7 @@ class TestMazeDatasetFilters:
     )
 
     def test_filters(self):
-        class TestDataset(MazeDataset):
-            ...
+        class TestDataset(MazeDataset): ...
 
         @register_filter_namespace_for_dataset(TestDataset)
         class TestFilters:
