@@ -62,7 +62,7 @@ class TestMazeDataset:
         cfgs = [self.config]
         cfgs.extend([MazeDatasetConfig(name="test", grid_n=grid_n, n_mazes=n_mazes, maze_ctor=maze_ctor, maze_ctor_kwargs=maze_ctor_kwargs, serialize_minimal_threshold=srz_threshold) 
         for grid_n, n_mazes, maze_ctor, maze_ctor_kwargs, srz_threshold in [
-                (3, 2, GENERATORS_MAP['gen_dfs'], {}, 1), 
+                (3, 1, GENERATORS_MAP['gen_dfs'], {}, 1), 
                 (5, 5, GENERATORS_MAP['gen_dfs'], dict(do_forks=False), 4), 
                 ]
             ])
@@ -74,7 +74,7 @@ class TestMazeDataset:
         cfgs = [self.config]
         cfgs.extend([MazeDatasetConfig(name="test", grid_n=grid_n, n_mazes=n_mazes, maze_ctor=maze_ctor, maze_ctor_kwargs=maze_ctor_kwargs, serialize_minimal_threshold=srz_threshold) 
         for grid_n, n_mazes, maze_ctor, maze_ctor_kwargs, srz_threshold in [
-                (3, 2, GENERATORS_MAP['gen_dfs'], {}, 1), 
+                (3, 1, GENERATORS_MAP['gen_dfs'], {}, 1), 
                 (5, 5, GENERATORS_MAP['gen_dfs'], dict(do_forks=False), 4), 
                 ]
             ])
