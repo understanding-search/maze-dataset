@@ -283,7 +283,7 @@ class MazeDataset(GPTDataset):
     @classmethod
     def load(cls, data: JSONitem) -> "MazeDataset":
         """load from zanj/json"""
-        if data["__format__"] == "MazeDatasetMinimal":
+        if data["__format__"] == "MazeDataset:minimal":
             return cls._load_minimal(data)
         assert data["__format__"] == "MazeDataset"
         return cls(
@@ -295,7 +295,7 @@ class MazeDataset(GPTDataset):
 
     @classmethod
     def _load_minimal(cls, data: JSONitem) -> "MazeDataset":
-        assert data["__format__"] == "MazeDatasetMinimal"
+        assert data["__format__"] == "MazeDataset:minimal"
         return cls(
             **{
                 "cfg": load_item_recursive(data["cfg"], tuple()),
@@ -336,26 +336,25 @@ class MazeDataset(GPTDataset):
         """
         Serialize to zanj/json `np.stack`ing data across mazes.
         """
-        # TODO: if metadata is already collected, don't call the filter
         filtered_meta = self.filter_by.collect_generation_meta()
         max_solution_len: int = max(len(m.solution) for m in filtered_meta.mazes)
         return dict(
-            __format__="MazeDatasetMinimal",
+            __format__="MazeDataset:minimal",
             cfg=json_serialize(filtered_meta.cfg),
             generation_metadata_collected=json_serialize(
                 filtered_meta.generation_metadata_collected
             ),
             maze_connection_lists=np.stack(
                 [m.connection_list for m in filtered_meta.mazes]
-            ),  # shape(k,2,n,n)
+            ),  # shape(n,2,g,g)
             maze_endpoints=np.stack(
                 [np.array([m.start_pos, m.end_pos]) for m in filtered_meta.mazes]
-            ),  # shape(k,2,2)
+            ),  # shape(n,2,2)
             maze_solution_lengths=np.fromiter(
                 (m.solution.shape[0] for m in filtered_meta.mazes),
                 count=len(self),
                 dtype=np.int32,
-            ),  # shape(k)
+            ),  # shape(n)
             maze_solutions=np.stack(
                 [
                     np.pad(
@@ -365,7 +364,7 @@ class MazeDataset(GPTDataset):
                     )
                     for m in filtered_meta.mazes
                 ]
-            ),  # shape(k,max_solution_len,2)
+            ),  # shape(n,max_solution_len,2)
         )
 
     def update_self_config(self):
