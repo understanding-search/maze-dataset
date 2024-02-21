@@ -4,6 +4,8 @@ import os
 import numpy as np
 import pytest
 
+from zanj import ZANJ
+
 from maze_dataset.constants import CoordArray
 from maze_dataset.dataset.dataset import (
     register_dataset_filter,
@@ -104,8 +106,14 @@ class TestMazeDataset:
                 os.path.join(os.getcwd(), "..", "data", d.cfg.to_fname() + ".zanj")
             )
             d.save(file_path=p)
-            roundtrip = MazeDataset.read(file_path=p)
+            # read as MazeDataset
+            roundtrip = MazeDataset.read(p)
             assert roundtrip == d
+            # read from zanj
+            z = ZANJ()
+            roundtrip_zanj = z.read(p)
+            assert roundtrip_zanj == d
+            
 
     def test_custom_maze_filter(self):
         connection_list = bool_array_from_string(
