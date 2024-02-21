@@ -336,7 +336,8 @@ class MazeDataset(GPTDataset):
         """
         Serialize to zanj/json `np.stack`ing data across mazes.
         """
-        filtered_meta = self.filter_by.collect_generation_meta()
+        if self.generation_metadata_collected is None:
+            filtered_meta = self.filter_by.collect_generation_meta()
         max_solution_len: int = max(len(m.solution) for m in filtered_meta.mazes)
         return dict(
             __format__="MazeDataset:minimal",
