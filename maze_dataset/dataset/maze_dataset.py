@@ -300,23 +300,47 @@ class MazeDataset(GPTDataset):
     def _load_minimal(cls, data: JSONitem) -> "MazeDataset":
         assert data["__format__"] == "MazeDataset:minimal"
         return cls(
-            **{
-                "cfg": load_item_recursive(data["cfg"], tuple()),
-                "generation_metadata_collected": load_item_recursive(
-                    data["generation_metadata_collected"], tuple()
-                ),
-                "mazes": [
-                    SolvedMaze(
-                        clist, soln[:slen, ...], None, endpts[0, :], endpts[1, :]
-                    )
-                    for clist, endpts, slen, soln in zip(
-                        load_item_recursive(data["maze_connection_lists"], tuple()),
-                        load_item_recursive(data["maze_endpoints"], tuple()),
-                        load_item_recursive(data["maze_solution_lengths"], tuple()),
-                        load_item_recursive(data["maze_solutions"], tuple()),
-                    )
-                ],
-            }
+            cfg = load_item_recursive(data["cfg"], tuple()),
+            generation_metadata_collected = load_item_recursive(data["generation_metadata_collected"], tuple()),
+            mazes = [
+                SolvedMaze(
+                    clist, soln[:slen, ...],
+                )
+                for clist, slen, soln in zip(
+                    load_item_recursive(data["maze_connection_lists"], tuple()),
+                    load_item_recursive(data["maze_solution_lengths"], tuple()),
+                    load_item_recursive(data["maze_solutions"], tuple()),
+                    # load_item_recursive(data["maze_endpoints"], tuple()),
+                )
+            ],
+        )
+
+    @classmethod
+    def _load_minimal_soln_cat(cls, data: JSONitem) -> "MazeDataset":
+        assert data["__format__"] == "MazeDataset:minimal_soln_cat"
+        print(data.keys())
+        print(f"{data['maze_solution_lengths'].shape = }, {data['maze_solutions_concat'].shape = }")
+        # print(f"{data['maze_solution_lengths'] = }, {data['maze_solutions_concat'] = }")
+
+        maze_solution_lengths = load_item_recursive(data["maze_solution_lengths"], tuple()),
+        maze_solutions_concat = load_item_recursive(data["maze_solutions_concat"], tuple()),
+        maze_solutions = np.split(maze_solutions_concat, np.cumsum(maze_solution_lengths)[:-1])
+        print(f"{maze_solutions = }")
+
+        return cls(
+            cfg = load_item_recursive(data["cfg"], tuple()),
+            generation_metadata_collected = load_item_recursive(data["generation_metadata_collected"], tuple()),
+            mazes = [
+                SolvedMaze(
+                    connection_list=clist, 
+                    solution=soln,
+                )
+                for clist, soln in zip(
+                    load_item_recursive(data["maze_connection_lists"], tuple()),
+                    # load_item_recursive(data["maze_endpoints"], tuple()),
+                    maze_solutions,
+                )
+            ],
         )
 
     def serialize(self) -> JSONitem:
@@ -383,20 +407,20 @@ class MazeDataset(GPTDataset):
         else:
             filtered_meta = self
         
-        max_solution_len: int = max(len(m.solution) for m in filtered_meta.mazes)
+        max_solution_len: int = max(m.solution.shape[0] for m in filtered_meta.mazes)
         n_mazes: int = len(filtered_meta.mazes)
         grid_n: int = filtered_meta.cfg.grid_n
 
         maze_connection_lists: np.ndarray = np.empty((n_mazes, 2, grid_n, grid_n), dtype=np.bool_)
-        maze_endpoints: np.ndarray = np.empty((n_mazes, 2, 2), dtype=np.int8)
+        # maze_endpoints: np.ndarray = np.empty((n_mazes, 2, 2), dtype=np.int8)
         maze_solution_lengths: np.ndarray = np.empty((n_mazes,), dtype=np.int32)
         maze_solutions: np.ndarray = np.empty((n_mazes, max_solution_len, 2), dtype=np.int8)
 
         for idx, maze in enumerate(filtered_meta.mazes):
             maze_connection_lists[idx] = maze.connection_list
-            maze_endpoints[idx] = np.array([maze.start_pos, maze.end_pos])
-            maze_solution_lengths[idx] = len(maze.solution)
-            maze_solutions[idx, : len(maze.solution)] = maze.solution
+            # maze_endpoints[idx] = np.array([maze.start_pos, maze.end_pos])
+            maze_solution_lengths[idx] = maze.solution.shape[0]
+            maze_solutions[idx, : maze.solution.shape[0]] = maze.solution
 
 
         return dict(
@@ -406,9 +430,47 @@ class MazeDataset(GPTDataset):
                 filtered_meta.generation_metadata_collected
             ),
             maze_connection_lists=maze_connection_lists,
-            maze_endpoints=maze_endpoints,
+            # maze_endpoints=maze_endpoints,
             maze_solution_lengths=maze_solution_lengths,
             maze_solutions=maze_solutions,
+        )
+    
+    def _serialize_minimal_soln_cat(self) -> JSONitem:
+        if self.generation_metadata_collected is None:
+            filtered_meta = self.filter_by.collect_generation_meta()
+        else:
+            filtered_meta = self
+        
+        maze_solution_lengths: np.ndarray = np.array(
+            [m.solution.shape[0] for m in filtered_meta.mazes],
+            dtype=np.int32,
+        )
+        n_mazes: int = len(filtered_meta.mazes)
+        grid_n: int = filtered_meta.cfg.grid_n
+        total_solution_len: int = np.sum(maze_solution_lengths)
+
+        maze_connection_lists: np.ndarray = np.empty((n_mazes, 2, grid_n, grid_n), dtype=np.bool_)
+        maze_endpoints: np.ndarray = np.empty((n_mazes, 2, 2), dtype=np.int8)
+        maze_solutions_concat: np.ndarray = np.empty((total_solution_len, 2), dtype=np.int8)
+
+        solutions_running_idx: int = 0
+        for idx, maze in enumerate(filtered_meta.mazes):
+            maze_connection_lists[idx] = maze.connection_list
+            maze_endpoints[idx] = np.array([maze.start_pos, maze.end_pos])
+            maze_solution_lengths[idx] = maze.solution.shape[0]
+            maze_solutions_concat[solutions_running_idx : solutions_running_idx + maze.solution.shape[0]] = maze.solution
+
+
+        return dict(
+            __format__="MazeDataset:minimal_soln_cat",
+            cfg=json_serialize(filtered_meta.cfg),
+            generation_metadata_collected=json_serialize(
+                filtered_meta.generation_metadata_collected
+            ),
+            maze_connection_lists=maze_connection_lists,
+            maze_endpoints=maze_endpoints,
+            maze_solution_lengths=maze_solution_lengths,
+            maze_solutions_concat=maze_solutions_concat,
         )
 
     def update_self_config(self):
