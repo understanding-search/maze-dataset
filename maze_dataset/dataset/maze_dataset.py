@@ -5,7 +5,7 @@ import multiprocessing
 import typing
 import warnings
 from collections import Counter, defaultdict
-from typing import Callable
+from typing import Any, Callable
 
 import numpy as np
 import tqdm
@@ -675,16 +675,15 @@ class MazeDatasetFilters:
         else:
             new_dataset = copy.deepcopy(dataset)
 
-        gen_meta_lists: dict = defaultdict(list)
+        gen_meta_lists: dict[bool|int|float|str|CoordTup, Counter] = defaultdict(Counter)
         for maze in new_dataset:
             for key, value in maze.generation_meta.items():
                 if isinstance(value, (bool, int, float, str)):
-                    gen_meta_lists[key].append(value)
+                    gen_meta_lists[key][value] += 1
 
                 elif isinstance(value, set):
                     # special case for visited_cells
-                    # HACK: this is ugly!!
-                    gen_meta_lists[key].extend([tuple(v) for v in value])
+                    gen_meta_lists[key].update(value)
 
                 elif isinstance(value, (list, np.ndarray)):
                     if isinstance(value, list):
@@ -698,12 +697,12 @@ class MazeDatasetFilters:
                     
                     if (len(value.shape) == 1) and (value.shape[0] == maze.lattice_dim):
                         # assume its a single coordinate
-                        gen_meta_lists[key].append(tuple(value))
+                        gen_meta_lists[key][tuple(value)] += 1
                     elif (len(value.shape) == 2) and (
                         value.shape[1] == maze.lattice_dim
                     ):
                         # assume its a list of coordinates
-                        gen_meta_lists[key].extend([tuple(v) for v in value])
+                        gen_meta_lists[key].update([tuple(v) for v in value])
                     else:
                         raise ValueError(
                             f"Cannot collect generation meta for {key} as it is an ndarray of shape {value.shape}",
@@ -721,7 +720,7 @@ class MazeDatasetFilters:
                 maze.__dict__["generation_meta"] = None
 
         new_dataset.generation_metadata_collected = {
-            key: dict(Counter(value)) for key, value in gen_meta_lists.items()
+            key: dict(value) for key, value in gen_meta_lists.items()
         }
 
         return new_dataset
