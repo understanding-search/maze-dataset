@@ -135,6 +135,7 @@ class MazePlot:
         self.preceding_tokens_coords: CoordArray = None
         self.colormap_center: float | None = None
         self.cbar_ax = None
+        self.marked_coords: list[tuple[Coord, dict]] = list()
 
         self.marker_kwargs_current: dict = dict(
             marker="s",
@@ -147,11 +148,11 @@ class MazePlot:
             ms=12,
         )
 
-        if isinstance(maze, TargetedLatticeMaze):
-            self.add_true_path(SolvedMaze.from_targeted_lattice_maze(maze).solution)
-
         if isinstance(maze, SolvedMaze):
             self.add_true_path(maze.solution)
+        else:
+            if isinstance(maze, TargetedLatticeMaze):
+                self.add_true_path(SolvedMaze.from_targeted_lattice_maze(maze).solution)
 
     @property
     def solved_maze(self) -> SolvedMaze:
@@ -238,12 +239,15 @@ class MazePlot:
         self.custom_node_value_flag = True
         # Retrieve Max node value for plotting, +1e-10 to avoid division by zero
         self.node_color_map = color_map
-        if target_token_coord is not None:
-            self.target_token_coord = target_token_coord
-        self.preceding_tokens_coords = preceeding_tokens_coords
         self.colormap_center = colormap_center
         self.colormap_max = colormap_max
         self.hide_colorbar = hide_colorbar
+
+        if target_token_coord is not None:
+            self.marked_coords.append((target_token_coord, self.marker_kwargs_next))
+        if preceeding_tokens_coords is not None:
+            for coord in preceeding_tokens_coords:
+                self.marked_coords.append((coord, self.marker_kwargs_current))
         return self
 
     def plot(
@@ -254,18 +258,16 @@ class MazePlot:
         plain: bool = False,
     ) -> MazePlot:
         """Plot the maze and paths."""
+
+        # set up figure
         if fig_ax is None:
             self.fig = plt.figure(dpi=dpi)
             self.ax = self.fig.add_subplot(1, 1, 1)
         else:
             self.fig, self.ax = fig_ax
 
+        # plot maze
         self._plot_maze()
-
-        if self.true_path is not None:
-            self._plot_path(self.true_path)
-        for path in self.predicted_paths:
-            self._plot_path(path)
 
         # Plot labels
         if not plain:
@@ -276,10 +278,34 @@ class MazePlot:
             self.ax.set_ylabel("row")
             self.ax.set_title(title)
 
+        # plot paths
+        if self.true_path is not None:
+            self._plot_path(self.true_path)
+        for path in self.predicted_paths:
+            self._plot_path(path)
+
+        # plot markers
+        for coord, kwargs in self.marked_coords:
+            self._place_marked_coords([coord], **kwargs)
+
     def _rowcol_to_coord(self, point: Coord) -> np.ndarray:
         """Transform Point from MazeTransformer (row, column) notation to matplotlib default (x, y) notation where x is the horizontal axis."""
         point = np.array([point[1], point[0]])
         return self.unit_length * (point + 0.5)
+
+    def mark_coords(self, coords: CoordArray | list[Coord], **kwargs) -> MazePlot:
+        kwargs = {
+            **dict(marker="+", color="blue"),
+            **kwargs,
+        }
+        for coord in coords:
+            self.marked_coords.append((coord, kwargs))
+
+    def _place_marked_coords(
+        self, coords: CoordArray | list[Coord], **kwargs
+    ) -> MazePlot:
+        coords_tp = np.array([self._rowcol_to_coord(coord) for coord in coords])
+        self.ax.plot(coords_tp[:, 0], coords_tp[:, 1], **kwargs)
 
     def _plot_maze(self) -> None:
         """
@@ -288,15 +314,6 @@ class MazePlot:
                   else: use colormap
         """
         img = self._lattice_maze_to_img()
-
-        if self.target_token_coord is not None:
-            x, y = self._rowcol_to_coord(self.target_token_coord)
-            self.ax.plot(x, y, **self.marker_kwargs_next)
-
-        if self.preceding_tokens_coords is not None:
-            for coord in self.preceding_tokens_coords:
-                x, y = self._rowcol_to_coord(coord)
-                self.ax.plot(x, y, **self.marker_kwargs_current)
 
         # if no node_values have been passed (no colormap)
         if self.custom_node_value_flag is False:
