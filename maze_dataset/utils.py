@@ -1,10 +1,13 @@
 import math
 import timeit
 import typing
-from typing import Callable, Iterable, Literal, Mapping, TypeVar
+from typing import Any, Callable, Iterable, Literal, Mapping, NamedTuple, TypeVar
+import cProfile
+import pstats
 
 import numpy as np
 from jaxtyping import Bool
+from muutils.statcounter import StatCounter
 
 WhenMissing = Literal["except", "skip", "include"]
 
@@ -152,40 +155,83 @@ def apply_mapping_chain(
 
 T = TypeVar("T")
 
+FancyTimeitResult = NamedTuple(
+    "FancyTimeitResult",
+    [
+        ("timings", StatCounter),
+        ("return_value", T|None),
+        ("profile", pstats.Stats|None),
+    ],
+)
 
 def timeit_fancy(
     cmd: Callable[[], T] | str,
     setup: str = lambda: None,
     repeats: int = 5,
-    total_runtime: float = 1.0,
-    namespace: dict[str, any] | None = None,
-    get_return=False,
-) -> None | tuple[float, T]:
+    namespace: dict[str, Any] | None = None,
+    get_return: bool = True,
+    do_profiling: bool = False,
+) -> FancyTimeitResult:
     """
     Wrapper for `timeit` to get the fastest run of a callable with more customization options.
 
     Approximates the functionality of the %timeit magic or command line interface in a Python callable.
-    `total_runtime`: Indication of the rough total wall clock time in seconds the call to `quicktimeit` should take.
-    If a single execution of `cmd` takes longer than `total_runtime/repeats`, then `total_rutime` may still be greatly exceeded.
-    `namespace`: Passed to `timeit.Timer` constructor.
-    If `cmd` or `setup` use local or global variables, they must be passed here. See `timeit` documentation for details.
-    `get_return`: Whether to pass the value returned from `cmd`. If True, the return value will be appended in a tuple with execution time.
-    This is for speed and convenience so that `cmd` doesn't need to be run again in the calling scope if the return values are needed.
-    `get_return` is only supported
+    
+    # Parameters
+    - `cmd: Callable[[], T] | str`
+        The callable to time. If a string, it will be passed to `timeit.Timer` as the `stmt` argument.
+    - `setup: str`
+        The setup code to run before `cmd`. If a string, it will be passed to `timeit.Timer` as the `setup` argument.
+    - `repeats: int`
+        The number of times to run `cmd` to get a reliable measurement.
+    - `namespace: dict[str, Any]` 
+        Passed to `timeit.Timer` constructor.
+        If `cmd` or `setup` use local or global variables, they must be passed here. See `timeit` documentation for details.
+    - `get_return: bool`
+        Whether to pass the value returned from `cmd`. If True, the return value will be appended in a tuple with execution time.
+        This is for speed and convenience so that `cmd` doesn't need to be run again in the calling scope if the return values are needed.
+        (default: `False`)
+    - `do_profiling: bool`
+        Whether to return a `pstats.Stats` object in addition to the time and return value.
+        (default: `False`)
+    
+    # Returns
+    `FancyTimeitResult`, which is a NamedTuple with the following fields:
+    - `time: float`
+        The time in seconds it took to run `cmd` the minimum number of times to get a reliable measurement.
+    - `return_value: T|None`
+        The return value of `cmd` if `get_return` is `True`, otherwise `None`.
+    - `profile: pstats.Stats|None`
+        A `pstats.Stats` object if `do_profiling` is `True`, otherwise `None`.
     """
-    timer = timeit.Timer(cmd, setup, globals=namespace)
-    n, _ = timer.autorange()
-    num = max(
-        round(n / (0.2 / (total_runtime / repeats))), 1
-    )  # 0.2 sec is the default time per repeat used in `timeit.autorange`.
-    min_time = min(
-        [t / num for t in timer.repeat(repeats, num)]
-    )  # timeit documentation recommends using the fastest run, ignoring
-    if get_return:
-        if isinstance(cmd, str):
-            raise TypeError(
-                f"`cmd` must be a callable if `get_return=True`, not type {type(cmd)}."
-            )
-            # Support for `str` types could be added if it were allowable to use the `exec` command.
-        return min_time, cmd()
-    return min_time
+    timer: timeit.Timer = timeit.Timer(cmd, setup, globals=namespace)
+
+    # Perform the timing
+    times: list[float] = timer.repeat(repeats, 1)
+
+    # Optionally capture the return value
+    return_value: T | None = None
+    profile: pstats.Stats | None = None
+
+    if get_return or do_profiling:
+
+        # Optionally perform profiling
+        if do_profiling:
+            profiler = cProfile.Profile()
+            profiler.enable()
+        
+        return_value: T = cmd()
+
+        if do_profiling:
+            profiler.disable()
+            profile = pstats.Stats(profiler).strip_dirs().sort_stats('cumulative')
+
+    # reset the return value if it wasn't requested
+    if not get_return:
+        return_value = None
+
+    return FancyTimeitResult(
+        timings=StatCounter(times),
+        return_value=return_value,
+        profile=profile,
+    )

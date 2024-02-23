@@ -322,7 +322,7 @@ class MazeDataset(GPTDataset):
             self.cfg.serialize_minimal_threshold is not None
             and len(self) >= self.cfg.serialize_minimal_threshold
         ):
-            return self.serialize_minimal()
+            return self._serialize_minimal()
         return {
             "__format__": "MazeDataset",
             "cfg": json_serialize(self.cfg),
@@ -332,13 +332,19 @@ class MazeDataset(GPTDataset):
             ),
         }
 
-    def serialize_minimal(self) -> JSONitem:
+    def _serialize_minimal(self) -> JSONitem:
         """
         Serialize to zanj/json `np.stack`ing data across mazes.
         """
         if self.generation_metadata_collected is None:
             filtered_meta = self.filter_by.collect_generation_meta()
+        else:
+            filtered_meta = self
+        
         max_solution_len: int = max(len(m.solution) for m in filtered_meta.mazes)
+        n_mazes: int = len(filtered_meta.mazes)
+        grid_n: int = filtered_meta.cfg.grid_n
+
         return dict(
             __format__="MazeDataset:minimal",
             cfg=json_serialize(filtered_meta.cfg),
@@ -366,6 +372,40 @@ class MazeDataset(GPTDataset):
                     for m in filtered_meta.mazes
                 ]
             ),  # shape(n,max_solution_len,2)
+        )
+
+    def _serialize_minimal_alt(self) -> JSONitem:
+        if self.generation_metadata_collected is None:
+            filtered_meta = self.filter_by.collect_generation_meta()
+        else:
+            filtered_meta = self
+        
+        max_solution_len: int = max(len(m.solution) for m in filtered_meta.mazes)
+        n_mazes: int = len(filtered_meta.mazes)
+        grid_n: int = filtered_meta.cfg.grid_n
+
+        maze_connection_lists: np.ndarray = np.empty((n_mazes, 2, grid_n, grid_n), dtype=np.bool_)
+        maze_endpoints: np.ndarray = np.empty((n_mazes, 2, 2), dtype=np.int8)
+        maze_solution_lengths: np.ndarray = np.empty((n_mazes,), dtype=np.int32)
+        maze_solutions: np.ndarray = np.empty((n_mazes, max_solution_len, 2), dtype=np.int8)
+
+        for idx, maze in enumerate(filtered_meta.mazes):
+            maze_connection_lists[idx] = maze.connection_list
+            maze_endpoints[idx] = np.array([maze.start_pos, maze.end_pos])
+            maze_solution_lengths[idx] = len(maze.solution)
+            maze_solutions[idx, : len(maze.solution)] = maze.solution
+
+
+        return dict(
+            __format__="MazeDataset:minimal",
+            cfg=json_serialize(filtered_meta.cfg),
+            generation_metadata_collected=json_serialize(
+                filtered_meta.generation_metadata_collected
+            ),
+            maze_connection_lists=maze_connection_lists,
+            maze_endpoints=maze_endpoints,
+            maze_solution_lengths=maze_solution_lengths,
+            maze_solutions=maze_solutions,
         )
 
     def update_self_config(self):
@@ -577,7 +617,16 @@ class MazeDatasetFilters:
                     # HACK: this is ugly!!
                     gen_meta_lists[key].extend([tuple(v) for v in value])
 
-                elif isinstance(value, np.ndarray):
+                elif isinstance(value, (list, np.ndarray)):
+                    if isinstance(value, list):
+                        try:
+                            value = np.array(value)
+                        except ValueError:
+                            raise ValueError(
+                                f"Cannot collect generation meta for {key} as it is a list of type '{str(type(value[0])) = }'",
+                                "expected either a basic type (bool, int, float, str), a numpy coord, or a numpy array of coords",
+                            )
+                    
                     if (len(value.shape) == 1) and (value.shape[0] == maze.lattice_dim):
                         # assume its a single coordinate
                         gen_meta_lists[key].append(tuple(value))

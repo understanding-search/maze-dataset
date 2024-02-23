@@ -80,7 +80,7 @@ class TestMazeDataset:
         )
         for c in cfgs:
             d = MazeDataset.generate(c, gen_parallel=False)
-            assert MazeDataset.load(d.serialize_minimal()) == d
+            assert MazeDataset.load(d._serialize_minimal()) == d
 
     def test_save_read_minimal(self):
         cfgs = [self.config]
