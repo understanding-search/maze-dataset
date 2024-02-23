@@ -49,7 +49,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: ${{ matrix.versions.python }}
 
       - name: Install dependencies
         run: |
