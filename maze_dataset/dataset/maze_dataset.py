@@ -32,6 +32,15 @@ from maze_dataset.generation.generators import GENERATORS_MAP
 from maze_dataset.maze import LatticeMaze, SolvedMaze
 
 
+# If `n_mazes>=SERIALIZE_MINIMAL_THRESHOLD`, then the MazeDataset will use `serialize_minimal`.
+# Setting to None means that `serialize_minimal` will never be used.
+SERIALIZE_MINIMAL_THRESHOLD: int | None = 100
+
+def set_serialize_minimal_threshold(threshold: int | None) -> None:
+    global SERIALIZE_MINIMAL_THRESHOLD
+    SERIALIZE_MINIMAL_THRESHOLD = threshold
+
+
 def _load_maze_ctor(maze_ctor_serialized: str | dict) -> Callable:
     if isinstance(maze_ctor_serialized, dict):
         # this is both the new and old version of the serialization
@@ -78,10 +87,6 @@ class MazeDatasetConfig(GPTDatasetConfig):
             else data["maze_ctor_kwargs"]
         ),
     )
-
-    # If `n_mazes>=serialize_minimal_threshold`, then the MazeDataset will use `serialize_minimal`.
-    # Setting to None means that `serialize_minimal` will never be used.
-    serialize_minimal_threshold: int | None = serializable_field(default=None)
 
     @property
     def grid_shape(self) -> CoordTup:
@@ -288,20 +293,27 @@ class MazeDataset(GPTDataset):
         """load from zanj/json"""
         if data["__format__"] == "MazeDataset:minimal":
             return cls._load_minimal(data)
+        elif data["__format__"] == "MazeDataset:minimal_soln_cat":
+            return cls._load_minimal_soln_cat(data)
+        else:
+            assert data["__format__"] == "MazeDataset"
+            return cls._load_full(data)
+    
+    @classmethod
+    def _load_full(cls, data: JSONitem) -> "MazeDataset":
         assert data["__format__"] == "MazeDataset"
         return cls(
-            **{
-                key: load_item_recursive(data[key], tuple())
-                for key in ["cfg", "mazes", "generation_metadata_collected"]
-            }
+            cfg = MazeDatasetConfig.load(data["cfg"]),
+            mazes = load_item_recursive(data["mazes"], tuple()),
+            generation_metadata_collected = data["generation_metadata_collected"],
         )
 
     @classmethod
     def _load_minimal(cls, data: JSONitem) -> "MazeDataset":
         assert data["__format__"] == "MazeDataset:minimal"
         return cls(
-            cfg = load_item_recursive(data["cfg"], tuple()),
-            generation_metadata_collected = load_item_recursive(data["generation_metadata_collected"], tuple()),
+            cfg = MazeDatasetConfig.load(data["cfg"]),
+            generation_metadata_collected = data["generation_metadata_collected"],
             mazes = [
                 SolvedMaze(
                     clist, soln[:slen, ...],
@@ -342,10 +354,13 @@ class MazeDataset(GPTDataset):
     def serialize(self) -> JSONitem:
         """serialize to zanj/json"""
         if (
-            self.cfg.serialize_minimal_threshold is not None
-            and len(self) >= self.cfg.serialize_minimal_threshold
+            SERIALIZE_MINIMAL_THRESHOLD is not None
+            and len(self) >= SERIALIZE_MINIMAL_THRESHOLD
         ):
             return self._serialize_minimal()
+        return self._serialize_full()
+    
+    def _serialize_full(self) -> JSONitem:
         return {
             "__format__": "MazeDataset",
             "cfg": json_serialize(self.cfg),
@@ -356,48 +371,6 @@ class MazeDataset(GPTDataset):
         }
 
     def _serialize_minimal(self) -> JSONitem:
-        """
-        Serialize to zanj/json `np.stack`ing data across mazes.
-        """
-        if self.generation_metadata_collected is None:
-            filtered_meta = self.filter_by.collect_generation_meta()
-        else:
-            filtered_meta = self
-        
-        max_solution_len: int = max(len(m.solution) for m in filtered_meta.mazes)
-        n_mazes: int = len(filtered_meta.mazes)
-        grid_n: int = filtered_meta.cfg.grid_n
-
-        return dict(
-            __format__="MazeDataset:minimal",
-            cfg=json_serialize(filtered_meta.cfg),
-            generation_metadata_collected=json_serialize(
-                filtered_meta.generation_metadata_collected
-            ),
-            maze_connection_lists=np.stack(
-                [m.connection_list for m in filtered_meta.mazes]
-            ),  # shape(n,2,g,g)
-            maze_endpoints=np.stack(
-                [np.array([m.start_pos, m.end_pos]) for m in filtered_meta.mazes]
-            ),  # shape(n,2,2)
-            maze_solution_lengths=np.fromiter(
-                (m.solution.shape[0] for m in filtered_meta.mazes),
-                count=len(self),
-                dtype=np.int32,
-            ),  # shape(n)
-            maze_solutions=np.stack(
-                [
-                    np.pad(
-                        m.solution,
-                        ((0, max_solution_len - len(m.solution)), (0, 0)),
-                        constant_values=-1,
-                    )
-                    for m in filtered_meta.mazes
-                ]
-            ),  # shape(n,max_solution_len,2)
-        )
-
-    def _serialize_minimal_alt(self) -> JSONitem:
         if self.generation_metadata_collected is None:
             filtered_meta = self.filter_by.collect_generation_meta()
         else:

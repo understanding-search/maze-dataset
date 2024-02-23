@@ -189,6 +189,7 @@ class GPTDataset(Dataset):
         do_download: bool = True,
         local_base_path: Path = Path("data/maze_dataset"),
         except_on_config_mismatch: bool = True,
+        allow_generation_metadata_filter_mismatch: bool = True,
         verbose: bool = False,
         **kwargs,
     ) -> "GPTDataset":
@@ -223,8 +224,12 @@ class GPTDataset(Dataset):
         if load_local:
             if dataset_path.exists():
                 print_log(f"loading dataset from {dataset_path.as_posix()}")
-                output = cls.read(dataset_path, zanj=zanj)
-                did_load_local = True
+                try:
+                    output = cls.read(dataset_path, zanj=zanj)
+                    did_load_local = True
+                    print_log("load successful!")
+                except Exception as e:
+                    print_log(f"failed to load dataset: {e}")
 
         if do_download and output is None:
             print_log("seeing if we can download the dataset...")
@@ -247,7 +252,13 @@ class GPTDataset(Dataset):
         cfg_diff: dict = cfg.diff(output.cfg, of_serialized=True)
         if cfg_diff:
             if except_on_config_mismatch:
-                raise ValueError(f"config mismatch: {cfg_diff = }")
+                if (
+                    allow_generation_metadata_filter_mismatch
+                    and (cfg_diff == {'applied_filters': {'self': [], 'other': [{'name': 'collect_generation_meta', 'args': [], 'kwargs': {}}]}})
+                    ):
+                    pass
+                else:
+                    raise ValueError(f"config mismatch: {cfg_diff = }")
             else:
                 warnings.warn(f"config mismatch: {cfg_diff = }")
 
