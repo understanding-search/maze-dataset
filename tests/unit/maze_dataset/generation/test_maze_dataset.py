@@ -1,7 +1,9 @@
 import copy
+import os
 
 import numpy as np
 import pytest
+from zanj import ZANJ
 
 from maze_dataset.constants import CoordArray
 from maze_dataset.dataset.dataset import (
@@ -13,6 +15,7 @@ from maze_dataset.dataset.maze_dataset import (
     MazeDatasetConfig,
     register_maze_filter,
 )
+from maze_dataset.generation.generators import GENERATORS_MAP
 from maze_dataset.maze import SolvedMaze
 from maze_dataset.utils import bool_array_from_string
 
@@ -55,6 +58,58 @@ class TestMazeDataset:
         assert dataset.cfg == dataset_copy.cfg
         for maze, maze_copy in zip(dataset, dataset_copy):
             assert maze == maze_copy
+
+    def test_serialize_load_minimal(self):
+        cfgs = [self.config]
+        cfgs.extend(
+            [
+                MazeDatasetConfig(
+                    name="test",
+                    grid_n=grid_n,
+                    n_mazes=n_mazes,
+                    maze_ctor=maze_ctor,
+                    maze_ctor_kwargs=maze_ctor_kwargs,
+                )
+                for grid_n, n_mazes, maze_ctor, maze_ctor_kwargs in [
+                    (3, 1, GENERATORS_MAP["gen_dfs"], {}),
+                    (5, 5, GENERATORS_MAP["gen_dfs"], dict(do_forks=False)),
+                ]
+            ]
+        )
+        for c in cfgs:
+            d = MazeDataset.generate(c, gen_parallel=False)
+            assert MazeDataset.load(d._serialize_minimal()) == d
+
+    def test_save_read_minimal(self):
+        cfgs = [self.config]
+        cfgs.extend(
+            [
+                MazeDatasetConfig(
+                    name="test",
+                    grid_n=grid_n,
+                    n_mazes=n_mazes,
+                    maze_ctor=maze_ctor,
+                    maze_ctor_kwargs=maze_ctor_kwargs,
+                )
+                for grid_n, n_mazes, maze_ctor, maze_ctor_kwargs in [
+                    (3, 1, GENERATORS_MAP["gen_dfs"], {}),
+                    (5, 5, GENERATORS_MAP["gen_dfs"], dict(do_forks=False)),
+                ]
+            ]
+        )
+        for c in cfgs:
+            d = MazeDataset.generate(c, gen_parallel=False)
+            p = os.path.abspath(
+                os.path.join(os.getcwd(), "..", "data", d.cfg.to_fname() + ".zanj")
+            )
+            d.save(file_path=p)
+            # read as MazeDataset
+            roundtrip = MazeDataset.read(p)
+            assert roundtrip == d
+            # read from zanj
+            z = ZANJ()
+            roundtrip_zanj = z.read(p)
+            assert roundtrip_zanj == d
 
     def test_custom_maze_filter(self):
         connection_list = bool_array_from_string(
