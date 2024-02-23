@@ -319,12 +319,12 @@ class MazeDataset(GPTDataset):
     def _load_minimal_soln_cat(cls, data: JSONitem) -> "MazeDataset":
         assert data["__format__"] == "MazeDataset:minimal_soln_cat"
         print(data.keys())
-        print(f"{data['maze_solution_lengths'].shape = }, {data['maze_solutions_concat'].shape = }")
-        # print(f"{data['maze_solution_lengths'] = }, {data['maze_solutions_concat'] = }")
 
-        maze_solution_lengths = load_item_recursive(data["maze_solution_lengths"], tuple()),
-        maze_solutions_concat = load_item_recursive(data["maze_solutions_concat"], tuple()),
-        maze_solutions = np.split(maze_solutions_concat, np.cumsum(maze_solution_lengths)[:-1])
+        maze_solution_lengths = load_item_recursive(data["maze_solution_lengths"], tuple())
+        maze_solutions_concat = load_item_recursive(data["maze_solutions_concat"], tuple())
+        maze_solutions = np.split(maze_solutions_concat, np.cumsum(maze_solution_lengths)[:-1], axis=0)
+        print(f"{maze_solution_lengths = }, {np.cumsum(maze_solution_lengths)[:-1] = }")
+        print(f"{maze_solution_lengths.shape = }, {maze_solutions_concat.shape = }")
         print(f"{maze_solutions = }")
 
         return cls(
@@ -457,8 +457,10 @@ class MazeDataset(GPTDataset):
         for idx, maze in enumerate(filtered_meta.mazes):
             maze_connection_lists[idx] = maze.connection_list
             maze_endpoints[idx] = np.array([maze.start_pos, maze.end_pos])
-            maze_solution_lengths[idx] = maze.solution.shape[0]
-            maze_solutions_concat[solutions_running_idx : solutions_running_idx + maze.solution.shape[0]] = maze.solution
+            soln_len: int = maze.solution.shape[0]
+            maze_solution_lengths[idx] = soln_len
+            maze_solutions_concat[solutions_running_idx : solutions_running_idx + soln_len] = maze.solution
+            solutions_running_idx += soln_len
 
 
         return dict(
