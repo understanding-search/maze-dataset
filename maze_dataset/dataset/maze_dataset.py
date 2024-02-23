@@ -183,6 +183,9 @@ class MazeDataset(GPTDataset):
 
     def __getitem__(self, i: int) -> SolvedMaze:
         return self.mazes[i]
+        
+    def __deepcopy__(self, memo) -> "MazeDataset":
+        return MazeDataset.load(self.serialize())
 
     def as_tokens(
         self,
@@ -598,13 +601,19 @@ class MazeDatasetFilters:
     @register_dataset_filter
     @staticmethod
     def collect_generation_meta(
-        dataset: MazeDataset, clear_in_mazes: bool = True
+        dataset: MazeDataset,
+        clear_in_mazes: bool = True,
+        inplace: bool = True,
     ) -> MazeDataset:
         if dataset.generation_metadata_collected is not None:
             return dataset
         # if the generation meta is already collected, don't collect it again, do nothing
 
-        new_dataset: MazeDataset = copy.deepcopy(dataset)
+        new_dataset: MazeDataset
+        if inplace:
+            new_dataset = dataset
+        else:
+            new_dataset = copy.deepcopy(dataset)
 
         gen_meta_lists: dict = defaultdict(list)
         for maze in new_dataset:
