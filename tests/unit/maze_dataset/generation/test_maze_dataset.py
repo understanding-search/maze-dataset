@@ -3,7 +3,6 @@ import os
 
 import numpy as np
 import pytest
-
 from zanj import ZANJ
 
 from maze_dataset.constants import CoordArray
@@ -111,7 +110,6 @@ class TestMazeDataset:
             z = ZANJ()
             roundtrip_zanj = z.read(p)
             assert roundtrip_zanj == d
-            
 
     def test_custom_maze_filter(self):
         connection_list = bool_array_from_string(
@@ -163,7 +161,8 @@ class TestMazeDatasetFilters:
     )
 
     def test_filters(self):
-        class TestDataset(MazeDataset): ...
+        class TestDataset(MazeDataset):
+            ...
 
         @register_filter_namespace_for_dataset(TestDataset)
         class TestFilters:

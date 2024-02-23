@@ -1,9 +1,9 @@
+import cProfile
 import math
+import pstats
 import timeit
 import typing
 from typing import Any, Callable, Iterable, Literal, Mapping, NamedTuple, TypeVar
-import cProfile
-import pstats
 
 import numpy as np
 from jaxtyping import Bool
@@ -159,10 +159,11 @@ FancyTimeitResult = NamedTuple(
     "FancyTimeitResult",
     [
         ("timings", StatCounter),
-        ("return_value", T|None),
-        ("profile", pstats.Stats|None),
+        ("return_value", T | None),
+        ("profile", pstats.Stats | None),
     ],
 )
+
 
 def timeit_fancy(
     cmd: Callable[[], T] | str,
@@ -176,7 +177,7 @@ def timeit_fancy(
     Wrapper for `timeit` to get the fastest run of a callable with more customization options.
 
     Approximates the functionality of the %timeit magic or command line interface in a Python callable.
-    
+
     # Parameters
     - `cmd: Callable[[], T] | str`
         The callable to time. If a string, it will be passed to `timeit.Timer` as the `stmt` argument.
@@ -184,7 +185,7 @@ def timeit_fancy(
         The setup code to run before `cmd`. If a string, it will be passed to `timeit.Timer` as the `setup` argument.
     - `repeats: int`
         The number of times to run `cmd` to get a reliable measurement.
-    - `namespace: dict[str, Any]` 
+    - `namespace: dict[str, Any]`
         Passed to `timeit.Timer` constructor.
         If `cmd` or `setup` use local or global variables, they must be passed here. See `timeit` documentation for details.
     - `get_return: bool`
@@ -194,7 +195,7 @@ def timeit_fancy(
     - `do_profiling: bool`
         Whether to return a `pstats.Stats` object in addition to the time and return value.
         (default: `False`)
-    
+
     # Returns
     `FancyTimeitResult`, which is a NamedTuple with the following fields:
     - `time: float`
@@ -214,17 +215,16 @@ def timeit_fancy(
     profile: pstats.Stats | None = None
 
     if get_return or do_profiling:
-
         # Optionally perform profiling
         if do_profiling:
             profiler = cProfile.Profile()
             profiler.enable()
-        
+
         return_value: T = cmd()
 
         if do_profiling:
             profiler.disable()
-            profile = pstats.Stats(profiler).strip_dirs().sort_stats('cumulative')
+            profile = pstats.Stats(profiler).strip_dirs().sort_stats("cumulative")
 
     # reset the return value if it wasn't requested
     if not get_return:

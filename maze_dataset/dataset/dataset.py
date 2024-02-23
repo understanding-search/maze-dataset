@@ -47,9 +47,9 @@ class GPTDatasetConfig(SerializableDataclass):
     # --------------------------------------------------
 
     seed: int | None = serializable_field(default=DEFAULT_SEED)
-    applied_filters: list[dict[typing.Literal["name", "kwargs"], str | dict]] = (
-        serializable_field(default_factory=list)
-    )
+    applied_filters: list[
+        dict[typing.Literal["name", "kwargs"], str | dict]
+    ] = serializable_field(default_factory=list)
 
     def __post_init__(self):
         assert self.seq_len_min <= self.seq_len_max
@@ -252,10 +252,21 @@ class GPTDataset(Dataset):
         cfg_diff: dict = cfg.diff(output.cfg, of_serialized=True)
         if cfg_diff:
             if except_on_config_mismatch:
-                if (
-                    allow_generation_metadata_filter_mismatch
-                    and (cfg_diff == {'applied_filters': {'self': [], 'other': [{'name': 'collect_generation_meta', 'args': [], 'kwargs': {}}]}})
-                    ):
+                if allow_generation_metadata_filter_mismatch and (
+                    cfg_diff
+                    == {
+                        "applied_filters": {
+                            "self": [],
+                            "other": [
+                                {
+                                    "name": "collect_generation_meta",
+                                    "args": [],
+                                    "kwargs": {},
+                                }
+                            ],
+                        }
+                    }
+                ):
                     pass
                 else:
                     raise ValueError(f"config mismatch: {cfg_diff = }")
@@ -436,7 +447,8 @@ class DatasetFilterProtocol(typing.Protocol):
         self,
         dataset: GPTDataset,
         **kwargs,
-    ) -> GPTDataset: ...
+    ) -> GPTDataset:
+        ...
 
 
 def register_dataset_filter(

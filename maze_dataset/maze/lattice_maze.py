@@ -229,9 +229,9 @@ class LatticeMaze(SerializableDataclass):
         c_start = tuple(c_start)
         c_end = tuple(c_end)
 
-        g_score: dict[CoordTup, float] = (
-            dict()
-        )  # cost of cheapest path to node from start currently known
+        g_score: dict[
+            CoordTup, float
+        ] = dict()  # cost of cheapest path to node from start currently known
         f_score: dict[CoordTup, float] = {
             c_start: 0.0
         }  # estimated total cost of path thru a node: f_score[c] := g_score[c] + heuristic(c, c_end)
@@ -242,7 +242,9 @@ class LatticeMaze(SerializableDataclass):
 
         closed_vtx: set[CoordTup] = set()  # nodes already evaluated
         open_vtx: set[CoordTup] = set([c_start])  # nodes to be evaluated
-        source: dict[CoordTup, CoordTup] = (
+        source: dict[
+            CoordTup, CoordTup
+        ] = (
             dict()
         )  # node immediately preceding each node in the path (currently known shortest path)
 
@@ -642,12 +644,12 @@ class LatticeMaze(SerializableDataclass):
         # set endpoints for TargetedLatticeMaze
         if self.__class__ == TargetedLatticeMaze:
             if show_endpoints:
-                pixel_grid[self.start_pos[0] * 2 + 1, self.start_pos[1] * 2 + 1] = (
-                    PixelColors.START
-                )
-                pixel_grid[self.end_pos[0] * 2 + 1, self.end_pos[1] * 2 + 1] = (
-                    PixelColors.END
-                )
+                pixel_grid[
+                    self.start_pos[0] * 2 + 1, self.start_pos[1] * 2 + 1
+                ] = PixelColors.START
+                pixel_grid[
+                    self.end_pos[0] * 2 + 1, self.end_pos[1] * 2 + 1
+                ] = PixelColors.END
             return pixel_grid
 
         # set solution
@@ -669,12 +671,12 @@ class LatticeMaze(SerializableDataclass):
                 ] = PixelColors.PATH
 
             # set endpoints (again, since path would overwrite them)
-            pixel_grid[self.start_pos[0] * 2 + 1, self.start_pos[1] * 2 + 1] = (
-                PixelColors.START
-            )
-            pixel_grid[self.end_pos[0] * 2 + 1, self.end_pos[1] * 2 + 1] = (
-                PixelColors.END
-            )
+            pixel_grid[
+                self.start_pos[0] * 2 + 1, self.start_pos[1] * 2 + 1
+            ] = PixelColors.START
+            pixel_grid[
+                self.end_pos[0] * 2 + 1, self.end_pos[1] * 2 + 1
+            ] = PixelColors.END
 
         return pixel_grid
 
