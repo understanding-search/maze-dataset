@@ -665,9 +665,9 @@ class MazeDatasetFilters:
         else:
             new_dataset = copy.deepcopy(dataset)
 
-        gen_meta_lists: dict[
-            bool | int | float | str | CoordTup, Counter
-        ] = defaultdict(Counter)
+        gen_meta_lists: dict[bool | int | float | str | CoordTup, Counter] = (
+            defaultdict(Counter)
+        )
         for maze in new_dataset:
             for key, value in maze.generation_meta.items():
                 if isinstance(value, (bool, int, float, str)):
