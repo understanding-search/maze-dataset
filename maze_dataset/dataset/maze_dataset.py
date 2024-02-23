@@ -318,14 +318,10 @@ class MazeDataset(GPTDataset):
     @classmethod
     def _load_minimal_soln_cat(cls, data: JSONitem) -> "MazeDataset":
         assert data["__format__"] == "MazeDataset:minimal_soln_cat"
-        print(data.keys())
 
         maze_solution_lengths = load_item_recursive(data["maze_solution_lengths"], tuple())
         maze_solutions_concat = load_item_recursive(data["maze_solutions_concat"], tuple())
         maze_solutions = np.split(maze_solutions_concat, np.cumsum(maze_solution_lengths)[:-1], axis=0)
-        print(f"{maze_solution_lengths = }, {np.cumsum(maze_solution_lengths)[:-1] = }")
-        print(f"{maze_solution_lengths.shape = }, {maze_solutions_concat.shape = }")
-        print(f"{maze_solutions = }")
 
         return cls(
             cfg = load_item_recursive(data["cfg"], tuple()),
@@ -714,7 +710,6 @@ class MazeDatasetFilters:
                             "expected either a coord of shape (2,) or a list of coords of shape (n, 2)",
                         )
                 else:
-                    # print(type(value))
                     raise ValueError(
                         f"Cannot collect generation meta for {key} as it is of type '{str(type(value))}'",
                         "expected either a basic type (bool, int, float, str), a numpy coord, or a numpy array of coords",
