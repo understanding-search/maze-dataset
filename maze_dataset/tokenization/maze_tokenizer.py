@@ -41,7 +41,7 @@ class TokenizationMode(Enum):
         example: for a 3x3 maze, token order is `(0,0), (0,1), (0,2), (1,0), (1,1), (1,2), (2,0), (2,1), (2,2)`
     - `AOTP_UT_uniform`: new mode, where a 3x3 tokenization scheme and 5x5 tokenizations scheme are compatible
         uses `corner_first_ndindex` function to order the tokens
-    - `AOTP_indexed`: each coordinate is a tuple of integers (not implemented)
+    - `AOTP_indexed`: each coordinate is a tuple of integers
     """
 
     AOTP_UT_rasterized = "AOTP_UT_rasterized"
