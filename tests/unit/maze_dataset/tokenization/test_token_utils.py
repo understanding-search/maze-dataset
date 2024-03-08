@@ -281,6 +281,17 @@ def test_strings_to_coords(toks: list[str], tokenizer_name: str):
     with pytest.raises(ValueError):
         strings_to_coords(adj_list, when_noncoord="error")
 
+    assert strings_to_coords("(1,2) <ADJLIST_START> (5,6)") == [(1, 2), (5, 6)]
+    assert strings_to_coords("(1,2) <ADJLIST_START> (5,6)", when_noncoord="skip") == [
+        (1, 2),
+        (5, 6),
+    ]
+    assert strings_to_coords(
+        "(1,2) <ADJLIST_START> (5,6)", when_noncoord="include"
+    ) == [(1, 2), "<ADJLIST_START>", (5, 6)]
+    with pytest.raises(ValueError):
+        strings_to_coords("(1,2) <ADJLIST_START> (5,6)", when_noncoord="error")
+
 
 @mark.parametrize(
     "toks, tokenizer_name",

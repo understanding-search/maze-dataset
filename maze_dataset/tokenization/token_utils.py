@@ -78,8 +78,9 @@ def coord_str_to_tuple_noneable(coord_str: str) -> CoordTup | None:
 
 
 def coords_string_split(coords: str) -> list[str]:
-    """Splits a list of tokens into a list containing the tokens for each coordinate
+    """Splits a string of tokens into a list containing the UT tokens for each coordinate.
 
+    Not capable of producing indexed tokens ("(", "1", ",", "2", ")"), only unique tokens ("(1,2)").
     Non-whitespace portions of the input string not matched are preserved in the same list:
     "(1,2) <SPECIAL_TOKEN> (5,6)" -> ["(1,2)", "<SPECIAL_TOKEN>", "(5,6)"]
     """
