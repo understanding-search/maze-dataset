@@ -14,11 +14,15 @@ from maze_dataset.tokenization.token_utils import (
     tokens_between,
 )
 
-MAZE_TOKENS = ("<ADJLIST_START> (0,1) <--> (1,1) ; (1,0) <--> (1,1) ; (0,1) <--> (0,0) ; <ADJLIST_END> <ORIGIN_START> (1,0) <ORIGIN_END> <TARGET_START> (1,1) <TARGET_END> <PATH_START> (1,0) (1,1) <PATH_END>".split(),
-               'AOTP_UT')
+MAZE_TOKENS = (
+    "<ADJLIST_START> (0,1) <--> (1,1) ; (1,0) <--> (1,1) ; (0,1) <--> (0,0) ; <ADJLIST_END> <ORIGIN_START> (1,0) <ORIGIN_END> <TARGET_START> (1,1) <TARGET_END> <PATH_START> (1,0) (1,1) <PATH_END>".split(),
+    "AOTP_UT",
+)
 # setattr(MAZE_TOKENS, "name", 'AOTP_UT')
-MAZE_TOKENS_AOTP_INDEXED = ("<ADJLIST_START> ( 0 , 1 ) <--> ( 1 , 1 ) ; ( 1 , 0 ) <--> ( 1 , 1 ) ; ( 0 , 1 ) <--> ( 0 , 0 ) ; <ADJLIST_END> <ORIGIN_START> ( 1 , 0 ) <ORIGIN_END> <TARGET_START> ( 1 , 1 ) <TARGET_END> <PATH_START> ( 1 , 0 ) ( 1 , 1 ) <PATH_END>".split(),
-                            'AOTP_indexed')
+MAZE_TOKENS_AOTP_INDEXED = (
+    "<ADJLIST_START> ( 0 , 1 ) <--> ( 1 , 1 ) ; ( 1 , 0 ) <--> ( 1 , 1 ) ; ( 0 , 1 ) <--> ( 0 , 0 ) ; <ADJLIST_END> <ORIGIN_START> ( 1 , 0 ) <ORIGIN_END> <TARGET_START> ( 1 , 1 ) <TARGET_END> <PATH_START> ( 1 , 0 ) ( 1 , 1 ) <PATH_END>".split(),
+    "AOTP_indexed",
+)
 TEST_TOKEN_LISTS = [MAZE_TOKENS, MAZE_TOKENS_AOTP_INDEXED]
 
 
@@ -36,9 +40,9 @@ TEST_TOKEN_LISTS = [MAZE_TOKENS, MAZE_TOKENS_AOTP_INDEXED]
 def test_tokens_between(toks: list[str], tokenizer_name: str):
     result = tokens_between(toks, "<PATH_START>", "<PATH_END>")
     match tokenizer_name:
-        case 'AOTP_UT':
+        case "AOTP_UT":
             assert result == ["(1,0)", "(1,1)"]
-        case 'AOTP_indexed':
+        case "AOTP_indexed":
             assert result == ["(", "1", ",", "0", ")", "(", "1", ",", "1", ")"]
 
     # Normal case
@@ -125,10 +129,12 @@ def test_tokens_between_out_of_order(toks: list[str], tokenizer_name: str):
 def test_get_adj_list_tokens(toks: list[str], tokenizer_name: str):
     result = get_adj_list_tokens(toks)
     match tokenizer_name:
-        case 'AOTP_UT':
-            expected = "(0,1) <--> (1,1) ; (1,0) <--> (1,1) ; (0,1) <--> (0,0) ;".split()
-        case 'AOTP_indexed':
-            expected = '( 0 , 1 ) <--> ( 1 , 1 ) ; ( 1 , 0 ) <--> ( 1 , 1 ) ; ( 0 , 1 ) <--> ( 0 , 0 ) ;'.split()
+        case "AOTP_UT":
+            expected = (
+                "(0,1) <--> (1,1) ; (1,0) <--> (1,1) ; (0,1) <--> (0,0) ;".split()
+            )
+        case "AOTP_indexed":
+            expected = "( 0 , 1 ) <--> ( 1 , 1 ) ; ( 1 , 0 ) <--> ( 1 , 1 ) ; ( 0 , 1 ) <--> ( 0 , 0 ) ;".split()
     assert result == expected
 
 
@@ -147,11 +153,13 @@ def test_get_path_tokens(toks: list[str], tokenizer_name: str):
     result_notrim = get_path_tokens(toks)
     result_trim = get_path_tokens(toks, trim_end=True)
     match tokenizer_name:
-        case 'AOTP_UT':
+        case "AOTP_UT":
             assert result_notrim == ["<PATH_START>", "(1,0)", "(1,1)", "<PATH_END>"]
             assert result_trim == ["(1,0)", "(1,1)"]
-        case 'AOTP_indexed':
-            assert result_notrim == "<PATH_START> ( 1 , 0 ) ( 1 , 1 ) <PATH_END>".split()
+        case "AOTP_indexed":
+            assert (
+                result_notrim == "<PATH_START> ( 1 , 0 ) ( 1 , 1 ) <PATH_END>".split()
+            )
             assert result_trim == "( 1 , 0 ) ( 1 , 1 )".split()
 
 
@@ -169,11 +177,10 @@ def test_get_path_tokens(toks: list[str], tokenizer_name: str):
 def test_get_origin_tokens(toks: list[str], tokenizer_name: str):
     result = get_origin_tokens(toks)
     match tokenizer_name:
-        case 'AOTP_UT':
+        case "AOTP_UT":
             assert result == ["(1,0)"]
-        case 'AOTP_indexed':
+        case "AOTP_indexed":
             assert result == "( 1 , 0 )".split()
-    
 
 
 @mark.parametrize(
@@ -190,9 +197,9 @@ def test_get_origin_tokens(toks: list[str], tokenizer_name: str):
 def test_get_target_tokens(toks: list[str], tokenizer_name: str):
     result = get_target_tokens(toks)
     match tokenizer_name:
-        case 'AOTP_UT':
+        case "AOTP_UT":
             assert result == ["(1,1)"]
-        case 'AOTP_indexed':
+        case "AOTP_indexed":
             assert result == "( 1 , 1 )".split()
 
 
@@ -207,13 +214,15 @@ def test_get_target_tokens(toks: list[str], tokenizer_name: str):
         for token_list in [MAZE_TOKENS]
     ],
 )
-def test_get_tokens_up_to_path_start_including_start(toks: list[str], tokenizer_name: str):
+def test_get_tokens_up_to_path_start_including_start(
+    toks: list[str], tokenizer_name: str
+):
     # Dont test on `MAZE_TOKENS_AOTP_INDEXED` because this function doesn't support `AOTP_indexed` when `include_start_coord=True`.
     result = get_tokens_up_to_path_start(toks, include_start_coord=True)
     match tokenizer_name:
-        case 'AOTP_UT':
+        case "AOTP_UT":
             expected = "<ADJLIST_START> (0,1) <--> (1,1) ; (1,0) <--> (1,1) ; (0,1) <--> (0,0) ; <ADJLIST_END> <ORIGIN_START> (1,0) <ORIGIN_END> <TARGET_START> (1,1) <TARGET_END> <PATH_START> (1,0)".split()
-        case 'AOTP_indexed':
+        case "AOTP_indexed":
             expected = "<ADJLIST_START> ( 0 , 1 ) <--> ( 1 , 1 ) ; ( 1 , 0 ) <--> ( 1 , 1 ) ; ( 0 , 1 ) <--> ( 0 , 0 ) ; <ADJLIST_END> <ORIGIN_START> ( 1 , 0 ) <ORIGIN_END> <TARGET_START> ( 1 , 1 ) <TARGET_END> <PATH_START> ( 1 , 0 )".split()
     assert result == expected
 
@@ -229,12 +238,14 @@ def test_get_tokens_up_to_path_start_including_start(toks: list[str], tokenizer_
         for token_list in TEST_TOKEN_LISTS
     ],
 )
-def test_get_tokens_up_to_path_start_excluding_start(toks: list[str], tokenizer_name: str):
+def test_get_tokens_up_to_path_start_excluding_start(
+    toks: list[str], tokenizer_name: str
+):
     result = get_tokens_up_to_path_start(toks, include_start_coord=False)
     match tokenizer_name:
-        case 'AOTP_UT':
+        case "AOTP_UT":
             expected = "<ADJLIST_START> (0,1) <--> (1,1) ; (1,0) <--> (1,1) ; (0,1) <--> (0,0) ; <ADJLIST_END> <ORIGIN_START> (1,0) <ORIGIN_END> <TARGET_START> (1,1) <TARGET_END> <PATH_START>".split()
-        case 'AOTP_indexed':
+        case "AOTP_indexed":
             expected = "<ADJLIST_START> ( 0 , 1 ) <--> ( 1 , 1 ) ; ( 1 , 0 ) <--> ( 1 , 1 ) ; ( 0 , 1 ) <--> ( 0 , 0 ) ; <ADJLIST_END> <ORIGIN_START> ( 1 , 0 ) <ORIGIN_END> <TARGET_START> ( 1 , 1 ) <TARGET_END> <PATH_START>".split()
     assert result == expected
 

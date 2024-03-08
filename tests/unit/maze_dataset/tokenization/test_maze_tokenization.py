@@ -11,13 +11,7 @@ from maze_dataset.tokenization import MazeTokenizer, TokenizationMode
 
 @mark.parametrize(
     "tok_mode",
-    [
-        param(
-            tok_mode,
-            id=tok_mode.name
-        )
-        for tok_mode in TokenizationMode
-    ],
+    [param(tok_mode, id=tok_mode.name) for tok_mode in TokenizationMode],
 )
 def test_tokenization_roundtrip(tok_mode: TokenizationMode):
     dataset: MazeDataset = MazeDataset.from_config(

@@ -1,7 +1,7 @@
+import re
 from collections import Counter
 from itertools import product
 from typing import Iterable
-import re
 
 from pytest import mark, param
 
@@ -45,7 +45,10 @@ def test_tokenizer():
             assert tokenizer.node_strings_map is not None
             # assert len(tokenizer.node_strings_map) == 100  # `tokenizer.node_strings_map` is a `Kappa` which has no length
             assert 100 < tokenizer.vocab_size < 200
-        elif mode in (TokenizationMode.AOTP_UT_rasterized, TokenizationMode.AOTP_UT_uniform):
+        elif mode in (
+            TokenizationMode.AOTP_UT_rasterized,
+            TokenizationMode.AOTP_UT_uniform,
+        ):
             assert tokenizer.node_strings_map is None
             assert tokenizer.vocab_size > 10000
 
@@ -136,7 +139,11 @@ _ASCII_MAZES: dict[str, tuple[str, list[str]]] = dict(
         )
         for maze_ascii_key, tok_mode in product(
             ["small_3x3", "big_10x10"],
-            [TokenizationMode.AOTP_UT_uniform, TokenizationMode.AOTP_UT_rasterized, TokenizationMode.AOTP_indexed],
+            [
+                TokenizationMode.AOTP_UT_uniform,
+                TokenizationMode.AOTP_UT_rasterized,
+                TokenizationMode.AOTP_indexed,
+            ],
         )
     ],
 )
@@ -147,9 +154,9 @@ def test_maze_to_tokens_roundtrip(
 ):
     if tok_mode == TokenizationMode.AOTP_indexed:
         # The hardcoded `tokens` assumes a UT tokenizer. Modify `tokens` to match what a `AOTP_indexed` tokenizer would produce.
-        tokens = re.sub(r'\(([0-9]),([0-9])\)', r'(\1 , \2)', tokens)
-        tokens = re.sub(r'\(([0-9]+ ,)', r'( \1', tokens)
-        tokens = re.sub(r'(, [0-9]+)\)', r'\1 )', tokens)
+        tokens = re.sub(r"\(([0-9]),([0-9])\)", r"(\1 , \2)", tokens)
+        tokens = re.sub(r"\(([0-9]+ ,)", r"( \1", tokens)
+        tokens = re.sub(r"(, [0-9]+)\)", r"\1 )", tokens)
     tokens_original_split: list[str] = tokens.split()
 
     def get_token_regions(toks: list[str]) -> tuple[list[str], list[str]]:

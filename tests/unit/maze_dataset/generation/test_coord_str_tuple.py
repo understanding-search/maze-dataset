@@ -7,10 +7,8 @@ from maze_dataset.tokenization.token_utils import (
     coord_str_to_coord_np,
     coord_str_to_tuple,
     coord_str_to_tuple_noneable,
-    coords_string_split,
     coords_to_strings,
     str_is_coord,
-    strings_to_coords,
 )
 
 
