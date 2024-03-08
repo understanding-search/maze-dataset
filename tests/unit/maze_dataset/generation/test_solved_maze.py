@@ -1,11 +1,23 @@
+from pytest import mark, param
+
 from maze_dataset import SolvedMaze
 from maze_dataset.generation.generators import get_maze_with_solution
 from maze_dataset.tokenization import MazeTokenizer, TokenizationMode
 
 
-def test_from_tokens():
+@mark.parametrize(
+    "tok_mode",
+    [
+        param(
+            tok_mode,
+            id=tok_mode.name
+        )
+        for tok_mode in TokenizationMode
+    ],
+)
+def test_from_tokens(tok_mode: TokenizationMode):
     tokenizer: MazeTokenizer = MazeTokenizer(
-        tokenization_mode=TokenizationMode.AOTP_UT_uniform,
+        tokenization_mode=tok_mode,
         max_grid_size=20,
     )
     maze_size: int = 2

@@ -1,4 +1,5 @@
 import pytest
+from pytest import mark, param
 
 from maze_dataset.dataset.maze_dataset import MazeDatasetConfig
 from maze_dataset.tokenization.token_utils import (
@@ -13,12 +14,32 @@ from maze_dataset.tokenization.token_utils import (
     tokens_between,
 )
 
-MAZE_TOKENS = "<ADJLIST_START> (0,1) <--> (1,1) ; (1,0) <--> (1,1) ; (0,1) <--> (0,0) ; <ADJLIST_END> <ORIGIN_START> (1,0) <ORIGIN_END> <TARGET_START> (1,1) <TARGET_END> <PATH_START> (1,0) (1,1) <PATH_END>".split()
+MAZE_TOKENS = ("<ADJLIST_START> (0,1) <--> (1,1) ; (1,0) <--> (1,1) ; (0,1) <--> (0,0) ; <ADJLIST_END> <ORIGIN_START> (1,0) <ORIGIN_END> <TARGET_START> (1,1) <TARGET_END> <PATH_START> (1,0) (1,1) <PATH_END>".split(),
+               'AOTP_UT')
+# setattr(MAZE_TOKENS, "name", 'AOTP_UT')
+MAZE_TOKENS_AOTP_INDEXED = ("<ADJLIST_START> ( 0 , 1 ) <--> ( 1 , 1 ) ; ( 1 , 0 ) <--> ( 1 , 1 ) ; ( 0 , 1 ) <--> ( 0 , 0 ) ; <ADJLIST_END> <ORIGIN_START> ( 1 , 0 ) <ORIGIN_END> <TARGET_START> ( 1 , 1 ) <TARGET_END> <PATH_START> ( 1 , 0 ) ( 1 , 1 ) <PATH_END>".split(),
+                            'AOTP_indexed')
+TEST_TOKEN_LISTS = [MAZE_TOKENS, MAZE_TOKENS_AOTP_INDEXED]
 
 
-def test_tokens_between():
-    result = tokens_between(MAZE_TOKENS, "<PATH_START>", "<PATH_END>")
-    assert result == ["(1,0)", "(1,1)"]
+@mark.parametrize(
+    "toks, tokenizer_name",
+    [
+        param(
+            token_list[0],
+            token_list[1],
+            id=f"{token_list[1]}",
+        )
+        for token_list in TEST_TOKEN_LISTS
+    ],
+)
+def test_tokens_between(toks: list[str], tokenizer_name: str):
+    result = tokens_between(toks, "<PATH_START>", "<PATH_END>")
+    match tokenizer_name:
+        case 'AOTP_UT':
+            assert result == ["(1,0)", "(1,1)"]
+        case 'AOTP_indexed':
+            assert result == ["(", "1", ",", "0", ")", "(", "1", ",", "1", ")"]
 
     # Normal case
     tokens = ["the", "quick", "brown", "fox", "jumps", "over", "the", "lazy", "dog"]
@@ -74,48 +95,162 @@ def test_tokens_between():
         tokens_between(["fox"], "fox", "fox", True, True)
 
 
-def test_tokens_between_out_of_order():
+@mark.parametrize(
+    "toks, tokenizer_name",
+    [
+        param(
+            token_list[0],
+            token_list[1],
+            id=f"{token_list[1]}",
+        )
+        for token_list in TEST_TOKEN_LISTS
+    ],
+)
+def test_tokens_between_out_of_order(toks: list[str], tokenizer_name: str):
     with pytest.raises(AssertionError):
-        tokens_between(MAZE_TOKENS, "<PATH_END>", "<PATH_START>")
+        tokens_between(toks, "<PATH_END>", "<PATH_START>")
 
 
-def test_get_adj_list_tokens():
-    result = get_adj_list_tokens(MAZE_TOKENS)
-    expected = "(0,1) <--> (1,1) ; (1,0) <--> (1,1) ; (0,1) <--> (0,0) ;".split()
+@mark.parametrize(
+    "toks, tokenizer_name",
+    [
+        param(
+            token_list[0],
+            token_list[1],
+            id=f"{token_list[1]}",
+        )
+        for token_list in TEST_TOKEN_LISTS
+    ],
+)
+def test_get_adj_list_tokens(toks: list[str], tokenizer_name: str):
+    result = get_adj_list_tokens(toks)
+    match tokenizer_name:
+        case 'AOTP_UT':
+            expected = "(0,1) <--> (1,1) ; (1,0) <--> (1,1) ; (0,1) <--> (0,0) ;".split()
+        case 'AOTP_indexed':
+            expected = '( 0 , 1 ) <--> ( 1 , 1 ) ; ( 1 , 0 ) <--> ( 1 , 1 ) ; ( 0 , 1 ) <--> ( 0 , 0 ) ;'.split()
     assert result == expected
 
 
-def test_get_path_tokens():
-    result_notrim = get_path_tokens(MAZE_TOKENS)
-    assert result_notrim == ["<PATH_START>", "(1,0)", "(1,1)", "<PATH_END>"]
-    result_trim = get_path_tokens(MAZE_TOKENS, trim_end=True)
-    assert result_trim == ["(1,0)", "(1,1)"]
+@mark.parametrize(
+    "toks, tokenizer_name",
+    [
+        param(
+            token_list[0],
+            token_list[1],
+            id=f"{token_list[1]}",
+        )
+        for token_list in TEST_TOKEN_LISTS
+    ],
+)
+def test_get_path_tokens(toks: list[str], tokenizer_name: str):
+    result_notrim = get_path_tokens(toks)
+    result_trim = get_path_tokens(toks, trim_end=True)
+    match tokenizer_name:
+        case 'AOTP_UT':
+            assert result_notrim == ["<PATH_START>", "(1,0)", "(1,1)", "<PATH_END>"]
+            assert result_trim == ["(1,0)", "(1,1)"]
+        case 'AOTP_indexed':
+            assert result_notrim == "<PATH_START> ( 1 , 0 ) ( 1 , 1 ) <PATH_END>".split()
+            assert result_trim == "( 1 , 0 ) ( 1 , 1 )".split()
 
 
-def test_get_origin_tokens():
-    result = get_origin_tokens(MAZE_TOKENS)
-    assert result == ["(1,0)"]
+@mark.parametrize(
+    "toks, tokenizer_name",
+    [
+        param(
+            token_list[0],
+            token_list[1],
+            id=f"{token_list[1]}",
+        )
+        for token_list in TEST_TOKEN_LISTS
+    ],
+)
+def test_get_origin_tokens(toks: list[str], tokenizer_name: str):
+    result = get_origin_tokens(toks)
+    match tokenizer_name:
+        case 'AOTP_UT':
+            assert result == ["(1,0)"]
+        case 'AOTP_indexed':
+            assert result == "( 1 , 0 )".split()
+    
 
 
-def test_get_target_token():
-    result = get_target_tokens(MAZE_TOKENS)
-    assert result == ["(1,1)"]
+@mark.parametrize(
+    "toks, tokenizer_name",
+    [
+        param(
+            token_list[0],
+            token_list[1],
+            id=f"{token_list[1]}",
+        )
+        for token_list in TEST_TOKEN_LISTS
+    ],
+)
+def test_get_target_tokens(toks: list[str], tokenizer_name: str):
+    result = get_target_tokens(toks)
+    match tokenizer_name:
+        case 'AOTP_UT':
+            assert result == ["(1,1)"]
+        case 'AOTP_indexed':
+            assert result == "( 1 , 1 )".split()
 
 
-def test_get_tokens_up_to_path_start_including_start():
-    result = get_tokens_up_to_path_start(MAZE_TOKENS)
-    expected = "<ADJLIST_START> (0,1) <--> (1,1) ; (1,0) <--> (1,1) ; (0,1) <--> (0,0) ; <ADJLIST_END> <ORIGIN_START> (1,0) <ORIGIN_END> <TARGET_START> (1,1) <TARGET_END> <PATH_START> (1,0)".split()
+@mark.parametrize(
+    "toks, tokenizer_name",
+    [
+        param(
+            token_list[0],
+            token_list[1],
+            id=f"{token_list[1]}",
+        )
+        for token_list in TEST_TOKEN_LISTS
+    ],
+)
+def test_get_tokens_up_to_path_start_including_start(toks: list[str], tokenizer_name: str):
+    result = get_tokens_up_to_path_start(toks, include_start_coord=True)
+    match tokenizer_name:
+        case 'AOTP_UT':
+            expected = "<ADJLIST_START> (0,1) <--> (1,1) ; (1,0) <--> (1,1) ; (0,1) <--> (0,0) ; <ADJLIST_END> <ORIGIN_START> (1,0) <ORIGIN_END> <TARGET_START> (1,1) <TARGET_END> <PATH_START> (1,0)".split()
+        case 'AOTP_indexed':
+            expected = "<ADJLIST_START> ( 0 , 1 ) <--> ( 1 , 1 ) ; ( 1 , 0 ) <--> ( 1 , 1 ) ; ( 0 , 1 ) <--> ( 0 , 0 ) ; <ADJLIST_END> <ORIGIN_START> ( 1 , 0 ) <ORIGIN_END> <TARGET_START> ( 1 , 1 ) <TARGET_END> <PATH_START> ( 1 , 0 )".split()
     assert result == expected
 
 
-def test_get_tokens_up_to_path_start_excluding_start():
-    result = get_tokens_up_to_path_start(MAZE_TOKENS, include_start_coord=False)
-    expected = "<ADJLIST_START> (0,1) <--> (1,1) ; (1,0) <--> (1,1) ; (0,1) <--> (0,0) ; <ADJLIST_END> <ORIGIN_START> (1,0) <ORIGIN_END> <TARGET_START> (1,1) <TARGET_END> <PATH_START>".split()
+@mark.parametrize(
+    "toks, tokenizer_name",
+    [
+        param(
+            token_list[0],
+            token_list[1],
+            id=f"{token_list[1]}",
+        )
+        for token_list in TEST_TOKEN_LISTS
+    ],
+)
+def test_get_tokens_up_to_path_start_excluding_start(toks: list[str], tokenizer_name: str):
+    result = get_tokens_up_to_path_start(toks, include_start_coord=False)
+    match tokenizer_name:
+        case 'AOTP_UT':
+            expected = "<ADJLIST_START> (0,1) <--> (1,1) ; (1,0) <--> (1,1) ; (0,1) <--> (0,0) ; <ADJLIST_END> <ORIGIN_START> (1,0) <ORIGIN_END> <TARGET_START> (1,1) <TARGET_END> <PATH_START>".split()
+        case 'AOTP_indexed':
+            expected = "<ADJLIST_START> ( 0 , 1 ) <--> ( 1 , 1 ) ; ( 1 , 0 ) <--> ( 1 , 1 ) ; ( 0 , 1 ) <--> ( 0 , 0 ) ; <ADJLIST_END> <ORIGIN_START> ( 1 , 0 ) <ORIGIN_END> <TARGET_START> ( 1 , 1 ) <TARGET_END> <PATH_START>".split()
     assert result == expected
 
 
-def test_strings_to_coords():
-    adj_list = get_adj_list_tokens(MAZE_TOKENS)
+@mark.parametrize(
+    "toks, tokenizer_name",
+    [
+        param(
+            token_list[0],
+            token_list[1],
+            id=f"{token_list[1]}",
+        )
+        for token_list in TEST_TOKEN_LISTS
+    ],
+)
+def test_strings_to_coords(toks: list[str], tokenizer_name: str):
+    adj_list = get_adj_list_tokens(toks)
     skipped = strings_to_coords(adj_list, when_noncoord="skip")
     included = strings_to_coords(adj_list, when_noncoord="include")
 
@@ -147,8 +282,19 @@ def test_strings_to_coords():
         strings_to_coords(adj_list, when_noncoord="error")
 
 
-def test_coords_to_strings():
-    adj_list = get_adj_list_tokens(MAZE_TOKENS)
+@mark.parametrize(
+    "toks, tokenizer_name",
+    [
+        param(
+            token_list[0],
+            token_list[1],
+            id=f"{token_list[1]}",
+        )
+        for token_list in TEST_TOKEN_LISTS
+    ],
+)
+def test_coords_to_strings(toks: list[str], tokenizer_name: str):
+    adj_list = get_adj_list_tokens(toks)
     config = MazeDatasetConfig(name="test", grid_n=2, n_mazes=1)
     coords = strings_to_coords(adj_list, when_noncoord="include")
 

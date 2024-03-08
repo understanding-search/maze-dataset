@@ -1,3 +1,5 @@
+from pytest import mark, param
+
 from maze_dataset import (
     LatticeMazeGenerators,
     MazeDataset,
@@ -7,7 +9,17 @@ from maze_dataset import (
 from maze_dataset.tokenization import MazeTokenizer, TokenizationMode
 
 
-def test_tokenization_roundtrip():
+@mark.parametrize(
+    "tok_mode",
+    [
+        param(
+            tok_mode,
+            id=tok_mode.name
+        )
+        for tok_mode in TokenizationMode
+    ],
+)
+def test_tokenization_roundtrip(tok_mode: TokenizationMode):
     dataset: MazeDataset = MazeDataset.from_config(
         MazeDatasetConfig(
             name="test",
@@ -17,7 +29,7 @@ def test_tokenization_roundtrip():
         )
     )
     tokenizer: MazeTokenizer = MazeTokenizer(
-        tokenization_mode=TokenizationMode.AOTP_UT_uniform,
+        tokenization_mode=tok_mode,
         max_grid_size=20,
     )
 
