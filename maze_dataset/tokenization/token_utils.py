@@ -3,6 +3,7 @@
 import re
 import typing
 from typing import Callable
+import warnings
 
 import numpy as np
 from muutils.misc import list_join
@@ -247,6 +248,10 @@ def get_target_tokens(tokens: list[str]) -> list[str]:
 def get_tokens_up_to_path_start(
     tokens: list[str], include_start_coord: bool = True
 ) -> list[str]:
+    warnings.warn(
+        '`get_tokens_up_to_path_start` assumes a unique token (UT) type tokenizer when `include_start_coord=True`. '
+        'This method is deprecated for a tokenizer-agnostic function in a future release.'
+        , PendingDeprecationWarning)
     path_start_idx: int = tokens.index(SPECIAL_TOKENS.PATH_START) + 1
     if include_start_coord:
         return tokens[: path_start_idx + 1]

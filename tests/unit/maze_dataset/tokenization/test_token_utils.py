@@ -204,10 +204,11 @@ def test_get_target_tokens(toks: list[str], tokenizer_name: str):
             token_list[1],
             id=f"{token_list[1]}",
         )
-        for token_list in TEST_TOKEN_LISTS
+        for token_list in [MAZE_TOKENS]
     ],
 )
 def test_get_tokens_up_to_path_start_including_start(toks: list[str], tokenizer_name: str):
+    # Dont test on `MAZE_TOKENS_AOTP_INDEXED` because this function doesn't support `AOTP_indexed` when `include_start_coord=True`.
     result = get_tokens_up_to_path_start(toks, include_start_coord=True)
     match tokenizer_name:
         case 'AOTP_UT':
