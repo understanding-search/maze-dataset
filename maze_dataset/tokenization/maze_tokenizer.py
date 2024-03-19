@@ -56,11 +56,13 @@ _NDINDEX_FUNC_MAP: dict[
     TokenizationMode.AOTP_UT_uniform: lambda n: corner_first_ndindex(n, 2),
 }
 
+
 def is_UT(tokenization_mode: TokenizationMode) -> bool:
     return tokenization_mode in (
         TokenizationMode.AOTP_UT_rasterized,
         TokenizationMode.AOTP_UT_uniform,
     )
+
 
 _MAZETOKENIZER_PROPERTIES_TO_SERIALIZE: list[str] = [
     "name",

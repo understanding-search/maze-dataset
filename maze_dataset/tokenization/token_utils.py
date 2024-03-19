@@ -3,7 +3,7 @@
 import warnings
 
 from maze_dataset.constants import SPECIAL_TOKENS
-from maze_dataset.tokenization.maze_tokenizer import MazeTokenizer, TokenizationMode, is_UT
+from maze_dataset.tokenization.maze_tokenizer import TokenizationMode, is_UT
 
 # filtering things from a prompt or generated text
 # ==================================================
@@ -102,7 +102,7 @@ def get_target_tokens(tokens: list[str]) -> list[str]:
 
 
 def get_tokens_up_to_path_start(
-    tokens: list[str], 
+    tokens: list[str],
     include_start_coord: bool = True,
     tokenization_mode: TokenizationMode = TokenizationMode.AOTP_UT_uniform,
 ) -> list[str]:

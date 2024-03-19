@@ -2,11 +2,6 @@ import pytest
 from pytest import mark, param
 
 from maze_dataset.dataset.maze_dataset import MazeDatasetConfig
-from maze_dataset.tokenization.util import (
-    _coord_to_strings_UT,
-    coords_to_strings,
-    strings_to_coords,
-)
 from maze_dataset.tokenization.token_utils import (
     get_adj_list_tokens,
     get_origin_tokens,
@@ -14,6 +9,11 @@ from maze_dataset.tokenization.token_utils import (
     get_target_tokens,
     get_tokens_up_to_path_start,
     tokens_between,
+)
+from maze_dataset.tokenization.util import (
+    _coord_to_strings_UT,
+    coords_to_strings,
+    strings_to_coords,
 )
 
 MAZE_TOKENS = (
