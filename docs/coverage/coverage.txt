@@ -33,7 +33,7 @@ tests\unit\maze_dataset\generation\test_maze_dataset.py               100      0
 tests\unit\maze_dataset\generation\test_neighbors.py                   26      0   100%
 tests\unit\maze_dataset\generation\test_solved_maze.py                 12      0   100%
 tests\unit\maze_dataset\plotting\test_maze_plot.py                     39      0   100%
-tests\unit\maze_dataset\tokenization\test_coords_string_split.py       30      0   100%
+tests\unit\maze_dataset\tokenization\test_coords_string_split_UT.py       30      0   100%
 tests\unit\maze_dataset\tokenization\test_maze_tokenization.py         12      0   100%
 tests\unit\maze_dataset\tokenization\test_special_tokens.py            12      0   100%
 tests\unit\maze_dataset\tokenization\test_token_utils.py               70      0   100%

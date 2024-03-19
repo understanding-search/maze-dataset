@@ -13,7 +13,7 @@ from muutils.json_serialize import (
 from muutils.kappa import Kappa
 
 from maze_dataset.constants import SPECIAL_TOKENS, CoordTup
-from maze_dataset.tokenization.token_utils import (  # coord_to_indexed_string,; coord_to_str,
+from maze_dataset.tokenization.util import (
     _coord_to_strings_indexed,
     _coord_to_strings_UT,
     coords_to_strings,
@@ -55,6 +55,12 @@ _NDINDEX_FUNC_MAP: dict[
     TokenizationMode.AOTP_UT_rasterized: lambda n: list(np.ndindex(n, n)),
     TokenizationMode.AOTP_UT_uniform: lambda n: corner_first_ndindex(n, 2),
 }
+
+def is_UT(tokenization_mode: TokenizationMode) -> bool:
+    return tokenization_mode in (
+        TokenizationMode.AOTP_UT_rasterized,
+        TokenizationMode.AOTP_UT_uniform,
+    )
 
 _MAZETOKENIZER_PROPERTIES_TO_SERIALIZE: list[str] = [
     "name",
@@ -368,10 +374,7 @@ class MazeTokenizer(SerializableDataclass):
         )
 
     def is_UT(self) -> bool:
-        return self.tokenization_mode in (
-            TokenizationMode.AOTP_UT_rasterized,
-            TokenizationMode.AOTP_UT_uniform,
-        )
+        return is_UT(self.tokenization_mode)
 
     def clear_cache(self):
         """clears all cached properties"""
