@@ -32,7 +32,7 @@ def test_tokenizer():
     for mode in (
         TokenizationMode.AOTP_UT_rasterized,
         TokenizationMode.AOTP_UT_uniform,
-        TokenizationMode.AOTP_indexed,
+        TokenizationMode.AOTP_CTT_indexed,
     ):
         tokenizer: MazeTokenizer = MazeTokenizer(
             tokenization_mode=mode, max_grid_size=100
@@ -40,7 +40,7 @@ def test_tokenizer():
 
         assert tokenizer.name == f"maze_tokenizer-{mode.name}-g{100}"
 
-        if mode == TokenizationMode.AOTP_indexed:
+        if mode == TokenizationMode.AOTP_CTT_indexed:
             # TODO: fix these asserts
             assert tokenizer.node_strings_map is not None
             # assert len(tokenizer.node_strings_map) == 100  # `tokenizer.node_strings_map` is a `Kappa` which has no length
@@ -142,7 +142,7 @@ _ASCII_MAZES: dict[str, tuple[str, list[str]]] = dict(
             [
                 TokenizationMode.AOTP_UT_uniform,
                 TokenizationMode.AOTP_UT_rasterized,
-                TokenizationMode.AOTP_indexed,
+                TokenizationMode.AOTP_CTT_indexed,
             ],
         )
     ],
@@ -152,8 +152,8 @@ def test_maze_to_tokens_roundtrip(
     tok_mode: TokenizationMode,
     tokens: str,
 ):
-    if tok_mode == TokenizationMode.AOTP_indexed:
-        # The hardcoded `tokens` assumes a UT tokenizer. Modify `tokens` to match what a `AOTP_indexed` tokenizer would produce.
+    if tok_mode == TokenizationMode.AOTP_CTT_indexed:
+        # The hardcoded `tokens` assumes a UT tokenizer. Modify `tokens` to match what a `AOTP_CTT_indexed` tokenizer would produce.
         tokens = re.sub(r"\(([0-9]),([0-9])\)", r"(\1 , \2)", tokens)
         tokens = re.sub(r"\(([0-9]+ ,)", r"( \1", tokens)
         tokens = re.sub(r"(, [0-9]+)\)", r"\1 )", tokens)

@@ -41,12 +41,12 @@ class TokenizationMode(Enum):
         example: for a 3x3 maze, token order is `(0,0), (0,1), (0,2), (1,0), (1,1), (1,2), (2,0), (2,1), (2,2)`
     - `AOTP_UT_uniform`: new mode, where a 3x3 tokenization scheme and 5x5 tokenizations scheme are compatible
         uses `corner_first_ndindex` function to order the tokens
-    - `AOTP_indexed`: each coordinate is a tuple of integers
+    - `AOTP_CTT_indexed`: each coordinate is a tuple of integers
     """
 
     AOTP_UT_rasterized = "AOTP_UT_rasterized"
     AOTP_UT_uniform = "AOTP_UT_uniform"
-    AOTP_indexed = "AOTP_indexed"
+    AOTP_CTT_indexed = "AOTP_CTT_indexed"
 
 
 _NDINDEX_FUNC_MAP: dict[
@@ -144,7 +144,7 @@ class MazeTokenizer(SerializableDataclass):
             TokenizationMode.AOTP_UT_uniform,
         ):
             return Kappa(_coord_to_strings_UT)
-        elif self.tokenization_mode == TokenizationMode.AOTP_indexed:
+        elif self.tokenization_mode == TokenizationMode.AOTP_CTT_indexed:
             return Kappa(_coord_to_strings_indexed)
         else:
             raise ValueError(
@@ -188,7 +188,7 @@ class MazeTokenizer(SerializableDataclass):
                     )
                 ]
             )
-        elif self.tokenization_mode == TokenizationMode.AOTP_indexed:
+        elif self.tokenization_mode == TokenizationMode.AOTP_CTT_indexed:
             # TODO: this is hacky, but we don't want to modify the original SPECIAL_TOKENS since that will break old models
             output.extend(
                 [
@@ -271,7 +271,7 @@ class MazeTokenizer(SerializableDataclass):
                 coord_to_strings_func=_coord_to_strings_UT,
                 when_noncoord=when_noncoord,
             )
-        elif self.tokenization_mode == TokenizationMode.AOTP_indexed:
+        elif self.tokenization_mode == TokenizationMode.AOTP_CTT_indexed:
             return coords_to_strings(
                 coords=coords,
                 coord_to_strings_func=_coord_to_strings_indexed,
@@ -372,7 +372,7 @@ class MazeTokenizer(SerializableDataclass):
         return self.tokenization_mode in (
             TokenizationMode.AOTP_UT_rasterized,
             TokenizationMode.AOTP_UT_uniform,
-            TokenizationMode.AOTP_indexed,
+            TokenizationMode.AOTP_CTT_indexed,
         )
 
     def is_UT(self) -> bool:

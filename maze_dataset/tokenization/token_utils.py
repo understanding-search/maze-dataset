@@ -115,7 +115,7 @@ def get_tokens_up_to_path_start(
     if include_start_coord:
         if is_UT(tokenization_mode):
             return tokens[: path_start_idx + 1]
-        elif tokenization_mode == TokenizationMode.AOTP_indexed:
+        elif tokenization_mode == TokenizationMode.AOTP_CTT_indexed:
             return tokens[: path_start_idx + 5]
         else:
             raise ValueError(f"Invalid tokenization mode: {tokenization_mode}")
