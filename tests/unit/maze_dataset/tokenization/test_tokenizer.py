@@ -1,3 +1,4 @@
+import re
 from collections import Counter
 from itertools import product
 from typing import Iterable
@@ -31,7 +32,7 @@ def test_tokenizer():
     for mode in (
         TokenizationMode.AOTP_UT_rasterized,
         TokenizationMode.AOTP_UT_uniform,
-        TokenizationMode.AOTP_indexed,
+        TokenizationMode.AOTP_CTT_indexed,
     ):
         tokenizer: MazeTokenizer = MazeTokenizer(
             tokenization_mode=mode, max_grid_size=100
@@ -39,14 +40,17 @@ def test_tokenizer():
 
         assert tokenizer.name == f"maze_tokenizer-{mode.name}-g{100}"
 
-        if mode == TokenizationMode.AOTP_indexed:
+        if mode == TokenizationMode.AOTP_CTT_indexed:
             # TODO: fix these asserts
-            # assert tokenizer.node_strings_map is None
-            pass
-        else:
-            # assert tokenizer.node_strings_map is not None
-            # assert len(tokenizer.node_strings_map) == 100
-            assert tokenizer.vocab_size > 100
+            assert tokenizer.node_strings_map is not None
+            # assert len(tokenizer.node_strings_map) == 100  # `tokenizer.node_strings_map` is a `Kappa` which has no length
+            assert 100 < tokenizer.vocab_size < 200
+        elif mode in (
+            TokenizationMode.AOTP_UT_rasterized,
+            TokenizationMode.AOTP_UT_uniform,
+        ):
+            assert tokenizer.node_strings_map is None
+            assert tokenizer.vocab_size > 10000
 
         assert isinstance(tokenizer.token_arr, Iterable)
         assert all(isinstance(token, str) for token in tokenizer.token_arr)
@@ -135,7 +139,11 @@ _ASCII_MAZES: dict[str, tuple[str, list[str]]] = dict(
         )
         for maze_ascii_key, tok_mode in product(
             ["small_3x3", "big_10x10"],
-            [TokenizationMode.AOTP_UT_uniform, TokenizationMode.AOTP_UT_rasterized],
+            [
+                TokenizationMode.AOTP_UT_uniform,
+                TokenizationMode.AOTP_UT_rasterized,
+                TokenizationMode.AOTP_CTT_indexed,
+            ],
         )
     ],
 )
@@ -144,6 +152,11 @@ def test_maze_to_tokens_roundtrip(
     tok_mode: TokenizationMode,
     tokens: str,
 ):
+    if tok_mode == TokenizationMode.AOTP_CTT_indexed:
+        # The hardcoded `tokens` assumes a UT tokenizer. Modify `tokens` to match what a `AOTP_CTT_indexed` tokenizer would produce.
+        tokens = re.sub(r"\(([0-9]),([0-9])\)", r"(\1 , \2)", tokens)
+        tokens = re.sub(r"\(([0-9]+ ,)", r"( \1", tokens)
+        tokens = re.sub(r"(, [0-9]+)\)", r"\1 )", tokens)
     tokens_original_split: list[str] = tokens.split()
 
     def get_token_regions(toks: list[str]) -> tuple[list[str], list[str]]:

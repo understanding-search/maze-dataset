@@ -13,7 +13,7 @@ from muutils.json_serialize import (
 from muutils.kappa import Kappa
 
 from maze_dataset.constants import SPECIAL_TOKENS, CoordTup
-from maze_dataset.tokenization.token_utils import (  # coord_to_indexed_string,; coord_to_str,
+from maze_dataset.tokenization.util import (
     _coord_to_strings_indexed,
     _coord_to_strings_UT,
     coords_to_strings,
@@ -41,12 +41,12 @@ class TokenizationMode(Enum):
         example: for a 3x3 maze, token order is `(0,0), (0,1), (0,2), (1,0), (1,1), (1,2), (2,0), (2,1), (2,2)`
     - `AOTP_UT_uniform`: new mode, where a 3x3 tokenization scheme and 5x5 tokenizations scheme are compatible
         uses `corner_first_ndindex` function to order the tokens
-    - `AOTP_indexed`: each coordinate is a tuple of integers (not implemented)
+    - `AOTP_CTT_indexed`: each coordinate is a tuple of integers
     """
 
     AOTP_UT_rasterized = "AOTP_UT_rasterized"
     AOTP_UT_uniform = "AOTP_UT_uniform"
-    AOTP_indexed = "AOTP_indexed"
+    AOTP_CTT_indexed = "AOTP_CTT_indexed"
 
 
 _NDINDEX_FUNC_MAP: dict[
@@ -55,6 +55,14 @@ _NDINDEX_FUNC_MAP: dict[
     TokenizationMode.AOTP_UT_rasterized: lambda n: list(np.ndindex(n, n)),
     TokenizationMode.AOTP_UT_uniform: lambda n: corner_first_ndindex(n, 2),
 }
+
+
+def is_UT(tokenization_mode: TokenizationMode) -> bool:
+    return tokenization_mode in (
+        TokenizationMode.AOTP_UT_rasterized,
+        TokenizationMode.AOTP_UT_uniform,
+    )
+
 
 _MAZETOKENIZER_PROPERTIES_TO_SERIALIZE: list[str] = [
     "name",
@@ -136,7 +144,7 @@ class MazeTokenizer(SerializableDataclass):
             TokenizationMode.AOTP_UT_uniform,
         ):
             return Kappa(_coord_to_strings_UT)
-        elif self.tokenization_mode == TokenizationMode.AOTP_indexed:
+        elif self.tokenization_mode == TokenizationMode.AOTP_CTT_indexed:
             return Kappa(_coord_to_strings_indexed)
         else:
             raise ValueError(
@@ -180,7 +188,7 @@ class MazeTokenizer(SerializableDataclass):
                     )
                 ]
             )
-        elif self.tokenization_mode == TokenizationMode.AOTP_indexed:
+        elif self.tokenization_mode == TokenizationMode.AOTP_CTT_indexed:
             # TODO: this is hacky, but we don't want to modify the original SPECIAL_TOKENS since that will break old models
             output.extend(
                 [
@@ -263,7 +271,7 @@ class MazeTokenizer(SerializableDataclass):
                 coord_to_strings_func=_coord_to_strings_UT,
                 when_noncoord=when_noncoord,
             )
-        elif self.tokenization_mode == TokenizationMode.AOTP_indexed:
+        elif self.tokenization_mode == TokenizationMode.AOTP_CTT_indexed:
             return coords_to_strings(
                 coords=coords,
                 coord_to_strings_func=_coord_to_strings_indexed,
@@ -364,14 +372,11 @@ class MazeTokenizer(SerializableDataclass):
         return self.tokenization_mode in (
             TokenizationMode.AOTP_UT_rasterized,
             TokenizationMode.AOTP_UT_uniform,
-            TokenizationMode.AOTP_indexed,
+            TokenizationMode.AOTP_CTT_indexed,
         )
 
     def is_UT(self) -> bool:
-        return self.tokenization_mode in (
-            TokenizationMode.AOTP_UT_rasterized,
-            TokenizationMode.AOTP_UT_uniform,
-        )
+        return is_UT(self.tokenization_mode)
 
     def clear_cache(self):
         """clears all cached properties"""
