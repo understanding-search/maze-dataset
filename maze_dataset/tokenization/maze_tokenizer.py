@@ -5,6 +5,7 @@ from functools import cached_property
 from typing import Callable, Iterable, Mapping, Sequence
 
 import numpy as np
+import abc
 from muutils.json_serialize import (
     SerializableDataclass,
     serializable_dataclass,
@@ -388,3 +389,107 @@ class MazeTokenizer(SerializableDataclass):
                     delattr(self, name)
                 except AttributeError as e:
                     pass
+
+
+class MazeTokenizer2(SerializableDataclass):
+    def __init__(
+	      self,
+        prompt_sequencer: PromptSequencer = PromptSequenceAOTP(),
+	      cell_tokenizer: CellTokenizer = CellTokUTUniform(),
+	      adjlist_tokenizer: AdjListTokenizer = AdjListTokCells(),
+        path_tokenizer: PathTokenizer = PathCells(),
+        max_grid_size: int | None = serializable_field(default=None)
+    ):
+	      # Store attributes, self.cell_tokenizer last so property setter doesn't break
+        pass
+	  
+    @property
+    def cell_tokenizer(self):
+        return self._cell_tokenizer
+            
+    @cell_tokenizer.setter
+    def cell_tokenizer(self, v: CellTokenizer):
+        """Cell tokenizer must be updated in other TokenizerElement objects."""
+        self.adjlist_tokenizer.cell_tokenizer = v
+        if isinstance(self.path_tokenizer, PathCells):  # If path tokenizer uses cells in its tokens
+            self.path_tokenizer.cell_tokenizer = v
+        self._cell_tokenizer = v
+    
+    @cached_property
+    def _tokenizer_elements(self):
+        return [self.prompt_sequencer, self.cell_tokenizer, self.adjlist_tokenizer, self.path_tokenizer]
+    
+    @property
+    def name(self) -> str:
+        """ Serializes MazeTokenizer into a key for encoding in zanj """
+        return 'maze_tokenizer-'+'-'.join([el.name for el in [self._tokenizer_elements]])
+    
+    @classmethod
+    def from_name(cls, key: str) -> 'MazeTokenizer':
+        """ Builds a MazeTokenizer from a serialization """
+        
+    @classmethod
+    def from_tokens(
+        cls, 
+        tokens: str | list[str], 
+        max_grid_size: int | None = None,
+        rasterization_mode: type[CellTokenizer] = CellTokUtUniform,
+        ) -> 'MazeTokenizer':
+        """
+        Infers most MazeTokenizer parameters from a full set of tokens.
+        Could be useful for adapting old code to new `MazeTokenizer`.
+        Would probably need a couple of other pieces of info besides just tokens.
+        - max_grid_size
+        - rasterization_mode: Only needed if UT tokens
+        - Anything else?
+        """
+# T = TypeVar('T', list | str)
+
+# Depth 0: superclass of all tokenizer elements
+class TokenizerElement(abc.ABC):
+    """ Some superclass for tokenizer elements. Not sure yet what all would be here."""
+    @abc.abstractmethod
+    def name(self) -> str:
+        pass
+# Depth 1: abc tokenizer elements
+class PromptSequencer(TokenizerElement, abc.ABC):
+    @abc.abstractmethod
+    def sequence(adjlist: list[str], origin: list[str], target: list[str], path: list[str]) -> list[str]: pass
+    # Define some (abstract) methods
+class CellTokenizer(TokenizerElement, abc.ABC):
+    @abc.abstractmethod
+    def coord_to_tokens(coord: CoordTup) -> list[str]: pass
+    # Define some (abstract) methods
+class AdjListTokenizer(TokenizerElement, abc.ABC):
+    @abc.abstractmethod
+    def adj_list_to_tokens(adjlist: np.array) -> list[str]: pass
+    # Define some (abstract) methods
+class PathTokenizer(TokenizerElement, abc.ABC):
+    @abc.abstractmethod
+    def path_to_tokens(path: list[CoordTup]) -> list[str]: pass
+    # Define some (abstract) methods
+
+
+# Intermediate abstract tokenizer elements
+class CellTokUT(CellTokenizer, abc.ABC): pass
+    # Implement some common abstract methods
+
+# Concrete classes
+class PromptSequencerAOTP(PromptSequencer): pass
+    # Concrete class, implement methods
+class CellTokUTUniform(CellTokenizer): pass
+    # No element options, so no __init__ needed
+    # Implement methods
+class CellTokCTT(CellTokenizer):
+    def __init__(self, pre=True, intra=True, post=True):
+        """
+        pre: Whether all cells include an integral preceding delimiter token
+        intra: Whether all cells include a delimiter token between coordinates
+        post: Whether all cells include an integral following delimiter token
+        """
+        pass
+        # Store attributes
+    # Implement methods
+class PathCells(PathTokenizer): pass
+    # Implement methods    
+# ...more concrete classes
