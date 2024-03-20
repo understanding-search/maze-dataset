@@ -391,16 +391,117 @@ class MazeTokenizer(SerializableDataclass):
                     pass
 
 
+# Depth 0: superclass of all tokenizer elements
+class TokenizerElement(SerializableDataclass, abc.ABC):
+    """ Some superclass for tokenizer elements. Not sure yet what all would be here."""
+    @abc.abstractmethod
+    def name(self) -> str:
+        pass
+
+class PromptSequencers:
+    class PromptSequencer(TokenizerElement, abc.ABC):
+        @abc.abstractmethod
+        def sequence(adjlist: list[str], origin: list[str], target: list[str], path: list[str]) -> list[str]: pass
+        # Define some (abstract) methods
+
+
+    class AOTP(PromptSequencer): pass
+        # Concrete class, implement methods
+
+
+class CellTokenizers:
+    class CellTokenizer(TokenizerElement, abc.ABC):
+        @abc.abstractmethod
+        def coord_to_tokens(coord: CoordTup) -> list[str]: pass
+        # Define some (abstract) methods
+
+    # Intermediate abstract tokenizer elements
+    class UT(CellTokenizer, abc.ABC): pass
+        # Implement some common abstract methods
+
+
+    class UTRasterized(UT): pass
+    # Implement methods
+
+
+    class UTUniform(UT): pass
+    # Implement methods
+    
+    
+    class CellTokCTT(CellTokenizer):
+        def __init__(self, pre=True, intra=True, post=True):
+            """
+            pre: Whether all cells include an integral preceding delimiter token
+            intra: Whether all cells include a delimiter token between coordinates
+            post: Whether all cells include an integral following delimiter token
+            """
+            pass
+            # Store attributes
+        # Implement methods
+
+
+class AdjListTokenizers:
+    class AdjListTokenizer(TokenizerElement, abc.ABC):
+        @abc.abstractmethod
+        def adj_list_to_tokens(adjlist: np.array) -> list[str]: pass
+        # Define some (abstract) methods
+
+
+    class Cells(AdjListTokenizer): pass
+        # Implement methods    
+    # ...more concrete classes
+
+
+class PathTokenizers:
+    class PathTokenizer(TokenizerElement, abc.ABC):
+        @abc.abstractmethod
+        def path_to_tokens(path: list[CoordTup]) -> list[str]: pass
+        # Define some (abstract) methods
+
+    
+    class Cells(PathTokenizer): pass
+        # Implement methods    
+    # ...more concrete classes
+    
+
+@serializable_dataclass(
+    properties_to_serialize=[
+        # TODO: figure out the right properties
+        "name",
+        "grid_size",
+        "token_arr",
+        "tokenizer_map",
+        "vocab_size",
+        "padding_token_index",
+    ], 
+    kw_only=True
+)
 class MazeTokenizer2(SerializableDataclass):
     def __init__(
-	      self,
-        prompt_sequencer: PromptSequencer = PromptSequenceAOTP(),
-	      cell_tokenizer: CellTokenizer = CellTokUTUniform(),
-	      adjlist_tokenizer: AdjListTokenizer = AdjListTokCells(),
-        path_tokenizer: PathTokenizer = PathCells(),
+	    self,
+        prompt_sequencer: PromptSequencers.PromptSequencer = serializable_field(
+            default=PromptSequencers.AOTP(),
+            serialization_fn=lambda x: x.name(),
+            loading_fn=lambda x: x.TokenizationElement.from_name(x)
+        ),
+	    cell_tokenizer: CellTokenizers.CellTokenizer = serializable_field(
+            default=CellTokenizers.CellTokUTUniform(),
+            serialization_fn=lambda x: x.name(),
+            loading_fn=lambda x: x.TokenizationElement.from_name(x)
+        ),
+        adjlist_tokenizer: AdjListTokenizers.AdjListTokenizer = serializable_field(
+            default=AdjListTokenizers.Cells(),
+            serialization_fn=lambda x: x.name(),
+            loading_fn=lambda x: x.TokenizationElement.from_name(x)
+        ),
+        path_tokenizer: PathTokenizers.PathTokenizer = serializable_field(
+            default=PathTokenizers.Cells(),
+            serialization_fn=lambda x: x.name(),
+            loading_fn=lambda x: x.TokenizationElement.from_name(x)
+        ),
         max_grid_size: int | None = serializable_field(default=None)
     ):
-	      # Store attributes, self.cell_tokenizer last so property setter doesn't break
+	    # Store attributes, self.cell_tokenizer last so property setter doesn't break
         pass
 	  
     @property
@@ -422,10 +523,10 @@ class MazeTokenizer2(SerializableDataclass):
     @property
     def name(self) -> str:
         """ Serializes MazeTokenizer into a key for encoding in zanj """
-        return 'maze_tokenizer-'+'-'.join([el.name for el in [self._tokenizer_elements]])
+        return '-'.join(['maze_tokenizer'] + [el.name for el in [self._tokenizer_elements]])
     
     @classmethod
-    def from_name(cls, key: str) -> 'MazeTokenizer':
+    def from_name(cls, key: str) -> 'MazeTokenizer2':
         """ Builds a MazeTokenizer from a serialization """
         
     @classmethod
@@ -434,7 +535,7 @@ class MazeTokenizer2(SerializableDataclass):
         tokens: str | list[str], 
         max_grid_size: int | None = None,
         rasterization_mode: type[CellTokenizer] = CellTokUtUniform,
-        ) -> 'MazeTokenizer':
+        ) -> 'MazeTokenizer2':
         """
         Infers most MazeTokenizer parameters from a full set of tokens.
         Could be useful for adapting old code to new `MazeTokenizer`.
@@ -443,53 +544,4 @@ class MazeTokenizer2(SerializableDataclass):
         - rasterization_mode: Only needed if UT tokens
         - Anything else?
         """
-# T = TypeVar('T', list | str)
-
-# Depth 0: superclass of all tokenizer elements
-class TokenizerElement(abc.ABC):
-    """ Some superclass for tokenizer elements. Not sure yet what all would be here."""
-    @abc.abstractmethod
-    def name(self) -> str:
-        pass
-# Depth 1: abc tokenizer elements
-class PromptSequencer(TokenizerElement, abc.ABC):
-    @abc.abstractmethod
-    def sequence(adjlist: list[str], origin: list[str], target: list[str], path: list[str]) -> list[str]: pass
-    # Define some (abstract) methods
-class CellTokenizer(TokenizerElement, abc.ABC):
-    @abc.abstractmethod
-    def coord_to_tokens(coord: CoordTup) -> list[str]: pass
-    # Define some (abstract) methods
-class AdjListTokenizer(TokenizerElement, abc.ABC):
-    @abc.abstractmethod
-    def adj_list_to_tokens(adjlist: np.array) -> list[str]: pass
-    # Define some (abstract) methods
-class PathTokenizer(TokenizerElement, abc.ABC):
-    @abc.abstractmethod
-    def path_to_tokens(path: list[CoordTup]) -> list[str]: pass
-    # Define some (abstract) methods
-
-
-# Intermediate abstract tokenizer elements
-class CellTokUT(CellTokenizer, abc.ABC): pass
-    # Implement some common abstract methods
-
-# Concrete classes
-class PromptSequencerAOTP(PromptSequencer): pass
-    # Concrete class, implement methods
-class CellTokUTUniform(CellTokenizer): pass
-    # No element options, so no __init__ needed
-    # Implement methods
-class CellTokCTT(CellTokenizer):
-    def __init__(self, pre=True, intra=True, post=True):
-        """
-        pre: Whether all cells include an integral preceding delimiter token
-        intra: Whether all cells include a delimiter token between coordinates
-        post: Whether all cells include an integral following delimiter token
-        """
-        pass
-        # Store attributes
-    # Implement methods
-class PathCells(PathTokenizer): pass
-    # Implement methods    
-# ...more concrete classes
+        # Don't need directly, but something similar needed for LatticeMaze.from_tokens
