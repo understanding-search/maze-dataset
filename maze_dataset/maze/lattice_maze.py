@@ -22,6 +22,7 @@ from maze_dataset.constants import (
 from maze_dataset.tokenization import (
     MazeTokenizer,
     TokenizationMode,
+    MazeTokenizer2,
     get_adj_list_tokens,
     get_path_tokens,
 )
