@@ -284,15 +284,93 @@ class MazePlot:
             self.ax.set_ylabel("row")
             self.ax.set_title(title)
 
-        # plot paths
+    def _empty_lattice_maze_raster_to_img(self, connection_val_scale: float = 0.93) -> np.ndarray:
+        """
+        Build an image to visualize the maze assuming all cells are connected.
+        Each "unit" consists of a node and the right and lower adjacent connection. Its area is ul * ul.
+        - Nodes have area: (ul-1) * (ul-1) and value 1 by default
+        - Connections have area: 1 * (ul-1); color and value 0.93 by default
+
+        Returns a matrix of side length (ul) * n + 1 where n is the number of nodes.
+        """
+        scaled_node_values = np.ones(self.maze.grid_shape)
+
+        # Create background image (all pixels set to the connection value, assuming full connectivity)
+        img = np.full(
+            (
+                self.maze.grid_shape[0] * self.unit_length + 1,
+                self.maze.grid_shape[1] * self.unit_length + 1,
+            ),
+            fill_value=connection_val_scale,
+            dtype=float,
+        )
+
+        # Draw nodes by iterating through lattice
+        for row in range(self.maze.grid_shape[0]):
+            for col in range(self.maze.grid_shape[1]):
+                # Draw node
+                img[
+                    row * self.unit_length + 1 : (row + 1) * self.unit_length,
+                    col * self.unit_length + 1 : (col + 1) * self.unit_length,
+                ] = 1  # Node value is always 1
+
+        return img
+
+    def _plot_maze_with_connections(self) -> None:
+        """Plot the maze using dots for cells and lines for connections between them, ensuring everything is centered in the cell."""
+
+        img = self._empty_lattice_maze_raster_to_img()
+
+        for row in range(self.maze.grid_shape[0]):
+            for col in range(self.maze.grid_shape[1]):
+                center = self._rowcol_to_coord((row, col))
+                self.ax.plot(center[0], center[1], 'o', color='black',ms=10 )  # Plot dot at the center of the cell
+
+                # Check and plot connection to the right cell if it exists
+                if col + 1 < self.maze.grid_shape[1] and self.maze.connection_list[1, row, col]:
+                    right_center = self._rowcol_to_coord((row, col + 1))
+                    self.ax.plot([center[0], right_center[0]], [center[1], right_center[1]], '-', color='black', ms=10)
+
+                # Check and plot connection to the cell below if it exists
+                if row + 1 < self.maze.grid_shape[0] and self.maze.connection_list[0, row, col]:
+                    below_center = self._rowcol_to_coord((row + 1, col))
+                    self.ax.plot([center[0], below_center[0]], [center[1], below_center[1]], '-', color='black', ms=10)
+
+        self.ax.imshow(img, cmap="gray", vmin=-1, vmax=1)
+
+
+    def plot_with_connections(
+        self,
+        dpi: int = 100,
+        title: str = "",
+        fig_ax: tuple | None = None,
+        plain: bool = False,
+    ) -> None:
+        """Plot the maze and paths using dots and connections instead of walls, with centered nodes and a mild raster."""
+        if fig_ax is None:
+            self.fig = plt.figure(dpi=dpi)
+            self.ax = self.fig.add_subplot(1, 1, 1)
+        else:
+            self.fig, self.ax = fig_ax
+
+        self._lattice_maze_to_img()
+
+        self._plot_maze_with_connections()
+
+        # Plotting the paths remains the same as before...
         if self.true_path is not None:
             self._plot_path(self.true_path)
         for path in self.predicted_paths:
             self._plot_path(path)
 
-        # plot markers
-        for coord, kwargs in self.marked_coords:
-            self._place_marked_coords([coord], **kwargs)
+        if not plain:
+            tick_arr = np.arange(self.maze.grid_shape[0])
+            self.ax.set_xticks(self.unit_length * (tick_arr + 0.5), tick_arr)
+            self.ax.set_yticks(self.unit_length * (tick_arr + 0.5), tick_arr)
+            self.ax.set_xlabel("col")
+            self.ax.set_ylabel("row")
+            self.ax.set_title(title)
+
 
     def _rowcol_to_coord(self, point: Coord) -> np.ndarray:
         """Transform Point from MazeTransformer (row, column) notation to matplotlib default (x, y) notation where x is the horizontal axis."""
