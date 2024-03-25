@@ -269,6 +269,12 @@ class MazePlot:
         # plot maze
         self._plot_maze()
 
+        # plot paths
+        if self.true_path is not None:
+            self._plot_path(self.true_path)
+        for path in self.predicted_paths:
+            self._plot_path(path)
+
         # Plot labels
         if not plain:
             tick_arr = np.arange(self.maze.grid_shape[0])
