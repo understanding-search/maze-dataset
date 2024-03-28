@@ -4,7 +4,7 @@ from maze_dataset.tokenization.maze_tokenizer import (
     TokenizerElement,
     MazeTokenizer2,
     PromptSequencers,
-    CellTokenizers,
+    CoordTokenizers,
     AdjListTokenizers,
     PathTokenizers
 )
@@ -25,7 +25,7 @@ __all__ = [
     "TokenizerElement",
     "MazeTokenizer2",
     "PromptSequencers",
-    "CellTokenizers",
+    "CoordTokenizers",
     "AdjListTokenizers",
     "PathTokenizers",
     "coord_str_to_tuple",
