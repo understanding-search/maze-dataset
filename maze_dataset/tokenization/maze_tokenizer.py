@@ -437,9 +437,9 @@ class CoordTokenizers:
         # Define some (abstract) methods
 
     # Intermediate abstract tokenizer elements
-    class UT(CoordTokenizer, abc.ABC): pass
-        # Implement some common abstract methods
-
+    class UT(CoordTokenizer, abc.ABC):
+        def to_tokens(coord: CoordTup[int]) -> list[str]:
+            return [''.join(['(', coord[0], ',', coord[1], ')'])]
 
     class UTRasterized(UT): pass
     # Implement methods
@@ -518,6 +518,7 @@ class PromptSequencers:
             *args,
             **kwargs
             ) -> list[str]:
+            """Returns a complete list of tokens for a given set of maze elements."""
             return self._sequence_tokens(
                 self._get_prompt_regions(
                     adj_list,
