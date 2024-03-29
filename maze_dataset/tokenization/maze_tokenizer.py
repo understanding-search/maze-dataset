@@ -422,7 +422,7 @@ class TokenizerElement(SerializableDataclass, abc.ABC):
         return self.__dict__
     
     @classmethod
-    def deserialize(cls, data: dict[str, Any]) -> 'cls':
+    def deserialize(cls, data: dict[str, Any]) -> 'TokenizerElement':
         return cls(data)
     
     @abc.abstractmethod
@@ -439,12 +439,12 @@ class TokenizerElement(SerializableDataclass, abc.ABC):
 class CoordTokenizers:
     class CoordTokenizer(TokenizerElement, abc.ABC):
         @abc.abstractmethod
-        def to_tokens(self, coord: CoordTup) -> list[str]: pass
+        def to_tokens(self, coord: Coord) -> list[str]: pass
         # Define some (abstract) methods
 
     # Intermediate abstract tokenizer elements
     class UT(CoordTokenizer, abc.ABC):
-        def to_tokens(self, coord: CoordTup) -> list[str]:
+        def to_tokens(self, coord: Coord) -> list[str]:
             return [''.join(['(', str(coord[0]), ',', str(coord[1]), ')'])]
 
     class UTRasterized(UT): pass
@@ -492,7 +492,7 @@ class AdjListTokenizers:
         
         def _single_connection_tokens(
             self, 
-            coord1: CoordTup, coord2: CoordTup, 
+            coord1: Coord, coord2: Coord, 
             coord_tokenizer: CoordTokenizers.CoordTokenizer
             ) -> list[str]:
             return [
@@ -523,7 +523,7 @@ class PathTokenizers:
         """Superclass of tokenizers for maze solution paths.
         """
         @abc.abstractmethod
-        def to_tokens(self, path: list[CoordTup], coord_tokenizer: CoordTokenizers.CoordTokenizer) -> list[str]:
+        def to_tokens(self, path: list[Coord], coord_tokenizer: CoordTokenizers.CoordTokenizer) -> list[str]:
             """Returns tokens representing the solution path.
             """
         
@@ -534,7 +534,7 @@ class PathTokenizers:
         Steps may be of any length.
         Allows for a sequence of leading and trailing tokens which don't fit the step pattern.
         """
-        def to_tokens(self, path: list[CoordTup], coord_tokenizer: CoordTokenizers.CoordTokenizer) -> list[str]:
+        def to_tokens(self, path: list[Coord], coord_tokenizer: CoordTokenizers.CoordTokenizer) -> list[str]:
             return [
                 *self._leading_tokens(path[0], coord_tokenizer),
                 *itertools.chain.from_iterable(
@@ -547,7 +547,7 @@ class PathTokenizers:
             ]
             
         @abc.abstractmethod
-        def _single_step_tokens(self, c0: CoordTup, c1: CoordTup, coord_tokenizer: CoordTokenizers.CoordTokenizer) -> list[str]:
+        def _single_step_tokens(self, c0: Coord, c1: Coord, coord_tokenizer: CoordTokenizers.CoordTokenizer) -> list[str]:
             """Returns the token sequence representing a single step along the path. 
             """
             pass
@@ -574,7 +574,7 @@ class PathTokenizers:
     class Coords(StepSequence):
         post: bool = False
         
-        def _single_step_tokens(self, c0: CoordTup, c1: CoordTup, coord_tokenizer: CoordTokenizers.CoordTokenizer) -> list[str]:
+        def _single_step_tokens(self, c0: Coord, c1: Coord, coord_tokenizer: CoordTokenizers.CoordTokenizer) -> list[str]:
             return [
                 *coord_tokenizer.to_tokens(c1),
                 *unpackable_if_true_attribute([_DELIMITERS.PATH_POST], self, 'post')
@@ -593,8 +593,8 @@ class PromptSequencers:
         def to_tokens(
             self, 
             adj_list: Int8[np.ndarray, "conn start_end coord"],
-            origin: CoordTup,
-            target: CoordTup,
+            origin: Coord,
+            target: Coord,
             path: CoordArray,
             coord_tokenizer: CoordTokenizers.CoordTokenizer,
             adj_list_tokenizer: AdjListTokenizers.AdjListTokenizer,
@@ -618,8 +618,8 @@ class PromptSequencers:
         def _get_prompt_regions(
             self,
             adj_list: Int8[np.ndarray, "conn start_end coord"],
-            origin: CoordTup,
-            target: CoordTup,
+            origin: Coord,
+            target: Coord,
             path: CoordArray,
             coord_tokenizer: CoordTokenizers.CoordTokenizer,
             adj_list_tokenizer: AdjListTokenizers.AdjListTokenizer,
@@ -741,8 +741,8 @@ class MazeTokenizer2(SerializableDataclass):
     def to_tokens(
         self,
         conn_list: ConnectionList,
-        origin: CoordTup,
-        target: CoordTup,
+        origin: Coord,
+        target: Coord,
         path: CoordArray
         ) -> list[str]:
         return self.prompt_sequencer.to_tokens(conn_list, origin, target, path, self.coord_tokenizer, self.adj_list_tokenizer, self.path_tokenizer)
