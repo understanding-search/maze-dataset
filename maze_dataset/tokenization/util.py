@@ -3,6 +3,7 @@
 import re
 import typing
 from typing import Callable
+from collections import Counter
 from jaxtyping import Float, Int8
 
 import numpy as np
@@ -187,3 +188,23 @@ def connection_list_to_adj_list(
         np.random.shuffle(adj_list)
 
     return adj_list
+
+
+def equal_except_adj_list_sequence(rollout1: list[str], rollout2: list[str]) -> bool:
+    """Returns if the rollout strings are equal, allowing for differently sequenced adjacency lists.
+    """
+    def get_token_regions(toks: list[str]) -> tuple[list[str], list[str]]:
+        adj_list_start, adj_list_end = toks.index("<ADJLIST_START>") + 1, toks.index(
+            "<ADJLIST_END>"
+        )
+        adj_list = toks[adj_list_start:adj_list_end]
+        non_adj_list = toks[:adj_list_start] + toks[adj_list_end:]
+        return adj_list, non_adj_list
+    
+    adj_list1, non_adj_list1 = get_token_regions(rollout1)
+    adj_list2, non_adj_list2 = get_token_regions(rollout2)
+    if non_adj_list1 != non_adj_list2:
+        return False
+    counter1: Counter = Counter(adj_list1)
+    counter2: Counter = Counter(adj_list2)
+    return counter1 == counter2

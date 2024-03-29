@@ -15,7 +15,7 @@ from muutils.json_serialize import (
 from muutils.kappa import Kappa
 from numpy.core.multiarray import array as array
 
-from maze_dataset.constants import SPECIAL_TOKENS, Int8, CoordTup, CoordArray, ConnectionList
+from maze_dataset.constants import SPECIAL_TOKENS, Int8, CoordTup, CoordArray, ConnectionList, Coord
 from maze_dataset.tokenization.util import (
     _coord_to_strings_indexed,
     _coord_to_strings_UT,
@@ -439,13 +439,13 @@ class TokenizerElement(SerializableDataclass, abc.ABC):
 class CoordTokenizers:
     class CoordTokenizer(TokenizerElement, abc.ABC):
         @abc.abstractmethod
-        def to_tokens(coord: CoordTup) -> list[str]: pass
+        def to_tokens(self, coord: CoordTup) -> list[str]: pass
         # Define some (abstract) methods
 
     # Intermediate abstract tokenizer elements
     class UT(CoordTokenizer, abc.ABC):
-        def to_tokens(coord: CoordTup) -> list[str]:
-            return [''.join(['(', coord[0], ',', coord[1], ')'])]
+        def to_tokens(self, coord: CoordTup) -> list[str]:
+            return [''.join(['(', str(coord[0]), ',', str(coord[1]), ')'])]
 
     class UTRasterized(UT): pass
     # Implement methods
@@ -470,14 +470,13 @@ class CoordTokenizers:
 
 
 class AdjListTokenizers:
-    # TODO: figure out properties_to_serialize
     @serializable_dataclass(frozen=True, kw_only=True)
     class AdjListTokenizer(TokenizerElement, abc.ABC):
         """
         Specifies how the adjacency list is tokenized.
         """
         @abc.abstractmethod
-        def to_tokens(conn_list: ConnectionList) -> list[str]: pass
+        def to_tokens(self, conn_list: ConnectionList) -> list[str]: pass
         # Define some (abstract) methods
 
 
@@ -533,18 +532,43 @@ class PathTokenizers:
         """Any `PathTokenizer` where the tokenization may be assembled from token subsequences, each of which represents a step along the path.
         
         Steps may be of any length.
+        Allows for a sequence of leading and trailing tokens which don't fit the step pattern.
         """
         def to_tokens(self, path: list[CoordTup], coord_tokenizer: CoordTokenizers.CoordTokenizer) -> list[str]:
-            return itertools.chain.from_iterable(
-                [
-                    self._single_step_tokens(c0, c1, coord_tokenizer)
-                    for c0, c1 in self.as_adj_list()
-                ]
-            )
+            return [
+                *self._leading_tokens(path[0], coord_tokenizer),
+                *itertools.chain.from_iterable(
+                    [                        
+                        self._single_step_tokens(c0, c1, coord_tokenizer)
+                        for c0, c1 in zip(path[:-1], path[1:])
+                    ]
+                ),
+                *self._trailing_tokens(path[-1], coord_tokenizer)
+            ]
             
         @abc.abstractmethod
         def _single_step_tokens(self, c0: CoordTup, c1: CoordTup, coord_tokenizer: CoordTokenizers.CoordTokenizer) -> list[str]:
+            """Returns the token sequence representing a single step along the path. 
+            """
             pass
+        
+        @abc.abstractmethod
+        def _leading_tokens(self, c: Coord, coord_tokenizer: CoordTokenizers.CoordTokenizer) -> list[str]:
+            """Returns tokens preceding those from the sequence from `_single_step_tokens`.
+            Since the for loop in `to_tokens` iterates `len(path)-1` times, there may be a fencepost problem.
+            There may be information about the start of the path that it misses that needs to be appended.
+            <PATH_START> should NOT be included.
+            """
+            raise NotImplementedError('Subclasses must implement `_leading_tokens`.' 
+                                      'If no leading tokens are desired then implement to return an empty tuple.')
+        
+        @abc.abstractmethod
+        def _trailing_tokens(self, c: Coord, coord_tokenizer: CoordTokenizers.CoordTokenizer) -> list[str]:
+            """Returns tokens following those from the sequence from `_single_step_tokens`.
+            <PATH_END> should NOT be included.
+            """
+            raise NotImplementedError('Subclasses must implement `_trailing_tokens`.' 
+                                      'If no leading tokens are desired then implement to return an empty tuple.')
 
     
     class Coords(StepSequence):
@@ -552,9 +576,16 @@ class PathTokenizers:
         
         def _single_step_tokens(self, c0: CoordTup, c1: CoordTup, coord_tokenizer: CoordTokenizers.CoordTokenizer) -> list[str]:
             return [
-                coord_tokenizer(c1),
+                *coord_tokenizer.to_tokens(c1),
                 *unpackable_if_true_attribute([_DELIMITERS.PATH_POST], self, 'post')
             ]
+            
+        def _leading_tokens(self, c: CoordArray, coord_tokenizer: CoordTokenizers.CoordTokenizer) -> list[str]:
+            return coord_tokenizer.to_tokens(c)
+            
+        def _trailing_tokens(self, c: CoordArray, coord_tokenizer: CoordTokenizers.CoordTokenizer) -> list[str]:
+            return ()
+            
 
 class PromptSequencers:
     """Namespace for `PromptSequencer` subclass hierarchy."""
@@ -573,7 +604,7 @@ class PromptSequencers:
             ) -> list[str]:
             """Returns a complete list of tokens for a given set of maze elements."""
             return self._sequence_tokens(
-                self._get_prompt_regions(
+                *self._get_prompt_regions(
                     adj_list,
                     origin,
                     target,

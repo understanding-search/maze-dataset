@@ -440,7 +440,7 @@ class LatticeMaze(SerializableDataclass):
     ) -> list[str]:
         """serialize maze and solution to tokens"""
         if isinstance(maze_tokenizer, TokenizationMode):
-            maze_tokenizer = MazeTokenizer(maze_tokenizer)
+            maze_tokenizer = MazeTokenizer(tokenization_mode=maze_tokenizer)
         if maze_tokenizer.is_AOTP():
             coords_raw: list[CoordTup | str] = self._as_coords_and_special_AOTP()
             coords_processed: list[str] = maze_tokenizer.coords_to_strings(

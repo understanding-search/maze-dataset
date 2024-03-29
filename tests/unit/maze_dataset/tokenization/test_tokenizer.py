@@ -160,7 +160,7 @@ def test_maze_to_tokens_roundtrip(
     tokens_original_split: list[str] = tokens.split()
 
     def get_token_regions(toks: list[str]) -> tuple[list[str], list[str]]:
-        adj_list_start, adj_list_end = toks.index("<ADJLIST_START>") + 1, tokens.index(
+        adj_list_start, adj_list_end = toks.index("<ADJLIST_START>") + 1, toks.index(
             "<ADJLIST_END>"
         )
         adj_list = toks[adj_list_start:adj_list_end]
