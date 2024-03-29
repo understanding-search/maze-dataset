@@ -3,11 +3,12 @@
 import re
 import typing
 from typing import Callable
+from jaxtyping import Float, Int8
 
 import numpy as np
 from muutils.misc import list_join
 
-from maze_dataset.constants import CoordTup
+from maze_dataset.constants import CoordTup, ConnectionList
 from maze_dataset.utils import WhenMissing
 
 # coordinate to strings
@@ -146,3 +147,43 @@ def coords_to_strings(
         else:
             result.extend(coord_to_strings_func(coord))
     return result
+
+
+def connection_list_to_adj_list(
+    conn_list: ConnectionList,
+    shuffle_d0: bool = True, 
+    shuffle_d1: bool = True
+    ) ->  Int8[np.ndarray, "conn start_end coord"]:
+    n_connections = conn_list.sum()
+    adj_list: Int8[np.ndarray, "conn start_end coord"] = np.full(
+            (n_connections, 2, 2),
+            -1,
+        )
+
+    if shuffle_d1:
+        flip_d1: Float[np.array, "conn"] = np.random.rand(n_connections)
+
+    # loop over all nonzero elements of the connection list
+    i: int = 0
+    for d, x, y in np.ndindex(conn_list.shape):
+        if conn_list[d, x, y]:
+            c_start: CoordTup = (x, y)
+            c_end: CoordTup = (
+                x + (1 if d == 0 else 0),
+                y + (1 if d == 1 else 0),
+            )
+            adj_list[i, 0] = np.array(c_start)
+            adj_list[i, 1] = np.array(c_end)
+
+            # flip if shuffling
+            if shuffle_d1 and (flip_d1[i] > 0.5):
+                c_s, c_e = adj_list[i, 0].copy(), adj_list[i, 1].copy()
+                adj_list[i, 0] = c_e
+                adj_list[i, 1] = c_s
+
+            i += 1
+
+    if shuffle_d0:
+        np.random.shuffle(adj_list)
+
+    return adj_list

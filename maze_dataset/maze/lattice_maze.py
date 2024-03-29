@@ -28,6 +28,7 @@ from maze_dataset.tokenization import (
     get_path_tokens,
 )
 from maze_dataset.tokenization.token_utils import get_origin_tokens, get_target_tokens
+from maze_dataset.tokenization.util import connection_list_to_adj_list
 
 RGB = tuple[int, int, int]
 
@@ -365,38 +366,7 @@ class LatticeMaze(SerializableDataclass):
     def as_adj_list(
         self, shuffle_d0: bool = True, shuffle_d1: bool = True
     ) -> Int8[np.ndarray, "conn start_end coord"]:
-        adj_list: Int8[np.ndarray, "conn start_end coord"] = np.full(
-            (self.n_connections, 2, 2),
-            -1,
-        )
-
-        if shuffle_d1:
-            flip_d1: Float[np.array, "conn"] = np.random.rand(self.n_connections)
-
-        # loop over all nonzero elements of the connection list
-        i: int = 0
-        for d, x, y in np.ndindex(self.connection_list.shape):
-            if self.connection_list[d, x, y]:
-                c_start: CoordTup = (x, y)
-                c_end: CoordTup = (
-                    x + (1 if d == 0 else 0),
-                    y + (1 if d == 1 else 0),
-                )
-                adj_list[i, 0] = np.array(c_start)
-                adj_list[i, 1] = np.array(c_end)
-
-                # flip if shuffling
-                if shuffle_d1 and (flip_d1[i] > 0.5):
-                    c_s, c_e = adj_list[i, 0].copy(), adj_list[i, 1].copy()
-                    adj_list[i, 0] = c_e
-                    adj_list[i, 1] = c_s
-
-                i += 1
-
-        if shuffle_d0:
-            np.random.shuffle(adj_list)
-
-        return adj_list
+        return connection_list_to_adj_list(self.connection_list, shuffle_d0, shuffle_d1)
 
     @classmethod
     def from_adj_list(

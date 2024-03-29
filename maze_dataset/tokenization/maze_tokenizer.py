@@ -21,8 +21,9 @@ from maze_dataset.tokenization.util import (
     _coord_to_strings_UT,
     coords_to_strings,
     strings_to_coords,
+    connection_list_to_adj_list
 )
-from maze_dataset.utils import WhenMissing, corner_first_ndindex
+from maze_dataset.utils import WhenMissing, corner_first_ndindex, unpackable_if_true_attribute
 
 
 class TokenError(ValueError):
@@ -394,8 +395,7 @@ class MazeTokenizer(SerializableDataclass):
 
 
 class _DELIMITERS:
-    """
-    For all `TokenizerElement`s, the tokens to be used for optional delimiters.
+    """For all `TokenizerElement`s, the tokens to be used for optional delimiters.
     """
     COORD_PRE = "("
     COORD_INTRA = ","
@@ -477,7 +477,7 @@ class AdjListTokenizers:
         Specifies how the adjacency list is tokenized.
         """
         @abc.abstractmethod
-        def to_tokens(adj_list: Int8[np.ndarray, "conn start_end coord"]) -> list[str]: pass
+        def to_tokens(conn_list: ConnectionList) -> list[str]: pass
         # Define some (abstract) methods
 
 
@@ -490,7 +490,6 @@ class AdjListTokenizers:
         intra: bool = serializable_field(default=True, compare=False)
         post: bool = serializable_field(default=True, compare=False)
         walls: bool = serializable_field(default=False, compare=False)
-        coord_tokenizer: CoordTokenizers.CoordTokenizer | None = serializable_field(default=None, compare=False)
         
         def _single_connection_tokens(
             self, 
@@ -506,33 +505,56 @@ class AdjListTokenizers:
         
         def to_tokens(
             self,
-            adj_list: Int8[np.ndarray, "conn start_end coord"], 
+            conn_list: ConnectionList, 
             coord_tokenizer: CoordTokenizers.CoordTokenizer
             ) -> list[str]:
             if self.walls:
-                adj_list = np.bitwise_not(adj_list)
-            adj_list: list[str] = itertools.chain.from_iterable(
+                conn_list = np.logical_not(conn_list)
+            adj_list = connection_list_to_adj_list(conn_list)
+            return itertools.chain.from_iterable(
                 [
                     self._single_connection_tokens(c_s, c_e, coord_tokenizer)
-                    for c_s, c_e in self.as_adj_list()
+                    for c_s, c_e in adj_list
                 ]
             )
         
-        # Implement methods    
-    # ...more concrete classes
-
 
 class PathTokenizers:
     class PathTokenizer(TokenizerElement, abc.ABC):
+        """Superclass of tokenizers for maze solution paths.
+        """
         @abc.abstractmethod
-        def path_to_tokens(path: list[CoordTup]) -> list[str]: pass
-        # Define some (abstract) methods
+        def to_tokens(self, path: list[CoordTup], coord_tokenizer: CoordTokenizers.CoordTokenizer) -> list[str]:
+            """Returns tokens representing the solution path.
+            """
+        
+        
+    class StepSequence(PathTokenizer, abc.ABC):
+        """Any `PathTokenizer` where the tokenization may be assembled from token subsequences, each of which represents a step along the path.
+        
+        Steps may be of any length.
+        """
+        def to_tokens(self, path: list[CoordTup], coord_tokenizer: CoordTokenizers.CoordTokenizer) -> list[str]:
+            return itertools.chain.from_iterable(
+                [
+                    self._single_step_tokens(c0, c1, coord_tokenizer)
+                    for c0, c1 in self.as_adj_list()
+                ]
+            )
+            
+        @abc.abstractmethod
+        def _single_step_tokens(self, c0: CoordTup, c1: CoordTup, coord_tokenizer: CoordTokenizers.CoordTokenizer) -> list[str]:
+            pass
 
     
-    class Coords(PathTokenizer): pass
-        # Implement methods    
-    # ...more concrete classes
-    
+    class Coords(StepSequence):
+        post: bool = False
+        
+        def _single_step_tokens(self, c0: CoordTup, c1: CoordTup, coord_tokenizer: CoordTokenizers.CoordTokenizer) -> list[str]:
+            return [
+                coord_tokenizer(c1),
+                *unpackable_if_true_attribute([_DELIMITERS.PATH_POST], self, 'post')
+            ]
 
 class PromptSequencers:
     """Namespace for `PromptSequencer` subclass hierarchy."""
@@ -692,7 +714,7 @@ class MazeTokenizer2(SerializableDataclass):
         target: CoordTup,
         path: CoordArray
         ) -> list[str]:
-        pass
+        return self.prompt_sequencer.to_tokens(conn_list, origin, target, path, self.coord_tokenizer, self.adj_list_tokenizer, self.path_tokenizer)
         
     @classmethod
     def from_tokens(
