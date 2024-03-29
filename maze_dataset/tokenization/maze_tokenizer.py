@@ -467,6 +467,16 @@ class CoordTokenizers:
         intra: bool = True
         post: bool = True
         # Implement methods
+        
+        def to_tokens(self, coord: Coord) -> list[str]:
+            return [
+                *unpackable_if_true_attribute([_DELIMITERS.COORD_PRE], self, 'pre'),
+                str(coord[0]),
+                *unpackable_if_true_attribute([_DELIMITERS.COORD_INTRA], self, 'intra'),
+                str(coord[1]),
+                *unpackable_if_true_attribute([_DELIMITERS.COORD_POST], self, 'post'),
+            ]
+        
 
 
 class AdjListTokenizers:
@@ -697,7 +707,10 @@ class PromptSequencers:
 class MazeTokenizer2(SerializableDataclass):
     """Tokenizer for mazes
     
-    # TODO: write docstring
+    # Development
+    - To ensure backwards compatibility, the default constructor must always return a tokenizer equivalent to the legacy `TokenizationMode.AOTP_UT_Uniform`.
+    - Furthermore, the mapping reflected in `from_legacy` must also be maintained.
+    - Updates to `MazeTokenizer2` or the `TokenizerElement` hierarchy must maintain that behavior.
     """
     prompt_sequencer: PromptSequencers.PromptSequencer = serializable_field(
         default=PromptSequencers.AOTP(),
@@ -737,6 +750,16 @@ class MazeTokenizer2(SerializableDataclass):
     def from_name(cls, key: str) -> 'MazeTokenizer2':
         """ Builds a MazeTokenizer from the output of `MazeTokenizer2.name`"""
         pass
+
+    @classmethod
+    def from_legacy(cls, legacy_maze_tokenizer: MazeTokenizer | TokenizationMode) -> 'MazeTokenizer2':
+        if isinstance(legacy_maze_tokenizer, MazeTokenizer):
+            legacy_maze_tokenizer = legacy_maze_tokenizer.tokenization_mode
+        return {
+            TokenizationMode.AOTP_UT_uniform: MazeTokenizer2(),
+            TokenizationMode.AOTP_UT_rasterized: MazeTokenizer2(coord_tokenizer=CoordTokenizers.UTRasterized()),
+            TokenizationMode.AOTP_CTT_indexed: MazeTokenizer2(coord_tokenizer=CoordTokenizers.CTT()),
+        }[legacy_maze_tokenizer]
         
     def to_tokens(
         self,

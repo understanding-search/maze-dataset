@@ -1,4 +1,6 @@
 from pytest import mark, param
+from itertools import product
+
 from maze_dataset import (
     LatticeMazeGenerators,
     MazeDataset,
@@ -23,7 +25,7 @@ from maze_dataset.tokenization import (
 CFG: MazeDatasetConfig = MazeDatasetConfig(
         name="test",
         grid_n=5,
-        n_mazes=3,
+        n_mazes=5,
         maze_ctor=LatticeMazeGenerators.gen_dfs,
     )
 DATASET = MazeDataset.from_config(
@@ -38,16 +40,28 @@ DATASET = MazeDataset.from_config(
 
 
 @mark.parametrize(
-    "maze",
+    "maze, tokenizer, legacy_tokenizer",
     [
-        param(maze)
-        for maze in DATASET.mazes
+        param(
+            maze[0],
+            tok_spec[0],
+            tok_spec[1],
+            id=f"{tok_spec[1].value}-maze{maze[1]}"
+        )
+        for maze, tok_spec in product(
+            [(maze, i) for i, maze in enumerate(DATASET.mazes[:2])],
+            [
+                (MazeTokenizer2.from_legacy(tok_mode), tok_mode)
+                for tok_mode in TokenizationMode
+            ]
+        )
     ]
 )
-# def test_to_tokens(tokenizer: MazeTokenizer2, maze: SolvedMaze):
-def test_to_tokens(maze: SolvedMaze):
-    tokenizer = MazeTokenizer2()
+def test_to_tokens_backwards_compatible(maze: SolvedMaze, tokenizer: MazeTokenizer2, legacy_tokenizer: TokenizationMode):
+    # tokenizer = MazeTokenizer2()
     toks: list[str] = tokenizer.to_tokens(maze.connection_list, maze.start_pos, maze.end_pos, maze.solution)
-    toks_legacy: list[str] = maze.as_tokens(TokenizationMode.AOTP_UT_uniform)
-    print(toks)
+    toks_legacy: list[str] = maze.as_tokens(legacy_tokenizer)
     assert equal_except_adj_list_sequence(toks, toks_legacy)
+    
+
+# def test_from_legacy(maze: SolvedMaze, )
