@@ -2,12 +2,13 @@ import warnings
 from dataclasses import dataclass
 
 import numpy as np
-from jaxtyping import Int8
+from jaxtyping import Int8, Bool
 
 Coord = Int8[np.ndarray, "x y"]
 CoordTup = tuple[int, int]
 CoordArray = Int8[np.ndarray, "coord x y"]
 CoordList = list[CoordTup]
+ConnectionList = Bool[np.ndarray, "lattice_dim x y"]
 
 
 class SpecialTokensError(Exception):

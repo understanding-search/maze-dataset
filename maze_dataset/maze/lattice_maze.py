@@ -18,6 +18,7 @@ from maze_dataset.constants import (
     Coord,
     CoordArray,
     CoordTup,
+    ConnectionList,
 )
 from maze_dataset.tokenization import (
     MazeTokenizer,
@@ -28,7 +29,6 @@ from maze_dataset.tokenization import (
 )
 from maze_dataset.tokenization.token_utils import get_origin_tokens, get_target_tokens
 
-ConnectionList = Bool[np.ndarray, "lattice_dim x y"]
 RGB = tuple[int, int, int]
 
 PixelGrid = Int[np.ndarray, "x y rgb"]

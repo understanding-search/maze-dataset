@@ -4,6 +4,7 @@ from maze_dataset.constants import (
     CoordArray,
     CoordList,
     CoordTup,
+    ConnectionList,
 )
 from maze_dataset.dataset.collected_dataset import (
     MazeDatasetCollection,
@@ -22,6 +23,7 @@ __all__ = [
     "CoordTup",
     "CoordList",
     "CoordArray",
+    "ConnectionList",
     "SPECIAL_TOKENS",
     "LatticeMaze",
     "SolvedMaze",

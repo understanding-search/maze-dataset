@@ -15,7 +15,7 @@ from muutils.json_serialize import (
 from muutils.kappa import Kappa
 from numpy.core.multiarray import array as array
 
-from maze_dataset.constants import SPECIAL_TOKENS, Int8, CoordTup, CoordArray
+from maze_dataset.constants import SPECIAL_TOKENS, Int8, CoordTup, CoordArray, ConnectionList
 from maze_dataset.tokenization.util import (
     _coord_to_strings_indexed,
     _coord_to_strings_UT,
@@ -687,7 +687,7 @@ class MazeTokenizer2(SerializableDataclass):
         
     def to_tokens(
         self,
-        adj_list: Int8[np.ndarray, "conn start_end coord"],
+        conn_list: ConnectionList,
         origin: CoordTup,
         target: CoordTup,
         path: CoordArray
