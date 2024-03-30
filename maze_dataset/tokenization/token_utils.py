@@ -3,7 +3,6 @@
 import warnings
 
 from maze_dataset.constants import SPECIAL_TOKENS
-from maze_dataset.tokenization.maze_tokenizer import TokenizationMode, is_UT
 
 # filtering things from a prompt or generated text
 # ==================================================
@@ -100,24 +99,3 @@ def get_target_tokens(tokens: list[str]) -> list[str]:
         include_end=False,
     )
 
-
-def get_tokens_up_to_path_start(
-    tokens: list[str],
-    include_start_coord: bool = True,
-    tokenization_mode: TokenizationMode = TokenizationMode.AOTP_UT_uniform,
-) -> list[str]:
-    warnings.warn(
-        "`get_tokens_up_to_path_start` assumes a unique token (UT) type tokenizer when `include_start_coord=True`. "
-        "This method is deprecated for a tokenizer-agnostic function in a future release.",
-        PendingDeprecationWarning,
-    )
-    path_start_idx: int = tokens.index(SPECIAL_TOKENS.PATH_START) + 1
-    if include_start_coord:
-        if is_UT(tokenization_mode):
-            return tokens[: path_start_idx + 1]
-        elif tokenization_mode == TokenizationMode.AOTP_CTT_indexed:
-            return tokens[: path_start_idx + 5]
-        else:
-            raise ValueError(f"Invalid tokenization mode: {tokenization_mode}")
-    else:
-        return tokens[:path_start_idx]

@@ -1,13 +1,17 @@
 from pytest import mark, param
-from itertools import product
+import itertools
+import numpy as np
 
 from maze_dataset import (
     LatticeMazeGenerators,
     MazeDataset,
     MazeDatasetConfig,
     SolvedMaze,
+    TargetedLatticeMaze,
+    LatticeMaze,
 )
-
+from maze_dataset.generation.default_generators import DEFAULT_GENERATORS
+from maze_dataset.generation.generators import GENERATORS_MAP
 from maze_dataset.tokenization.util import equal_except_adj_list_sequence
 
 from maze_dataset.tokenization import (
@@ -21,14 +25,15 @@ from maze_dataset.tokenization import (
     TokenizationMode
 )
 
-
+GRID_N = 5
+N_MAZES = 5
 CFG: MazeDatasetConfig = MazeDatasetConfig(
         name="test",
-        grid_n=5,
-        n_mazes=5,
+        grid_n=GRID_N,
+        n_mazes=N_MAZES,
         maze_ctor=LatticeMazeGenerators.gen_dfs,
     )
-DATASET = MazeDataset.from_config(
+MAZE_DATASET: MazeDataset = MazeDataset.from_config(
     CFG,
     do_download=False,
     load_local=False,
@@ -37,7 +42,10 @@ DATASET = MazeDataset.from_config(
     verbose=True,
     gen_parallel=False,
 )
-
+LATTICE_MAZES: list[LatticeMaze] = [LatticeMazeGenerators.gen_dfs(np.array([GRID_N, GRID_N])) for _ in range(N_MAZES)]
+_PATHS = [maze.generate_random_path() for maze in LATTICE_MAZES]
+TARGETED_MAZES: list[TargetedLatticeMaze] = [TargetedLatticeMaze.from_lattice_maze(maze, path[0], path[-1]) for maze, path in zip(LATTICE_MAZES, _PATHS)]
+MIXED_MAZES: list[LatticeMaze | TargetedLatticeMaze | SolvedMaze] = [x for x in itertools.chain.from_iterable(itertools.zip_longest(MAZE_DATASET.mazes, TARGETED_MAZES, LATTICE_MAZES))]
 
 @mark.parametrize(
     "maze, tokenizer, legacy_tokenizer",
@@ -48,8 +56,8 @@ DATASET = MazeDataset.from_config(
             tok_spec[1],
             id=f"{tok_spec[1].value}-maze{maze[1]}"
         )
-        for maze, tok_spec in product(
-            [(maze, i) for i, maze in enumerate(DATASET.mazes[:2])],
+        for maze, tok_spec in itertools.product(
+            [(maze, i) for i, maze in enumerate(MIXED_MAZES[:6])],
             [
                 (MazeTokenizer2.from_legacy(tok_mode), tok_mode)
                 for tok_mode in TokenizationMode
@@ -59,7 +67,7 @@ DATASET = MazeDataset.from_config(
 )
 def test_to_tokens_backwards_compatible(maze: SolvedMaze, tokenizer: MazeTokenizer2, legacy_tokenizer: TokenizationMode):
     # tokenizer = MazeTokenizer2()
-    toks: list[str] = tokenizer.to_tokens(maze.connection_list, maze.start_pos, maze.end_pos, maze.solution)
+    toks: list[str] = maze.as_tokens(tokenizer)
     toks_legacy: list[str] = maze.as_tokens(legacy_tokenizer)
     assert equal_except_adj_list_sequence(toks, toks_legacy)
     

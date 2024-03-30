@@ -16,7 +16,7 @@ from maze_dataset.dataset.maze_dataset import (
     set_serialize_minimal_threshold,
 )
 from maze_dataset.generation.generators import LatticeMazeGenerators
-from maze_dataset.maze.lattice_maze import LatticeMaze, SolvedMaze
+from maze_dataset.maze.lattice_maze import LatticeMaze, SolvedMaze, TargetedLatticeMaze
 
 __all__ = [
     "Coord",
@@ -26,6 +26,7 @@ __all__ = [
     "ConnectionList",
     "SPECIAL_TOKENS",
     "LatticeMaze",
+    "TargetedLatticeMaze",
     "SolvedMaze",
     "MazeDataset",
     "MazeDatasetConfig",

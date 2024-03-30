@@ -6,7 +6,8 @@ from maze_dataset.tokenization.maze_tokenizer import (
     PromptSequencers,
     CoordTokenizers,
     AdjListTokenizers,
-    PathTokenizers
+    PathTokenizers,
+    get_tokens_up_to_path_start
 )
 from maze_dataset.tokenization.token_utils import (
     get_adj_list_tokens,
@@ -14,7 +15,6 @@ from maze_dataset.tokenization.token_utils import (
     get_origin_tokens,
     get_path_tokens,
     get_target_tokens,
-    get_tokens_up_to_path_start,
     tokens_between,
 )
 from maze_dataset.tokenization.util import coord_str_to_tuple

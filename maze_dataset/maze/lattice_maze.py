@@ -434,14 +434,10 @@ class LatticeMaze(SerializableDataclass):
             output += self.get_solution_tokens()
         return output
 
-    def as_tokens(
-        self,
-        maze_tokenizer: MazeTokenizer | TokenizationMode,
-    ) -> list[str]:
-        """serialize maze and solution to tokens"""
+    def _as_tokens(self, maze_tokenizer: MazeTokenizer | TokenizationMode) -> list[str]:
         if isinstance(maze_tokenizer, TokenizationMode):
             maze_tokenizer = MazeTokenizer(tokenization_mode=maze_tokenizer)
-        if maze_tokenizer.is_AOTP():
+        if isinstance(maze_tokenizer, MazeTokenizer) and maze_tokenizer.is_AOTP():
             coords_raw: list[CoordTup | str] = self._as_coords_and_special_AOTP()
             coords_processed: list[str] = maze_tokenizer.coords_to_strings(
                 coords=coords_raw, when_noncoord="include"
@@ -449,6 +445,21 @@ class LatticeMaze(SerializableDataclass):
             return coords_processed
         else:
             raise NotImplementedError("only AOTP tokenization is supported")
+
+    def as_tokens(
+        self,
+        maze_tokenizer: MazeTokenizer | TokenizationMode | MazeTokenizer2,
+    ) -> list[str]:
+        """serialize maze and solution to tokens"""
+        if isinstance(maze_tokenizer, MazeTokenizer2):
+            return maze_tokenizer.to_tokens(
+                self.connection_list, 
+                getattr(self, 'start_pos', None), 
+                getattr(self, 'end_pos', None), 
+                getattr(self, 'solution', None)
+                )
+        else:
+            return self._as_tokens(maze_tokenizer)
 
     @classmethod
     def _from_tokens_AOTP(

@@ -3,6 +3,7 @@
 from enum import Enum
 from functools import cached_property
 import itertools
+import warnings
 from typing import Callable, Iterable, Mapping, Sequence, Any
 
 import numpy as np
@@ -23,7 +24,12 @@ from maze_dataset.tokenization.util import (
     strings_to_coords,
     connection_list_to_adj_list
 )
-from maze_dataset.utils import WhenMissing, corner_first_ndindex, unpackable_if_true_attribute
+from maze_dataset.tokenization.token_utils import tokens_between
+from maze_dataset.utils import (
+    WhenMissing, 
+    corner_first_ndindex, 
+    unpackable_if_true_attribute
+)
 
 
 class TokenError(ValueError):
@@ -66,6 +72,26 @@ def is_UT(tokenization_mode: TokenizationMode) -> bool:
         TokenizationMode.AOTP_UT_rasterized,
         TokenizationMode.AOTP_UT_uniform,
     )
+
+def get_tokens_up_to_path_start(
+    tokens: list[str],
+    include_start_coord: bool = True,
+    tokenization_mode: TokenizationMode = TokenizationMode.AOTP_UT_uniform,
+) -> list[str]:
+    warnings.warn(
+        "`get_tokens_up_to_path_start` is deprecated for a `MazeTokenizer2`-compatible function in a future release.",
+        DeprecationWarning,
+    )
+    path_start_idx: int = tokens.index(SPECIAL_TOKENS.PATH_START) + 1
+    if include_start_coord:
+        if is_UT(tokenization_mode):
+            return tokens[: path_start_idx + 1]
+        elif tokenization_mode == TokenizationMode.AOTP_CTT_indexed:
+            return tokens[: path_start_idx + 5]
+        else:
+            raise ValueError(f"Invalid tokenization mode: {tokenization_mode}")
+    else:
+        return tokens[:path_start_idx]
 
 
 _MAZETOKENIZER_PROPERTIES_TO_SERIALIZE: list[str] = [
@@ -600,12 +626,29 @@ class PathTokenizers:
 class PromptSequencers:
     """Namespace for `PromptSequencer` subclass hierarchy."""
     class PromptSequencer(TokenizerElement, abc.ABC):
+        @staticmethod
+        def _trim_if_unsolved_maze(untrimmed: list[str], is_untargeted: bool = False, is_unsolved: bool = False):
+            """Trims a full prompt if the maze data reflects an unsolved or untargeted maze.
+            
+            # Development
+            This implementation should function for `AOTP`, `AOP`, and other concrete classes using any subsequence of AOTP.
+            It is not located in `token_utils.py` because it may need to be overridden in more exotic `PromptSequencer` subclasses.
+            """
+            if is_untargeted:
+                return tokens_between(untrimmed, SPECIAL_TOKENS.ADJLIST_START, SPECIAL_TOKENS.ADJLIST_END, include_start=True, include_end=True)
+            if is_unsolved:
+                if SPECIAL_TOKENS.TARGET_END in untrimmed:
+                    return tokens_between(untrimmed, SPECIAL_TOKENS.ADJLIST_START, SPECIAL_TOKENS.TARGET_END, include_start=True, include_end=True)
+                else:
+                    return tokens_between(untrimmed, SPECIAL_TOKENS.ADJLIST_START, SPECIAL_TOKENS.ORIGIN_END, include_start=True, include_end=True)
+            return untrimmed
+        
         def to_tokens(
             self, 
             adj_list: Int8[np.ndarray, "conn start_end coord"],
-            origin: Coord,
-            target: Coord,
-            path: CoordArray,
+            origin: Coord | None,
+            target: Coord | None,
+            path: CoordArray | None,
             coord_tokenizer: CoordTokenizers.CoordTokenizer,
             adj_list_tokenizer: AdjListTokenizers.AdjListTokenizer,
             path_tokenizer: PathTokenizers.PathTokenizer,
@@ -613,7 +656,7 @@ class PromptSequencers:
             **kwargs
             ) -> list[str]:
             """Returns a complete list of tokens for a given set of maze elements."""
-            return self._sequence_tokens(
+            untrimmed: list[str] = self._sequence_tokens(
                 *self._get_prompt_regions(
                     adj_list,
                     origin,
@@ -624,13 +667,14 @@ class PromptSequencers:
                     path_tokenizer,
                 )
             )
+            return self._trim_if_unsolved_maze(untrimmed, origin is None, path is None)
         
         def _get_prompt_regions(
             self,
             adj_list: Int8[np.ndarray, "conn start_end coord"],
-            origin: Coord,
-            target: Coord,
-            path: CoordArray,
+            origin: Coord | None,
+            target: Coord | None,
+            path: CoordArray | None,
             coord_tokenizer: CoordTokenizers.CoordTokenizer,
             adj_list_tokenizer: AdjListTokenizers.AdjListTokenizer,
             path_tokenizer: PathTokenizers.PathTokenizer,
@@ -639,6 +683,8 @@ class PromptSequencers:
             ) -> list[list[str]]:
             """Gets the prompt regions of a maze in a fixed sequence.
             
+            This method is NOT responsible for including/excluding any prompt regions.
+            Always return according to the API described under Returns.
             This implementation is expected to be suitable for most `PromptSequencer` subclasses.
             Subclasses may override this method if needed for special behavior.
                         
@@ -647,6 +693,10 @@ class PromptSequencers:
             - [1]: Origin tokens
             - [2]: Target tokens
             - [3]: Path tokens
+            
+            # `None`-valued Args
+            If one or more of `origin`, `target`, or `path` are `None`, that indicates that an unsolved or untargeted maze is being tokenized.
+            To ensure unpackability in `_sequence_tokens`, these `None` values are substituted for empty iterables.
             """
             # adj_list_tokens: list[str] = adj_list_tokenizer.to_tokens(adj_list, coord_tokenizer=coord_tokenizer)
             # origin_tokens: list[str] = coord_tokenizer.to_tokens(origin)
@@ -655,13 +705,13 @@ class PromptSequencers:
             
             return [
                 adj_list_tokenizer.to_tokens(adj_list, coord_tokenizer=coord_tokenizer),
-                coord_tokenizer.to_tokens(origin),
-                coord_tokenizer.to_tokens(target),
-                path_tokenizer.to_tokens(path, coord_tokenizer=coord_tokenizer)
+                coord_tokenizer.to_tokens(origin) if origin is not None else [],
+                coord_tokenizer.to_tokens(target) if target is not None else [],
+                path_tokenizer.to_tokens(path, coord_tokenizer=coord_tokenizer) if path is not None else []
             ]
         
         @abc.abstractmethod
-        def _sequence_tokens(self, adj_list: list[str], origin: list[str], target: list[str], path: list[str]) -> list[str]:
+        def _sequence_tokens(self, adj_list: list[str], origin: list[str] | None, target: list[str] | None, path: list[str] | None) -> list[str]:
             """Sequences token regions into a complete prompt.
             Includes any boundary tokens in `constatns.SPECIAL_TOKENS` such as <ADJLIST_START>, <ORIGIN_END>, etc.
             """
@@ -669,7 +719,7 @@ class PromptSequencers:
         
 
     class AOTP(PromptSequencer):
-        def _sequence_tokens(self, adj_list: list[str], origin: list[str], target: list[str], path: list[str]) -> list[str]:
+        def _sequence_tokens(self, adj_list: list[str], origin: list[str] | None, target: list[str] | None, path: list[str] | None) -> list[str]:
             return [
                 SPECIAL_TOKENS.ADJLIST_START,
                 *adj_list,
@@ -764,9 +814,9 @@ class MazeTokenizer2(SerializableDataclass):
     def to_tokens(
         self,
         conn_list: ConnectionList,
-        origin: Coord,
-        target: Coord,
-        path: CoordArray
+        origin: Coord | None,
+        target: Coord | None,
+        path: CoordArray | None
         ) -> list[str]:
         return self.prompt_sequencer.to_tokens(conn_list, origin, target, path, self.coord_tokenizer, self.adj_list_tokenizer, self.path_tokenizer)
         
