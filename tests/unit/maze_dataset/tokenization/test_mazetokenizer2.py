@@ -45,28 +45,25 @@ MAZE_DATASET: MazeDataset = MazeDataset.from_config(
 LATTICE_MAZES: list[LatticeMaze] = [LatticeMazeGenerators.gen_dfs(np.array([GRID_N, GRID_N])) for _ in range(N_MAZES)]
 _PATHS = [maze.generate_random_path() for maze in LATTICE_MAZES]
 TARGETED_MAZES: list[TargetedLatticeMaze] = [TargetedLatticeMaze.from_lattice_maze(maze, path[0], path[-1]) for maze, path in zip(LATTICE_MAZES, _PATHS)]
+# MIXED_MAZES alternates the maze types, so you can slice a contiguous subset and still get all types
 MIXED_MAZES: list[LatticeMaze | TargetedLatticeMaze | SolvedMaze] = [x for x in itertools.chain.from_iterable(itertools.zip_longest(MAZE_DATASET.mazes, TARGETED_MAZES, LATTICE_MAZES))]
 
 @mark.parametrize(
-    "maze, tokenizer, legacy_tokenizer",
+    "maze,legacy_tokenizer",
     [
         param(
             maze[0],
-            tok_spec[0],
-            tok_spec[1],
+            tok_spec,
             id=f"{tok_spec[1].value}-maze{maze[1]}"
         )
         for maze, tok_spec in itertools.product(
             [(maze, i) for i, maze in enumerate(MIXED_MAZES[:6])],
-            [
-                (MazeTokenizer2.from_legacy(tok_mode), tok_mode)
-                for tok_mode in TokenizationMode
-            ]
+            [tok_mode for tok_mode in TokenizationMode]
         )
     ]
 )
-def test_to_tokens_backwards_compatible(maze: SolvedMaze, tokenizer: MazeTokenizer2, legacy_tokenizer: TokenizationMode):
-    # tokenizer = MazeTokenizer2()
+def test_to_tokens_backwards_compatible(maze: SolvedMaze, legacy_tokenizer: TokenizationMode):
+    tokenizer: MazeTokenizer2 = MazeTokenizer2.from_legacy(legacy_tokenizer)
     toks: list[str] = maze.as_tokens(tokenizer)
     toks_legacy: list[str] = maze.as_tokens(legacy_tokenizer)
     assert equal_except_adj_list_sequence(toks, toks_legacy)

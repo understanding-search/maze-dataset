@@ -428,6 +428,7 @@ class _DELIMITERS:
     COORD_POST = ")"
     ADJ_LIST_INTRA = SPECIAL_TOKENS.CONNECTOR
     ADJ_LIST_POST = SPECIAL_TOKENS.ADJACENCY_ENDLINE
+    TARGET_POST = SPECIAL_TOKENS.ADJACENCY_ENDLINE
     PATH_INTRA = ","
     PATH_POST = SPECIAL_TOKENS.ADJACENCY_ENDLINE
     
@@ -552,6 +553,27 @@ class AdjListTokenizers:
                     for c_s, c_e in adj_list
                 ]
             )
+
+
+class TargetTokenizers:
+    class TargetTokenizer(TokenizerElement, abc.ABC):        
+        """Superclass of tokenizers for maze targets.
+        """
+        @abc.abstractmethod
+        def to_tokens(self, targets: list[Coord], coord_tokenizer: CoordTokenizers.CoordTokenizer) -> list[str]:
+            """Returns tokens representing the target.
+            """
+            pass
+    
+    class Unlabeled(TargetTokenizer):
+        """Targets are simply listed as coord tokens.
+        """
+        post: bool = False
+        
+        def to_tokens(self, targets: list[Coord], coord_tokenizer: CoordTokenizers.CoordTokenizer) -> list[str]:
+            return itertools.chain([[coord_tokenizer.to_tokens(target), 
+                                     *unpackable_if_true_attribute([_DELIMITERS.TARGET_POST], self, 'post')]
+                                     for target in targets])
         
 
 class PathTokenizers:
