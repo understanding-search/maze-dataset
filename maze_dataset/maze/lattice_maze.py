@@ -444,7 +444,7 @@ class LatticeMaze(SerializableDataclass):
             )
             return coords_processed
         else:
-            raise NotImplementedError("only AOTP tokenization is supported")
+            raise NotImplementedError(f"Unsupported tokenizer type: {maze_tokenizer}")
 
     def as_tokens(
         self,
@@ -455,7 +455,7 @@ class LatticeMaze(SerializableDataclass):
             return maze_tokenizer.to_tokens(
                 self.connection_list, 
                 getattr(self, 'start_pos', None), 
-                getattr(self, 'end_pos', None), 
+                [getattr(self, 'end_pos', None)], # MazeTokenizer2 requires target: Iterable[Coord]
                 getattr(self, 'solution', None)
                 )
         else:

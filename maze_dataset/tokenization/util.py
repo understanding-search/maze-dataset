@@ -2,7 +2,7 @@
 
 import re
 import typing
-from typing import Callable
+from typing import Callable, Iterable, Generator
 from collections import Counter
 from jaxtyping import Float, Int8
 
@@ -208,3 +208,22 @@ def equal_except_adj_list_sequence(rollout1: list[str], rollout2: list[str]) -> 
     counter1: Counter = Counter(adj_list1)
     counter2: Counter = Counter(adj_list2)
     return counter1 == counter2
+
+def flatten(it: Iterable[any], levels_to_flatten: int | None = None) -> Generator:
+    """
+    Flattens an arbitrarily nested iterable.
+    Flattens all iterable data types except for `str` and `bytes`.
+    
+    # Returns
+    Generator over the flattened sequence.
+    
+    # Parameters
+    - `it`: Any arbitrarily nested iterable.
+    - `levels_to_flatten`: Number of levels to flatten by. If `None`, performs full flattening.
+    """
+    for x in it:
+        # TODO: swap type check with more general check for __iter__() or __next__() or whatever
+        if hasattr(x, '__iter__') and not isinstance(x, (str, bytes)) and (levels_to_flatten is None or levels_to_flatten > 0):
+            yield from flatten(x, None if levels_to_flatten == None else levels_to_flatten-1)
+        else:
+            yield x

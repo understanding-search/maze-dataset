@@ -54,7 +54,7 @@ MIXED_MAZES: list[LatticeMaze | TargetedLatticeMaze | SolvedMaze] = [x for x in 
         param(
             maze[0],
             tok_spec,
-            id=f"{tok_spec[1].value}-maze{maze[1]}"
+            id=f"{tok_spec.value}-maze{maze[1]}"
         )
         for maze, tok_spec in itertools.product(
             [(maze, i) for i, maze in enumerate(MIXED_MAZES[:6])],

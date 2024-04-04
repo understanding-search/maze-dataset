@@ -22,7 +22,8 @@ from maze_dataset.tokenization.util import (
     _coord_to_strings_UT,
     coords_to_strings,
     strings_to_coords,
-    connection_list_to_adj_list
+    connection_list_to_adj_list,
+    flatten
 )
 from maze_dataset.tokenization.token_utils import tokens_between
 from maze_dataset.utils import (
@@ -560,7 +561,7 @@ class TargetTokenizers:
         """Superclass of tokenizers for maze targets.
         """
         @abc.abstractmethod
-        def to_tokens(self, targets: list[Coord], coord_tokenizer: CoordTokenizers.CoordTokenizer) -> list[str]:
+        def to_tokens(self, targets: Iterable[Coord], coord_tokenizer: CoordTokenizers.CoordTokenizer) -> list[str]:
             """Returns tokens representing the target.
             """
             pass
@@ -570,10 +571,10 @@ class TargetTokenizers:
         """
         post: bool = False
         
-        def to_tokens(self, targets: list[Coord], coord_tokenizer: CoordTokenizers.CoordTokenizer) -> list[str]:
-            return itertools.chain([[coord_tokenizer.to_tokens(target), 
+        def to_tokens(self, targets: Iterable[Coord], coord_tokenizer: CoordTokenizers.CoordTokenizer) -> list[str]:
+            return list(flatten([[*coord_tokenizer.to_tokens(target), 
                                      *unpackable_if_true_attribute([_DELIMITERS.TARGET_POST], self, 'post')]
-                                     for target in targets])
+                                     for target in targets]))
         
 
 class PathTokenizers:
@@ -669,10 +670,11 @@ class PromptSequencers:
             self, 
             adj_list: Int8[np.ndarray, "conn start_end coord"],
             origin: Coord | None,
-            target: Coord | None,
+            target: Iterable[Coord] | None,
             path: CoordArray | None,
             coord_tokenizer: CoordTokenizers.CoordTokenizer,
             adj_list_tokenizer: AdjListTokenizers.AdjListTokenizer,
+            target_tokenizer: TargetTokenizers.TargetTokenizer,
             path_tokenizer: PathTokenizers.PathTokenizer,
             *args,
             **kwargs
@@ -686,6 +688,7 @@ class PromptSequencers:
                     path,
                     coord_tokenizer,
                     adj_list_tokenizer,
+                    target_tokenizer,
                     path_tokenizer,
                 )
             )
@@ -695,10 +698,11 @@ class PromptSequencers:
             self,
             adj_list: Int8[np.ndarray, "conn start_end coord"],
             origin: Coord | None,
-            target: Coord | None,
+            target: Iterable[Coord] | None,
             path: CoordArray | None,
             coord_tokenizer: CoordTokenizers.CoordTokenizer,
             adj_list_tokenizer: AdjListTokenizers.AdjListTokenizer,
+            target_tokenizer: TargetTokenizers.TargetTokenizer,
             path_tokenizer: PathTokenizers.PathTokenizer,
             *args,
             **kwargs
@@ -720,15 +724,11 @@ class PromptSequencers:
             If one or more of `origin`, `target`, or `path` are `None`, that indicates that an unsolved or untargeted maze is being tokenized.
             To ensure unpackability in `_sequence_tokens`, these `None` values are substituted for empty iterables.
             """
-            # adj_list_tokens: list[str] = adj_list_tokenizer.to_tokens(adj_list, coord_tokenizer=coord_tokenizer)
-            # origin_tokens: list[str] = coord_tokenizer.to_tokens(origin)
-            # target_tokens: list[str] = coord_tokenizer.to_tokens(target)
-            # path_tokens: list[str] = path_tokenizer.to_tokens(path, coord_tokenizer=coord_tokenizer)
             
             return [
                 adj_list_tokenizer.to_tokens(adj_list, coord_tokenizer=coord_tokenizer),
                 coord_tokenizer.to_tokens(origin) if origin is not None else [],
-                coord_tokenizer.to_tokens(target) if target is not None else [],
+                target_tokenizer.to_tokens(target, coord_tokenizer=coord_tokenizer) if target[0] is not None else [],
                 path_tokenizer.to_tokens(path, coord_tokenizer=coord_tokenizer) if path is not None else []
             ]
         
@@ -799,6 +799,11 @@ class MazeTokenizer2(SerializableDataclass):
         serialization_fn=lambda x: x.serialize(),
         loading_fn=lambda x: x.TokenizationElement.from_name(x)
     )
+    target_tokenizer: TargetTokenizers.TargetTokenizer = serializable_field(
+        default=TargetTokenizers.Unlabeled(),
+        serialization_fn=lambda x: x.serialize(),
+        loading_fn=lambda x: x.TokenizationElement.from_name(x)
+    )
     path_tokenizer: PathTokenizers.PathTokenizer = serializable_field(
         default=PathTokenizers.Coords(),
         serialization_fn=lambda x: x.serialize(),
@@ -811,7 +816,7 @@ class MazeTokenizer2(SerializableDataclass):
    
     @cached_property
     def _tokenizer_elements(self):
-        return [self.prompt_sequencer, self.coord_tokenizer, self.adj_list_tokenizer, self.path_tokenizer]
+        return [self.prompt_sequencer, self.coord_tokenizer, self.adj_list_tokenizer, self.target_tokenizer, self.path_tokenizer]
     
     @property
     def name(self) -> str:
@@ -837,10 +842,10 @@ class MazeTokenizer2(SerializableDataclass):
         self,
         conn_list: ConnectionList,
         origin: Coord | None,
-        target: Coord | None,
+        target: Iterable[Coord],
         path: CoordArray | None
         ) -> list[str]:
-        return self.prompt_sequencer.to_tokens(conn_list, origin, target, path, self.coord_tokenizer, self.adj_list_tokenizer, self.path_tokenizer)
+        return self.prompt_sequencer.to_tokens(conn_list, origin, target, path, self.coord_tokenizer, self.adj_list_tokenizer, self.target_tokenizer, self.path_tokenizer)
         
     @classmethod
     def from_tokens(
@@ -858,6 +863,7 @@ class MazeTokenizer2(SerializableDataclass):
         - Anything else?
         """
         # Don't need directly, but something similar needed for LatticeMaze.from_tokens
+        raise NotImplementedError
         
     @cached_property
     def _token_arr(self) -> list[str]:
