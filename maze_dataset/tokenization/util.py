@@ -192,6 +192,14 @@ def connection_list_to_adj_list(
 
 def equal_except_adj_list_sequence(rollout1: list[str], rollout2: list[str]) -> bool:
     """Returns if the rollout strings are equal, allowing for differently sequenced adjacency lists.
+    <ADJLIST_START> and <ADJLIST_END> tokens must be in the rollouts.
+    Intended ONLY for determining if two tokenization schemes are the same for rollouts generated from the same maze.
+    This function should NOT be used to determine if two rollouts encode the same `LatticeMaze` object.
+    
+    # Warning: CTT False Positives
+    This function is not robustly correct for some corner cases using `CoordTokenizers.CTT`.
+    If rollouts are passed for identical tokenizers processing two slightly different mazes, a false positive is possible.
+    More specifically, some cases of zero-sum adding and removing of connections in a maze within square regions along the diagonal will produce a false positive.    
     """
     def get_token_regions(toks: list[str]) -> tuple[list[str], list[str]]:
         adj_list_start, adj_list_end = toks.index("<ADJLIST_START>") + 1, toks.index(
@@ -200,6 +208,10 @@ def equal_except_adj_list_sequence(rollout1: list[str], rollout2: list[str]) -> 
         adj_list = toks[adj_list_start:adj_list_end]
         non_adj_list = toks[:adj_list_start] + toks[adj_list_end:]
         return adj_list, non_adj_list
+    
+    if len(rollout1) != len(rollout2): return False
+    if ("<ADJLIST_START>" in rollout1) ^ ("<ADJLIST_START>" in rollout2): return False
+    if ("<ADJLIST_END>" in rollout1) ^ ("<ADJLIST_END>" in rollout2): return False
     
     adj_list1, non_adj_list1 = get_token_regions(rollout1)
     adj_list2, non_adj_list2 = get_token_regions(rollout2)
