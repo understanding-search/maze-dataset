@@ -1,5 +1,6 @@
 import pytest
 from pytest import mark, param
+from typing import Iterable
 
 from maze_dataset.dataset.maze_dataset import MazeDatasetConfig
 from maze_dataset.tokenization.token_utils import (
@@ -15,6 +16,7 @@ from maze_dataset.tokenization.util import (
     coords_to_strings,
     strings_to_coords,
     equal_except_adj_list_sequence,
+    flatten
 )
 
 MAZE_TOKENS: tuple[list[str], str] = (
@@ -421,4 +423,34 @@ def test_equal_except_adj_list_sequence():
     #     "<ADJLIST_START> ( 0 , 1 ) <--> ( 1 , 1 ) ; ( 1 , 0 ) <--> ( 1 , 1 ) ; ( 0 , 1 ) <--> ( 0 , 0 ) ; <ADJLIST_END> <ORIGIN_START> ( 1 , 0 ) <ORIGIN_END> <TARGET_START> ( 1 , 1 ) <TARGET_END> <PATH_START> ( 1 , 0 ) ( 1 , 1 ) <PATH_END>".split(),
     #     "<ADJLIST_START> ( 1 , 0 ) <--> ( 1 , 1 ) ; ( 1 , 0 ) <--> ( 1 , 1 ) ; ( 0 , 1 ) <--> ( 0 , 0 ) ; <ADJLIST_END> <ORIGIN_START> ( 1 , 0 ) <ORIGIN_END> <TARGET_START> ( 1 , 1 ) <TARGET_END> <PATH_START> ( 1 , 0 ) ( 1 , 1 ) <PATH_END>".split()
     # )
+    
+
+@mark.parametrize(
+    "deep, flat, depth",
+    [
+        param(
+        iter_tuple[0],
+        iter_tuple[1],
+        iter_tuple[2],
+        id=f"{i}",
+        )
+        for i, iter_tuple in enumerate([
+            ([1, 2, 3, 4], [1, 2, 3, 4], None),
+            ((1, 2, 3, 4), [1, 2, 3, 4], None),
+            ((j for j in [1, 2, 3, 4]), [1, 2, 3, 4], None),
+            (['a', 'b', 'c', 'd'], ['a', 'b', 'c', 'd'], None),
+            ([[1, 2, 3, 4]], [1, 2, 3, 4], None),
+            ([[[[1, 2, 3, 4]]]], [1, 2, 3, 4], None),
+            ([[[[1], 2], 3], 4], [1, 2, 3, 4], None),
+            ([[1, 2], [[3]], (4,)], [1, 2, 3, 4], None),
+            ([[[1, 2, 3, 4]]], [[1, 2, 3, 4]], 1),
+            ([[[1, 2, 3, 4]]], [1, 2, 3, 4], 2),
+            ([[1, 2], [[3]], (4,)], [1, 2, [3], 4], 1),
+            ([[1, 2], [(3,)], (4,)], [1, 2, (3,), 4], 1),
+            ([[[[1], 2], 3], 4], [[1], 2, 3, 4], 2),
+        ])
+    ],
+)
+def test_flatten(deep: Iterable[any], flat: Iterable[any], depth: int | None):
+    assert list(flatten(deep, depth)) == flat
     
