@@ -16,7 +16,7 @@ from muutils.json_serialize import (
 from muutils.kappa import Kappa
 from numpy.core.multiarray import array as array
 
-from maze_dataset.constants import SPECIAL_TOKENS, VOCAB, Int8, CoordTup, CoordArray, ConnectionList, Coord
+from maze_dataset.constants import SPECIAL_TOKENS, VOCAB, VOCAB_LIST, TOKEN_TO_INDEX, Int8, CoordTup, CoordArray, ConnectionList, Coord
 from maze_dataset.tokenization.util import (
     _coord_to_strings_indexed,
     _coord_to_strings_UT,
@@ -850,18 +850,18 @@ class MazeTokenizer2(SerializableDataclass):
         # Don't need directly, but something similar needed for LatticeMaze.from_tokens
         raise NotImplementedError
    
-    @cached_property
+    @property
     def token_arr(self) -> list[str] | None:
-        return list(VOCAB.values())
+        return VOCAB_LIST
     
-    @cached_property
+    @property
     def tokenizer_map(self) -> dict[str, int]:
         """map from token to index"""
-        return {token: i for i, token in enumerate(self.token_arr)}
+        return TOKEN_TO_INDEX
     
     @property
     def vocab_size(self) -> int:
-        return len(self.token_arr)
+        return len(VOCAB_LIST)
     
     @property
     def n_tokens(self) -> int:
@@ -870,30 +870,29 @@ class MazeTokenizer2(SerializableDataclass):
     
     @cached_property
     def padding_token_index(self) -> int:
-        return self.tokenizer_map[VOCAB.PADDING]
+        return TOKEN_TO_INDEX[VOCAB.PADDING]
     
-    def encode(self, text: str | list[str]) -> list[int]:
+    @staticmethod
+    def encode(text: str | list[str]) -> list[int]:
         """encode a string or list of strings into a list of tokens"""
         try:
             if isinstance(text, str):
                 text = text.split()
-            return [self.tokenizer_map[token] for token in text]
+            return [TOKEN_TO_INDEX[token] for token in text]
         except KeyError as e:
             raise TokenError(
                 f"Token {e} not found",
-                f"in vocabulary of {self}:",
-                f"{self.token_arr}",
+                f"in constants.VOCAB.",
             ) from e
 
-    def decode(
-        self, tokens: Sequence[int], joined_tokens: bool = False
-    ) -> list[str] | str:
+    @staticmethod
+    def decode(token_ids: Sequence[int], joined_tokens: bool = False) -> list[str] | str:
         """decode a list of tokens into a string or list of strings"""
         try:
-            output: list[str] = [self.token_arr[token] for token in tokens]
+            output: list[str] = [VOCAB_LIST[token_id] for token_id in token_ids]
         except IndexError as e:
             raise TokenError(
-                f"Token index '{e}' not found in vocabulary of length {self.vocab_size}"
+                f"Token index '{e}' not found in `constants.VOCAB`."
             ) from e
         if joined_tokens:
             return " ".join(output)

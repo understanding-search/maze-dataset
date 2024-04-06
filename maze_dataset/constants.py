@@ -129,8 +129,17 @@ _VOCAB_FIELDS: list = [
     ("TARGET_POST", str, field(default="||")),
     ("PATH_INTRA", str, field(default=":")),
     ("PATH_POST", str, field(default="THEN")),
-    *[(f"RESERVE_{i}", str, field(default=f"<RESERVE_{i}>")) for i in range(18, 793)],
+    ("NEGATIVE", str, field(default="-")),
     *[(f"TARGET_{a}", str, field(default=f"TARGET_{a}")) for a in "ABCDEFGHIJKLMNOPQRSTUVWXYZ"],
+    ("TARGET_NORTH", str, field(default="TARGET_NORTH")),
+    ("TARGET_SOUTH", str, field(default="TARGET_SOUTH")),
+    ("TARGET_EAST", str, field(default="TARGET_EAST")),
+    ("TARGET_WEST", str, field(default="TARGET_WEST")),
+    ("TARGET_NORTHEAST", str, field(default="TARGET_NORTHEAST")),
+    ("TARGET_NORTHWEST", str, field(default="TARGET_NORTHWEST")),
+    ("TARGET_SOUTHEAST", str, field(default="TARGET_SOUTHEAST")),
+    ("TARGET_SOUTHWEST", str, field(default="TARGET_SOUTHWEST")),
+    ("TARGET_CENTER", str, field(default="TARGET_CENTER")),
     ("PATH_NORTH", str, field(default="NORTH")),
     ("PATH_SOUTH", str, field(default="SOUTH")),
     ("PATH_EAST", str, field(default="EAST")),
@@ -140,9 +149,10 @@ _VOCAB_FIELDS: list = [
     ("PATH_LEFT", str, field(default="LEFT")),
     ("PATH_RIGHT", str, field(default="RIGHT")),
     ("PATH_STAY", str, field(default="STAY")),
-    *[(f"CTT_{i}", str, field(default=f"{i}")) for i in range(128)],
-    *[(f"I_N{-i:03}", str, field(default=f"I-{i}")) for i in range(-128, 0)],
-    *[(f"I_{i:03}", str, field(default=f"I{i}")) for i in range(512)],
+    *[(f"I_{i:03}", str, field(default=f"+{i}")) for i in range(128)],  # General purpose int tokens
+    *[(f"CTT_{i}", str, field(default=f"{i}")) for i in range(128)],  # Coord tuple tokens
+    *[(f"I_N{-i:03}", str, field(default=f"-{i}")) for i in range(-128, 0)],    # General purpose negative int tokens
+    *[(f"RESERVE_{i}", str, field(default=f"<RESERVE_{i}>")) for i in range(447, 1596)],
     *[(f"UT_{x:02}_{y:02}", str, field(default=f"({x},{y})")) for x, y in corner_first_ndindex(50)],
 ]
 
@@ -152,6 +162,8 @@ _VOCAB_BASE: type = make_dataclass(
     fields=_VOCAB_FIELDS, 
     bases=(_SPECIAL_TOKENS_BASE,),
     frozen=True)
-
+# TODO: edit __getitem__ to add warning for accessing a RESERVE token
 
 VOCAB: _VOCAB_BASE = _VOCAB_BASE()
+VOCAB_LIST: list[str] = list(VOCAB.values())
+TOKEN_TO_INDEX: dict[str, int] = {token: i for i, token in enumerate(VOCAB_LIST)}
