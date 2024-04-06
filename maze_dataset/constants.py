@@ -1,8 +1,10 @@
 import warnings
-from dataclasses import dataclass
+from dataclasses import dataclass, make_dataclass, field
 
 import numpy as np
 from jaxtyping import Int8, Bool
+
+from maze_dataset.utils import corner_first_ndindex
 
 Coord = Int8[np.ndarray, "x y"]
 CoordTup = tuple[int, int]
@@ -116,3 +118,40 @@ NEIGHBORS_MASK: Int8[np.ndarray, "coord point"] = np.array(
         [-1, 0],  # left
     ]
 )
+
+
+_VOCAB_FIELDS: list = [
+    # *[(k, str, field(default=v)) for k, v in SPECIAL_TOKENS.items()],
+    ("COORD_PRE", str, field(default="(")),
+    ("COORD_INTRA", str, field(default=",")),
+    ("COORD_POST", str, field(default=")")),
+    ("TARGET_INTRA", str, field(default="=")),
+    ("TARGET_POST", str, field(default="||")),
+    ("PATH_INTRA", str, field(default=":")),
+    ("PATH_POST", str, field(default="THEN")),
+    *[(f"RESERVE_{i}", str, field(default=f"<RESERVE_{i}>")) for i in range(18, 793)],
+    *[(f"TARGET_{a}", str, field(default=f"TARGET_{a}")) for a in "ABCDEFGHIJKLMNOPQRSTUVWXYZ"],
+    ("PATH_NORTH", str, field(default="NORTH")),
+    ("PATH_SOUTH", str, field(default="SOUTH")),
+    ("PATH_EAST", str, field(default="EAST")),
+    ("PATH_WEST", str, field(default="WEST")),
+    ("PATH_FORWARD", str, field(default="FORWARD")),
+    ("PATH_BACKWARD", str, field(default="BACKWARD")),
+    ("PATH_LEFT", str, field(default="LEFT")),
+    ("PATH_RIGHT", str, field(default="RIGHT")),
+    ("PATH_STAY", str, field(default="STAY")),
+    *[(f"CTT_{i}", str, field(default=f"{i}")) for i in range(128)],
+    *[(f"I_N{-i:03}", str, field(default=f"I-{i}")) for i in range(-128, 0)],
+    *[(f"I_{i:03}", str, field(default=f"I{i}")) for i in range(512)],
+    *[(f"UT_{x:02}_{y:02}", str, field(default=f"({x},{y})")) for x, y in corner_first_ndindex(50)],
+]
+
+
+_VOCAB_BASE: type = make_dataclass(
+    '_VOCAB_BASE', 
+    fields=_VOCAB_FIELDS, 
+    bases=(_SPECIAL_TOKENS_BASE,),
+    frozen=True)
+
+
+VOCAB: _VOCAB_BASE = _VOCAB_BASE()
