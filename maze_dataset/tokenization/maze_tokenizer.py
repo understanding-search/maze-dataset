@@ -795,8 +795,7 @@ class MazeTokenizer2(SerializableDataclass):
         serialization_fn=lambda x: x.serialize(),
         loading_fn=lambda x: x.TokenizationElement.from_name(x)
     )
-    max_grid_size: int | None = serializable_field(default=None)
-	    
+        
     def __repr__(self) -> str:
         return "-".join([type(self).__name__, *(repr(el) for el in self._tokenizer_elements)])
    
@@ -850,23 +849,56 @@ class MazeTokenizer2(SerializableDataclass):
         """
         # Don't need directly, but something similar needed for LatticeMaze.from_tokens
         raise NotImplementedError
-        
-    @cached_property
-    def _token_arr(self) -> list[str]:
-        """map from index to token"""
-        if self.max_grid_size is None:
-            raise ValueError(
-                f"max_grid_size must be specified to use token_arr property: {self.max_grid_size = }"
-            )
-        output: list[str] = list(VOCAB.values())
-        # output.extend(self._
-            
-        
+   
     @cached_property
     def token_arr(self) -> list[str] | None:
-        if self.max_grid_size is None:
-            return None
-        return self._token_arr
+        return list(VOCAB.values())
     
+    @cached_property
+    def tokenizer_map(self) -> dict[str, int]:
+        """map from token to index"""
+        return {token: i for i, token in enumerate(self.token_arr)}
+    
+    @property
+    def vocab_size(self) -> int:
+        return len(self.token_arr)
+    
+    @property
+    def n_tokens(self) -> int:
+        warnings.warn("`MazeTokenizer2.n_tokens` is deprecated. Use `MazeTokenizer2.vocab_size` instead.", DeprecationWarning)
+        return self.vocab_size
+    
+    @cached_property
+    def padding_token_index(self) -> int:
+        return self.tokenizer_map[VOCAB.PADDING]
+    
+    def encode(self, text: str | list[str]) -> list[int]:
+        """encode a string or list of strings into a list of tokens"""
+        try:
+            if isinstance(text, str):
+                text = text.split()
+            return [self.tokenizer_map[token] for token in text]
+        except KeyError as e:
+            raise TokenError(
+                f"Token {e} not found",
+                f"in vocabulary of {self}:",
+                f"{self.token_arr}",
+            ) from e
+
+    def decode(
+        self, tokens: Sequence[int], joined_tokens: bool = False
+    ) -> list[str] | str:
+        """decode a list of tokens into a string or list of strings"""
+        try:
+            output: list[str] = [self.token_arr[token] for token in tokens]
+        except IndexError as e:
+            raise TokenError(
+                f"Token index '{e}' not found in vocabulary of length {self.vocab_size}"
+            ) from e
+        if joined_tokens:
+            return " ".join(output)
+        else:
+            return output
+
     
 _line_for_debugging_breakpoint = 1
