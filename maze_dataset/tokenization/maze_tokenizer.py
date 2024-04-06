@@ -16,7 +16,7 @@ from muutils.json_serialize import (
 from muutils.kappa import Kappa
 from numpy.core.multiarray import array as array
 
-from maze_dataset.constants import SPECIAL_TOKENS, Int8, CoordTup, CoordArray, ConnectionList, Coord
+from maze_dataset.constants import SPECIAL_TOKENS, VOCAB, Int8, CoordTup, CoordArray, ConnectionList, Coord
 from maze_dataset.tokenization.util import (
     _coord_to_strings_indexed,
     _coord_to_strings_UT,
@@ -420,22 +420,7 @@ class MazeTokenizer(SerializableDataclass):
                 except AttributeError as e:
                     pass
 
-
-class _DELIMITERS:
-    """For all `TokenizerElement`s, the tokens to be used for optional delimiters.
-    """
-    COORD_PRE = "("
-    COORD_INTRA = ","
-    COORD_POST = ")"
-    ADJ_LIST_INTRA = SPECIAL_TOKENS.CONNECTOR
-    ADJ_LIST_POST = SPECIAL_TOKENS.ADJACENCY_ENDLINE
-    TARGET_INTRA = "="
-    TARGET_POST = "||"
-    PATH_INTRA = ":"
-    PATH_POST = "THEN"
-    
-
-# TODO: figure out properties_to_serialize
+  
 @serializable_dataclass(frozen=True, kw_only=True)
 class TokenizerElement(SerializableDataclass, abc.ABC):
     """Superclass for tokenizer elements."""
@@ -499,11 +484,11 @@ class CoordTokenizers:
         
         def to_tokens(self, coord: Coord) -> list[str]:
             return [
-                *unpackable_if_true_attribute([_DELIMITERS.COORD_PRE], self, 'pre'),
+                *unpackable_if_true_attribute([VOCAB.COORD_PRE], self, 'pre'),
                 str(coord[0]),
-                *unpackable_if_true_attribute([_DELIMITERS.COORD_INTRA], self, 'intra'),
+                *unpackable_if_true_attribute([VOCAB.COORD_INTRA], self, 'intra'),
                 str(coord[1]),
-                *unpackable_if_true_attribute([_DELIMITERS.COORD_POST], self, 'post'),
+                *unpackable_if_true_attribute([VOCAB.COORD_POST], self, 'post'),
             ]
         
 
@@ -536,9 +521,9 @@ class AdjListTokenizers:
             ) -> list[str]:
             return [
                 *coord_tokenizer.to_tokens(coord1),
-                *([_DELIMITERS.ADJ_LIST_INTRA] if self.intra else ()),
+                *([VOCAB.CONNECTOR] if self.intra else ()),
                 *coord_tokenizer.to_tokens(coord2),
-                *([_DELIMITERS.ADJ_LIST_POST] if self.post else ())
+                *([VOCAB.ADJACENCY_ENDLINE] if self.post else ())
             ]
         
         def to_tokens(
@@ -574,7 +559,7 @@ class TargetTokenizers:
         
         def to_tokens(self, targets: Iterable[Coord], coord_tokenizer: CoordTokenizers.CoordTokenizer) -> list[str]:
             return list(flatten([[*coord_tokenizer.to_tokens(target), 
-                                     *unpackable_if_true_attribute([_DELIMITERS.TARGET_POST], self, 'post')]
+                                     *unpackable_if_true_attribute([VOCAB.TARGET_POST], self, 'post')]
                                      for target in targets]))
         
 
@@ -637,7 +622,7 @@ class PathTokenizers:
         def _single_step_tokens(self, c0: Coord, c1: Coord, coord_tokenizer: CoordTokenizers.CoordTokenizer) -> list[str]:
             return [
                 *coord_tokenizer.to_tokens(c1),
-                *unpackable_if_true_attribute([_DELIMITERS.PATH_POST], self, 'post')
+                *unpackable_if_true_attribute([VOCAB.PATH_POST], self, 'post')
             ]
             
         def _leading_tokens(self, c: CoordArray, coord_tokenizer: CoordTokenizers.CoordTokenizer) -> list[str]:
@@ -659,12 +644,12 @@ class PromptSequencers:
             It is not located in `token_utils.py` because it may need to be overridden in more exotic `PromptSequencer` subclasses.
             """
             if is_untargeted:
-                return tokens_between(untrimmed, SPECIAL_TOKENS.ADJLIST_START, SPECIAL_TOKENS.ADJLIST_END, include_start=True, include_end=True)
+                return tokens_between(untrimmed, VOCAB.ADJLIST_START, VOCAB.ADJLIST_END, include_start=True, include_end=True)
             if is_unsolved:
-                if SPECIAL_TOKENS.TARGET_END in untrimmed:
-                    return tokens_between(untrimmed, SPECIAL_TOKENS.ADJLIST_START, SPECIAL_TOKENS.TARGET_END, include_start=True, include_end=True)
+                if VOCAB.TARGET_END in untrimmed:
+                    return tokens_between(untrimmed, VOCAB.ADJLIST_START, VOCAB.TARGET_END, include_start=True, include_end=True)
                 else:
-                    return tokens_between(untrimmed, SPECIAL_TOKENS.ADJLIST_START, SPECIAL_TOKENS.ORIGIN_END, include_start=True, include_end=True)
+                    return tokens_between(untrimmed, VOCAB.ADJLIST_START, VOCAB.ORIGIN_END, include_start=True, include_end=True)
             return untrimmed
         
         def to_tokens(
@@ -736,7 +721,7 @@ class PromptSequencers:
         @abc.abstractmethod
         def _sequence_tokens(self, adj_list: list[str], origin: list[str] | None, target: list[str] | None, path: list[str] | None) -> list[str]:
             """Sequences token regions into a complete prompt.
-            Includes any boundary tokens in `constatns.SPECIAL_TOKENS` such as <ADJLIST_START>, <ORIGIN_END>, etc.
+            Includes any boundary tokens in `constants.SPECIAL_TOKENS` such as <ADJLIST_START>, <ORIGIN_END>, etc.
             """
             pass
         
@@ -744,18 +729,18 @@ class PromptSequencers:
     class AOTP(PromptSequencer):
         def _sequence_tokens(self, adj_list: list[str], origin: list[str] | None, target: list[str] | None, path: list[str] | None) -> list[str]:
             return [
-                SPECIAL_TOKENS.ADJLIST_START,
+                VOCAB.ADJLIST_START,
                 *adj_list,
-                SPECIAL_TOKENS.ADJLIST_END,
-                SPECIAL_TOKENS.ORIGIN_START,
+                VOCAB.ADJLIST_END,
+                VOCAB.ORIGIN_START,
                 *origin,
-                SPECIAL_TOKENS.ORIGIN_END,
-                SPECIAL_TOKENS.TARGET_START,
+                VOCAB.ORIGIN_END,
+                VOCAB.TARGET_START,
                 *target,
-                SPECIAL_TOKENS.TARGET_END,
-                SPECIAL_TOKENS.PATH_START,
+                VOCAB.TARGET_END,
+                VOCAB.PATH_START,
                 *path,
-                SPECIAL_TOKENS.PATH_END
+                VOCAB.PATH_END
             ]
             
     class AOP(PromptSequencer):
@@ -763,16 +748,16 @@ class PromptSequencers:
         
         def _sequence_tokens(self, adj_list: list[str], origin: list[str], target: list[str], path: list[str]) -> list[str]:
             return [
-                SPECIAL_TOKENS.ADJLIST_START,
+                VOCAB.ADJLIST_START,
                 *adj_list,
-                SPECIAL_TOKENS.ADJLIST_END,
-                SPECIAL_TOKENS.ORIGIN_START,
+                VOCAB.ADJLIST_END,
+                VOCAB.ORIGIN_START,
                 *origin,
-                SPECIAL_TOKENS.ORIGIN_END,
-                *([SPECIAL_TOKENS.TARGET_START, SPECIAL_TOKENS.TARGET_END] if self.include_target_special_tokens else ()),
-                SPECIAL_TOKENS.PATH_START,
+                VOCAB.ORIGIN_END,
+                *([VOCAB.TARGET_START, VOCAB.TARGET_END] if self.include_target_special_tokens else ()),
+                VOCAB.PATH_START,
                 *path,
-                SPECIAL_TOKENS.PATH_END
+                VOCAB.PATH_END
             ]
 
 
@@ -873,7 +858,7 @@ class MazeTokenizer2(SerializableDataclass):
             raise ValueError(
                 f"max_grid_size must be specified to use token_arr property: {self.max_grid_size = }"
             )
-        output: list[str] = list(SPECIAL_TOKENS.values())
+        output: list[str] = list(VOCAB.values())
         # output.extend(self._
             
         
