@@ -9,6 +9,8 @@ from maze_dataset import (
     SolvedMaze,
     TargetedLatticeMaze,
     LatticeMaze,
+    Coord,
+    CoordTup
 )
 from maze_dataset.generation.default_generators import DEFAULT_GENERATORS
 from maze_dataset.generation.generators import GENERATORS_MAP
@@ -48,6 +50,9 @@ TARGETED_MAZES: list[TargetedLatticeMaze] = [TargetedLatticeMaze.from_lattice_ma
 # MIXED_MAZES alternates the maze types, so you can slice a contiguous subset and still get all types
 MIXED_MAZES: list[LatticeMaze | TargetedLatticeMaze | SolvedMaze] = [x for x in itertools.chain.from_iterable(itertools.zip_longest(MAZE_DATASET.mazes, TARGETED_MAZES, LATTICE_MAZES))]
 
+# Backwards compatibility tests
+# =============================
+
 @mark.parametrize(
     "maze,legacy_tokenizer",
     [
@@ -69,4 +74,35 @@ def test_to_tokens_backwards_compatible(maze: SolvedMaze, legacy_tokenizer: Toke
     assert equal_except_adj_list_sequence(toks, toks_legacy)
     
 
-# def test_from_legacy(maze: SolvedMaze, )
+@mark.parametrize(
+    "coords, legacy_tok_mode",
+    [
+        param(
+            coords,
+            tok_mode,
+            id=f"{tok_mode.value}-coords(type={type(coords[0])},len={len(coords)})"
+        )
+        for tok_mode, coords in itertools.product(
+            [tok_mode for tok_mode in TokenizationMode],
+            [
+                *[[maze.start_pos] for maze in MAZE_DATASET.mazes[:2]],
+                [maze.start_pos for maze in MAZE_DATASET.mazes],
+                *[[tuple(maze.start_pos)] for maze in MAZE_DATASET.mazes[:2]],
+                [tuple(maze.start_pos) for maze in MAZE_DATASET.mazes],
+                ]
+        )
+    ]
+)
+def test_coords_to_strings_backwards_compatible(coords: list[Coord, CoordTup], legacy_tok_mode: TokenizationMode):
+    tokenizer: MazeTokenizer2 = MazeTokenizer2.from_legacy(legacy_tok_mode)
+    legacy_tokenizer = MazeTokenizer(tokenization_mode=legacy_tok_mode)
+    strings: list[str] = tokenizer.coords_to_strings(coords)
+    strings_legacy: list[str] = legacy_tokenizer.coords_to_strings(coords)
+    assert strings == strings_legacy
+
+# General functionality tests
+# ===========================
+
+def test_maze_to_tokens_roundtrip():
+    # TODO: implement when `from_tokens` ready
+    pass

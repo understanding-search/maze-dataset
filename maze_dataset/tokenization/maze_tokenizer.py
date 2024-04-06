@@ -16,7 +16,7 @@ from muutils.json_serialize import (
 from muutils.kappa import Kappa
 from numpy.core.multiarray import array as array
 
-from maze_dataset.constants import SPECIAL_TOKENS, VOCAB, VOCAB_LIST, TOKEN_TO_INDEX, Int8, CoordTup, CoordArray, ConnectionList, Coord
+from maze_dataset.constants import SPECIAL_TOKENS, VOCAB, VOCAB_LIST, VOCAB_TOKEN_TO_INDEX, Int8, CoordTup, CoordArray, ConnectionList, Coord
 from maze_dataset.tokenization.util import (
     _coord_to_strings_indexed,
     _coord_to_strings_UT,
@@ -448,17 +448,32 @@ class TokenizerElement(SerializableDataclass, abc.ABC):
     def from_tokens(self, toks: list[str]):
         """Converts a list of tokens into a maze element."""
         raise NotImplementedError(f'Conversion from tokens to ')
+
+    def clear_cache(self, recursive: bool = True):
+        """Clears all cached properties.
+        Optionally clears all cached properties recursively if the object contains other `TokenizerElement` instances.
+        """
+        # delete the properties only if they exist
+        for name, prop in self.__class__.__dict__.items():
+            if isinstance(prop, TokenizerElement) and recursive:  # Recursively clear cache for nested properties
+                prop.clear_cache()
+            if isinstance(prop, cached_property):
+                # if the property exists, delete it
+                try:
+                    delattr(self, name)
+                except AttributeError as e:
+                    pass
     
     
 class CoordTokenizers:
     class CoordTokenizer(TokenizerElement, abc.ABC):
         @abc.abstractmethod
-        def to_tokens(self, coord: Coord) -> list[str]: pass
+        def to_tokens(self, coord: Coord | CoordTup) -> list[str]: pass
         # Define some (abstract) methods
 
     # Intermediate abstract tokenizer elements
     class UT(CoordTokenizer, abc.ABC):
-        def to_tokens(self, coord: Coord) -> list[str]:
+        def to_tokens(self, coord: Coord | CoordTup) -> list[str]:
             return [''.join(['(', str(coord[0]), ',', str(coord[1]), ')'])]
 
     class UTRasterized(UT): pass
@@ -482,7 +497,7 @@ class CoordTokenizers:
         post: bool = True
         # Implement methods
         
-        def to_tokens(self, coord: Coord) -> list[str]:
+        def to_tokens(self, coord: Coord | CoordTup) -> list[str]:
             return [
                 *unpackable_if_true_attribute([VOCAB.COORD_PRE], self, 'pre'),
                 str(coord[0]),
@@ -819,7 +834,7 @@ class MazeTokenizer2(SerializableDataclass):
             legacy_maze_tokenizer = legacy_maze_tokenizer.tokenization_mode
         return {
             TokenizationMode.AOTP_UT_uniform: MazeTokenizer2(),
-            TokenizationMode.AOTP_UT_rasterized: MazeTokenizer2(coord_tokenizer=CoordTokenizers.UTRasterized()),
+            TokenizationMode.AOTP_UT_rasterized: MazeTokenizer2(),
             TokenizationMode.AOTP_CTT_indexed: MazeTokenizer2(coord_tokenizer=CoordTokenizers.CTT()),
         }[legacy_maze_tokenizer]
         
@@ -857,7 +872,7 @@ class MazeTokenizer2(SerializableDataclass):
     @property
     def tokenizer_map(self) -> dict[str, int]:
         """map from token to index"""
-        return TOKEN_TO_INDEX
+        return VOCAB_TOKEN_TO_INDEX
     
     @property
     def vocab_size(self) -> int:
@@ -870,15 +885,36 @@ class MazeTokenizer2(SerializableDataclass):
     
     @cached_property
     def padding_token_index(self) -> int:
-        return TOKEN_TO_INDEX[VOCAB.PADDING]
+        return VOCAB_TOKEN_TO_INDEX[VOCAB.PADDING]
     
+    # conversion functions
+    # ============================================================
+
+    def coords_to_strings(
+        self,
+        coords: list[CoordTup | Coord],
+        when_noncoord: WhenMissing = "skip",
+    ) -> list[str]:
+        return coords_to_strings(
+            coords=coords,
+            coord_to_strings_func=self.coord_tokenizer.to_tokens,
+            when_noncoord=when_noncoord,
+        )
+
+    @staticmethod
+    def strings_to_coords(
+        text: str,
+        when_noncoord: WhenMissing = "skip",
+    ) -> list[str | CoordTup]:
+        return strings_to_coords(text=text, when_noncoord=when_noncoord)
+
     @staticmethod
     def encode(text: str | list[str]) -> list[int]:
         """encode a string or list of strings into a list of tokens"""
         try:
             if isinstance(text, str):
                 text = text.split()
-            return [TOKEN_TO_INDEX[token] for token in text]
+            return [VOCAB_TOKEN_TO_INDEX[token] for token in text]
         except KeyError as e:
             raise TokenError(
                 f"Token {e} not found",
@@ -898,6 +934,19 @@ class MazeTokenizer2(SerializableDataclass):
             return " ".join(output)
         else:
             return output
+
+    def clear_cache(self):
+        """clears all cached properties"""
+        # delete the properties only if they exist
+        for element in self._tokenizer_elements:
+            element.clear_cache()
+        for name, prop in self.__class__.__dict__.items():
+            if isinstance(prop, cached_property):
+                # if the property exists, delete it
+                try:
+                    delattr(self, name)
+                except AttributeError as e:
+                    pass
 
     
 _line_for_debugging_breakpoint = 1

@@ -166,4 +166,4 @@ _VOCAB_BASE: type = make_dataclass(
 
 VOCAB: _VOCAB_BASE = _VOCAB_BASE()
 VOCAB_LIST: list[str] = list(VOCAB.values())
-TOKEN_TO_INDEX: dict[str, int] = {token: i for i, token in enumerate(VOCAB_LIST)}
+VOCAB_TOKEN_TO_INDEX: dict[str, int] = {token: i for i, token in enumerate(VOCAB_LIST)}
