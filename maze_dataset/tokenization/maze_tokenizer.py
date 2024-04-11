@@ -879,23 +879,20 @@ class MazeTokenizer2(SerializableDataclass):
     
     # conversion functions
     # ============================================================
-
+    
     def coords_to_strings(
         self,
-        coords: list[CoordTup | Coord],
-        when_noncoord: WhenMissing = "skip",
+        coords: list[CoordTup | Coord]
     ) -> list[str]:
-        return coords_to_strings(
-            coords=coords,
-            coord_to_strings_func=self.coord_tokenizer.to_tokens,
-            when_noncoord=when_noncoord,
-        )
+        return list(flatten([self.coord_tokenizer.to_tokens(c) for c in coords]))
 
     @staticmethod
     def strings_to_coords(
         text: str,
         when_noncoord: WhenMissing = "skip",
     ) -> list[str | CoordTup]:
+        warnings.warn("`MazeTokenizer2.strings_to_coords` only supports legacy UT strings. Will be replaced by a more generalized function in a future release.", 
+                      PendingDeprecationWarning)
         return strings_to_coords(text=text, when_noncoord=when_noncoord)
 
     @staticmethod
@@ -924,6 +921,9 @@ class MazeTokenizer2(SerializableDataclass):
             return " ".join(output)
         else:
             return output
+
+    # utils
+    # =============
 
     def clear_cache(self):
         """clears all cached properties"""
