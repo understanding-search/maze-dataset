@@ -1,6 +1,6 @@
 import pytest
 
-from maze_dataset.constants import SPECIAL_TOKENS
+from maze_dataset.constants import SPECIAL_TOKENS, VOCAB, VOCAB_LIST, VOCAB_TOKEN_TO_INDEX
 
 
 def test_special_tokens_base():
@@ -25,3 +25,13 @@ def test_special_tokens_base():
 
     # Test the keys method
     assert "ADJLIST_START" in SPECIAL_TOKENS.keys()
+
+
+def test_vocab():
+    assert len(VOCAB) == 4096
+    assert VOCAB.CTT_10 == '10'
+    assert VOCAB_LIST[0] == "<ADJLIST_START>"
+    assert VOCAB_TOKEN_TO_INDEX['<UNK>'] == 19
+    assert VOCAB_TOKEN_TO_INDEX['0'] == 192
+    assert VOCAB_TOKEN_TO_INDEX['-1'] == 447
+    assert VOCAB_TOKEN_TO_INDEX['(0,0)'] == 1596

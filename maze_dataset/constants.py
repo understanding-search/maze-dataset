@@ -130,6 +130,7 @@ _VOCAB_FIELDS: list = [
     ("PATH_INTRA", str, field(default=":")),
     ("PATH_POST", str, field(default="THEN")),
     ("NEGATIVE", str, field(default="-")),
+    ("UNKNOWN", str, field(default="<UNK>")),
     *[(f"TARGET_{a}", str, field(default=f"TARGET_{a}")) for a in "ABCDEFGHIJKLMNOPQRSTUVWXYZ"],
     ("TARGET_NORTH", str, field(default="TARGET_NORTH")),
     ("TARGET_SOUTH", str, field(default="TARGET_SOUTH")),
@@ -151,8 +152,8 @@ _VOCAB_FIELDS: list = [
     ("PATH_STAY", str, field(default="STAY")),
     *[(f"I_{i:03}", str, field(default=f"+{i}")) for i in range(128)],  # General purpose int tokens
     *[(f"CTT_{i}", str, field(default=f"{i}")) for i in range(128)],  # Coord tuple tokens
-    *[(f"I_N{-i:03}", str, field(default=f"-{i}")) for i in range(-128, 0)],    # General purpose negative int tokens
-    *[(f"RESERVE_{i}", str, field(default=f"<RESERVE_{i}>")) for i in range(447, 1596)],
+    *[(f"I_N{-i:03}", str, field(default=f"{i}")) for i in range(-128, 0)],    # General purpose negative int tokens
+    *[(f"RESERVE_{i}", str, field(default=f"<RESERVE_{i}>")) for i in range(448, 1596)],
     *[(f"UT_{x:02}_{y:02}", str, field(default=f"({x},{y})")) for x, y in corner_first_ndindex(50)],
 ]
 
