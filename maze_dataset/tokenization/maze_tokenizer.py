@@ -813,7 +813,16 @@ class MazeTokenizer2(SerializableDataclass):
     @property
     def name(self) -> str:
         """ Serializes MazeTokenizer into a key for encoding in zanj """
-        return '-'.join(['maze_tokenizer'] + [el.name for el in [self._tokenizer_elements]])
+        return repr(self)
+    
+    def summary(self) -> dict[str, Any]:
+        return {name: getattr(self, name) for name in [
+            "prompt_sequencer",
+            "coord_tokenizer",
+            "adj_list_tokenizer",
+            "target_tokenizer",
+            "path_tokenizer",
+            ]}
     
     @classmethod
     def from_name(cls, key: str) -> 'MazeTokenizer2':

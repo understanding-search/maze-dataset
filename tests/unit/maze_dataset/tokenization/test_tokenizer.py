@@ -1,11 +1,9 @@
 import re
 import numpy as np
-from collections import Counter
 import itertools
 from itertools import product
 from typing import Iterable
 
-import pytest
 from pytest import mark, param
 
 from maze_dataset import (
@@ -16,7 +14,8 @@ from maze_dataset import (
     TargetedLatticeMaze,
     LatticeMaze,
     Coord,
-    CoordTup
+    CoordTup,
+    VOCAB
 )
 from maze_dataset.generation import LatticeMazeGenerators
 from maze_dataset.generation.default_generators import DEFAULT_GENERATORS
@@ -25,12 +24,7 @@ from maze_dataset.generation.generators import GENERATORS_MAP
 from maze_dataset.plotting.print_tokens import color_maze_tokens_AOTP
 from maze_dataset.tokenization.util import equal_except_adj_list_sequence
 from maze_dataset.tokenization import (
-    TokenizerElement,
     MazeTokenizer2,
-    PromptSequencers,
-    CoordTokenizers,
-    AdjListTokenizers,
-    PathTokenizers,
     MazeTokenizer,
     TokenizationMode
 )
@@ -307,3 +301,55 @@ def test_from_tokens_backwards_compatible(maze: LatticeMaze, tok_mode: Tokenizat
 # General functionality tests
 # ===========================
 
+@mark.parametrize(
+    "tokenizer",
+    [
+        param(
+            MazeTokenizer2.from_legacy(tok_mode),
+        )
+        for tok_mode in TokenizationMode
+    ]
+)
+def test_tokenizer_properties(tokenizer: MazeTokenizer2):
+    # Just make sure the call doesn't raise exception
+    assert len(tokenizer.name) > 5
+    
+    assert tokenizer.vocab_size == 4096
+    assert isinstance(tokenizer.token_arr, Iterable)
+    assert all(isinstance(token, str) for token in tokenizer.token_arr)
+    assert tokenizer.token_arr[tokenizer.padding_token_index] == VOCAB.PADDING
+    
+    # Just make sure the call doesn't raise exception
+    print(tokenizer.summary())
+
+    # Just make sure the call doesn't raise exception
+    tokenizer.clear_cache()
+
+
+@mark.parametrize(
+    "maze,tokenizer",
+    [
+        param(
+            maze[0],
+            tok_spec,
+            id=f"{tok_spec.name}-maze{maze[1]}"
+        )
+        for maze, tok_spec in itertools.product(
+            [(maze, i) for i, maze in enumerate(MIXED_MAZES[:6])],
+            [MazeTokenizer2.from_legacy(tok_mode) for tok_mode in TokenizationMode]
+        )
+    ]
+)
+def test_encode_decode(maze: LatticeMaze, tokenizer: MazeTokenizer2):
+    # Just make sure the call doesn't raise exception
+ 
+    maze_tok = maze.as_tokens(maze_tokenizer=tokenizer)
+
+    maze_encoded = tokenizer.encode(maze_tok)
+    maze_decoded = tokenizer.decode(maze_encoded)
+
+    assert maze_tok == maze_decoded
+
+    maze_recovered = SolvedMaze.from_tokens(maze_tok, maze_tokenizer=tokenizer)
+
+    assert (maze.connection_list == maze_recovered.connection_list).all()
