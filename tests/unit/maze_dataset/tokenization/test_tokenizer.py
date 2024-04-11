@@ -5,6 +5,7 @@ import itertools
 from itertools import product
 from typing import Iterable
 
+import pytest
 from pytest import mark, param
 
 from maze_dataset import (
@@ -208,14 +209,6 @@ def test_maze_to_tokens_roundtrip(
         tokens = re.sub(r"(, [0-9]+)\)", r"\1 )", tokens)
     tokens_original_split: list[str] = tokens.split()
 
-    def get_token_regions(toks: list[str]) -> tuple[list[str], list[str]]:
-        adj_list_start, adj_list_end = toks.index("<ADJLIST_START>") + 1, toks.index(
-            "<ADJLIST_END>"
-        )
-        adj_list = toks[adj_list_start:adj_list_end]
-        non_adj_list = toks[:adj_list_start] + toks[adj_list_end:]
-        return adj_list, non_adj_list
-
     # join into a single string, and get a maze out
     ascii_str: str = "\n".join(maze_ascii)
     maze: SolvedMaze = SolvedMaze.from_ascii(ascii_str)
@@ -224,30 +217,16 @@ def test_maze_to_tokens_roundtrip(
 
     # maze as tokens
     tokens_from_maze: list[str] = maze.as_tokens(tokenizer)
-    adj_list, non_adj_list = get_token_regions(tokens_from_maze)
 
     # maze round trip
     maze_roundtrip: SolvedMaze = SolvedMaze.from_tokens(tokens_from_maze, tokenizer)
     tokens_roundtrip: list[str] = maze_roundtrip.as_tokens(tokenizer)
-    adj_list_rt, non_adj_list_rt = get_token_regions(tokens_roundtrip)
 
-    # regions from original tokens
-    adj_list_orig, non_adj_list_orig = get_token_regions(tokens_original_split)
-
-    # check that the maze works
+    # check that the mazes and tokens are all equivalent
     assert maze == maze_roundtrip
+    assert equal_except_adj_list_sequence(tokens_original_split, tokens_from_maze)
+    assert equal_except_adj_list_sequence(tokens_original_split, tokens_roundtrip)
 
-    # check that the counters match
-    counter_original: Counter = Counter(tokens_original_split)
-    counter_from_maze: Counter = Counter(tokens_from_maze)
-    counter_roundtrip: Counter = Counter(tokens_roundtrip)
-
-    assert counter_original == counter_from_maze
-    assert counter_original == counter_roundtrip
-
-    # check that the token regions match
-    assert non_adj_list_orig == non_adj_list
-    assert non_adj_list_rt == non_adj_list
 
 # MazeTokenizer2 tests
 # =====================
@@ -302,9 +281,29 @@ def test_coords_to_strings_backwards_compatible(coords: list[Coord, CoordTup], l
     strings_legacy: list[str] = legacy_tokenizer.coords_to_strings(coords)
     assert strings == strings_legacy
 
+
+@mark.parametrize(
+    "maze,tok_mode",
+    [
+        param(
+            maze[0],
+            tok_spec,
+            id=f"{tok_spec.value}-maze{maze[1]}"
+        )
+        for maze, tok_spec in itertools.product(
+            [(maze, i) for i, maze in enumerate(MIXED_MAZES[:6])],
+            [tok_mode for tok_mode in TokenizationMode]
+        )
+    ]
+)
+def test_from_tokens_backwards_compatible(maze: LatticeMaze, tok_mode: TokenizationMode):
+    tokenizer = MazeTokenizer2.from_legacy(tok_mode)
+    toks = maze.as_tokens(tok_mode)
+    # Equality test of `as_tokens` output done in a separate unit test
+    maze_legacy: LatticeMaze = LatticeMaze.from_tokens(toks, tok_mode)
+    maze: LatticeMaze = LatticeMaze.from_tokens(toks, tokenizer)        
+    assert maze == maze_legacy
+    
 # General functionality tests
 # ===========================
 
-def test_maze_to_tokens_roundtrip():
-    # TODO: implement when `from_tokens` ready
-    pass

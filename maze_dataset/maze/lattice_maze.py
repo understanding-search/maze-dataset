@@ -562,10 +562,10 @@ class LatticeMaze(SerializableDataclass):
 
     @classmethod
     def from_tokens(
-        cls, tokens: list[str], maze_tokenizer: MazeTokenizer | TokenizationMode
+        cls, tokens: list[str], maze_tokenizer: MazeTokenizer | TokenizationMode | MazeTokenizer2
     ) -> "LatticeMaze":
         if isinstance(maze_tokenizer, TokenizationMode):
-            maze_tokenizer = MazeTokenizer(maze_tokenizer)
+            maze_tokenizer = MazeTokenizer(tokenization_mode=maze_tokenizer)
         if isinstance(maze_tokenizer, MazeTokenizer2) and maze_tokenizer not in [MazeTokenizer2.from_legacy(tm) for tm in TokenizationMode]:
             raise NotImplementedError(f"Only exact conversions of legacy tokenizers supported, not {maze_tokenizer}.")
 

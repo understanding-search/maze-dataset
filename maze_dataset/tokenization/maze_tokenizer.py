@@ -925,6 +925,16 @@ class MazeTokenizer2(SerializableDataclass):
     # utils
     # =============
 
+    def is_AOTP(self):
+        warnings.warn("`MazeTokenizer2.is_AOTP` will be replaced by a more generalized function in a future release.", 
+                      PendingDeprecationWarning)
+        return isinstance(self.prompt_sequencer, PromptSequencers.AOTP)
+
+    def is_UT(self):
+        warnings.warn("`MazeTokenizer2.is_UT` will be replaced by a more generalized function in a future release.", 
+                      PendingDeprecationWarning)
+        return isinstance(self.coord_tokenizer, CoordTokenizers.UT)
+
     def clear_cache(self):
         """clears all cached properties"""
         # delete the properties only if they exist
