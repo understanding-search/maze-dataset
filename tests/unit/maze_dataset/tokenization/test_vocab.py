@@ -32,6 +32,6 @@ def test_vocab():
     assert VOCAB.CTT_10 == '10'
     assert VOCAB_LIST[0] == "<ADJLIST_START>"
     assert VOCAB_TOKEN_TO_INDEX['<UNK>'] == 19
-    assert VOCAB_TOKEN_TO_INDEX['0'] == 192
-    assert VOCAB_TOKEN_TO_INDEX['-1'] == 447
+    assert VOCAB_TOKEN_TO_INDEX['0'] == 320
+    assert VOCAB_TOKEN_TO_INDEX['-1'] == 703
     assert VOCAB_TOKEN_TO_INDEX['(0,0)'] == 1596

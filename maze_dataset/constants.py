@@ -150,10 +150,10 @@ _VOCAB_FIELDS: list = [
     ("PATH_LEFT", str, field(default="LEFT")),
     ("PATH_RIGHT", str, field(default="RIGHT")),
     ("PATH_STAY", str, field(default="STAY")),
-    *[(f"I_{i:03}", str, field(default=f"+{i}")) for i in range(128)],  # General purpose int tokens
+    *[(f"I_{i:03}", str, field(default=f"+{i}")) for i in range(256)],  # General purpose positive int tokens
     *[(f"CTT_{i}", str, field(default=f"{i}")) for i in range(128)],  # Coord tuple tokens
-    *[(f"I_N{-i:03}", str, field(default=f"{i}")) for i in range(-128, 0)],    # General purpose negative int tokens
-    *[(f"RESERVE_{i}", str, field(default=f"<RESERVE_{i}>")) for i in range(448, 1596)],
+    *[(f"I_N{-i:03}", str, field(default=f"{i}")) for i in range(-256, 0)],  # General purpose negative int tokens
+    *[(f"RESERVE_{i}", str, field(default=f"<RESERVE_{i}>")) for i in range(704, 1596)],
     *[(f"UT_{x:02}_{y:02}", str, field(default=f"({x},{y})")) for x, y in corner_first_ndindex(50)],
 ]
 
