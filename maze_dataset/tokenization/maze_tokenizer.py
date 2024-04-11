@@ -80,8 +80,8 @@ def get_tokens_up_to_path_start(
     tokenization_mode: TokenizationMode = TokenizationMode.AOTP_UT_uniform,
 ) -> list[str]:
     warnings.warn(
-        "`get_tokens_up_to_path_start` is deprecated for a `MazeTokenizer2`-compatible function in a future release.",
-        DeprecationWarning,
+        "`maze_tokenizer.get_tokens_up_to_path_start` is deprecated for a `MazeTokenizer2`-compatible function in a future release.",
+        PendingDeprecationWarning,
     )
     path_start_idx: int = tokens.index(SPECIAL_TOKENS.PATH_START) + 1
     if include_start_coord:
@@ -476,13 +476,6 @@ class CoordTokenizers:
         def to_tokens(self, coord: Coord | CoordTup) -> list[str]:
             return [''.join(['(', str(coord[0]), ',', str(coord[1]), ')'])]
 
-    class UTRasterized(UT): pass
-    # Implement methods
-
-
-    class UTUniform(UT): pass
-    # Implement methods
-    
     
     class CTT(CoordTokenizer):
         """Coordinate tuple tokenizer
@@ -506,7 +499,6 @@ class CoordTokenizers:
                 *unpackable_if_true_attribute([VOCAB.COORD_POST], self, 'post'),
             ]
         
-
 
 class AdjListTokenizers:
     @serializable_dataclass(frozen=True, kw_only=True)
@@ -791,7 +783,7 @@ class MazeTokenizer2(SerializableDataclass):
         loading_fn=lambda x: x.TokenizationElement.from_name(x)
     )
     coord_tokenizer: CoordTokenizers.CoordTokenizer = serializable_field(
-        default=CoordTokenizers.UTUniform(),
+        default=CoordTokenizers.UT(),
         serialization_fn=lambda x: x.serialize(),
         loading_fn=lambda x: x.TokenizationElement.from_name(x)
     )
@@ -851,8 +843,6 @@ class MazeTokenizer2(SerializableDataclass):
     def from_tokens(
         cls, 
         tokens: str | list[str], 
-        max_grid_size: int | None = None,
-        rasterization_mode: type[CoordTokenizers.CoordTokenizer] = CoordTokenizers.UTUniform,
         ) -> 'MazeTokenizer2':
         """
         Infers most MazeTokenizer parameters from a full set of tokens.
@@ -883,7 +873,7 @@ class MazeTokenizer2(SerializableDataclass):
         warnings.warn("`MazeTokenizer2.n_tokens` is deprecated. Use `MazeTokenizer2.vocab_size` instead.", DeprecationWarning)
         return self.vocab_size
     
-    @cached_property
+    @property
     def padding_token_index(self) -> int:
         return VOCAB_TOKEN_TO_INDEX[VOCAB.PADDING]
     

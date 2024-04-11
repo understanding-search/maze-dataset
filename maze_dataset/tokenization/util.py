@@ -5,6 +5,7 @@ import typing
 from typing import Callable, Iterable, Generator
 from collections import Counter
 from jaxtyping import Float, Int8
+import warnings
 
 import numpy as np
 from muutils.misc import list_join
@@ -38,6 +39,7 @@ def _coord_to_strings_indexed(coord: typing.Sequence[int]) -> list[str]:
 def str_is_coord(coord_str: str, allow_whitespace: bool = True) -> bool:
     """return True if the string represents a coordinate, False otherwise"""
 
+    warnings.warn("`util.str_is_coord` only supports legacy UT strings.")
     strip_func: Callable[[str], str] = lambda x: x.strip() if allow_whitespace else x
 
     coord_str = strip_func(coord_str)
@@ -101,6 +103,7 @@ def strings_to_coords(
     returns list[CoordTup] if `when_noncoord` is "skip" or "error"
     returns list[str | CoordTup] if `when_noncoord` is "include"
     """
+    warnings.warn("`util.strings_to_coords` only supports legacy UT strings.")
     tokens_joined: str = text if isinstance(text, str) else " ".join(text)
     tokens_processed: list[str] = coords_string_split_UT(tokens_joined)
     result: list[str] = list()

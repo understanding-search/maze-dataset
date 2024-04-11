@@ -153,7 +153,8 @@ def test_maze_to_tokens_roundtrip(
     tokens: str,
 ):
     if tok_mode == TokenizationMode.AOTP_CTT_indexed:
-        # The hardcoded `tokens` assumes a UT tokenizer. Modify `tokens` to match what a `AOTP_CTT_indexed` tokenizer would produce.
+        # The hardcoded `tokens` assumes a UT tokenizer. 
+        # Here we modify `tokens` to match what a `AOTP_CTT_indexed` tokenizer would produce.
         tokens = re.sub(r"\(([0-9]),([0-9])\)", r"(\1 , \2)", tokens)
         tokens = re.sub(r"\(([0-9]+ ,)", r"( \1", tokens)
         tokens = re.sub(r"(, [0-9]+)\)", r"\1 )", tokens)

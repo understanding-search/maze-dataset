@@ -1,5 +1,8 @@
 from maze_dataset.constants import (
     SPECIAL_TOKENS,
+    VOCAB,
+    VOCAB_LIST,
+    VOCAB_TOKEN_TO_INDEX,
     Coord,
     CoordArray,
     CoordList,
@@ -25,6 +28,9 @@ __all__ = [
     "CoordArray",
     "ConnectionList",
     "SPECIAL_TOKENS",
+    "VOCAB",
+    "VOCAB_LIST",
+    "VOCAB_TOKEN_TO_INDEX",
     "LatticeMaze",
     "TargetedLatticeMaze",
     "SolvedMaze",
