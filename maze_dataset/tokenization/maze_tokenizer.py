@@ -80,7 +80,7 @@ def get_tokens_up_to_path_start(
     tokenization_mode: TokenizationMode = TokenizationMode.AOTP_UT_uniform,
 ) -> list[str]:
     warnings.warn(
-        "`maze_tokenizer.get_tokens_up_to_path_start` is deprecated for a `MazeTokenizer2`-compatible function in a future release.",
+        "`maze_tokenizer.get_tokens_up_to_path_start` will be deprecated for a `MazeTokenizer2`-compatible function in a future release.",
         PendingDeprecationWarning,
     )
     path_start_idx: int = tokens.index(SPECIAL_TOKENS.PATH_START) + 1
@@ -432,9 +432,9 @@ class TokenizerElement(SerializableDataclass, abc.ABC):
     def name(self) -> str:
         return repr(self)
     
-    def serialize(self):
-        # return f"{type(self).__name__}"
-        return repr(self)
+    # def serialize(self):
+    #     # return f"{type(self).__name__}"
+    #     return repr(self)
     
     @abc.abstractmethod
     def to_tokens(self, *args, **kwargs) -> list[str]:
