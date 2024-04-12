@@ -244,7 +244,7 @@ def flatten(it: Iterable[any], levels_to_flatten: int | None = None) -> Generato
             yield x
 
 
-def get_all_subclasses(class_: type, include_self=False) -> list[type]:
+def get_all_subclasses(class_: type, include_self=False) -> set[type]:
     """
     Returns a list of all subclasses of `class_`, including subclasses of subclasses, etc.
     
@@ -253,10 +253,10 @@ def get_all_subclasses(class_: type, include_self=False) -> list[type]:
     `class_`: Superclass
     
     # Returns
-    List of subclasses without duplicates in no guaranteed order.
+    Set of subclasses without duplicates in no guaranteed order.
     """
-    subs: list[list] = [get_all_subclasses(sub, includeSelf=True) for sub in class_.__subclasses__() if sub is not None]
-    if not include_self:
-        return list({c for c in flatten(subs)})
-    else:
-        return [class_] + subs
+    subs: list[list] = [get_all_subclasses(sub, include_self=True) for sub in class_.__subclasses__() if sub is not None]
+    subs: set = set(flatten(subs))
+    if include_self:
+        subs.add((class_))
+    return subs

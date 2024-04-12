@@ -29,6 +29,8 @@ from maze_dataset.tokenization import (
     MazeTokenizer2,
     MazeTokenizer,
     TokenizationMode,
+    PromptSequencers,
+    CoordTokenizers,
     ALL_TOKENIZERS
 )
 
@@ -375,3 +377,26 @@ def test_zanj_save_read(tokenizer: MazeTokenizer2):
     zanj = ZANJ()
     zanj.save(tokenizer, path)
     assert zanj.read(path) == tokenizer
+    
+
+def test_is_AOTP():
+    for mt in ALL_TOKENIZERS():
+        if isinstance(mt.prompt_sequencer, PromptSequencers.AOTP):
+            assert mt.is_AOTP()
+        else:
+            assert not mt.is_AOTP()
+    assert not MazeTokenizer2(
+        prompt_sequencer=PromptSequencers.AOP()
+        ).is_AOTP()
+    assert not MazeTokenizer2(
+        prompt_sequencer=PromptSequencers.AOP(),
+        target_tokenizer=CoordTokenizers.CTT(),
+        ).is_AOTP()
+    
+
+def test_is_UT():
+    for mt in ALL_TOKENIZERS():
+        if isinstance(mt.coord_tokenizer, CoordTokenizers.UT):
+            assert mt.is_UT()
+        else:
+            assert not mt.is_UT()

@@ -24,7 +24,6 @@ from maze_dataset.tokenization.util import (
     strings_to_coords,
     connection_list_to_adj_list,
     flatten,
-    get_all_subclasses
 )
 from maze_dataset.tokenization.token_utils import tokens_between
 from maze_dataset.utils import (
