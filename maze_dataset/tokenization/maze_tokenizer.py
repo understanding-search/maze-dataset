@@ -741,7 +741,6 @@ class PromptSequencers(_TokenizerElementNamespace):
             If one or more of `origin`, `target`, or `path` are `None`, that indicates that an unsolved or untargeted maze is being tokenized.
             To ensure unpackability in `_sequence_tokens`, these `None` values are substituted for empty iterables.
             """
-            
             return [
                 adj_list_tokenizer.to_tokens(adj_list, coord_tokenizer=coord_tokenizer),
                 coord_tokenizer.to_tokens(origin) if origin is not None else [],

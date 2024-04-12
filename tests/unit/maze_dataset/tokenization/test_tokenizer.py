@@ -5,6 +5,7 @@ import itertools
 from zanj import ZANJ
 from itertools import product
 from typing import Iterable
+from collections import Counter
 
 from pytest import mark, param
 
@@ -18,6 +19,7 @@ from maze_dataset import (
     Coord,
     CoordTup,
     VOCAB,
+    VOCAB_LIST,
 )
 from maze_dataset.generation import LatticeMazeGenerators
 from maze_dataset.generation.default_generators import DEFAULT_GENERATORS
@@ -305,6 +307,27 @@ def test_from_tokens_backwards_compatible(maze: LatticeMaze, tok_mode: Tokenizat
     
 # General functionality tests
 # ===========================
+
+@mark.parametrize(
+    "maze,tokenizer",
+    [
+        param(
+            maze[0],
+            tokenizer,
+            id=f"{type(maze[0])}{maze[1]}-{tokenizer.name}"
+        )
+        for maze, tokenizer in itertools.product(
+            [(maze, i) for i, maze in enumerate(MIXED_MAZES[:6])],
+            ALL_TOKENIZERS()
+        )
+    ]
+)
+def test_token_region_delimiters(maze: LatticeMaze, tokenizer: MazeTokenizer2):
+    """<PATH_START> and similar token region delimiters should appear at most 1 time, regardless of tokenizer.
+    """
+    counts: Counter = Counter(maze.as_tokens(tokenizer))
+    assert all([counts[tok] < 2 for tok in VOCAB_LIST[:8]])
+
 
 @mark.parametrize(
     "tokenizer",
