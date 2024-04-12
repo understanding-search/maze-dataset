@@ -1,6 +1,8 @@
 import re
+import os
 import numpy as np
 import itertools
+from zanj import ZANJ
 from itertools import product
 from typing import Iterable
 
@@ -15,7 +17,7 @@ from maze_dataset import (
     LatticeMaze,
     Coord,
     CoordTup,
-    VOCAB
+    VOCAB,
 )
 from maze_dataset.generation import LatticeMazeGenerators
 from maze_dataset.generation.default_generators import DEFAULT_GENERATORS
@@ -26,7 +28,8 @@ from maze_dataset.tokenization.util import equal_except_adj_list_sequence
 from maze_dataset.tokenization import (
     MazeTokenizer2,
     MazeTokenizer,
-    TokenizationMode
+    TokenizationMode,
+    ALL_TOKENIZERS
 )
 
 
@@ -331,12 +334,12 @@ def test_tokenizer_properties(tokenizer: MazeTokenizer2):
     [
         param(
             maze[0],
-            tok_spec,
-            id=f"{tok_spec.name}-maze{maze[1]}"
+            tokenizer,
+            id=f"{tokenizer.name}-maze{maze[1]}"
         )
-        for maze, tok_spec in itertools.product(
+        for maze, tokenizer in itertools.product(
             [(maze, i) for i, maze in enumerate(MIXED_MAZES[:6])],
-            [MazeTokenizer2.from_legacy(tok_mode) for tok_mode in TokenizationMode]
+            ALL_TOKENIZERS()
         )
     ]
 )
@@ -353,3 +356,22 @@ def test_encode_decode(maze: LatticeMaze, tokenizer: MazeTokenizer2):
     maze_recovered = SolvedMaze.from_tokens(maze_tok, maze_tokenizer=tokenizer)
 
     assert (maze.connection_list == maze_recovered.connection_list).all()
+
+
+@mark.parametrize(
+    "tokenizer",
+    [
+        param(
+            tokenizer,
+            id=tokenizer.name
+        )
+        for tokenizer in ALL_TOKENIZERS()
+    ]
+)
+def test_zanj_save_read(tokenizer: MazeTokenizer2):
+    path = os.path.abspath(
+                os.path.join(os.path.curdir, "data", "MazeTokenizer2_" + hex(hash(tokenizer)) + ".zanj")
+            )
+    zanj = ZANJ()
+    zanj.save(tokenizer, path)
+    assert zanj.read(path) == tokenizer

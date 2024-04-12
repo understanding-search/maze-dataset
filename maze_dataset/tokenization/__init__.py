@@ -7,6 +7,7 @@ from maze_dataset.tokenization.maze_tokenizer import (
     CoordTokenizers,
     AdjListTokenizers,
     PathTokenizers,
+    ALL_TOKENIZERS,
     get_tokens_up_to_path_start
 )
 from maze_dataset.tokenization.token_utils import (
@@ -28,6 +29,7 @@ __all__ = [
     "CoordTokenizers",
     "AdjListTokenizers",
     "PathTokenizers",
+    "ALL_TOKENIZERS",
     "coord_str_to_tuple",
     "get_adj_list_tokens",
     "get_context_tokens",

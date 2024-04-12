@@ -23,7 +23,8 @@ from maze_dataset.tokenization.util import (
     coords_to_strings,
     strings_to_coords,
     connection_list_to_adj_list,
-    flatten
+    flatten,
+    get_all_subclasses
 )
 from maze_dataset.tokenization.token_utils import tokens_between
 from maze_dataset.utils import (
@@ -432,22 +433,19 @@ class TokenizerElement(SerializableDataclass, abc.ABC):
     def name(self) -> str:
         return repr(self)
     
-    def serialize(self) -> dict[str, Any]:
-        return self.__dict__
-    
-    @classmethod
-    def deserialize(cls, data: dict[str, Any]) -> 'TokenizerElement':
-        return cls(data)
+    def serialize(self):
+        # return f"{type(self).__name__}"
+        return repr(self)
     
     @abc.abstractmethod
     def to_tokens(self, *args, **kwargs) -> list[str]:
         """Converts a maze element into a list of tokens."""
-        pass
+        raise NotImplementedError
     
     @classmethod
     def from_tokens(self, toks: list[str]):
         """Converts a list of tokens into a maze element."""
-        raise NotImplementedError(f'Conversion from tokens to ')
+        raise NotImplementedError(f'Conversion from tokens to {type(self)} not yet supported.')
 
     def clear_cache(self, recursive: bool = True):
         """Clears all cached properties.
@@ -463,20 +461,32 @@ class TokenizerElement(SerializableDataclass, abc.ABC):
                     delattr(self, name)
                 except AttributeError as e:
                     pass
+
+
+class _TokenizerElementNamespace(abc.ABC):
+    """ABC for namespaces
     
+    # Properties
+    - key: The binding used in `MazeTokenizer2` for instances of the classes contained within that `_TokenizerElementNamespace`.
+    """
+    key: str = NotImplementedError
     
-class CoordTokenizers:
+class CoordTokenizers(_TokenizerElementNamespace):
+    key = "coord_tokenizer"
+    
+    @serializable_dataclass(frozen=True, kw_only=True)
     class CoordTokenizer(TokenizerElement, abc.ABC):
         @abc.abstractmethod
         def to_tokens(self, coord: Coord | CoordTup) -> list[str]: pass
         # Define some (abstract) methods
 
-    # Intermediate abstract tokenizer elements
+    @serializable_dataclass(frozen=True, kw_only=True)
     class UT(CoordTokenizer, abc.ABC):
         def to_tokens(self, coord: Coord | CoordTup) -> list[str]:
             return [''.join(['(', str(coord[0]), ',', str(coord[1]), ')'])]
 
-    
+
+    @serializable_dataclass(frozen=True, kw_only=True)    
     class CTT(CoordTokenizer):
         """Coordinate tuple tokenizer
         
@@ -485,9 +495,9 @@ class CoordTokenizers:
         - `intra`: Whether all coords include a delimiter token between coordinates
         - `post`: Whether all coords include an integral following delimiter token
         """
-        pre: bool = True
-        intra: bool = True
-        post: bool = True
+        pre: bool = serializable_field(default=True)
+        intra: bool = serializable_field(default=True)
+        post: bool = serializable_field(default=True)
         # Implement methods
         
         def to_tokens(self, coord: Coord | CoordTup) -> list[str]:
@@ -500,7 +510,9 @@ class CoordTokenizers:
             ]
         
 
-class AdjListTokenizers:
+class AdjListTokenizers(_TokenizerElementNamespace):
+    key = "adj_list_tokenizer"
+    
     @serializable_dataclass(frozen=True, kw_only=True)
     class AdjListTokenizer(TokenizerElement, abc.ABC):
         """
@@ -517,9 +529,9 @@ class AdjListTokenizers:
         """
         A connection is represented as the tokens of 2 coords with optional delimiters.
         """
-        intra: bool = serializable_field(default=True, compare=False)
-        post: bool = serializable_field(default=True, compare=False)
-        walls: bool = serializable_field(default=False, compare=False)
+        intra: bool = serializable_field(default=True)
+        post: bool = serializable_field(default=True)
+        walls: bool = serializable_field(default=False)
         
         def _single_connection_tokens(
             self, 
@@ -549,7 +561,10 @@ class AdjListTokenizers:
             )
 
 
-class TargetTokenizers:
+class TargetTokenizers(_TokenizerElementNamespace):
+    key = "target_tokenizer"
+    
+    @serializable_dataclass(frozen=True, kw_only=True)
     class TargetTokenizer(TokenizerElement, abc.ABC):        
         """Superclass of tokenizers for maze targets.
         """
@@ -559,10 +574,12 @@ class TargetTokenizers:
             """
             pass
     
+    
+    @serializable_dataclass(frozen=True, kw_only=True)
     class Unlabeled(TargetTokenizer):
         """Targets are simply listed as coord tokens.
         """
-        post: bool = False
+        post: bool = serializable_field(default=False)
         
         def to_tokens(self, targets: Iterable[Coord], coord_tokenizer: CoordTokenizers.CoordTokenizer) -> list[str]:
             return list(flatten([[*coord_tokenizer.to_tokens(target), 
@@ -570,7 +587,10 @@ class TargetTokenizers:
                                      for target in targets]))
         
 
-class PathTokenizers:
+class PathTokenizers(_TokenizerElementNamespace):
+    key = "path_tokenizer"
+    
+    @serializable_dataclass(frozen=True, kw_only=True)
     class PathTokenizer(TokenizerElement, abc.ABC):
         """Superclass of tokenizers for maze solution paths.
         """
@@ -580,6 +600,7 @@ class PathTokenizers:
             """
         
         
+    @serializable_dataclass(frozen=True, kw_only=True)
     class StepSequence(PathTokenizer, abc.ABC):
         """Any `PathTokenizer` where the tokenization may be assembled from token subsequences, each of which represents a step along the path.
         
@@ -623,8 +644,9 @@ class PathTokenizers:
                                       'If no leading tokens are desired then implement to return an empty tuple.')
 
     
+    @serializable_dataclass(frozen=True, kw_only=True)
     class Coords(StepSequence):
-        post: bool = False
+        post: bool = serializable_field(default=False)
         
         def _single_step_tokens(self, c0: Coord, c1: Coord, coord_tokenizer: CoordTokenizers.CoordTokenizer) -> list[str]:
             return [
@@ -639,8 +661,11 @@ class PathTokenizers:
             return ()
             
 
-class PromptSequencers:
+class PromptSequencers(_TokenizerElementNamespace):
+    key = "prompt_sequencer"
+    
     """Namespace for `PromptSequencer` subclass hierarchy."""
+    @serializable_dataclass(frozen=True, kw_only=True)
     class PromptSequencer(TokenizerElement, abc.ABC):
         @staticmethod
         def _trim_if_unsolved_maze(untrimmed: list[str], is_untargeted: bool = False, is_unsolved: bool = False):
@@ -729,10 +754,16 @@ class PromptSequencers:
         def _sequence_tokens(self, adj_list: list[str], origin: list[str] | None, target: list[str] | None, path: list[str] | None) -> list[str]:
             """Sequences token regions into a complete prompt.
             Includes any boundary tokens in `constants.SPECIAL_TOKENS` such as <ADJLIST_START>, <ORIGIN_END>, etc.
+            # Parameters
+            - `adj_list`: Tokens representing the adjacency list
+            - `origin`: Tokens representing the origin
+            - `target`: Tokens representing the target
+            - `path`: Tokens representing the path
             """
             pass
         
 
+    @serializable_dataclass(frozen=True, kw_only=True)
     class AOTP(PromptSequencer):
         def _sequence_tokens(self, adj_list: list[str], origin: list[str] | None, target: list[str] | None, path: list[str] | None) -> list[str]:
             return [
@@ -750,8 +781,10 @@ class PromptSequencers:
                 VOCAB.PATH_END
             ]
             
+            
+    @serializable_dataclass(frozen=True, kw_only=True)
     class AOP(PromptSequencer):
-        include_target_special_tokens: bool = False
+        include_target_special_tokens: bool = serializable_field(default=True)
         
         def _sequence_tokens(self, adj_list: list[str], origin: list[str], target: list[str], path: list[str]) -> list[str]:
             return [
@@ -768,6 +801,16 @@ class PromptSequencers:
             ]
 
 
+def _load_tokenizer_element(data: dict[str, Any], namespace: type[_TokenizerElementNamespace]) -> TokenizerElement:
+    key: str = namespace.key
+    format: str = data[key]["__format__"]
+    cls_name: str = format.split("(")[0]
+    # return getattr(namespace, cls_name).deserialize(data[key])
+    cls: type[TokenizerElement] = getattr(namespace, cls_name)
+    # TODO: Refactor line below with `zanj.loading.load_item_recursive` to properly leverage zanj
+    return cls(**{k: v for k, v in data[key].items() if k != "__format__"})
+    
+
 @serializable_dataclass(frozen=True, kw_only=True)
 class MazeTokenizer2(SerializableDataclass):
     """Tokenizer for mazes
@@ -779,28 +822,28 @@ class MazeTokenizer2(SerializableDataclass):
     """
     prompt_sequencer: PromptSequencers.PromptSequencer = serializable_field(
         default=PromptSequencers.AOTP(),
-        serialization_fn=lambda x: x.serialize(),
-        loading_fn=lambda x: x.TokenizationElement.from_name(x)
+        # serialization_fn=lambda x: repr(x),
+        loading_fn=lambda x: _load_tokenizer_element(x, PromptSequencers)
     )
     coord_tokenizer: CoordTokenizers.CoordTokenizer = serializable_field(
         default=CoordTokenizers.UT(),
-        serialization_fn=lambda x: x.serialize(),
-        loading_fn=lambda x: x.TokenizationElement.from_name(x)
+        # serialization_fn=lambda x: x.serialize(),
+        loading_fn=lambda x: _load_tokenizer_element(x, CoordTokenizers)
     )
     adj_list_tokenizer: AdjListTokenizers.AdjListTokenizer = serializable_field(
         default=AdjListTokenizers.Coords(),
-        serialization_fn=lambda x: x.serialize(),
-        loading_fn=lambda x: x.TokenizationElement.from_name(x)
+        # serialization_fn=lambda x: x.serialize(),
+        loading_fn=lambda x: _load_tokenizer_element(x, AdjListTokenizers)
     )
     target_tokenizer: TargetTokenizers.TargetTokenizer = serializable_field(
         default=TargetTokenizers.Unlabeled(),
-        serialization_fn=lambda x: x.serialize(),
-        loading_fn=lambda x: x.TokenizationElement.from_name(x)
+        # serialization_fn=lambda x: x.serialize(),
+        loading_fn=lambda x: _load_tokenizer_element(x, TargetTokenizers)
     )
     path_tokenizer: PathTokenizers.PathTokenizer = serializable_field(
         default=PathTokenizers.Coords(),
-        serialization_fn=lambda x: x.serialize(),
-        loading_fn=lambda x: x.TokenizationElement.from_name(x)
+        # serialization_fn=lambda x: x.serialize(),
+        loading_fn=lambda x: _load_tokenizer_element(x, PathTokenizers)
     )
         
     def __repr__(self) -> str:
@@ -827,7 +870,7 @@ class MazeTokenizer2(SerializableDataclass):
     @classmethod
     def from_name(cls, key: str) -> 'MazeTokenizer2':
         """ Builds a MazeTokenizer from the output of `MazeTokenizer2.name`"""
-        pass
+        raise NotImplementedError
 
     @classmethod
     def from_legacy(cls, legacy_maze_tokenizer: MazeTokenizer | TokenizationMode) -> 'MazeTokenizer2':
@@ -879,8 +922,7 @@ class MazeTokenizer2(SerializableDataclass):
     
     @property
     def n_tokens(self) -> int:
-        warnings.warn("`MazeTokenizer2.n_tokens` is deprecated. Use `MazeTokenizer2.vocab_size` instead.", DeprecationWarning)
-        return self.vocab_size
+        raise NameError('`MazeTokenizer2.n_tokens` has been removed. Use `len(maze_dataset.VOCAB_LIST)` instead.')
     
     @property
     def padding_token_index(self) -> int:
@@ -957,5 +999,14 @@ class MazeTokenizer2(SerializableDataclass):
                 except AttributeError as e:
                     pass
 
+    
+def ALL_TOKENIZERS() -> Iterable[MazeTokenizer2]: 
+    """Returns a list of all the supported and tested tokenizers.
+    Other tokenizers may be possible to construct, but they are untested and not guaranteed to work.
+    """
+    return [
+        MazeTokenizer2(),
+        MazeTokenizer2(coord_tokenizer=CoordTokenizers.CTT())
+    ]    
     
 _line_for_debugging_breakpoint = 1
