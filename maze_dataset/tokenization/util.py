@@ -2,15 +2,15 @@
 
 import re
 import typing
-from typing import Callable, Iterable, Generator
-from collections import Counter
-from jaxtyping import Float, Int8
 import warnings
+from collections import Counter
+from typing import Callable, Generator, Iterable
 
 import numpy as np
+from jaxtyping import Float, Int8
 from muutils.misc import list_join
 
-from maze_dataset.constants import CoordTup, ConnectionList
+from maze_dataset.constants import ConnectionList, CoordTup
 from maze_dataset.utils import WhenMissing
 
 # coordinate to strings
@@ -154,15 +154,13 @@ def coords_to_strings(
 
 
 def connection_list_to_adj_list(
-    conn_list: ConnectionList,
-    shuffle_d0: bool = True, 
-    shuffle_d1: bool = True
-    ) ->  Int8[np.ndarray, "conn start_end coord"]:
+    conn_list: ConnectionList, shuffle_d0: bool = True, shuffle_d1: bool = True
+) -> Int8[np.ndarray, "conn start_end coord"]:
     n_connections = conn_list.sum()
     adj_list: Int8[np.ndarray, "conn start_end coord"] = np.full(
-            (n_connections, 2, 2),
-            -1,
-        )
+        (n_connections, 2, 2),
+        -1,
+    )
 
     if shuffle_d1:
         flip_d1: Float[np.array, "conn"] = np.random.rand(n_connections)
@@ -198,12 +196,13 @@ def equal_except_adj_list_sequence(rollout1: list[str], rollout2: list[str]) -> 
     <ADJLIST_START> and <ADJLIST_END> tokens must be in the rollouts.
     Intended ONLY for determining if two tokenization schemes are the same for rollouts generated from the same maze.
     This function should NOT be used to determine if two rollouts encode the same `LatticeMaze` object.
-    
+
     # Warning: CTT False Positives
     This function is not robustly correct for some corner cases using `CoordTokenizers.CTT`.
     If rollouts are passed for identical tokenizers processing two slightly different mazes, a false positive is possible.
-    More specifically, some cases of zero-sum adding and removing of connections in a maze within square regions along the diagonal will produce a false positive.    
+    More specifically, some cases of zero-sum adding and removing of connections in a maze within square regions along the diagonal will produce a false positive.
     """
+
     def get_token_regions(toks: list[str]) -> tuple[list[str], list[str]]:
         adj_list_start, adj_list_end = toks.index("<ADJLIST_START>") + 1, toks.index(
             "<ADJLIST_END>"
@@ -211,11 +210,14 @@ def equal_except_adj_list_sequence(rollout1: list[str], rollout2: list[str]) -> 
         adj_list = toks[adj_list_start:adj_list_end]
         non_adj_list = toks[:adj_list_start] + toks[adj_list_end:]
         return adj_list, non_adj_list
-    
-    if len(rollout1) != len(rollout2): return False
-    if ("<ADJLIST_START>" in rollout1) ^ ("<ADJLIST_START>" in rollout2): return False
-    if ("<ADJLIST_END>" in rollout1) ^ ("<ADJLIST_END>" in rollout2): return False
-    
+
+    if len(rollout1) != len(rollout2):
+        return False
+    if ("<ADJLIST_START>" in rollout1) ^ ("<ADJLIST_START>" in rollout2):
+        return False
+    if ("<ADJLIST_END>" in rollout1) ^ ("<ADJLIST_END>" in rollout2):
+        return False
+
     adj_list1, non_adj_list1 = get_token_regions(rollout1)
     adj_list2, non_adj_list2 = get_token_regions(rollout2)
     if non_adj_list1 != non_adj_list2:
@@ -224,22 +226,29 @@ def equal_except_adj_list_sequence(rollout1: list[str], rollout2: list[str]) -> 
     counter2: Counter = Counter(adj_list2)
     return counter1 == counter2
 
+
 def flatten(it: Iterable[any], levels_to_flatten: int | None = None) -> Generator:
     """
     Flattens an arbitrarily nested iterable.
     Flattens all iterable data types except for `str` and `bytes`.
-    
+
     # Returns
     Generator over the flattened sequence.
-    
+
     # Parameters
     - `it`: Any arbitrarily nested iterable.
     - `levels_to_flatten`: Number of levels to flatten by. If `None`, performs full flattening.
     """
     for x in it:
         # TODO: swap type check with more general check for __iter__() or __next__() or whatever
-        if hasattr(x, '__iter__') and not isinstance(x, (str, bytes)) and (levels_to_flatten is None or levels_to_flatten > 0):
-            yield from flatten(x, None if levels_to_flatten == None else levels_to_flatten-1)
+        if (
+            hasattr(x, "__iter__")
+            and not isinstance(x, (str, bytes))
+            and (levels_to_flatten is None or levels_to_flatten > 0)
+        ):
+            yield from flatten(
+                x, None if levels_to_flatten == None else levels_to_flatten - 1
+            )
         else:
             yield x
 
@@ -247,15 +256,19 @@ def flatten(it: Iterable[any], levels_to_flatten: int | None = None) -> Generato
 def get_all_subclasses(class_: type, include_self=False) -> set[type]:
     """
     Returns a list of all subclasses of `class_`, including subclasses of subclasses, etc.
-    
+
     # Parameters
     - include_self: Whether to include `class_` itself in the returned list
     `class_`: Superclass
-    
+
     # Returns
     Set of subclasses without duplicates in no guaranteed order.
     """
-    subs: list[list] = [get_all_subclasses(sub, include_self=True) for sub in class_.__subclasses__() if sub is not None]
+    subs: list[list] = [
+        get_all_subclasses(sub, include_self=True)
+        for sub in class_.__subclasses__()
+        if sub is not None
+    ]
     subs: set = set(flatten(subs))
     if include_self:
         subs.add((class_))

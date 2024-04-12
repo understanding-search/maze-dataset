@@ -1,50 +1,46 @@
-import re
-import os
-import numpy as np
 import itertools
-from zanj import ZANJ
+import os
+import re
+from collections import Counter
 from itertools import product
 from typing import Iterable
-from collections import Counter
 
+import numpy as np
 from pytest import mark, param
+from zanj import ZANJ
 
 from maze_dataset import (
+    VOCAB,
+    VOCAB_LIST,
+    Coord,
+    CoordTup,
+    LatticeMaze,
     LatticeMazeGenerators,
     MazeDataset,
     MazeDatasetConfig,
     SolvedMaze,
     TargetedLatticeMaze,
-    LatticeMaze,
-    Coord,
-    CoordTup,
-    VOCAB,
-    VOCAB_LIST,
 )
 from maze_dataset.generation import LatticeMazeGenerators
-from maze_dataset.generation.default_generators import DEFAULT_GENERATORS
-from maze_dataset.generation.generators import GENERATORS_MAP
-
 from maze_dataset.plotting.print_tokens import color_maze_tokens_AOTP
-from maze_dataset.tokenization.util import equal_except_adj_list_sequence
 from maze_dataset.tokenization import (
-    MazeTokenizer2,
-    MazeTokenizer,
-    TokenizationMode,
-    PromptSequencers,
+    ALL_TOKENIZERS,
     CoordTokenizers,
-    ALL_TOKENIZERS
+    MazeTokenizer,
+    MazeTokenizer2,
+    PromptSequencers,
+    TokenizationMode,
 )
-
+from maze_dataset.tokenization.util import equal_except_adj_list_sequence
 
 GRID_N = 5
 N_MAZES = 5
 CFG: MazeDatasetConfig = MazeDatasetConfig(
-        name="test",
-        grid_n=GRID_N,
-        n_mazes=N_MAZES,
-        maze_ctor=LatticeMazeGenerators.gen_dfs,
-    )
+    name="test",
+    grid_n=GRID_N,
+    n_mazes=N_MAZES,
+    maze_ctor=LatticeMazeGenerators.gen_dfs,
+)
 MAZE_DATASET: MazeDataset = MazeDataset.from_config(
     CFG,
     do_download=False,
@@ -54,11 +50,21 @@ MAZE_DATASET: MazeDataset = MazeDataset.from_config(
     verbose=True,
     gen_parallel=False,
 )
-LATTICE_MAZES: list[LatticeMaze] = [LatticeMazeGenerators.gen_dfs(np.array([GRID_N, GRID_N])) for _ in range(N_MAZES)]
+LATTICE_MAZES: list[LatticeMaze] = [
+    LatticeMazeGenerators.gen_dfs(np.array([GRID_N, GRID_N])) for _ in range(N_MAZES)
+]
 _PATHS = [maze.generate_random_path() for maze in LATTICE_MAZES]
-TARGETED_MAZES: list[TargetedLatticeMaze] = [TargetedLatticeMaze.from_lattice_maze(maze, path[0], path[-1]) for maze, path in zip(LATTICE_MAZES, _PATHS)]
+TARGETED_MAZES: list[TargetedLatticeMaze] = [
+    TargetedLatticeMaze.from_lattice_maze(maze, path[0], path[-1])
+    for maze, path in zip(LATTICE_MAZES, _PATHS)
+]
 # MIXED_MAZES alternates the maze types, so you can slice a contiguous subset and still get all types
-MIXED_MAZES: list[LatticeMaze | TargetedLatticeMaze | SolvedMaze] = [x for x in itertools.chain.from_iterable(itertools.zip_longest(MAZE_DATASET.mazes, TARGETED_MAZES, LATTICE_MAZES))]
+MIXED_MAZES: list[LatticeMaze | TargetedLatticeMaze | SolvedMaze] = [
+    x
+    for x in itertools.chain.from_iterable(
+        itertools.zip_longest(MAZE_DATASET.mazes, TARGETED_MAZES, LATTICE_MAZES)
+    )
+]
 
 
 def test_tokenizer():
@@ -203,7 +209,7 @@ def test_maze_to_tokens_roundtrip(
     tokens: str,
 ):
     if tok_mode == TokenizationMode.AOTP_CTT_indexed:
-        # The hardcoded `tokens` assumes a UT tokenizer. 
+        # The hardcoded `tokens` assumes a UT tokenizer.
         # Here we modify `tokens` to match what a `AOTP_CTT_indexed` tokenizer would produce.
         tokens = re.sub(r"\(([0-9]),([0-9])\)", r"(\1 , \2)", tokens)
         tokens = re.sub(r"\(([0-9]+ ,)", r"( \1", tokens)
@@ -235,26 +241,25 @@ def test_maze_to_tokens_roundtrip(
 # Backwards compatibility tests
 # =============================
 
+
 @mark.parametrize(
     "maze,legacy_tokenizer",
     [
-        param(
-            maze[0],
-            tok_spec,
-            id=f"{tok_spec.value}-maze{maze[1]}"
-        )
+        param(maze[0], tok_spec, id=f"{tok_spec.value}-maze{maze[1]}")
         for maze, tok_spec in itertools.product(
             [(maze, i) for i, maze in enumerate(MIXED_MAZES[:6])],
-            [tok_mode for tok_mode in TokenizationMode]
+            [tok_mode for tok_mode in TokenizationMode],
         )
-    ]
+    ],
 )
-def test_to_tokens_backwards_compatible(maze: SolvedMaze, legacy_tokenizer: TokenizationMode):
+def test_to_tokens_backwards_compatible(
+    maze: SolvedMaze, legacy_tokenizer: TokenizationMode
+):
     tokenizer: MazeTokenizer2 = MazeTokenizer2.from_legacy(legacy_tokenizer)
     toks: list[str] = maze.as_tokens(tokenizer)
     toks_legacy: list[str] = maze.as_tokens(legacy_tokenizer)
     assert equal_except_adj_list_sequence(toks, toks_legacy)
-    
+
 
 @mark.parametrize(
     "coords, legacy_tok_mode",
@@ -262,7 +267,7 @@ def test_to_tokens_backwards_compatible(maze: SolvedMaze, legacy_tokenizer: Toke
         param(
             coords,
             tok_mode,
-            id=f"{tok_mode.value}-coords(type={type(coords[0])},len={len(coords)})"
+            id=f"{tok_mode.value}-coords(type={type(coords[0])},len={len(coords)})",
         )
         for tok_mode, coords in itertools.product(
             [tok_mode for tok_mode in TokenizationMode],
@@ -271,11 +276,13 @@ def test_to_tokens_backwards_compatible(maze: SolvedMaze, legacy_tokenizer: Toke
                 [maze.start_pos for maze in MAZE_DATASET.mazes],
                 *[[tuple(maze.start_pos)] for maze in MAZE_DATASET.mazes[:2]],
                 [tuple(maze.start_pos) for maze in MAZE_DATASET.mazes],
-                ]
+            ],
         )
-    ]
+    ],
 )
-def test_coords_to_strings_backwards_compatible(coords: list[Coord, CoordTup], legacy_tok_mode: TokenizationMode):
+def test_coords_to_strings_backwards_compatible(
+    coords: list[Coord, CoordTup], legacy_tok_mode: TokenizationMode
+):
     tokenizer: MazeTokenizer2 = MazeTokenizer2.from_legacy(legacy_tok_mode)
     legacy_tokenizer = MazeTokenizer(tokenization_mode=legacy_tok_mode)
     strings: list[str] = tokenizer.coords_to_strings(coords)
@@ -286,45 +293,39 @@ def test_coords_to_strings_backwards_compatible(coords: list[Coord, CoordTup], l
 @mark.parametrize(
     "maze,tok_mode",
     [
-        param(
-            maze[0],
-            tok_spec,
-            id=f"{tok_spec.value}-maze{maze[1]}"
-        )
+        param(maze[0], tok_spec, id=f"{tok_spec.value}-maze{maze[1]}")
         for maze, tok_spec in itertools.product(
             [(maze, i) for i, maze in enumerate(MIXED_MAZES[:6])],
-            [tok_mode for tok_mode in TokenizationMode]
+            [tok_mode for tok_mode in TokenizationMode],
         )
-    ]
+    ],
 )
-def test_from_tokens_backwards_compatible(maze: LatticeMaze, tok_mode: TokenizationMode):
+def test_from_tokens_backwards_compatible(
+    maze: LatticeMaze, tok_mode: TokenizationMode
+):
     tokenizer = MazeTokenizer2.from_legacy(tok_mode)
     toks = maze.as_tokens(tok_mode)
     # Equality test of `as_tokens` output done in a separate unit test
     maze_legacy: LatticeMaze = LatticeMaze.from_tokens(toks, tok_mode)
-    maze: LatticeMaze = LatticeMaze.from_tokens(toks, tokenizer)        
+    maze: LatticeMaze = LatticeMaze.from_tokens(toks, tokenizer)
     assert maze == maze_legacy
-    
+
+
 # General functionality tests
 # ===========================
+
 
 @mark.parametrize(
     "maze,tokenizer",
     [
-        param(
-            maze[0],
-            tokenizer,
-            id=f"{type(maze[0])}{maze[1]}-{tokenizer.name}"
-        )
+        param(maze[0], tokenizer, id=f"{type(maze[0])}{maze[1]}-{tokenizer.name}")
         for maze, tokenizer in itertools.product(
-            [(maze, i) for i, maze in enumerate(MIXED_MAZES[:6])],
-            ALL_TOKENIZERS()
+            [(maze, i) for i, maze in enumerate(MIXED_MAZES[:6])], ALL_TOKENIZERS()
         )
-    ]
+    ],
 )
 def test_token_region_delimiters(maze: LatticeMaze, tokenizer: MazeTokenizer2):
-    """<PATH_START> and similar token region delimiters should appear at most 1 time, regardless of tokenizer.
-    """
+    """<PATH_START> and similar token region delimiters should appear at most 1 time, regardless of tokenizer."""
     counts: Counter = Counter(maze.as_tokens(tokenizer))
     assert all([counts[tok] < 2 for tok in VOCAB_LIST[:8]])
 
@@ -336,17 +337,17 @@ def test_token_region_delimiters(maze: LatticeMaze, tokenizer: MazeTokenizer2):
             MazeTokenizer2.from_legacy(tok_mode),
         )
         for tok_mode in TokenizationMode
-    ]
+    ],
 )
 def test_tokenizer_properties(tokenizer: MazeTokenizer2):
     # Just make sure the call doesn't raise exception
     assert len(tokenizer.name) > 5
-    
+
     assert tokenizer.vocab_size == 4096
     assert isinstance(tokenizer.token_arr, Iterable)
     assert all(isinstance(token, str) for token in tokenizer.token_arr)
     assert tokenizer.token_arr[tokenizer.padding_token_index] == VOCAB.PADDING
-    
+
     # Just make sure the call doesn't raise exception
     print(tokenizer.summary())
 
@@ -357,20 +358,15 @@ def test_tokenizer_properties(tokenizer: MazeTokenizer2):
 @mark.parametrize(
     "maze,tokenizer",
     [
-        param(
-            maze[0],
-            tokenizer,
-            id=f"{tokenizer.name}-maze{maze[1]}"
-        )
+        param(maze[0], tokenizer, id=f"{tokenizer.name}-maze{maze[1]}")
         for maze, tokenizer in itertools.product(
-            [(maze, i) for i, maze in enumerate(MIXED_MAZES[:6])],
-            ALL_TOKENIZERS()
+            [(maze, i) for i, maze in enumerate(MIXED_MAZES[:6])], ALL_TOKENIZERS()
         )
-    ]
+    ],
 )
 def test_encode_decode(maze: LatticeMaze, tokenizer: MazeTokenizer2):
     # Just make sure the call doesn't raise exception
- 
+
     maze_tok = maze.as_tokens(maze_tokenizer=tokenizer)
 
     maze_encoded = tokenizer.encode(maze_tok)
@@ -384,23 +380,18 @@ def test_encode_decode(maze: LatticeMaze, tokenizer: MazeTokenizer2):
 
 
 @mark.parametrize(
-    "tokenizer",
-    [
-        param(
-            tokenizer,
-            id=tokenizer.name
-        )
-        for tokenizer in ALL_TOKENIZERS()
-    ]
+    "tokenizer", [param(tokenizer, id=tokenizer.name) for tokenizer in ALL_TOKENIZERS()]
 )
 def test_zanj_save_read(tokenizer: MazeTokenizer2):
     path = os.path.abspath(
-                os.path.join(os.path.curdir, "data", "MazeTokenizer2_" + hex(hash(tokenizer)) + ".zanj")
-            )
+        os.path.join(
+            os.path.curdir, "data", "MazeTokenizer2_" + hex(hash(tokenizer)) + ".zanj"
+        )
+    )
     zanj = ZANJ()
     zanj.save(tokenizer, path)
     assert zanj.read(path) == tokenizer
-    
+
 
 def test_is_AOTP():
     for mt in ALL_TOKENIZERS():
@@ -408,14 +399,12 @@ def test_is_AOTP():
             assert mt.is_AOTP()
         else:
             assert not mt.is_AOTP()
-    assert not MazeTokenizer2(
-        prompt_sequencer=PromptSequencers.AOP()
-        ).is_AOTP()
+    assert not MazeTokenizer2(prompt_sequencer=PromptSequencers.AOP()).is_AOTP()
     assert not MazeTokenizer2(
         prompt_sequencer=PromptSequencers.AOP(),
         target_tokenizer=CoordTokenizers.CTT(),
-        ).is_AOTP()
-    
+    ).is_AOTP()
+
 
 def test_is_UT():
     for mt in ALL_TOKENIZERS():

@@ -1,8 +1,8 @@
 import warnings
-from dataclasses import dataclass, make_dataclass, field
+from dataclasses import dataclass, field, make_dataclass
 
 import numpy as np
-from jaxtyping import Int8, Bool
+from jaxtyping import Bool, Int8
 
 from maze_dataset.utils import corner_first_ndindex
 
@@ -131,7 +131,10 @@ _VOCAB_FIELDS: list = [
     ("PATH_POST", str, field(default="THEN")),
     ("NEGATIVE", str, field(default="-")),
     ("UNKNOWN", str, field(default="<UNK>")),
-    *[(f"TARGET_{a}", str, field(default=f"TARGET_{a}")) for a in "ABCDEFGHIJKLMNOPQRSTUVWXYZ"],
+    *[
+        (f"TARGET_{a}", str, field(default=f"TARGET_{a}"))
+        for a in "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    ],
     ("TARGET_NORTH", str, field(default="TARGET_NORTH")),
     ("TARGET_SOUTH", str, field(default="TARGET_SOUTH")),
     ("TARGET_EAST", str, field(default="TARGET_EAST")),
@@ -150,19 +153,26 @@ _VOCAB_FIELDS: list = [
     ("PATH_LEFT", str, field(default="LEFT")),
     ("PATH_RIGHT", str, field(default="RIGHT")),
     ("PATH_STAY", str, field(default="STAY")),
-    *[(f"I_{i:03}", str, field(default=f"+{i}")) for i in range(256)],  # General purpose positive int tokens
-    *[(f"CTT_{i}", str, field(default=f"{i}")) for i in range(128)],  # Coord tuple tokens
-    *[(f"I_N{-i:03}", str, field(default=f"{i}")) for i in range(-256, 0)],  # General purpose negative int tokens
+    *[
+        (f"I_{i:03}", str, field(default=f"+{i}")) for i in range(256)
+    ],  # General purpose positive int tokens
+    *[
+        (f"CTT_{i}", str, field(default=f"{i}")) for i in range(128)
+    ],  # Coord tuple tokens
+    *[
+        (f"I_N{-i:03}", str, field(default=f"{i}")) for i in range(-256, 0)
+    ],  # General purpose negative int tokens
     *[(f"RESERVE_{i}", str, field(default=f"<RESERVE_{i}>")) for i in range(704, 1596)],
-    *[(f"UT_{x:02}_{y:02}", str, field(default=f"({x},{y})")) for x, y in corner_first_ndindex(50)],
+    *[
+        (f"UT_{x:02}_{y:02}", str, field(default=f"({x},{y})"))
+        for x, y in corner_first_ndindex(50)
+    ],
 ]
 
 
 _VOCAB_BASE: type = make_dataclass(
-    '_VOCAB_BASE', 
-    fields=_VOCAB_FIELDS, 
-    bases=(_SPECIAL_TOKENS_BASE,),
-    frozen=True)
+    "_VOCAB_BASE", fields=_VOCAB_FIELDS, bases=(_SPECIAL_TOKENS_BASE,), frozen=True
+)
 # TODO: edit __getitem__ to add warning for accessing a RESERVE token
 
 VOCAB: _VOCAB_BASE = _VOCAB_BASE()

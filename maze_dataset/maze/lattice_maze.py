@@ -4,7 +4,7 @@ from dataclasses import dataclass
 from itertools import chain
 
 import numpy as np
-from jaxtyping import Bool, Float, Int, Int8, Shaped
+from jaxtyping import Bool, Int, Int8, Shaped
 from muutils.json_serialize.serializable_dataclass import (
     SerializableDataclass,
     serializable_dataclass,
@@ -15,15 +15,15 @@ from muutils.misc import list_split
 from maze_dataset.constants import (
     NEIGHBORS_MASK,
     SPECIAL_TOKENS,
+    ConnectionList,
     Coord,
     CoordArray,
     CoordTup,
-    ConnectionList,
 )
 from maze_dataset.tokenization import (
     MazeTokenizer,
-    TokenizationMode,
     MazeTokenizer2,
+    TokenizationMode,
     get_adj_list_tokens,
     get_path_tokens,
 )
@@ -407,9 +407,9 @@ class LatticeMaze(SerializableDataclass):
 
     def as_adj_list_tokens(self) -> list[str | CoordTup]:
         warnings.warn(
-        "`LatticeMaze.as_adj_list_tokens` will be removed from the public API in a future release.",
-        PendingDeprecationWarning,
-    )
+            "`LatticeMaze.as_adj_list_tokens` will be removed from the public API in a future release.",
+            PendingDeprecationWarning,
+        )
         return [
             SPECIAL_TOKENS.ADJLIST_START,
             *chain.from_iterable(
@@ -428,6 +428,7 @@ class LatticeMaze(SerializableDataclass):
 
     def _as_coords_and_special_AOTP(self) -> list[CoordTup | str]:
         """turn the maze into adjacency list, origin, target, and solution -- keep coords as tuples"""
+
         def _as_adj_list_tokens() -> list[str | CoordTup]:
             return [
                 SPECIAL_TOKENS.ADJLIST_START,
@@ -444,7 +445,7 @@ class LatticeMaze(SerializableDataclass):
                 ),
                 SPECIAL_TOKENS.ADJLIST_END,
             ]
-        
+
         output: list[str] = _as_adj_list_tokens()
         # if getattr(self, "start_pos", None) is not None:
         if isinstance(self, TargetedLatticeMaze):
@@ -474,11 +475,13 @@ class LatticeMaze(SerializableDataclass):
         """serialize maze and solution to tokens"""
         if isinstance(maze_tokenizer, MazeTokenizer2):
             return maze_tokenizer.to_tokens(
-                self.connection_list, 
-                getattr(self, 'start_pos', None), 
-                [getattr(self, 'end_pos', None)], # MazeTokenizer2 requires target: Iterable[Coord]
-                getattr(self, 'solution', None)
-                )
+                self.connection_list,
+                getattr(self, "start_pos", None),
+                [
+                    getattr(self, "end_pos", None)
+                ],  # MazeTokenizer2 requires target: Iterable[Coord]
+                getattr(self, "solution", None),
+            )
         else:
             return self._as_tokens(maze_tokenizer)
 
@@ -583,12 +586,18 @@ class LatticeMaze(SerializableDataclass):
 
     @classmethod
     def from_tokens(
-        cls, tokens: list[str], maze_tokenizer: MazeTokenizer | TokenizationMode | MazeTokenizer2
+        cls,
+        tokens: list[str],
+        maze_tokenizer: MazeTokenizer | TokenizationMode | MazeTokenizer2,
     ) -> "LatticeMaze":
         if isinstance(maze_tokenizer, TokenizationMode):
             maze_tokenizer = MazeTokenizer(tokenization_mode=maze_tokenizer)
-        if isinstance(maze_tokenizer, MazeTokenizer2) and maze_tokenizer not in [MazeTokenizer2.from_legacy(tm) for tm in TokenizationMode]:
-            raise NotImplementedError(f"Only exact conversions of legacy tokenizers supported, not {maze_tokenizer}.")
+        if isinstance(maze_tokenizer, MazeTokenizer2) and maze_tokenizer not in [
+            MazeTokenizer2.from_legacy(tm) for tm in TokenizationMode
+        ]:
+            raise NotImplementedError(
+                f"Only exact conversions of legacy tokenizers supported, not {maze_tokenizer}."
+            )
 
         if isinstance(tokens, str):
             tokens = tokens.split()

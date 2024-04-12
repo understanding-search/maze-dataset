@@ -1,15 +1,15 @@
 from maze_dataset.tokenization.maze_tokenizer import (
-    MazeTokenizer, 
+    ALL_TOKENIZERS,
+    AdjListTokenizers,
+    CoordTokenizers,
+    MazeTokenizer,
+    MazeTokenizer2,
+    PathTokenizers,
+    PromptSequencers,
+    TargetTokenizers,
     TokenizationMode,
     TokenizerElement,
-    MazeTokenizer2,
-    PromptSequencers,
-    CoordTokenizers,
-    AdjListTokenizers,
-    TargetTokenizers,
-    PathTokenizers,
-    ALL_TOKENIZERS,
-    get_tokens_up_to_path_start
+    get_tokens_up_to_path_start,
 )
 from maze_dataset.tokenization.token_utils import (
     get_adj_list_tokens,

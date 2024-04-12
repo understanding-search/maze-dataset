@@ -1,7 +1,5 @@
 """a whole bunch of utilities for tokenization"""
 
-import warnings
-
 from maze_dataset.constants import SPECIAL_TOKENS
 
 # filtering things from a prompt or generated text
@@ -98,4 +96,3 @@ def get_target_tokens(tokens: list[str]) -> list[str]:
         include_start=False,
         include_end=False,
     )
-

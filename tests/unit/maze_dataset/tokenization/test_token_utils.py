@@ -1,8 +1,10 @@
-import pytest
-from pytest import mark, param
 from typing import Iterable
 
+import pytest
+from pytest import mark, param
+
 from maze_dataset.dataset.maze_dataset import MazeDatasetConfig
+from maze_dataset.tokenization import get_tokens_up_to_path_start
 from maze_dataset.tokenization.token_utils import (
     get_adj_list_tokens,
     get_origin_tokens,
@@ -10,14 +12,13 @@ from maze_dataset.tokenization.token_utils import (
     get_target_tokens,
     tokens_between,
 )
-from maze_dataset.tokenization import get_tokens_up_to_path_start
 from maze_dataset.tokenization.util import (
     _coord_to_strings_UT,
     coords_to_strings,
-    strings_to_coords,
     equal_except_adj_list_sequence,
     flatten,
-    get_all_subclasses
+    get_all_subclasses,
+    strings_to_coords,
 )
 
 MAZE_TOKENS: tuple[list[str], str] = (
@@ -28,7 +29,10 @@ MAZE_TOKENS_AOTP_CTT_indexed: tuple[list[str], str] = (
     "<ADJLIST_START> ( 0 , 1 ) <--> ( 1 , 1 ) ; ( 1 , 0 ) <--> ( 1 , 1 ) ; ( 0 , 1 ) <--> ( 0 , 0 ) ; <ADJLIST_END> <ORIGIN_START> ( 1 , 0 ) <ORIGIN_END> <TARGET_START> ( 1 , 1 ) <TARGET_END> <PATH_START> ( 1 , 0 ) ( 1 , 1 ) <PATH_END>".split(),
     "AOTP_CTT_indexed",
 )
-TEST_TOKEN_LISTS: list[tuple[list[str], str]] = [MAZE_TOKENS, MAZE_TOKENS_AOTP_CTT_indexed]
+TEST_TOKEN_LISTS: list[tuple[list[str], str]] = [
+    MAZE_TOKENS,
+    MAZE_TOKENS_AOTP_CTT_indexed,
+]
 
 
 @mark.parametrize(
@@ -365,58 +369,60 @@ def test_coords_to_strings(toks: list[str], tokenizer_name: str):
 
 def test_equal_except_adj_list_sequence():
     assert equal_except_adj_list_sequence(MAZE_TOKENS[0], MAZE_TOKENS[0])
-    assert not equal_except_adj_list_sequence(MAZE_TOKENS[0], MAZE_TOKENS_AOTP_CTT_indexed[0])
-    assert equal_except_adj_list_sequence(
-        "<ADJLIST_START> (0,1) <--> (1,1) ; (1,0) <--> (1,1) ; (0,1) <--> (0,0) ; <ADJLIST_END> <ORIGIN_START> (1,0) <ORIGIN_END> <TARGET_START> (1,1) <TARGET_END> <PATH_START> (1,0) (1,1) <PATH_END>".split(),
-        "<ADJLIST_START> (0,1) <--> (1,1) ; (1,0) <--> (1,1) ; (0,1) <--> (0,0) ; <ADJLIST_END> <ORIGIN_START> (1,0) <ORIGIN_END> <TARGET_START> (1,1) <TARGET_END> <PATH_START> (1,0) (1,1) <PATH_END>".split()
+    assert not equal_except_adj_list_sequence(
+        MAZE_TOKENS[0], MAZE_TOKENS_AOTP_CTT_indexed[0]
     )
     assert equal_except_adj_list_sequence(
         "<ADJLIST_START> (0,1) <--> (1,1) ; (1,0) <--> (1,1) ; (0,1) <--> (0,0) ; <ADJLIST_END> <ORIGIN_START> (1,0) <ORIGIN_END> <TARGET_START> (1,1) <TARGET_END> <PATH_START> (1,0) (1,1) <PATH_END>".split(),
-        "<ADJLIST_START> (1,0) <--> (1,1) ; (0,1) <--> (0,0) ; (0,1) <--> (1,1) ; <ADJLIST_END> <ORIGIN_START> (1,0) <ORIGIN_END> <TARGET_START> (1,1) <TARGET_END> <PATH_START> (1,0) (1,1) <PATH_END>".split()
+        "<ADJLIST_START> (0,1) <--> (1,1) ; (1,0) <--> (1,1) ; (0,1) <--> (0,0) ; <ADJLIST_END> <ORIGIN_START> (1,0) <ORIGIN_END> <TARGET_START> (1,1) <TARGET_END> <PATH_START> (1,0) (1,1) <PATH_END>".split(),
     )
     assert equal_except_adj_list_sequence(
         "<ADJLIST_START> (0,1) <--> (1,1) ; (1,0) <--> (1,1) ; (0,1) <--> (0,0) ; <ADJLIST_END> <ORIGIN_START> (1,0) <ORIGIN_END> <TARGET_START> (1,1) <TARGET_END> <PATH_START> (1,0) (1,1) <PATH_END>".split(),
-        "<ADJLIST_START> (1,1) <--> (0,1) ; (1,0) <--> (1,1) ; (0,1) <--> (0,0) ; <ADJLIST_END> <ORIGIN_START> (1,0) <ORIGIN_END> <TARGET_START> (1,1) <TARGET_END> <PATH_START> (1,0) (1,1) <PATH_END>".split()
+        "<ADJLIST_START> (1,0) <--> (1,1) ; (0,1) <--> (0,0) ; (0,1) <--> (1,1) ; <ADJLIST_END> <ORIGIN_START> (1,0) <ORIGIN_END> <TARGET_START> (1,1) <TARGET_END> <PATH_START> (1,0) (1,1) <PATH_END>".split(),
+    )
+    assert equal_except_adj_list_sequence(
+        "<ADJLIST_START> (0,1) <--> (1,1) ; (1,0) <--> (1,1) ; (0,1) <--> (0,0) ; <ADJLIST_END> <ORIGIN_START> (1,0) <ORIGIN_END> <TARGET_START> (1,1) <TARGET_END> <PATH_START> (1,0) (1,1) <PATH_END>".split(),
+        "<ADJLIST_START> (1,1) <--> (0,1) ; (1,0) <--> (1,1) ; (0,1) <--> (0,0) ; <ADJLIST_END> <ORIGIN_START> (1,0) <ORIGIN_END> <TARGET_START> (1,1) <TARGET_END> <PATH_START> (1,0) (1,1) <PATH_END>".split(),
     )
     assert not equal_except_adj_list_sequence(
         "<ADJLIST_START> (0,1) <--> (1,1) ; (1,0) <--> (1,1) ; (0,1) <--> (0,0) ; <ADJLIST_END> <ORIGIN_START> (1,0) <ORIGIN_END> <TARGET_START> (1,1) <TARGET_END> <PATH_START> (1,0) (1,1) <PATH_END>".split(),
-        "<ADJLIST_START> (1,0) <--> (1,1) ; (0,1) <--> (0,0) ; (0,1) <--> (1,1) ; <ADJLIST_END> <ORIGIN_START> (1,0) <ORIGIN_END> <TARGET_START> (1,1) <TARGET_END> <PATH_START> (1,1) (1,0) <PATH_END>".split()
+        "<ADJLIST_START> (1,0) <--> (1,1) ; (0,1) <--> (0,0) ; (0,1) <--> (1,1) ; <ADJLIST_END> <ORIGIN_START> (1,0) <ORIGIN_END> <TARGET_START> (1,1) <TARGET_END> <PATH_START> (1,1) (1,0) <PATH_END>".split(),
     )
     assert not equal_except_adj_list_sequence(
         "<ADJLIST_START> (0,1) <--> (1,1) ; (1,0) <--> (1,1) ; (0,1) <--> (0,0) ; <ADJLIST_END> <ORIGIN_START> (1,0) <ORIGIN_END> <TARGET_START> (1,1) <TARGET_END> <PATH_START> (1,0) (1,1) <PATH_END>".split(),
-        "<ADJLIST_START> (0,1) <--> (1,1) ; (1,0) <--> (1,1) ; (0,1) <--> (0,0) ; <ADJLIST_END> <ORIGIN_START> (1,0) <ORIGIN_END> <TARGET_START> (1,1) <TARGET_END> <PATH_START> (1,0) (1,1) <PATH_END> <PATH_END>".split()
+        "<ADJLIST_START> (0,1) <--> (1,1) ; (1,0) <--> (1,1) ; (0,1) <--> (0,0) ; <ADJLIST_END> <ORIGIN_START> (1,0) <ORIGIN_END> <TARGET_START> (1,1) <TARGET_END> <PATH_START> (1,0) (1,1) <PATH_END> <PATH_END>".split(),
     )
     assert not equal_except_adj_list_sequence(
         "<ADJLIST_START> (0,1) <--> (1,1) ; (1,0) <--> (1,1) ; (0,1) <--> (0,0) ; <ADJLIST_END> (1,0) <ORIGIN_END> <TARGET_START> (1,1) <TARGET_END> <PATH_START> (1,0) (1,1) <PATH_END>".split(),
-        "<ADJLIST_START> (0,1) <--> (1,1) ; (1,0) <--> (1,1) ; (0,1) <--> (0,0) ; <ADJLIST_END> <ORIGIN_START> (1,0) <ORIGIN_END> <TARGET_START> (1,1) <TARGET_END> <PATH_START> (1,0) (1,1) <PATH_END>".split()
+        "<ADJLIST_START> (0,1) <--> (1,1) ; (1,0) <--> (1,1) ; (0,1) <--> (0,0) ; <ADJLIST_END> <ORIGIN_START> (1,0) <ORIGIN_END> <TARGET_START> (1,1) <TARGET_END> <PATH_START> (1,0) (1,1) <PATH_END>".split(),
     )
     assert not equal_except_adj_list_sequence(
         "<ADJLIST_START> (0,1) <--> (1,1) ; (1,0) <--> (1,1) ; (0,1) <--> (0,0) ; <ADJLIST_END> <ORIGIN_START> (1,0) <ORIGIN_END> <TARGET_START> (1,1) <TARGET_END> <PATH_START> (1,0) (1,1) <PATH_END>".split(),
-        "(0,1) <--> (1,1) ; (1,0) <--> (1,1) ; (0,1) <--> (0,0) ; <ADJLIST_END> <ORIGIN_START> (1,0) <ORIGIN_END> <TARGET_START> (1,1) <TARGET_END> <PATH_START> (1,0) (1,1) <PATH_END>".split()
+        "(0,1) <--> (1,1) ; (1,0) <--> (1,1) ; (0,1) <--> (0,0) ; <ADJLIST_END> <ORIGIN_START> (1,0) <ORIGIN_END> <TARGET_START> (1,1) <TARGET_END> <PATH_START> (1,0) (1,1) <PATH_END>".split(),
     )
     with pytest.raises(ValueError):
         equal_except_adj_list_sequence(
             "(0,1) <--> (1,1) ; (1,0) <--> (1,1) ; (0,1) <--> (0,0) ; <ADJLIST_END> <ORIGIN_START> (1,0) <ORIGIN_END> <TARGET_START> (1,1) <TARGET_END> <PATH_START> (1,0) (1,1) <PATH_END>".split(),
-            "(0,1) <--> (1,1) ; (1,0) <--> (1,1) ; (0,1) <--> (0,0) ; <ADJLIST_END> <ORIGIN_START> (1,0) <ORIGIN_END> <TARGET_START> (1,1) <TARGET_END> <PATH_START> (1,0) (1,1) <PATH_END>".split()
+            "(0,1) <--> (1,1) ; (1,0) <--> (1,1) ; (0,1) <--> (0,0) ; <ADJLIST_END> <ORIGIN_START> (1,0) <ORIGIN_END> <TARGET_START> (1,1) <TARGET_END> <PATH_START> (1,0) (1,1) <PATH_END>".split(),
         )
     with pytest.raises(ValueError):
         equal_except_adj_list_sequence(
             "<ADJLIST_START> (0,1) <--> (1,1) ; (1,0) <--> (1,1) ; (0,1) <--> (0,0) ; <ORIGIN_START> (1,0) <ORIGIN_END> <TARGET_START> (1,1) <TARGET_END> <PATH_START> (1,0) (1,1) <PATH_END>".split(),
-            "<ADJLIST_START> (0,1) <--> (1,1) ; (1,0) <--> (1,1) ; (0,1) <--> (0,0) ; <ORIGIN_START> (1,0) <ORIGIN_END> <TARGET_START> (1,1) <TARGET_END> <PATH_START> (1,0) (1,1) <PATH_END>".split()
+            "<ADJLIST_START> (0,1) <--> (1,1) ; (1,0) <--> (1,1) ; (0,1) <--> (0,0) ; <ORIGIN_START> (1,0) <ORIGIN_END> <TARGET_START> (1,1) <TARGET_END> <PATH_START> (1,0) (1,1) <PATH_END>".split(),
         )
     assert not equal_except_adj_list_sequence(
         "<ADJLIST_START> (0,1) <--> (1,1) ; (1,0) <--> (1,1) ; (0,1) <--> (0,0) ; <ADJLIST_END> <ORIGIN_START> (1,0) <ORIGIN_END> <TARGET_START> (1,1) <TARGET_END> <PATH_START> (1,0) (1,1) <PATH_END>".split(),
-        "<ADJLIST_START> (0,1) <--> (1,1) ; (1,0) <--> (1,1) ; (0,1) <--> (0,0) ; <ORIGIN_START> (1,0) <ORIGIN_END> <TARGET_START> (1,1) <TARGET_END> <PATH_START> (1,0) (1,1) <PATH_END>".split()
+        "<ADJLIST_START> (0,1) <--> (1,1) ; (1,0) <--> (1,1) ; (0,1) <--> (0,0) ; <ORIGIN_START> (1,0) <ORIGIN_END> <TARGET_START> (1,1) <TARGET_END> <PATH_START> (1,0) (1,1) <PATH_END>".split(),
     )
-    
+
     # CTT
     assert equal_except_adj_list_sequence(
         "<ADJLIST_START> ( 0 , 1 ) <--> ( 1 , 1 ) ; ( 1 , 0 ) <--> ( 1 , 1 ) ; ( 0 , 1 ) <--> ( 0 , 0 ) ; <ADJLIST_END> <ORIGIN_START> ( 1 , 0 ) <ORIGIN_END> <TARGET_START> ( 1 , 1 ) <TARGET_END> <PATH_START> ( 1 , 0 ) ( 1 , 1 ) <PATH_END>".split(),
-        "<ADJLIST_START> ( 0 , 1 ) <--> ( 1 , 1 ) ; ( 1 , 0 ) <--> ( 1 , 1 ) ; ( 0 , 1 ) <--> ( 0 , 0 ) ; <ADJLIST_END> <ORIGIN_START> ( 1 , 0 ) <ORIGIN_END> <TARGET_START> ( 1 , 1 ) <TARGET_END> <PATH_START> ( 1 , 0 ) ( 1 , 1 ) <PATH_END>".split()
+        "<ADJLIST_START> ( 0 , 1 ) <--> ( 1 , 1 ) ; ( 1 , 0 ) <--> ( 1 , 1 ) ; ( 0 , 1 ) <--> ( 0 , 0 ) ; <ADJLIST_END> <ORIGIN_START> ( 1 , 0 ) <ORIGIN_END> <TARGET_START> ( 1 , 1 ) <TARGET_END> <PATH_START> ( 1 , 0 ) ( 1 , 1 ) <PATH_END>".split(),
     )
     assert equal_except_adj_list_sequence(
         "<ADJLIST_START> ( 0 , 1 ) <--> ( 1 , 1 ) ; ( 1 , 0 ) <--> ( 1 , 1 ) ; ( 0 , 1 ) <--> ( 0 , 0 ) ; <ADJLIST_END> <ORIGIN_START> ( 1 , 0 ) <ORIGIN_END> <TARGET_START> ( 1 , 1 ) <TARGET_END> <PATH_START> ( 1 , 0 ) ( 1 , 1 ) <PATH_END>".split(),
-        "<ADJLIST_START> ( 1 , 1 ) <--> ( 0 , 1 ) ; ( 1 , 0 ) <--> ( 1 , 1 ) ; ( 0 , 1 ) <--> ( 0 , 0 ) ; <ADJLIST_END> <ORIGIN_START> ( 1 , 0 ) <ORIGIN_END> <TARGET_START> ( 1 , 1 ) <TARGET_END> <PATH_START> ( 1 , 0 ) ( 1 , 1 ) <PATH_END>".split()
+        "<ADJLIST_START> ( 1 , 1 ) <--> ( 0 , 1 ) ; ( 1 , 0 ) <--> ( 1 , 1 ) ; ( 0 , 1 ) <--> ( 0 , 0 ) ; <ADJLIST_END> <ORIGIN_START> ( 1 , 0 ) <ORIGIN_END> <TARGET_START> ( 1 , 1 ) <TARGET_END> <PATH_START> ( 1 , 0 ) ( 1 , 1 ) <PATH_END>".split(),
     )
     # This inactive test demonstrates the lack of robustness of the function for comparing source `LatticeMaze` objects.
     # See function documentation for details.
@@ -424,51 +430,66 @@ def test_equal_except_adj_list_sequence():
     #     "<ADJLIST_START> ( 0 , 1 ) <--> ( 1 , 1 ) ; ( 1 , 0 ) <--> ( 1 , 1 ) ; ( 0 , 1 ) <--> ( 0 , 0 ) ; <ADJLIST_END> <ORIGIN_START> ( 1 , 0 ) <ORIGIN_END> <TARGET_START> ( 1 , 1 ) <TARGET_END> <PATH_START> ( 1 , 0 ) ( 1 , 1 ) <PATH_END>".split(),
     #     "<ADJLIST_START> ( 1 , 0 ) <--> ( 1 , 1 ) ; ( 1 , 0 ) <--> ( 1 , 1 ) ; ( 0 , 1 ) <--> ( 0 , 0 ) ; <ADJLIST_END> <ORIGIN_START> ( 1 , 0 ) <ORIGIN_END> <TARGET_START> ( 1 , 1 ) <TARGET_END> <PATH_START> ( 1 , 0 ) ( 1 , 1 ) <PATH_END>".split()
     # )
-    
+
 
 @mark.parametrize(
     "deep, flat, depth",
     [
         param(
-        iter_tuple[0],
-        iter_tuple[1],
-        iter_tuple[2],
-        id=f"{i}",
+            iter_tuple[0],
+            iter_tuple[1],
+            iter_tuple[2],
+            id=f"{i}",
         )
-        for i, iter_tuple in enumerate([
-            ([1, 2, 3, 4], [1, 2, 3, 4], None),
-            ((1, 2, 3, 4), [1, 2, 3, 4], None),
-            ((j for j in [1, 2, 3, 4]), [1, 2, 3, 4], None),
-            (['a', 'b', 'c', 'd'], ['a', 'b', 'c', 'd'], None),
-            ('funky duck', [c for c in 'funky duck'], None),
-            (['funky', 'duck'], ['funky', 'duck'], None),
-            (b'funky duck', [b for b in b'funky duck'], None),
-            ([b'funky', b'duck'], [b'funky', b'duck'], None),
-            ([[1, 2, 3, 4]], [1, 2, 3, 4], None),
-            ([[[[1, 2, 3, 4]]]], [1, 2, 3, 4], None),
-            ([[[[1], 2], 3], 4], [1, 2, 3, 4], None),
-            ([[1, 2], [[3]], (4,)], [1, 2, 3, 4], None),
-            ([[[1, 2, 3, 4]]], [[1, 2, 3, 4]], 1),
-            ([[[1, 2, 3, 4]]], [1, 2, 3, 4], 2),
-            ([[1, 2], [[3]], (4,)], [1, 2, [3], 4], 1),
-            ([[1, 2], [(3,)], (4,)], [1, 2, (3,), 4], 1),
-            ([[[[1], 2], 3], 4], [[1], 2, 3, 4], 2),
-        ])
+        for i, iter_tuple in enumerate(
+            [
+                ([1, 2, 3, 4], [1, 2, 3, 4], None),
+                ((1, 2, 3, 4), [1, 2, 3, 4], None),
+                ((j for j in [1, 2, 3, 4]), [1, 2, 3, 4], None),
+                (["a", "b", "c", "d"], ["a", "b", "c", "d"], None),
+                ("funky duck", [c for c in "funky duck"], None),
+                (["funky", "duck"], ["funky", "duck"], None),
+                (b"funky duck", [b for b in b"funky duck"], None),
+                ([b"funky", b"duck"], [b"funky", b"duck"], None),
+                ([[1, 2, 3, 4]], [1, 2, 3, 4], None),
+                ([[[[1, 2, 3, 4]]]], [1, 2, 3, 4], None),
+                ([[[[1], 2], 3], 4], [1, 2, 3, 4], None),
+                ([[1, 2], [[3]], (4,)], [1, 2, 3, 4], None),
+                ([[[1, 2, 3, 4]]], [[1, 2, 3, 4]], 1),
+                ([[[1, 2, 3, 4]]], [1, 2, 3, 4], 2),
+                ([[1, 2], [[3]], (4,)], [1, 2, [3], 4], 1),
+                ([[1, 2], [(3,)], (4,)], [1, 2, (3,), 4], 1),
+                ([[[[1], 2], 3], 4], [[1], 2, 3, 4], 2),
+            ]
+        )
     ],
 )
 def test_flatten(deep: Iterable[any], flat: Iterable[any], depth: int | None):
     assert list(flatten(deep, depth)) == flat
-    
+
 
 def test_get_all_subclasses():
-    class A: pass
-    class B(A): pass
-    class C(A): pass
-    class D(B, C): pass
-    class E(B): pass
-    class F(D): pass
-    class Z: pass
-    
+    class A:
+        pass
+
+    class B(A):
+        pass
+
+    class C(A):
+        pass
+
+    class D(B, C):
+        pass
+
+    class E(B):
+        pass
+
+    class F(D):
+        pass
+
+    class Z:
+        pass
+
     assert get_all_subclasses(A) == {B, C, D, E, F}
     assert get_all_subclasses(A, include_self=True) == {A, B, C, D, E, F}
     assert get_all_subclasses(B) == {D, E, F}
@@ -477,4 +498,3 @@ def test_get_all_subclasses():
     assert get_all_subclasses(D, include_self=True) == {D, F}
     assert get_all_subclasses(Z) == set()
     assert get_all_subclasses(Z, include_self=True) == {Z}
-    

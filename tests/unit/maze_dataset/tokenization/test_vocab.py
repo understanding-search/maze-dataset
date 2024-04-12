@@ -1,6 +1,11 @@
 import pytest
 
-from maze_dataset.constants import SPECIAL_TOKENS, VOCAB, VOCAB_LIST, VOCAB_TOKEN_TO_INDEX
+from maze_dataset.constants import (
+    SPECIAL_TOKENS,
+    VOCAB,
+    VOCAB_LIST,
+    VOCAB_TOKEN_TO_INDEX,
+)
 
 
 def test_special_tokens_base():
@@ -29,9 +34,9 @@ def test_special_tokens_base():
 
 def test_vocab():
     assert len(VOCAB) == 4096
-    assert VOCAB.CTT_10 == '10'
+    assert VOCAB.CTT_10 == "10"
     assert VOCAB_LIST[0] == "<ADJLIST_START>"
-    assert VOCAB_TOKEN_TO_INDEX['<UNK>'] == 19
-    assert VOCAB_TOKEN_TO_INDEX['0'] == 320
-    assert VOCAB_TOKEN_TO_INDEX['-1'] == 703
-    assert VOCAB_TOKEN_TO_INDEX['(0,0)'] == 1596
+    assert VOCAB_TOKEN_TO_INDEX["<UNK>"] == 19
+    assert VOCAB_TOKEN_TO_INDEX["0"] == 320
+    assert VOCAB_TOKEN_TO_INDEX["-1"] == 703
+    assert VOCAB_TOKEN_TO_INDEX["(0,0)"] == 1596

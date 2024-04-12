@@ -3,11 +3,11 @@ from maze_dataset.constants import (
     VOCAB,
     VOCAB_LIST,
     VOCAB_TOKEN_TO_INDEX,
+    ConnectionList,
     Coord,
     CoordArray,
     CoordList,
     CoordTup,
-    ConnectionList,
 )
 from maze_dataset.dataset.collected_dataset import (
     MazeDatasetCollection,
