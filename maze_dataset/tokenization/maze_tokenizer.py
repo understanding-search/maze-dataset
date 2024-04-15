@@ -729,7 +729,7 @@ class PromptSequencers(_TokenizerElementNamespace):
         def _trim_if_unsolved_maze(
             untrimmed: list[str], is_untargeted: bool = False, is_unsolved: bool = False
         ):
-            """Trims a full prompt if the maze data reflects an unsolved or untargeted maze.
+            """Trims a full `SolvedMaze` prompt if the maze data reflects an unsolved or untargeted maze.
 
             # Development
             This implementation should function for `AOTP`, `AOP`, and other concrete classes using any subsequence of AOTP.
@@ -858,9 +858,9 @@ class PromptSequencers(_TokenizerElementNamespace):
         def _sequence_tokens(
             self,
             adj_list: list[str],
-            origin: list[str] | None,
-            target: list[str] | None,
-            path: list[str] | None,
+            origin: list[str],
+            target: list[str],
+            path: list[str],
         ) -> list[str]:
             return [
                 VOCAB.ADJLIST_START,
@@ -1012,6 +1012,8 @@ class MazeTokenizer2(SerializableDataclass):
         target: Iterable[Coord],
         path: CoordArray | None,
     ) -> list[str]:
+        """Converts a set of maze elements into a list of tokens.
+        """
         return self.prompt_sequencer.to_tokens(
             conn_list,
             origin,
@@ -1140,7 +1142,7 @@ class MazeTokenizer2(SerializableDataclass):
 
 
 def ALL_TOKENIZERS() -> Iterable[MazeTokenizer2]:
-    """Returns a list of all the supported and tested tokenizers.
+    """Returns an iterable of all the supported and tested tokenizers.
     Other tokenizers may be possible to construct, but they are untested and not guaranteed to work.
     """
     return [MazeTokenizer2(), MazeTokenizer2(coord_tokenizer=CoordTokenizers.CTT())]
