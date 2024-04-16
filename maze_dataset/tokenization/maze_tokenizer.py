@@ -461,23 +461,6 @@ class TokenizerElement(SerializableDataclass, abc.ABC):
             f"Conversion from tokens to {type(self)} not yet supported."
         )
 
-    def clear_cache(self, recursive: bool = True):
-        """Clears all cached properties.
-        Optionally clears all cached properties recursively if the object contains other `TokenizerElement` instances.
-        """
-        # delete the properties only if they exist
-        for name, prop in self.__class__.__dict__.items():
-            if (
-                isinstance(prop, TokenizerElement) and recursive
-            ):  # Recursively clear cache for nested properties
-                prop.clear_cache()
-            if isinstance(prop, cached_property):
-                # if the property exists, delete it
-                try:
-                    delattr(self, name)
-                except AttributeError as e:
-                    pass
-
 
 class _TokenizerElementNamespace(abc.ABC):
     """ABC for namespaces
@@ -1155,19 +1138,6 @@ class MazeTokenizer2(SerializableDataclass):
             PendingDeprecationWarning,
         )
         return isinstance(self.coord_tokenizer, CoordTokenizers.UT)
-
-    def clear_cache(self):
-        """clears all cached properties"""
-        # delete the properties only if they exist
-        for element in self._tokenizer_elements:
-            element.clear_cache()
-        for name, prop in self.__class__.__dict__.items():
-            if isinstance(prop, cached_property):
-                # if the property exists, delete it
-                try:
-                    delattr(self, name)
-                except AttributeError as e:
-                    pass
 
 
 def ALL_TOKENIZERS() -> Iterable[MazeTokenizer2]:

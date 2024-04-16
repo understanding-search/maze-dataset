@@ -331,13 +331,7 @@ def test_token_region_delimiters(maze: LatticeMaze, tokenizer: MazeTokenizer2):
 
 
 @mark.parametrize(
-    "tokenizer",
-    [
-        param(
-            MazeTokenizer2.from_legacy(tok_mode),
-        )
-        for tok_mode in TokenizationMode
-    ],
+    "tokenizer", [param(tokenizer, id=tokenizer.name) for tokenizer in ALL_TOKENIZERS()]
 )
 def test_tokenizer_properties(tokenizer: MazeTokenizer2):
     # Just make sure the call doesn't raise exception
@@ -351,30 +345,28 @@ def test_tokenizer_properties(tokenizer: MazeTokenizer2):
     # Just make sure the call doesn't raise exception
     print(tokenizer.summary())
 
-    # Just make sure the call doesn't raise exception
-    tokenizer.clear_cache()
-
 
 @mark.parametrize(
     "maze,tokenizer",
     [
         param(maze[0], tokenizer, id=f"{tokenizer.name}-maze{maze[1]}")
         for maze, tokenizer in itertools.product(
-            [(maze, i) for i, maze in enumerate(MIXED_MAZES[:6])], ALL_TOKENIZERS()
+            [(maze, i) for i, maze in enumerate(MIXED_MAZES[:6])], 
+            ALL_TOKENIZERS()
         )
     ],
 )
 def test_encode_decode(maze: LatticeMaze, tokenizer: MazeTokenizer2):
     # Just make sure the call doesn't raise exception
 
-    maze_tok = maze.as_tokens(maze_tokenizer=tokenizer)
+    maze_tok: list[str] = maze.as_tokens(maze_tokenizer=tokenizer)
 
-    maze_encoded = tokenizer.encode(maze_tok)
-    maze_decoded = tokenizer.decode(maze_encoded)
+    maze_encoded: list[int] = tokenizer.encode(maze_tok)
+    maze_decoded: LatticeMaze = tokenizer.decode(maze_encoded)
 
     assert maze_tok == maze_decoded
 
-    maze_recovered = SolvedMaze.from_tokens(maze_tok, maze_tokenizer=tokenizer)
+    maze_recovered: LatticeMaze = SolvedMaze.from_tokens(maze_tok, maze_tokenizer=tokenizer)
 
     assert (maze.connection_list == maze_recovered.connection_list).all()
 
