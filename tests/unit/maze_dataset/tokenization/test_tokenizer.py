@@ -351,8 +351,7 @@ def test_tokenizer_properties(tokenizer: MazeTokenizer2):
     [
         param(maze[0], tokenizer, id=f"{tokenizer.name}-maze{maze[1]}")
         for maze, tokenizer in itertools.product(
-            [(maze, i) for i, maze in enumerate(MIXED_MAZES[:6])], 
-            ALL_TOKENIZERS()
+            [(maze, i) for i, maze in enumerate(MIXED_MAZES[:6])], ALL_TOKENIZERS()
         )
     ],
 )
@@ -366,7 +365,9 @@ def test_encode_decode(maze: LatticeMaze, tokenizer: MazeTokenizer2):
 
     assert maze_tok == maze_decoded
 
-    maze_recovered: LatticeMaze = SolvedMaze.from_tokens(maze_tok, maze_tokenizer=tokenizer)
+    maze_recovered: LatticeMaze = SolvedMaze.from_tokens(
+        maze_tok, maze_tokenizer=tokenizer
+    )
 
     assert (maze.connection_list == maze_recovered.connection_list).all()
 

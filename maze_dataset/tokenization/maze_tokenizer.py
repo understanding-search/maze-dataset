@@ -533,7 +533,7 @@ class AdjListTokenizers(_TokenizerElementNamespace):
     class Coords(AdjListTokenizer):
         """
         Represents a connection as the tokens of 2 coords with optional delimiters.
-        
+
         # Parameters
         - `intra`: Whether all coords include a delimiter token between coordinates
         - `post`: Whether all coords include an integral following delimiter token
@@ -687,11 +687,12 @@ class PathTokenizers(_TokenizerElementNamespace):
 
     @serializable_dataclass(frozen=True, kw_only=True)
     class Coords(StepSequence):
-        """ Represents a path as a sequence of tokens for all the coords traversed.
-        
+        """Represents a path as a sequence of tokens for all the coords traversed.
+
         # Parameters
         - `post`: Whether all coords include an integral following delimiter token
         """
+
         post: bool = serializable_field(default=False)
 
         def _single_step_tokens(
@@ -875,10 +876,11 @@ class PromptSequencers(_TokenizerElementNamespace):
     @serializable_dataclass(frozen=True, kw_only=True)
     class AOP(PromptSequencer):
         """Sequences a prompt as [adjacency list, origin, path].
-        
+
         # Parameters
         - `include_target_special_tokens`: Whether to include <TARGET_START> and <TARGET_END> tokens in the output in the location used by `AOTP`.
         """
+
         include_target_special_tokens: bool = serializable_field(default=True)
 
         def _sequence_tokens(
@@ -921,7 +923,7 @@ def _load_tokenizer_element(
 @serializable_dataclass(frozen=True, kw_only=True)
 class MazeTokenizer2(SerializableDataclass):
     """Tokenizer for mazes
-    
+
     # Parameters
     - `prompt_sequencer`: Tokenizer element which assembles token regions (adjacency list, origin, target, path) into a complete prompt.
     - `coord_tokenizer`: Tokenizer element which tokenizes a single `Coord` aka maze position.
@@ -931,7 +933,7 @@ class MazeTokenizer2(SerializableDataclass):
     Uses `coord_tokenizer` to tokenize coords if that is part of the design of that `TargetTokenizer`.
     - `path_tokenizer`: Tokenizer element which tokenizes the solution path of a `SolvedMaze`.
     Uses `coord_tokenizer` to tokenize coords if that is part of the design of that `PathTokenizer`.
-    
+
     # Development
     - To ensure backwards compatibility, the default constructor must always return a tokenizer equivalent to the legacy `TokenizationMode.AOTP_UT_Uniform`.
     - Furthermore, the mapping reflected in `from_legacy` must also be maintained.
@@ -1005,8 +1007,7 @@ class MazeTokenizer2(SerializableDataclass):
     def from_legacy(
         cls, legacy_maze_tokenizer: MazeTokenizer | TokenizationMode
     ) -> "MazeTokenizer2":
-        """Maps a legacy `MazeTokenizer` to its equivalent `MazeTokenizer2` instance.
-        """
+        """Maps a legacy `MazeTokenizer` to its equivalent `MazeTokenizer2` instance."""
         if isinstance(legacy_maze_tokenizer, MazeTokenizer):
             legacy_maze_tokenizer = legacy_maze_tokenizer.tokenization_mode
         return {
@@ -1024,8 +1025,7 @@ class MazeTokenizer2(SerializableDataclass):
         target: Iterable[Coord],
         path: CoordArray | None,
     ) -> list[str]:
-        """Converts a set of maze elements into a list of tokens.
-        """
+        """Converts a set of maze elements into a list of tokens."""
         return self.prompt_sequencer.to_tokens(
             conn_list,
             origin,
