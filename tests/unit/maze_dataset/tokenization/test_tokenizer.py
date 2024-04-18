@@ -257,8 +257,10 @@ def test_to_tokens_backwards_compatible(
 ):
     tokenizer: MazeTokenizer2 = MazeTokenizer2.from_legacy(legacy_tokenizer)
     toks: list[str] = maze.as_tokens(tokenizer)
+    toks2: list[str] = tokenizer.to_tokens(maze)
     toks_legacy: list[str] = maze.as_tokens(legacy_tokenizer)
     assert equal_except_adj_list_sequence(toks, toks_legacy)
+    assert equal_except_adj_list_sequence(toks2, toks_legacy)
 
 
 @mark.parametrize(

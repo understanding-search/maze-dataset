@@ -5,7 +5,7 @@ import itertools
 import warnings
 from enum import Enum
 from functools import cached_property
-from typing import Any, Callable, Iterable, Mapping, Sequence
+from typing import TYPE_CHECKING, Any, Callable, Iterable, Mapping, Sequence
 
 import numpy as np
 from muutils.json_serialize import (
@@ -40,6 +40,9 @@ from maze_dataset.utils import (
     corner_first_ndindex,
     unpackable_if_true_attribute,
 )
+
+if TYPE_CHECKING:
+    from maze_dataset import LatticeMaze
 
 
 class TokenError(ValueError):
@@ -1020,17 +1023,16 @@ class MazeTokenizer2(SerializableDataclass):
 
     def to_tokens(
         self,
-        conn_list: ConnectionList,
-        origin: Coord | None,
-        target: Iterable[Coord],
-        path: CoordArray | None,
+        maze: "LatticeMaze",
     ) -> list[str]:
-        """Converts a set of maze elements into a list of tokens."""
+        """Converts maze into a list of tokens."""
         return self.prompt_sequencer.to_tokens(
-            conn_list,
-            origin,
-            target,
-            path,
+            maze.connection_list,
+            getattr(maze, "start_pos", None),
+            [
+                getattr(maze, "end_pos", None)
+            ],  # TargetTokenizer requires target: Iterable[Coord]
+            getattr(maze, "solution", None),
             self.coord_tokenizer,
             self.adj_list_tokenizer,
             self.target_tokenizer,
@@ -1145,6 +1147,3 @@ def ALL_TOKENIZERS() -> Iterable[MazeTokenizer2]:
     Other tokenizers may be possible to construct, but they are untested and not guaranteed to work.
     """
     return [MazeTokenizer2(), MazeTokenizer2(coord_tokenizer=CoordTokenizers.CTT())]
-
-
-_line_for_debugging_breakpoint = 1

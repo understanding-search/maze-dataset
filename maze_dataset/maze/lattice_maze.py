@@ -474,14 +474,7 @@ class LatticeMaze(SerializableDataclass):
     ) -> list[str]:
         """serialize maze and solution to tokens"""
         if isinstance(maze_tokenizer, MazeTokenizer2):
-            return maze_tokenizer.to_tokens(
-                self.connection_list,
-                getattr(self, "start_pos", None),
-                [
-                    getattr(self, "end_pos", None)
-                ],  # MazeTokenizer2 requires target: Iterable[Coord]
-                getattr(self, "solution", None),
-            )
+            return maze_tokenizer.to_tokens(self)
         else:
             return self._as_tokens(maze_tokenizer)
 
