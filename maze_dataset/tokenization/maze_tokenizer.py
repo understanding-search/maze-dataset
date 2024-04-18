@@ -945,27 +945,22 @@ class MazeTokenizer2(SerializableDataclass):
 
     prompt_sequencer: PromptSequencers.PromptSequencer = serializable_field(
         default=PromptSequencers.AOTP(),
-        # serialization_fn=lambda x: repr(x),
         loading_fn=lambda x: _load_tokenizer_element(x, PromptSequencers),
     )
     coord_tokenizer: CoordTokenizers.CoordTokenizer = serializable_field(
         default=CoordTokenizers.UT(),
-        # serialization_fn=lambda x: x.serialize(),
         loading_fn=lambda x: _load_tokenizer_element(x, CoordTokenizers),
     )
     adj_list_tokenizer: AdjListTokenizers.AdjListTokenizer = serializable_field(
         default=AdjListTokenizers.Coords(),
-        # serialization_fn=lambda x: x.serialize(),
         loading_fn=lambda x: _load_tokenizer_element(x, AdjListTokenizers),
     )
     target_tokenizer: TargetTokenizers.TargetTokenizer = serializable_field(
         default=TargetTokenizers.Unlabeled(),
-        # serialization_fn=lambda x: x.serialize(),
         loading_fn=lambda x: _load_tokenizer_element(x, TargetTokenizers),
     )
     path_tokenizer: PathTokenizers.PathTokenizer = serializable_field(
         default=PathTokenizers.Coords(),
-        # serialization_fn=lambda x: x.serialize(),
         loading_fn=lambda x: _load_tokenizer_element(x, PathTokenizers),
     )
 
@@ -977,11 +972,11 @@ class MazeTokenizer2(SerializableDataclass):
     @cached_property
     def _tokenizer_elements(self):
         return [
-            self.prompt_sequencer,
             self.coord_tokenizer,
             self.adj_list_tokenizer,
             self.target_tokenizer,
             self.path_tokenizer,
+            self.prompt_sequencer,
         ]
 
     @property
@@ -1105,7 +1100,7 @@ class MazeTokenizer2(SerializableDataclass):
         except KeyError as e:
             raise TokenError(
                 f"Token {e} not found",
-                f"in constants.VOCAB.",
+                f"in `VOCAB`.",
             ) from e
 
     @staticmethod
@@ -1117,7 +1112,7 @@ class MazeTokenizer2(SerializableDataclass):
             output: list[str] = [VOCAB_LIST[token_id] for token_id in token_ids]
         except IndexError as e:
             raise TokenError(
-                f"Token index '{e}' not found in `constants.VOCAB`."
+                f"Token index '{e}' not found in `VOCAB`."
             ) from e
         if joined_tokens:
             return " ".join(output)
@@ -1142,8 +1137,11 @@ class MazeTokenizer2(SerializableDataclass):
         return isinstance(self.coord_tokenizer, CoordTokenizers.UT)
 
 
-def ALL_TOKENIZERS() -> Iterable[MazeTokenizer2]:
+def _all_tokenizers() -> Iterable[MazeTokenizer2]:
     """Returns an iterable of all the supported and tested tokenizers.
     Other tokenizers may be possible to construct, but they are untested and not guaranteed to work.
     """
     return [MazeTokenizer2(), MazeTokenizer2(coord_tokenizer=CoordTokenizers.CTT())]
+
+
+ALL_TOKENIZERS: Iterable[MazeTokenizer2] = _all_tokenizers()

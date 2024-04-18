@@ -322,7 +322,7 @@ def test_from_tokens_backwards_compatible(
     [
         param(maze[0], tokenizer, id=f"{type(maze[0])}{maze[1]}-{tokenizer.name}")
         for maze, tokenizer in itertools.product(
-            [(maze, i) for i, maze in enumerate(MIXED_MAZES[:6])], ALL_TOKENIZERS()
+            [(maze, i) for i, maze in enumerate(MIXED_MAZES[:6])], ALL_TOKENIZERS
         )
     ],
 )
@@ -333,7 +333,7 @@ def test_token_region_delimiters(maze: LatticeMaze, tokenizer: MazeTokenizer2):
 
 
 @mark.parametrize(
-    "tokenizer", [param(tokenizer, id=tokenizer.name) for tokenizer in ALL_TOKENIZERS()]
+    "tokenizer", [param(tokenizer, id=tokenizer.name) for tokenizer in ALL_TOKENIZERS]
 )
 def test_tokenizer_properties(tokenizer: MazeTokenizer2):
     # Just make sure the call doesn't raise exception
@@ -353,7 +353,7 @@ def test_tokenizer_properties(tokenizer: MazeTokenizer2):
     [
         param(maze[0], tokenizer, id=f"{tokenizer.name}-maze{maze[1]}")
         for maze, tokenizer in itertools.product(
-            [(maze, i) for i, maze in enumerate(MIXED_MAZES[:6])], ALL_TOKENIZERS()
+            [(maze, i) for i, maze in enumerate(MIXED_MAZES[:6])], ALL_TOKENIZERS
         )
     ],
 )
@@ -375,7 +375,7 @@ def test_encode_decode(maze: LatticeMaze, tokenizer: MazeTokenizer2):
 
 
 @mark.parametrize(
-    "tokenizer", [param(tokenizer, id=tokenizer.name) for tokenizer in ALL_TOKENIZERS()]
+    "tokenizer", [param(tokenizer, id=tokenizer.name) for tokenizer in ALL_TOKENIZERS]
 )
 def test_zanj_save_read(tokenizer: MazeTokenizer2):
     path = os.path.abspath(
@@ -389,7 +389,7 @@ def test_zanj_save_read(tokenizer: MazeTokenizer2):
 
 
 def test_is_AOTP():
-    for mt in ALL_TOKENIZERS():
+    for mt in ALL_TOKENIZERS:
         if isinstance(mt.prompt_sequencer, PromptSequencers.AOTP):
             assert mt.is_AOTP()
         else:
@@ -402,7 +402,7 @@ def test_is_AOTP():
 
 
 def test_is_UT():
-    for mt in ALL_TOKENIZERS():
+    for mt in ALL_TOKENIZERS:
         if isinstance(mt.coord_tokenizer, CoordTokenizers.UT):
             assert mt.is_UT()
         else:
