@@ -34,6 +34,8 @@ from maze_dataset.tokenization.util import (
     coords_to_strings,
     flatten,
     strings_to_coords,
+    TokenizerDeprecationWarning,
+    TokenizerPendingDeprecationWarning,
 )
 from maze_dataset.utils import (
     WhenMissing,
@@ -94,7 +96,7 @@ def get_tokens_up_to_path_start(
 ) -> list[str]:
     warnings.warn(
         "`maze_tokenizer.get_tokens_up_to_path_start` will be deprecated for a `MazeTokenizer2`-compatible function in a future release.",
-        PendingDeprecationWarning,
+        TokenizerPendingDeprecationWarning,
     )
     path_start_idx: int = tokens.index(SPECIAL_TOKENS.PATH_START) + 1
     if include_start_coord:
@@ -1086,7 +1088,7 @@ class MazeTokenizer2(SerializableDataclass):
     ) -> list[str | CoordTup]:
         warnings.warn(
             "`MazeTokenizer2.strings_to_coords` only supports legacy UT strings. Will be replaced by a more generalized function in a future release.",
-            PendingDeprecationWarning,
+            TokenizerPendingDeprecationWarning,
         )
         return strings_to_coords(text=text, when_noncoord=when_noncoord)
 
@@ -1125,14 +1127,14 @@ class MazeTokenizer2(SerializableDataclass):
     def is_AOTP(self):
         warnings.warn(
             "`MazeTokenizer2.is_AOTP` will be replaced by a more generalized function in a future release.",
-            PendingDeprecationWarning,
+            TokenizerPendingDeprecationWarning,
         )
         return isinstance(self.prompt_sequencer, PromptSequencers.AOTP)
 
     def is_UT(self):
         warnings.warn(
             "`MazeTokenizer2.is_UT` will be replaced by a more generalized function in a future release.",
-            PendingDeprecationWarning,
+            TokenizerPendingDeprecationWarning,
         )
         return isinstance(self.coord_tokenizer, CoordTokenizers.UT)
 

@@ -28,7 +28,11 @@ from maze_dataset.tokenization import (
     get_path_tokens,
 )
 from maze_dataset.tokenization.token_utils import get_origin_tokens, get_target_tokens
-from maze_dataset.tokenization.util import connection_list_to_adj_list
+from maze_dataset.tokenization.util import (
+    connection_list_to_adj_list,
+    TokenizerPendingDeprecationWarning,
+    TokenizerDeprecationWarning,
+)
 
 RGB = tuple[int, int, int]
 
@@ -408,7 +412,7 @@ class LatticeMaze(SerializableDataclass):
     def as_adj_list_tokens(self) -> list[str | CoordTup]:
         warnings.warn(
             "`LatticeMaze.as_adj_list_tokens` will be removed from the public API in a future release.",
-            PendingDeprecationWarning,
+            TokenizerPendingDeprecationWarning,
         )
         return [
             SPECIAL_TOKENS.ADJLIST_START,

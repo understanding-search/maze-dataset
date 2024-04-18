@@ -19,7 +19,9 @@ from maze_dataset.tokenization.token_utils import (
     get_target_tokens,
     tokens_between,
 )
-from maze_dataset.tokenization.util import coord_str_to_tuple
+from maze_dataset.tokenization.util import (
+    coord_str_to_tuple,
+)
 
 __all__ = [
     "MazeTokenizer",

@@ -13,6 +13,19 @@ from muutils.misc import list_join
 from maze_dataset.constants import ConnectionList, CoordTup
 from maze_dataset.utils import WhenMissing
 
+
+class TokenizerDeprecationWarning(DeprecationWarning):
+    """Deprecation warnings related to the `MazeTokenizer2` upgrade.
+    """
+    pass
+
+
+class TokenizerPendingDeprecationWarning(PendingDeprecationWarning):
+    """Pending deprecation warnings related to the `MazeTokenizer2` upgrade.
+    """
+    pass
+
+
 # coordinate to strings
 # ==================================================
 
@@ -39,7 +52,8 @@ def _coord_to_strings_indexed(coord: typing.Sequence[int]) -> list[str]:
 def str_is_coord(coord_str: str, allow_whitespace: bool = True) -> bool:
     """return True if the string represents a coordinate, False otherwise"""
 
-    warnings.warn("`util.str_is_coord` only supports legacy UT strings.")
+    warnings.warn("`util.str_is_coord` only supports legacy UT strings. Function will be replaced with a generalized version in a future release.", 
+                  TokenizerPendingDeprecationWarning)
     strip_func: Callable[[str], str] = lambda x: x.strip() if allow_whitespace else x
 
     coord_str = strip_func(coord_str)
@@ -103,7 +117,8 @@ def strings_to_coords(
     returns list[CoordTup] if `when_noncoord` is "skip" or "error"
     returns list[str | CoordTup] if `when_noncoord` is "include"
     """
-    warnings.warn("`util.strings_to_coords` only supports legacy UT strings.")
+    warnings.warn("`util.strings_to_coords` only supports legacy UT strings. Function will be replaced with a generalized version in a future release.",
+                  TokenizerPendingDeprecationWarning)
     tokens_joined: str = text if isinstance(text, str) else " ".join(text)
     tokens_processed: list[str] = coords_string_split_UT(tokens_joined)
     result: list[str] = list()
