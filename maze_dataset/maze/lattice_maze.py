@@ -29,9 +29,8 @@ from maze_dataset.tokenization import (
 )
 from maze_dataset.tokenization.token_utils import get_origin_tokens, get_target_tokens
 from maze_dataset.tokenization.util import (
-    connection_list_to_adj_list,
     TokenizerPendingDeprecationWarning,
-    TokenizerDeprecationWarning,
+    connection_list_to_adj_list,
 )
 
 RGB = tuple[int, int, int]

@@ -28,14 +28,13 @@ from maze_dataset.constants import (
 )
 from maze_dataset.tokenization.token_utils import tokens_between
 from maze_dataset.tokenization.util import (
+    TokenizerPendingDeprecationWarning,
     _coord_to_strings_indexed,
     _coord_to_strings_UT,
     connection_list_to_adj_list,
     coords_to_strings,
     flatten,
     strings_to_coords,
-    TokenizerDeprecationWarning,
-    TokenizerPendingDeprecationWarning,
 )
 from maze_dataset.utils import (
     WhenMissing,
@@ -1113,9 +1112,7 @@ class MazeTokenizer2(SerializableDataclass):
         try:
             output: list[str] = [VOCAB_LIST[token_id] for token_id in token_ids]
         except IndexError as e:
-            raise TokenError(
-                f"Token index '{e}' not found in `VOCAB`."
-            ) from e
+            raise TokenError(f"Token index '{e}' not found in `VOCAB`.") from e
         if joined_tokens:
             return " ".join(output)
         else:
