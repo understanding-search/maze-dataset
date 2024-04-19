@@ -3,7 +3,7 @@ import os
 import re
 from collections import Counter
 from itertools import product
-from typing import Iterable
+from typing import Iterable, Callable, Hashable
 
 import numpy as np
 from pytest import mark, param
@@ -25,10 +25,14 @@ from maze_dataset.generation import LatticeMazeGenerators
 from maze_dataset.plotting.print_tokens import color_maze_tokens_AOTP
 from maze_dataset.tokenization import (
     ALL_TOKENIZERS,
-    CoordTokenizers,
     MazeTokenizer,
     MazeTokenizer2,
+    TokenizerElement,
+    CoordTokenizers,
     PromptSequencers,
+    AdjListTokenizers,
+    PathTokenizers,
+    TargetTokenizers,
     TokenizationMode,
 )
 from maze_dataset.tokenization.util import equal_except_adj_list_sequence
@@ -407,3 +411,57 @@ def test_is_UT():
             assert mt.is_UT()
         else:
             assert not mt.is_UT()
+
+
+_has_elems_type = type[TokenizerElement] | TokenizerElement | Iterable[type[TokenizerElement] | TokenizerElement]
+
+
+@mark.parametrize(
+    "tokenizer, elems, result_func",
+    [
+        param(tokenizer, 
+              elems_tuple[0],
+              elems_tuple[1],
+              id=f"{tokenizer.name}-{elems_tuple[0]}")
+        for tokenizer, elems_tuple in itertools.product(
+            ALL_TOKENIZERS,
+            [
+                ([PromptSequencers.AOTP()], 
+                 lambda mt, els: mt.prompt_sequencer == els[0]
+                 ),
+                (PromptSequencers.AOTP(), 
+                 lambda mt, els: mt.prompt_sequencer == els
+                 ),
+                ([CoordTokenizers.CTT()], 
+                 lambda mt, els: mt.coord_tokenizer == els[0]
+                 ),
+                (CoordTokenizers.CTT(intra=False), 
+                 lambda mt, els: mt.coord_tokenizer == els
+                 ),
+                ([CoordTokenizers.CTT], 
+                 lambda mt, els: isinstance(mt.coord_tokenizer, els[0])
+                 ),
+                (CoordTokenizers.CoordTokenizer, 
+                 lambda mt, els: isinstance(mt.coord_tokenizer, els)
+                 ),
+                ([CoordTokenizers.CTT, PathTokenizers.Coords], 
+                 lambda mt, els: isinstance(mt.coord_tokenizer, els[0]) and isinstance(mt.path_tokenizer, els[1])
+                 ),
+                # ((a for a in [CoordTokenizers.CTT, PathTokenizers.Coords]), 
+                #  lambda mt, els: isinstance(mt.coord_tokenizer, list(els)[0]) and isinstance(mt.path_tokenizer, list(els)[1])
+                #  ),
+                ([CoordTokenizers.CTT, PathTokenizers.Coords(post=False)], 
+                 lambda mt, els: isinstance(mt.coord_tokenizer, els[0]) and mt.path_tokenizer == els[1]
+                 ),
+                ([CoordTokenizers.CTT, PathTokenizers.Coords, PromptSequencers.AOP()], 
+                 lambda mt, els: isinstance(mt.coord_tokenizer, els[0]) and isinstance(mt.path_tokenizer, els[1]) and mt.prompt_sequencer == els[2]
+                 ),
+            ]
+        )
+    ],
+)
+def test_has_element(
+    tokenizer: MazeTokenizer2, 
+    elems: _has_elems_type,
+    result_func: Callable[[MazeTokenizer2, _has_elems_type], bool]):
+    assert tokenizer.has_element(elems) == result_func(tokenizer, elems)

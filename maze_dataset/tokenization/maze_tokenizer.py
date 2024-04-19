@@ -448,10 +448,19 @@ class TokenizerElement(SerializableDataclass, abc.ABC):
     @property
     def name(self) -> str:
         return repr(self)
-
-    # def serialize(self):
-    #     # return f"{type(self).__name__}"
-    #     return repr(self)
+    
+    @classmethod
+    def _level_one_subclass(cls) -> type['TokenizerElement']:
+        """Returns the immediate subclass of `TokenizerElement` of which `cls` is an instance.
+        """
+        return set(cls.__mro__).intersection(set(TokenizerElement.__subclasses__())).pop()
+    
+    @classmethod
+    @abc.abstractmethod
+    def attribute_key(cls) -> str:
+        """Returns the binding used in `MazeTokenizer2` for that type of `TokenizerElement`.
+        """
+        raise NotImplementedError
 
     @abc.abstractmethod
     def to_tokens(self, *args, **kwargs) -> list[str]:
@@ -484,6 +493,10 @@ class CoordTokenizers(_TokenizerElementNamespace):
         @abc.abstractmethod
         def to_tokens(self, coord: Coord | CoordTup) -> list[str]:
             pass
+        
+        @classmethod
+        def attribute_key(cls) -> str:
+            return CoordTokenizers.key
 
         # Define some (abstract) methods
 
@@ -529,8 +542,11 @@ class AdjListTokenizers(_TokenizerElementNamespace):
         @abc.abstractmethod
         def to_tokens(self, conn_list: ConnectionList) -> list[str]:
             pass
-
-        # Define some (abstract) methods
+        
+        @classmethod
+        def attribute_key(cls) -> str:
+            return AdjListTokenizers.key
+        
 
     # TODO: figure out properties_to_serialize
     @serializable_dataclass(frozen=True, kw_only=True)
@@ -592,6 +608,11 @@ class TargetTokenizers(_TokenizerElementNamespace):
         ) -> list[str]:
             """Returns tokens representing the target."""
             pass
+        
+        @classmethod
+        def attribute_key(cls) -> str:
+            return TargetTokenizers.key
+        
 
     @serializable_dataclass(frozen=True, kw_only=True)
     class Unlabeled(TargetTokenizer):
@@ -633,6 +654,12 @@ class PathTokenizers(_TokenizerElementNamespace):
             self, path: list[Coord], coord_tokenizer: CoordTokenizers.CoordTokenizer
         ) -> list[str]:
             """Returns tokens representing the solution path."""
+            pass
+        
+        @classmethod
+        def attribute_key(cls) -> str:
+            return PathTokenizers.key
+        
 
     @serializable_dataclass(frozen=True, kw_only=True)
     class StepSequence(PathTokenizer, abc.ABC):
@@ -725,6 +752,10 @@ class PromptSequencers(_TokenizerElementNamespace):
 
     @serializable_dataclass(frozen=True, kw_only=True)
     class PromptSequencer(TokenizerElement, abc.ABC):
+        @classmethod
+        def attribute_key(cls) -> str:
+            return PromptSequencers.key
+        
         @staticmethod
         def _trim_if_unsolved_maze(
             untrimmed: list[str], is_untargeted: bool = False, is_unsolved: bool = False
@@ -970,6 +1001,8 @@ class MazeTokenizer2(SerializableDataclass):
             [type(self).__name__, *(repr(el) for el in self._tokenizer_elements)]
         )
 
+    # Information Querying Methods
+
     @cached_property
     def _tokenizer_elements(self):
         return [
@@ -996,6 +1029,37 @@ class MazeTokenizer2(SerializableDataclass):
                 "path_tokenizer",
             ]
         }
+        
+    def has_element(
+        self,
+        elements: type[TokenizerElement] | TokenizerElement | Iterable[type[TokenizerElement] | TokenizerElement]
+        ) -> bool:
+        """Returns True if the `MazeTokenizer2` instance contains ALL of the items specified in `elements`.
+        
+        # Parameters
+        - `elements`: Singleton or iterable of `TokenizerElement` instances or classes.
+        If an instance is provided, then comparison is done via equality.
+        If a class is provided, then comparison isdone via `isinstance`. I.e., any instance of that class is accepted.
+        """
+        def type_check(obj: any) -> None:
+            if not (isinstance(obj, TokenizerElement) or (isinstance(obj, type) and issubclass(obj, TokenizerElement))):
+                raise TypeError(f"{elements} is not a `TokenizerElement` instance or subclass.")
+        
+        def has_element_singular(el: type[TokenizerElement] | TokenizerElement):
+            type_check(el)
+            local_elem: TokenizerElement = getattr(self, el.attribute_key())
+            if isinstance(el, type):
+                return isinstance(local_elem, el)
+            else:
+                return el == local_elem
+        
+        if not isinstance(elements, Iterable):
+            return has_element_singular(elements)
+        else:
+            return all([has_element_singular(e) for e in elements])
+
+    # Alternate Constructors
+    # ======================
 
     @classmethod
     def from_name(cls, key: str) -> "MazeTokenizer2":
@@ -1017,24 +1081,6 @@ class MazeTokenizer2(SerializableDataclass):
             ),
         }[legacy_maze_tokenizer]
 
-    def to_tokens(
-        self,
-        maze: "LatticeMaze",
-    ) -> list[str]:
-        """Converts maze into a list of tokens."""
-        return self.prompt_sequencer.to_tokens(
-            maze.connection_list,
-            getattr(maze, "start_pos", None),
-            [
-                getattr(maze, "end_pos", None)
-            ],  # TargetTokenizer requires target: Iterable[Coord]
-            getattr(maze, "solution", None),
-            self.coord_tokenizer,
-            self.adj_list_tokenizer,
-            self.target_tokenizer,
-            self.path_tokenizer,
-        )
-
     @classmethod
     def from_tokens(
         cls,
@@ -1050,6 +1096,9 @@ class MazeTokenizer2(SerializableDataclass):
         """
         # Don't need directly, but something similar needed for LatticeMaze.from_tokens
         raise NotImplementedError
+
+    # Simple properties
+    # =================
 
     @property
     def token_arr(self) -> list[str] | None:
@@ -1076,6 +1125,24 @@ class MazeTokenizer2(SerializableDataclass):
 
     # conversion functions
     # ============================================================
+
+    def to_tokens(
+        self,
+        maze: "LatticeMaze",
+    ) -> list[str]:
+        """Converts maze into a list of tokens."""
+        return self.prompt_sequencer.to_tokens(
+            maze.connection_list,
+            getattr(maze, "start_pos", None),
+            [
+                getattr(maze, "end_pos", None)
+            ],  # TargetTokenizer requires target: Iterable[Coord]
+            getattr(maze, "solution", None),
+            self.coord_tokenizer,
+            self.adj_list_tokenizer,
+            self.target_tokenizer,
+            self.path_tokenizer,
+        )
 
     def coords_to_strings(self, coords: list[CoordTup | Coord]) -> list[str]:
         return list(flatten([self.coord_tokenizer.to_tokens(c) for c in coords]))
