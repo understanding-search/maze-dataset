@@ -14,6 +14,7 @@ from maze_dataset.dataset.maze_dataset import (
     MazeDataset,
     MazeDatasetConfig,
     register_maze_filter,
+    set_serialize_minimal_threshold,
 )
 from maze_dataset.generation.generators import GENERATORS_MAP
 from maze_dataset.maze import SolvedMaze
@@ -81,6 +82,16 @@ class TestMazeDataset:
             assert MazeDataset.load(d._serialize_minimal()) == d
 
     def test_save_read_minimal(self):
+        def save_and_read(d: MazeDataset, p: str):
+            d.save(file_path=p)
+            # read as MazeDataset
+            roundtrip = MazeDataset.read(p)
+            assert roundtrip == d
+            # read from zanj
+            z = ZANJ()
+            roundtrip_zanj = z.read(p)
+            assert roundtrip_zanj == d
+            
         cfgs = [self.config]
         cfgs.extend(
             [
@@ -98,18 +109,18 @@ class TestMazeDataset:
             ]
         )
         for c in cfgs:
-            d = MazeDataset.generate(c, gen_parallel=False)
-            p = os.path.abspath(
-                os.path.join(os.getcwd(), "..", "data", d.cfg.to_fname() + ".zanj")
+            dataset = MazeDataset.generate(c, gen_parallel=False)
+            path = os.path.abspath(
+                os.path.join(os.getcwd(), "..", "data", dataset.cfg.to_fname() + ".zanj")
             )
-            d.save(file_path=p)
-            # read as MazeDataset
-            roundtrip = MazeDataset.read(p)
-            assert roundtrip == d
-            # read from zanj
-            z = ZANJ()
-            roundtrip_zanj = z.read(p)
-            assert roundtrip_zanj == d
+            # Test with full serialization
+            set_serialize_minimal_threshold(None)
+            save_and_read(dataset, path)
+            
+            # Test with minimal serialization
+            set_serialize_minimal_threshold(0)
+            save_and_read(dataset, path)
+            
 
     def test_custom_maze_filter(self):
         connection_list = bool_array_from_string(
