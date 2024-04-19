@@ -33,6 +33,7 @@ from maze_dataset.maze import LatticeMaze, SolvedMaze
 
 # If `n_mazes>=SERIALIZE_MINIMAL_THRESHOLD`, then the MazeDataset will use `serialize_minimal`.
 # Setting to None means that `serialize_minimal` will never be used.
+# Set to -1 to make calls to `read` use `MazeDataset._load_legacy`. Used for profiling only.
 SERIALIZE_MINIMAL_THRESHOLD: int | None = 100
 
 
@@ -295,9 +296,13 @@ class MazeDataset(GPTDataset):
             return cls._load_minimal(data)
         elif data["__format__"] == "MazeDataset:minimal_soln_cat":
             return cls._load_minimal_soln_cat(data)
-        else:
-            assert data["__format__"] == "MazeDataset"
+        elif data["__format__"] == "MazeDataset":
+            if SERIALIZE_MINIMAL_THRESHOLD == -1:  # Allow access to `_load_legacy` for profiling
+                return cls._load_legacy(data)
             return cls._load_full(data)
+        else:
+            raise KeyError(f"`__format__` string {data['__format__']} is not a recognized `MazeDataset` format.")
+            
 
     @classmethod
     def _load_full(cls, data: JSONitem) -> "MazeDataset":
@@ -358,6 +363,17 @@ class MazeDataset(GPTDataset):
                     maze_solutions,
                 )
             ],
+        )
+
+    @classmethod
+    def _load_legacy(cls, data: JSONitem) -> "MazeDataset":
+        """Legacy `load` method from <0.5.2. Used exclusively for profiling comparison."""
+        assert data["__format__"] == "MazeDataset"
+        return cls(
+            **{
+                key: load_item_recursive(data[key], tuple())
+                for key in ["cfg", "mazes", "generation_metadata_collected"]
+            }
         )
 
     def serialize(self) -> JSONitem:
