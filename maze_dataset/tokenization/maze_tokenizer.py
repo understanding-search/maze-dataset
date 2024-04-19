@@ -447,7 +447,14 @@ class TokenizerElement(SerializableDataclass, abc.ABC):
 
     @property
     def name(self) -> str:
-        return repr(self)
+        members_str: str = ",".join(
+            [f"{k}={str(v) if not isinstance(v, bool) else str(v)[0]}" for k, v in self.__dict__.items()]
+        )
+        r = f"{type(self).__name__}({members_str})"
+        if "." in r:
+            return "".join(r.split(".")[1:])
+        else:
+            return r
     
     @classmethod
     def _level_one_subclass(cls) -> type['TokenizerElement']:
@@ -1016,7 +1023,9 @@ class MazeTokenizer2(SerializableDataclass):
     @property
     def name(self) -> str:
         """Serializes MazeTokenizer into a key for encoding in zanj"""
-        return repr(self)
+        return "-".join(
+            [type(self).__name__, *(el.name for el in self._tokenizer_elements)]
+        )
 
     def summary(self) -> dict[str, Any]:
         return {
