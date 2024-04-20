@@ -4,14 +4,14 @@ import re
 import typing
 import warnings
 from collections import Counter
-from typing import Callable, Generator, Iterable
+from typing import Callable
 
 import numpy as np
 from jaxtyping import Float, Int8
 from muutils.misc import list_join
 
 from maze_dataset.constants import ConnectionList, CoordTup
-from maze_dataset.utils import WhenMissing
+from maze_dataset.utils import WhenMissing, flatten
 
 
 class TokenizerDeprecationWarning(DeprecationWarning):
@@ -244,32 +244,6 @@ def equal_except_adj_list_sequence(rollout1: list[str], rollout2: list[str]) -> 
     counter1: Counter = Counter(adj_list1)
     counter2: Counter = Counter(adj_list2)
     return counter1 == counter2
-
-
-def flatten(it: Iterable[any], levels_to_flatten: int | None = None) -> Generator:
-    """
-    Flattens an arbitrarily nested iterable.
-    Flattens all iterable data types except for `str` and `bytes`.
-
-    # Returns
-    Generator over the flattened sequence.
-
-    # Parameters
-    - `it`: Any arbitrarily nested iterable.
-    - `levels_to_flatten`: Number of levels to flatten by. If `None`, performs full flattening.
-    """
-    for x in it:
-        # TODO: swap type check with more general check for __iter__() or __next__() or whatever
-        if (
-            hasattr(x, "__iter__")
-            and not isinstance(x, (str, bytes))
-            and (levels_to_flatten is None or levels_to_flatten > 0)
-        ):
-            yield from flatten(
-                x, None if levels_to_flatten == None else levels_to_flatten - 1
-            )
-        else:
-            yield x
 
 
 def get_all_subclasses(class_: type, include_self=False) -> set[type]:

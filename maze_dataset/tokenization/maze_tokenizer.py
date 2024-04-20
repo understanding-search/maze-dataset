@@ -29,17 +29,19 @@ from maze_dataset.constants import (
 from maze_dataset.tokenization.token_utils import tokens_between
 from maze_dataset.tokenization.util import (
     TokenizerPendingDeprecationWarning,
+    TokenizerDeprecationWarning,
     _coord_to_strings_indexed,
     _coord_to_strings_UT,
     connection_list_to_adj_list,
     coords_to_strings,
-    flatten,
     strings_to_coords,
 )
 from maze_dataset.utils import (
     WhenMissing,
     corner_first_ndindex,
+    flatten,
     unpackable_if_true_attribute,
+    type_to_possible_values,
 )
 
 if TYPE_CHECKING:
@@ -1045,6 +1047,9 @@ class MazeTokenizer2(SerializableDataclass):
         ) -> bool:
         """Returns True if the `MazeTokenizer2` instance contains ALL of the items specified in `elements`.
         
+        Querying with a partial subset of `TokenizerElement` fields is not currently supported.
+        To do such a query, assemble multiple calls to `has_elements`.
+        
         # Parameters
         - `elements`: Singleton or iterable of `TokenizerElement` instances or classes.
         If an instance is provided, then comparison is done via equality.
@@ -1199,24 +1204,25 @@ class MazeTokenizer2(SerializableDataclass):
 
     def is_AOTP(self):
         warnings.warn(
-            "`MazeTokenizer2.is_AOTP` will be replaced by a more generalized function in a future release.",
-            TokenizerPendingDeprecationWarning,
+            "`MazeTokenizer2.is_AOTP` is deprecated. Use `MazeTokenizer2.has_element(PromptSequencers.AOTP)` instead.",
+            TokenizerDeprecationWarning,
         )
-        return isinstance(self.prompt_sequencer, PromptSequencers.AOTP)
+        return self.has_element(PromptSequencers.AOTP)
 
     def is_UT(self):
         warnings.warn(
-            "`MazeTokenizer2.is_UT` will be replaced by a more generalized function in a future release.",
-            TokenizerPendingDeprecationWarning,
+            "`MazeTokenizer2.is_UT` is deprecated. Use `MazeTokenizer2.has_element(CoordTokenizers.UT)` instead.",
+            TokenizerDeprecationWarning,
         )
-        return isinstance(self.coord_tokenizer, CoordTokenizers.UT)
+        return self.has_element(CoordTokenizers.UT)
 
 
 def _all_tokenizers() -> Iterable[MazeTokenizer2]:
     """Returns an iterable of all the supported and tested tokenizers.
     Other tokenizers may be possible to construct, but they are untested and not guaranteed to work.
     """
-    return [MazeTokenizer2(), MazeTokenizer2(coord_tokenizer=CoordTokenizers.CTT())]
+    return type_to_possible_values(CoordTokenizers.CoordTokenizer)
+    # return [MazeTokenizer2(), MazeTokenizer2(coord_tokenizer=CoordTokenizers.CTT())]
 
 
 ALL_TOKENIZERS: Iterable[MazeTokenizer2] = _all_tokenizers()

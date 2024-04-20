@@ -16,10 +16,10 @@ from maze_dataset.tokenization.util import (
     _coord_to_strings_UT,
     coords_to_strings,
     equal_except_adj_list_sequence,
-    flatten,
     get_all_subclasses,
     strings_to_coords,
 )
+from maze_dataset.utils import flatten
 
 MAZE_TOKENS: tuple[list[str], str] = (
     "<ADJLIST_START> (0,1) <--> (1,1) ; (1,0) <--> (1,1) ; (0,1) <--> (0,0) ; <ADJLIST_END> <ORIGIN_START> (1,0) <ORIGIN_END> <TARGET_START> (1,1) <TARGET_END> <PATH_START> (1,0) (1,1) <PATH_END>".split(),

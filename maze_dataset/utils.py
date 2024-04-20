@@ -3,7 +3,10 @@ import math
 import pstats
 import timeit
 import typing
-from typing import Any, Callable, Iterable, Literal, Mapping, NamedTuple, TypeVar
+from typing import Any, Callable, Iterable, Literal, Mapping, NamedTuple, TypeVar, Generator
+from dataclasses import field
+import itertools
+from enum import Enum
 
 import numpy as np
 from jaxtyping import Bool
@@ -244,3 +247,56 @@ def unpackable_if_true_attribute(
     Particularly useful for optionally inserting delimiters into a sequence depending on an `TokenizerElement` attribute.
     """
     return iterable if bool(getattr(attr_owner, attr_name, False)) else ()
+
+
+def flatten(it: Iterable[any], levels_to_flatten: int | None = None) -> Generator:
+    """
+    Flattens an arbitrarily nested iterable.
+    Flattens all iterable data types except for `str` and `bytes`.
+
+    # Returns
+    Generator over the flattened sequence.
+
+    # Parameters
+    - `it`: Any arbitrarily nested iterable.
+    - `levels_to_flatten`: Number of levels to flatten by. If `None`, performs full flattening.
+    """
+    for x in it:
+        # TODO: swap type check with more general check for __iter__() or __next__() or whatever
+        if (
+            hasattr(x, "__iter__")
+            and not isinstance(x, (str, bytes))
+            and (levels_to_flatten is None or levels_to_flatten > 0)
+        ):
+            yield from flatten(
+                x, None if levels_to_flatten == None else levels_to_flatten - 1
+            )
+        else:
+            yield x
+
+
+def is_abstract(cls):
+    if not hasattr(cls, "__abstractmethods__"):
+        return False # an ordinary class
+    elif len(cls.__abstractmethods__) == 0:
+        return False # a concrete implementation of an abstract class
+    else:
+        return True # an abstract class
+    
+
+def type_to_possible_values(T: type) -> list[T]:
+    """Returns all possible values of an instance of `T` if finite instances exist.
+    """
+    if T == bool:
+        return [True, False]
+    elif hasattr(T, "__dataclass_fields__") and not is_abstract(T):
+        fields: list[field] = T.__dataclass_fields__
+        fields_to_types: dict[str, type] = {f: fields[f].type for f in fields}
+        return [T(**{fld: arg for fld, arg in zip(fields_to_types.keys(), args)}) 
+                for args in itertools.product(*[type_to_possible_values(arg_type) for arg_type in fields_to_types.values()])]
+    elif hasattr(T, "__dataclass_fields__") and is_abstract(T):
+        return list(flatten([type_to_possible_values(sub) for sub in T.__subclasses__()], levels_to_flatten=1))
+    elif issubclass(T, Enum):
+        raise NotImplementedError(f"Support for Enums not yet implemented.")
+    else:
+        raise TypeError(f"Type {T} either has unbounded possible values or is not supported.")
