@@ -19,7 +19,7 @@ from maze_dataset.tokenization.util import (
     get_all_subclasses,
     strings_to_coords,
 )
-from maze_dataset.utils import flatten
+from maze_dataset.utils import flatten, type_to_possible_values
 
 MAZE_TOKENS: tuple[list[str], str] = (
     "<ADJLIST_START> (0,1) <--> (1,1) ; (1,0) <--> (1,1) ; (0,1) <--> (0,0) ; <ADJLIST_END> <ORIGIN_START> (1,0) <ORIGIN_END> <TARGET_START> (1,1) <TARGET_END> <PATH_START> (1,0) (1,1) <PATH_END>".split(),
@@ -498,3 +498,8 @@ def test_get_all_subclasses():
     assert get_all_subclasses(D, include_self=True) == {D, F}
     assert get_all_subclasses(Z) == set()
     assert get_all_subclasses(Z, include_self=True) == {Z}
+
+
+def test_type_to_possible_values(T: type):
+    assert False
+    # TODO: this
