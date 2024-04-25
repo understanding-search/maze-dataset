@@ -3,7 +3,19 @@ import math
 import pstats
 import timeit
 import typing
-from typing import Any, Callable, Iterable, Literal, Mapping, NamedTuple, TypeVar, Generator
+from typing import (
+    Any, 
+    Callable, 
+    Iterable, 
+    Literal, 
+    Mapping, 
+    NamedTuple, 
+    TypeVar,
+    Generator,
+    Protocol,
+    runtime_checkable,
+    ClassVar
+    )
 from dataclasses import field
 import itertools
 from enum import Enum
@@ -13,6 +25,13 @@ from jaxtyping import Bool
 from muutils.statcounter import StatCounter
 
 WhenMissing = Literal["except", "skip", "include"]
+
+
+@runtime_checkable
+class IsDataclass(Protocol):
+    # Type hint for any dataclass
+    # https://stackoverflow.com/questions/54668000/type-hint-for-an-instance-of-a-non-specific-dataclass
+    __dataclass_fields__: ClassVar[dict[str, Any]]
 
 
 def bool_array_from_string(
@@ -283,20 +302,39 @@ def is_abstract(cls):
     else:
         return True # an abstract class
     
+    
+FiniteValued = TypeVar("FiniteValued", bool, IsDataclass, Enum)
 
-def type_to_possible_values(T: type) -> list[T]:
-    """Returns all possible values of an instance of `T` if finite instances exist.
+
+def type_to_possible_values(type_: FiniteValued) -> list[FiniteValued]:
+    """Returns all possible values of an instance of `type_` if finite instances exist.
+    Do not use with types whose members contain circular references.
+    Function is susceptible to infinite recursion if `type_` is a dataclass whose member tree includes another instance of `type_`.
     """
-    if T == bool:
+    if type_ == bool:
         return [True, False]
-    elif hasattr(T, "__dataclass_fields__") and not is_abstract(T):
-        fields: list[field] = T.__dataclass_fields__
+    elif hasattr(type_, "__dataclass_fields__") and not is_abstract(type_):
+        fields: list[field] = type_.__dataclass_fields__
         fields_to_types: dict[str, type] = {f: fields[f].type for f in fields}
-        return [T(**{fld: arg for fld, arg in zip(fields_to_types.keys(), args)}) 
-                for args in itertools.product(*[type_to_possible_values(arg_type) for arg_type in fields_to_types.values()])]
-    elif hasattr(T, "__dataclass_fields__") and is_abstract(T):
-        return list(flatten([type_to_possible_values(sub) for sub in T.__subclasses__()], levels_to_flatten=1))
-    elif issubclass(T, Enum):
+        all_arg_sequences: Iterable = itertools.product(*[type_to_possible_values(arg_type) for arg_type in fields_to_types.values()])
+        return [type_(**{fld: arg for fld, arg in zip(fields_to_types.keys(), args)}) 
+                for args in all_arg_sequences]
+    elif hasattr(type_, "__dataclass_fields__") and is_abstract(type_):
+        return list(flatten([type_to_possible_values(sub) for sub in type_.__subclasses__()], levels_to_flatten=1))
+    elif issubclass(type_, Enum):
         raise NotImplementedError(f"Support for Enums not yet implemented.")
     else:
-        raise TypeError(f"Type {T} either has unbounded possible values or is not supported.")
+        raise TypeError(f"Type {type_} either has unbounded possible values or is not supported.")
+    
+    
+def compare_dataclass_collections_as_sets(coll1: Iterable[IsDataclass], coll2: Iterable[IsDataclass]):
+    """Compares 2 collections of dataclass instances as if they were sets.
+    Unfrozen dataclasses can't actually be placed in sets since they're not hashable.
+    """
+    def get_hashable_eq_attrs(dc: IsDataclass) -> tuple[Any]:
+        """Returns a tuple of all fields used for equality comparison.
+        Essentially used to generate a hashable dataclass representation of a dataclass for equality comparison even if it's not frozen.
+        """
+        return tuple(getattr(dc, fld.name) for fld in filter(lambda x: x.compare, dc.__dataclass_fields__.values()))
+    
+    return {get_hashable_eq_attrs(x) for x in coll1} == {get_hashable_eq_attrs(y) for y in coll2}

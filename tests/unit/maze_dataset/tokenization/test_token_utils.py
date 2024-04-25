@@ -1,4 +1,5 @@
-from typing import Iterable
+from typing import Iterable, TypeVar
+from dataclasses import dataclass
 
 import pytest
 from pytest import mark, param
@@ -19,7 +20,12 @@ from maze_dataset.tokenization.util import (
     get_all_subclasses,
     strings_to_coords,
 )
-from maze_dataset.utils import flatten, type_to_possible_values
+from maze_dataset.utils import (
+    flatten, 
+    type_to_possible_values, 
+    compare_dataclass_collections_as_sets,
+    FiniteValued
+    )
 
 MAZE_TOKENS: tuple[list[str], str] = (
     "<ADJLIST_START> (0,1) <--> (1,1) ; (1,0) <--> (1,1) ; (0,1) <--> (0,0) ; <ADJLIST_END> <ORIGIN_START> (1,0) <ORIGIN_END> <TARGET_START> (1,1) <TARGET_END> <PATH_START> (1,0) (1,1) <PATH_END>".split(),
@@ -500,6 +506,96 @@ def test_get_all_subclasses():
     assert get_all_subclasses(Z, include_self=True) == {Z}
 
 
-def test_type_to_possible_values(T: type):
-    assert False
-    # TODO: this
+# Test classes
+@dataclass
+class DC1:
+    x: bool
+    y: bool = False
+
+
+@dataclass(frozen=True)
+class DC2:
+    x: bool
+    y: bool = False
+
+
+@dataclass(frozen=True)
+class DC3:
+    x: DC2 = DC2(False, False)
+
+
+@dataclass(frozen=True)
+class DC4:
+    x: DC2
+    y: bool = False
+
+
+@dataclass(frozen=True)
+class DC5:
+    x: int
+
+
+@dataclass(frozen=True)
+class DC6:
+    x: DC5
+    y: bool = False
+
+
+@mark.parametrize(
+    "type_, result",
+    [
+        param(
+            type_,
+            result,
+            id=type_.__name__,
+        )
+        for type_, result in (
+            [
+                (DC1,
+                 [
+                    DC1(False, False),
+                    DC1(False, True),
+                    DC1(True, False),
+                    DC1(True, True),
+                 ]
+                ),
+                (DC2,
+                 [
+                    DC2(False, False),
+                    DC2(False, True),
+                    DC2(True, False),
+                    DC2(True, True),
+                 ]
+                ),
+                (DC3,
+                 [
+                    DC3(DC2(False, False)),
+                    DC3(DC2(False, True)),
+                    DC3(DC2(True, False)),
+                    DC3(DC2(True, True)),
+                 ]
+                ),
+                (DC4,
+                 [
+                    DC4(DC2(False, False), True),
+                    DC4(DC2(False, True), True),
+                    DC4(DC2(True, False), True),
+                    DC4(DC2(True, True), True),
+                    DC4(DC2(False, False), False),
+                    DC4(DC2(False, True), False),
+                    DC4(DC2(True, False), False),
+                    DC4(DC2(True, True), False),
+                 ]
+                ),
+                (DC5, TypeError),
+                (DC6, TypeError),
+            ]
+        )
+    ],
+)
+def test_type_to_possible_values(type_: FiniteValued, result: Exception | Iterable[FiniteValued]):
+    if isinstance(result, Exception):
+        with pytest.raises(result):
+            type_to_possible_values(type_)
+    else:
+        assert compare_dataclass_collections_as_sets(type_to_possible_values(type_), result)
