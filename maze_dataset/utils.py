@@ -306,7 +306,7 @@ def is_abstract(cls):
 FiniteValued = TypeVar("FiniteValued", bool, IsDataclass, Enum)
 
 
-def type_to_possible_values(type_: FiniteValued) -> list[FiniteValued]:
+def all_instances(type_: FiniteValued) -> list[FiniteValued]:
     """Returns all possible values of an instance of `type_` if finite instances exist.
     Do not use with types whose members contain circular references.
     Function is susceptible to infinite recursion if `type_` is a dataclass whose member tree includes another instance of `type_`.
@@ -316,25 +316,27 @@ def type_to_possible_values(type_: FiniteValued) -> list[FiniteValued]:
     elif hasattr(type_, "__dataclass_fields__") and not is_abstract(type_):
         fields: list[field] = type_.__dataclass_fields__
         fields_to_types: dict[str, type] = {f: fields[f].type for f in fields}
-        all_arg_sequences: Iterable = itertools.product(*[type_to_possible_values(arg_type) for arg_type in fields_to_types.values()])
+        all_arg_sequences: Iterable = itertools.product(*[all_instances(arg_type) for arg_type in fields_to_types.values()])
         return [type_(**{fld: arg for fld, arg in zip(fields_to_types.keys(), args)}) 
                 for args in all_arg_sequences]
     elif hasattr(type_, "__dataclass_fields__") and is_abstract(type_):
-        return list(flatten([type_to_possible_values(sub) for sub in type_.__subclasses__()], levels_to_flatten=1))
+        return list(flatten([all_instances(sub) for sub in type_.__subclasses__()], levels_to_flatten=1))
     elif issubclass(type_, Enum):
         raise NotImplementedError(f"Support for Enums not yet implemented.")
     else:
         raise TypeError(f"Type {type_} either has unbounded possible values or is not supported.")
     
     
-def compare_dataclass_collections_as_sets(coll1: Iterable[IsDataclass], coll2: Iterable[IsDataclass]):
+def dataclass_set_equals(coll1: Iterable[IsDataclass], coll2: Iterable[IsDataclass]) -> bool:
     """Compares 2 collections of dataclass instances as if they were sets.
-    Unfrozen dataclasses can't actually be placed in sets since they're not hashable.
+    Duplicates are ignored in the same manner as a set.
+    Unfrozen dataclasses can't be placed in sets since they're not hashable.
+    Collections of them may be compared using this function.
     """
     def get_hashable_eq_attrs(dc: IsDataclass) -> tuple[Any]:
         """Returns a tuple of all fields used for equality comparison.
         Essentially used to generate a hashable dataclass representation of a dataclass for equality comparison even if it's not frozen.
         """
-        return tuple(getattr(dc, fld.name) for fld in filter(lambda x: x.compare, dc.__dataclass_fields__.values()))
+        return *(getattr(dc, fld.name) for fld in filter(lambda x: x.compare, dc.__dataclass_fields__.values())), type(dc)
     
     return {get_hashable_eq_attrs(x) for x in coll1} == {get_hashable_eq_attrs(y) for y in coll2}

@@ -22,9 +22,10 @@ from maze_dataset.tokenization.util import (
 )
 from maze_dataset.utils import (
     flatten, 
-    type_to_possible_values, 
-    compare_dataclass_collections_as_sets,
-    FiniteValued
+    all_instances, 
+    dataclass_set_equals,
+    IsDataclass,
+    FiniteValued,
     )
 
 MAZE_TOKENS: tuple[list[str], str] = (
@@ -589,13 +590,86 @@ class DC6:
                 ),
                 (DC5, TypeError),
                 (DC6, TypeError),
+                (bool, [True, False]),
+                (int, TypeError),
+                (str, TypeError),
             ]
         )
     ],
 )
-def test_type_to_possible_values(type_: FiniteValued, result: Exception | Iterable[FiniteValued]):
-    if isinstance(result, Exception):
+def test_all_instances(type_: FiniteValued, result: type[Exception] | Iterable[FiniteValued]):
+    if isinstance(result, type) and issubclass(result, Exception):
         with pytest.raises(result):
-            type_to_possible_values(type_)
+            all_instances(type_)
+    elif hasattr(type_, "__dataclass_fields__"):
+        assert dataclass_set_equals(all_instances(type_), result)
     else:
-        assert compare_dataclass_collections_as_sets(type_to_possible_values(type_), result)
+        assert set(all_instances(type_)) == set(result)
+
+
+@mark.parametrize(
+    "coll1, coll2, result",
+    [
+        param(
+            c1,
+            c2,
+            res,
+            id=f"{c1}_{c2}",
+        )
+        for c1, c2, res in (
+            [
+                (
+                    [
+                        DC1(False, False),
+                        DC1(False, True),
+                    ],
+                    [
+                        DC1(True, False),
+                        DC1(True, True),
+                    ],
+                    False
+                ),
+                (
+                    [
+                        DC1(False, False),
+                        DC1(False, True),
+                    ],
+                    [
+                        DC1(False, False),
+                        DC1(False, True),
+                    ],
+                    True
+                ),
+                (
+                    [
+                        DC1(False, False),
+                        DC1(False, True),
+                    ],
+                    [
+                        DC2(False, False),
+                        DC2(False, True),
+                    ],
+                    False
+                ),
+                (
+                    [
+                        DC3(False),
+                        DC3(False),
+                    ],
+                    [
+                        DC3(False),
+                    ],
+                    True
+                ),
+                ([], [], True),
+                ([DC5], [DC5], AttributeError),
+            ]
+        )
+    ],
+)
+def test_dataclass_set_equals(coll1: Iterable[IsDataclass], coll2: Iterable[IsDataclass], result: bool | type[Exception]):
+    if isinstance(result, type) and issubclass(result, Exception):
+        with pytest.raises(result):
+            dataclass_set_equals(coll1, coll2)
+    else:
+        assert dataclass_set_equals(coll1, coll2) == result

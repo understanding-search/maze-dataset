@@ -41,7 +41,7 @@ from maze_dataset.utils import (
     corner_first_ndindex,
     flatten,
     unpackable_if_true_attribute,
-    type_to_possible_values,
+    all_instances,
 )
 
 if TYPE_CHECKING:
@@ -1221,7 +1221,7 @@ def _all_tokenizers() -> Iterable[MazeTokenizer2]:
     """Returns an iterable of all the supported and tested tokenizers.
     Other tokenizers may be possible to construct, but they are untested and not guaranteed to work.
     """
-    return type_to_possible_values(MazeTokenizer2)
+    return all_instances(MazeTokenizer2)
     # return [MazeTokenizer2(), MazeTokenizer2(coord_tokenizer=CoordTokenizers.CTT())]
 
 
