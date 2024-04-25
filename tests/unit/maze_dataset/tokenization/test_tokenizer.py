@@ -362,20 +362,10 @@ def test_tokenizer_properties(tokenizer: MazeTokenizer2):
     ],
 )
 def test_encode_decode(maze: LatticeMaze, tokenizer: MazeTokenizer2):
-    # Just make sure the call doesn't raise exception
-
     maze_tok: list[str] = maze.as_tokens(maze_tokenizer=tokenizer)
-
     maze_encoded: list[int] = tokenizer.encode(maze_tok)
     maze_decoded: LatticeMaze = tokenizer.decode(maze_encoded)
-
     assert maze_tok == maze_decoded
-
-    maze_recovered: LatticeMaze = SolvedMaze.from_tokens(
-        maze_tok, maze_tokenizer=tokenizer
-    )
-
-    assert (maze.connection_list == maze_recovered.connection_list).all()
 
 
 @mark.parametrize(

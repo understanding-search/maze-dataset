@@ -1095,22 +1095,6 @@ class MazeTokenizer2(SerializableDataclass):
             ),
         }[legacy_maze_tokenizer]
 
-    @classmethod
-    def from_tokens(
-        cls,
-        tokens: str | list[str],
-    ) -> "MazeTokenizer2":
-        """
-        Infers most MazeTokenizer parameters from a full set of tokens.
-        Could be useful for adapting old code to new `MazeTokenizer`.
-        Would probably need a couple of other pieces of info besides just tokens.
-        - max_grid_size
-        - rasterization_mode: Only needed if UT tokens
-        - Anything else?
-        """
-        # Don't need directly, but something similar needed for LatticeMaze.from_tokens
-        raise NotImplementedError
-
     # Simple properties
     # =================
 
