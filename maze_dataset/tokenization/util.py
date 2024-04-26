@@ -244,25 +244,3 @@ def equal_except_adj_list_sequence(rollout1: list[str], rollout2: list[str]) -> 
     counter1: Counter = Counter(adj_list1)
     counter2: Counter = Counter(adj_list2)
     return counter1 == counter2
-
-
-def get_all_subclasses(class_: type, include_self=False) -> set[type]:
-    """
-    Returns a list of all subclasses of `class_`, including subclasses of subclasses, etc.
-
-    # Parameters
-    - include_self: Whether to include `class_` itself in the returned list
-    `class_`: Superclass
-
-    # Returns
-    Set of subclasses without duplicates in no guaranteed order.
-    """
-    subs: list[list] = [
-        get_all_subclasses(sub, include_self=True)
-        for sub in class_.__subclasses__()
-        if sub is not None
-    ]
-    subs: set = set(flatten(subs))
-    if include_self:
-        subs.add((class_))
-    return subs

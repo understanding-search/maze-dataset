@@ -304,6 +304,28 @@ def is_abstract(cls):
         return False # a concrete implementation of an abstract class
     else:
         return True # an abstract class
+
+
+def get_all_subclasses(class_: type, include_self=False) -> set[type]:
+    """
+    Returns a list of all subclasses of `class_`, including subclasses of subclasses, etc.
+
+    # Parameters
+    - include_self: Whether to include `class_` itself in the returned list
+    `class_`: Superclass
+
+    # Returns
+    Set of subclasses without duplicates in no guaranteed order.
+    """
+    subs: list[list] = [
+        get_all_subclasses(sub, include_self=True)
+        for sub in class_.__subclasses__()
+        if sub is not None
+    ]
+    subs: set = set(flatten(subs))
+    if include_self:
+        subs.add((class_))
+    return subs
     
 
 def all_instances(type_: FiniteValued) -> list[FiniteValued]:

@@ -17,13 +17,13 @@ from maze_dataset.tokenization.util import (
     _coord_to_strings_UT,
     coords_to_strings,
     equal_except_adj_list_sequence,
-    get_all_subclasses,
     strings_to_coords,
 )
 from maze_dataset.utils import (
     flatten, 
     all_instances, 
     dataclass_set_equals,
+    get_all_subclasses,
     IsDataclass,
     FiniteValued,
     )
