@@ -30,6 +30,7 @@ from maze_dataset.tokenization import (
 from maze_dataset.tokenization.token_utils import get_origin_tokens, get_target_tokens
 from maze_dataset.tokenization.util import (
     TokenizerPendingDeprecationWarning,
+    TokenizerDeprecationWarning,
     connection_list_to_adj_list,
 )
 
@@ -411,7 +412,7 @@ class LatticeMaze(SerializableDataclass):
     def as_adj_list_tokens(self) -> list[str | CoordTup]:
         warnings.warn(
             "`LatticeMaze.as_adj_list_tokens` will be removed from the public API in a future release.",
-            TokenizerPendingDeprecationWarning,
+            TokenizerDeprecationWarning,
         )
         return [
             SPECIAL_TOKENS.ADJLIST_START,
@@ -432,7 +433,7 @@ class LatticeMaze(SerializableDataclass):
     def _as_coords_and_special_AOTP(self) -> list[CoordTup | str]:
         """turn the maze into adjacency list, origin, target, and solution -- keep coords as tuples"""
 
-        def _as_adj_list_tokens() -> list[str | CoordTup]:
+        def _as_adj_list_tokens(self_) -> list[str | CoordTup]:
             return [
                 SPECIAL_TOKENS.ADJLIST_START,
                 *chain.from_iterable(
@@ -443,20 +444,20 @@ class LatticeMaze(SerializableDataclass):
                             tuple(c_e),
                             SPECIAL_TOKENS.ADJACENCY_ENDLINE,
                         ]
-                        for c_s, c_e in self.as_adj_list()
+                        for c_s, c_e in self_.as_adj_list()
                     ]
                 ),
                 SPECIAL_TOKENS.ADJLIST_END,
             ]
 
-        output: list[str] = _as_adj_list_tokens()
+        output: list[str] = _as_adj_list_tokens(self)
         # if getattr(self, "start_pos", None) is not None:
         if isinstance(self, TargetedLatticeMaze):
-            output += self.get_start_pos_tokens()
+            output += self._get_start_pos_tokens()
         if isinstance(self, TargetedLatticeMaze):
-            output += self.get_end_pos_tokens()
+            output += self._get_end_pos_tokens()
         if isinstance(self, SolvedMaze):
-            output += self.get_solution_tokens()
+            output += self._get_solution_tokens()
         return output
 
     def _as_tokens(self, maze_tokenizer: MazeTokenizer | TokenizationMode) -> list[str]:
@@ -592,7 +593,7 @@ class LatticeMaze(SerializableDataclass):
             MazeTokenizer2.from_legacy(tm) for tm in TokenizationMode
         ]:
             raise NotImplementedError(
-                f"Only exact conversions of legacy tokenizers supported, not {maze_tokenizer}."
+                f"Only legacy tokenizers and their exact `MazeTokenizer2` analogs supported, not {maze_tokenizer}."
             )
 
         if isinstance(tokens, str):
@@ -744,7 +745,7 @@ class LatticeMaze(SerializableDataclass):
         connection_list: ConnectionList
         grid_shape: tuple[int, int]
 
-        # if a binary pixel grid, return regular LaticeMaze
+        # if a binary pixel grid, return regular LatticeMaze
         if len(pixel_grid.shape) == 2:
             connection_list, grid_shape = cls._from_pixel_grid_bw(pixel_grid)
             return LatticeMaze(connection_list=connection_list)
@@ -936,19 +937,33 @@ class TargetedLatticeMaze(LatticeMaze):
                 f"end_pos {self.end_pos} is out of bounds for grid shape {self.grid_shape}"
             )
 
-    def get_start_pos_tokens(self) -> list[str | CoordTup]:
+    def _get_start_pos_tokens(self) -> list[str | CoordTup]:
         return [
             SPECIAL_TOKENS.ORIGIN_START,
             tuple(self.start_pos),
             SPECIAL_TOKENS.ORIGIN_END,
         ]
 
-    def get_end_pos_tokens(self) -> list[str | CoordTup]:
+    def get_start_pos_tokens(self) -> list[str | CoordTup]:
+        warnings.warn(
+            "`TargetedLatticeMaze.get_start_pos_tokens` will be removed from the public API in a future release.",
+            TokenizerDeprecationWarning,
+        )
+        return self._get_start_pos_tokens()
+
+    def _get_end_pos_tokens(self) -> list[str | CoordTup]:
         return [
             SPECIAL_TOKENS.TARGET_START,
             tuple(self.end_pos),
             SPECIAL_TOKENS.TARGET_END,
         ]
+
+    def get_end_pos_tokens(self) -> list[str | CoordTup]:
+        warnings.warn(
+            "`TargetedLatticeMaze.get_end_pos_tokens` will be removed from the public API in a future release.",
+            TokenizerDeprecationWarning,
+        )
+        return self._get_end_pos_tokens()
 
     @classmethod
     def from_lattice_maze(
@@ -1019,12 +1034,19 @@ class SolvedMaze(TargetedLatticeMaze):
     def __hash__(self) -> int:
         return hash((self.connection_list.tobytes(), self.solution.tobytes()))
 
-    def get_solution_tokens(self) -> list[str | CoordTup]:
+    def _get_solution_tokens(self) -> list[str | CoordTup]:
         return [
             SPECIAL_TOKENS.PATH_START,
             *[tuple(c) for c in self.solution],
             SPECIAL_TOKENS.PATH_END,
         ]
+
+    def get_solution_tokens(self) -> list[str | CoordTup]:
+        warnings.warn(
+            "`LatticeMaze.get_solution_tokens` is deprecated.",
+            TokenizerDeprecationWarning,
+        )
+        return self._get_solution_tokens()
 
     # for backwards compatibility
     @property

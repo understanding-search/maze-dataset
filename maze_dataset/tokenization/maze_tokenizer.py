@@ -1151,7 +1151,7 @@ class MazeTokenizer2(SerializableDataclass):
         when_noncoord: WhenMissing = "skip",
     ) -> list[str | CoordTup]:
         warnings.warn(
-            "`MazeTokenizer2.strings_to_coords` only supports legacy UT strings. Will be replaced by a more generalized function in a future release.",
+            "`MazeTokenizer2.strings_to_coords` only supports legacy UT strings.",
             TokenizerPendingDeprecationWarning,
         )
         return strings_to_coords(text=text, when_noncoord=when_noncoord)
