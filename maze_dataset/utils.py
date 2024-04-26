@@ -29,9 +29,12 @@ WhenMissing = Literal["except", "skip", "include"]
 
 @runtime_checkable
 class IsDataclass(Protocol):
-    # Type hint for any dataclass
+    # Type hint for any dataclass instance
     # https://stackoverflow.com/questions/54668000/type-hint-for-an-instance-of-a-non-specific-dataclass
     __dataclass_fields__: ClassVar[dict[str, Any]]
+
+    
+FiniteValued = TypeVar("FiniteValued", bool, IsDataclass, Enum)
 
 
 def bool_array_from_string(
@@ -302,9 +305,6 @@ def is_abstract(cls):
     else:
         return True # an abstract class
     
-    
-FiniteValued = TypeVar("FiniteValued", bool, IsDataclass, Enum)
-
 
 def all_instances(type_: FiniteValued) -> list[FiniteValued]:
     """Returns all possible values of an instance of `type_` if finite instances exist.

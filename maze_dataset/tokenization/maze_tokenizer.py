@@ -439,7 +439,13 @@ class MazeTokenizer(SerializableDataclass):
 
 @serializable_dataclass(frozen=True, kw_only=True)
 class TokenizerElement(SerializableDataclass, abc.ABC):
-    """Superclass for tokenizer elements."""
+    """Superclass for tokenizer elements.
+    
+    # Development
+    Due to the functionality of `ALL_TOKENIZERS`, `TokenizerElement` subclasses may only contain fields of type `utils.FiniteValued`.
+    Implementing a subclass with an `int` or `float`-typed field, for example, is not supported.
+    In the event that adding such fields is deemed necessary, `ALL_TOKENIZERS` must be updated.
+    """
 
     def __repr__(self) -> str:
         members_str: str = ",".join(
