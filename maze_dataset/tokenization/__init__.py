@@ -1,5 +1,4 @@
 from maze_dataset.tokenization.maze_tokenizer import (
-    ALL_TOKENIZERS,
     AdjListTokenizers,
     CoordTokenizers,
     MazeTokenizer,
@@ -20,6 +19,7 @@ from maze_dataset.tokenization.token_utils import (
     tokens_between,
 )
 from maze_dataset.tokenization.util import coord_str_to_tuple
+from maze_dataset.tokenization.all_tokenizers import ALL_TOKENIZERS
 
 __all__ = [
     "MazeTokenizer",

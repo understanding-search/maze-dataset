@@ -308,16 +308,18 @@ def is_abstract(cls):
 
 def get_all_subclasses(class_: type, include_self=False) -> set[type]:
     """
-    Returns a list of all subclasses of `class_`, including subclasses of subclasses, etc.
+    Returns a set containing all child classes in the subclass graph of `class_`.
+    I.e., includes subclasses of subclasses, etc.
 
     # Parameters
-    - include_self: Whether to include `class_` itself in the returned list
-    `class_`: Superclass
-
-    # Returns
-    Set of subclasses without duplicates in no guaranteed order.
+    - `include_self`: Whether to include `class_` itself in the returned list
+    - `class_`: Superclass
+    
+    # Development
+    Since most class hierarchies are small, the inefficiencies of the existing recursive implementation aren't problematic.
+    It might be valuable to refactor with memoization if the need arises to use this function on a very large class hierarchy.
     """
-    subs: list[list] = [
+    subs: list[set] = [
         get_all_subclasses(sub, include_self=True)
         for sub in class_.__subclasses__()
         if sub is not None
