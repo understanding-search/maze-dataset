@@ -1,4 +1,4 @@
-"""Contains `ALL_TOKENIZERS`.
+"""Contains `ALL_TOKENIZERS` and supporting limited-use functions.
 
 # `ALL_TOKENIZERS`
 A comprehensive collection of all valid `MazeTokenizer2` objects.

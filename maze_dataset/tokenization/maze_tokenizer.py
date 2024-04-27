@@ -41,7 +41,6 @@ from maze_dataset.utils import (
     corner_first_ndindex,
     flatten,
     unpackable_if_true_attribute,
-    all_instances,
 )
 
 if TYPE_CHECKING:
@@ -1192,27 +1191,17 @@ class MazeTokenizer2(SerializableDataclass):
     # utils
     # =============
 
-    def is_AOTP(self):
+    def is_AOTP(self) -> bool:
         warnings.warn(
             "`MazeTokenizer2.is_AOTP` is deprecated. Use `MazeTokenizer2.has_element(PromptSequencers.AOTP)` instead.",
             TokenizerDeprecationWarning,
         )
         return self.has_element(PromptSequencers.AOTP)
 
-    def is_UT(self):
+    def is_UT(self) -> bool:
         warnings.warn(
             "`MazeTokenizer2.is_UT` is deprecated. Use `MazeTokenizer2.has_element(CoordTokenizers.UT)` instead.",
             TokenizerDeprecationWarning,
         )
         return self.has_element(CoordTokenizers.UT)
 
-
-def _all_tokenizers() -> Iterable[MazeTokenizer2]:
-    """Returns an iterable of all the supported and tested tokenizers.
-    Other tokenizers may be possible to construct, but they are untested and not guaranteed to work.
-    """
-    return all_instances(MazeTokenizer2)
-    # return [MazeTokenizer2(), MazeTokenizer2(coord_tokenizer=CoordTokenizers.CTT())]
-
-
-ALL_TOKENIZERS: Iterable[MazeTokenizer2] = _all_tokenizers()
