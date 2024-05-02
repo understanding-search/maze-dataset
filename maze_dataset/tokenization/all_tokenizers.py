@@ -30,7 +30,7 @@ from maze_dataset.tokenization import MazeTokenizer2, CoordTokenizers
 from maze_dataset.utils import all_instances
 
 
-ALL_TOKENIZERS: set[MazeTokenizer2] = all_instances(MazeTokenizer2)
+ALL_TOKENIZERS: set[MazeTokenizer2] = set(all_instances(MazeTokenizer2))
 EVERY_TEST_TOKENIZERS: list[MazeTokenizer2] = [
     MazeTokenizer2(), 
     MazeTokenizer2(coord_tokenizer=CoordTokenizers.CTT())
@@ -55,7 +55,7 @@ def sample_all_tokenizers(n: int) -> list[MazeTokenizer2]:
 
 
 def sample_tokenizers_for_test(n: int) -> list[MazeTokenizer2]:
-    """ Returns a sample of size `n` from `ALL_TOKENIZERS`, 
+    """ Returns a sample of size `n` of unique elements from `ALL_TOKENIZERS`, 
     always including every element in `EVERY_TEST_TOKENIZERS`.
     """
     if n < len(EVERY_TEST_TOKENIZERS):

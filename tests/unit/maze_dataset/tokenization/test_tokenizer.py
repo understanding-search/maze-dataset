@@ -6,6 +6,7 @@ from itertools import product
 from typing import Iterable, Callable, Hashable
 
 import numpy as np
+import pytest
 from pytest import mark, param
 from zanj import ZANJ
 
@@ -35,7 +36,9 @@ from maze_dataset.tokenization import (
     TargetTokenizers,
     TokenizationMode,
 )
+from maze_dataset.utils import all_instances
 from maze_dataset.tokenization.util import equal_except_adj_list_sequence
+from maze_dataset.tokenization.all_tokenizers import sample_tokenizers_for_test, EVERY_TEST_TOKENIZERS
 
 GRID_N = 5
 N_MAZES = 5
@@ -322,6 +325,37 @@ def test_from_tokens_backwards_compatible(
 
 def test_all_tokenizers():
     assert len(ALL_TOKENIZERS) > 800
+    assert len(all_instances(MazeTokenizer2)) == len(ALL_TOKENIZERS)
+
+sample_min: int = len(EVERY_TEST_TOKENIZERS)
+
+@mark.parametrize(
+    "n, result",
+    [
+        param(i, result)
+        for i, result in [
+            (sample_min-1, ValueError),
+            (sample_min, None),
+            (sample_min+5, None),
+            (sample_min+200, None),
+            ]
+    ],
+)
+def test_sample_tokenizers_for_test(n: int, result: type[Exception] | None):
+    if isinstance(result, type) and issubclass(result, Exception):
+        with pytest.raises(result):
+            sample_tokenizers_for_test(n)
+        return
+    mts: list[MazeTokenizer2] = sample_tokenizers_for_test(n)
+    mts_set: set[MazeTokenizer2] = set(mts)
+    assert len(mts) == len(mts_set)
+    assert set(EVERY_TEST_TOKENIZERS).issubset(mts_set)
+    if n > sample_min + 1:
+        mts2: list[MazeTokenizer2] = sample_tokenizers_for_test(n)
+        assert set(mts2) != mts_set  # Check that succesive samples are different
+        
+        
+        
 
 
 @mark.parametrize(
