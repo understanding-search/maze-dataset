@@ -320,6 +320,9 @@ def test_from_tokens_backwards_compatible(
 # General functionality tests
 # ===========================
 
+def test_all_tokenizers():
+    assert len(ALL_TOKENIZERS) > 800
+
 
 @mark.parametrize(
     "maze,tokenizer",
