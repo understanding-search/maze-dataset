@@ -26,14 +26,18 @@ from typing import Iterable
 from functools import cache
 import random
 
-from maze_dataset.tokenization import MazeTokenizer2, CoordTokenizers
+from maze_dataset.tokenization import MazeTokenizer2, CoordTokenizers, PromptSequencers
 from maze_dataset.utils import all_instances
 
 
 ALL_TOKENIZERS: set[MazeTokenizer2] = set(all_instances(MazeTokenizer2))
 EVERY_TEST_TOKENIZERS: list[MazeTokenizer2] = [
     MazeTokenizer2(), 
-    MazeTokenizer2(coord_tokenizer=CoordTokenizers.CTT())
+    MazeTokenizer2(
+        prompt_sequencer=PromptSequencers.AOTP(
+            coord_tokenizer=CoordTokenizers.CTT()
+        )
+    )
 ]
 
 

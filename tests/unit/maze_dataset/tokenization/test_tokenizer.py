@@ -428,8 +428,9 @@ def test_is_AOTP():
             assert not mt.is_AOTP()
     assert not MazeTokenizer2(prompt_sequencer=PromptSequencers.AOP()).is_AOTP()
     assert not MazeTokenizer2(
-        prompt_sequencer=PromptSequencers.AOP(),
-        target_tokenizer=CoordTokenizers.CTT(),
+        prompt_sequencer=PromptSequencers.AOTP(
+            coord_tokenizer=CoordTokenizers.CTT()
+        )
     ).is_AOTP()
 
 

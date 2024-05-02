@@ -446,16 +446,22 @@ class TokenizerElement(SerializableDataclass, abc.ABC):
     In the event that adding such fields is deemed necessary, `ALL_TOKENIZERS` must be updated.
     """
 
-    def __repr__(self) -> str:
-        members_str: str = ",".join(
-            [f"{k}={repr(v)}" for k, v in self.__dict__.items()]
-        )
-        return f"{type(self).__name__}({members_str})"
+    # def __repr__(self) -> str:
+    #     members_str: str = ",".join(
+    #         [f"{k}={repr(v)}" for k, v in self.__dict__.items()]
+    #     )
+    #     return f"{type(self).__name__}({members_str})"
 
     @property
     def name(self) -> str:
-        members_str: str = ",".join(
-            [f"{k}={str(v) if not isinstance(v, bool) else str(v)[0]}" for k, v in self.__dict__.items()]
+        def _stringify(k: str, v: Any):
+            if isinstance(v, bool):
+                return f'{k}={str(v)[0]}'
+            if isinstance(v, TokenizerElement):
+                return v.name
+            return f'{k}={v}'
+        members_str: str = ", ".join(
+            [_stringify(k, v) for k, v in self.__dict__.items()]
         )
         r = f"{type(self).__name__}({members_str})"
         if "." in r:
@@ -468,6 +474,11 @@ class TokenizerElement(SerializableDataclass, abc.ABC):
         """Returns the immediate subclass of `TokenizerElement` of which `cls` is an instance.
         """
         return set(cls.__mro__).intersection(set(TokenizerElement.__subclasses__())).pop()
+    
+    def _tokenizer_elements(self) -> list['TokenizerElement']:
+        """Returns a list of all `TokenizerElement` instances contained in the subtree.
+        """
+        return list(flatten([el._tokenizer_elements + [el] for el in self.__dict__.values() if isinstance(el, TokenizerElement)]))
     
     @classmethod
     @abc.abstractmethod
@@ -902,6 +913,36 @@ class PromptSequencers(_TokenizerElementNamespace):
 
     @serializable_dataclass(frozen=True, kw_only=True)
     class AOTP(PromptSequencer):
+        """
+        Sequences a prompt as [adjacency list, origin, target, path].
+        
+        # Parameters
+        - `coord_tokenizer`: Tokenizer element which tokenizes a single `Coord` aka maze position.
+        - `adj_list_tokenizer`: Tokenizer element which tokenizes the adjacency list of a `LatticeMaze`.
+        Uses `coord_tokenizer` to tokenize coords if that is part of the design of that `AdjListTokenizer`.
+        - `target_tokenizer`: Tokenizer element which tokenizes the target(s) of a `TargetedLatticeMaze`.
+        Uses `coord_tokenizer` to tokenize coords if that is part of the design of that `TargetTokenizer`.
+        - `path_tokenizer`: Tokenizer element which tokenizes the solution path of a `SolvedMaze`.
+        Uses `coord_tokenizer` to tokenize coords if that is part of the design of that `PathTokenizer`.
+
+        """
+        coord_tokenizer: CoordTokenizers.CoordTokenizer = serializable_field(
+        default=CoordTokenizers.UT(),
+        loading_fn=lambda x: _load_tokenizer_element(x, CoordTokenizers),
+        )
+        adj_list_tokenizer: AdjListTokenizers.AdjListTokenizer = serializable_field(
+            default=AdjListTokenizers.Coords(),
+            loading_fn=lambda x: _load_tokenizer_element(x, AdjListTokenizers),
+        )
+        target_tokenizer: TargetTokenizers.TargetTokenizer = serializable_field(
+            default=TargetTokenizers.Unlabeled(),
+            loading_fn=lambda x: _load_tokenizer_element(x, TargetTokenizers),
+        )
+        path_tokenizer: PathTokenizers.PathTokenizer = serializable_field(
+            default=PathTokenizers.Coords(),
+            loading_fn=lambda x: _load_tokenizer_element(x, PathTokenizers),
+        )
+        
         def _sequence_tokens(
             self,
             adj_list: list[str],
@@ -929,9 +970,26 @@ class PromptSequencers(_TokenizerElementNamespace):
         """Sequences a prompt as [adjacency list, origin, path].
 
         # Parameters
+        - `coord_tokenizer`: Tokenizer element which tokenizes a single `Coord` aka maze position.
+        - `adj_list_tokenizer`: Tokenizer element which tokenizes the adjacency list of a `LatticeMaze`.
+        Uses `coord_tokenizer` to tokenize coords if that is part of the design of that `AdjListTokenizer`.
+        - `path_tokenizer`: Tokenizer element which tokenizes the solution path of a `SolvedMaze`.
+        Uses `coord_tokenizer` to tokenize coords if that is part of the design of that `PathTokenizer`.
+
         - `include_target_special_tokens`: Whether to include <TARGET_START> and <TARGET_END> tokens in the output in the location used by `AOTP`.
         """
-
+        coord_tokenizer: CoordTokenizers.CoordTokenizer = serializable_field(
+        default=CoordTokenizers.UT(),
+        loading_fn=lambda x: _load_tokenizer_element(x, CoordTokenizers),
+        )
+        adj_list_tokenizer: AdjListTokenizers.AdjListTokenizer = serializable_field(
+            default=AdjListTokenizers.Coords(),
+            loading_fn=lambda x: _load_tokenizer_element(x, AdjListTokenizers),
+        )
+        path_tokenizer: PathTokenizers.PathTokenizer = serializable_field(
+            default=PathTokenizers.Coords(),
+            loading_fn=lambda x: _load_tokenizer_element(x, PathTokenizers),
+        )
         include_target_special_tokens: bool = serializable_field(default=True)
 
         def _sequence_tokens(
@@ -977,14 +1035,7 @@ class MazeTokenizer2(SerializableDataclass):
 
     # Parameters
     - `prompt_sequencer`: Tokenizer element which assembles token regions (adjacency list, origin, target, path) into a complete prompt.
-    - `coord_tokenizer`: Tokenizer element which tokenizes a single `Coord` aka maze position.
-    - `adj_list_tokenizer`: Tokenizer element which tokenizes the adjacency list of a `LatticeMaze`.
-    Uses `coord_tokenizer` to tokenize coords if that is part of the design of that `AdjListTokenizer`.
-    - `target_tokenizer`: Tokenizer element which tokenizes the target(s) of a `TargetedLatticeMaze`.
-    Uses `coord_tokenizer` to tokenize coords if that is part of the design of that `TargetTokenizer`.
-    - `path_tokenizer`: Tokenizer element which tokenizes the solution path of a `SolvedMaze`.
-    Uses `coord_tokenizer` to tokenize coords if that is part of the design of that `PathTokenizer`.
-
+    
     # Development
     - To ensure backwards compatibility, the default constructor must always return a tokenizer equivalent to the legacy `TokenizationMode.AOTP_UT_Uniform`.
     - Furthermore, the mapping reflected in `from_legacy` must also be maintained.
@@ -995,57 +1046,31 @@ class MazeTokenizer2(SerializableDataclass):
         default=PromptSequencers.AOTP(),
         loading_fn=lambda x: _load_tokenizer_element(x, PromptSequencers),
     )
-    coord_tokenizer: CoordTokenizers.CoordTokenizer = serializable_field(
-        default=CoordTokenizers.UT(),
-        loading_fn=lambda x: _load_tokenizer_element(x, CoordTokenizers),
-    )
-    adj_list_tokenizer: AdjListTokenizers.AdjListTokenizer = serializable_field(
-        default=AdjListTokenizers.Coords(),
-        loading_fn=lambda x: _load_tokenizer_element(x, AdjListTokenizers),
-    )
-    target_tokenizer: TargetTokenizers.TargetTokenizer = serializable_field(
-        default=TargetTokenizers.Unlabeled(),
-        loading_fn=lambda x: _load_tokenizer_element(x, TargetTokenizers),
-    )
-    path_tokenizer: PathTokenizers.PathTokenizer = serializable_field(
-        default=PathTokenizers.Coords(),
-        loading_fn=lambda x: _load_tokenizer_element(x, PathTokenizers),
-    )
 
-    def __repr__(self) -> str:
-        return "-".join(
-            [type(self).__name__, *(repr(el) for el in self._tokenizer_elements)]
-        )
+    # def __repr__(self) -> str:
+    #     return "-".join(
+    #         [type(self).__name__, repr(self.prompt_sequencer)]
+    #     )
 
     # Information Querying Methods
 
     @cached_property
     def _tokenizer_elements(self):
         return [
-            self.coord_tokenizer,
-            self.adj_list_tokenizer,
-            self.target_tokenizer,
-            self.path_tokenizer,
             self.prompt_sequencer,
+            *self.prompt_sequencer._tokenizer_elements()
         ]
 
     @property
     def name(self) -> str:
         """Serializes MazeTokenizer into a key for encoding in zanj"""
         return "-".join(
-            [type(self).__name__, *(el.name for el in self._tokenizer_elements)]
+            [type(self).__name__, self.prompt_sequencer.name]
         )
 
     def summary(self) -> dict[str, Any]:
         return {
-            name: getattr(self, name)
-            for name in [
-                "prompt_sequencer",
-                "coord_tokenizer",
-                "adj_list_tokenizer",
-                "target_tokenizer",
-                "path_tokenizer",
-            ]
+            "prompt_sequencer": self.prompt_sequencer.name
         }
         
     def has_element(
@@ -1098,7 +1123,9 @@ class MazeTokenizer2(SerializableDataclass):
             TokenizationMode.AOTP_UT_uniform: MazeTokenizer2(),
             TokenizationMode.AOTP_UT_rasterized: MazeTokenizer2(),
             TokenizationMode.AOTP_CTT_indexed: MazeTokenizer2(
-                coord_tokenizer=CoordTokenizers.CTT()
+                prompt_sequencer=PromptSequencers.AOTP(
+                    coord_tokenizer=CoordTokenizers.CTT()
+                )
             ),
         }[legacy_maze_tokenizer]
 
