@@ -40,7 +40,7 @@ from maze_dataset.utils import all_instances
 from maze_dataset.tokenization.util import equal_except_adj_list_sequence
 from maze_dataset.tokenization.all_tokenizers import sample_tokenizers_for_test, EVERY_TEST_TOKENIZERS
 
-TOKENIZERS_TO_TEST = 100
+NUM_TOKENIZERS_TO_TEST = 100
 GRID_N = 5
 N_MAZES = 5
 CFG: MazeDatasetConfig = MazeDatasetConfig(
@@ -364,7 +364,7 @@ def test_sample_tokenizers_for_test(n: int, result: type[Exception] | None):
     [
         param(maze[0], tokenizer, id=f"{type(maze[0])}{maze[1]}-{tokenizer.name}")
         for maze, tokenizer in itertools.product(
-            [(maze, i) for i, maze in enumerate(MIXED_MAZES[:6])], sample_tokenizers_for_test(TOKENIZERS_TO_TEST)
+            [(maze, i) for i, maze in enumerate(MIXED_MAZES[:6])], sample_tokenizers_for_test(NUM_TOKENIZERS_TO_TEST)
         )
     ],
 )
@@ -395,7 +395,7 @@ def test_tokenizer_properties(tokenizer: MazeTokenizer2):
     [
         param(maze[0], tokenizer, id=f"{tokenizer.name}-maze{maze[1]}")
         for maze, tokenizer in itertools.product(
-            [(maze, i) for i, maze in enumerate(MIXED_MAZES[:6])], sample_tokenizers_for_test(TOKENIZERS_TO_TEST)
+            [(maze, i) for i, maze in enumerate(MIXED_MAZES[:6])], sample_tokenizers_for_test(NUM_TOKENIZERS_TO_TEST)
         )
     ],
 )
@@ -407,7 +407,7 @@ def test_encode_decode(maze: LatticeMaze, tokenizer: MazeTokenizer2):
 
 
 @mark.parametrize(
-    "tokenizer", [param(tokenizer, id=tokenizer.name) for tokenizer in sample_tokenizers_for_test(TOKENIZERS_TO_TEST)]
+    "tokenizer", [param(tokenizer, id=tokenizer.name) for tokenizer in sample_tokenizers_for_test(NUM_TOKENIZERS_TO_TEST)]
 )
 def test_zanj_save_read(tokenizer: MazeTokenizer2):
     path = os.path.abspath(
@@ -421,7 +421,7 @@ def test_zanj_save_read(tokenizer: MazeTokenizer2):
 
 
 def test_is_AOTP():
-    for mt in sample_tokenizers_for_test(TOKENIZERS_TO_TEST):
+    for mt in sample_tokenizers_for_test(NUM_TOKENIZERS_TO_TEST):
         if isinstance(mt.prompt_sequencer, PromptSequencers.AOTP):
             assert mt.is_AOTP()
         else:
@@ -434,7 +434,7 @@ def test_is_AOTP():
 
 
 def test_is_UT():
-    for mt in sample_tokenizers_for_test(TOKENIZERS_TO_TEST):
+    for mt in sample_tokenizers_for_test(NUM_TOKENIZERS_TO_TEST):
         if isinstance(mt.coord_tokenizer, CoordTokenizers.UT):
             assert mt.is_UT()
         else:
@@ -452,7 +452,7 @@ _has_elems_type = type[TokenizerElement] | TokenizerElement | Iterable[type[Toke
               elems_tuple[1],
               id=f"{tokenizer.name}-{elems_tuple[0]}")
         for tokenizer, elems_tuple in itertools.product(
-            sample_tokenizers_for_test(TOKENIZERS_TO_TEST),
+            sample_tokenizers_for_test(NUM_TOKENIZERS_TO_TEST),
             [
                 ([PromptSequencers.AOTP()], 
                  lambda mt, els: mt.prompt_sequencer == els[0]

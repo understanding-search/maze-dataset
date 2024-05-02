@@ -598,6 +598,8 @@ class AdjListTokenizers(_TokenizerElementNamespace):
         ) -> list[str]:
             if self.walls:
                 conn_list = np.logical_not(conn_list)
+                conn_list[0,-1,:] = False
+                conn_list[1,:,-1] = False
             adj_list = connection_list_to_adj_list(conn_list)
             return itertools.chain.from_iterable(
                 [
