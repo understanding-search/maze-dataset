@@ -325,7 +325,7 @@ def test_from_tokens_backwards_compatible(
 # ===========================
 
 def test_all_tokenizers():
-    assert len(ALL_TOKENIZERS) > 800
+    assert len(ALL_TOKENIZERS) > 400
     assert len(all_instances(MazeTokenizer2)) == len(ALL_TOKENIZERS)
 
 sample_min: int = len(EVERY_TEST_TOKENIZERS)

@@ -922,9 +922,6 @@ class PromptSequencers(_TokenizerElementNamespace):
         Sequences a prompt as [adjacency list, origin, target, path].
         
         # Parameters
-        - `coord_tokenizer`: Tokenizer element which tokenizes a single `Coord` aka maze position.
-        - `adj_list_tokenizer`: Tokenizer element which tokenizes the adjacency list of a `LatticeMaze`.
-        Uses `coord_tokenizer` to tokenize coords if that is part of the design of that `AdjListTokenizer`.
         - `target_tokenizer`: Tokenizer element which tokenizes the target(s) of a `TargetedLatticeMaze`.
         Uses `coord_tokenizer` to tokenize coords if that is part of the design of that `TargetTokenizer`.
         - `path_tokenizer`: Tokenizer element which tokenizes the solution path of a `SolvedMaze`.
@@ -967,19 +964,13 @@ class PromptSequencers(_TokenizerElementNamespace):
         """Sequences a prompt as [adjacency list, origin, path].
 
         # Parameters
-        - `coord_tokenizer`: Tokenizer element which tokenizes a single `Coord` aka maze position.
-        - `adj_list_tokenizer`: Tokenizer element which tokenizes the adjacency list of a `LatticeMaze`.
-        Uses `coord_tokenizer` to tokenize coords if that is part of the design of that `AdjListTokenizer`.
         - `path_tokenizer`: Tokenizer element which tokenizes the solution path of a `SolvedMaze`.
         Uses `coord_tokenizer` to tokenize coords if that is part of the design of that `PathTokenizer`.
-
-        - `include_target_special_tokens`: Whether to include <TARGET_START> and <TARGET_END> tokens in the output in the location used by `AOTP`.
         """
         path_tokenizer: PathTokenizers.PathTokenizer = serializable_field(
             default=PathTokenizers.PathCoords(),
             loading_fn=lambda x: _load_tokenizer_element(x, PathTokenizers),
         )
-        include_target_special_tokens: bool = serializable_field(default=True)
 
         def _sequence_tokens(
             self,
@@ -995,11 +986,8 @@ class PromptSequencers(_TokenizerElementNamespace):
                 VOCAB.ORIGIN_START,
                 *origin,
                 VOCAB.ORIGIN_END,
-                *(
-                    [VOCAB.TARGET_START, VOCAB.TARGET_END]
-                    if self.include_target_special_tokens
-                    else ()
-                ),
+                VOCAB.TARGET_START,
+                VOCAB.TARGET_END,
                 VOCAB.PATH_START,
                 *path,
                 VOCAB.PATH_END,
