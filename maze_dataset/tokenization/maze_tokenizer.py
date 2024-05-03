@@ -1198,6 +1198,11 @@ class MazeTokenizer2(SerializableDataclass):
 
     # utils
     # =============
+    
+    def is_tested_tokenizer(self) -> bool:
+        """Returns if the tokenizer is a member of `all_tokenizers.ALL_TOKENIZERS`, the set of tested and reliable tokenizers.
+        """
+        return ALL_TOKENIZER_HASHES[np.searchsorted(ALL_TOKENIZER_HASHES, hash(self))] == hash(self)
 
     def is_AOTP(self) -> bool:
         warnings.warn(
@@ -1214,9 +1219,9 @@ class MazeTokenizer2(SerializableDataclass):
         return self.has_element(CoordTokenizers.UT)
 
 
-def load_tokenizer_hashes() -> Int64[np.int64, "tokenizer"]:
+def _load_tokenizer_hashes() -> Int64[np.int64, "tokenizer"]:
     """Loads the sorted list of `sall_tokenizers.ALL_TOKENIZERS` hashes from disk.
     """
     return np.load(os.path.join(os.path.curdir, 'maze_dataset', 'tokenization', 'MazeTokenizer2_hashes.npy'))
 
-ALL_TOKENIZER_HASHES: Int64[np.int64, "tokenizer"] = load_tokenizer_hashes()
+ALL_TOKENIZER_HASHES: Int64[np.int64, "tokenizer"] = _load_tokenizer_hashes()

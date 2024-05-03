@@ -37,7 +37,7 @@ from maze_dataset.tokenization import (
     TokenizationMode,
 )
 from maze_dataset.utils import all_instances
-from maze_dataset.tokenization.maze_tokenizer import load_tokenizer_hashes
+from maze_dataset.tokenization.maze_tokenizer import _load_tokenizer_hashes
 from maze_dataset.tokenization.util import equal_except_adj_list_sequence
 from maze_dataset.tokenization.all_tokenizers import (
     sample_tokenizers_for_test, 
@@ -499,5 +499,11 @@ def test_has_element(
     
 def test_all_tokenizer_hashes():
     loaded_hashes = save_hashes()
-    assert np.array_equal(load_tokenizer_hashes(), loaded_hashes)
+    assert np.array_equal(_load_tokenizer_hashes(), loaded_hashes)
     
+
+@mark.parametrize(
+    "tokenizer", [param(tokenizer, id=tokenizer.name) for tokenizer in sample_tokenizers_for_test(NUM_TOKENIZERS_TO_TEST)]
+)
+def test_is_tested_tokenizer(tokenizer: MazeTokenizer2):
+    assert tokenizer.is_tested_tokenizer()
