@@ -23,6 +23,7 @@ This collection should be expanded as specific tokenizers become canonical or po
 """
 
 from typing import Iterable
+from jaxtyping import Int64
 from functools import cache
 import random
 import numpy as np
@@ -72,10 +73,14 @@ def sample_tokenizers_for_test(n: int) -> list[MazeTokenizer2]:
     return sample
 
 
-def save_hashes():
+def save_hashes() -> Int64[np.int64, "tokenizer"]:
     """Computes, sorts, and saves the hashes of every member of `ALL_TOKENIZERS`.
     """
     hashes_array = np.array([hash(obj) for obj in ALL_TOKENIZERS], dtype=np.int64)
-    hashes_array.sort(0)
-    z: zanj.ZANJ = zanj.ZANJ()
-    z.save(hashes_array, os.path.join(os.path.curdir, 'maze_dataset', 'tokenization', 'MazeTokenizer2_hashes.zanj'))
+    sorted_hashes = np.unique(hashes_array)
+    if sorted_hashes.shape[0] != hashes_array.shape[0]:
+        raise ValueError("Tokenizer hash collision. Report error to the developer to increase the hash size or otherwise update the tokenizer hashing algorithm.")
+    # z: zanj.ZANJ = zanj.ZANJ()
+    # z.save(hashes_array, os.path.join(os.path.curdir, 'maze_dataset', 'tokenization', 'MazeTokenizer2_hashes.zanj'))
+    np.save(os.path.join(os.path.curdir, 'maze_dataset', 'tokenization', 'MazeTokenizer2_hashes.npy'), sorted_hashes)
+    return sorted_hashes

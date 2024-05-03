@@ -25,7 +25,7 @@ from maze_dataset import (
 from maze_dataset.generation import LatticeMazeGenerators
 from maze_dataset.plotting.print_tokens import color_maze_tokens_AOTP
 from maze_dataset.tokenization import (
-    ALL_TOKENIZERS,
+    ALL_TOKENIZER_HASHES,
     MazeTokenizer,
     MazeTokenizer2,
     TokenizerElement,
@@ -37,10 +37,12 @@ from maze_dataset.tokenization import (
     TokenizationMode,
 )
 from maze_dataset.utils import all_instances
+from maze_dataset.tokenization.maze_tokenizer import load_tokenizer_hashes
 from maze_dataset.tokenization.util import equal_except_adj_list_sequence
 from maze_dataset.tokenization.all_tokenizers import (
     sample_tokenizers_for_test, 
     EVERY_TEST_TOKENIZERS,
+    ALL_TOKENIZERS,
     save_hashes,
 )
 
@@ -493,3 +495,9 @@ def test_has_element(
     elems: _has_elems_type,
     result_func: Callable[[MazeTokenizer2, _has_elems_type], bool]):
     assert tokenizer.has_element(elems) == result_func(tokenizer, elems)
+    
+    
+def test_all_tokenizer_hashes():
+    loaded_hashes = save_hashes()
+    assert np.array_equal(load_tokenizer_hashes(), loaded_hashes)
+    

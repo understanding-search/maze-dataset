@@ -1,11 +1,13 @@
 """TokenizationMode enum and the MazeTokenizer class"""
 
 import abc
+import os
 import itertools
 import warnings
 from enum import Enum
 from functools import cached_property
 from typing import TYPE_CHECKING, Any, Callable, Iterable, Mapping, Sequence
+from jaxtyping import Int64
 
 import numpy as np
 from muutils.json_serialize import (
@@ -1211,3 +1213,10 @@ class MazeTokenizer2(SerializableDataclass):
         )
         return self.has_element(CoordTokenizers.UT)
 
+
+def load_tokenizer_hashes() -> Int64[np.int64, "tokenizer"]:
+    """Loads the sorted list of `sall_tokenizers.ALL_TOKENIZERS` hashes from disk.
+    """
+    return np.load(os.path.join(os.path.curdir, 'maze_dataset', 'tokenization', 'MazeTokenizer2_hashes.npy'))
+
+ALL_TOKENIZER_HASHES: Int64[np.int64, "tokenizer"] = load_tokenizer_hashes()

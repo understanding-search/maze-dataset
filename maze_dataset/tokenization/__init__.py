@@ -8,6 +8,7 @@ from maze_dataset.tokenization.maze_tokenizer import (
     TargetTokenizers,
     TokenizationMode,
     TokenizerElement,
+    ALL_TOKENIZER_HASHES,
     get_tokens_up_to_path_start,
 )
 from maze_dataset.tokenization.token_utils import (
@@ -19,7 +20,6 @@ from maze_dataset.tokenization.token_utils import (
     tokens_between,
 )
 from maze_dataset.tokenization.util import coord_str_to_tuple
-from maze_dataset.tokenization.all_tokenizers import ALL_TOKENIZERS
 
 __all__ = [
     "MazeTokenizer",
@@ -31,7 +31,7 @@ __all__ = [
     "AdjListTokenizers",
     "TargetTokenizers",
     "PathTokenizers",
-    "ALL_TOKENIZERS",
+    "ALL_TOKENIZER_HASHES",
     "coord_str_to_tuple",
     "get_adj_list_tokens",
     "get_context_tokens",
