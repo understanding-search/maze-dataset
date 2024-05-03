@@ -471,16 +471,16 @@ _has_elems_type = type[TokenizerElement] | TokenizerElement | Iterable[type[Toke
                 (CoordTokenizers.CoordTokenizer, 
                  lambda mt, els: isinstance(mt.prompt_sequencer.coord_tokenizer, els)
                  ),
-                ([CoordTokenizers.CTT, PathTokenizers.Coords], 
+                ([CoordTokenizers.CTT, PathTokenizers.PathCoords], 
                  lambda mt, els: isinstance(mt.prompt_sequencer.coord_tokenizer, els[0]) and isinstance(mt.prompt_sequencer.path_tokenizer, els[1])
                  ),
                 # ((a for a in [CoordTokenizers.CTT, PathTokenizers.Coords]), 
                 #  lambda mt, els: isinstance(mt.coord_tokenizer, list(els)[0]) and isinstance(mt.path_tokenizer, list(els)[1])
                 #  ),
-                ([CoordTokenizers.CTT, PathTokenizers.Coords(post=False)], 
+                ([CoordTokenizers.CTT, PathTokenizers.PathCoords(post=False)], 
                  lambda mt, els: isinstance(mt.prompt_sequencer.coord_tokenizer, els[0]) and mt.prompt_sequencer.path_tokenizer == els[1]
                  ),
-                ([CoordTokenizers.CTT, PathTokenizers.Coords, PromptSequencers.AOP()], 
+                ([CoordTokenizers.CTT, PathTokenizers.PathCoords, PromptSequencers.AOP()], 
                  lambda mt, els: isinstance(mt.prompt_sequencer.coord_tokenizer, els[0]) and isinstance(mt.prompt_sequencer.path_tokenizer, els[1]) and mt.prompt_sequencer == els[2]
                  ),
             ]

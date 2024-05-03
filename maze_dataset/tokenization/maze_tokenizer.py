@@ -14,6 +14,8 @@ from muutils.json_serialize import (
     serializable_field,
 )
 from muutils.kappa import Kappa
+from zanj import ZANJ
+from zanj.loading import load_item_recursive
 
 from maze_dataset.constants import (
     SPECIAL_TOKENS,
@@ -744,7 +746,7 @@ class PathTokenizers(_TokenizerElementNamespace):
             )
 
     @serializable_dataclass(frozen=True, kw_only=True)
-    class Coords(StepSequence):
+    class PathCoords(StepSequence):
         """Represents a path as a sequence of tokens for all the coords traversed.
 
         # Parameters
@@ -934,7 +936,7 @@ class PromptSequencers(_TokenizerElementNamespace):
             loading_fn=lambda x: _load_tokenizer_element(x, TargetTokenizers),
         )
         path_tokenizer: PathTokenizers.PathTokenizer = serializable_field(
-            default=PathTokenizers.Coords(),
+            default=PathTokenizers.PathCoords(),
             loading_fn=lambda x: _load_tokenizer_element(x, PathTokenizers),
         )
         
@@ -974,7 +976,7 @@ class PromptSequencers(_TokenizerElementNamespace):
         - `include_target_special_tokens`: Whether to include <TARGET_START> and <TARGET_END> tokens in the output in the location used by `AOTP`.
         """
         path_tokenizer: PathTokenizers.PathTokenizer = serializable_field(
-            default=PathTokenizers.Coords(),
+            default=PathTokenizers.PathCoords(),
             loading_fn=lambda x: _load_tokenizer_element(x, PathTokenizers),
         )
         include_target_special_tokens: bool = serializable_field(default=True)
@@ -1013,7 +1015,11 @@ def _load_tokenizer_element(
     # return getattr(namespace, cls_name).deserialize(data[key])
     cls: type[TokenizerElement] = getattr(namespace, cls_name)
     # TODO: Refactor line below with `zanj.loading.load_item_recursive` to properly leverage zanj
-    return cls(**{k: v for k, v in data[key].items() if k != "__format__"})
+    # zanj = ZANJ()
+    kwargs: dict[str, Any] = {k: load_item_recursive(data[key][k], tuple()) for k, v in data[key].items()}
+    if "__format__" in kwargs:
+        kwargs.pop("__format__")
+    return cls(**kwargs)
 
 
 @serializable_dataclass(frozen=True, kw_only=True)
