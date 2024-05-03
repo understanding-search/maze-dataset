@@ -25,6 +25,9 @@ This collection should be expanded as specific tokenizers become canonical or po
 from typing import Iterable
 from functools import cache
 import random
+import numpy as np
+import os
+import zanj
 
 from maze_dataset.tokenization import MazeTokenizer2, CoordTokenizers, PromptSequencers
 from maze_dataset.utils import all_instances
@@ -67,3 +70,12 @@ def sample_tokenizers_for_test(n: int) -> list[MazeTokenizer2]:
     sample: list[MazeTokenizer2] = random.sample(all_tokenizers_except_every_test_tokenizers(), n-len(EVERY_TEST_TOKENIZERS))
     sample.extend(EVERY_TEST_TOKENIZERS)
     return sample
+
+
+def save_hashes():
+    """Computes, sorts, and saves the hashes of every member of `ALL_TOKENIZERS`.
+    """
+    hashes_array = np.array([hash(obj) for obj in ALL_TOKENIZERS], dtype=np.int64)
+    hashes_array.sort(0)
+    z: zanj.ZANJ = zanj.ZANJ()
+    z.save(hashes_array, os.path.join(os.path.curdir, 'maze_dataset', 'tokenization', 'MazeTokenizer2_hashes.zanj'))

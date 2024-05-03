@@ -38,7 +38,11 @@ from maze_dataset.tokenization import (
 )
 from maze_dataset.utils import all_instances
 from maze_dataset.tokenization.util import equal_except_adj_list_sequence
-from maze_dataset.tokenization.all_tokenizers import sample_tokenizers_for_test, EVERY_TEST_TOKENIZERS
+from maze_dataset.tokenization.all_tokenizers import (
+    sample_tokenizers_for_test, 
+    EVERY_TEST_TOKENIZERS,
+    save_hashes,
+)
 
 NUM_TOKENIZERS_TO_TEST = 100
 GRID_N = 5
@@ -355,9 +359,6 @@ def test_sample_tokenizers_for_test(n: int, result: type[Exception] | None):
         mts2: list[MazeTokenizer2] = sample_tokenizers_for_test(n)
         assert set(mts2) != mts_set  # Check that succesive samples are different
         
-        
-        
-
 
 @mark.parametrize(
     "maze,tokenizer",
