@@ -420,26 +420,24 @@ def test_zanj_save_read(tokenizer: MazeTokenizer2):
     assert zanj.read(path) == tokenizer
 
 
-def test_is_AOTP():
-    for mt in sample_tokenizers_for_test(NUM_TOKENIZERS_TO_TEST):
-        if isinstance(mt.prompt_sequencer, PromptSequencers.AOTP):
-            assert mt.is_AOTP()
-        else:
-            assert not mt.is_AOTP()
-    assert not MazeTokenizer2(prompt_sequencer=PromptSequencers.AOP()).is_AOTP()
-    assert not MazeTokenizer2(
-        prompt_sequencer=PromptSequencers.AOTP(
-            coord_tokenizer=CoordTokenizers.CTT()
-        )
-    ).is_AOTP()
+@mark.parametrize(
+    "tokenizer", [param(tokenizer, id=tokenizer.name) for tokenizer in sample_tokenizers_for_test(NUM_TOKENIZERS_TO_TEST)]
+)
+def test_is_AOTP(tokenizer: MazeTokenizer2):
+    if isinstance(tokenizer.prompt_sequencer, PromptSequencers.AOTP):
+        assert tokenizer.is_AOTP()
+    else:
+        assert not tokenizer.is_AOTP()
 
 
-def test_is_UT():
-    for mt in sample_tokenizers_for_test(NUM_TOKENIZERS_TO_TEST):
-        if isinstance(mt.coord_tokenizer, CoordTokenizers.UT):
-            assert mt.is_UT()
-        else:
-            assert not mt.is_UT()
+@mark.parametrize(
+    "tokenizer", [param(tokenizer, id=tokenizer.name) for tokenizer in sample_tokenizers_for_test(NUM_TOKENIZERS_TO_TEST)]
+)
+def test_is_UT(tokenizer: MazeTokenizer2):
+    if isinstance(tokenizer.prompt_sequencer.coord_tokenizer, CoordTokenizers.UT):
+        assert tokenizer.is_UT()
+    else:
+        assert not tokenizer.is_UT()
 
 
 _has_elems_type = type[TokenizerElement] | TokenizerElement | Iterable[type[TokenizerElement] | TokenizerElement]
@@ -462,28 +460,28 @@ _has_elems_type = type[TokenizerElement] | TokenizerElement | Iterable[type[Toke
                  lambda mt, els: mt.prompt_sequencer == els
                  ),
                 ([CoordTokenizers.CTT()], 
-                 lambda mt, els: mt.coord_tokenizer == els[0]
+                 lambda mt, els: mt.prompt_sequencer.coord_tokenizer == els[0]
                  ),
                 (CoordTokenizers.CTT(intra=False), 
-                 lambda mt, els: mt.coord_tokenizer == els
+                 lambda mt, els: mt.prompt_sequencer.coord_tokenizer == els
                  ),
                 ([CoordTokenizers.CTT], 
-                 lambda mt, els: isinstance(mt.coord_tokenizer, els[0])
+                 lambda mt, els: isinstance(mt.prompt_sequencer.coord_tokenizer, els[0])
                  ),
                 (CoordTokenizers.CoordTokenizer, 
-                 lambda mt, els: isinstance(mt.coord_tokenizer, els)
+                 lambda mt, els: isinstance(mt.prompt_sequencer.coord_tokenizer, els)
                  ),
                 ([CoordTokenizers.CTT, PathTokenizers.Coords], 
-                 lambda mt, els: isinstance(mt.coord_tokenizer, els[0]) and isinstance(mt.path_tokenizer, els[1])
+                 lambda mt, els: isinstance(mt.prompt_sequencer.coord_tokenizer, els[0]) and isinstance(mt.prompt_sequencer.path_tokenizer, els[1])
                  ),
                 # ((a for a in [CoordTokenizers.CTT, PathTokenizers.Coords]), 
                 #  lambda mt, els: isinstance(mt.coord_tokenizer, list(els)[0]) and isinstance(mt.path_tokenizer, list(els)[1])
                 #  ),
                 ([CoordTokenizers.CTT, PathTokenizers.Coords(post=False)], 
-                 lambda mt, els: isinstance(mt.coord_tokenizer, els[0]) and mt.path_tokenizer == els[1]
+                 lambda mt, els: isinstance(mt.prompt_sequencer.coord_tokenizer, els[0]) and mt.prompt_sequencer.path_tokenizer == els[1]
                  ),
                 ([CoordTokenizers.CTT, PathTokenizers.Coords, PromptSequencers.AOP()], 
-                 lambda mt, els: isinstance(mt.coord_tokenizer, els[0]) and isinstance(mt.path_tokenizer, els[1]) and mt.prompt_sequencer == els[2]
+                 lambda mt, els: isinstance(mt.prompt_sequencer.coord_tokenizer, els[0]) and isinstance(mt.prompt_sequencer.path_tokenizer, els[1]) and mt.prompt_sequencer == els[2]
                  ),
             ]
         )
