@@ -673,6 +673,48 @@ class TargetTokenizers(_TokenizerElementNamespace):
             )
 
 
+class StepSizes(_TokenizerElementNamespace):
+    key='step_size'
+    
+    class StepSize(abc.ABC):
+        ...
+    
+    class Singles(StepSize): pass
+    class Straightaways(StepSize): pass
+    class Forks(StepSize): pass
+    class ForksAndStraightaways(StepSize): pass
+
+
+class StepTokenizers(_TokenizerElementNamespace):
+    class StepTokenizer(TokenizerElement, abc.ABC):
+        ...
+    
+    class Coord(StepTokenizer): pass
+    class Cardinal(StepTokenizer): pass
+    class Relative(StepTokenizer): pass
+    class Distance(StepTokenizer): pass
+
+        # `_step_rep_objs` is the set of all valid combinations and permutations of `StepTokenizer` objects
+    # This elaborate type hinting is to ensure the functionality of `utils.all_instances`, not for humans
+    # Enforcement of adherence to `_step_rep_objs` is done in `__post_init__`
+    _step_rep_objs: set[StepTokenizer] = {x() for x in StepTokenizer.__subclasses__()}
+    _step_rep_objs: set[tuple[StepTokenizer]] = {
+        *[(x, ) for x in _step_rep_objs],
+        *itertools.permutations(
+            itertools.combinations(
+            _step_rep_objs, 2
+            )
+        ),
+        *itertools.permutations(
+            itertools.combinations(
+            _step_rep_objs, 3
+            )
+        ),
+        *itertools.permutations(_step_rep_objs)
+    }
+    _step_rep_objs.remove((Distance(),))  # `Distance()` alone is not a valid step representation
+    StepRepPermutation: type == Literal[*_step_rep_objs]   
+  
 class PathTokenizers(_TokenizerElementNamespace):
     key = "path_tokenizer"
 
@@ -775,6 +817,9 @@ class PathTokenizers(_TokenizerElementNamespace):
         ) -> list[str]:
             return ()
 
+
+
+    
 
 class PromptSequencers(_TokenizerElementNamespace):
     key = "prompt_sequencer"
