@@ -6,7 +6,7 @@ import itertools
 import warnings
 from enum import Enum
 from functools import cached_property
-from typing import TYPE_CHECKING, Any, Callable, Iterable, Mapping, Sequence
+from typing import TYPE_CHECKING, Any, Callable, Iterable, Mapping, Sequence, Literal
 from jaxtyping import Int64
 
 import numpy as np
@@ -697,23 +697,26 @@ class StepTokenizers(_TokenizerElementNamespace):
         # `_step_rep_objs` is the set of all valid combinations and permutations of `StepTokenizer` objects
     # This elaborate type hinting is to ensure the functionality of `utils.all_instances`, not for humans
     # Enforcement of adherence to `_step_rep_objs` is done in `__post_init__`
-    _step_rep_objs: set[StepTokenizer] = {x() for x in StepTokenizer.__subclasses__()}
-    _step_rep_objs: set[tuple[StepTokenizer]] = {
-        *[(x, ) for x in _step_rep_objs],
-        *itertools.permutations(
-            itertools.combinations(
-            _step_rep_objs, 2
-            )
-        ),
-        *itertools.permutations(
-            itertools.combinations(
-            _step_rep_objs, 3
-            )
-        ),
-        *itertools.permutations(_step_rep_objs)
-    }
-    _step_rep_objs.remove((Distance(),))  # `Distance()` alone is not a valid step representation
-    StepRepPermutation: type == Literal[*_step_rep_objs]   
+    # _step_rep_objs: set[StepTokenizer] = {x() for x in StepTokenizer.__subclasses__()}
+    # _step_rep_objs: set[tuple[StepTokenizer]] = {
+    #     *[(x, ) for x in _step_rep_objs],
+    #     *itertools.permutations(
+    #         itertools.combinations(
+    #         _step_rep_objs, 2
+    #         )
+    #     ),
+    #     *itertools.permutations(
+    #         itertools.combinations(
+    #         _step_rep_objs, 3
+    #         )
+    #     ),
+    #     *itertools.permutations(_step_rep_objs)
+    # }
+    # _step_rep_objs.remove((Distance(),))  # `Distance()` alone is not a valid step representation
+    # _step_rep_names: list[str] = ["".join([type(step_tokenizer).__name__[:2] for step_tokenizer in tup]) for tup in _step_rep_objs]
+    # _StepRepEnum: type = Enum("_StepRepEnum", dict(zip(_step_rep_names, _step_rep_objs)))
+    
+    StepTokenizerPermutation: type = tuple[StepTokenizer] | tuple[StepTokenizer, StepTokenizer] | tuple[StepTokenizer, StepTokenizer, StepTokenizer] | tuple[StepTokenizer, StepTokenizer, StepTokenizer, StepTokenizer]
   
 class PathTokenizers(_TokenizerElementNamespace):
     key = "path_tokenizer"
