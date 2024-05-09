@@ -785,7 +785,7 @@ class PathTokenizers(_TokenizerElementNamespace):
         ) -> list[str]:
             return [
                 *self._leading_tokens(maze, coord_tokenizer),
-                *itertools.chain.from_iterable(
+                *flatten(
                     [
                         self._single_step_tokens(maze, start, end, coord_tokenizer)
                         for start, end in self.step_size.step_start_end_indices(maze)
@@ -799,8 +799,15 @@ class PathTokenizers(_TokenizerElementNamespace):
         ) -> list[str]:
             """Returns the token sequence representing a single step along the path."""
             step_rep_tokens: list[list[str]] = [step_tokenizer.to_tokens(maze, i, j, coord_tokenizer) for step_tokenizer in self.step_tokenizers]
+            if self.intra:
+                step_rep_tokens_and_intra: list[str] = [None]*(len(step_rep_tokens)*2)
+                step_rep_tokens_and_intra[::2] = step_rep_tokens
+                step_rep_tokens_and_intra[1::2] = [VOCAB.PATH_INTRA]*len(step_rep_tokens)
+                step_rep_tokens = list(flatten(step_rep_tokens_and_intra))
             all_tokens: list[str] = [
                 *unpackable_if_true_attribute((VOCAB.PATH_PRE,), self, 'pre'),
+                *flatten(step_rep_tokens),
+                *unpackable_if_true_attribute((VOCAB.PATH_POST,), self, 'post'),
             ]
             return all_tokens
 
@@ -814,8 +821,9 @@ class PathTokenizers(_TokenizerElementNamespace):
             """
             if StepTokenizers.Coord() in self.step_tokenizers:
                 return [
+                    *unpackable_if_true_attribute((VOCAB.PATH_PRE,), self, 'pre'),
                     *coord_tokenizer.to_tokens(maze.solution[0,...]),
-                    *unpackable_if_true_attribute((VOCAB.PATH_INTRA,), self, 'intra')
+                    *unpackable_if_true_attribute((VOCAB.PATH_INTRA,), self, 'intra'),
                 ]
             return []
 
@@ -827,6 +835,24 @@ class PathTokenizers(_TokenizerElementNamespace):
             """
             return []
         
+        def has_valid_step_tokenizers(self) -> bool:
+            """Validates `self.step_tokenizers`.
+            Used to filter `StepSequence` instances from `all_tokenizers.ALL_TOKENIZERS`.
+            
+            # Types of Invalidity
+            Each conditional clause classifies the reason for invalidity.
+            - Not useful: Tokenizers with these values might be used to train functional models, but the schemes are not interesting to study.
+            - Invalid: These values will produce useless tokenizers, training models would be impossible.
+            """
+            if len(set(self.step_tokenizers)) != len(self.step_tokenizers):
+                # Repeated elements are not useful
+                return False
+            if self.step_tokenizers == (StepTokenizers.Distance(),):
+                # `Distance` alone is invalid. >=1 `StepTokenizer` which indicates direction/location is required.
+                return False
+            else:
+                return True
+            
         
     # @serializable_dataclass(frozen=True, kw_only=True)
     # class PathCoords(StepSequence):
@@ -925,30 +951,29 @@ class PromptSequencers(_TokenizerElementNamespace):
 
         def to_tokens(
             self,
-            adj_list: Int8[np.ndarray, "conn start_end coord"],
-            origin: Coord | None,
-            target: Iterable[Coord] | None,
-            path: CoordArray | None,
+            maze: "LatticeMaze",
+            # adj_list: Int8[np.ndarray, "conn start_end coord"],
+            # origin: Coord | None,
+            # target: Iterable[Coord] | None,
+            # path: CoordArray | None,
             *args,
             **kwargs,
         ) -> list[str]:
             """Returns a complete list of tokens for a given set of maze elements."""
             untrimmed: list[str] = self._sequence_tokens(
                 *self._get_prompt_regions(
-                    adj_list,
-                    origin,
-                    target,
-                    path,
+                    maze
                 )
             )
-            return self._trim_if_unsolved_maze(untrimmed, origin is None, path is None)
+            return self._trim_if_unsolved_maze(untrimmed, not hasattr(maze, "start_pos"), not hasattr(maze, "solution"))
 
         def _get_prompt_regions(
             self,
-            adj_list: Int8[np.ndarray, "conn start_end coord"],
-            origin: Coord | None,
-            target: Iterable[Coord] | None,
-            path: CoordArray | None,
+            maze: "LatticeMaze",
+            # adj_list: Int8[np.ndarray, "conn start_end coord"],
+            # origin: Coord | None,
+            # target: Iterable[Coord] | None,
+            # path: CoordArray | None,
             *args,
             **kwargs,
         ) -> list[list[str]]:
@@ -969,8 +994,11 @@ class PromptSequencers(_TokenizerElementNamespace):
             If one or more of `origin`, `target`, or `path` are `None`, that indicates that an unsolved or untargeted maze is being tokenized.
             To ensure unpackability in `_sequence_tokens`, these `None` values are substituted for empty iterables.
             """
+            origin: Coord | None = getattr(maze, "start_pos", None)
+            target: list[Coord] | None = [getattr(maze, "end_pos", None)] # TargetTokenizer requires target: Sequence[Coord]
+
             return [
-                self.adj_list_tokenizer.to_tokens(adj_list, coord_tokenizer=self.coord_tokenizer) if hasattr(self, "adj_list_tokenizer") else [],
+                self.adj_list_tokenizer.to_tokens(maze.connection_list, coord_tokenizer=self.coord_tokenizer) if hasattr(self, "adj_list_tokenizer") else [],
                 self.coord_tokenizer.to_tokens(origin) if origin is not None else [],
                 (
                     self.target_tokenizer.to_tokens(target, coord_tokenizer=self.coord_tokenizer)
@@ -978,8 +1006,8 @@ class PromptSequencers(_TokenizerElementNamespace):
                     else []
                 ),
                 (
-                    self.path_tokenizer.to_tokens(path, coord_tokenizer=self.coord_tokenizer)
-                    if path is not None and hasattr(self, "path_tokenizer")
+                    self.path_tokenizer.to_tokens(maze, coord_tokenizer=self.coord_tokenizer)
+                    if hasattr(maze, "solution") and hasattr(self, "path_tokenizer")
                     else []
                 ),
             ]
@@ -1230,14 +1258,7 @@ class MazeTokenizer2(SerializableDataclass):
         maze: "LatticeMaze",
     ) -> list[str]:
         """Converts maze into a list of tokens."""
-        return self.prompt_sequencer.to_tokens(
-            maze.connection_list,
-            getattr(maze, "start_pos", None),
-            [
-                getattr(maze, "end_pos", None)
-            ],  # TargetTokenizer requires target: Iterable[Coord]
-            getattr(maze, "solution", None),
-        )
+        return self.prompt_sequencer.to_tokens(maze)
 
     def coords_to_strings(self, coords: list[CoordTup | Coord]) -> list[str]:
         return list(flatten([self.prompt_sequencer.coord_tokenizer.to_tokens(c) for c in coords]))
