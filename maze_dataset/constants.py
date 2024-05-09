@@ -162,7 +162,8 @@ _VOCAB_FIELDS: list = [
     *[
         (f"I_N{-i:03}", str, field(default=f"{i}")) for i in range(-256, 0)
     ],  # General purpose negative int tokens
-    *[(f"RESERVE_{i}", str, field(default=f"<RESERVE_{i}>")) for i in range(704, 1596)],
+    ("PATH_PRE", str, field(default="STEP")),
+    *[(f"RESERVE_{i}", str, field(default=f"<RESERVE_{i}>")) for i in range(705, 1596)],
     *[
         (f"UT_{x:02}_{y:02}", str, field(default=f"({x},{y})"))
         for x, y in corner_first_ndindex(50)

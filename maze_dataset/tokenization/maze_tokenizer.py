@@ -2,6 +2,7 @@
 
 import abc
 import os
+from pathlib import Path
 import itertools
 import warnings
 from enum import Enum
@@ -19,6 +20,7 @@ from muutils.kappa import Kappa
 from zanj import ZANJ
 from zanj.loading import load_item_recursive
 
+# from maze_dataset import SolvedMaze
 from maze_dataset.constants import (
     SPECIAL_TOKENS,
     VOCAB,
@@ -48,7 +50,7 @@ from maze_dataset.utils import (
 )
 
 if TYPE_CHECKING:
-    from maze_dataset import LatticeMaze
+    from maze_dataset import LatticeMaze, SolvedMaze
 
 
 class TokenError(ValueError):
@@ -449,13 +451,6 @@ class TokenizerElement(SerializableDataclass, abc.ABC):
     Implementing a subclass with an `int` or `float`-typed field, for example, is not supported.
     In the event that adding such fields is deemed necessary, `ALL_TOKENIZERS` must be updated.
     """
-
-    # def __repr__(self) -> str:
-    #     members_str: str = ",".join(
-    #         [f"{k}={repr(v)}" for k, v in self.__dict__.items()]
-    #     )
-    #     return f"{type(self).__name__}({members_str})"
-
     @property
     def name(self) -> str:
         def _stringify(k: str, v: Any):
@@ -463,15 +458,21 @@ class TokenizerElement(SerializableDataclass, abc.ABC):
                 return f'{k}={str(v)[0]}'
             if isinstance(v, TokenizerElement):
                 return v.name
-            return f'{k}={v}'
+            if isinstance(v, tuple):
+                return f"{k}={''.join(['(', *[str(x)+', ' for x in v], ')'])}"
+            else:
+                return f'{k}={v}'
         members_str: str = ", ".join(
             [_stringify(k, v) for k, v in self.__dict__.items()]
         )
         r = f"{type(self).__name__}({members_str})"
-        if "." in r:
+        if "." in r and r.index("(") > r.index("."):
             return "".join(r.split(".")[1:])
         else:
             return r
+    
+    def __str__(self):
+        return self.name
     
     @classmethod
     def _level_one_subclass(cls) -> type['TokenizerElement']:
@@ -491,17 +492,10 @@ class TokenizerElement(SerializableDataclass, abc.ABC):
         """
         raise NotImplementedError
 
-    @abc.abstractmethod
+    # @abc.abstractmethod
     def to_tokens(self, *args, **kwargs) -> list[str]:
         """Converts a maze element into a list of tokens."""
         raise NotImplementedError
-
-    @classmethod
-    def from_tokens(self, toks: list[str]):
-        """Converts a list of tokens into a maze element."""
-        raise NotImplementedError(
-            f"Conversion from tokens to {type(self)} not yet supported."
-        )
 
 
 class _TokenizerElementNamespace(abc.ABC):
@@ -676,8 +670,26 @@ class TargetTokenizers(_TokenizerElementNamespace):
 class StepSizes(_TokenizerElementNamespace):
     key='step_size'
     
-    class StepSize(abc.ABC):
-        ...
+    class StepSize(TokenizerElement, abc.ABC):
+        @classmethod
+        def attribute_key(cls) -> str:
+            return StepSizes.key
+        
+        def to_tokens(self, *args, **kwargs) -> list[str]:
+            raise NotImplementedError('`StepSize` classes do not directly produce tokens.')
+        
+        # @abc.abstractmethod
+        def _step_single_indices(self, maze: 'SolvedMaze') -> list[int]:
+            """Returns the indices of `maze.solution` corresponding to the steps to be tokenized.
+            """
+            # raise NotImplementedError('Subclasses must implement `StepSize.step_indices.')
+            return list(range(maze.solution.shape[0])) # temp for debug
+            
+        def step_start_end_indices(self, maze) -> list[tuple[int, int]]:
+            """Returns steps as tuples of starting and ending positions for each step.
+            """
+            indices: list[int] = self._step_single_indices(maze)
+            return [(start, end) for start, end in zip(indices[:-1], indices[1:])]
     
     class Singles(StepSize): pass
     class Straightaways(StepSize): pass
@@ -686,36 +698,45 @@ class StepSizes(_TokenizerElementNamespace):
 
 
 class StepTokenizers(_TokenizerElementNamespace):
-    class StepTokenizer(TokenizerElement, abc.ABC):
-        ...
+    key = "step_tokenizers"
     
-    class Coord(StepTokenizer): pass
+    class StepTokenizer(TokenizerElement, abc.ABC):
+        @classmethod
+        def attribute_key(cls) -> str:
+            return StepTokenizers.key
+        
+        @abc.abstractmethod
+        def to_tokens(
+            self, 
+            maze: "SolvedMaze", 
+            start_index: int, 
+            end_index: int,
+            **kwargs,
+            ) -> list[str]:
+            """Tokenizes a single step in the solution.
+            
+            # Parameters
+            - `maze`: Maze to be tokenized
+            - `start_index`: The index of the Coord in `maze.solution` at which the current step starts
+            - `end_index`: The index of the Coord in `maze.solution` at which the current step ends
+            """
+            raise NotImplementedError('Subclasses must implement `StepTokenizer.to_tokens.')
+        
+    
+    class Coord(StepTokenizer):
+        def to_tokens(
+            self, 
+            maze: "SolvedMaze", 
+            start_index: int, 
+            end_index: int, 
+            coord_tokenizer: CoordTokenizers.CoordTokenizer
+            ) -> list[str]:
+            return coord_tokenizer.to_tokens(maze.solution[end_index,...])
+            
     class Cardinal(StepTokenizer): pass
     class Relative(StepTokenizer): pass
     class Distance(StepTokenizer): pass
 
-        # `_step_rep_objs` is the set of all valid combinations and permutations of `StepTokenizer` objects
-    # This elaborate type hinting is to ensure the functionality of `utils.all_instances`, not for humans
-    # Enforcement of adherence to `_step_rep_objs` is done in `__post_init__`
-    # _step_rep_objs: set[StepTokenizer] = {x() for x in StepTokenizer.__subclasses__()}
-    # _step_rep_objs: set[tuple[StepTokenizer]] = {
-    #     *[(x, ) for x in _step_rep_objs],
-    #     *itertools.permutations(
-    #         itertools.combinations(
-    #         _step_rep_objs, 2
-    #         )
-    #     ),
-    #     *itertools.permutations(
-    #         itertools.combinations(
-    #         _step_rep_objs, 3
-    #         )
-    #     ),
-    #     *itertools.permutations(_step_rep_objs)
-    # }
-    # _step_rep_objs.remove((Distance(),))  # `Distance()` alone is not a valid step representation
-    # _step_rep_names: list[str] = ["".join([type(step_tokenizer).__name__[:2] for step_tokenizer in tup]) for tup in _step_rep_objs]
-    # _StepRepEnum: type = Enum("_StepRepEnum", dict(zip(_step_rep_names, _step_rep_objs)))
-    
     StepTokenizerPermutation: type = tuple[StepTokenizer] | tuple[StepTokenizer, StepTokenizer] | tuple[StepTokenizer, StepTokenizer, StepTokenizer] | tuple[StepTokenizer, StepTokenizer, StepTokenizer, StepTokenizer]
   
 class PathTokenizers(_TokenizerElementNamespace):
@@ -738,87 +759,102 @@ class PathTokenizers(_TokenizerElementNamespace):
         
 
     @serializable_dataclass(frozen=True, kw_only=True)
-    class StepSequence(PathTokenizer, abc.ABC):
+    class StepSequence(PathTokenizer):
         """Any `PathTokenizer` where the tokenization may be assembled from token subsequences, each of which represents a step along the path.
-
-        Steps may be of any length.
         Allows for a sequence of leading and trailing tokens which don't fit the step pattern.
+
+        # Parameters
+        - `step_size`: Selects the size of a single step in the sequence
+        - `step_tokenizer`: Selects the combination and permutation of tokens 
+        
         """
+        step_size: StepSizes.StepSize = serializable_field(
+        default=StepSizes.Singles(),
+        loading_fn=lambda x: _load_tokenizer_element(x, StepSizes),
+        )
+        step_tokenizers: StepTokenizers.StepTokenizerPermutation = serializable_field(
+        default=(StepTokenizers.Coord(),),
+        loading_fn=lambda x: _load_tokenizer_element(x, StepTokenizers),
+        )
+        pre: bool = serializable_field(default=False)
+        intra: bool = serializable_field(default=False)
+        post: bool = serializable_field(default=False)
 
         def to_tokens(
-            self, path: list[Coord], coord_tokenizer: CoordTokenizers.CoordTokenizer
+            self, maze: 'SolvedMaze', coord_tokenizer: CoordTokenizers.CoordTokenizer
         ) -> list[str]:
             return [
-                *self._leading_tokens(path[0], coord_tokenizer),
+                *self._leading_tokens(maze, coord_tokenizer),
                 *itertools.chain.from_iterable(
                     [
-                        self._single_step_tokens(c0, c1, coord_tokenizer)
-                        for c0, c1 in zip(path[:-1], path[1:])
+                        self._single_step_tokens(maze, start, end, coord_tokenizer)
+                        for start, end in self.step_size.step_start_end_indices(maze)
                     ]
                 ),
-                *self._trailing_tokens(path[-1], coord_tokenizer),
+                *self._trailing_tokens(maze, coord_tokenizer),
             ]
 
-        @abc.abstractmethod
         def _single_step_tokens(
-            self, c0: Coord, c1: Coord, coord_tokenizer: CoordTokenizers.CoordTokenizer
+            self, maze: "SolvedMaze", i: int, j: int, coord_tokenizer: CoordTokenizers.CoordTokenizer
         ) -> list[str]:
             """Returns the token sequence representing a single step along the path."""
-            pass
+            step_rep_tokens: list[list[str]] = [step_tokenizer.to_tokens(maze, i, j, coord_tokenizer) for step_tokenizer in self.step_tokenizers]
+            all_tokens: list[str] = [
+                *unpackable_if_true_attribute((VOCAB.PATH_PRE,), self, 'pre'),
+            ]
+            return all_tokens
 
-        @abc.abstractmethod
         def _leading_tokens(
-            self, c: Coord, coord_tokenizer: CoordTokenizers.CoordTokenizer
+            self, maze: "SolvedMaze", coord_tokenizer: CoordTokenizers.CoordTokenizer
         ) -> list[str]:
             """Returns tokens preceding those from the sequence from `_single_step_tokens`.
             Since the for loop in `to_tokens` iterates `len(path)-1` times, there may be a fencepost problem.
             There may be information about the start of the path that it misses that needs to be appended.
             <PATH_START> should NOT be included.
             """
-            raise NotImplementedError(
-                "Subclasses must implement `_leading_tokens`."
-                "If no leading tokens are desired then implement to return an empty tuple."
-            )
+            if StepTokenizers.Coord() in self.step_tokenizers:
+                return [
+                    *coord_tokenizer.to_tokens(maze.solution[0,...]),
+                    *unpackable_if_true_attribute((VOCAB.PATH_INTRA,), self, 'intra')
+                ]
+            return []
 
-        @abc.abstractmethod
         def _trailing_tokens(
             self, c: Coord, coord_tokenizer: CoordTokenizers.CoordTokenizer
         ) -> list[str]:
             """Returns tokens following those from the sequence from `_single_step_tokens`.
             <PATH_END> should NOT be included.
             """
-            raise NotImplementedError(
-                "Subclasses must implement `_trailing_tokens`."
-                "If no leading tokens are desired then implement to return an empty tuple."
-            )
+            return []
+        
+        
+    # @serializable_dataclass(frozen=True, kw_only=True)
+    # class PathCoords(StepSequence):
+    #     """Represents a path as a sequence of tokens for all the coords traversed.
 
-    @serializable_dataclass(frozen=True, kw_only=True)
-    class PathCoords(StepSequence):
-        """Represents a path as a sequence of tokens for all the coords traversed.
+    #     # Parameters
+    #     - `post`: Whether all coords include an integral following delimiter token
+    #     """
 
-        # Parameters
-        - `post`: Whether all coords include an integral following delimiter token
-        """
+        
 
-        post: bool = serializable_field(default=False)
+    #     def _single_step_tokens(
+    #         self, c0: Coord, c1: Coord, coord_tokenizer: CoordTokenizers.CoordTokenizer
+    #     ) -> list[str]:
+    #         return [
+    #             *coord_tokenizer.to_tokens(c1),
+    #             *unpackable_if_true_attribute([VOCAB.PATH_POST], self, "post"),
+    #         ]
 
-        def _single_step_tokens(
-            self, c0: Coord, c1: Coord, coord_tokenizer: CoordTokenizers.CoordTokenizer
-        ) -> list[str]:
-            return [
-                *coord_tokenizer.to_tokens(c1),
-                *unpackable_if_true_attribute([VOCAB.PATH_POST], self, "post"),
-            ]
+    #     def _leading_tokens(
+    #         self, c: CoordArray, coord_tokenizer: CoordTokenizers.CoordTokenizer
+    #     ) -> list[str]:
+    #         return coord_tokenizer.to_tokens(c)
 
-        def _leading_tokens(
-            self, c: CoordArray, coord_tokenizer: CoordTokenizers.CoordTokenizer
-        ) -> list[str]:
-            return coord_tokenizer.to_tokens(c)
-
-        def _trailing_tokens(
-            self, c: CoordArray, coord_tokenizer: CoordTokenizers.CoordTokenizer
-        ) -> list[str]:
-            return ()
+    #     def _trailing_tokens(
+    #         self, c: CoordArray, coord_tokenizer: CoordTokenizers.CoordTokenizer
+    #     ) -> list[str]:
+    #         return ()
 
 
 
@@ -983,7 +1019,7 @@ class PromptSequencers(_TokenizerElementNamespace):
             loading_fn=lambda x: _load_tokenizer_element(x, TargetTokenizers),
         )
         path_tokenizer: PathTokenizers.PathTokenizer = serializable_field(
-            default=PathTokenizers.PathCoords(),
+            default=PathTokenizers.StepSequence(),
             loading_fn=lambda x: _load_tokenizer_element(x, PathTokenizers),
         )
         
@@ -1018,7 +1054,7 @@ class PromptSequencers(_TokenizerElementNamespace):
         Uses `coord_tokenizer` to tokenize coords if that is part of the design of that `PathTokenizer`.
         """
         path_tokenizer: PathTokenizers.PathTokenizer = serializable_field(
-            default=PathTokenizers.PathCoords(),
+            default=PathTokenizers.StepSequence(),
             loading_fn=lambda x: _load_tokenizer_element(x, PathTokenizers),
         )
 
@@ -1270,6 +1306,6 @@ class MazeTokenizer2(SerializableDataclass):
 def _load_tokenizer_hashes() -> Int64[np.int64, "tokenizer"]:
     """Loads the sorted list of `sall_tokenizers.ALL_TOKENIZERS` hashes from disk.
     """
-    return np.load(os.path.join(os.path.curdir, 'maze_dataset', 'tokenization', 'MazeTokenizer2_hashes.npy'))
+    return np.load(Path(__file__).parent/'MazeTokenizer2_hashes.npy')
 
 ALL_TOKENIZER_HASHES: Int64[np.int64, "tokenizer"] = _load_tokenizer_hashes()
