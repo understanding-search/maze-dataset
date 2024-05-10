@@ -792,6 +792,14 @@ class StepTokenizers(_TokenizerElementNamespace):
     class Cardinal(StepTokenizer): pass
     class Relative(StepTokenizer): pass
     class Distance(StepTokenizer): pass
+        # def to_tokens(
+        #     self, 
+        #     maze: "SolvedMaze", 
+        #     start_index: int, 
+        #     end_index: int, 
+        #     **kwargs
+        #     ) -> list[str]:
+        #     return [VOCAB.I_1] # TODO: Temp debug, actually do it
 
     StepTokenizerPermutation: type = tuple[StepTokenizer] | tuple[StepTokenizer, StepTokenizer] | tuple[StepTokenizer, StepTokenizer, StepTokenizer] | tuple[StepTokenizer, StepTokenizer, StepTokenizer, StepTokenizer]
   
@@ -895,9 +903,9 @@ class PathTokenizers(_TokenizerElementNamespace):
             if len(set(self.step_tokenizers)) != len(self.step_tokenizers):
                 # Uninteresting: repeated elements are not useful
                 return False
-            if self.step_tokenizers == (StepTokenizers.Distance(),):
-                # Untrainable: `Distance` alone cannot encode a path. >=1 `StepTokenizer` which indicates direction/location is required.
-                return False
+            # if self.step_tokenizers == (StepTokenizers.Distance(),):
+            #     # Untrainable: `Distance` alone cannot encode a path. >=1 `StepTokenizer` which indicates direction/location is required.
+            #     return False
             else:
                 return True
                 
@@ -1323,7 +1331,8 @@ class MazeTokenizer2(SerializableDataclass):
     def is_tested_tokenizer(self) -> bool:
         """Returns if the tokenizer is a member of `all_tokenizers.ALL_TOKENIZERS`, the set of tested and reliable tokenizers.
         """
-        return ALL_TOKENIZER_HASHES[np.searchsorted(ALL_TOKENIZER_HASHES, hash(self))] == hash(self)
+        hash_index: int = np.searchsorted(ALL_TOKENIZER_HASHES, hash(self))
+        return hash_index < len(ALL_TOKENIZER_HASHES) and ALL_TOKENIZER_HASHES[hash_index] == hash(self)
 
     def is_AOTP(self) -> bool:
         warnings.warn(

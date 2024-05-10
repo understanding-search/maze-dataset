@@ -19,8 +19,10 @@ from typing import (
     ClassVar,
     )
 from types import UnionType
+import frozendict
 from dataclasses import field
 import itertools
+from functools import cache
 import enum
 
 import numpy as np
@@ -333,32 +335,82 @@ def get_all_subclasses(class_: type, include_self=False) -> set[type]:
     return subs
     
 
-def all_instances(type_: FiniteValued) -> list[FiniteValued]:
+def _apply_validation_func(
+    type_: FiniteValued,
+    vals: list[FiniteValued], 
+    validation_funcs: frozendict.frozendict[FiniteValued, Callable[[FiniteValued], bool]] | None = None
+    ) -> list[FiniteValued]:
+    """Helper function for `all_instances`
+    """
+    if validation_funcs is None or len(vals) == 0:
+        return vals
+    if hasattr(type_, "__mro__"):  # UnionType doesn't have `__mro__`
+        for superclass in type_.__mro__:
+            if superclass not in validation_funcs:
+                continue
+            vals = list(filter(validation_funcs[superclass], vals))
+            break  # Only the first validation function hit in the mro is applied
+    return vals
+
+
+@cache
+def all_instances(
+    type_: FiniteValued, 
+    validation_funcs: frozendict.frozendict[FiniteValued, Callable[[FiniteValued], bool]] | None = None
+    ) -> list[FiniteValued]:
     """Returns all possible values of an instance of `type_` if finite instances exist.
     Do not use with types whose members contain circular references.
     Function is susceptible to infinite recursion if `type_` is a dataclass whose member tree includes another instance of `type_`.
+    
+    # Parameters
+    - `type_`: A finite-valued type. See section "Supported `type_` Values" for more details.
+    - `validation_funcs`: A mapping of types to auxiliary functions to validate instances of that type.
+    This optional argument can provide an additional, more precise layer of validation for the instances generated beyond what type hinting alone can provide.
+        
+    # Supported `type_` Values
+    `type_` may be:
+    - `FiniteValued`
+    - A finite-valued, fixed-length Generic tuple type.
+    E.g., `tuple[bool]`, `tuple[bool, MyEnum]` are OK.
+    `tuple[bool, ...]` is NOT supported, since the length of the tuple is not fixed.
+    - Nested versions of any of the types in this list
+    - A `UnionType` of any of the types in this list
+    
+    # `validation_funcs` Details
+    `validation_funcs` is applied after all instances have been generated according to type hints.
+    If `type_` is in `validation_funcs`, then the list of instances is filtered by `validation_funcs[type_](instance)`.
+    `validation_funcs` is passed down for all recursive calls of `all_instances`.
+    This allows for improved performance through maximal pruning of the exponential tree.
+    `validation_funcs` supports subclass checking.
+    If `type_` is not found in `validation_funcs`, then the search is performed iteratively in mro order.
+    If a superclass of `type_` is found while searching in mro order, that validation function is applied and the list is returned.
+    If no superclass of `type_` is found, then no filter is applied.
     """
     if type_ == bool:
-        return [True, False]
+        return _apply_validation_func(type_, [True, False], validation_funcs)
     elif hasattr(type_, "__dataclass_fields__") and not is_abstract(type_):
+        # Concrete dataclass: construct dataclass instances with all possible combinations of fields
         fields: list[field] = type_.__dataclass_fields__
         fields_to_types: dict[str, type] = {f: fields[f].type for f in fields}
-        all_arg_sequences: Iterable = itertools.product(*[all_instances(arg_type) for arg_type in fields_to_types.values()])
-        return [type_(**{fld: arg for fld, arg in zip(fields_to_types.keys(), args)}) 
-                for args in all_arg_sequences]
+        all_arg_sequences: Iterable = itertools.product(*[all_instances(arg_type, validation_funcs) for arg_type in fields_to_types.values()])
+        return _apply_validation_func(type_, [type_(**{fld: arg for fld, arg in zip(fields_to_types.keys(), args)}) 
+                for args in all_arg_sequences], validation_funcs)
     elif hasattr(type_, "__dataclass_fields__") and is_abstract(type_):
-        return list(flatten([all_instances(sub) for sub in type_.__subclasses__()], levels_to_flatten=1))
+        # Abstract dataclass: call `all_instances` on each subclass
+        return _apply_validation_func(type_, list(flatten([all_instances(sub, validation_funcs) for sub in type_.__subclasses__()], levels_to_flatten=1)), validation_funcs)
     elif get_origin(type_) == tuple: # Only matches Generic type tuple since regular tuple is not finite-valued
-        return [
+        # Generic tuple: Similar to concrete dataclass. Construct all possible combinations of tuple fields.
+        return _apply_validation_func(type_, [
             tuple(combo) for combo in
             itertools.product(
-                *[all_instances(tup_item) for tup_item in get_args(type_)]
+                *[all_instances(tup_item, validation_funcs) for tup_item in get_args(type_)]
             )
-        ]
-        # TODO: figure this out for weird possible tuple variants
-    elif get_origin(type_) == UnionType: # Union: get all possible values for each Union arg
-        return list(flatten([all_instances(sub) for sub in get_args(type_)], levels_to_flatten=1))
+        ], validation_funcs)
+    elif get_origin(type_) == UnionType: 
+        # Union: call `all_instances` for each type in the Union
+        return _apply_validation_func(type_, list(flatten([all_instances(sub, validation_funcs) for sub in get_args(type_)], levels_to_flatten=1)), validation_funcs)
     elif type(type_) == enum.EnumMeta: # `issubclass(type_, enum.Enum)` doesn't work
+        # Enum: return all Enum members
         raise NotImplementedError(f"Support for Enums not yet implemented.")
     else:
         raise TypeError(f"Type {type_} either has unbounded possible values or is not supported.")

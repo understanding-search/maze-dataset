@@ -23,6 +23,7 @@ This collection should be expanded as specific tokenizers become canonical or po
 """
 
 from typing import Iterable
+import frozendict
 from jaxtyping import Int64
 from functools import cache
 import random
@@ -30,11 +31,21 @@ import numpy as np
 import os
 from pathlib import Path
 
-from maze_dataset.tokenization import MazeTokenizer2, CoordTokenizers, PromptSequencers
+from maze_dataset.tokenization import MazeTokenizer2, CoordTokenizers, PromptSequencers, TokenizerElement
 from maze_dataset.utils import all_instances
 
 
-ALL_TOKENIZERS: set[MazeTokenizer2] = set(all_instances(MazeTokenizer2))
+def _get_all_tokenizers() -> list[MazeTokenizer2]:
+    return all_instances(
+        MazeTokenizer2, 
+        validation_funcs=frozendict.frozendict({
+            TokenizerElement: lambda x: x.is_valid(),
+            MazeTokenizer2: lambda x: x.is_valid(),
+        })
+    )
+
+
+ALL_TOKENIZERS: set[MazeTokenizer2] = set(_get_all_tokenizers())
 EVERY_TEST_TOKENIZERS: list[MazeTokenizer2] = [
     MazeTokenizer2(), 
     MazeTokenizer2(
