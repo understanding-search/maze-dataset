@@ -483,7 +483,13 @@ class TokenizerElement(SerializableDataclass, abc.ABC):
     def _tokenizer_elements(self) -> list['TokenizerElement']:
         """Returns a list of all `TokenizerElement` instances contained in the subtree.
         """
-        return list(flatten([[el] + el._tokenizer_elements() for el in self.__dict__.values() if isinstance(el, TokenizerElement)]))
+        if not any(type(el) == tuple for el in self.__dict__.values()):
+            return list(flatten([[el] + el._tokenizer_elements() for el in self.__dict__.values() if isinstance(el, TokenizerElement)]))
+        else:
+            non_tuple_elems: list[TokenizerElement] = list(flatten([[el] + el._tokenizer_elements() for el in self.__dict__.values() if isinstance(el, TokenizerElement)]))
+            tuple_elems: list[TokenizerElement] = list(flatten([[[tup_el] + tup_el._tokenizer_elements() for tup_el in el if isinstance(tup_el, TokenizerElement)] for el in self.__dict__.values() if isinstance(el, tuple)]))
+            non_tuple_elems.extend(tuple_elems)
+            return non_tuple_elems
     
     @classmethod
     @abc.abstractmethod
@@ -492,9 +498,42 @@ class TokenizerElement(SerializableDataclass, abc.ABC):
         """
         raise NotImplementedError
 
-    # @abc.abstractmethod
     def to_tokens(self, *args, **kwargs) -> list[str]:
-        """Converts a maze element into a list of tokens."""
+        """Converts a maze element into a list of tokens.
+        Not all `TokenizerElement` subclasses produce tokens, so this is not an abstract method.
+        Those subclasses which do produce tokens should override this method.
+        """
+        raise NotImplementedError
+    
+    @abc.abstractmethod
+    def is_valid(self) -> bool:
+        """Returns if `self` contains data members capable of producing an overall valid `MazeTokenizer2`.
+        Some `TokenizerElement` instances may be created which are not useful despite obeying data member type hints.
+        `is_valid` allows for more precise detection of invalid `TokenizerElement`s beyond type hinting alone.
+        If type hints are sufficient to constrain the possible instances of some subclass, then this method may simply `return True` for that subclass.
+        
+        # Types of Invalidity
+        In nontrivial implementations of this method, each conditional clause should contain a comment classifying the reason for invalidity and one of the types below.
+        Invalidity types, in ascending order of invalidity:
+        - Uninteresting: These tokenizers might be used to train functional models, but the schemes are not interesting to study.
+        E.g., `TokenizerElement`s which are strictly worse than some alternative.
+        - Duplicate: These tokenizers have identical tokenization behavior as some other valid tokenizers.
+        - Untrainable: Training functional models using these tokenizers would be (nearly) impossible.
+        - Erroneous: These tokenizers might raise exceptions during use.
+        
+        # Development 
+        `is_invalid` is implemented to always return `True` in some abstract classes where all currently possible subclass instances are valid.
+        When adding new subclasses or data members, the developer should check if any such blanket statement of validity still holds and update it as neccesary.
+        
+        ## Nesting
+        In general, when implementing this method, there is no need to recursively call `is_valid` on nested `TokenizerElement`s contained in the class.
+        In other words, failures of `is_valid` need not bubble up to the top of the nested `TokenizerElement` tree.
+        `MazeTokenizer2.is_valid` calls `is_valid` on each of its `TokenizerElement`s individually, so failure at any level will be detected.
+        
+        ## Types of Invalidity
+        If it's judged to be useful, the types of invalidity could be implemented with an Enum or similar rather than only living in comments.
+        This could be used to create more or less stringent filters on the valid `TokenizerElement` instances.
+        """
         raise NotImplementedError
 
 
@@ -521,7 +560,9 @@ class CoordTokenizers(_TokenizerElementNamespace):
         def attribute_key(cls) -> str:
             return CoordTokenizers.key
 
-        # Define some (abstract) methods
+        def is_valid(self) -> bool:
+            # No invalid instances possible within data member type hint bounds
+            return True
 
     @serializable_dataclass(frozen=True, kw_only=True)
     class UT(CoordTokenizer, abc.ABC):
@@ -571,7 +612,6 @@ class AdjListTokenizers(_TokenizerElementNamespace):
             return AdjListTokenizers.key
         
 
-    # TODO: figure out properties_to_serialize
     @serializable_dataclass(frozen=True, kw_only=True)
     class Coords(AdjListTokenizer):
         """
@@ -616,6 +656,10 @@ class AdjListTokenizers(_TokenizerElementNamespace):
                     for c_s, c_e in adj_list
                 ]
             )
+
+        def is_valid(self) -> bool:
+            # No invalid instances possible within data member type hint bounds
+            return True
 
 
 class TargetTokenizers(_TokenizerElementNamespace):
@@ -666,6 +710,10 @@ class TargetTokenizers(_TokenizerElementNamespace):
                 )
             )
 
+        def is_valid(self) -> bool:
+            # No invalid instances possible within data member type hint bounds
+            return True
+
 
 class StepSizes(_TokenizerElementNamespace):
     key='step_size'
@@ -690,6 +738,10 @@ class StepSizes(_TokenizerElementNamespace):
             """
             indices: list[int] = self._step_single_indices(maze)
             return [(start, end) for start, end in zip(indices[:-1], indices[1:])]
+
+        def is_valid(self) -> bool:
+            # No invalid instances possible within data member type hint bounds
+            return True
     
     class Singles(StepSize): pass
     class Straightaways(StepSize): pass
@@ -721,6 +773,10 @@ class StepTokenizers(_TokenizerElementNamespace):
             - `end_index`: The index of the Coord in `maze.solution` at which the current step ends
             """
             raise NotImplementedError('Subclasses must implement `StepTokenizer.to_tokens.')
+
+        def is_valid(self) -> bool:
+            # No invalid instances possible within data member type hint bounds
+            return True
         
     
     class Coord(StepTokenizer):
@@ -835,56 +891,16 @@ class PathTokenizers(_TokenizerElementNamespace):
             """
             return []
         
-        def has_valid_step_tokenizers(self) -> bool:
-            """Validates `self.step_tokenizers`.
-            Used to filter `StepSequence` instances from `all_tokenizers.ALL_TOKENIZERS`.
-            
-            # Types of Invalidity
-            Each conditional clause classifies the reason for invalidity.
-            - Not useful: Tokenizers with these values might be used to train functional models, but the schemes are not interesting to study.
-            - Invalid: These values will produce useless tokenizers, training models would be impossible.
-            """
+        def is_valid(self) -> bool:
             if len(set(self.step_tokenizers)) != len(self.step_tokenizers):
-                # Repeated elements are not useful
+                # Uninteresting: repeated elements are not useful
                 return False
             if self.step_tokenizers == (StepTokenizers.Distance(),):
-                # `Distance` alone is invalid. >=1 `StepTokenizer` which indicates direction/location is required.
+                # Untrainable: `Distance` alone cannot encode a path. >=1 `StepTokenizer` which indicates direction/location is required.
                 return False
             else:
                 return True
-            
-        
-    # @serializable_dataclass(frozen=True, kw_only=True)
-    # class PathCoords(StepSequence):
-    #     """Represents a path as a sequence of tokens for all the coords traversed.
-
-    #     # Parameters
-    #     - `post`: Whether all coords include an integral following delimiter token
-    #     """
-
-        
-
-    #     def _single_step_tokens(
-    #         self, c0: Coord, c1: Coord, coord_tokenizer: CoordTokenizers.CoordTokenizer
-    #     ) -> list[str]:
-    #         return [
-    #             *coord_tokenizer.to_tokens(c1),
-    #             *unpackable_if_true_attribute([VOCAB.PATH_POST], self, "post"),
-    #         ]
-
-    #     def _leading_tokens(
-    #         self, c: CoordArray, coord_tokenizer: CoordTokenizers.CoordTokenizer
-    #     ) -> list[str]:
-    #         return coord_tokenizer.to_tokens(c)
-
-    #     def _trailing_tokens(
-    #         self, c: CoordArray, coord_tokenizer: CoordTokenizers.CoordTokenizer
-    #     ) -> list[str]:
-    #         return ()
-
-
-
-    
+                
 
 class PromptSequencers(_TokenizerElementNamespace):
     key = "prompt_sequencer"
@@ -1030,6 +1046,10 @@ class PromptSequencers(_TokenizerElementNamespace):
             """
             pass
 
+        def is_valid(self) -> bool:
+            # No invalid instances possible within data member type hint bounds
+            return True
+
     @serializable_dataclass(frozen=True, kw_only=True)
     class AOTP(PromptSequencer):
         """
@@ -1116,8 +1136,6 @@ def _load_tokenizer_element(
     cls_name: str = format.split("(")[0]
     # return getattr(namespace, cls_name).deserialize(data[key])
     cls: type[TokenizerElement] = getattr(namespace, cls_name)
-    # TODO: Refactor line below with `zanj.loading.load_item_recursive` to properly leverage zanj
-    # zanj = ZANJ()
     kwargs: dict[str, Any] = {k: load_item_recursive(data[key][k], tuple()) for k, v in data[key].items()}
     if "__format__" in kwargs:
         kwargs.pop("__format__")
@@ -1141,11 +1159,6 @@ class MazeTokenizer2(SerializableDataclass):
         default=PromptSequencers.AOTP(),
         loading_fn=lambda x: _load_tokenizer_element(x, PromptSequencers),
     )
-
-    # def __repr__(self) -> str:
-    #     return "-".join(
-    #         [type(self).__name__, repr(self.prompt_sequencer)]
-    #     )
 
     # Information Querying Methods
 
@@ -1198,6 +1211,9 @@ class MazeTokenizer2(SerializableDataclass):
             return has_element_singular(elements)
         else:
             return all([has_element_singular(e) for e in elements])
+
+    def is_valid(self):
+        return all([el.is_valid() for el in self._tokenizer_elements])
 
     # Alternate Constructors
     # ======================
