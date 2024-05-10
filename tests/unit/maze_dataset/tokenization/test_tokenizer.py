@@ -45,6 +45,7 @@ from maze_dataset.tokenization.all_tokenizers import (
     sample_tokenizers_for_test, 
     EVERY_TEST_TOKENIZERS,
     ALL_TOKENIZERS,
+    _get_all_tokenizers,
     save_hashes,
 )
 
@@ -334,7 +335,7 @@ def test_from_tokens_backwards_compatible(
 
 def test_all_tokenizers():
     assert len(ALL_TOKENIZERS) > 400
-    assert len(all_instances(MazeTokenizer2)) == len(ALL_TOKENIZERS)
+    assert len(_get_all_tokenizers()) == len(ALL_TOKENIZERS)
 
 sample_min: int = len(EVERY_TEST_TOKENIZERS)
 
@@ -476,7 +477,7 @@ _has_elems_type = type[TokenizerElement] | TokenizerElement | Iterable[type[Toke
                 (CoordTokenizers.CoordTokenizer, 
                  lambda mt, els: isinstance(mt.prompt_sequencer.coord_tokenizer, els)
                  ),
-                ([CoordTokenizers.CTT, PathTokenizers.StepSequence()], 
+                ([CoordTokenizers.CTT, PathTokenizers.StepSequence], 
                  lambda mt, els: isinstance(mt.prompt_sequencer.coord_tokenizer, els[0]) and isinstance(mt.prompt_sequencer.path_tokenizer, els[1])
                  ),
                 # ((a for a in [CoordTokenizers.CTT, PathTokenizers.Coords]), 

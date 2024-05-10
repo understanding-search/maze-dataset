@@ -838,7 +838,7 @@ class PathTokenizers(_TokenizerElementNamespace):
         )
         step_tokenizers: StepTokenizers.StepTokenizerPermutation = serializable_field(
         default=(StepTokenizers.Coord(),),
-        loading_fn=lambda x: _load_tokenizer_element(x, StepTokenizers),
+        loading_fn=lambda x: tuple(_load_tokenizer_element(y, StepTokenizers) for y in x),
         )
         pre: bool = serializable_field(default=False)
         intra: bool = serializable_field(default=False)
@@ -1142,7 +1142,6 @@ def _load_tokenizer_element(
     key: str = namespace.key
     format: str = data[key]["__format__"]
     cls_name: str = format.split("(")[0]
-    # return getattr(namespace, cls_name).deserialize(data[key])
     cls: type[TokenizerElement] = getattr(namespace, cls_name)
     kwargs: dict[str, Any] = {k: load_item_recursive(data[key][k], tuple()) for k, v in data[key].items()}
     if "__format__" in kwargs:
