@@ -28,7 +28,6 @@ from functools import cache
 import random
 import numpy as np
 import os
-import zanj
 
 from maze_dataset.tokenization import MazeTokenizer2, CoordTokenizers, PromptSequencers
 from maze_dataset.utils import all_instances

@@ -14,11 +14,14 @@ from typing import (
     Generator,
     Protocol,
     runtime_checkable,
-    ClassVar
+    get_args,
+    get_origin,
+    ClassVar,
     )
+from types import UnionType
 from dataclasses import field
 import itertools
-from enum import Enum
+import enum
 
 import numpy as np
 from jaxtyping import Bool
@@ -34,7 +37,7 @@ class IsDataclass(Protocol):
     __dataclass_fields__: ClassVar[dict[str, Any]]
 
     
-FiniteValued = TypeVar("FiniteValued", bool, IsDataclass, Enum)
+FiniteValued = TypeVar("FiniteValued", bool, IsDataclass, enum.Enum)
 
 
 def bool_array_from_string(
@@ -345,7 +348,12 @@ def all_instances(type_: FiniteValued) -> list[FiniteValued]:
                 for args in all_arg_sequences]
     elif hasattr(type_, "__dataclass_fields__") and is_abstract(type_):
         return list(flatten([all_instances(sub) for sub in type_.__subclasses__()], levels_to_flatten=1))
-    elif issubclass(type_, Enum):
+    elif get_origin(type_) == tuple: # Only matches Generic type tuple since regular tuple is not Finite-valued
+        ...
+        # TODO: figure this out for weird possible tuple variants
+    elif get_origin(type_) == UnionType: # Union: get all possible values for each Union arg
+        list(flatten([all_instances(sub) for sub in get_args(type_)], levels_to_flatten=1))
+    elif type(type_) == enum.EnumMeta: # `issubclass(type_, enum.Enum)` doesn't work
         raise NotImplementedError(f"Support for Enums not yet implemented.")
     else:
         raise TypeError(f"Type {type_} either has unbounded possible values or is not supported.")

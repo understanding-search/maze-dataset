@@ -32,6 +32,8 @@ from maze_dataset.tokenization import (
     CoordTokenizers,
     PromptSequencers,
     AdjListTokenizers,
+    StepSizes,
+    StepTokenizers,
     PathTokenizers,
     TargetTokenizers,
     TokenizationMode,
@@ -495,7 +497,50 @@ def test_has_element(
     elems: _has_elems_type,
     result_func: Callable[[MazeTokenizer2, _has_elems_type], bool]):
     assert tokenizer.has_element(elems) == result_func(tokenizer, elems)
-    
+
+
+@mark.parametrize(
+    "el, result",
+    [
+        param(elem, result, id=elem.name)
+        for elem, result in [
+            (CoordTokenizers.CTT(), True),
+            (CoordTokenizers.CTT(intra=True), True),
+            (CoordTokenizers.UT(), True),
+            (AdjListTokenizers.Coords(), True),
+            (AdjListTokenizers.Coords(walls=True), True),
+            (TargetTokenizers.Unlabeled(post=True), True),
+            (PathTokenizers.StepSequence(), True),
+            (PathTokenizers.StepSequence(
+                step_tokenizers=(StepTokenizers.Coord(), )
+                ),
+             True),
+            (PathTokenizers.StepSequence(
+                step_tokenizers=(StepTokenizers.Coord(), StepTokenizers.Coord(),)
+                ),
+             False),
+            (PromptSequencers.AOP(), True),
+            (PromptSequencers.AOP(
+                path_tokenizer=PathTokenizers.StepSequence()
+                ), 
+             True),
+            (PromptSequencers.AOP(
+                path_tokenizer=PathTokenizers.StepSequence(
+                    step_tokenizers=(StepTokenizers.Coord(),)
+                    )
+                ), 
+             True),
+            (PromptSequencers.AOP(
+                path_tokenizer=PathTokenizers.StepSequence(
+                    step_tokenizers=(StepTokenizers.Coord(), StepTokenizers.Coord(),)
+                    )
+                ), 
+             False),
+            ]
+    ],
+)
+def test_tokenizer_element_is_valid(el: TokenizerElement, result: bool):
+    ...
     
 def test_all_tokenizer_hashes():
     loaded_hashes = save_hashes()
