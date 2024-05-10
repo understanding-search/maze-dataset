@@ -28,6 +28,7 @@ from functools import cache
 import random
 import numpy as np
 import os
+from pathlib import Path
 
 from maze_dataset.tokenization import MazeTokenizer2, CoordTokenizers, PromptSequencers
 from maze_dataset.utils import all_instances
@@ -51,7 +52,7 @@ def all_tokenizers_list() -> list[MazeTokenizer2]:
 
 
 @cache
-def all_tokenizers_except_every_test_tokenizers() -> list[MazeTokenizer2]:
+def _all_tokenizers_except_every_test_tokenizers() -> list[MazeTokenizer2]:
     """Returns  """
     return list(ALL_TOKENIZERS.difference(EVERY_TEST_TOKENIZERS))
 
@@ -67,7 +68,7 @@ def sample_tokenizers_for_test(n: int) -> list[MazeTokenizer2]:
     """
     if n < len(EVERY_TEST_TOKENIZERS):
         raise ValueError(f'`n` must be at least {len(EVERY_TEST_TOKENIZERS)} such that the sample can contain `EVERY_TEST_TOKENIZERS`.')
-    sample: list[MazeTokenizer2] = random.sample(all_tokenizers_except_every_test_tokenizers(), n-len(EVERY_TEST_TOKENIZERS))
+    sample: list[MazeTokenizer2] = random.sample(_all_tokenizers_except_every_test_tokenizers(), n-len(EVERY_TEST_TOKENIZERS))
     sample.extend(EVERY_TEST_TOKENIZERS)
     return sample
 
@@ -81,5 +82,5 @@ def save_hashes() -> Int64[np.int64, "tokenizer"]:
         raise ValueError("Tokenizer hash collision. Report error to the developer to increase the hash size or otherwise update the tokenizer hashing algorithm.")
     # z: zanj.ZANJ = zanj.ZANJ()
     # z.save(hashes_array, os.path.join(os.path.curdir, 'maze_dataset', 'tokenization', 'MazeTokenizer2_hashes.zanj'))
-    np.save(os.path.join(os.path.curdir, 'maze_dataset', 'tokenization', 'MazeTokenizer2_hashes.npy'), sorted_hashes)
+    np.save(Path(__file__).parent/'MazeTokenizer2_hashes.npy', sorted_hashes)
     return sorted_hashes

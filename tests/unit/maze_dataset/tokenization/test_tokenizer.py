@@ -540,7 +540,7 @@ def test_has_element(
     ],
 )
 def test_tokenizer_element_is_valid(el: TokenizerElement, result: bool):
-    ...
+    assert el.is_valid() == result
     
 def test_all_tokenizer_hashes():
     loaded_hashes = save_hashes()

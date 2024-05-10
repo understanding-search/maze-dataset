@@ -3,6 +3,7 @@ from dataclasses import dataclass
 
 import pytest
 from pytest import mark, param
+import abc
 
 from maze_dataset.dataset.maze_dataset import MazeDatasetConfig
 from maze_dataset.tokenization import get_tokens_up_to_path_start
@@ -542,6 +543,25 @@ class DC6:
     y: bool = False
 
 
+@dataclass(frozen=True)
+class DC7(abc.ABC):
+    x: bool
+    @abc.abstractmethod
+    def foo(): pass
+
+
+@dataclass(frozen=True)
+class DC8(DC7):
+    x: bool = False
+    def foo(): pass
+    
+    
+@dataclass(frozen=True)
+class DC9(DC7):
+    y: bool = True
+    def foo(): pass
+
+
 @mark.parametrize(
     "type_, result",
     [
@@ -593,6 +613,70 @@ class DC6:
                 (bool, [True, False]),
                 (int, TypeError),
                 (str, TypeError),
+                (tuple[bool], 
+                 [
+                     (True,),
+                     (False,),
+                 ]
+                ),
+                (tuple[bool, bool], 
+                 [
+                     (True, True),
+                     (True, False),
+                     (False, True),
+                     (False, False),
+                 ]
+                ),
+                (DC8,
+                 [
+                    DC8(False),
+                    DC8(True),
+                 ]
+                ),
+                (DC7,
+                 [
+                    DC8(False),
+                    DC8(True),
+                    DC9(False, False),
+                    DC9(False, True),
+                    DC9(True, False),
+                    DC9(True, True),
+                 ]
+                ),
+                (tuple[DC7], 
+                 [
+                     (DC8(False),),
+                     (DC8(True),),
+                     (DC9(False, False),),
+                     (DC9(False, True),),
+                     (DC9(True, False),),
+                     (DC9(True, True),),
+                 ]
+                ),
+                (tuple[DC8, DC8], 
+                 [
+                     (DC8(False), DC8(False)),
+                     (DC8(False), DC8(True)),
+                     (DC8(True), DC8(False)),
+                     (DC8(True), DC8(True)),
+                 ]
+                ),
+                (tuple[DC7, bool], 
+                 [
+                     (DC8(False), True),
+                     (DC8(True), True),
+                     (DC9(False, False), True),
+                     (DC9(False, True), True),
+                     (DC9(True, False), True),
+                     (DC9(True, True), True),
+                     (DC8(False), False),
+                     (DC8(True), False),
+                     (DC9(False, False), False),
+                     (DC9(False, True), False),
+                     (DC9(True, False), False),
+                     (DC9(True, True), False),
+                 ]
+                ),
             ]
         )
     ],

@@ -348,11 +348,16 @@ def all_instances(type_: FiniteValued) -> list[FiniteValued]:
                 for args in all_arg_sequences]
     elif hasattr(type_, "__dataclass_fields__") and is_abstract(type_):
         return list(flatten([all_instances(sub) for sub in type_.__subclasses__()], levels_to_flatten=1))
-    elif get_origin(type_) == tuple: # Only matches Generic type tuple since regular tuple is not Finite-valued
-        ...
+    elif get_origin(type_) == tuple: # Only matches Generic type tuple since regular tuple is not finite-valued
+        return [
+            tuple(combo) for combo in
+            itertools.product(
+                *[all_instances(tup_item) for tup_item in get_args(type_)]
+            )
+        ]
         # TODO: figure this out for weird possible tuple variants
     elif get_origin(type_) == UnionType: # Union: get all possible values for each Union arg
-        list(flatten([all_instances(sub) for sub in get_args(type_)], levels_to_flatten=1))
+        return list(flatten([all_instances(sub) for sub in get_args(type_)], levels_to_flatten=1))
     elif type(type_) == enum.EnumMeta: # `issubclass(type_, enum.Enum)` doesn't work
         raise NotImplementedError(f"Support for Enums not yet implemented.")
     else:
