@@ -723,15 +723,11 @@ class StepSizes(_TokenizerElementNamespace):
         def attribute_key(cls) -> str:
             return StepSizes.key
         
-        def to_tokens(self, *args, **kwargs) -> list[str]:
-            raise NotImplementedError('`StepSize` classes do not directly produce tokens.')
-        
-        # @abc.abstractmethod
+        @abc.abstractmethod
         def _step_single_indices(self, maze: 'SolvedMaze') -> list[int]:
             """Returns the indices of `maze.solution` corresponding to the steps to be tokenized.
             """
-            # raise NotImplementedError('Subclasses must implement `StepSize.step_indices.')
-            return list(range(maze.solution.shape[0])) # temp for debug
+            raise NotImplementedError('Subclasses must implement `StepSize.step_indices.')
             
         def step_start_end_indices(self, maze) -> list[tuple[int, int]]:
             """Returns steps as tuples of starting and ending positions for each step.
@@ -743,8 +739,28 @@ class StepSizes(_TokenizerElementNamespace):
             # No invalid instances possible within data member type hint bounds
             return True
     
-    class Singles(StepSize): pass
-    class Straightaways(StepSize): pass
+    class Singles(StepSize):
+        def _step_single_indices(self, maze: 'SolvedMaze') -> list[int]:
+            """Returns the indices of `maze.solution` corresponding to the steps to be tokenized.
+            """
+            return list(range(maze.solution.shape[0]))
+        
+        
+    class Straightaways(StepSize):
+        def _step_single_indices(self, maze: 'SolvedMaze') -> list[int]:
+            """Returns the indices of `maze.solution` corresponding to the steps to be tokenized.
+            """
+            last_turn_coord: Coord = maze.solution[0,...]
+            indices: list[int] = [0]
+            for i, coord in enumerate(maze.solution):
+                if coord[0] != last_turn_coord[0] and coord[1] != last_turn_coord[1]:
+                    indices.append(i-1)
+                    last_turn_coord = maze.solution[i-1,...]
+            indices.append(i)
+            return indices
+                
+        
+        
     class Forks(StepSize): pass
     class ForksAndStraightaways(StepSize): pass
 
