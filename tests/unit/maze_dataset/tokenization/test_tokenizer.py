@@ -609,9 +609,13 @@ def test_path_tokenizers(pt: PathTokenizers.PathTokenizer, maze: _MANUAL_MAZE):
         case StepSizes.Singles:
             if StepTokenizers.Coord() in pt.step_tokenizers:
                 assert all([tok in path_toks for tok in [ct.to_tokens(c)[0] for c in solved_maze.solution]])
-            # if StepTokenizers.
+            if StepTokenizers.Distance() in pt.step_tokenizers:
+                assert Counter(path_toks)[VOCAB.I_001] == len(solved_maze.solution)-1
         case StepSizes.Straightaways:
             if StepTokenizers.Coord() in pt.step_tokenizers:
                 non_steps = set(tuple(c) for c in solved_maze.solution) - set(tuple(c) for c in maze.straightaway_steps)
                 assert all([ct.to_tokens(tok)[0] in path_toks_set for tok in maze.straightaway_steps])
                 assert all([ct.to_tokens(tok)[0] not in path_toks_set for tok in non_steps])
+            if StepTokenizers.Distance() in pt.step_tokenizers:
+                distances: list[int] = [max(abs(c1[0]-c0[0]), abs(c1[1]-c0[1])) for c0, c1 in zip(maze.straightaway_steps[:-1], maze.straightaway_steps[1:])]
+                assert len(Counter(getattr(VOCAB, f"I_{d:03}") for d in distances) - Counter(path_toks)) == 0

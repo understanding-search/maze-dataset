@@ -807,15 +807,16 @@ class StepTokenizers(_TokenizerElementNamespace):
             
     class Cardinal(StepTokenizer): pass
     class Relative(StepTokenizer): pass
-    class Distance(StepTokenizer): pass
-        # def to_tokens(
-        #     self, 
-        #     maze: "SolvedMaze", 
-        #     start_index: int, 
-        #     end_index: int, 
-        #     **kwargs
-        #     ) -> list[str]:
-        #     return [VOCAB.I_1] # TODO: Temp debug, actually do it
+    class Distance(StepTokenizer):
+        def to_tokens(
+            self, 
+            maze: "SolvedMaze", 
+            start_index: int, 
+            end_index: int, 
+            **kwargs
+            ) -> list[str]:
+            d: int = end_index-start_index
+            return [getattr(VOCAB, f"I_{d:03}")]
 
     StepTokenizerPermutation: type = tuple[StepTokenizer] | tuple[StepTokenizer, StepTokenizer] | tuple[StepTokenizer, StepTokenizer, StepTokenizer] | tuple[StepTokenizer, StepTokenizer, StepTokenizer, StepTokenizer]
   
@@ -845,7 +846,7 @@ class PathTokenizers(_TokenizerElementNamespace):
 
         # Parameters
         - `step_size`: Selects the size of a single step in the sequence
-        - `step_tokenizer`: Selects the combination and permutation of tokens 
+        - `step_tokenizers`: Selects the combination and permutation of tokens 
         
         """
         step_size: StepSizes.StepSize = serializable_field(
@@ -878,7 +879,7 @@ class PathTokenizers(_TokenizerElementNamespace):
             self, maze: "SolvedMaze", i: int, j: int, coord_tokenizer: CoordTokenizers.CoordTokenizer
         ) -> list[str]:
             """Returns the token sequence representing a single step along the path."""
-            step_rep_tokens: list[list[str]] = [step_tokenizer.to_tokens(maze, i, j, coord_tokenizer) for step_tokenizer in self.step_tokenizers]
+            step_rep_tokens: list[list[str]] = [step_tokenizer.to_tokens(maze, i, j, coord_tokenizer=coord_tokenizer) for step_tokenizer in self.step_tokenizers]
             if self.intra:
                 step_rep_tokens_and_intra: list[str] = [None]*(len(step_rep_tokens)*2)
                 step_rep_tokens_and_intra[::2] = step_rep_tokens
@@ -919,9 +920,9 @@ class PathTokenizers(_TokenizerElementNamespace):
             if len(set(self.step_tokenizers)) != len(self.step_tokenizers):
                 # Uninteresting: repeated elements are not useful
                 return False
-            # if self.step_tokenizers == (StepTokenizers.Distance(),):
-            #     # Untrainable: `Distance` alone cannot encode a path. >=1 `StepTokenizer` which indicates direction/location is required.
-            #     return False
+            if self.step_tokenizers == (StepTokenizers.Distance(),):
+                # Untrainable: `Distance` alone cannot encode a path. >=1 `StepTokenizer` which indicates direction/location is required.
+                return False
             else:
                 return True
                 

@@ -155,7 +155,7 @@ _VOCAB_FIELDS: list = [
     ("PATH_STAY", str, field(default="STAY")),
     *[
         (f"I_{i:03}", str, field(default=f"+{i}")) for i in range(256)
-    ],  # General purpose positive int tokens
+    ],  # General purpose positive int tokens. Used by `StepTokenizers.Distance`.
     *[
         (f"CTT_{i}", str, field(default=f"{i}")) for i in range(128)
     ],  # Coord tuple tokens

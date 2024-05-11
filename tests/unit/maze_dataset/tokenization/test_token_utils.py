@@ -1,12 +1,18 @@
-from typing import Iterable, TypeVar
+from typing import Iterable, TypeVar, Callable
 from dataclasses import dataclass
 
 import pytest
 from pytest import mark, param
 import abc
+import frozendict
 
 from maze_dataset.dataset.maze_dataset import MazeDatasetConfig
-from maze_dataset.tokenization import get_tokens_up_to_path_start
+from maze_dataset.tokenization import (
+    get_tokens_up_to_path_start,
+    PathTokenizers,
+    StepSizes,
+    StepTokenizers,
+)
 from maze_dataset.tokenization.token_utils import (
     get_adj_list_tokens,
     get_origin_tokens,
@@ -690,6 +696,47 @@ def test_all_instances(type_: FiniteValued, result: type[Exception] | Iterable[F
     else:
         assert set(all_instances(type_)) == set(result)
 
+
+
+@mark.parametrize(
+    "type_, validation_funcs, assertion",
+    [
+        param(
+            type_,
+            vfs,
+            assertion,
+            id=f"{i}-{type_.__name__}",
+        )
+        for i, (type_, vfs, assertion) in enumerate(
+            [
+                (PathTokenizers.PathTokenizer,
+                 frozendict.frozendict({}),
+                 lambda x: PathTokenizers.StepSequence(
+                     step_tokenizers=(StepTokenizers.Distance(),)
+                     ) in x
+                ),
+                (PathTokenizers.PathTokenizer,
+                 frozendict.frozendict({
+                     PathTokenizers.PathTokenizer: lambda x: x.is_valid(),
+                 }),
+                 lambda x: 
+                     PathTokenizers.StepSequence(
+                        step_tokenizers=(StepTokenizers.Distance(),)
+                     ) not in x
+                     and
+                     PathTokenizers.StepSequence(
+                        step_tokenizers=(StepTokenizers.Coord(), StepTokenizers.Coord(),)
+                     ) not in x
+                ),
+            ]
+        )
+    ],
+)
+def test_all_instances2(
+    type_: FiniteValued, 
+    validation_funcs: frozendict.frozendict[FiniteValued, Callable[[FiniteValued], bool]], 
+    assertion: Callable[[list[FiniteValued]], bool]):
+    assert assertion(all_instances(type_, validation_funcs))
 
 @mark.parametrize(
     "coll1, coll2, result",
