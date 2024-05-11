@@ -896,8 +896,7 @@ class PathTokenizers(_TokenizerElementNamespace):
             self, maze: "SolvedMaze", coord_tokenizer: CoordTokenizers.CoordTokenizer
         ) -> list[str]:
             """Returns tokens preceding those from the sequence from `_single_step_tokens`.
-            Since the for loop in `to_tokens` iterates `len(path)-1` times, there may be a fencepost problem.
-            There may be information about the start of the path that it misses that needs to be appended.
+            Since the for loop in `to_tokens` iterates `len(path)-1` times, a fencepost problem exists with `StepTokenizers.Coord`.
             <PATH_START> should NOT be included.
             """
             if StepTokenizers.Coord() in self.step_tokenizers:
