@@ -673,6 +673,8 @@ class MazeDatasetFilters:
     ) -> MazeDataset:
         if dataset.generation_metadata_collected is not None:
             return dataset
+        else:
+            assert dataset[0].generation_meta is not None, "generation meta is not collected and original is not present"
         # if the generation meta is already collected, don't collect it again, do nothing
 
         new_dataset: MazeDataset
