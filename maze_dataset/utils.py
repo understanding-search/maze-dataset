@@ -235,3 +235,12 @@ def timeit_fancy(
         return_value=return_value,
         profile=profile,
     )
+
+
+def unpackable_if_true_attribute(
+    iterable: Iterable[any], attr_owner: Any, attr_name: str
+) -> Iterable[any]:
+    """Returns `iterable` if `attr_owner` has the attribute `attr_name` and it boolean casts to `True`.
+    Particularly useful for optionally inserting delimiters into a sequence depending on an `TokenizerElement` attribute.
+    """
+    return iterable if bool(getattr(attr_owner, attr_name, False)) else ()
