@@ -12,6 +12,9 @@ from maze_dataset.tokenization import (
     PathTokenizers,
     StepSizes,
     StepTokenizers,
+    MazeTokenizer2,
+    MazeTokenizer,
+    TokenizationMode,
 )
 from maze_dataset.tokenization.token_utils import (
     get_adj_list_tokens,
@@ -31,6 +34,7 @@ from maze_dataset.utils import (
     all_instances, 
     dataclass_set_equals,
     get_all_subclasses,
+    isinstance_by_type_name,
     IsDataclass,
     FiniteValued,
     )
@@ -804,3 +808,41 @@ def test_dataclass_set_equals(coll1: Iterable[IsDataclass], coll2: Iterable[IsDa
             dataclass_set_equals(coll1, coll2)
     else:
         assert dataclass_set_equals(coll1, coll2) == result
+        
+       
+@mark.parametrize(
+    "o, type_name, result",
+    [
+        param(
+            o,
+            name,
+            res,
+            id=f"{o}_{name}",
+        )
+        for o, name, res in (
+            [
+                (True,"bool",True),
+                (True,"int",True),
+                (1,"int",True),
+                (1,"bool",False),
+                (MazeTokenizer(),"MazeTokenizer",True),
+                (MazeTokenizer(),"TokenizationMode",False),
+                (MazeTokenizer2(),"MazeTokenizer2",True),
+                (MazeTokenizer2(),"MazeTokenizer",False),
+                (TokenizationMode.AOTP_CTT_indexed, "TokenizationMode", True),
+                (TokenizationMode.AOTP_UT_uniform, "MazeTokenizer", False),
+                (StepTokenizers.Distance(), "StepTokenizer", True),
+                (StepTokenizers.Distance(), "TokenizerElement", True),
+                (MazeTokenizer2,"MazeTokenizer2",False),
+                (TokenizationMode, "TokenizationMode", False),
+            ]
+        )
+    ],
+) 
+def test_isinstance_by_type_name(o: object, type_name: str, result: bool | type[Exception]):
+    if isinstance(result, type) and issubclass(result, Exception):
+        with pytest.raises(result):
+            isinstance_by_type_name(o, type_name)
+    else:
+        assert isinstance_by_type_name(o, type_name) == result
+    

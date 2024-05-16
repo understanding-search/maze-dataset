@@ -585,6 +585,21 @@ def test_all_tokenizer_hashes():
 )
 def test_is_tested_tokenizer(tokenizer: MazeTokenizer2):
     assert tokenizer.is_tested_tokenizer()
+
+
+@mark.parametrize(
+    "tokenizer, result", 
+    [param(tokenizer, result, id=str(tokenizer)) 
+    for tokenizer, result in 
+    [
+        (MazeTokenizer2(), True),
+        (MazeTokenizer2.from_legacy(TokenizationMode.AOTP_CTT_indexed), True),
+        (MazeTokenizer2(prompt_sequencer=PromptSequencers.AOP()), False),
+    ]
+    ]
+)
+def test_is_legacy_equivalent(tokenizer: MazeTokenizer2, result: bool):
+    assert tokenizer.is_legacy_equivalent() == result
     
 
 @mark.parametrize(

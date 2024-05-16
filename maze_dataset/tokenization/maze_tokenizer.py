@@ -1238,6 +1238,11 @@ class MazeTokenizer2(SerializableDataclass):
     def is_valid(self):
         return all([el.is_valid() for el in self._tokenizer_elements])
 
+    def is_legacy_equivalent(self) -> bool:
+        """Returns if `self` has identical stringification behavior as any legacy `MazeTokenizer`.
+        """
+        return any([self == MazeTokenizer2.from_legacy(tok_mode) for tok_mode in TokenizationMode])
+
     # Alternate Constructors
     # ======================
 

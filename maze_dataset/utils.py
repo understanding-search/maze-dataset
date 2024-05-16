@@ -429,3 +429,16 @@ def dataclass_set_equals(coll1: Iterable[IsDataclass], coll2: Iterable[IsDatacla
         return *(getattr(dc, fld.name) for fld in filter(lambda x: x.compare, dc.__dataclass_fields__.values())), type(dc)
     
     return {get_hashable_eq_attrs(x) for x in coll1} == {get_hashable_eq_attrs(y) for y in coll2}
+
+
+def isinstance_by_type_name(o: object, type_name: str):
+    """Behaves like stdlib `isinstance` except it accepts a string representation of the type rather than the type itself.
+    This is a hacky function intended to circumvent the need to import a type into a module.
+    It is susceptible to type name collisions.
+    
+    # Parameters
+    `o`: Object (not the type itself) whose type to interrogate
+    `type_name`: The string returned by `type_.__name__`.
+    Generic types are not supported, only types that would appear in `type_.__mro__`.
+    """
+    return type_name in {s.__name__ for s in type(o).__mro__}

@@ -20,10 +20,8 @@ from maze_dataset.constants import (
     CoordArray,
     CoordTup,
 )
+from maze_dataset.utils import isinstance_by_type_name
 from maze_dataset.tokenization import (
-    MazeTokenizer,
-    MazeTokenizer2,
-    TokenizationMode,
     get_adj_list_tokens,
     get_path_tokens,
 )
@@ -33,6 +31,13 @@ from maze_dataset.tokenization.util import (
     TokenizerDeprecationWarning,
     connection_list_to_adj_list,
 )
+
+if typing.TYPE_CHECKING:
+    from maze_dataset.tokenization import (
+        MazeTokenizer,
+        MazeTokenizer2,
+        TokenizationMode,
+    )
 
 RGB = tuple[int, int, int]
 
@@ -460,10 +465,10 @@ class LatticeMaze(SerializableDataclass):
             output += self._get_solution_tokens()
         return output
 
-    def _as_tokens(self, maze_tokenizer: MazeTokenizer | TokenizationMode) -> list[str]:
-        if isinstance(maze_tokenizer, TokenizationMode):
+    def _as_tokens(self, maze_tokenizer: "MazeTokenizer | TokenizationMode") -> list[str]:
+        if isinstance_by_type_name(maze_tokenizer, "TokenizationMode"):
             maze_tokenizer = MazeTokenizer(tokenization_mode=maze_tokenizer)
-        if isinstance(maze_tokenizer, MazeTokenizer) and maze_tokenizer.is_AOTP():
+        if isinstance_by_type_name(maze_tokenizer, "MazeTokenizer") and maze_tokenizer.is_AOTP():
             coords_raw: list[CoordTup | str] = self._as_coords_and_special_AOTP()
             coords_processed: list[str] = maze_tokenizer.coords_to_strings(
                 coords=coords_raw, when_noncoord="include"
@@ -474,17 +479,17 @@ class LatticeMaze(SerializableDataclass):
 
     def as_tokens(
         self,
-        maze_tokenizer: MazeTokenizer | TokenizationMode | MazeTokenizer2,
+        maze_tokenizer: "MazeTokenizer | TokenizationMode | MazeTokenizer2",
     ) -> list[str]:
         """serialize maze and solution to tokens"""
-        if isinstance(maze_tokenizer, MazeTokenizer2):
+        if isinstance_by_type_name(maze_tokenizer, "MazeTokenizer2"):
             return maze_tokenizer.to_tokens(self)
         else:
             return self._as_tokens(maze_tokenizer)
 
     @classmethod
     def _from_tokens_AOTP(
-        cls, tokens: list[str], maze_tokenizer: MazeTokenizer
+        cls, tokens: list[str], maze_tokenizer: "MazeTokenizer"
     ) -> "LatticeMaze":
         """create a LatticeMaze from a list of tokens"""
 
@@ -585,13 +590,11 @@ class LatticeMaze(SerializableDataclass):
     def from_tokens(
         cls,
         tokens: list[str],
-        maze_tokenizer: MazeTokenizer | TokenizationMode | MazeTokenizer2,
+        maze_tokenizer: "MazeTokenizer | TokenizationMode | MazeTokenizer2",
     ) -> "LatticeMaze":
-        if isinstance(maze_tokenizer, TokenizationMode):
+        if isinstance_by_type_name(maze_tokenizer, "TokenizationMode"):
             maze_tokenizer = MazeTokenizer(tokenization_mode=maze_tokenizer)
-        if isinstance(maze_tokenizer, MazeTokenizer2) and maze_tokenizer not in [
-            MazeTokenizer2.from_legacy(tm) for tm in TokenizationMode
-        ]:
+        if isinstance_by_type_name(maze_tokenizer, "MazeTokenizer2") and not maze_tokenizer.is_legacy_equivalent():
             raise NotImplementedError(
                 f"Only legacy tokenizers and their exact `MazeTokenizer2` analogs supported, not {maze_tokenizer}."
             )
