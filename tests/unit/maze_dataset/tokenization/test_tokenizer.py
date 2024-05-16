@@ -388,6 +388,26 @@ def test_from_tokens_backwards_compatible(
 def test_all_tokenizers():
     assert len(ALL_TOKENIZERS) > 400
     assert len(_get_all_tokenizers()) == len(ALL_TOKENIZERS)
+    assert len({hash(mt) for mt in ALL_TOKENIZERS}) == len(ALL_TOKENIZERS)
+
+
+@mark.parametrize(
+    "class_",
+    [
+        param(c, id=c.__name__)
+        for c in TokenizerElement.__subclasses__()
+    ],
+)
+def test_all_instances_tokenizerelement(class_: type):
+    all_vals = all_instances(
+        class_, 
+        validation_funcs=frozendict.frozendict({
+            TokenizerElement: lambda x: x.is_valid(),
+        })
+    )
+    assert len({hash(elem) for elem in all_vals}) == len(all_vals)
+    
+
 
 sample_min: int = len(EVERY_TEST_TOKENIZERS)
 
@@ -594,6 +614,7 @@ def test_has_element(
 )
 def test_tokenizer_element_is_valid(el: TokenizerElement, result: bool):
     assert el.is_valid() == result
+    
     
 def test_all_tokenizer_hashes():
     loaded_hashes = save_hashes()

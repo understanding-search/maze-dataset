@@ -477,6 +477,19 @@ class TokenizerElement(SerializableDataclass, abc.ABC):
     def __str__(self):
         return self.name
     
+    def __hash__(self):
+        """Hashing algorithm to identify unique `TokenizerElement` instances.
+        Default dataclass `__hash__` operates on fields only, so instances of distinct but empty dataclass instances can collide.
+        For example, this causes problems with `StepTokenizers.Singles()`, and `StepTokenizers.Straightaways()` hashing identically.
+        """
+        return hash(
+            hash(repr(type(self))) ^ 
+            (hash(
+                hash((key, val)) for key, val in self.__dict__.items()
+                )**3
+            )
+        )
+    
     @classmethod
     def _level_one_subclass(cls) -> type['TokenizerElement']:
         """Returns the immediate subclass of `TokenizerElement` of which `cls` is an instance.

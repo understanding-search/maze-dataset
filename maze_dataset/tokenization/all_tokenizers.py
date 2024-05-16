@@ -88,10 +88,9 @@ def save_hashes() -> Int64[np.int64, "tokenizer"]:
     """Computes, sorts, and saves the hashes of every member of `ALL_TOKENIZERS`.
     """
     hashes_array = np.array([hash(obj) for obj in ALL_TOKENIZERS], dtype=np.int64)
-    sorted_hashes = np.unique(hashes_array)
+    sorted_hashes, counts = np.unique(hashes_array, return_counts=True)
     if sorted_hashes.shape[0] != hashes_array.shape[0]:
-        raise ValueError("Tokenizer hash collision. Report error to the developer to increase the hash size or otherwise update the tokenizer hashing algorithm.")
-    # z: zanj.ZANJ = zanj.ZANJ()
-    # z.save(hashes_array, os.path.join(os.path.curdir, 'maze_dataset', 'tokenization', 'MazeTokenizer2_hashes.zanj'))
+        collisions = sorted_hashes[counts > 1]
+        raise ValueError(f"{hashes_array.shape[0] - sorted_hashes.shape[0]} tokenizer hash collisions: {collisions}\nReport error to the developer to increase the hash size or otherwise update the tokenizer hashing algorithm.")
     np.save(Path(__file__).parent/'MazeTokenizer2_hashes.npy', sorted_hashes)
     return sorted_hashes

@@ -21,8 +21,6 @@ from maze_dataset.constants import (
     CoordTup,
 )
 from maze_dataset.utils import isinstance_by_type_name
-# from maze_dataset.tokenization import (
-# )
 from maze_dataset.token_utils import (
     get_origin_tokens, 
     get_adj_list_tokens,
