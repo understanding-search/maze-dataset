@@ -284,6 +284,26 @@ def test_maze_to_tokens_roundtrip(
     assert equal_except_adj_list_sequence(tokens_original_split, tokens_roundtrip)
 
 
+@mark.parametrize(
+    "tok_mode, max_grid_size, result",
+    [
+        param(
+            tok_mode, 
+            max_grid_size,
+            MazeTokenizer(tokenization_mode=tok_mode, max_grid_size=max_grid_size), 
+            id=f"{tok_mode}-{max_grid_size}")
+        for tok_mode, max_grid_size in 
+        [
+            (TokenizationMode.AOTP_CTT_indexed, None),
+            (TokenizationMode.AOTP_UT_rasterized, None),
+            (TokenizationMode.AOTP_UT_uniform, None),
+            (TokenizationMode.AOTP_CTT_indexed, 5),            
+        ]
+    ],
+)
+def test_to_legacy_tokenizer(tok_mode: TokenizationMode, max_grid_size: int | None, result: MazeTokenizer):
+    assert tok_mode.to_legacy_tokenizer(max_grid_size) == result
+
 # MazeTokenizer2 tests
 # =====================
 

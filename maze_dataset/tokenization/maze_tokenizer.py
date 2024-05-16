@@ -78,6 +78,9 @@ class TokenizationMode(Enum):
     AOTP_UT_rasterized = "AOTP_UT_rasterized"
     AOTP_UT_uniform = "AOTP_UT_uniform"
     AOTP_CTT_indexed = "AOTP_CTT_indexed"
+    
+    def to_legacy_tokenizer(self, max_grid_size: int | None = None):
+        return MazeTokenizer(tokenization_mode=self, max_grid_size=max_grid_size)
 
 
 _NDINDEX_FUNC_MAP: dict[
@@ -1245,11 +1248,6 @@ class MazeTokenizer2(SerializableDataclass):
 
     # Alternate Constructors
     # ======================
-
-    @classmethod
-    def from_name(cls, key: str) -> "MazeTokenizer2":
-        """Builds a MazeTokenizer from the output of `MazeTokenizer2.name`"""
-        raise NotImplementedError
 
     @classmethod
     def from_legacy(
