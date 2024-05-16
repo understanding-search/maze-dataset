@@ -21,12 +21,15 @@ from maze_dataset.constants import (
     CoordTup,
 )
 from maze_dataset.utils import isinstance_by_type_name
-from maze_dataset.tokenization import (
+# from maze_dataset.tokenization import (
+# )
+from maze_dataset.token_utils import (
+    get_origin_tokens, 
     get_adj_list_tokens,
     get_path_tokens,
+    get_target_tokens,
 )
-from maze_dataset.tokenization.token_utils import get_origin_tokens, get_target_tokens
-from maze_dataset.tokenization.util import (
+from maze_dataset.util import (
     TokenizerPendingDeprecationWarning,
     TokenizerDeprecationWarning,
     connection_list_to_adj_list,

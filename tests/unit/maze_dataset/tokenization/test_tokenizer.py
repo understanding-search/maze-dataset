@@ -41,8 +41,8 @@ from maze_dataset.tokenization import (
 )
 from maze_dataset.utils import all_instances
 from maze_dataset.tokenization.maze_tokenizer import _load_tokenizer_hashes
-from maze_dataset.tokenization.util import equal_except_adj_list_sequence
-from maze_dataset.tokenization.token_utils import get_path_tokens
+from maze_dataset.util import equal_except_adj_list_sequence
+from maze_dataset.token_utils import get_path_tokens
 from maze_dataset.tokenization.all_tokenizers import (
     sample_tokenizers_for_test, 
     EVERY_TEST_TOKENIZERS,

@@ -16,14 +16,14 @@ from maze_dataset.tokenization import (
     MazeTokenizer,
     TokenizationMode,
 )
-from maze_dataset.tokenization.token_utils import (
+from maze_dataset.token_utils import (
     get_adj_list_tokens,
     get_origin_tokens,
     get_path_tokens,
     get_target_tokens,
     tokens_between,
 )
-from maze_dataset.tokenization.util import (
+from maze_dataset.util import (
     _coord_to_strings_UT,
     coords_to_strings,
     equal_except_adj_list_sequence,

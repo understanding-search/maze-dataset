@@ -32,8 +32,8 @@ from maze_dataset.constants import (
     CoordTup,
     Int8,
 )
-from maze_dataset.tokenization.token_utils import tokens_between
-from maze_dataset.tokenization.util import (
+from maze_dataset.token_utils import tokens_between
+from maze_dataset.util import (
     TokenizerPendingDeprecationWarning,
     TokenizerDeprecationWarning,
     _coord_to_strings_indexed,
@@ -49,8 +49,8 @@ from maze_dataset.utils import (
     unpackable_if_true_attribute,
 )
 
-if TYPE_CHECKING:
-    from maze_dataset import LatticeMaze, SolvedMaze
+# if TYPE_CHECKING:
+from maze_dataset.maze.lattice_maze import LatticeMaze, SolvedMaze
 
 
 class TokenError(ValueError):
@@ -779,7 +779,7 @@ class StepTokenizers(_TokenizerElementNamespace):
         @abc.abstractmethod
         def to_tokens(
             self, 
-            maze: "SolvedMaze", 
+            maze: SolvedMaze, 
             start_index: int, 
             end_index: int,
             **kwargs,
@@ -801,7 +801,7 @@ class StepTokenizers(_TokenizerElementNamespace):
     class Coord(StepTokenizer):
         def to_tokens(
             self, 
-            maze: "SolvedMaze", 
+            maze: SolvedMaze, 
             start_index: int, 
             end_index: int, 
             coord_tokenizer: CoordTokenizers.CoordTokenizer
@@ -813,7 +813,7 @@ class StepTokenizers(_TokenizerElementNamespace):
     class Distance(StepTokenizer):
         def to_tokens(
             self, 
-            maze: "SolvedMaze", 
+            maze: SolvedMaze, 
             start_index: int, 
             end_index: int, 
             **kwargs
@@ -879,7 +879,7 @@ class PathTokenizers(_TokenizerElementNamespace):
             ]
 
         def _single_step_tokens(
-            self, maze: "SolvedMaze", i: int, j: int, coord_tokenizer: CoordTokenizers.CoordTokenizer
+            self, maze: SolvedMaze, i: int, j: int, coord_tokenizer: CoordTokenizers.CoordTokenizer
         ) -> list[str]:
             """Returns the token sequence representing a single step along the path."""
             step_rep_tokens: list[list[str]] = [step_tokenizer.to_tokens(maze, i, j, coord_tokenizer=coord_tokenizer) for step_tokenizer in self.step_tokenizers]
@@ -896,7 +896,7 @@ class PathTokenizers(_TokenizerElementNamespace):
             return all_tokens
 
         def _leading_tokens(
-            self, maze: "SolvedMaze", coord_tokenizer: CoordTokenizers.CoordTokenizer
+            self, maze: SolvedMaze, coord_tokenizer: CoordTokenizers.CoordTokenizer
         ) -> list[str]:
             """Returns tokens preceding those from the sequence from `_single_step_tokens`.
             Since the for loop in `to_tokens` iterates `len(path)-1` times, a fencepost problem exists with `StepTokenizers.Coord`.
@@ -994,7 +994,7 @@ class PromptSequencers(_TokenizerElementNamespace):
 
         def to_tokens(
             self,
-            maze: "LatticeMaze",
+            maze: LatticeMaze,
             # adj_list: Int8[np.ndarray, "conn start_end coord"],
             # origin: Coord | None,
             # target: Iterable[Coord] | None,
@@ -1012,7 +1012,7 @@ class PromptSequencers(_TokenizerElementNamespace):
 
         def _get_prompt_regions(
             self,
-            maze: "LatticeMaze",
+            maze: LatticeMaze,
             # adj_list: Int8[np.ndarray, "conn start_end coord"],
             # origin: Coord | None,
             # target: Iterable[Coord] | None,
@@ -1297,7 +1297,7 @@ class MazeTokenizer2(SerializableDataclass):
 
     def to_tokens(
         self,
-        maze: "LatticeMaze",
+        maze: LatticeMaze,
     ) -> list[str]:
         """Converts maze into a list of tokens."""
         return self.prompt_sequencer.to_tokens(maze)
