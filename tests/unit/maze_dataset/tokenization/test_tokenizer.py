@@ -665,9 +665,9 @@ def _helper_test_path_tokenizers(
     # if StepTokenizers.Cardinal() in pt.step_tokenizers:
     #     c = Counter(path_toks)
     #     assert c[VOCAB.PATH_NORTH] + c[VOCAB.PATH_SOUTH] + c[VOCAB.PATH_EAST] + c[VOCAB.PATH_WEST] == len(footprint_inds)-1
-    if StepTokenizers.Relative() in pt.step_tokenizers:
-        c = Counter(path_toks)
-        assert c[VOCAB.PATH_LEFT] + c[VOCAB.PATH_RIGHT] + c[VOCAB.PATH_FORWARD] + c[VOCAB.PATH_BACKWARD] == len(footprint_inds)-1
+    # if StepTokenizers.Relative() in pt.step_tokenizers:
+    #     c = Counter(path_toks)
+    #     assert c[VOCAB.PATH_LEFT] + c[VOCAB.PATH_RIGHT] + c[VOCAB.PATH_FORWARD] + c[VOCAB.PATH_BACKWARD] == len(footprint_inds)-1
 
 
 @mark.parametrize(

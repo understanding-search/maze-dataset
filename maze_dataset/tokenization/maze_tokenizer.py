@@ -839,21 +839,23 @@ class StepTokenizers(_TokenizerElementNamespace):
             ) -> list[str]:
             return coord_tokenizer.to_tokens(maze.solution[end_index,...])
             
-    # class Cardinal(StepTokenizer):
-    #     def to_tokens(
-    #         self, 
-    #         maze: SolvedMaze, 
-    #         start_index: int, 
-    #         end_index: int, 
-    #         **kwargs
-    #         ) -> list[str]:
-    #         return [get_cardinal_direction(maze.solution[start_index:start_index+2])]
+    class Cardinal(StepTokenizer):
+        @abc.abstractmethod
+        def to_tokens(
+            self, 
+            maze: SolvedMaze, 
+            start_index: int, 
+            end_index: int, 
+            **kwargs
+            ) -> list[str]:
+            return [get_cardinal_direction(maze.solution[start_index:start_index+2])]
                         
         
     class Relative(StepTokenizer):
         """Tokenizes a solution step using relative first-person directions (right, left, forward, etc.).
         To simplify the indeterminacy, at the start of a solution the "agent" solving the maze is assumed to be facing NORTH.
         """
+        @abc.abstractmethod
         def to_tokens(
             self, 
             maze: SolvedMaze, 
