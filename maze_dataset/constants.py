@@ -179,3 +179,11 @@ _VOCAB_BASE: type = make_dataclass(
 VOCAB: _VOCAB_BASE = _VOCAB_BASE()
 VOCAB_LIST: list[str] = list(VOCAB.values())
 VOCAB_TOKEN_TO_INDEX: dict[str, int] = {token: i for i, token in enumerate(VOCAB_LIST)}
+
+# CARDINAL_MAP: Maps tuple(coord1 - coord0) : cardinal direction
+CARDINAL_MAP: dict[tuple[int, int], str] = {
+    (-1,0): VOCAB.PATH_NORTH,
+    (1,0): VOCAB.PATH_SOUTH,
+    (0,-1): VOCAB.PATH_WEST,
+    (0,1): VOCAB.PATH_EAST,
+}

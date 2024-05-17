@@ -32,7 +32,7 @@ from maze_dataset.constants import (
     CoordTup,
     Int8,
 )
-from maze_dataset.token_utils import tokens_between
+from maze_dataset.token_utils import tokens_between, get_cardinal
 from maze_dataset.util import (
     TokenizerPendingDeprecationWarning,
     TokenizerDeprecationWarning,
@@ -821,7 +821,17 @@ class StepTokenizers(_TokenizerElementNamespace):
             ) -> list[str]:
             return coord_tokenizer.to_tokens(maze.solution[end_index,...])
             
-    class Cardinal(StepTokenizer): pass
+    class Cardinal(StepTokenizer):
+        def to_tokens(
+            self, 
+            maze: SolvedMaze, 
+            start_index: int, 
+            end_index: int, 
+            **kwargs
+            ) -> list[str]:
+            return get_cardinal(maze.solution[start_index:start_index+2])
+                        
+        
     class Relative(StepTokenizer): pass
     class Distance(StepTokenizer):
         def to_tokens(

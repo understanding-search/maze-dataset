@@ -1,6 +1,8 @@
 """a whole bunch of utilities for tokenization"""
 
-from maze_dataset.constants import SPECIAL_TOKENS
+from jaxtyping import Int8
+import numpy as np
+from maze_dataset.constants import SPECIAL_TOKENS, CARDINAL_MAP
 
 # filtering things from a prompt or generated text
 # ==================================================
@@ -96,3 +98,9 @@ def get_target_tokens(tokens: list[str]) -> list[str]:
         include_start=False,
         include_end=False,
     )
+
+
+def get_cardinal(coords: Int8[np.ndarray, "start_end=2 axis=2"]) -> str:
+    """Returns the cardinal direction token corresponding to traveling from `coords[0]` to `coords[1]`.
+    """
+    return CARDINAL_MAP[tuple(coords[1]-coords[0])]
