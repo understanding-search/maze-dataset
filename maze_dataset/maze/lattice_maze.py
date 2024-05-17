@@ -1089,7 +1089,10 @@ class SolvedMaze(TargetedLatticeMaze):
             generation_meta=targeted_lattice_maze.generation_meta,
         )
 
-    def get_solution_forking_points(self) -> tuple[list[int], CoordArray]:
+    def get_solution_forking_points(
+        self,
+        always_include_endpoints: bool = False, 
+        ) -> tuple[list[int], CoordArray]:
         """coordinates and their indicies from the solution where a fork is present
 
         - if the start point is not a dead end, this counts as a fork
@@ -1103,7 +1106,7 @@ class SolvedMaze(TargetedLatticeMaze):
             # since the previous coord doesn't count as a choice
             is_endpoint: bool = idx == 0 or idx == self.solution.shape[0] - 1
             theshold: int = 1 if is_endpoint else 2
-            if self.get_coord_neighbors(coord).shape[0] > theshold:
+            if self.get_coord_neighbors(coord).shape[0] > theshold or (is_endpoint and always_include_endpoints):
                 output_idxs.append(idx)
                 output_coords.append(coord)
 

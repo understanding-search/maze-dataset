@@ -681,3 +681,15 @@ def test_path_tokenizers(pt: PathTokenizers.PathTokenizer, maze: _MANUAL_MAZE):
             if StepTokenizers.Cardinal() in pt.step_tokenizers:
                 c = Counter(path_toks)
                 assert c[VOCAB.PATH_NORTH] + c[VOCAB.PATH_SOUTH] + c[VOCAB.PATH_EAST] + c[VOCAB.PATH_WEST] == len(maze.straightaway_steps)-1
+        case StepSizes.Forks:
+            if StepTokenizers.Coord() in pt.step_tokenizers:
+                non_steps: set[CoordTup] = set(tuple(c) for c in solved_maze.solution) - set(tuple(c) for c in solved_maze.get_solution_forking_points(always_include_endpoints=True)[1])
+                assert all([ct.to_tokens(tok)[0] in path_toks_set for tok in solved_maze.get_solution_forking_points(always_include_endpoints=True)[1]])
+                assert all([ct.to_tokens(tok)[0] not in path_toks_set for tok in non_steps])
+            if StepTokenizers.Distance() in pt.step_tokenizers:
+                fork_inds: np.ndarray = np.array(solved_maze.get_solution_forking_points(always_include_endpoints=True)[0])
+                distances: list[int] = fork_inds[1:] - fork_inds[:-1]
+                assert len(Counter(getattr(VOCAB, f"I_{d:03}") for d in distances) - Counter(path_toks)) == 0
+            if StepTokenizers.Cardinal() in pt.step_tokenizers:
+                c = Counter(path_toks)
+                assert c[VOCAB.PATH_NORTH] + c[VOCAB.PATH_SOUTH] + c[VOCAB.PATH_EAST] + c[VOCAB.PATH_WEST] == len(solved_maze.get_solution_forking_points(always_include_endpoints=True)[1])-1

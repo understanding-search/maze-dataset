@@ -740,7 +740,7 @@ class StepSizes(_TokenizerElementNamespace):
             return StepSizes.key
         
         @abc.abstractmethod
-        def _step_single_indices(self, maze: 'SolvedMaze') -> list[int]:
+        def _step_single_indices(self, maze: SolvedMaze) -> list[int]:
             """Returns the indices of `maze.solution` corresponding to the steps to be tokenized.
             """
             raise NotImplementedError('Subclasses must implement `StepSize.step_indices.')
@@ -756,14 +756,14 @@ class StepSizes(_TokenizerElementNamespace):
             return True
     
     class Singles(StepSize):
-        def _step_single_indices(self, maze: 'SolvedMaze') -> list[int]:
+        def _step_single_indices(self, maze: SolvedMaze) -> list[int]:
             """Returns the indices of `maze.solution` corresponding to the steps to be tokenized.
             """
             return list(range(maze.solution.shape[0]))
         
         
     class Straightaways(StepSize):
-        def _step_single_indices(self, maze: 'SolvedMaze') -> list[int]:
+        def _step_single_indices(self, maze: SolvedMaze) -> list[int]:
             """Returns the indices of `maze.solution` corresponding to the steps to be tokenized.
             """
             last_turn_coord: Coord = maze.solution[0,...]
@@ -776,8 +776,13 @@ class StepSizes(_TokenizerElementNamespace):
             return indices
                 
         
-        
-    class Forks(StepSize): pass
+    class Forks(StepSize):
+        def _step_single_indices(self, maze: SolvedMaze) -> list[int]:
+            """Returns the indices of `maze.solution` corresponding to the steps to be tokenized.
+            """
+            return maze.get_solution_forking_points(always_include_endpoints=True)[0]
+            
+            
     class ForksAndStraightaways(StepSize): pass
 
 
@@ -888,7 +893,7 @@ class PathTokenizers(_TokenizerElementNamespace):
         post: bool = serializable_field(default=False)
 
         def to_tokens(
-            self, maze: 'SolvedMaze', coord_tokenizer: CoordTokenizers.CoordTokenizer
+            self, maze: SolvedMaze, coord_tokenizer: CoordTokenizers.CoordTokenizer
         ) -> list[str]:
             return [
                 *self._leading_tokens(maze, coord_tokenizer),
