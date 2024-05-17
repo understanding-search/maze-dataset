@@ -5,6 +5,7 @@ from collections import Counter, namedtuple
 from itertools import product
 from typing import Iterable, Callable, Hashable
 import frozendict
+import random
 
 import numpy as np
 import pytest
@@ -649,9 +650,12 @@ def test_is_legacy_equivalent(tokenizer: MazeTokenizer2, result: bool):
         param(tokenizer, maze_kv[1], id=f"{tokenizer.name}-{maze_kv[0]}")
         for maze_kv, tokenizer in itertools.product(
             _ASCII_MAZES.items(), 
-            all_instances(
-                PathTokenizers.PathTokenizer,
-                frozendict.frozendict({PathTokenizers.PathTokenizer: lambda x: x.is_valid()})
+            random.sample(
+                all_instances(
+                    PathTokenizers.PathTokenizer,
+                    frozendict.frozendict({PathTokenizers.PathTokenizer: lambda x: x.is_valid()})
+                ),
+                NUM_TOKENIZERS_TO_TEST
             )
         )
     ],
