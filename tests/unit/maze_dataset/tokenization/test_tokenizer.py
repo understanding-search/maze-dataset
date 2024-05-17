@@ -647,6 +647,7 @@ def test_is_legacy_equivalent(tokenizer: MazeTokenizer2, result: bool):
 
 def _helper_test_path_tokenizers(
     pt: PathTokenizers.PathTokenizer, 
+    maze: SolvedMaze,
     footprint_inds: Sequence[int],
     ):
     ct: CoordTokenizers.CoordTokenizer = CoordTokenizers.UT()
@@ -661,9 +662,12 @@ def _helper_test_path_tokenizers(
     if StepTokenizers.Distance() in pt.step_tokenizers:
         distances: list[int] = footprint_inds[1:] - footprint_inds[:-1]
         assert len(Counter(getattr(VOCAB, f"I_{d:03}") for d in distances) - Counter(path_toks)) == 0
-    if StepTokenizers.Cardinal() in pt.step_tokenizers:
+    # if StepTokenizers.Cardinal() in pt.step_tokenizers:
+    #     c = Counter(path_toks)
+    #     assert c[VOCAB.PATH_NORTH] + c[VOCAB.PATH_SOUTH] + c[VOCAB.PATH_EAST] + c[VOCAB.PATH_WEST] == len(footprint_inds)-1
+    if StepTokenizers.Relative() in pt.step_tokenizers:
         c = Counter(path_toks)
-        assert c[VOCAB.PATH_NORTH] + c[VOCAB.PATH_SOUTH] + c[VOCAB.PATH_EAST] + c[VOCAB.PATH_WEST] == len(footprint_inds)-1
+        assert c[VOCAB.PATH_LEFT] + c[VOCAB.PATH_RIGHT] + c[VOCAB.PATH_FORWARD] + c[VOCAB.PATH_BACKWARD] == len(footprint_inds)-1
 
 
 @mark.parametrize(

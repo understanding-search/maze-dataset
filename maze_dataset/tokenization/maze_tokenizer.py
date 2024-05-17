@@ -32,7 +32,7 @@ from maze_dataset.constants import (
     CoordTup,
     Int8,
 )
-from maze_dataset.token_utils import tokens_between, get_cardinal
+from maze_dataset.token_utils import tokens_between, get_cardinal_direction, get_relative_direction
 from maze_dataset.util import (
     TokenizerPendingDeprecationWarning,
     TokenizerDeprecationWarning,
@@ -755,6 +755,7 @@ class StepSizes(_TokenizerElementNamespace):
             # No invalid instances possible within data member type hint bounds
             return True
     
+    
     class Singles(StepSize):
         def _step_single_indices(self, maze: SolvedMaze) -> list[int]:
             """Returns the indices of `maze.solution` corresponding to the steps to be tokenized.
@@ -838,7 +839,21 @@ class StepTokenizers(_TokenizerElementNamespace):
             ) -> list[str]:
             return coord_tokenizer.to_tokens(maze.solution[end_index,...])
             
-    class Cardinal(StepTokenizer):
+    # class Cardinal(StepTokenizer):
+    #     def to_tokens(
+    #         self, 
+    #         maze: SolvedMaze, 
+    #         start_index: int, 
+    #         end_index: int, 
+    #         **kwargs
+    #         ) -> list[str]:
+    #         return [get_cardinal_direction(maze.solution[start_index:start_index+2])]
+                        
+        
+    class Relative(StepTokenizer):
+        """Tokenizes a solution step using relative first-person directions (right, left, forward, etc.).
+        To simplify the indeterminacy, at the start of a solution the "agent" solving the maze is assumed to be facing NORTH.
+        """
         def to_tokens(
             self, 
             maze: SolvedMaze, 
@@ -846,10 +861,13 @@ class StepTokenizers(_TokenizerElementNamespace):
             end_index: int, 
             **kwargs
             ) -> list[str]:
-            return get_cardinal(maze.solution[start_index:start_index+2])
-                        
-        
-    class Relative(StepTokenizer): pass
+            if start_index == 0:
+                start = maze.solution[0]
+                previous = start + np.array([1,0])
+                return [get_relative_direction(np.concatenate((np.expand_dims(previous,0), maze.solution[start_index:start_index+2]), axis=0))]
+            return [get_relative_direction(maze.solution[start_index-1:start_index+2])]
+    
+    
     class Distance(StepTokenizer):
         def to_tokens(
             self, 

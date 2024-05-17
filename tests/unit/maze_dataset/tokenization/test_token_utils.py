@@ -5,6 +5,8 @@ import pytest
 from pytest import mark, param
 import abc
 import frozendict
+import numpy as np
+from jaxtyping import Int
 
 from maze_dataset.dataset.maze_dataset import MazeDatasetConfig
 from maze_dataset.tokenization import (
@@ -22,6 +24,7 @@ from maze_dataset.token_utils import (
     get_path_tokens,
     get_target_tokens,
     tokens_between,
+    get_relative_direction,
 )
 from maze_dataset.util import (
     _coord_to_strings_UT,
@@ -38,6 +41,7 @@ from maze_dataset.utils import (
     IsDataclass,
     FiniteValued,
     )
+from maze_dataset.constants import VOCAB
 
 MAZE_TOKENS: tuple[list[str], str] = (
     "<ADJLIST_START> (0,1) <--> (1,1) ; (1,0) <--> (1,1) ; (0,1) <--> (0,0) ; <ADJLIST_END> <ORIGIN_START> (1,0) <ORIGIN_END> <TARGET_START> (1,1) <TARGET_END> <PATH_START> (1,0) (1,1) <PATH_END>".split(),
@@ -845,4 +849,51 @@ def test_isinstance_by_type_name(o: object, type_name: str, result: bool | type[
             isinstance_by_type_name(o, type_name)
     else:
         assert isinstance_by_type_name(o, type_name) == result
-    
+
+
+@mark.parametrize(
+    "coords, result",
+    [
+        param(
+            np.array(coords),
+            res,
+            id=f"{coords}",
+        )
+        for coords, res in (
+            [
+                ([[0,0],[0,1],[1,1]], VOCAB.PATH_RIGHT),
+                ([[0,0],[1,0],[1,1]], VOCAB.PATH_LEFT),
+                ([[0,0],[0,1],[0,2]], VOCAB.PATH_FORWARD),
+                ([[0,0],[0,1],[0,0]], VOCAB.PATH_BACKWARD),
+                ([[0,0],[0,1],[0,1]], VOCAB.PATH_STAY),
+                ([[1,1],[0,1],[0,0]], VOCAB.PATH_LEFT),
+                ([[1,1],[1,0],[0,0]], VOCAB.PATH_RIGHT),
+                ([[0,2],[0,1],[0,0]], VOCAB.PATH_FORWARD),
+                ([[0,0],[0,1],[0,0]], VOCAB.PATH_BACKWARD),
+                ([[0,1],[0,1],[0,0]], ValueError),
+                ([[0,1],[1,1],[0,0]], ValueError),
+                ([[1,0],[1,1],[0,0]], ValueError),
+                ([[0,1],[0,2],[0,0]], ValueError),
+                ([[0,1],[0,0],[0,0]], VOCAB.PATH_STAY),
+                ([[1,1],[0,0],[0,1]], ValueError),
+                ([[1,1],[0,0],[1,0]], ValueError),
+                ([[0,2],[0,0],[0,1]], ValueError),
+                ([[0,0],[0,0],[0,1]], ValueError),
+                ([[0,1],[0,0],[0,1]], VOCAB.PATH_BACKWARD),
+                ([[-1,0],[0,0],[1,0]], VOCAB.PATH_FORWARD),
+                ([[-1,0],[0,0],[0,1]], VOCAB.PATH_LEFT),
+                ([[-1,0],[0,0],[-1,0]], VOCAB.PATH_BACKWARD),
+                ([[-1,0],[0,0],[0,-1]], VOCAB.PATH_RIGHT),
+                ([[-1,0],[0,0],[1,0],[2,0]], ValueError),
+                ([[-1,0],[0,0]], ValueError),
+                ([[-1,0,0],[0,0,0]], ValueError),
+            ]
+        )
+    ],
+) 
+def test_get_relative_direction(coords: Int[np.ndarray, "prev_cur_next=3 axis=2"], result: str | type[Exception]):
+    if isinstance(result, type) and issubclass(result, Exception):
+        with pytest.raises(result):
+            get_relative_direction(coords)
+        return
+    assert get_relative_direction(coords) == result

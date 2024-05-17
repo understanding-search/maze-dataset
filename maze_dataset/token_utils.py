@@ -1,8 +1,8 @@
 """a whole bunch of utilities for tokenization"""
 
-from jaxtyping import Int8
+from jaxtyping import Int8, Int
 import numpy as np
-from maze_dataset.constants import SPECIAL_TOKENS, CARDINAL_MAP
+from maze_dataset.constants import SPECIAL_TOKENS, CARDINAL_MAP, VOCAB
 
 # filtering things from a prompt or generated text
 # ==================================================
@@ -100,7 +100,39 @@ def get_target_tokens(tokens: list[str]) -> list[str]:
     )
 
 
-def get_cardinal(coords: Int8[np.ndarray, "start_end=2 axis=2"]) -> str:
+def get_cardinal_direction(coords: Int[np.ndarray, "start_end=2 axis=2"]) -> str:
     """Returns the cardinal direction token corresponding to traveling from `coords[0]` to `coords[1]`.
     """
     return CARDINAL_MAP[tuple(coords[1]-coords[0])]
+
+
+def get_relative_direction(coords: Int[np.ndarray, "prev_cur_next=3 axis=2"]) -> str:
+    """Returns the relative first-person direction token corresponding to traveling from `coords[1]` to `coords[2]`.
+     # Parameters
+     - `coords`: Contains 3 Coords, each of which must neighbor the previous Coord.
+       - `coords[0]`: The previous location, used to determine the current absolute direction that the "agent" is facing.
+       - `coords[1]`: The current location
+       - `coords[2]`: The next location. May be equal to the current location.
+    """
+    if coords.shape != (3,2):
+        raise ValueError(f"`coords` must have shape (3,2). Got {coords.shape} instead.")
+    directions = coords[1:] - coords[:-1]
+    if not np.all(np.linalg.norm(directions, axis=1) <= np.array([1.1,1.1])):
+        # Use floats as constant since `np.linalg.norm` returns float array
+        raise ValueError(f"Adjacent `coords` must be neighboring or equivalent. Got {coords} instead.")
+    if np.array_equal(coords[1], coords[2]):
+        return VOCAB.PATH_STAY
+    if np.array_equal(coords[0], coords[2]):
+        return VOCAB.PATH_BACKWARD
+    if np.array_equal(coords[0], coords[1]):
+        raise ValueError(f"Previous first-person direction indeterminate from {coords=}.")
+    if np.array_equal(directions[0], directions[1]):
+        return VOCAB.PATH_FORWARD
+    directions = np.append(directions, [[0],[0]], axis=1)  # Augment to represent unit basis vectors in 3D
+    match np.cross(directions[0], directions[1])[-1]:
+        case 1:
+            return VOCAB.PATH_LEFT
+        case -1:
+            return VOCAB.PATH_RIGHT
+        
+a=1
