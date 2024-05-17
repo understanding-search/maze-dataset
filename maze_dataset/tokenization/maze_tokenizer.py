@@ -783,7 +783,19 @@ class StepSizes(_TokenizerElementNamespace):
             return maze.get_solution_forking_points(always_include_endpoints=True)[0]
             
             
-    class ForksAndStraightaways(StepSize): pass
+    class ForksAndStraightaways(StepSize):
+        def _step_single_indices(self, maze: SolvedMaze) -> list[int]:
+            """Returns the indices of `maze.solution` corresponding to the steps to be tokenized.
+            """
+            return list(
+                np.unique(
+                    np.concatenate(
+                        (StepSizes.Straightaways()._step_single_indices(maze), 
+                        StepSizes.Forks()._step_single_indices(maze))
+                    )
+                )
+            )
+            
 
 
 class StepTokenizers(_TokenizerElementNamespace):

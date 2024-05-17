@@ -6,6 +6,7 @@ from itertools import product
 from typing import Iterable, Callable, Hashable
 import frozendict
 import random
+from jaxtyping import Int
 
 import numpy as np
 import pytest
@@ -691,9 +692,24 @@ def test_path_tokenizers(pt: PathTokenizers.PathTokenizer, maze: _MANUAL_MAZE):
                 assert all([ct.to_tokens(tok)[0] in path_toks_set for tok in solved_maze.get_solution_forking_points(always_include_endpoints=True)[1]])
                 assert all([ct.to_tokens(tok)[0] not in path_toks_set for tok in non_steps])
             if StepTokenizers.Distance() in pt.step_tokenizers:
-                fork_inds: np.ndarray = np.array(solved_maze.get_solution_forking_points(always_include_endpoints=True)[0])
-                distances: list[int] = fork_inds[1:] - fork_inds[:-1]
+                footprint_inds: np.ndarray = np.array(solved_maze.get_solution_forking_points(always_include_endpoints=True)[0])
+                distances: list[int] = footprint_inds[1:] - footprint_inds[:-1]
                 assert len(Counter(getattr(VOCAB, f"I_{d:03}") for d in distances) - Counter(path_toks)) == 0
             if StepTokenizers.Cardinal() in pt.step_tokenizers:
                 c = Counter(path_toks)
                 assert c[VOCAB.PATH_NORTH] + c[VOCAB.PATH_SOUTH] + c[VOCAB.PATH_EAST] + c[VOCAB.PATH_WEST] == len(solved_maze.get_solution_forking_points(always_include_endpoints=True)[1])-1
+        case StepSizes.ForksAndStraightaways:
+            swy_step_inds: list[int] = StepSizes.Straightaways()._step_single_indices(solved_maze)
+            footprint_inds: Int[np.ndarray, "footprint_index"] = np.concatenate((solved_maze.get_solution_forking_points(always_include_endpoints=True)[0], swy_step_inds))
+            footprint_inds, _ = np.unique(footprint_inds, axis=0, return_index=True)
+            footprints: Int[np.ndarray, "footprint_index, row_col=2"] = solved_maze.solution[footprint_inds]
+            if StepTokenizers.Coord() in pt.step_tokenizers:
+                non_steps: set[CoordTup] = set(tuple(c) for c in solved_maze.solution) - set(tuple(c) for c in footprints)
+                assert all([ct.to_tokens(coord)[0] in path_toks_set for coord in footprints])
+                assert all([ct.to_tokens(coord)[0] not in path_toks_set for coord in non_steps])
+            if StepTokenizers.Distance() in pt.step_tokenizers:
+                distances: list[int] = footprint_inds[1:] - footprint_inds[:-1]
+                assert len(Counter(getattr(VOCAB, f"I_{d:03}") for d in distances) - Counter(path_toks)) == 0
+            if StepTokenizers.Cardinal() in pt.step_tokenizers:
+                c = Counter(path_toks)
+                assert c[VOCAB.PATH_NORTH] + c[VOCAB.PATH_SOUTH] + c[VOCAB.PATH_EAST] + c[VOCAB.PATH_WEST] == len(footprint_inds)-1
