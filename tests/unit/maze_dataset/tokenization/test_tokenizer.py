@@ -3,7 +3,7 @@ import os
 import re
 from collections import Counter, namedtuple
 from itertools import product
-from typing import Iterable, Callable, Hashable
+from typing import Iterable, Callable, Hashable, Sequence
 import frozendict
 import random
 from jaxtyping import Int
@@ -163,7 +163,7 @@ def test_tokenizer():
             print(color_maze_tokens_AOTP(maze_tok, fmt="terminal"))
 
 
-_MANUAL_MAZE = namedtuple("_MANUAL_MAZE", ["tokens", "ascii", "straightaway_steps"])
+_MANUAL_MAZE = namedtuple("_MANUAL_MAZE", ["tokens", "ascii", "straightaway_footprints"])
 _ASCII_MAZES: dict[str, tuple[str, list[str]]] = dict(
     small_3x3=_MANUAL_MAZE(
         tokens="<ADJLIST_START> (2,0) <--> (2,1) ; (0,0) <--> (0,1) ; (0,0) <--> (1,0) ; (0,2) <--> (1,2) ; (1,0) <--> (2,0) ; (0,2) <--> (0,1) ; (2,2) <--> (2,1) ; (1,1) <--> (2,1) ; <ADJLIST_END> <ORIGIN_START> (0,0) <ORIGIN_END> <TARGET_START> (2,1) <TARGET_END> <PATH_START> (0,0) (1,0) (2,0) (2,1) <PATH_END>",
@@ -176,7 +176,7 @@ _ASCII_MAZES: dict[str, tuple[str, list[str]]] = dict(
             "#XXE  #",
             "#######",
         ],
-        straightaway_steps=np.array([[0,0],[2,0],[2,1],]),
+        straightaway_footprints=np.array([[0,0],[2,0],[2,1],]),
     ),
     big_10x10=_MANUAL_MAZE(
         tokens="<ADJLIST_START> (8,2) <--> (8,3) ; (3,7) <--> (3,6) ; (6,7) <--> (6,8) ; (4,6) <--> (5,6) ; (9,5) <--> (9,4) ; (3,3) <--> (3,4) ; (5,1) <--> (4,1) ; (2,6) <--> (2,7) ; (8,5) <--> (8,4) ; (1,9) <--> (2,9) ; (4,1) <--> (4,2) ; (0,8) <--> (0,7) ; (5,4) <--> (5,3) ; (6,3) <--> (6,4) ; (5,0) <--> (4,0) ; (5,3) <--> (5,2) ; (3,1) <--> (2,1) ; (9,1) <--> (9,0) ; (3,5) <--> (3,6) ; (5,5) <--> (6,5) ; (7,1) <--> (7,2) ; (0,1) <--> (1,1) ; (7,8) <--> (8,8) ; (3,9) <--> (4,9) ; (4,6) <--> (4,7) ; (0,6) <--> (0,7) ; (3,4) <--> (3,5) ; (6,0) <--> (5,0) ; (7,7) <--> (7,6) ; (1,6) <--> (0,6) ; (6,1) <--> (6,0) ; (8,6) <--> (8,7) ; (9,9) <--> (9,8) ; (1,8) <--> (1,9) ; (2,1) <--> (2,2) ; (9,2) <--> (9,3) ; (5,9) <--> (6,9) ; (3,2) <--> (2,2) ; (0,8) <--> (0,9) ; (5,6) <--> (5,7) ; (2,3) <--> (2,4) ; (4,5) <--> (4,4) ; (8,9) <--> (8,8) ; (9,6) <--> (8,6) ; (3,7) <--> (3,8) ; (8,0) <--> (7,0) ; (6,1) <--> (6,2) ; (0,1) <--> (0,0) ; (7,3) <--> (7,4) ; (9,4) <--> (9,3) ; (9,6) <--> (9,5) ; (8,7) <--> (7,7) ; (5,2) <--> (5,1) ; (0,0) <--> (1,0) ; (7,2) <--> (7,3) ; (2,5) <--> (2,6) ; (4,9) <--> (5,9) ; (5,5) <--> (5,4) ; (5,6) <--> (6,6) ; (7,8) <--> (7,9) ; (1,7) <--> (2,7) ; (4,6) <--> (4,5) ; (1,1) <--> (1,2) ; (3,1) <--> (3,0) ; (1,5) <--> (1,6) ; (8,3) <--> (8,4) ; (9,9) <--> (8,9) ; (8,5) <--> (7,5) ; (1,4) <--> (2,4) ; (3,0) <--> (4,0) ; (3,3) <--> (4,3) ; (6,9) <--> (6,8) ; (1,0) <--> (2,0) ; (6,0) <--> (7,0) ; (8,0) <--> (9,0) ; (2,3) <--> (2,2) ; (2,8) <--> (3,8) ; (5,7) <--> (6,7) ; (1,3) <--> (0,3) ; (9,7) <--> (9,8) ; (7,5) <--> (7,4) ; (1,8) <--> (2,8) ; (6,5) <--> (6,4) ; (0,2) <--> (1,2) ; (0,7) <--> (1,7) ; (0,3) <--> (0,2) ; (4,3) <--> (4,2) ; (5,8) <--> (4,8) ; (9,1) <--> (8,1) ; (9,2) <--> (8,2) ; (1,3) <--> (1,4) ; (2,9) <--> (3,9) ; (4,8) <--> (4,7) ; (0,5) <--> (0,4) ; (8,1) <--> (7,1) ; (0,3) <--> (0,4) ; (9,7) <--> (9,6) ; (7,6) <--> (6,6) ; (1,5) <--> (0,5) ; <ADJLIST_END> <ORIGIN_START> (6,2) <ORIGIN_END> <TARGET_START> (2,1) <TARGET_END> <PATH_START> (6,2) (6,1) (6,0) (5,0) (4,0) (3,0) (3,1) (2,1) <PATH_END>",
@@ -203,7 +203,7 @@ _ASCII_MAZES: dict[str, tuple[str, list[str]]] = dict(
             "#   #               #",
             "#####################",
         ],
-        straightaway_steps=np.array([[6,2],[6,0],[3,0],[3,1],[2,1],]),
+        straightaway_footprints=np.array([[6,2],[6,0],[3,0],[3,1],[2,1],]),
     ),
     longer_10x10=_MANUAL_MAZE(
         tokens="<ADJLIST_START> (8,2) <--> (8,3) ; (3,7) <--> (3,6) ; (6,7) <--> (6,8) ; (4,6) <--> (5,6) ; (9,5) <--> (9,4) ; (3,3) <--> (3,4) ; (5,1) <--> (4,1) ; (2,6) <--> (2,7) ; (8,5) <--> (8,4) ; (1,9) <--> (2,9) ; (4,1) <--> (4,2) ; (0,8) <--> (0,7) ; (5,4) <--> (5,3) ; (6,3) <--> (6,4) ; (5,0) <--> (4,0) ; (5,3) <--> (5,2) ; (3,1) <--> (2,1) ; (9,1) <--> (9,0) ; (3,5) <--> (3,6) ; (5,5) <--> (6,5) ; (7,1) <--> (7,2) ; (0,1) <--> (1,1) ; (7,8) <--> (8,8) ; (3,9) <--> (4,9) ; (4,6) <--> (4,7) ; (0,6) <--> (0,7) ; (3,4) <--> (3,5) ; (6,0) <--> (5,0) ; (7,7) <--> (7,6) ; (1,6) <--> (0,6) ; (6,1) <--> (6,0) ; (8,6) <--> (8,7) ; (9,9) <--> (9,8) ; (1,8) <--> (1,9) ; (2,1) <--> (2,2) ; (9,2) <--> (9,3) ; (5,9) <--> (6,9) ; (3,2) <--> (2,2) ; (0,8) <--> (0,9) ; (5,6) <--> (5,7) ; (2,3) <--> (2,4) ; (4,5) <--> (4,4) ; (8,9) <--> (8,8) ; (9,6) <--> (8,6) ; (3,7) <--> (3,8) ; (8,0) <--> (7,0) ; (6,1) <--> (6,2) ; (0,1) <--> (0,0) ; (7,3) <--> (7,4) ; (9,4) <--> (9,3) ; (9,6) <--> (9,5) ; (8,7) <--> (7,7) ; (5,2) <--> (5,1) ; (0,0) <--> (1,0) ; (7,2) <--> (7,3) ; (2,5) <--> (2,6) ; (4,9) <--> (5,9) ; (5,5) <--> (5,4) ; (5,6) <--> (6,6) ; (7,8) <--> (7,9) ; (1,7) <--> (2,7) ; (4,6) <--> (4,5) ; (1,1) <--> (1,2) ; (3,1) <--> (3,0) ; (1,5) <--> (1,6) ; (8,3) <--> (8,4) ; (9,9) <--> (8,9) ; (8,5) <--> (7,5) ; (1,4) <--> (2,4) ; (3,0) <--> (4,0) ; (3,3) <--> (4,3) ; (6,9) <--> (6,8) ; (1,0) <--> (2,0) ; (6,0) <--> (7,0) ; (8,0) <--> (9,0) ; (2,3) <--> (2,2) ; (2,8) <--> (3,8) ; (5,7) <--> (6,7) ; (1,3) <--> (0,3) ; (9,7) <--> (9,8) ; (7,5) <--> (7,4) ; (1,8) <--> (2,8) ; (6,5) <--> (6,4) ; (0,2) <--> (1,2) ; (0,7) <--> (1,7) ; (0,3) <--> (0,2) ; (4,3) <--> (4,2) ; (5,8) <--> (4,8) ; (9,1) <--> (8,1) ; (9,2) <--> (8,2) ; (1,3) <--> (1,4) ; (2,9) <--> (3,9) ; (4,8) <--> (4,7) ; (0,5) <--> (0,4) ; (8,1) <--> (7,1) ; (0,3) <--> (0,4) ; (9,7) <--> (9,6) ; (7,6) <--> (6,6) ; (1,5) <--> (0,5) ; <ADJLIST_END> <ORIGIN_START> (6,2) <ORIGIN_END> <TARGET_START> (2,1) <TARGET_END> <PATH_START> (6,2) (6,1) (6,0) (5,0) (4,0) (3,0) (3,1) (2,1) (2,2) (2,3) (2,4) (1,4) (1,3) (0,3) (0,4) (0,5) (1,5) (1,6) (0,6) (0,7) (0,8) <PATH_END>",
@@ -230,7 +230,7 @@ _ASCII_MAZES: dict[str, tuple[str, list[str]]] = dict(
             "#   #               #",
             "#####################",
         ],
-        straightaway_steps=np.array([[6,2],[6,0],[3,0],[3,1],[2,1],[2,4],[1,4],[1,3],[0,3],[0,5],[1,5],[1,6],[0,6],[0,8],]),
+        straightaway_footprints=np.array([[6,2],[6,0],[3,0],[3,1],[2,1],[2,4],[1,4],[1,3],[0,3],[0,5],[1,5],[1,6],[0,6],[0,8],]),
     ),
 )
 
@@ -645,8 +645,29 @@ def test_is_legacy_equivalent(tokenizer: MazeTokenizer2, result: bool):
     assert tokenizer.is_legacy_equivalent() == result
     
 
+def _helper_test_path_tokenizers(
+    pt: PathTokenizers.PathTokenizer, 
+    footprint_inds: Sequence[int],
+    ):
+    ct: CoordTokenizers.CoordTokenizer = CoordTokenizers.UT()
+    path_toks: list[str] = pt.to_tokens(maze, ct)
+    path_toks_set: set[str] = set(path_toks)
+    footprint_inds: Int[np.ndarray, "footprint_index"] = np.array(footprint_inds)
+    footprints: Int[np.ndarray, "footprint_index row_col=2"] = maze.solution[footprint_inds]
+    if StepTokenizers.Coord() in pt.step_tokenizers:
+        non_steps: set[CoordTup] = set(tuple(c) for c in maze.solution) - set(tuple(c) for c in footprints)
+        assert all([ct.to_tokens(coord)[0] in path_toks_set for coord in footprints])
+        assert all([ct.to_tokens(coord)[0] not in path_toks_set for coord in non_steps])
+    if StepTokenizers.Distance() in pt.step_tokenizers:
+        distances: list[int] = footprint_inds[1:] - footprint_inds[:-1]
+        assert len(Counter(getattr(VOCAB, f"I_{d:03}") for d in distances) - Counter(path_toks)) == 0
+    if StepTokenizers.Cardinal() in pt.step_tokenizers:
+        c = Counter(path_toks)
+        assert c[VOCAB.PATH_NORTH] + c[VOCAB.PATH_SOUTH] + c[VOCAB.PATH_EAST] + c[VOCAB.PATH_WEST] == len(footprint_inds)-1
+
+
 @mark.parametrize(
-    "pt,maze",
+    "pt,manual_maze",
     [
         param(tokenizer, maze_kv[1], id=f"{tokenizer.name}-{maze_kv[0]}")
         for maze_kv, tokenizer in itertools.product(
@@ -654,62 +675,25 @@ def test_is_legacy_equivalent(tokenizer: MazeTokenizer2, result: bool):
             random.sample(
                 all_instances(
                     PathTokenizers.PathTokenizer,
-                    frozendict.frozendict({PathTokenizers.PathTokenizer: lambda x: x.is_valid()})
+                    frozendict.frozendict({TokenizerElement: lambda x: x.is_valid()})
                 ),
                 NUM_TOKENIZERS_TO_TEST
             )
         )
     ],
 )    
-def test_path_tokenizers(pt: PathTokenizers.PathTokenizer, maze: _MANUAL_MAZE):
-    solved_maze = SolvedMaze.from_ascii("\n".join(maze.ascii))
-    ct: CoordTokenizers.CoordTokenizer = CoordTokenizers.UT()
-    path_toks: list[str] = pt.to_tokens(solved_maze, ct)
-    path_toks_set: set[str] = set(path_toks)
+def test_path_tokenizers(pt: PathTokenizers.PathTokenizer, manual_maze: _MANUAL_MAZE):
+    solved_maze: SolvedMaze = SolvedMaze.from_ascii("\n".join(manual_maze.ascii))
     match type(pt.step_size):
         case StepSizes.Singles:
-            if StepTokenizers.Coord() in pt.step_tokenizers:
-                assert all([tok in path_toks for tok in [ct.to_tokens(c)[0] for c in solved_maze.solution]])
-            if StepTokenizers.Distance() in pt.step_tokenizers:
-                assert Counter(path_toks)[VOCAB.I_001] == len(solved_maze.solution)-1
-            if StepTokenizers.Cardinal() in pt.step_tokenizers:
-                c = Counter(path_toks)
-                assert c[VOCAB.PATH_NORTH] + c[VOCAB.PATH_SOUTH] + c[VOCAB.PATH_EAST] + c[VOCAB.PATH_WEST] == len(solved_maze.solution)-1
+            footprint_inds = range(solved_maze.solution.shape[0])
         case StepSizes.Straightaways:
-            if StepTokenizers.Coord() in pt.step_tokenizers:
-                non_steps = set(tuple(c) for c in solved_maze.solution) - set(tuple(c) for c in maze.straightaway_steps)
-                assert all([ct.to_tokens(tok)[0] in path_toks_set for tok in maze.straightaway_steps])
-                assert all([ct.to_tokens(tok)[0] not in path_toks_set for tok in non_steps])
-            if StepTokenizers.Distance() in pt.step_tokenizers:
-                distances: list[int] = [max(abs(c1[0]-c0[0]), abs(c1[1]-c0[1])) for c0, c1 in zip(maze.straightaway_steps[:-1], maze.straightaway_steps[1:])]
-                assert len(Counter(getattr(VOCAB, f"I_{d:03}") for d in distances) - Counter(path_toks)) == 0
-            if StepTokenizers.Cardinal() in pt.step_tokenizers:
-                c = Counter(path_toks)
-                assert c[VOCAB.PATH_NORTH] + c[VOCAB.PATH_SOUTH] + c[VOCAB.PATH_EAST] + c[VOCAB.PATH_WEST] == len(maze.straightaway_steps)-1
+            swy_coordtup_set: set[CoordTup] = set(tuple(c) for c in manual_maze.straightaway_footprints)
+            footprint_inds: list[int] = [i for i, c in enumerate(solved_maze.solution) if tuple(c) in swy_coordtup_set]
         case StepSizes.Forks:
-            if StepTokenizers.Coord() in pt.step_tokenizers:
-                non_steps: set[CoordTup] = set(tuple(c) for c in solved_maze.solution) - set(tuple(c) for c in solved_maze.get_solution_forking_points(always_include_endpoints=True)[1])
-                assert all([ct.to_tokens(tok)[0] in path_toks_set for tok in solved_maze.get_solution_forking_points(always_include_endpoints=True)[1]])
-                assert all([ct.to_tokens(tok)[0] not in path_toks_set for tok in non_steps])
-            if StepTokenizers.Distance() in pt.step_tokenizers:
-                footprint_inds: np.ndarray = np.array(solved_maze.get_solution_forking_points(always_include_endpoints=True)[0])
-                distances: list[int] = footprint_inds[1:] - footprint_inds[:-1]
-                assert len(Counter(getattr(VOCAB, f"I_{d:03}") for d in distances) - Counter(path_toks)) == 0
-            if StepTokenizers.Cardinal() in pt.step_tokenizers:
-                c = Counter(path_toks)
-                assert c[VOCAB.PATH_NORTH] + c[VOCAB.PATH_SOUTH] + c[VOCAB.PATH_EAST] + c[VOCAB.PATH_WEST] == len(solved_maze.get_solution_forking_points(always_include_endpoints=True)[1])-1
+            footprint_inds = solved_maze.get_solution_forking_points(always_include_endpoints=True)[0]
         case StepSizes.ForksAndStraightaways:
             swy_step_inds: list[int] = StepSizes.Straightaways()._step_single_indices(solved_maze)
             footprint_inds: Int[np.ndarray, "footprint_index"] = np.concatenate((solved_maze.get_solution_forking_points(always_include_endpoints=True)[0], swy_step_inds))
             footprint_inds, _ = np.unique(footprint_inds, axis=0, return_index=True)
-            footprints: Int[np.ndarray, "footprint_index, row_col=2"] = solved_maze.solution[footprint_inds]
-            if StepTokenizers.Coord() in pt.step_tokenizers:
-                non_steps: set[CoordTup] = set(tuple(c) for c in solved_maze.solution) - set(tuple(c) for c in footprints)
-                assert all([ct.to_tokens(coord)[0] in path_toks_set for coord in footprints])
-                assert all([ct.to_tokens(coord)[0] not in path_toks_set for coord in non_steps])
-            if StepTokenizers.Distance() in pt.step_tokenizers:
-                distances: list[int] = footprint_inds[1:] - footprint_inds[:-1]
-                assert len(Counter(getattr(VOCAB, f"I_{d:03}") for d in distances) - Counter(path_toks)) == 0
-            if StepTokenizers.Cardinal() in pt.step_tokenizers:
-                c = Counter(path_toks)
-                assert c[VOCAB.PATH_NORTH] + c[VOCAB.PATH_SOUTH] + c[VOCAB.PATH_EAST] + c[VOCAB.PATH_WEST] == len(footprint_inds)-1
+    _helper_test_path_tokenizers(pt,solved_maze,footprint_inds,)
