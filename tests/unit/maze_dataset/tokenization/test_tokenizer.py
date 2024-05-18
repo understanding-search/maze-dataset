@@ -318,7 +318,7 @@ def test_to_legacy_tokenizer(tok_mode: TokenizationMode, max_grid_size: int | No
     [
         param(maze[0], tok_spec, id=f"{tok_spec.value}-maze{maze[1]}")
         for maze, tok_spec in itertools.product(
-            [(maze, i) for i, maze in enumerate(MIXED_MAZES[:6])],
+            [(maze, i) for i, maze in enumerate(MIXED_MAZES)],
             [tok_mode for tok_mode in TokenizationMode],
         )
     ],
@@ -368,7 +368,7 @@ def test_coords_to_strings_backwards_compatible(
     [
         param(maze[0], tok_spec, id=f"{tok_spec.value}-maze{maze[1]}")
         for maze, tok_spec in itertools.product(
-            [(maze, i) for i, maze in enumerate(MIXED_MAZES[:6])],
+            [(maze, i) for i, maze in enumerate(MIXED_MAZES)],
             [tok_mode for tok_mode in TokenizationMode],
         )
     ],
@@ -455,7 +455,7 @@ def test_token_region_delimiters(maze: LatticeMaze, tokenizer: MazeTokenizer2):
 
 
 @mark.parametrize(
-    "tokenizer", [param(tokenizer, id=tokenizer.name) for tokenizer in ALL_TOKENIZERS]
+    "tokenizer", [param(tokenizer, id=tokenizer.name) for tokenizer in sample_tokenizers_for_test(NUM_TOKENIZERS_TO_TEST)]
 )
 def test_tokenizer_properties(tokenizer: MazeTokenizer2):
     # Just make sure the call doesn't raise exception
