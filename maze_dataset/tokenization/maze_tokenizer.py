@@ -840,7 +840,7 @@ class StepTokenizers(_TokenizerElementNamespace):
             return coord_tokenizer.to_tokens(maze.solution[end_index,...])
             
     class Cardinal(StepTokenizer):
-        @abc.abstractmethod
+        @abc.abstractmethod  # TODO: Delete to reinstantiate as valid `StepTokenizer` concrete class
         def to_tokens(
             self, 
             maze: SolvedMaze, 
@@ -855,7 +855,7 @@ class StepTokenizers(_TokenizerElementNamespace):
         """Tokenizes a solution step using relative first-person directions (right, left, forward, etc.).
         To simplify the indeterminacy, at the start of a solution the "agent" solving the maze is assumed to be facing NORTH.
         """
-        @abc.abstractmethod
+        @abc.abstractmethod  # TODO: Delete to reinstantiate as valid `StepTokenizer` concrete class
         def to_tokens(
             self, 
             maze: SolvedMaze, 

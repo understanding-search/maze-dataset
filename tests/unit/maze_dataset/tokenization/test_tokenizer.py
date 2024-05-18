@@ -681,7 +681,7 @@ def _helper_test_path_tokenizers(
                     PathTokenizers.PathTokenizer,
                     frozendict.frozendict({TokenizerElement: lambda x: x.is_valid()})
                 ),
-                NUM_TOKENIZERS_TO_TEST
+                min(3, NUM_TOKENIZERS_TO_TEST)  # TODO: Get rid of "3" when reinstantiating all `StepTokenizer` leaf classes
             )
         )
     ],
