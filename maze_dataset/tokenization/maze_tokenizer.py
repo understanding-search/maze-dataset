@@ -610,14 +610,45 @@ class CoordTokenizers(_TokenizerElementNamespace):
             ]
 
 
+class ConnectionGroupings(_TokenizerElementNamespace):
+    class ConnectionGrouping(TokenizerElement, abc.ABC): pass
+    
+    
+    class Single(ConnectionGrouping):
+        connection_token_ordinal: Literal[1, 2] = 1
+        
+        
+    class ByHubCoord(ConnectionGrouping):
+        intra: bool = True
+        shuffle_group: bool = True
+        connection_token_ordinal: Literal[0, 1, 2] = 1
+        
+        
+class EdgeSubsets(_TokenizerElementNamespace):
+    class EdgeSubset(TokenizerElement, abc.ABC): pass
+    
+    
+    class AllLatticeEdges(EdgeSubset): pass
+    
+    
+    class ConnectionEdges(EdgeSubset):
+        walls: bool = False
+        
+        
 class AdjListTokenizers(_TokenizerElementNamespace):
     key = "adj_list_tokenizer"
+    ChessboardSublattice = Literal["evens", "odds", "all"]
 
     @serializable_dataclass(frozen=True, kw_only=True)
     class AdjListTokenizer(TokenizerElement, abc.ABC):
         """
         Specifies how the adjacency list is tokenized.
         """
+        pre: bool = False
+        post: bool = True
+        shuffle_d0: bool = True
+        connection_grouping: ConnectionGroupings.ConnectionGrouping = ConnectionGroupings.Single()
+        edge_subset: EdgeSubsets.EdgeSubset = EdgeSubsets.ConnectionEdges()
 
         @abc.abstractmethod
         def to_tokens(self, conn_list: ConnectionList) -> list[str]:
@@ -627,6 +658,12 @@ class AdjListTokenizers(_TokenizerElementNamespace):
         def attribute_key(cls) -> str:
             return AdjListTokenizers.key
         
+    class AdjListCoord(AdjListTokenizer):
+        leading_coords: AdjListTokenizers.ChessboardSublattice | Literal["shuffle"] = "shuffle"
+        
+    class AdjListCardinal(AdjListTokenizer):
+        leading_coords: AdjListTokenizers.ChessboardSublattice = "all"
+        coord_first: bool = True
 
     @serializable_dataclass(frozen=True, kw_only=True)
     class Coords(AdjListTokenizer):
