@@ -610,22 +610,40 @@ class CoordTokenizers(_TokenizerElementNamespace):
             ]
 
 
-class ConnectionGroupings(_TokenizerElementNamespace):
-    class ConnectionGrouping(TokenizerElement, abc.ABC): pass
+class EdgeGroupings(_TokenizerElementNamespace):
+    class EdgeGrouping(TokenizerElement, abc.ABC): pass
     
     
-    class Single(ConnectionGrouping):
+    class Single(EdgeGrouping):
         connection_token_ordinal: Literal[1, 2] = 1
         
         
-    class ByHubCoord(ConnectionGrouping):
+    class ByHubCoord(EdgeGrouping):
         intra: bool = True
         shuffle_group: bool = True
         connection_token_ordinal: Literal[0, 1, 2] = 1
         
         
 class EdgeSubsets(_TokenizerElementNamespace):
-    class EdgeSubset(TokenizerElement, abc.ABC): pass
+    """
+    # `ChessboardSublattice`
+    Specifies a subset of the coords in a `LatticeMaze`.
+    - `evens`: The subset of coords for which the sum of the x and y indices is even.
+    Analogous to the black squares on a chessboard.
+    - `odds`: The subset of coords for which the sum of the x and y indices is odd.
+    Analogous to the white squares on a chessboard.
+    - `all`: The full subset of coords
+    """
+    ChessboardSublattice = Literal["evens", "odds", "all"]
+    
+    class EdgeSubset(TokenizerElement, abc.ABC):
+        @abc.abstractmethod
+        def get_edges(
+            self, 
+            maze: LatticeMaze, 
+            leading_coords: ChessboardSublattice | Literal["shuffle"]
+        ) -> CoordArray:
+            pass
     
     
     class AllLatticeEdges(EdgeSubset): pass
@@ -637,32 +655,43 @@ class EdgeSubsets(_TokenizerElementNamespace):
         
 class AdjListTokenizers(_TokenizerElementNamespace):
     key = "adj_list_tokenizer"
-    ChessboardSublattice = Literal["evens", "odds", "all"]
 
     @serializable_dataclass(frozen=True, kw_only=True)
     class AdjListTokenizer(TokenizerElement, abc.ABC):
         """
         Specifies how the adjacency list is tokenized.
+        Tokenization behavior is decomposed into specification of edge groupings and edge subsets.
+        See documentation of `EdgeSubset` and `ConnectionGrouping` classes for more details.
+        
+        # Parameters
+        - `pre`: Whether all edge groupings include a preceding delimiter token
+        - `post`: Whether all edge groupings include a following delimiter token
+        - `shuffle_d0`: Specifies how to sequence the edge groupings.
+        If true, groupings are shuffled randomly. If false, groupings are sorted by the leading coord in each group.
+        See subclasses and `EdgeSubsets.ChessboardSublattice` for documentation on leading coords.
+        - `edge_grouping`: Specifies if/how multiple coord-coord connections are grouped together in a token subsequence called a edge grouping.
+        - `edge_subset`: Specifies the subset of lattice edges to be tokenized.
         """
         pre: bool = False
         post: bool = True
         shuffle_d0: bool = True
-        connection_grouping: ConnectionGroupings.ConnectionGrouping = ConnectionGroupings.Single()
+        edge_grouping: EdgeGroupings.EdgeGrouping = EdgeGroupings.Single()
         edge_subset: EdgeSubsets.EdgeSubset = EdgeSubsets.ConnectionEdges()
+        leading_coords: EdgeSubsets.ChessboardSublattice | Literal["shuffle"]
 
         @abc.abstractmethod
-        def to_tokens(self, conn_list: ConnectionList) -> list[str]:
-            pass
+        def to_tokens(self, maze: LatticeMaze) -> list[str]:
+            edges = self.edge_subset.get_edges(maze, self.leading_coords)
         
         @classmethod
         def attribute_key(cls) -> str:
             return AdjListTokenizers.key
         
     class AdjListCoord(AdjListTokenizer):
-        leading_coords: AdjListTokenizers.ChessboardSublattice | Literal["shuffle"] = "shuffle"
+        leading_coords: EdgeSubsets.ChessboardSublattice | Literal["shuffle"] = "shuffle"
         
     class AdjListCardinal(AdjListTokenizer):
-        leading_coords: AdjListTokenizers.ChessboardSublattice = "all"
+        leading_coords: EdgeSubsets.ChessboardSublattice = "all"
         coord_first: bool = True
 
     @serializable_dataclass(frozen=True, kw_only=True)
@@ -695,14 +724,14 @@ class AdjListTokenizers(_TokenizerElementNamespace):
 
         def to_tokens(
             self,
-            conn_list: ConnectionList,
+            maze: LatticeMaze,
             coord_tokenizer: CoordTokenizers.CoordTokenizer,
         ) -> list[str]:
             if self.walls:
                 conn_list = np.logical_not(conn_list)
                 conn_list[0,-1,:] = False
                 conn_list[1,:,-1] = False
-            adj_list = connection_list_to_adj_list(conn_list)
+            adj_list = connection_list_to_adj_list(maze.connection_list)
             return itertools.chain.from_iterable(
                 [
                     self._single_connection_tokens(c_s, c_e, coord_tokenizer)
@@ -1138,7 +1167,7 @@ class PromptSequencers(_TokenizerElementNamespace):
             target: list[Coord] | None = [getattr(maze, "end_pos", None)] # TargetTokenizer requires target: Sequence[Coord]
 
             return [
-                self.adj_list_tokenizer.to_tokens(maze.connection_list, coord_tokenizer=self.coord_tokenizer) if hasattr(self, "adj_list_tokenizer") else [],
+                self.adj_list_tokenizer.to_tokens(maze, coord_tokenizer=self.coord_tokenizer) if hasattr(self, "adj_list_tokenizer") else [],
                 self.coord_tokenizer.to_tokens(origin) if origin is not None else [],
                 (
                     self.target_tokenizer.to_tokens(target, coord_tokenizer=self.coord_tokenizer)
