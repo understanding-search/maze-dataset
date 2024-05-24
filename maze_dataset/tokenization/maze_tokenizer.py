@@ -8,7 +8,7 @@ import warnings
 from enum import Enum
 from functools import cached_property
 from typing import TYPE_CHECKING, Any, Callable, Iterable, Mapping, Sequence, Literal
-from jaxtyping import Int64
+from jaxtyping import Int64, Int8
 
 import numpy as np
 from muutils.json_serialize import (
@@ -27,6 +27,7 @@ from maze_dataset.constants import (
     VOCAB_LIST,
     VOCAB_TOKEN_TO_INDEX,
     ConnectionList,
+    ConnectionArray,
     Coord,
     CoordArray,
     CoordTup,
@@ -48,8 +49,8 @@ from maze_dataset.utils import (
     flatten,
     unpackable_if_true_attribute,
 )
+from maze_dataset.generation import numpy_rng
 
-# if TYPE_CHECKING:
 from maze_dataset.maze.lattice_maze import LatticeMaze, SolvedMaze
 
 
@@ -613,10 +614,17 @@ class CoordTokenizers(_TokenizerElementNamespace):
 class EdgeGroupings(_TokenizerElementNamespace):
     """Namespace for `EdgeGrouping` subclass hierarchy used by `AdjListTokenizer`.
     """
+    key = "edge_grouping"
+    
     class EdgeGrouping(TokenizerElement, abc.ABC): 
         """Specifies if/how multiple coord-coord connections are grouped together in a token subsequence called a edge grouping.
         """
-        pass
+        @classmethod
+        def attribute_key(cls) -> str:
+            return EdgeGroupings.key
+        
+        def is_valid(self) -> bool:
+            return True
     
     
     class SingleEdges(EdgeGrouping):
@@ -644,31 +652,75 @@ class EdgeGroupings(_TokenizerElementNamespace):
         shuffle_group: bool = True
         connection_token_ordinal: Literal[0, 1] = 0
         
+class EdgePermuters(_TokenizerElementNamespace):
+    """Namespace for `EdgePermuter` subclass hierarchy used by `AdjListTokenizer`.
+    """
+    key = "edge_permuter"
+    
+    class EdgePermuter(TokenizerElement, abc.ABC):
+        """Specifies how to sequence the two coords that encode a lattice edge.
+        """
+        @classmethod
+        def attribute_key(cls) -> str:
+            return EdgePermuters.key
+        
+        def is_valid(self) -> bool:
+            # No invalid instances possible within data member type hint bounds
+            return True
+        
+        @abc.abstractmethod
+        def _permute(lattice_edges: ConnectionArray) -> None:
+            """
+            Executes a permutation. `lattice_edges` is modified in-place.
+            
+            # Parameters
+            - `lattice_edges`: Array of lattice edges.
+            The two coords in shape[1] must be adjacent in the lattice.
+            
+            # Returns
+            - Array of lattice edges with entries along shape[1] systematically permuted.
+            - shape[0] of the returned array is NOT guaranteed to match `lattice_edges.shape[1]`.
+            """
+            pass
+
+    
+    class RandomCoord(EdgePermuter):
+        """Permutes randomly.
+        """
+        def _permute(lattice_edges: ConnectionList) -> None:
+            # return np.random.shuffle(lattice_edges.transpose((1,0,2,3))).transpose((1,0,2,3))
+            numpy_rng.shuffle(lattice_edges, 1)
+    
+    
+    class BothCoords(EdgePermuter):
+        """Includes both possible permutations of every edge in the output.
+        """
+        def _permute(lattice_edges: ConnectionList) -> None:
+            ...
+        
         
 class EdgeSubsets(_TokenizerElementNamespace):
     """
     Namespace for `EdgeSubset` subclass hierarchy used by `AdjListTokenizer`.
-    ## `ChessboardSublattice`
-    Specifies a subset of the coords in a `LatticeMaze`.
-    - `evens`: The subset of coords for which the sum of the x and y indices is even.
-    Analogous to the black squares on a chessboard.
-    - `odds`: The subset of coords for which the sum of the x and y indices is odd.
-    Analogous to the white squares on a chessboard.
-    - `all`: The full subset of coords.
-    - `shuffle`: Indicates some type of random selection of coords depending on the particular use case.
     """
-    ChessboardSublattice = Literal["evens", "odds", "all", "shuffle"]
+    key = "edge_subset"
     
     class EdgeSubset(TokenizerElement, abc.ABC):
         """
         Component of an `AdjListTokenizers.AdjListTokenizer` which specifies the subset of lattice edges to be tokenized.
         """
+        @classmethod
+        def attribute_key(cls) -> str:
+            return EdgeSubsets.key
+        
+        def is_valid(self) -> bool:
+            return True
+        
+        @staticmethod
         @abc.abstractmethod
         def get_edges(
-            self, 
             maze: LatticeMaze, 
-            leading_coords: "EdgeSubsets.ChessboardSublattice",
-        ) -> CoordArray:
+        ) -> ConnectionArray:
             pass
     
     
@@ -677,7 +729,11 @@ class EdgeSubsets(_TokenizerElementNamespace):
         All 2n^2-2n edges of the lattice are tokenized.
         If a wall exists on that edge, the edge is tokenized in the same manner, using `VOCAB.ADJLIST_WALL` in place of `VOCAB.CONNECTOR`.
         """
-        pass
+        @staticmethod
+        def get_edges(
+            maze: LatticeMaze, 
+        ) -> ConnectionArray:
+            pass
     
     
     class ConnectionEdges(EdgeSubset):
@@ -690,6 +746,12 @@ class EdgeSubsets(_TokenizerElementNamespace):
         If true, `VOCAB.ADJLIST_WALL` is used in place of `VOCAB.CONNECTOR`.
         """
         walls: bool = False
+        
+        @staticmethod
+        def get_edges(
+            maze: LatticeMaze, 
+        ) -> ConnectionArray:
+            pass
         
         
 class AdjListTokenizers(_TokenizerElementNamespace):
@@ -721,76 +783,74 @@ class AdjListTokenizers(_TokenizerElementNamespace):
         shuffle_d0: bool = True
         edge_grouping: EdgeGroupings.EdgeGrouping = EdgeGroupings.SingleEdges()
         edge_subset: EdgeSubsets.EdgeSubset = EdgeSubsets.ConnectionEdges()
-        leading_coords: EdgeSubsets.ChessboardSublattice
-
-        @abc.abstractmethod
-        def to_tokens(self, maze: LatticeMaze) -> list[str]:
-            edges = self.edge_subset.get_edges(maze, self.leading_coords)
+        edge_permuter: EdgePermuters.EdgePermuter
         
         @classmethod
         def attribute_key(cls) -> str:
             return AdjListTokenizers.key
         
+        def is_valid(self) -> bool:
+            return True
+
+        def to_tokens(self, maze: LatticeMaze) -> list[str]:
+            edges: ConnectionArray = self.edge_subset.get_edges(maze)
+            edges = self.edge_permuter._permute(edges)
+        
     class AdjListCoord(AdjListTokenizer):
-        leading_coords: EdgeSubsets.ChessboardSublattice = "shuffle"
+        edge_permuter: EdgePermuters.EdgePermuter = EdgePermuters.RandomCoord()
         
     class AdjListCardinal(AdjListTokenizer):
-        leading_coords: EdgeSubsets.ChessboardSublattice = "all"
+        edge_permuter: EdgePermuters.EdgePermuter = EdgePermuters.BothCoords()
         coord_first: bool = True
-        
-        def is_valid(self) -> bool:
-            if self.leading_coords == "shuffle":
-                # 
-                return False
 
-    @serializable_dataclass(frozen=True, kw_only=True)
-    class Coords(AdjListTokenizer):
-        """
-        Represents a connection as the tokens of 2 coords with optional delimiters.
+    # @serializable_dataclass(frozen=True, kw_only=True)
+    # class Coords(AdjListTokenizer):
+    #     """
+    #     Represents a connection as the tokens of 2 coords with optional delimiters.
 
-        # Parameters
-        - `intra`: Whether all coords include a delimiter token between coordinates
-        - `post`: Whether all coords include an integral following delimiter token
-        - `walls`: Whether the tokenized adjacency list should list the walls in the maze rather than the connections.
-        """
+    #     # Parameters
+    #     - `intra`: Whether all coords include a delimiter token between coordinates
+    #     - `post`: Whether all coords include an integral following delimiter token
+    #     - `walls`: Whether the tokenized adjacency list should list the walls in the maze rather than the connections.
+    #     """
 
-        intra: bool = serializable_field(default=True)
-        post: bool = serializable_field(default=True)
-        walls: bool = serializable_field(default=False)
+    #     intra: bool = serializable_field(default=True)
+    #     post: bool = serializable_field(default=True)
+    #     walls: bool = serializable_field(default=False)
 
-        def _single_connection_tokens(
-            self,
-            coord1: Coord,
-            coord2: Coord,
-            coord_tokenizer: CoordTokenizers.CoordTokenizer,
-        ) -> list[str]:
-            return [
-                *coord_tokenizer.to_tokens(coord1),
-                *([VOCAB.CONNECTOR] if self.intra else ()),
-                *coord_tokenizer.to_tokens(coord2),
-                *([VOCAB.ADJACENCY_ENDLINE] if self.post else ()),
-            ]
+    #     def _single_connection_tokens(
+    #         self,
+    #         coord1: Coord,
+    #         coord2: Coord,
+    #         coord_tokenizer: CoordTokenizers.CoordTokenizer,
+    #     ) -> list[str]:
+    #         return [
+    #             *coord_tokenizer.to_tokens(coord1),
+    #             *([VOCAB.CONNECTOR] if self.intra else ()),
+    #             *coord_tokenizer.to_tokens(coord2),
+    #             *([VOCAB.ADJACENCY_ENDLINE] if self.post else ()),
+    #         ]
 
-        def to_tokens(
-            self,
-            maze: LatticeMaze,
-            coord_tokenizer: CoordTokenizers.CoordTokenizer,
-        ) -> list[str]:
-            if self.walls:
-                conn_list = np.logical_not(conn_list)
-                conn_list[0,-1,:] = False
-                conn_list[1,:,-1] = False
-            adj_list = connection_list_to_adj_list(maze.connection_list)
-            return itertools.chain.from_iterable(
-                [
-                    self._single_connection_tokens(c_s, c_e, coord_tokenizer)
-                    for c_s, c_e in adj_list
-                ]
-            )
+    #     def to_tokens(
+    #         self,
+    #         maze: LatticeMaze,
+    #         coord_tokenizer: CoordTokenizers.CoordTokenizer,
+    #     ) -> list[str]:
+    #         if self.walls:
+    #             conn_list = np.logical_not(conn_list)
+    #             conn_list[0,-1,:] = False
+    #             conn_list[1,:,-1] = False
+    #         adj_list = connection_list_to_adj_list(maze.connection_list)
+    #         return itertools.chain.from_iterable(
+    #             [
+    #                 self._single_connection_tokens(c_s, c_e, coord_tokenizer)
+    #                 for c_s, c_e in adj_list
+    #             ]
+    #         )
 
-        def is_valid(self) -> bool:
-            # No invalid instances possible within data member type hint bounds
-            return True
+    #     def is_valid(self) -> bool:
+    #         # No invalid instances possible within data member type hint bounds
+    #         return True
 
 
 class TargetTokenizers(_TokenizerElementNamespace):
@@ -1122,7 +1182,7 @@ class PromptSequencers(_TokenizerElementNamespace):
         loading_fn=lambda x: _load_tokenizer_element(x, CoordTokenizers),
         )
         adj_list_tokenizer: AdjListTokenizers.AdjListTokenizer = serializable_field(
-        default=AdjListTokenizers.Coords(),
+        default=AdjListTokenizers.AdjListCoord(),
         loading_fn=lambda x: _load_tokenizer_element(x, AdjListTokenizers),
         )
         
@@ -1421,6 +1481,26 @@ class MazeTokenizer2(SerializableDataclass):
         """
         return any([self == MazeTokenizer2.from_legacy(tok_mode) for tok_mode in TokenizationMode])
 
+    def is_tested_tokenizer(self) -> bool:
+        """Returns if the tokenizer is a member of `all_tokenizers.ALL_TOKENIZERS`, the set of tested and reliable tokenizers.
+        """
+        hash_index: int = np.searchsorted(ALL_TOKENIZER_HASHES, hash(self))
+        return hash_index < len(ALL_TOKENIZER_HASHES) and ALL_TOKENIZER_HASHES[hash_index] == hash(self) and self.is_valid()
+
+    def is_AOTP(self) -> bool:
+        warnings.warn(
+            "`MazeTokenizer2.is_AOTP` is deprecated. Use `MazeTokenizer2.has_element(PromptSequencers.AOTP)` instead.",
+            TokenizerDeprecationWarning,
+        )
+        return self.has_element(PromptSequencers.AOTP)
+
+    def is_UT(self) -> bool:
+        warnings.warn(
+            "`MazeTokenizer2.is_UT` is deprecated. Use `MazeTokenizer2.has_element(CoordTokenizers.UT)` instead.",
+            TokenizerDeprecationWarning,
+        )
+        return self.has_element(CoordTokenizers.UT)
+
     # Alternate Constructors
     # ======================
 
@@ -1517,29 +1597,6 @@ class MazeTokenizer2(SerializableDataclass):
             return " ".join(output)
         else:
             return output
-
-    # utils
-    # =============
-    
-    def is_tested_tokenizer(self) -> bool:
-        """Returns if the tokenizer is a member of `all_tokenizers.ALL_TOKENIZERS`, the set of tested and reliable tokenizers.
-        """
-        hash_index: int = np.searchsorted(ALL_TOKENIZER_HASHES, hash(self))
-        return hash_index < len(ALL_TOKENIZER_HASHES) and ALL_TOKENIZER_HASHES[hash_index] == hash(self)
-
-    def is_AOTP(self) -> bool:
-        warnings.warn(
-            "`MazeTokenizer2.is_AOTP` is deprecated. Use `MazeTokenizer2.has_element(PromptSequencers.AOTP)` instead.",
-            TokenizerDeprecationWarning,
-        )
-        return self.has_element(PromptSequencers.AOTP)
-
-    def is_UT(self) -> bool:
-        warnings.warn(
-            "`MazeTokenizer2.is_UT` is deprecated. Use `MazeTokenizer2.has_element(CoordTokenizers.UT)` instead.",
-            TokenizerDeprecationWarning,
-        )
-        return self.has_element(CoordTokenizers.UT)
 
 
 def _load_tokenizer_hashes() -> Int64[np.int64, "tokenizer"]:

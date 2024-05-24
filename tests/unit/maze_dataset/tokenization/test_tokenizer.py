@@ -582,8 +582,8 @@ def test_has_element(
             (CoordTokenizers.CTT(), True),
             (CoordTokenizers.CTT(intra=True), True),
             (CoordTokenizers.UT(), True),
-            (AdjListTokenizers.Coords(), True),
-            (AdjListTokenizers.Coords(walls=True), True),
+            (AdjListTokenizers.AdjListCoord(), True),
+            (AdjListTokenizers.AdjListCoord(pre=True), True),
             (TargetTokenizers.Unlabeled(post=True), True),
             (PathTokenizers.StepSequence(), True),
             (PathTokenizers.StepSequence(

@@ -11,6 +11,7 @@ CoordTup = tuple[int, int]
 CoordArray = Int8[np.ndarray, "coord x y"]
 CoordList = list[CoordTup]
 ConnectionList = Bool[np.ndarray, "lattice_dim x y"]
+ConnectionArray = Int8[np.ndarray, "edges leading_trailing_coord=2 row_column=2"]
 
 
 class SpecialTokensError(Exception):
