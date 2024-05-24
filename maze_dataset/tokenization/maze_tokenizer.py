@@ -611,7 +611,7 @@ class CoordTokenizers(_TokenizerElementNamespace):
 
 
 class EdgeGroupings(_TokenizerElementNamespace):
-    """Namespace for `EdgeGrouping` subclass hierarchy.
+    """Namespace for `EdgeGrouping` subclass hierarchy used by `AdjListTokenizer`.
     """
     class EdgeGrouping(TokenizerElement, abc.ABC): 
         """Specifies if/how multiple coord-coord connections are grouped together in a token subsequence called a edge grouping.
@@ -622,8 +622,9 @@ class EdgeGroupings(_TokenizerElementNamespace):
     class SingleEdges(EdgeGrouping):
         """No grouping occurs, each edge is tokenized individually.
         
-        - `connection_token_ordinal`: At which index in token sequence representing a single edge the connector (or wall) token appears.
-        Edge tokenizations contain 3 parts: a leading coord, a connector (or wall) token and a second coord or cardinal tokenization.
+        # Parameters
+        - `connection_token_ordinal`: At which index in the edge tokenization the connector (or wall) token appears.
+        Edge tokenizations contain 3 parts: a leading coord, a connector (or wall) token, and either a second coord or cardinal direction tokenization.
         """
         connection_token_ordinal: Literal[0, 1, 2] = 1
         
@@ -646,7 +647,7 @@ class EdgeGroupings(_TokenizerElementNamespace):
         
 class EdgeSubsets(_TokenizerElementNamespace):
     """
-    Namespace for `EdgeSubset` subclass hierarchy.
+    Namespace for `EdgeSubset` subclass hierarchy used by `AdjListTokenizer`.
     ## `ChessboardSublattice`
     Specifies a subset of the coords in a `LatticeMaze`.
     - `evens`: The subset of coords for which the sum of the x and y indices is even.
@@ -666,15 +667,28 @@ class EdgeSubsets(_TokenizerElementNamespace):
         def get_edges(
             self, 
             maze: LatticeMaze, 
-            leading_coords: "EdgeSubsets.ChessboardSublattice" | Literal["shuffle"]
+            leading_coords: "EdgeSubsets.ChessboardSublattice",
         ) -> CoordArray:
             pass
     
     
-    class AllLatticeEdges(EdgeSubset): pass
+    class AllLatticeEdges(EdgeSubset): 
+        """
+        All 2n^2-2n edges of the lattice are tokenized.
+        If a wall exists on that edge, the edge is tokenized in the same manner, using `VOCAB.ADJLIST_WALL` in place of `VOCAB.CONNECTOR`.
+        """
+        pass
     
     
     class ConnectionEdges(EdgeSubset):
+        """
+        Only edges which contain a connection are tokenized.
+        Alternatively, only edges which contain a wall are tokenized.
+        
+        # Parameters
+        - `walls`: Whether wall edges or connection edges are tokenized.
+        If true, `VOCAB.ADJLIST_WALL` is used in place of `VOCAB.CONNECTOR`.
+        """
         walls: bool = False
         
         
