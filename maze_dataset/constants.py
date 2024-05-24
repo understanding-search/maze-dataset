@@ -163,7 +163,10 @@ _VOCAB_FIELDS: list = [
         (f"I_N{-i:03}", str, field(default=f"{i}")) for i in range(-256, 0)
     ],  # General purpose negative int tokens
     ("PATH_PRE", str, field(default="STEP")),
-    *[(f"RESERVE_{i}", str, field(default=f"<RESERVE_{i}>")) for i in range(705, 1596)],
+    ("ADJLIST_PRE", str, field(default="ADJ_GROUP")),
+    ("ADJLIST_INTRA", str, field(default="&")),
+    ("ADJLIST_WALL", str, field(default="<XX>")),
+    *[(f"RESERVE_{i}", str, field(default=f"<RESERVE_{i}>")) for i in range(708, 1596)],
     *[
         (f"UT_{x:02}_{y:02}", str, field(default=f"({x},{y})"))
         for x, y in corner_first_ndindex(50)

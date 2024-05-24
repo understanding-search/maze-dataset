@@ -611,37 +611,62 @@ class CoordTokenizers(_TokenizerElementNamespace):
 
 
 class EdgeGroupings(_TokenizerElementNamespace):
-    class EdgeGrouping(TokenizerElement, abc.ABC): pass
+    """Namespace for `EdgeGrouping` subclass hierarchy.
+    """
+    class EdgeGrouping(TokenizerElement, abc.ABC): 
+        """Specifies if/how multiple coord-coord connections are grouped together in a token subsequence called a edge grouping.
+        """
+        pass
     
     
-    class Single(EdgeGrouping):
-        connection_token_ordinal: Literal[1, 2] = 1
+    class SingleEdges(EdgeGrouping):
+        """No grouping occurs, each edge is tokenized individually.
+        
+        - `connection_token_ordinal`: At which index in token sequence representing a single edge the connector (or wall) token appears.
+        Edge tokenizations contain 3 parts: a leading coord, a connector (or wall) token and a second coord or cardinal tokenization.
+        """
+        connection_token_ordinal: Literal[0, 1, 2] = 1
         
         
-    class ByHubCoord(EdgeGrouping):
+    class ByLeadingCoord(EdgeGrouping):
+        """All edges with the same leading coord are grouped together.
+        
+        # Parameters
+        - `intra`: Whether all edge groupings include a delimiter token between individual edge representations.
+        Note that each edge representation will already always include a connector token (`VOCAB.CONNECTOR`, or possibly `)
+        - `shuffle_group`: Whether the sequence of edges within the group should be shuffled or appear in a fixed order.
+        If false, the fixed order is NORTH, WEST, SOUTH, EAST, where the directions indicate the position of the connecting coord relative to the leading coord.
+        - `connection_token_ordinal`: At which index in token sequence representing a single edge the connector (or wall) token appears.
+        Edge tokenizations contain 2 parts: a connector (or wall) token and a coord or cardinal tokenization.
+        """
         intra: bool = True
         shuffle_group: bool = True
-        connection_token_ordinal: Literal[0, 1, 2] = 1
+        connection_token_ordinal: Literal[0, 1] = 0
         
         
 class EdgeSubsets(_TokenizerElementNamespace):
     """
-    # `ChessboardSublattice`
+    Namespace for `EdgeSubset` subclass hierarchy.
+    ## `ChessboardSublattice`
     Specifies a subset of the coords in a `LatticeMaze`.
     - `evens`: The subset of coords for which the sum of the x and y indices is even.
     Analogous to the black squares on a chessboard.
     - `odds`: The subset of coords for which the sum of the x and y indices is odd.
     Analogous to the white squares on a chessboard.
-    - `all`: The full subset of coords
+    - `all`: The full subset of coords.
+    - `shuffle`: Indicates some type of random selection of coords depending on the particular use case.
     """
-    ChessboardSublattice = Literal["evens", "odds", "all"]
+    ChessboardSublattice = Literal["evens", "odds", "all", "shuffle"]
     
     class EdgeSubset(TokenizerElement, abc.ABC):
+        """
+        Component of an `AdjListTokenizers.AdjListTokenizer` which specifies the subset of lattice edges to be tokenized.
+        """
         @abc.abstractmethod
         def get_edges(
             self, 
             maze: LatticeMaze, 
-            leading_coords: ChessboardSublattice | Literal["shuffle"]
+            leading_coords: "EdgeSubsets.ChessboardSublattice" | Literal["shuffle"]
         ) -> CoordArray:
             pass
     
@@ -667,17 +692,22 @@ class AdjListTokenizers(_TokenizerElementNamespace):
         - `pre`: Whether all edge groupings include a preceding delimiter token
         - `post`: Whether all edge groupings include a following delimiter token
         - `shuffle_d0`: Specifies how to sequence the edge groupings.
-        If true, groupings are shuffled randomly. If false, groupings are sorted by the leading coord in each group.
-        See subclasses and `EdgeSubsets.ChessboardSublattice` for documentation on leading coords.
+        If true, groupings are shuffled randomly. If false, groupings are sorted by the leading coord of each group.
         - `edge_grouping`: Specifies if/how multiple coord-coord connections are grouped together in a token subsequence called a edge grouping.
         - `edge_subset`: Specifies the subset of lattice edges to be tokenized.
+        - `leading_coords`: Specifies, in each edge tokenization, which coord either:
+          1. Appears first in the tokenization, for `AdjListCoord`.
+          2. Is tokenized directly as a coord, for `AdjListCardinal`.
+          - `shuffle`: For each edge, the leading coord is selected randomly.
+          - `all`: Each edge appears twice in the tokenization, appearing with both leading coords.
+          - `evens`, `odds`: The leading coord is the one belonging to that coord subset. See `EdgeSubsets.ChessboardSublattice` for details.
         """
         pre: bool = False
         post: bool = True
         shuffle_d0: bool = True
-        edge_grouping: EdgeGroupings.EdgeGrouping = EdgeGroupings.Single()
+        edge_grouping: EdgeGroupings.EdgeGrouping = EdgeGroupings.SingleEdges()
         edge_subset: EdgeSubsets.EdgeSubset = EdgeSubsets.ConnectionEdges()
-        leading_coords: EdgeSubsets.ChessboardSublattice | Literal["shuffle"]
+        leading_coords: EdgeSubsets.ChessboardSublattice
 
         @abc.abstractmethod
         def to_tokens(self, maze: LatticeMaze) -> list[str]:
@@ -688,11 +718,16 @@ class AdjListTokenizers(_TokenizerElementNamespace):
             return AdjListTokenizers.key
         
     class AdjListCoord(AdjListTokenizer):
-        leading_coords: EdgeSubsets.ChessboardSublattice | Literal["shuffle"] = "shuffle"
+        leading_coords: EdgeSubsets.ChessboardSublattice = "shuffle"
         
     class AdjListCardinal(AdjListTokenizer):
         leading_coords: EdgeSubsets.ChessboardSublattice = "all"
         coord_first: bool = True
+        
+        def is_valid(self) -> bool:
+            if self.leading_coords == "shuffle":
+                # 
+                return False
 
     @serializable_dataclass(frozen=True, kw_only=True)
     class Coords(AdjListTokenizer):
