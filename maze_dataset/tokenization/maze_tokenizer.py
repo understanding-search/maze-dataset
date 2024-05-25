@@ -730,11 +730,8 @@ class EdgeSubsets(_TokenizerElementNamespace):
         def is_valid(self) -> bool:
             return True
         
-        @staticmethod
         @abc.abstractmethod
-        def get_edges(
-            maze: LatticeMaze, 
-        ) -> ConnectionArray:
+        def get_edges(self, maze: LatticeMaze) -> ConnectionArray:
             pass
     
     
@@ -744,11 +741,10 @@ class EdgeSubsets(_TokenizerElementNamespace):
         All 2n^2-2n edges of the lattice are tokenized.
         If a wall exists on that edge, the edge is tokenized in the same manner, using `VOCAB.ADJLIST_WALL` in place of `VOCAB.CONNECTOR`.
         """
-        @staticmethod
         def get_edges(
             maze: LatticeMaze, 
         ) -> ConnectionArray:
-            pass
+            np.ndindex()
     
     
     @serializable_dataclass(frozen=True, kw_only=True)
@@ -763,11 +759,13 @@ class EdgeSubsets(_TokenizerElementNamespace):
         """
         walls: bool = serializable_field(default=False)
         
-        @staticmethod
-        def get_edges(
-            maze: LatticeMaze, 
-        ) -> ConnectionArray:
-            pass
+        def get_edges(self, maze: LatticeMaze) -> ConnectionArray:
+            conn_list: ConnectionList = maze.connection_list
+            if self.walls:
+                conn_list = np.logical_not(conn_list)
+                conn_list[0,-1,:] = False
+                conn_list[1,:,-1] = False
+            return connection_list_to_adj_list(conn_list, shuffle_d0=False, shuffle_d1=False)
         
         
 class AdjListTokenizers(_TokenizerElementNamespace):

@@ -664,6 +664,7 @@ def _helper_test_path_tokenizers(
     if StepTokenizers.Distance() in pt.step_tokenizers:
         distances: list[int] = footprint_inds[1:] - footprint_inds[:-1]
         assert len(Counter(getattr(VOCAB, f"I_{d:03}") for d in distances) - Counter(path_toks)) == 0
+    # TODO: Uncomment tests when restoring full breadth of TokenizerElements
     # if StepTokenizers.Cardinal() in pt.step_tokenizers:
     #     c = Counter(path_toks)
     #     assert c[VOCAB.PATH_NORTH] + c[VOCAB.PATH_SOUTH] + c[VOCAB.PATH_EAST] + c[VOCAB.PATH_WEST] == len(footprint_inds)-1
