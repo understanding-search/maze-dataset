@@ -1,5 +1,8 @@
 from maze_dataset.tokenization.maze_tokenizer import (
     AdjListTokenizers,
+    EdgeGroupings,
+    EdgePermuters,
+    EdgeSubsets,
     CoordTokenizers,
     MazeTokenizer,
     MazeTokenizer2,
@@ -22,6 +25,9 @@ __all__ = [
     "PromptSequencers",
     "CoordTokenizers",
     "AdjListTokenizers",
+    "EdgeGroupings",
+    "EdgePermuters",
+    "EdgeSubsets",
     "TargetTokenizers",
     "StepSizes",
     "StepTokenizers",

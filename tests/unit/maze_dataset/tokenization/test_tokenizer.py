@@ -34,6 +34,7 @@ from maze_dataset.tokenization import (
     TokenizerElement,
     CoordTokenizers,
     PromptSequencers,
+    EdgePermuters,
     AdjListTokenizers,
     StepSizes,
     StepTokenizers,
@@ -701,3 +702,21 @@ def test_path_tokenizers(pt: PathTokenizers.PathTokenizer, manual_maze: _MANUAL_
             footprint_inds: Int[np.ndarray, "footprint_index"] = np.concatenate((solved_maze.get_solution_forking_points(always_include_endpoints=True)[0], swy_step_inds))
             footprint_inds, _ = np.unique(footprint_inds, axis=0, return_index=True)
     _helper_test_path_tokenizers(pt,solved_maze,footprint_inds,)
+    
+
+@mark.parametrize(
+    "ep,maze",
+    [
+        param(tokenizer, maze, id=f"{tokenizer.name}-maze[{i}]")
+        for (i, maze), tokenizer in itertools.product(
+            enumerate(MIXED_MAZES[:6]), 
+            all_instances(
+                EdgePermuters.EdgePermuter,
+                frozendict.frozendict({TokenizerElement: lambda x: x.is_valid()})
+            ),
+            
+        )
+    ],
+)    
+def test_edge_permuters(ep: EdgePermuters.EdgePermuter, maze: LatticeMaze):
+    ...
