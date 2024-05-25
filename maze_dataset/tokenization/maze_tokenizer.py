@@ -749,7 +749,8 @@ class EdgeSubsets(_TokenizerElementNamespace):
         def get_edges(
             maze: LatticeMaze, 
         ) -> ConnectionArray:
-            return lattice_connection_array(maze.grid_n)
+            lattice_edges: ConnectionArray = lattice_connection_array(maze.grid_n)
+            return np.append(lattice_edges, np.flip(lattice_edges, axis=1), axis=0)
     
     
     @serializable_dataclass(frozen=True, kw_only=True)
