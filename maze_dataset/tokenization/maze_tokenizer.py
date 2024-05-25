@@ -616,6 +616,7 @@ class EdgeGroupings(_TokenizerElementNamespace):
     """
     key = "edge_grouping"
     
+    @serializable_dataclass(frozen=True, kw_only=True)
     class EdgeGrouping(TokenizerElement, abc.ABC): 
         """Specifies if/how multiple coord-coord connections are grouped together in a token subsequence called a edge grouping.
         """
@@ -627,6 +628,7 @@ class EdgeGroupings(_TokenizerElementNamespace):
             return True
     
     
+    @serializable_dataclass(frozen=True, kw_only=True)
     class SingleEdges(EdgeGrouping):
         """No grouping occurs, each edge is tokenized individually.
         
@@ -634,9 +636,10 @@ class EdgeGroupings(_TokenizerElementNamespace):
         - `connection_token_ordinal`: At which index in the edge tokenization the connector (or wall) token appears.
         Edge tokenizations contain 3 parts: a leading coord, a connector (or wall) token, and either a second coord or cardinal direction tokenization.
         """
-        connection_token_ordinal: Literal[0, 1, 2] = 1
+        connection_token_ordinal: Literal[0, 1, 2] = serializable_field(default=1)
         
         
+    @serializable_dataclass(frozen=True, kw_only=True)
     class ByLeadingCoord(EdgeGrouping):
         """All edges with the same leading coord are grouped together.
         
@@ -648,15 +651,16 @@ class EdgeGroupings(_TokenizerElementNamespace):
         - `connection_token_ordinal`: At which index in token sequence representing a single edge the connector (or wall) token appears.
         Edge tokenizations contain 2 parts: a connector (or wall) token and a coord or cardinal tokenization.
         """
-        intra: bool = True
-        shuffle_group: bool = True
-        connection_token_ordinal: Literal[0, 1] = 0
+        intra: bool = serializable_field(default=True)
+        shuffle_group: bool = serializable_field(default=True)
+        connection_token_ordinal: Literal[0, 1] = serializable_field(default=0)
         
 class EdgePermuters(_TokenizerElementNamespace):
     """Namespace for `EdgePermuter` subclass hierarchy used by `AdjListTokenizer`.
     """
     key = "edge_permuter"
     
+    @serializable_dataclass(frozen=True, kw_only=True)
     class EdgePermuter(TokenizerElement, abc.ABC):
         """Specifies how to sequence the two coords that encode a lattice edge.
         """
@@ -668,10 +672,12 @@ class EdgePermuters(_TokenizerElementNamespace):
             # No invalid instances possible within data member type hint bounds
             return True
         
+        @staticmethod
         @abc.abstractmethod
-        def _permute(lattice_edges: ConnectionArray) -> None:
+        def _permute(lattice_edges: ConnectionArray) -> ConnectionArray:
             """
-            Executes a permutation. `lattice_edges` is modified in-place.
+            Executes a permutation. 
+            Warning: Caller should be aware that `lattice_edges` may be modified in-place depending on the subclass's implementation.
             
             # Parameters
             - `lattice_edges`: Array of lattice edges.
@@ -684,19 +690,26 @@ class EdgePermuters(_TokenizerElementNamespace):
             pass
 
     
+    @serializable_dataclass(frozen=True, kw_only=True)
     class RandomCoord(EdgePermuter):
         """Permutes randomly.
         """
-        def _permute(lattice_edges: ConnectionList) -> None:
+        @staticmethod
+        def _permute(lattice_edges: ConnectionList) -> ConnectionArray:
             # return np.random.shuffle(lattice_edges.transpose((1,0,2,3))).transpose((1,0,2,3))
             numpy_rng.shuffle(lattice_edges, 1)
+            return lattice_edges
     
     
+    @serializable_dataclass(frozen=True, kw_only=True)
     class BothCoords(EdgePermuter):
         """Includes both possible permutations of every edge in the output.
+        Since input ConnectionList has only 1 instance of each edge, 
+        a call to `BothCoords._permute` will modify `lattice_edges` in-place to double `shape[1]`.
         """
-        def _permute(lattice_edges: ConnectionList) -> None:
-            ...
+        @staticmethod
+        def _permute(lattice_edges: ConnectionList) -> ConnectionArray:
+            return np.append(lattice_edges, np.flip(lattice_edges, axis=1), axis=0)
         
         
 class EdgeSubsets(_TokenizerElementNamespace):
@@ -705,6 +718,7 @@ class EdgeSubsets(_TokenizerElementNamespace):
     """
     key = "edge_subset"
     
+    @serializable_dataclass(frozen=True, kw_only=True)
     class EdgeSubset(TokenizerElement, abc.ABC):
         """
         Component of an `AdjListTokenizers.AdjListTokenizer` which specifies the subset of lattice edges to be tokenized.
@@ -724,6 +738,7 @@ class EdgeSubsets(_TokenizerElementNamespace):
             pass
     
     
+    @serializable_dataclass(frozen=True, kw_only=True)
     class AllLatticeEdges(EdgeSubset): 
         """
         All 2n^2-2n edges of the lattice are tokenized.
@@ -736,6 +751,7 @@ class EdgeSubsets(_TokenizerElementNamespace):
             pass
     
     
+    @serializable_dataclass(frozen=True, kw_only=True)
     class ConnectionEdges(EdgeSubset):
         """
         Only edges which contain a connection are tokenized.
@@ -745,7 +761,7 @@ class EdgeSubsets(_TokenizerElementNamespace):
         - `walls`: Whether wall edges or connection edges are tokenized.
         If true, `VOCAB.ADJLIST_WALL` is used in place of `VOCAB.CONNECTOR`.
         """
-        walls: bool = False
+        walls: bool = serializable_field(default=False)
         
         @staticmethod
         def get_edges(
@@ -778,11 +794,17 @@ class AdjListTokenizers(_TokenizerElementNamespace):
           - `all`: Each edge appears twice in the tokenization, appearing with both leading coords.
           - `evens`, `odds`: The leading coord is the one belonging to that coord subset. See `EdgeSubsets.ChessboardSublattice` for details.
         """
-        pre: bool = False
-        post: bool = True
-        shuffle_d0: bool = True
-        edge_grouping: EdgeGroupings.EdgeGrouping = EdgeGroupings.SingleEdges()
-        edge_subset: EdgeSubsets.EdgeSubset = EdgeSubsets.ConnectionEdges()
+        pre: bool = serializable_field(default=False)
+        post: bool = serializable_field(default=True)
+        shuffle_d0: bool = serializable_field(default=True)
+        edge_grouping: EdgeGroupings.EdgeGrouping = serializable_field(
+            default=EdgeGroupings.SingleEdges(),
+            loading_fn=lambda x: _load_tokenizer_element(x, EdgeGroupings),
+        )
+        edge_subset: EdgeSubsets.EdgeSubset = serializable_field(
+            default=EdgeSubsets.ConnectionEdges(),
+            loading_fn=lambda x: _load_tokenizer_element(x, EdgeSubsets),
+        )
         edge_permuter: EdgePermuters.EdgePermuter
         
         @classmethod
@@ -796,12 +818,20 @@ class AdjListTokenizers(_TokenizerElementNamespace):
             edges: ConnectionArray = self.edge_subset.get_edges(maze)
             edges = self.edge_permuter._permute(edges)
         
+    @serializable_dataclass(frozen=True, kw_only=True)
     class AdjListCoord(AdjListTokenizer):
-        edge_permuter: EdgePermuters.EdgePermuter = EdgePermuters.RandomCoord()
+        edge_permuter: EdgePermuters.EdgePermuter = serializable_field(
+            default=EdgePermuters.RandomCoord(),
+            loading_fn=lambda x: _load_tokenizer_element(x, EdgePermuters),
+        )
         
+    @serializable_dataclass(frozen=True, kw_only=True)
     class AdjListCardinal(AdjListTokenizer):
-        edge_permuter: EdgePermuters.EdgePermuter = EdgePermuters.BothCoords()
-        coord_first: bool = True
+        edge_permuter: EdgePermuters.EdgePermuter = serializable_field(
+            default=EdgePermuters.BothCoords(),
+            loading_fn=lambda x: _load_tokenizer_element(x, EdgePermuters)
+        )
+        coord_first: bool = serializable_field(default=True)
 
     # @serializable_dataclass(frozen=True, kw_only=True)
     # class Coords(AdjListTokenizer):

@@ -10,7 +10,7 @@ import numpy as np
 from jaxtyping import Float, Int8
 from muutils.misc import list_join
 
-from maze_dataset.constants import ConnectionList, CoordTup
+from maze_dataset.constants import ConnectionList, CoordTup, ConnectionArray
 from maze_dataset.utils import WhenMissing, flatten
 
 
@@ -174,9 +174,9 @@ def coords_to_strings(
 
 def connection_list_to_adj_list(
     conn_list: ConnectionList, shuffle_d0: bool = True, shuffle_d1: bool = True
-) -> Int8[np.ndarray, "conn start_end coord"]:
+) -> ConnectionArray:
     n_connections = conn_list.sum()
-    adj_list: Int8[np.ndarray, "conn start_end coord"] = np.full(
+    adj_list: ConnectionArray = np.full(
         (n_connections, 2, 2),
         -1,
     )
