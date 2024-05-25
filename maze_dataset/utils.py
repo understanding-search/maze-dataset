@@ -26,7 +26,7 @@ from functools import cache
 import enum
 
 import numpy as np
-from jaxtyping import Bool
+from jaxtyping import Bool, Int8
 from muutils.statcounter import StatCounter
 
 WhenMissing = Literal["except", "skip", "include"]
@@ -118,6 +118,28 @@ def corner_first_ndindex(n: int, ndim: int = 2) -> list[tuple]:
     return indices[sorted_order]
     """
 
+def lattice_connection_array(n: int) -> Int8[np.ndarray, "edges leading_trailing_coord=2 row_column=2"]:
+    """
+    Returns a 3D NumPy array containing all the edges in a 2D square lattice of size n x n.
+    Thanks Claude.
+    
+    # Parameters
+    - `n`: The size of the square lattice.
+        
+    # Returns
+    - np.ndarray: A 3D NumPy array of shape (2*n*(n-1), 2, 2) containing the coordinates of the edges in the 2D square lattice.
+    """
+    row_coords, col_coords = np.meshgrid(np.arange(n, dtype=np.int8), np.arange(n, dtype=np.int8), indexing='ij', )
+    
+    # Horizontal edges
+    horiz_edges = np.column_stack((row_coords[:, :-1].ravel(), col_coords[:, :-1].ravel(),
+                                    row_coords[:, 1:].ravel(), col_coords[:, 1:].ravel()))
+
+    # Vertical edges
+    vert_edges = np.column_stack((row_coords[:-1, :].ravel(), col_coords[:-1, :].ravel(),
+                                   row_coords[1:, :].ravel(), col_coords[1:, :].ravel()))
+    
+    return np.concatenate((horiz_edges.reshape(n**2-n, 2, 2), vert_edges.reshape(n**2-n, 2, 2)), axis=0)
 
 def adj_list_to_nested_set(adj_list: list) -> set:
     """Used for comparison of adj_lists

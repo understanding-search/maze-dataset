@@ -33,7 +33,11 @@ from maze_dataset.constants import (
     CoordTup,
     Int8,
 )
-from maze_dataset.token_utils import tokens_between, get_cardinal_direction, get_relative_direction
+from maze_dataset.token_utils import (
+    tokens_between, 
+    get_cardinal_direction, 
+    get_relative_direction,
+)
 from maze_dataset.util import (
     TokenizerPendingDeprecationWarning,
     TokenizerDeprecationWarning,
@@ -48,6 +52,7 @@ from maze_dataset.utils import (
     corner_first_ndindex,
     flatten,
     unpackable_if_true_attribute,
+    lattice_connection_array,
 )
 from maze_dataset.generation import numpy_rng
 
@@ -738,13 +743,13 @@ class EdgeSubsets(_TokenizerElementNamespace):
     @serializable_dataclass(frozen=True, kw_only=True)
     class AllLatticeEdges(EdgeSubset): 
         """
-        All 2n^2-2n edges of the lattice are tokenized.
+        All 2n**2-2n edges of the lattice are tokenized.
         If a wall exists on that edge, the edge is tokenized in the same manner, using `VOCAB.ADJLIST_WALL` in place of `VOCAB.CONNECTOR`.
         """
         def get_edges(
             maze: LatticeMaze, 
         ) -> ConnectionArray:
-            np.ndindex()
+            return lattice_connection_array(maze.grid_n)
     
     
     @serializable_dataclass(frozen=True, kw_only=True)
