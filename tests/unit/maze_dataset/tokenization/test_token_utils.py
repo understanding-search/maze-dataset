@@ -38,10 +38,11 @@ from maze_dataset.utils import (
     dataclass_set_equals,
     get_all_subclasses,
     isinstance_by_type_name,
+    manhattan_distance,
     IsDataclass,
     FiniteValued,
     )
-from maze_dataset.constants import VOCAB
+from maze_dataset.constants import VOCAB, ConnectionArray, Connection
 
 MAZE_TOKENS: tuple[list[str], str] = (
     "<ADJLIST_START> (0,1) <--> (1,1) ; (1,0) <--> (1,1) ; (0,1) <--> (0,0) ; <ADJLIST_END> <ORIGIN_START> (1,0) <ORIGIN_END> <TARGET_START> (1,1) <TARGET_END> <PATH_START> (1,0) (1,1) <PATH_END>".split(),
@@ -897,3 +898,34 @@ def test_get_relative_direction(coords: Int[np.ndarray, "prev_cur_next=3 axis=2"
             get_relative_direction(coords)
         return
     assert get_relative_direction(coords) == result
+
+
+@mark.parametrize(
+    "edges, result",
+    [
+        param(
+            edges,
+            res,
+            id=f"{edges}",
+        )
+        for edges, res in (
+            [
+                (np.array([[0,0],[0,1]]), 1),
+                (np.array([[1,0],[0,1]]), 2),
+                (np.array([[-1,0],[0,1]]), 2),
+                (np.array([[0,0],[5,3]]), 8),
+                (np.array([[[0,0],[0,1]],
+                           [[1,0],[0,1]],
+                           [[-1,0],[0,1]],
+                           [[0,0],[5,3]]]), [1, 2, 2, 8]),
+                (np.array([[[0,0],[5,3]]]), [8]),
+            ]
+        )
+    ],
+) 
+def test_manhattan_distance(edges: ConnectionArray | Connection, result: Int[np.ndarray, "edges"] | Int[np.ndarray, ""] | type[Exception]):
+    if isinstance(result, type) and issubclass(result, Exception):
+        with pytest.raises(result):
+            manhattan_distance(edges)
+        return
+    assert np.array_equal(manhattan_distance(edges), np.array(result, dtype=np.int8))

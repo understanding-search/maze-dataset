@@ -746,9 +746,7 @@ class EdgeSubsets(_TokenizerElementNamespace):
         All 2n**2-2n edges of the lattice are tokenized.
         If a wall exists on that edge, the edge is tokenized in the same manner, using `VOCAB.ADJLIST_WALL` in place of `VOCAB.CONNECTOR`.
         """
-        def get_edges(
-            maze: LatticeMaze, 
-        ) -> ConnectionArray:
+        def get_edges(self, maze: LatticeMaze) -> ConnectionArray:
             lattice_edges: ConnectionArray = lattice_connection_array(maze.grid_n)
             return np.append(lattice_edges, np.flip(lattice_edges, axis=1), axis=0)
     

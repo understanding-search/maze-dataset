@@ -36,6 +36,8 @@ from maze_dataset.tokenization import (
     CoordTokenizers,
     PromptSequencers,
     EdgePermuters,
+    EdgeSubsets,
+    EdgeGroupings,
     AdjListTokenizers,
     StepSizes,
     StepTokenizers,
@@ -742,3 +744,26 @@ def test_edge_permuters(ep: EdgePermuters.EdgePermuter, maze: LatticeMaze):
             assert np.array_equal(permuted[:n,0,:], permuted[n:,1,:])
             assert np.array_equal(permuted[:n,1,:], permuted[n:,0,:])
             assert edges is not permuted
+
+
+@mark.parametrize(
+    "es,maze",
+    [
+        param(tokenizer, maze, id=f"{tokenizer.name}-maze[{i}]")
+        for (i, maze), tokenizer in itertools.product(
+            enumerate(MIXED_MAZES[:6]), 
+            all_instances(
+                EdgeSubsets.EdgeSubset,
+                frozendict.frozendict({TokenizerElement: lambda x: x.is_valid()})
+            ),   
+        )
+    ],
+)    
+def test_edge_subsets(es: EdgeSubsets.EdgeSubset, maze: LatticeMaze):
+    edges: ConnectionArray = es.get_edges(maze)
+    n: int = maze.grid_n
+    match es:
+        case EdgeSubsets.AllLatticeEdges():
+            assert tuple(edges.shape) == (2*n*(n-1), 2, 2)
+            assert tuple(np.unique(edges, axis=0).shape) == (2*n*(n-1), 2, 2)
+            assert edges.dtype == np.int8

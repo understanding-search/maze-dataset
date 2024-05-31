@@ -26,7 +26,7 @@ from functools import cache
 import enum
 
 import numpy as np
-from jaxtyping import Bool, Int8
+from jaxtyping import Bool, Int8, Int
 from muutils.statcounter import StatCounter
 
 WhenMissing = Literal["except", "skip", "include"]
@@ -118,7 +118,20 @@ def corner_first_ndindex(n: int, ndim: int = 2) -> list[tuple]:
     return indices[sorted_order]
     """
 
-def lattice_connection_array(n: int) -> Int8[np.ndarray, "edges leading_trailing_coord=2 row_column=2"]:
+def manhattan_distance(
+        edges: Int[np.ndarray, "edges coord=2 row_col=2"] | Int[np.ndarray, "coord=2 row_col=2"],
+        ) -> Int[np.ndarray, "edges"] | Int[np.ndarray, ""]:
+    """ Returns the Manhattan distance between two coords.
+    """
+    if len(edges.shape) == 3:
+        return np.linalg.norm(edges[:,0,:]-edges[:,1,:], axis=1, ord=1).astype(np.int8)
+    elif len(edges.shape) == 2:
+        return np.linalg.norm(edges[0,:]-edges[1,:], ord=1).astype(np.int8)
+    else: 
+        raise ValueError(f"{edges} has shape {edges.shape}, but must be match the shape in the type hints.")
+
+
+def lattice_connection_array(n: int) -> Int8[np.ndarray, "edges leading_trailing_coord=2 row_col=2"]:
     """
     Returns a 3D NumPy array containing all the edges in a 2D square lattice of size n x n.
     Thanks Claude.
