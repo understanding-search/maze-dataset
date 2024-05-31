@@ -45,7 +45,7 @@ from maze_dataset.tokenization import (
     TargetTokenizers,
     TokenizationMode,
 )
-from maze_dataset.utils import all_instances
+from maze_dataset.utils import all_instances, manhattan_distance
 from maze_dataset.tokenization.maze_tokenizer import _load_tokenizer_hashes
 from maze_dataset.util import equal_except_adj_list_sequence, connection_list_to_adj_list
 from maze_dataset.token_utils import get_path_tokens
@@ -762,8 +762,15 @@ def test_edge_permuters(ep: EdgePermuters.EdgePermuter, maze: LatticeMaze):
 def test_edge_subsets(es: EdgeSubsets.EdgeSubset, maze: LatticeMaze):
     edges: ConnectionArray = es.get_edges(maze)
     n: int = maze.grid_n
-    match es:
-        case EdgeSubsets.AllLatticeEdges():
-            assert tuple(edges.shape) == (2*n*(n-1), 2, 2)
-            assert tuple(np.unique(edges, axis=0).shape) == (2*n*(n-1), 2, 2)
-            assert edges.dtype == np.int8
+    match type(es):
+        case EdgeSubsets.AllLatticeEdges:
+            assert_shape: tuple = (4*n*(n-1), 2, 2)
+        case EdgeSubsets.ConnectionEdges:
+            if not es.walls:
+                assert_shape: tuple = (np.count_nonzero(maze.connection_list), 2, 2)
+            else:
+                assert_shape: tuple = (2*n*(n-1) - np.count_nonzero(maze.connection_list), 2, 2)
+    assert edges.dtype == np.int8
+    assert assert_shape == tuple(edges.shape)
+    assert assert_shape == tuple(np.unique(edges, axis=0).shape)  # All edges are unique (swapping leading/trailing coords is considered different)
+    assert np.array_equal(manhattan_distance(edges), np.array([1]*assert_shape[0], dtype=np.int8))

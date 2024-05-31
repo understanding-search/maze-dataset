@@ -179,6 +179,7 @@ def connection_list_to_adj_list(
     adj_list: ConnectionArray = np.full(
         (n_connections, 2, 2),
         -1,
+        dtype=np.int8
     )
 
     if shuffle_d1:
@@ -193,8 +194,8 @@ def connection_list_to_adj_list(
                 x + (1 if d == 0 else 0),
                 y + (1 if d == 1 else 0),
             )
-            adj_list[i, 0] = np.array(c_start)
-            adj_list[i, 1] = np.array(c_end)
+            adj_list[i, 0] = np.array(c_start, dtype=np.int8)
+            adj_list[i, 1] = np.array(c_end, dtype=np.int8)
 
             # flip if shuffling
             if shuffle_d1 and (flip_d1[i] > 0.5):
