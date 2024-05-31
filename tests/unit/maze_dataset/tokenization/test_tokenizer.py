@@ -760,7 +760,7 @@ def test_edge_permuters(ep: EdgePermuters.EdgePermuter, maze: LatticeMaze):
     ],
 )    
 def test_edge_subsets(es: EdgeSubsets.EdgeSubset, maze: LatticeMaze):
-    edges: ConnectionArray = es.get_edges(maze)
+    edges: ConnectionArray = es._get_edges(maze)
     n: int = maze.grid_n
     match type(es):
         case EdgeSubsets.AllLatticeEdges:

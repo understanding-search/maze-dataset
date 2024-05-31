@@ -11,7 +11,7 @@ CoordTup = tuple[int, int]
 CoordArray = Int8[np.ndarray, "coord row_col"]
 CoordList = list[CoordTup]
 Connection = Int8[np.ndarray, "coord=2 row_col=2"]
-ConnectionList = Bool[np.ndarray, "lattice_dim row col"]
+ConnectionList = Bool[np.ndarray, "lattice_dim=2 row col"]
 ConnectionArray = Int8[np.ndarray, "edges leading_trailing_coord=2 row_col=2"]
 
 
