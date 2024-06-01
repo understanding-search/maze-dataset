@@ -17,7 +17,7 @@ from typing import (
     Literal,
     TypedDict,
 )
-from jaxtyping import Int64, Int8
+from jaxtyping import Int64, Int8, Int
 
 import numpy as np
 from muutils.json_serialize import (
@@ -709,9 +709,10 @@ class EdgeGroupings(_TokenizerElementNamespace):
                  intra=self.intra
              )
         
-        def _group_edges(self, edges: ConnectionList) -> Sequence[ConnectionList]:
+        def _group_edges(self, edges: ConnectionArray) -> Sequence[ConnectionArray]:
             # Adapted from: https://stackoverflow.com/questions/38013778/is-there-any-numpy-group-by-function
-            sorted_edges: ConnectionArray = np.lexsort((edges[:,1,1], edges[:,1,0], edges[:,0,1], edges[:,0,0]))
+            index_array: Int[np.ndarray, "sort_indices=edges"] = np.lexsort((edges[:,1,1], edges[:,1,0], edges[:,0,1], edges[:,0,0]))
+            sorted_edges: ConnectionArray = edges[index_array,...]
             groups: list[ConnectionArray] = np.split(sorted_edges, np.unique(sorted_edges[:,0,:], return_index=True, axis=0)[1][1:])
             if self.shuffle_group:
                 [numpy_rng.shuffle(g, axis=0) for g in groups]

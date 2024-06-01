@@ -781,14 +781,14 @@ def test_edge_subsets(es: EdgeSubsets.EdgeSubset, maze: LatticeMaze):
 @mark.parametrize(
     "tok_elem,es,maze",
     [
-        param(tok_elem, maze, id=f"{tok_elem.name}-{es.name}-maze[{i}]")
+        param(tok_elem, es, maze, id=f"{tok_elem.name}-{es.name}-maze[{i}]")
         for (i, maze), tok_elem, es in itertools.product(
             enumerate(MIXED_MAZES[:6]), 
             all_instances(
                 EdgeGroupings.EdgeGrouping,
                 frozendict.frozendict({
                     TokenizerElement: lambda x: x.is_valid(),
-                    # Add a condition to trim out the param space that doesn't affect functionality being tested
+                    # Add a condition to prune the range space that doesn't affect functionality being tested
                     EdgeGroupings.ByLeadingCoord: lambda x: x.intra and x.connection_token_ordinal==1
                     })
             ),   
@@ -810,15 +810,16 @@ def test_edge_subsets(tok_elem: EdgeGroupings.EdgeGrouping, es: EdgeSubsets.Edge
         case EdgeGroupings.ByLeadingCoord:
             assert len(groups) == np.unique(edges[:,0,:], axis=0).shape[0]
             assert sum(g.shape[0] for g in groups) == edges.shape[0]
+            trailing_coords: list[CoordArray] = [g[:,1,:] for g in groups]
+            # vector_diffs is the position vector difference between the trailing coords of each group
+            # These are stacked into a single array since we don't care about maintaining group separation
+            vector_diffs: CoordArray = np.stack(list(flatten([np.diff(g[:,1,:], axis=0) for g in groups], 1)))
             if tok_elem.shuffle_group:
-                ...
+                allowed_diffs = {(1,-1),(1,1),(0,2),(2,0)}
+                # The set of all 2D vectors between any 2 coords adjacent to a central coord
+                allowed_diffs = allowed_diffs.union({(-d[0], -d[1]) for d in allowed_diffs})
             else:
-                trailing_coords: list[CoordArray] = [g[:,1,:] for g in groups]
-                # vector_diffs is the position vector difference between the trailing coords of each group
-                # These are stacked into a single array since we don't care about maintaining group separation
-                vector_diffs: CoordArray = np.stack(list(flatten([np.diff(g[:,1,:], axis=0) for g in groups], 1)))
                 # If vector_diffs are lexicographically sorted, these are the only possible values. Any other value indicates an error in sorting
                 allowed_diffs = {(1,-1),(1,1),(0,2),(2,0)}
-                # vector_diffs are 
-                assert all(tuple(diff) in allowed_diffs for diff in np.unique(vector_diffs, axis=0))
+            assert all(tuple(diff) in allowed_diffs for diff in np.unique(vector_diffs, axis=0))
     

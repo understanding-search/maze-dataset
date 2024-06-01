@@ -1,4 +1,4 @@
-from typing import Iterable, TypeVar, Callable
+from typing import Iterable, TypeVar, Callable, Literal
 from dataclasses import dataclass
 
 import pytest
@@ -628,6 +628,7 @@ class DC9(DC7):
                 (bool, [True, False]),
                 (int, TypeError),
                 (str, TypeError),
+                (Literal[0, 1, 2], [0, 1, 2]),
                 (tuple[bool], 
                  [
                      (True,),
