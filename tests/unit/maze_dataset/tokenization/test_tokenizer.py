@@ -18,6 +18,7 @@ from maze_dataset import (
     VOCAB_LIST,
     Coord,
     CoordTup,
+    CoordArray,
     ConnectionArray,
     LatticeMaze,
     LatticeMazeGenerators,
@@ -45,7 +46,7 @@ from maze_dataset.tokenization import (
     TargetTokenizers,
     TokenizationMode,
 )
-from maze_dataset.utils import all_instances, manhattan_distance
+from maze_dataset.utils import all_instances, manhattan_distance, flatten
 from maze_dataset.tokenization.maze_tokenizer import _load_tokenizer_hashes
 from maze_dataset.util import equal_except_adj_list_sequence, connection_list_to_adj_list
 from maze_dataset.token_utils import get_path_tokens
@@ -774,3 +775,50 @@ def test_edge_subsets(es: EdgeSubsets.EdgeSubset, maze: LatticeMaze):
     assert assert_shape == tuple(edges.shape)
     assert assert_shape == tuple(np.unique(edges, axis=0).shape)  # All edges are unique (swapping leading/trailing coords is considered different)
     assert np.array_equal(manhattan_distance(edges), np.array([1]*assert_shape[0], dtype=np.int8))
+
+
+    
+@mark.parametrize(
+    "tok_elem,es,maze",
+    [
+        param(tok_elem, maze, id=f"{tok_elem.name}-{es.name}-maze[{i}]")
+        for (i, maze), tok_elem, es in itertools.product(
+            enumerate(MIXED_MAZES[:6]), 
+            all_instances(
+                EdgeGroupings.EdgeGrouping,
+                frozendict.frozendict({
+                    TokenizerElement: lambda x: x.is_valid(),
+                    # Add a condition to trim out the param space that doesn't affect functionality being tested
+                    EdgeGroupings.ByLeadingCoord: lambda x: x.intra and x.connection_token_ordinal==1
+                    })
+            ),   
+            all_instances(
+                EdgeSubsets.EdgeSubset,
+                frozendict.frozendict({TokenizerElement: lambda x: x.is_valid()})
+            ),  
+        )
+    ],
+)    
+def test_edge_subsets(tok_elem: EdgeGroupings.EdgeGrouping, es: EdgeSubsets.EdgeSubset, maze: LatticeMaze):
+    edges: ConnectionArray = es._get_edges(maze)
+    n: int = maze.grid_n
+    groups: Sequence[ConnectionArray] = tok_elem._group_edges(edges)
+    match type(tok_elem):
+        case EdgeGroupings.Ungrouped:
+            assert_shape = edges.shape[0], 1, 2, 2
+            assert tuple(groups.shape) == assert_shape
+        case EdgeGroupings.ByLeadingCoord:
+            assert len(groups) == np.unique(edges[:,0,:], axis=0).shape[0]
+            assert sum(g.shape[0] for g in groups) == edges.shape[0]
+            if tok_elem.shuffle_group:
+                ...
+            else:
+                trailing_coords: list[CoordArray] = [g[:,1,:] for g in groups]
+                # vector_diffs is the position vector difference between the trailing coords of each group
+                # These are stacked into a single array since we don't care about maintaining group separation
+                vector_diffs: CoordArray = np.stack(list(flatten([np.diff(g[:,1,:], axis=0) for g in groups], 1)))
+                # If vector_diffs are lexicographically sorted, these are the only possible values. Any other value indicates an error in sorting
+                allowed_diffs = {(1,-1),(1,1),(0,2),(2,0)}
+                # vector_diffs are 
+                assert all(tuple(diff) in allowed_diffs for diff in np.unique(vector_diffs, axis=0))
+    

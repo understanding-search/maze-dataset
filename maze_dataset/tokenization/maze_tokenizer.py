@@ -652,7 +652,7 @@ class EdgeGroupings(_TokenizerElementNamespace):
             """Divides a ConnectionArray into groups of edges.
             Shuffles/sequences within each group if applicable. 
             """
-            ...
+            pass
 
         @abc.abstractmethod
         def _token_params(self) -> "EdgeGroupings._GroupingTokenParams":
@@ -683,6 +683,8 @@ class EdgeGroupings(_TokenizerElementNamespace):
                  intra=False
              )
 
+        def _group_edges(self, edges: ConnectionList) -> Sequence[ConnectionList]:
+            return np.expand_dims(edges, 1)
         
     @serializable_dataclass(frozen=True, kw_only=True)
     class ByLeadingCoord(EdgeGrouping):
@@ -692,7 +694,8 @@ class EdgeGroupings(_TokenizerElementNamespace):
         - `intra`: Whether all edge groupings include a delimiter token between individual edge representations.
         Note that each edge representation will already always include a connector token (`VOCAB.CONNECTOR`, or possibly `)
         - `shuffle_group`: Whether the sequence of edges within the group should be shuffled or appear in a fixed order.
-        If false, the fixed order is NORTH, WEST, SOUTH, EAST, where the directions indicate the position of the connecting coord relative to the leading coord.
+        If false, the fixed order is lexicographical by (row, col).
+        In effect, lexicographical sorting sorts edges by their cardinal direction in the sequence NORTH, WEST, EAST, SOUTH, where the directions indicate the position of the trailing coord relative to the leading coord.
         - `connection_token_ordinal`: At which index in token sequence representing a single edge the connector (or wall) token appears.
         Edge tokenizations contain 2 parts: a connector (or wall) token and a coord or cardinal tokenization.
         """
@@ -706,6 +709,15 @@ class EdgeGroupings(_TokenizerElementNamespace):
                  intra=self.intra
              )
         
+        def _group_edges(self, edges: ConnectionList) -> Sequence[ConnectionList]:
+            # Adapted from: https://stackoverflow.com/questions/38013778/is-there-any-numpy-group-by-function
+            sorted_edges: ConnectionArray = np.lexsort((edges[:,1,1], edges[:,1,0], edges[:,0,1], edges[:,0,0]))
+            groups: list[ConnectionArray] = np.split(sorted_edges, np.unique(sorted_edges[:,0,:], return_index=True, axis=0)[1][1:])
+            if self.shuffle_group:
+                [numpy_rng.shuffle(g, axis=0) for g in groups]
+            return groups
+            
+
 class EdgePermuters(_TokenizerElementNamespace):
     """Namespace for `EdgePermuter` subclass hierarchy used by `AdjListTokenizer`.
     """
