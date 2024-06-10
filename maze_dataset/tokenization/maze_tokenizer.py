@@ -44,14 +44,13 @@ from maze_dataset.util import (
     _coord_to_strings_UT,
     connection_list_to_adj_list,
     coords_to_strings,
-    empty_sequence_if_attr_false,
     flatten,
     strings_to_coords,
 )
 from maze_dataset.utils import (
     WhenMissing,
-    corner_first_ndindex,
     empty_sequence_if_attr_false,
+    corner_first_ndindex,
     lattice_connection_array,
 )
 
@@ -660,7 +659,7 @@ class EdgeGroupings(_TokenizerElementNamespace):
     key = "edge_grouping"
 
     @serializable_dataclass(frozen=True, kw_only=True)
-    class EdgeGrouping(TokenizerElement, abc.ABC):
+    class _EdgeGrouping(TokenizerElement, abc.ABC):
         """Specifies if/how multiple coord-coord connections are grouped together in a token subsequence called a edge grouping."""
 
         @classmethod
@@ -671,7 +670,7 @@ class EdgeGroupings(_TokenizerElementNamespace):
             return True
 
     @serializable_dataclass(frozen=True, kw_only=True)
-    class SingleEdges(EdgeGrouping):
+    class SingleEdges(_EdgeGrouping):
         """No grouping occurs, each edge is tokenized individually.
 
         # Parameters
@@ -682,7 +681,7 @@ class EdgeGroupings(_TokenizerElementNamespace):
         connection_token_ordinal: Literal[0, 1, 2] = serializable_field(default=1)
 
     @serializable_dataclass(frozen=True, kw_only=True)
-    class ByLeadingCoord(EdgeGrouping):
+    class ByLeadingCoord(_EdgeGrouping):
         """All edges with the same leading coord are grouped together.
 
         # Parameters
@@ -705,7 +704,7 @@ class EdgePermuters(_TokenizerElementNamespace):
     key = "edge_permuter"
 
     @serializable_dataclass(frozen=True, kw_only=True)
-    class EdgePermuter(TokenizerElement, abc.ABC):
+    class _EdgePermuter(TokenizerElement, abc.ABC):
         """Specifies how to sequence the two coords that encode a lattice edge."""
 
         @classmethod
@@ -734,7 +733,7 @@ class EdgePermuters(_TokenizerElementNamespace):
             pass
 
     @serializable_dataclass(frozen=True, kw_only=True)
-    class RandomCoord(EdgePermuter):
+    class RandomCoord(_EdgePermuter):
         """Permutes randomly."""
 
         @staticmethod
@@ -744,7 +743,7 @@ class EdgePermuters(_TokenizerElementNamespace):
             return lattice_edges
 
     @serializable_dataclass(frozen=True, kw_only=True)
-    class BothCoords(EdgePermuter):
+    class BothCoords(_EdgePermuter):
         """Includes both possible permutations of every edge in the output.
         Since input ConnectionList has only 1 instance of each edge,
         a call to `BothCoords._permute` will modify `lattice_edges` in-place to double `shape[1]`.
@@ -763,9 +762,9 @@ class EdgeSubsets(_TokenizerElementNamespace):
     key = "edge_subset"
 
     @serializable_dataclass(frozen=True, kw_only=True)
-    class EdgeSubset(TokenizerElement, abc.ABC):
+    class _EdgeSubset(TokenizerElement, abc.ABC):
         """
-        Component of an `AdjListTokenizers.AdjListTokenizer` which specifies the subset of lattice edges to be tokenized.
+        Component of an `AdjListTokenizers._AdjListTokenizer` which specifies the subset of lattice edges to be tokenized.
         """
 
         @classmethod
@@ -780,7 +779,7 @@ class EdgeSubsets(_TokenizerElementNamespace):
             pass
 
     @serializable_dataclass(frozen=True, kw_only=True)
-    class AllLatticeEdges(EdgeSubset):
+    class AllLatticeEdges(_EdgeSubset):
         """
         All 2n**2-2n edges of the lattice are tokenized.
         If a wall exists on that edge, the edge is tokenized in the same manner, using `VOCAB.ADJLIST_WALL` in place of `VOCAB.CONNECTOR`.
@@ -793,7 +792,7 @@ class EdgeSubsets(_TokenizerElementNamespace):
             return np.append(lattice_edges, np.flip(lattice_edges, axis=1), axis=0)
 
     @serializable_dataclass(frozen=True, kw_only=True)
-    class ConnectionEdges(EdgeSubset):
+    class ConnectionEdges(_EdgeSubset):
         """
         Only edges which contain a connection are tokenized.
         Alternatively, only edges which contain a wall are tokenized.
@@ -832,6 +831,18 @@ class AdjListTokenizers(_TokenizerElementNamespace):
         def to_tokens(self, conn_list: ConnectionList) -> list[str]:
             pass
 
+        @classmethod
+        def attribute_key(cls) -> str:
+            return cls.key
+
+        def is_valid(self) -> bool:
+            # TODO
+            warnings.warn(
+                "no validation implemented for AdjListTokenizers",
+            )
+
+            return True
+
         # Define some (abstract) methods
 
     # TODO: figure out properties_to_serialize
@@ -858,22 +869,18 @@ class AdjListTokenizers(_TokenizerElementNamespace):
         pre: bool = serializable_field(default=False)
         post: bool = serializable_field(default=True)
         shuffle_d0: bool = serializable_field(default=True)
-        edge_grouping: EdgeGroupings.EdgeGrouping = serializable_field(
+        edge_grouping: EdgeGroupings._EdgeGrouping = serializable_field(
             default=EdgeGroupings.SingleEdges(),
             loading_fn=lambda x: _load_tokenizer_element(x, EdgeGroupings),
         )
-        edge_subset: EdgeSubsets.EdgeSubset = serializable_field(
+        edge_subset: EdgeSubsets._EdgeSubset = serializable_field(
             default=EdgeSubsets.ConnectionEdges(),
             loading_fn=lambda x: _load_tokenizer_element(x, EdgeSubsets),
         )
-        edge_permuter: EdgePermuters.EdgePermuter
-
-        @classmethod
-        def attribute_key(cls) -> str:
-            return AdjListTokenizers.key
-
-        def is_valid(self) -> bool:
-            return True
+        edge_permuter: EdgePermuters._EdgePermuter = serializable_field(
+            default=EdgePermuters.RandomCoord(),
+            loading_fn=lambda x: _load_tokenizer_element(x, EdgePermuters),
+        )
 
         def to_tokens(self, maze: LatticeMaze) -> list[str]:
             edges: ConnectionArray = self.edge_subset.get_edges(maze)
@@ -881,67 +888,69 @@ class AdjListTokenizers(_TokenizerElementNamespace):
 
     @serializable_dataclass(frozen=True, kw_only=True)
     class AdjListCoord(_AdjListTokenizer):
-        edge_permuter: EdgePermuters.EdgePermuter = serializable_field(
+        edge_permuter: EdgePermuters._EdgePermuter = serializable_field(
             default=EdgePermuters.RandomCoord(),
             loading_fn=lambda x: _load_tokenizer_element(x, EdgePermuters),
         )
+        """
+        Represents a connection as the tokens of 2 coords with optional delimiters.
+
+        # Parameters
+        - `intra`: Whether all coords include a delimiter token between coordinates
+        - `post`: Whether all coords include an integral following delimiter token
+        - `walls`: Whether the tokenized adjacency list should list the walls in the maze rather than the connections.
+        """
+
+        intra: bool = serializable_field(default=True)
+        post: bool = serializable_field(default=True)
+        walls: bool = serializable_field(default=False)
+
+        def _single_connection_tokens(
+            self,
+            coord1: Coord,
+            coord2: Coord,
+            coord_tokenizer: CoordTokenizers._CoordTokenizer,
+        ) -> list[str]:
+            return [
+                *coord_tokenizer.to_tokens(coord1),
+                *([VOCAB.CONNECTOR] if self.intra else ()),
+                *coord_tokenizer.to_tokens(coord2),
+                *([VOCAB.ADJACENCY_ENDLINE] if self.post else ()),
+            ]
+
+        def to_tokens(
+            self,
+            maze: LatticeMaze,
+            coord_tokenizer: CoordTokenizers._CoordTokenizer,
+        ) -> list[str]:
+            warnings.warn(
+                "Aaron I'm not sure if this is correct, just trying to get tests to collect"
+            )
+            if self.walls:
+                conn_list = np.logical_not(maze.connection_list)
+                conn_list[0,-1,:] = False
+                conn_list[1,:,-1] = False
+            adj_list = connection_list_to_adj_list(maze.connection_list)
+            return itertools.chain.from_iterable(
+                [
+                    self._single_connection_tokens(c_s, c_e, coord_tokenizer)
+                    for c_s, c_e in adj_list
+                ]
+            )
+
+        def is_valid(self) -> bool:
+            # No invalid instances possible within data member type hint bounds
+            return True
 
     @serializable_dataclass(frozen=True, kw_only=True)
     class AdjListCardinal(_AdjListTokenizer):
-        edge_permuter: EdgePermuters.EdgePermuter = serializable_field(
+        edge_permuter: EdgePermuters._EdgePermuter = serializable_field(
             default=EdgePermuters.BothCoords(),
             loading_fn=lambda x: _load_tokenizer_element(x, EdgePermuters),
         )
         coord_first: bool = serializable_field(default=True)
 
-        # @serializable_dataclass(frozen=True, kw_only=True)
-        # class Coords(AdjListTokenizer):
-        #     """
-        #     Represents a connection as the tokens of 2 coords with optional delimiters.
 
-        #     # Parameters
-        #     - `intra`: Whether all coords include a delimiter token between coordinates
-        #     - `post`: Whether all coords include an integral following delimiter token
-        #     - `walls`: Whether the tokenized adjacency list should list the walls in the maze rather than the connections.
-        #     """
-
-        #     intra: bool = serializable_field(default=True)
-        #     post: bool = serializable_field(default=True)
-        #     walls: bool = serializable_field(default=False)
-
-        #     def _single_connection_tokens(
-        #         self,
-        #         coord1: Coord,
-        #         coord2: Coord,
-        #         coord_tokenizer: CoordTokenizers.CoordTokenizer,
-        #     ) -> list[str]:
-        #         return [
-        #             *coord_tokenizer.to_tokens(coord1),
-        #             *([VOCAB.CONNECTOR] if self.intra else ()),
-        #             *coord_tokenizer.to_tokens(coord2),
-        #             *([VOCAB.ADJACENCY_ENDLINE] if self.post else ()),
-        #         ]
-
-        #     def to_tokens(
-        #         self,
-        #         maze: LatticeMaze,
-        #         coord_tokenizer: CoordTokenizers.CoordTokenizer,
-        #     ) -> list[str]:
-        #         if self.walls:
-        #             conn_list = np.logical_not(conn_list)
-        #             conn_list[0,-1,:] = False
-        #             conn_list[1,:,-1] = False
-        #         adj_list = connection_list_to_adj_list(maze.connection_list)
-        #         return itertools.chain.from_iterable(
-        #             [
-        #                 self._single_connection_tokens(c_s, c_e, coord_tokenizer)
-        #                 for c_s, c_e in adj_list
-        #             ]
-        #         )
-
-        #     def is_valid(self) -> bool:
-        #         # No invalid instances possible within data member type hint bounds
-        #         return True
         def _single_connection_tokens(
             self,
             coord1: Coord,
@@ -1026,7 +1035,7 @@ class TargetTokenizers(_TokenizerElementNamespace):
 class StepSizes(_TokenizerElementNamespace):
     key = "step_size"
 
-    class StepSize(TokenizerElement, abc.ABC):
+    class _StepSize(TokenizerElement, abc.ABC):
         @classmethod
         def attribute_key(cls) -> str:
             return StepSizes.key
@@ -1047,12 +1056,12 @@ class StepSizes(_TokenizerElementNamespace):
             # No invalid instances possible within data member type hint bounds
             return True
 
-    class Singles(StepSize):
+    class Singles(_StepSize):
         def _step_single_indices(self, maze: SolvedMaze) -> list[int]:
             """Returns the indices of `maze.solution` corresponding to the steps to be tokenized."""
             return list(range(maze.solution.shape[0]))
 
-    class Straightaways(StepSize):
+    class Straightaways(_StepSize):
         def _step_single_indices(self, maze: SolvedMaze) -> list[int]:
             """Returns the indices of `maze.solution` corresponding to the steps to be tokenized."""
             last_turn_coord: Coord = maze.solution[0, ...]
@@ -1064,12 +1073,12 @@ class StepSizes(_TokenizerElementNamespace):
             indices.append(i)
             return indices
 
-    class Forks(StepSize):
+    class Forks(_StepSize):
         def _step_single_indices(self, maze: SolvedMaze) -> list[int]:
             """Returns the indices of `maze.solution` corresponding to the steps to be tokenized."""
             return maze.get_solution_forking_points(always_include_endpoints=True)[0]
 
-    class ForksAndStraightaways(StepSize):
+    class ForksAndStraightaways(_StepSize):
         def _step_single_indices(self, maze: SolvedMaze) -> list[int]:
             """Returns the indices of `maze.solution` corresponding to the steps to be tokenized."""
             return list(
@@ -1087,7 +1096,7 @@ class StepSizes(_TokenizerElementNamespace):
 class StepTokenizers(_TokenizerElementNamespace):
     key = "step_tokenizers"
 
-    class StepTokenizer(TokenizerElement, abc.ABC):
+    class _StepTokenizer(TokenizerElement, abc.ABC):
         @classmethod
         def attribute_key(cls) -> str:
             return StepTokenizers.key
@@ -1115,17 +1124,17 @@ class StepTokenizers(_TokenizerElementNamespace):
             # No invalid instances possible within data member type hint bounds
             return True
 
-    class Coord(StepTokenizer):
+    class Coord(_StepTokenizer):
         def to_tokens(
             self,
             maze: SolvedMaze,
             start_index: int,
             end_index: int,
-            coord_tokenizer: CoordTokenizers.CoordTokenizer,
+            coord_tokenizer: CoordTokenizers._CoordTokenizer,
         ) -> list[str]:
             return coord_tokenizer.to_tokens(maze.solution[end_index, ...])
 
-    class Cardinal(StepTokenizer):
+    class Cardinal(_StepTokenizer):
         @abc.abstractmethod  # TODO: Delete to reinstantiate as valid `StepTokenizer` concrete class
         def to_tokens(
             self, maze: SolvedMaze, start_index: int, end_index: int, **kwargs
@@ -1134,7 +1143,7 @@ class StepTokenizers(_TokenizerElementNamespace):
                 get_cardinal_direction(maze.solution[start_index : start_index + 2])
             ]
 
-    class Relative(StepTokenizer):
+    class Relative(_StepTokenizer):
         """Tokenizes a solution step using relative first-person directions (right, left, forward, etc.).
         To simplify the indeterminacy, at the start of a solution the "agent" solving the maze is assumed to be facing NORTH.
         """
@@ -1161,7 +1170,7 @@ class StepTokenizers(_TokenizerElementNamespace):
                 get_relative_direction(maze.solution[start_index - 1 : start_index + 2])
             ]
 
-    class Distance(StepTokenizer):
+    class Distance(_StepTokenizer):
         def to_tokens(
             self, maze: SolvedMaze, start_index: int, end_index: int, **kwargs
         ) -> list[str]:
@@ -1169,10 +1178,10 @@ class StepTokenizers(_TokenizerElementNamespace):
             return [getattr(VOCAB, f"I_{d:03}")]
 
     StepTokenizerPermutation: type = (
-        tuple[StepTokenizer]
-        | tuple[StepTokenizer, StepTokenizer]
-        | tuple[StepTokenizer, StepTokenizer, StepTokenizer]
-        | tuple[StepTokenizer, StepTokenizer, StepTokenizer, StepTokenizer]
+        tuple[_StepTokenizer]
+        | tuple[_StepTokenizer, _StepTokenizer]
+        | tuple[_StepTokenizer, _StepTokenizer, _StepTokenizer]
+        | tuple[_StepTokenizer, _StepTokenizer, _StepTokenizer, _StepTokenizer]
     )
 
 
@@ -1205,7 +1214,7 @@ class PathTokenizers(_TokenizerElementNamespace):
 
         """
 
-        step_size: StepSizes.StepSize = serializable_field(
+        step_size: StepSizes._StepSize = serializable_field(
             default=StepSizes.Singles(),
             loading_fn=lambda x: _load_tokenizer_element(x, StepSizes),
         )
@@ -1337,11 +1346,11 @@ class PromptSequencers(_TokenizerElementNamespace):
         Uses `coord_tokenizer` to tokenize coords if that is part of the design of that `AdjListTokenizer`.
         """
 
-        coord_tokenizer: CoordTokenizers.CoordTokenizer = serializable_field(
+        coord_tokenizer: CoordTokenizers._CoordTokenizer = serializable_field(
             default=CoordTokenizers.UT(),
             loading_fn=lambda x: _load_tokenizer_element(x, CoordTokenizers),
         )
-        adj_list_tokenizer: AdjListTokenizers.AdjListTokenizer = serializable_field(
+        adj_list_tokenizer: AdjListTokenizers._AdjListTokenizer = serializable_field(
             default=AdjListTokenizers.AdjListCoord(),
             loading_fn=lambda x: _load_tokenizer_element(x, AdjListTokenizers),
         )
@@ -1505,11 +1514,11 @@ class PromptSequencers(_TokenizerElementNamespace):
 
         """
 
-        target_tokenizer: TargetTokenizers.TargetTokenizer = serializable_field(
+        target_tokenizer: TargetTokenizers._TargetTokenizer = serializable_field(
             default=TargetTokenizers.Unlabeled(),
             loading_fn=lambda x: _load_tokenizer_element(x, TargetTokenizers),
         )
-        path_tokenizer: PathTokenizers.PathTokenizer = serializable_field(
+        path_tokenizer: PathTokenizers._PathTokenizer = serializable_field(
             default=PathTokenizers.StepSequence(),
             loading_fn=lambda x: _load_tokenizer_element(x, PathTokenizers),
         )
@@ -1545,7 +1554,7 @@ class PromptSequencers(_TokenizerElementNamespace):
         Uses `coord_tokenizer` to tokenize coords if that is part of the design of that `PathTokenizer`.
         """
 
-        path_tokenizer: PathTokenizers.PathTokenizer = serializable_field(
+        path_tokenizer: PathTokenizers._PathTokenizer = serializable_field(
             default=PathTokenizers.StepSequence(),
             loading_fn=lambda x: _load_tokenizer_element(x, PathTokenizers),
         )

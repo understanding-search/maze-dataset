@@ -735,7 +735,7 @@ def test_all_instances(
         for i, (type_, vfs, assertion) in enumerate(
             [
                 (
-                    PathTokenizers.PathTokenizer,
+                    PathTokenizers._PathTokenizer,
                     frozendict.frozendict({}),
                     lambda x: PathTokenizers.StepSequence(
                         step_tokenizers=(StepTokenizers.Distance(),)
@@ -743,10 +743,10 @@ def test_all_instances(
                     in x,
                 ),
                 (
-                    PathTokenizers.PathTokenizer,
+                    PathTokenizers._PathTokenizer,
                     frozendict.frozendict(
                         {
-                            PathTokenizers.PathTokenizer: lambda x: x.is_valid(),
+                            PathTokenizers._PathTokenizer: lambda x: x.is_valid(),
                         }
                     ),
                     lambda x: PathTokenizers.StepSequence(
