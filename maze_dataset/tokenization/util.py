@@ -173,10 +173,28 @@ def coords_to_strings(
 
 
 def connection_list_to_adj_list(
-    conn_list: ConnectionList, shuffle_d0: bool = True, shuffle_d1: bool = True
-) -> Int8[np.ndarray, "conn start_end coord"]:
-    n_connections = conn_list.sum()
-    adj_list: Int8[np.ndarray, "conn start_end coord"] = np.full(
+    conn_list: ConnectionList,
+    shuffle_d0: bool = True,
+    shuffle_d1: bool = True,
+) -> Int8[np.ndarray, "conn start_end=2 coord=2"]:
+    """converts a `ConnectionList` (special lattice format) to a shuffled adjacency list
+
+    # Parameters:
+    - `conn_list: ConnectionList`
+        special internal format for graphs which are subgraphs of a lattice
+    - `shuffle_d0: bool`
+        shuffle the adjacency list along the 0th axis (order of pairs)
+    - `shuffle_d1: bool`
+        shuffle the adjacency list along the 1st axis (order of coordinates in each pair)
+
+
+    # Returns:
+     - `Int8[np.ndarray, "conn start_end=2 coord=2"]`
+        adjacency list in the shape `(n_connections, 2, 2)`
+    """
+
+    n_connections: int = conn_list.sum()
+    adj_list: Int8[np.ndarray, "conn start_end=2 coord=2"] = np.full(
         (n_connections, 2, 2),
         -1,
     )
