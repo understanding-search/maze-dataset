@@ -1049,7 +1049,9 @@ class MazeTokenizer2(SerializableDataclass):
         - Anything else?
         """
         # Don't need directly, but something similar needed for LatticeMaze.from_tokens
-        raise NotImplementedError
+        raise NotImplementedError(
+            "recovering maze objects from MazeTokenizer2-produces strings not implemented yet"
+        )
 
     @property
     def token_arr(self) -> list[str] | None:
