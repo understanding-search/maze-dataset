@@ -39,7 +39,7 @@ from maze_dataset.tokenization.util import (
 from maze_dataset.utils import (
     WhenMissing,
     corner_first_ndindex,
-    unpackable_if_true_attribute,
+    empty_sequence_if_attr_false,
 )
 
 if TYPE_CHECKING:
@@ -509,11 +509,11 @@ class CoordTokenizers(_TokenizerElementNamespace):
 
         def to_tokens(self, coord: Coord | CoordTup) -> list[str]:
             return [
-                *unpackable_if_true_attribute([VOCAB.COORD_PRE], self, "pre"),
+                *empty_sequence_if_attr_false([VOCAB.COORD_PRE], self, "pre"),
                 str(coord[0]),
-                *unpackable_if_true_attribute([VOCAB.COORD_INTRA], self, "intra"),
+                *empty_sequence_if_attr_false([VOCAB.COORD_INTRA], self, "intra"),
                 str(coord[1]),
-                *unpackable_if_true_attribute([VOCAB.COORD_POST], self, "post"),
+                *empty_sequence_if_attr_false([VOCAB.COORD_POST], self, "post"),
             ]
 
 
@@ -611,7 +611,7 @@ class TargetTokenizers(_TokenizerElementNamespace):
                     [
                         [
                             *coord_tokenizer.to_tokens(target),
-                            *unpackable_if_true_attribute(
+                            *empty_sequence_if_attr_false(
                                 [VOCAB.TARGET_POST], self, "post"
                             ),
                         ]
@@ -704,7 +704,7 @@ class PathTokenizers(_TokenizerElementNamespace):
         ) -> list[str]:
             return [
                 *coord_tokenizer.to_tokens(c1),
-                *unpackable_if_true_attribute([VOCAB.PATH_POST], self, "post"),
+                *empty_sequence_if_attr_false([VOCAB.PATH_POST], self, "post"),
             ]
 
         def _leading_tokens(
