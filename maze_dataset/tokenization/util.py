@@ -4,7 +4,7 @@ import re
 import typing
 import warnings
 from collections import Counter
-from typing import Callable, Generator, Iterable
+from typing import Callable, Generator, Iterable, Type
 
 import numpy as np
 from jaxtyping import Float, Int8
@@ -272,7 +272,7 @@ def flatten(it: Iterable[any], levels_to_flatten: int | None = None) -> Generato
             yield x
 
 
-def get_all_subclasses(class_: type, include_self=False) -> set[type]:
+def get_all_subclasses(class_: Type, include_self: bool = False) -> set[Type]:
     """
     Returns a list of all subclasses of `class_`, including subclasses of subclasses, etc.
 
