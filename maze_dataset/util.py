@@ -10,7 +10,7 @@ import numpy as np
 from jaxtyping import Float, Int8
 from muutils.misc import list_join
 
-from maze_dataset.constants import ConnectionList, CoordTup, ConnectionArray
+from maze_dataset.constants import ConnectionList, CoordTup
 from maze_dataset.utils import WhenMissing, flatten
 
 

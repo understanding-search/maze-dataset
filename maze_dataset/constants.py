@@ -186,8 +186,8 @@ VOCAB_TOKEN_TO_INDEX: dict[str, int] = {token: i for i, token in enumerate(VOCAB
 
 # CARDINAL_MAP: Maps tuple(coord1 - coord0) : cardinal direction
 CARDINAL_MAP: dict[tuple[int, int], str] = {
-    (-1,0): VOCAB.PATH_NORTH,
-    (1,0): VOCAB.PATH_SOUTH,
-    (0,-1): VOCAB.PATH_WEST,
-    (0,1): VOCAB.PATH_EAST,
+    (-1, 0): VOCAB.PATH_NORTH,
+    (1, 0): VOCAB.PATH_SOUTH,
+    (0, -1): VOCAB.PATH_WEST,
+    (0, 1): VOCAB.PATH_EAST,
 }
