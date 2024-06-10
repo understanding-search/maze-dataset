@@ -436,27 +436,27 @@ class LatticeMaze(SerializableDataclass):
             SPECIAL_TOKENS.ADJLIST_END,
         ]
 
+    def _as_adj_list_tokens(self) -> list[str | CoordTup]:
+        return [
+            SPECIAL_TOKENS.ADJLIST_START,
+            *chain.from_iterable(
+                [
+                    [
+                        tuple(c_s),
+                        SPECIAL_TOKENS.CONNECTOR,
+                        tuple(c_e),
+                        SPECIAL_TOKENS.ADJACENCY_ENDLINE,
+                    ]
+                    for c_s, c_e in self.as_adj_list()
+                ]
+            ),
+            SPECIAL_TOKENS.ADJLIST_END,
+        ]
+
     def _as_coords_and_special_AOTP(self) -> list[CoordTup | str]:
         """turn the maze into adjacency list, origin, target, and solution -- keep coords as tuples"""
 
-        def _as_adj_list_tokens(self_) -> list[str | CoordTup]:
-            return [
-                SPECIAL_TOKENS.ADJLIST_START,
-                *chain.from_iterable(
-                    [
-                        [
-                            tuple(c_s),
-                            SPECIAL_TOKENS.CONNECTOR,
-                            tuple(c_e),
-                            SPECIAL_TOKENS.ADJACENCY_ENDLINE,
-                        ]
-                        for c_s, c_e in self_.as_adj_list()
-                    ]
-                ),
-                SPECIAL_TOKENS.ADJLIST_END,
-            ]
-
-        output: list[str] = _as_adj_list_tokens(self)
+        output: list[str] = self._as_adj_list_tokens()
         # if getattr(self, "start_pos", None) is not None:
         if isinstance(self, TargetedLatticeMaze):
             output += self._get_start_pos_tokens()

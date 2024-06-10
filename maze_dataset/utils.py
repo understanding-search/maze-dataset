@@ -289,13 +289,28 @@ def timeit_fancy(
     )
 
 
-def unpackable_if_true_attribute(
-    iterable: Iterable[any], attr_owner: Any, attr_name: str
+def empty_sequence_if_attr_false(
+    itr: Iterable[Any],
+    attr_owner: Any,
+    attr_name: str,
 ) -> Iterable[any]:
-    """Returns `iterable` if `attr_owner` has the attribute `attr_name` and it boolean casts to `True`.
+    """Returns `itr` if `attr_owner` has the attribute `attr_name` and it boolean casts to `True`. Returns an empty sequence otherwise.
+
     Particularly useful for optionally inserting delimiters into a sequence depending on an `TokenizerElement` attribute.
+
+    # Parameters:
+    - `itr: Iterable[Any]`
+        The iterable to return if the attribute is `True`.
+    - `attr_owner: Any`
+        The object to check for the attribute.
+    - `attr_name: str`
+        The name of the attribute to check.
+
+    # Returns:
+    - `itr: Iterable` if `attr_owner` has the attribute `attr_name` and it boolean casts to `True`, otherwise an empty sequence.
+    - `()` an empty sequence if the attribute is `False` or not present.
     """
-    return iterable if bool(getattr(attr_owner, attr_name, False)) else ()
+    return itr if bool(getattr(attr_owner, attr_name, False)) else ()
 
 
 def flatten(it: Iterable[any], levels_to_flatten: int | None = None) -> Generator:
@@ -464,3 +479,4 @@ def isinstance_by_type_name(o: object, type_name: str):
     Generic types are not supported, only types that would appear in `type_.__mro__`.
     """
     return type_name in {s.__name__ for s in type(o).__mro__}
+    
