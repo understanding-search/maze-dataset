@@ -480,7 +480,7 @@ class CoordTokenizers(_TokenizerElementNamespace):
     key = "coord_tokenizer"
 
     @serializable_dataclass(frozen=True, kw_only=True)
-    class CoordTokenizer(TokenizerElement, abc.ABC):
+    class _CoordTokenizer(TokenizerElement, abc.ABC):
         @abc.abstractmethod
         def to_tokens(self, coord: Coord | CoordTup) -> list[str]:
             pass
@@ -488,12 +488,12 @@ class CoordTokenizers(_TokenizerElementNamespace):
         # Define some (abstract) methods
 
     @serializable_dataclass(frozen=True, kw_only=True)
-    class UT(CoordTokenizer, abc.ABC):
+    class UT(_CoordTokenizer):
         def to_tokens(self, coord: Coord | CoordTup) -> list[str]:
             return ["".join(["(", str(coord[0]), ",", str(coord[1]), ")"])]
 
     @serializable_dataclass(frozen=True, kw_only=True)
-    class CTT(CoordTokenizer):
+    class CTT(_CoordTokenizer):
         """Coordinate tuple tokenizer
 
         # Parameters
@@ -521,7 +521,7 @@ class AdjListTokenizers(_TokenizerElementNamespace):
     key = "adj_list_tokenizer"
 
     @serializable_dataclass(frozen=True, kw_only=True)
-    class AdjListTokenizer(TokenizerElement, abc.ABC):
+    class _AdjListTokenizer(TokenizerElement, abc.ABC):
         """
         Specifies how the adjacency list is tokenized.
         """
@@ -534,7 +534,7 @@ class AdjListTokenizers(_TokenizerElementNamespace):
 
     # TODO: figure out properties_to_serialize
     @serializable_dataclass(frozen=True, kw_only=True)
-    class Coords(AdjListTokenizer):
+    class Coords(_AdjListTokenizer):
         """
         Represents a connection as the tokens of 2 coords with optional delimiters.
 
@@ -552,7 +552,7 @@ class AdjListTokenizers(_TokenizerElementNamespace):
             self,
             coord1: Coord,
             coord2: Coord,
-            coord_tokenizer: CoordTokenizers.CoordTokenizer,
+            coord_tokenizer: CoordTokenizers._CoordTokenizer,
         ) -> list[str]:
             return [
                 *coord_tokenizer.to_tokens(coord1),
@@ -564,7 +564,7 @@ class AdjListTokenizers(_TokenizerElementNamespace):
         def to_tokens(
             self,
             conn_list: ConnectionList,
-            coord_tokenizer: CoordTokenizers.CoordTokenizer,
+            coord_tokenizer: CoordTokenizers._CoordTokenizer,
         ) -> list[str]:
             if self.walls:
                 conn_list = np.logical_not(conn_list)
@@ -581,20 +581,20 @@ class TargetTokenizers(_TokenizerElementNamespace):
     key = "target_tokenizer"
 
     @serializable_dataclass(frozen=True, kw_only=True)
-    class TargetTokenizer(TokenizerElement, abc.ABC):
+    class _TargetTokenizer(TokenizerElement, abc.ABC):
         """Superclass of tokenizers for maze targets."""
 
         @abc.abstractmethod
         def to_tokens(
             self,
             targets: Iterable[Coord],
-            coord_tokenizer: CoordTokenizers.CoordTokenizer,
+            coord_tokenizer: CoordTokenizers._CoordTokenizer,
         ) -> list[str]:
             """Returns tokens representing the target."""
             pass
 
     @serializable_dataclass(frozen=True, kw_only=True)
-    class Unlabeled(TargetTokenizer):
+    class Unlabeled(_TargetTokenizer):
         """Targets are simply listed as coord tokens.
         - `post`: Whether all coords include an integral following delimiter token
         """
@@ -604,7 +604,7 @@ class TargetTokenizers(_TokenizerElementNamespace):
         def to_tokens(
             self,
             targets: Iterable[Coord],
-            coord_tokenizer: CoordTokenizers.CoordTokenizer,
+            coord_tokenizer: CoordTokenizers._CoordTokenizer,
         ) -> list[str]:
             return list(
                 flatten(
@@ -625,17 +625,17 @@ class PathTokenizers(_TokenizerElementNamespace):
     key = "path_tokenizer"
 
     @serializable_dataclass(frozen=True, kw_only=True)
-    class PathTokenizer(TokenizerElement, abc.ABC):
+    class _PathTokenizer(TokenizerElement, abc.ABC):
         """Superclass of tokenizers for maze solution paths."""
 
         @abc.abstractmethod
         def to_tokens(
-            self, path: list[Coord], coord_tokenizer: CoordTokenizers.CoordTokenizer
+            self, path: list[Coord], coord_tokenizer: CoordTokenizers._CoordTokenizer
         ) -> list[str]:
             """Returns tokens representing the solution path."""
 
     @serializable_dataclass(frozen=True, kw_only=True)
-    class StepSequence(PathTokenizer, abc.ABC):
+    class StepSequence(_PathTokenizer, abc.ABC):
         """Any `PathTokenizer` where the tokenization may be assembled from token subsequences, each of which represents a step along the path.
 
         Steps may be of any length.
@@ -643,7 +643,7 @@ class PathTokenizers(_TokenizerElementNamespace):
         """
 
         def to_tokens(
-            self, path: list[Coord], coord_tokenizer: CoordTokenizers.CoordTokenizer
+            self, path: list[Coord], coord_tokenizer: CoordTokenizers._CoordTokenizer
         ) -> list[str]:
             return [
                 *self._leading_tokens(path[0], coord_tokenizer),
@@ -658,14 +658,14 @@ class PathTokenizers(_TokenizerElementNamespace):
 
         @abc.abstractmethod
         def _single_step_tokens(
-            self, c0: Coord, c1: Coord, coord_tokenizer: CoordTokenizers.CoordTokenizer
+            self, c0: Coord, c1: Coord, coord_tokenizer: CoordTokenizers._CoordTokenizer
         ) -> list[str]:
             """Returns the token sequence representing a single step along the path."""
             pass
 
         @abc.abstractmethod
         def _leading_tokens(
-            self, c: Coord, coord_tokenizer: CoordTokenizers.CoordTokenizer
+            self, c: Coord, coord_tokenizer: CoordTokenizers._CoordTokenizer
         ) -> list[str]:
             """Returns tokens preceding those from the sequence from `_single_step_tokens`.
             Since the for loop in `to_tokens` iterates `len(path)-1` times, there may be a fencepost problem.
@@ -679,7 +679,7 @@ class PathTokenizers(_TokenizerElementNamespace):
 
         @abc.abstractmethod
         def _trailing_tokens(
-            self, c: Coord, coord_tokenizer: CoordTokenizers.CoordTokenizer
+            self, c: Coord, coord_tokenizer: CoordTokenizers._CoordTokenizer
         ) -> list[str]:
             """Returns tokens following those from the sequence from `_single_step_tokens`.
             <PATH_END> should NOT be included.
@@ -700,7 +700,7 @@ class PathTokenizers(_TokenizerElementNamespace):
         post: bool = serializable_field(default=False)
 
         def _single_step_tokens(
-            self, c0: Coord, c1: Coord, coord_tokenizer: CoordTokenizers.CoordTokenizer
+            self, c0: Coord, c1: Coord, coord_tokenizer: CoordTokenizers._CoordTokenizer
         ) -> list[str]:
             return [
                 *coord_tokenizer.to_tokens(c1),
@@ -708,12 +708,12 @@ class PathTokenizers(_TokenizerElementNamespace):
             ]
 
         def _leading_tokens(
-            self, c: CoordArray, coord_tokenizer: CoordTokenizers.CoordTokenizer
+            self, c: CoordArray, coord_tokenizer: CoordTokenizers._CoordTokenizer
         ) -> list[str]:
             return coord_tokenizer.to_tokens(c)
 
         def _trailing_tokens(
-            self, c: CoordArray, coord_tokenizer: CoordTokenizers.CoordTokenizer
+            self, c: CoordArray, coord_tokenizer: CoordTokenizers._CoordTokenizer
         ) -> list[str]:
             return ()
 
@@ -724,7 +724,7 @@ class PromptSequencers(_TokenizerElementNamespace):
     """Namespace for `PromptSequencer` subclass hierarchy."""
 
     @serializable_dataclass(frozen=True, kw_only=True)
-    class PromptSequencer(TokenizerElement, abc.ABC):
+    class _PromptSequencer(TokenizerElement, abc.ABC):
         @staticmethod
         def _trim_if_unsolved_maze(
             untrimmed: list[str], is_untargeted: bool = False, is_unsolved: bool = False
@@ -768,10 +768,10 @@ class PromptSequencers(_TokenizerElementNamespace):
             origin: Coord | None,
             target: Iterable[Coord] | None,
             path: CoordArray | None,
-            coord_tokenizer: CoordTokenizers.CoordTokenizer,
-            adj_list_tokenizer: AdjListTokenizers.AdjListTokenizer,
-            target_tokenizer: TargetTokenizers.TargetTokenizer,
-            path_tokenizer: PathTokenizers.PathTokenizer,
+            coord_tokenizer: CoordTokenizers._CoordTokenizer,
+            adj_list_tokenizer: AdjListTokenizers._AdjListTokenizer,
+            target_tokenizer: TargetTokenizers._TargetTokenizer,
+            path_tokenizer: PathTokenizers._PathTokenizer,
             *args,
             **kwargs,
         ) -> list[str]:
@@ -796,10 +796,10 @@ class PromptSequencers(_TokenizerElementNamespace):
             origin: Coord | None,
             target: Iterable[Coord] | None,
             path: CoordArray | None,
-            coord_tokenizer: CoordTokenizers.CoordTokenizer,
-            adj_list_tokenizer: AdjListTokenizers.AdjListTokenizer,
-            target_tokenizer: TargetTokenizers.TargetTokenizer,
-            path_tokenizer: PathTokenizers.PathTokenizer,
+            coord_tokenizer: CoordTokenizers._CoordTokenizer,
+            adj_list_tokenizer: AdjListTokenizers._AdjListTokenizer,
+            target_tokenizer: TargetTokenizers._TargetTokenizer,
+            path_tokenizer: PathTokenizers._PathTokenizer,
             *args,
             **kwargs,
         ) -> list[list[str]]:
@@ -854,7 +854,7 @@ class PromptSequencers(_TokenizerElementNamespace):
             pass
 
     @serializable_dataclass(frozen=True, kw_only=True)
-    class AOTP(PromptSequencer):
+    class AOTP(_PromptSequencer):
         def _sequence_tokens(
             self,
             adj_list: list[str],
@@ -878,7 +878,7 @@ class PromptSequencers(_TokenizerElementNamespace):
             ]
 
     @serializable_dataclass(frozen=True, kw_only=True)
-    class AOP(PromptSequencer):
+    class AOP(_PromptSequencer):
         """Sequences a prompt as [adjacency list, origin, path].
 
         # Parameters
@@ -932,11 +932,11 @@ class MazeTokenizer2(SerializableDataclass):
     - `prompt_sequencer`: Tokenizer element which assembles token regions (adjacency list, origin, target, path) into a complete prompt.
     - `coord_tokenizer`: Tokenizer element which tokenizes a single `Coord` aka maze position.
     - `adj_list_tokenizer`: Tokenizer element which tokenizes the adjacency list of a `LatticeMaze`.
-    Uses `coord_tokenizer` to tokenize coords if that is part of the design of that `AdjListTokenizer`.
+    Uses `coord_tokenizer` to tokenize coords if that is part of the design of that `_AdjListTokenizer`.
     - `target_tokenizer`: Tokenizer element which tokenizes the target(s) of a `TargetedLatticeMaze`.
-    Uses `coord_tokenizer` to tokenize coords if that is part of the design of that `TargetTokenizer`.
+    Uses `coord_tokenizer` to tokenize coords if that is part of the design of that `_TargetTokenizer`.
     - `path_tokenizer`: Tokenizer element which tokenizes the solution path of a `SolvedMaze`.
-    Uses `coord_tokenizer` to tokenize coords if that is part of the design of that `PathTokenizer`.
+    Uses `coord_tokenizer` to tokenize coords if that is part of the design of that `_PathTokenizer`.
 
     # Development
     - To ensure backwards compatibility, the default constructor must always return a tokenizer equivalent to the legacy `TokenizationMode.AOTP_UT_Uniform`.
@@ -944,23 +944,23 @@ class MazeTokenizer2(SerializableDataclass):
     - Updates to `MazeTokenizer2` or the `TokenizerElement` hierarchy must maintain that behavior.
     """
 
-    prompt_sequencer: PromptSequencers.PromptSequencer = serializable_field(
+    prompt_sequencer: PromptSequencers._PromptSequencer = serializable_field(
         default=PromptSequencers.AOTP(),
         loading_fn=lambda x: _load_tokenizer_element(x, PromptSequencers),
     )
-    coord_tokenizer: CoordTokenizers.CoordTokenizer = serializable_field(
+    coord_tokenizer: CoordTokenizers._CoordTokenizer = serializable_field(
         default=CoordTokenizers.UT(),
         loading_fn=lambda x: _load_tokenizer_element(x, CoordTokenizers),
     )
-    adj_list_tokenizer: AdjListTokenizers.AdjListTokenizer = serializable_field(
+    adj_list_tokenizer: AdjListTokenizers._AdjListTokenizer = serializable_field(
         default=AdjListTokenizers.Coords(),
         loading_fn=lambda x: _load_tokenizer_element(x, AdjListTokenizers),
     )
-    target_tokenizer: TargetTokenizers.TargetTokenizer = serializable_field(
+    target_tokenizer: TargetTokenizers._TargetTokenizer = serializable_field(
         default=TargetTokenizers.Unlabeled(),
         loading_fn=lambda x: _load_tokenizer_element(x, TargetTokenizers),
     )
-    path_tokenizer: PathTokenizers.PathTokenizer = serializable_field(
+    path_tokenizer: PathTokenizers._PathTokenizer = serializable_field(
         default=PathTokenizers.Coords(),
         loading_fn=lambda x: _load_tokenizer_element(x, PathTokenizers),
     )
