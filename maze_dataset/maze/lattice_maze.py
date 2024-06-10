@@ -4,7 +4,7 @@ from dataclasses import dataclass
 from itertools import chain
 
 import numpy as np
-from jaxtyping import Bool, Float, Int, Int8, Shaped
+from jaxtyping import Bool, Int, Int8, Shaped
 from muutils.json_serialize.serializable_dataclass import (
     SerializableDataclass,
     serializable_dataclass,
@@ -15,19 +15,24 @@ from muutils.misc import list_split
 from maze_dataset.constants import (
     NEIGHBORS_MASK,
     SPECIAL_TOKENS,
+    ConnectionList,
     Coord,
     CoordArray,
     CoordTup,
 )
 from maze_dataset.tokenization import (
     MazeTokenizer,
+    MazeTokenizer2,
     TokenizationMode,
     get_adj_list_tokens,
     get_path_tokens,
 )
 from maze_dataset.tokenization.token_utils import get_origin_tokens, get_target_tokens
+from maze_dataset.tokenization.util import (
+    TokenizerPendingDeprecationWarning,
+    connection_list_to_adj_list,
+)
 
-ConnectionList = Bool[np.ndarray, "lattice_dim x y"]
 RGB = tuple[int, int, int]
 
 PixelGrid = Int[np.ndarray, "x y rgb"]
@@ -364,38 +369,7 @@ class LatticeMaze(SerializableDataclass):
     def as_adj_list(
         self, shuffle_d0: bool = True, shuffle_d1: bool = True
     ) -> Int8[np.ndarray, "conn start_end coord"]:
-        adj_list: Int8[np.ndarray, "conn start_end coord"] = np.full(
-            (self.n_connections, 2, 2),
-            -1,
-        )
-
-        if shuffle_d1:
-            flip_d1: Float[np.array, "conn"] = np.random.rand(self.n_connections)
-
-        # loop over all nonzero elements of the connection list
-        i: int = 0
-        for d, x, y in np.ndindex(self.connection_list.shape):
-            if self.connection_list[d, x, y]:
-                c_start: CoordTup = (x, y)
-                c_end: CoordTup = (
-                    x + (1 if d == 0 else 0),
-                    y + (1 if d == 1 else 0),
-                )
-                adj_list[i, 0] = np.array(c_start)
-                adj_list[i, 1] = np.array(c_end)
-
-                # flip if shuffling
-                if shuffle_d1 and (flip_d1[i] > 0.5):
-                    c_s, c_e = adj_list[i, 0].copy(), adj_list[i, 1].copy()
-                    adj_list[i, 0] = c_e
-                    adj_list[i, 1] = c_s
-
-                i += 1
-
-        if shuffle_d0:
-            np.random.shuffle(adj_list)
-
-        return adj_list
+        return connection_list_to_adj_list(self.connection_list, shuffle_d0, shuffle_d1)
 
     @classmethod
     def from_adj_list(
@@ -435,6 +409,27 @@ class LatticeMaze(SerializableDataclass):
         )
 
     def as_adj_list_tokens(self) -> list[str | CoordTup]:
+        warnings.warn(
+            "`LatticeMaze.as_adj_list_tokens` will be removed from the public API in a future release.",
+            TokenizerPendingDeprecationWarning,
+        )
+        return [
+            SPECIAL_TOKENS.ADJLIST_START,
+            *chain.from_iterable(
+                [
+                    [
+                        tuple(c_s),
+                        SPECIAL_TOKENS.CONNECTOR,
+                        tuple(c_e),
+                        SPECIAL_TOKENS.ADJACENCY_ENDLINE,
+                    ]
+                    for c_s, c_e in self.as_adj_list()
+                ]
+            ),
+            SPECIAL_TOKENS.ADJLIST_END,
+        ]
+
+    def _as_adj_list_tokens(self) -> list[str | CoordTup]:
         return [
             SPECIAL_TOKENS.ADJLIST_START,
             *chain.from_iterable(
@@ -453,7 +448,8 @@ class LatticeMaze(SerializableDataclass):
 
     def _as_coords_and_special_AOTP(self) -> list[CoordTup | str]:
         """turn the maze into adjacency list, origin, target, and solution -- keep coords as tuples"""
-        output: list[str] = self.as_adj_list_tokens()
+
+        output: list[str] = self._as_adj_list_tokens()
         # if getattr(self, "start_pos", None) is not None:
         if isinstance(self, TargetedLatticeMaze):
             output += self.get_start_pos_tokens()
@@ -463,21 +459,27 @@ class LatticeMaze(SerializableDataclass):
             output += self.get_solution_tokens()
         return output
 
-    def as_tokens(
-        self,
-        maze_tokenizer: MazeTokenizer | TokenizationMode,
-    ) -> list[str]:
-        """serialize maze and solution to tokens"""
+    def _as_tokens(self, maze_tokenizer: MazeTokenizer | TokenizationMode) -> list[str]:
         if isinstance(maze_tokenizer, TokenizationMode):
-            maze_tokenizer = MazeTokenizer(maze_tokenizer)
-        if maze_tokenizer.is_AOTP():
+            maze_tokenizer = MazeTokenizer(tokenization_mode=maze_tokenizer)
+        if isinstance(maze_tokenizer, MazeTokenizer) and maze_tokenizer.is_AOTP():
             coords_raw: list[CoordTup | str] = self._as_coords_and_special_AOTP()
             coords_processed: list[str] = maze_tokenizer.coords_to_strings(
                 coords=coords_raw, when_noncoord="include"
             )
             return coords_processed
         else:
-            raise NotImplementedError("only AOTP tokenization is supported")
+            raise NotImplementedError(f"Unsupported tokenizer type: {maze_tokenizer}")
+
+    def as_tokens(
+        self,
+        maze_tokenizer: MazeTokenizer | TokenizationMode | MazeTokenizer2,
+    ) -> list[str]:
+        """serialize maze and solution to tokens"""
+        if isinstance(maze_tokenizer, MazeTokenizer2):
+            return maze_tokenizer.to_tokens(self)
+        else:
+            return self._as_tokens(maze_tokenizer)
 
     @classmethod
     def _from_tokens_AOTP(
@@ -580,10 +582,18 @@ class LatticeMaze(SerializableDataclass):
 
     @classmethod
     def from_tokens(
-        cls, tokens: list[str], maze_tokenizer: MazeTokenizer | TokenizationMode
+        cls,
+        tokens: list[str],
+        maze_tokenizer: MazeTokenizer | TokenizationMode | MazeTokenizer2,
     ) -> "LatticeMaze":
         if isinstance(maze_tokenizer, TokenizationMode):
-            maze_tokenizer = MazeTokenizer(maze_tokenizer)
+            maze_tokenizer = MazeTokenizer(tokenization_mode=maze_tokenizer)
+        if isinstance(maze_tokenizer, MazeTokenizer2) and maze_tokenizer not in [
+            MazeTokenizer2.from_legacy(tm) for tm in TokenizationMode
+        ]:
+            raise NotImplementedError(
+                f"Only exact conversions of legacy tokenizers supported, not {maze_tokenizer}."
+            )
 
         if isinstance(tokens, str):
             tokens = tokens.split()

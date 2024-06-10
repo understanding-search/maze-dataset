@@ -1,8 +1,11 @@
 """TokenizationMode enum and the MazeTokenizer class"""
 
+import abc
+import itertools
+import warnings
 from enum import Enum
 from functools import cached_property
-from typing import Callable, Iterable, Mapping, Sequence
+from typing import TYPE_CHECKING, Any, Callable, Iterable, Mapping, Sequence
 
 import numpy as np
 from muutils.json_serialize import (
@@ -12,14 +15,35 @@ from muutils.json_serialize import (
 )
 from muutils.kappa import Kappa
 
-from maze_dataset.constants import SPECIAL_TOKENS, CoordTup
+from maze_dataset.constants import (
+    SPECIAL_TOKENS,
+    VOCAB,
+    VOCAB_LIST,
+    VOCAB_TOKEN_TO_INDEX,
+    ConnectionList,
+    Coord,
+    CoordArray,
+    CoordTup,
+    Int8,
+)
+from maze_dataset.tokenization.token_utils import tokens_between
 from maze_dataset.tokenization.util import (
+    TokenizerPendingDeprecationWarning,
     _coord_to_strings_indexed,
     _coord_to_strings_UT,
+    connection_list_to_adj_list,
     coords_to_strings,
+    flatten,
     strings_to_coords,
 )
-from maze_dataset.utils import WhenMissing, corner_first_ndindex
+from maze_dataset.utils import (
+    WhenMissing,
+    corner_first_ndindex,
+    empty_sequence_if_attr_false,
+)
+
+if TYPE_CHECKING:
+    from maze_dataset import LatticeMaze
 
 
 class TokenError(ValueError):
@@ -62,6 +86,27 @@ def is_UT(tokenization_mode: TokenizationMode) -> bool:
         TokenizationMode.AOTP_UT_rasterized,
         TokenizationMode.AOTP_UT_uniform,
     )
+
+
+def get_tokens_up_to_path_start(
+    tokens: list[str],
+    include_start_coord: bool = True,
+    tokenization_mode: TokenizationMode = TokenizationMode.AOTP_UT_uniform,
+) -> list[str]:
+    warnings.warn(
+        "`maze_tokenizer.get_tokens_up_to_path_start` will be deprecated for a `MazeTokenizer2`-compatible function in a future release.",
+        TokenizerPendingDeprecationWarning,
+    )
+    path_start_idx: int = tokens.index(SPECIAL_TOKENS.PATH_START) + 1
+    if include_start_coord:
+        if is_UT(tokenization_mode):
+            return tokens[: path_start_idx + 1]
+        elif tokenization_mode == TokenizationMode.AOTP_CTT_indexed:
+            return tokens[: path_start_idx + 5]
+        else:
+            raise ValueError(f"Invalid tokenization mode: {tokenization_mode}")
+    else:
+        return tokens[:path_start_idx]
 
 
 _MAZETOKENIZER_PROPERTIES_TO_SERIALIZE: list[str] = [
@@ -388,3 +433,716 @@ class MazeTokenizer(SerializableDataclass):
                     delattr(self, name)
                 except AttributeError as e:
                     pass
+
+
+@serializable_dataclass(frozen=True, kw_only=True)
+class TokenizerElement(SerializableDataclass, abc.ABC):
+    """Superclass for tokenizer elements."""
+
+    def __repr__(self) -> str:
+        members_str: str = ",".join(
+            [f"{k}={repr(v)}" for k, v in self.__dict__.items()]
+        )
+        return f"{type(self).__name__}({members_str})"
+
+    @property
+    def name(self) -> str:
+        return repr(self)
+
+    # def serialize(self):
+    #     # return f"{type(self).__name__}"
+    #     return repr(self)
+
+    @abc.abstractmethod
+    def to_tokens(self, *args, **kwargs) -> list[str]:
+        """Converts a maze element into a list of tokens."""
+        raise NotImplementedError
+
+    @classmethod
+    def from_tokens(self, toks: list[str]):
+        """Converts a list of tokens into a maze element."""
+        raise NotImplementedError(
+            f"Conversion from tokens to {type(self)} not yet supported."
+        )
+
+
+class _TokenizerElementNamespace(abc.ABC):
+    """ABC for namespaces
+
+    # Properties
+    - key: The binding used in `MazeTokenizer2` for instances of the classes contained within that `_TokenizerElementNamespace`.
+    """
+
+    key: str = NotImplementedError
+
+
+class CoordTokenizers(_TokenizerElementNamespace):
+    key = "coord_tokenizer"
+
+    @serializable_dataclass(frozen=True, kw_only=True)
+    class _CoordTokenizer(TokenizerElement, abc.ABC):
+        @abc.abstractmethod
+        def to_tokens(self, coord: Coord | CoordTup) -> list[str]:
+            pass
+
+        # Define some (abstract) methods
+
+    @serializable_dataclass(frozen=True, kw_only=True)
+    class UT(_CoordTokenizer):
+        def to_tokens(self, coord: Coord | CoordTup) -> list[str]:
+            return ["".join(["(", str(coord[0]), ",", str(coord[1]), ")"])]
+
+    @serializable_dataclass(frozen=True, kw_only=True)
+    class CTT(_CoordTokenizer):
+        """Coordinate tuple tokenizer
+
+        # Parameters
+        - `pre`: Whether all coords include an integral preceding delimiter token
+        - `intra`: Whether all coords include a delimiter token between coordinates
+        - `post`: Whether all coords include an integral following delimiter token
+        """
+
+        pre: bool = serializable_field(default=True)
+        intra: bool = serializable_field(default=True)
+        post: bool = serializable_field(default=True)
+        # Implement methods
+
+        def to_tokens(self, coord: Coord | CoordTup) -> list[str]:
+            return [
+                *empty_sequence_if_attr_false([VOCAB.COORD_PRE], self, "pre"),
+                str(coord[0]),
+                *empty_sequence_if_attr_false([VOCAB.COORD_INTRA], self, "intra"),
+                str(coord[1]),
+                *empty_sequence_if_attr_false([VOCAB.COORD_POST], self, "post"),
+            ]
+
+
+class AdjListTokenizers(_TokenizerElementNamespace):
+    key = "adj_list_tokenizer"
+
+    @serializable_dataclass(frozen=True, kw_only=True)
+    class _AdjListTokenizer(TokenizerElement, abc.ABC):
+        """
+        Specifies how the adjacency list is tokenized.
+        """
+
+        @abc.abstractmethod
+        def to_tokens(self, conn_list: ConnectionList) -> list[str]:
+            pass
+
+        # Define some (abstract) methods
+
+    # TODO: figure out properties_to_serialize
+    @serializable_dataclass(frozen=True, kw_only=True)
+    class Coords(_AdjListTokenizer):
+        """
+        Represents a connection as the tokens of 2 coords with optional delimiters.
+
+        # Parameters
+        - `intra`: Whether all coords include a delimiter token between coordinates
+        - `post`: Whether all coords include an integral following delimiter token
+        - `walls`: Whether the tokenized adjacency list should list the walls in the maze rather than the connections.
+        """
+
+        intra: bool = serializable_field(default=True)
+        post: bool = serializable_field(default=True)
+        walls: bool = serializable_field(default=False)
+
+        def _single_connection_tokens(
+            self,
+            coord1: Coord,
+            coord2: Coord,
+            coord_tokenizer: CoordTokenizers._CoordTokenizer,
+        ) -> list[str]:
+            return [
+                *coord_tokenizer.to_tokens(coord1),
+                *([VOCAB.CONNECTOR] if self.intra else ()),
+                *coord_tokenizer.to_tokens(coord2),
+                *([VOCAB.ADJACENCY_ENDLINE] if self.post else ()),
+            ]
+
+        def to_tokens(
+            self,
+            conn_list: ConnectionList,
+            coord_tokenizer: CoordTokenizers._CoordTokenizer,
+        ) -> list[str]:
+            if self.walls:
+                conn_list = np.logical_not(conn_list)
+            adj_list = connection_list_to_adj_list(conn_list)
+            return itertools.chain.from_iterable(
+                [
+                    self._single_connection_tokens(c_s, c_e, coord_tokenizer)
+                    for c_s, c_e in adj_list
+                ]
+            )
+
+
+class TargetTokenizers(_TokenizerElementNamespace):
+    key = "target_tokenizer"
+
+    @serializable_dataclass(frozen=True, kw_only=True)
+    class _TargetTokenizer(TokenizerElement, abc.ABC):
+        """Superclass of tokenizers for maze targets."""
+
+        @abc.abstractmethod
+        def to_tokens(
+            self,
+            targets: Iterable[Coord],
+            coord_tokenizer: CoordTokenizers._CoordTokenizer,
+        ) -> list[str]:
+            """Returns tokens representing the target."""
+            pass
+
+    @serializable_dataclass(frozen=True, kw_only=True)
+    class Unlabeled(_TargetTokenizer):
+        """Targets are simply listed as coord tokens.
+        - `post`: Whether all coords include an integral following delimiter token
+        """
+
+        post: bool = serializable_field(default=False)
+
+        def to_tokens(
+            self,
+            targets: Iterable[Coord],
+            coord_tokenizer: CoordTokenizers._CoordTokenizer,
+        ) -> list[str]:
+            return list(
+                flatten(
+                    [
+                        [
+                            *coord_tokenizer.to_tokens(target),
+                            *empty_sequence_if_attr_false(
+                                [VOCAB.TARGET_POST], self, "post"
+                            ),
+                        ]
+                        for target in targets
+                    ]
+                )
+            )
+
+
+class PathTokenizers(_TokenizerElementNamespace):
+    key = "path_tokenizer"
+
+    @serializable_dataclass(frozen=True, kw_only=True)
+    class _PathTokenizer(TokenizerElement, abc.ABC):
+        """Superclass of tokenizers for maze solution paths."""
+
+        @abc.abstractmethod
+        def to_tokens(
+            self, path: list[Coord], coord_tokenizer: CoordTokenizers._CoordTokenizer
+        ) -> list[str]:
+            """Returns tokens representing the solution path."""
+
+    @serializable_dataclass(frozen=True, kw_only=True)
+    class StepSequence(_PathTokenizer, abc.ABC):
+        """Any `PathTokenizer` where the tokenization may be assembled from token subsequences, each of which represents a step along the path.
+
+        Steps may be of any length.
+        Allows for a sequence of leading and trailing tokens which don't fit the step pattern.
+        """
+
+        def to_tokens(
+            self, path: list[Coord], coord_tokenizer: CoordTokenizers._CoordTokenizer
+        ) -> list[str]:
+            return [
+                *self._leading_tokens(path[0], coord_tokenizer),
+                *itertools.chain.from_iterable(
+                    [
+                        self._single_step_tokens(c0, c1, coord_tokenizer)
+                        for c0, c1 in zip(path[:-1], path[1:])
+                    ]
+                ),
+                *self._trailing_tokens(path[-1], coord_tokenizer),
+            ]
+
+        @abc.abstractmethod
+        def _single_step_tokens(
+            self, c0: Coord, c1: Coord, coord_tokenizer: CoordTokenizers._CoordTokenizer
+        ) -> list[str]:
+            """Returns the token sequence representing a single step along the path."""
+            pass
+
+        @abc.abstractmethod
+        def _leading_tokens(
+            self, c: Coord, coord_tokenizer: CoordTokenizers._CoordTokenizer
+        ) -> list[str]:
+            """Returns tokens preceding those from the sequence from `_single_step_tokens`.
+            Since the for loop in `to_tokens` iterates `len(path)-1` times, there may be a fencepost problem.
+            There may be information about the start of the path that it misses that needs to be appended.
+            <PATH_START> should NOT be included.
+            """
+            raise NotImplementedError(
+                "Subclasses must implement `_leading_tokens`."
+                "If no leading tokens are desired then implement to return an empty tuple."
+            )
+
+        @abc.abstractmethod
+        def _trailing_tokens(
+            self, c: Coord, coord_tokenizer: CoordTokenizers._CoordTokenizer
+        ) -> list[str]:
+            """Returns tokens following those from the sequence from `_single_step_tokens`.
+            <PATH_END> should NOT be included.
+            """
+            raise NotImplementedError(
+                "Subclasses must implement `_trailing_tokens`."
+                "If no leading tokens are desired then implement to return an empty tuple."
+            )
+
+    @serializable_dataclass(frozen=True, kw_only=True)
+    class Coords(StepSequence):
+        """Represents a path as a sequence of tokens for all the coords traversed.
+
+        # Parameters
+        - `post`: Whether all coords include an integral following delimiter token
+        """
+
+        post: bool = serializable_field(default=False)
+
+        def _single_step_tokens(
+            self, c0: Coord, c1: Coord, coord_tokenizer: CoordTokenizers._CoordTokenizer
+        ) -> list[str]:
+            return [
+                *coord_tokenizer.to_tokens(c1),
+                *empty_sequence_if_attr_false([VOCAB.PATH_POST], self, "post"),
+            ]
+
+        def _leading_tokens(
+            self, c: CoordArray, coord_tokenizer: CoordTokenizers._CoordTokenizer
+        ) -> list[str]:
+            return coord_tokenizer.to_tokens(c)
+
+        def _trailing_tokens(
+            self, c: CoordArray, coord_tokenizer: CoordTokenizers._CoordTokenizer
+        ) -> list[str]:
+            return ()
+
+
+class PromptSequencers(_TokenizerElementNamespace):
+    key = "prompt_sequencer"
+
+    """Namespace for `PromptSequencer` subclass hierarchy."""
+
+    @serializable_dataclass(frozen=True, kw_only=True)
+    class _PromptSequencer(TokenizerElement, abc.ABC):
+        @staticmethod
+        def _trim_if_unsolved_maze(
+            untrimmed: list[str], is_untargeted: bool = False, is_unsolved: bool = False
+        ):
+            """Trims a full `SolvedMaze` prompt if the maze data reflects an unsolved or untargeted maze.
+
+            # Development
+            This implementation should function for `AOTP`, `AOP`, and other concrete classes using any subsequence of AOTP.
+            It is not located in `token_utils.py` because it may need to be overridden in more exotic `PromptSequencer` subclasses.
+            """
+            if is_untargeted:
+                return tokens_between(
+                    untrimmed,
+                    VOCAB.ADJLIST_START,
+                    VOCAB.ADJLIST_END,
+                    include_start=True,
+                    include_end=True,
+                )
+            if is_unsolved:
+                if VOCAB.TARGET_END in untrimmed:
+                    return tokens_between(
+                        untrimmed,
+                        VOCAB.ADJLIST_START,
+                        VOCAB.TARGET_END,
+                        include_start=True,
+                        include_end=True,
+                    )
+                else:
+                    return tokens_between(
+                        untrimmed,
+                        VOCAB.ADJLIST_START,
+                        VOCAB.ORIGIN_END,
+                        include_start=True,
+                        include_end=True,
+                    )
+            return untrimmed
+
+        def to_tokens(
+            self,
+            adj_list: Int8[np.ndarray, "conn start_end coord"],
+            origin: Coord | None,
+            target: Iterable[Coord] | None,
+            path: CoordArray | None,
+            coord_tokenizer: CoordTokenizers._CoordTokenizer,
+            adj_list_tokenizer: AdjListTokenizers._AdjListTokenizer,
+            target_tokenizer: TargetTokenizers._TargetTokenizer,
+            path_tokenizer: PathTokenizers._PathTokenizer,
+            *args,
+            **kwargs,
+        ) -> list[str]:
+            """Returns a complete list of tokens for a given set of maze elements."""
+            untrimmed: list[str] = self._sequence_tokens(
+                *self._get_prompt_regions(
+                    adj_list,
+                    origin,
+                    target,
+                    path,
+                    coord_tokenizer,
+                    adj_list_tokenizer,
+                    target_tokenizer,
+                    path_tokenizer,
+                )
+            )
+            return self._trim_if_unsolved_maze(untrimmed, origin is None, path is None)
+
+        def _get_prompt_regions(
+            self,
+            adj_list: Int8[np.ndarray, "conn start_end coord"],
+            origin: Coord | None,
+            target: Iterable[Coord] | None,
+            path: CoordArray | None,
+            coord_tokenizer: CoordTokenizers._CoordTokenizer,
+            adj_list_tokenizer: AdjListTokenizers._AdjListTokenizer,
+            target_tokenizer: TargetTokenizers._TargetTokenizer,
+            path_tokenizer: PathTokenizers._PathTokenizer,
+            *args,
+            **kwargs,
+        ) -> list[list[str]]:
+            """Gets the prompt regions of a maze in a fixed sequence.
+
+            This method is NOT responsible for including/excluding any prompt regions.
+            Always return according to the API described under Returns.
+            This implementation is expected to be suitable for most `PromptSequencer` subclasses.
+            Subclasses may override this method if needed for special behavior.
+
+            # Returns
+            - [0]: Adjacency list tokens
+            - [1]: Origin tokens
+            - [2]: Target tokens
+            - [3]: Path tokens
+
+            # `None`-valued Args
+            If one or more of `origin`, `target`, or `path` are `None`, that indicates that an unsolved or untargeted maze is being tokenized.
+            To ensure unpackability in `_sequence_tokens`, these `None` values are substituted for empty iterables.
+            """
+            return [
+                adj_list_tokenizer.to_tokens(adj_list, coord_tokenizer=coord_tokenizer),
+                coord_tokenizer.to_tokens(origin) if origin is not None else [],
+                (
+                    target_tokenizer.to_tokens(target, coord_tokenizer=coord_tokenizer)
+                    if target[0] is not None
+                    else []
+                ),
+                (
+                    path_tokenizer.to_tokens(path, coord_tokenizer=coord_tokenizer)
+                    if path is not None
+                    else []
+                ),
+            ]
+
+        @abc.abstractmethod
+        def _sequence_tokens(
+            self,
+            adj_list: list[str],
+            origin: list[str] | None,
+            target: list[str] | None,
+            path: list[str] | None,
+        ) -> list[str]:
+            """Sequences token regions into a complete prompt.
+            Includes any boundary tokens in `constants.SPECIAL_TOKENS` such as <ADJLIST_START>, <ORIGIN_END>, etc.
+            # Parameters
+            - `adj_list`: Tokens representing the adjacency list
+            - `origin`: Tokens representing the origin
+            - `target`: Tokens representing the target
+            - `path`: Tokens representing the path
+            """
+            pass
+
+    @serializable_dataclass(frozen=True, kw_only=True)
+    class AOTP(_PromptSequencer):
+        def _sequence_tokens(
+            self,
+            adj_list: list[str],
+            origin: list[str],
+            target: list[str],
+            path: list[str],
+        ) -> list[str]:
+            return [
+                VOCAB.ADJLIST_START,
+                *adj_list,
+                VOCAB.ADJLIST_END,
+                VOCAB.ORIGIN_START,
+                *origin,
+                VOCAB.ORIGIN_END,
+                VOCAB.TARGET_START,
+                *target,
+                VOCAB.TARGET_END,
+                VOCAB.PATH_START,
+                *path,
+                VOCAB.PATH_END,
+            ]
+
+    @serializable_dataclass(frozen=True, kw_only=True)
+    class AOP(_PromptSequencer):
+        """Sequences a prompt as [adjacency list, origin, path].
+
+        # Parameters
+        - `include_target_special_tokens`: Whether to include <TARGET_START> and <TARGET_END> tokens in the output in the location used by `AOTP`.
+        """
+
+        include_target_special_tokens: bool = serializable_field(default=True)
+
+        def _sequence_tokens(
+            self,
+            adj_list: list[str],
+            origin: list[str],
+            target: list[str],
+            path: list[str],
+        ) -> list[str]:
+            return [
+                VOCAB.ADJLIST_START,
+                *adj_list,
+                VOCAB.ADJLIST_END,
+                VOCAB.ORIGIN_START,
+                *origin,
+                VOCAB.ORIGIN_END,
+                *(
+                    [VOCAB.TARGET_START, VOCAB.TARGET_END]
+                    if self.include_target_special_tokens
+                    else ()
+                ),
+                VOCAB.PATH_START,
+                *path,
+                VOCAB.PATH_END,
+            ]
+
+
+def _load_tokenizer_element(
+    data: dict[str, Any], namespace: type[_TokenizerElementNamespace]
+) -> TokenizerElement:
+    key: str = namespace.key
+    format: str = data[key]["__format__"]
+    cls_name: str = format.split("(")[0]
+    # return getattr(namespace, cls_name).deserialize(data[key])
+    cls: type[TokenizerElement] = getattr(namespace, cls_name)
+    # TODO: Refactor line below with `zanj.loading.load_item_recursive` to properly leverage zanj
+    return cls(**{k: v for k, v in data[key].items() if k != "__format__"})
+
+
+@serializable_dataclass(frozen=True, kw_only=True)
+class MazeTokenizer2(SerializableDataclass):
+    """Tokenizer for mazes
+
+    # Parameters
+    - `prompt_sequencer`: Tokenizer element which assembles token regions (adjacency list, origin, target, path) into a complete prompt.
+    - `coord_tokenizer`: Tokenizer element which tokenizes a single `Coord` aka maze position.
+    - `adj_list_tokenizer`: Tokenizer element which tokenizes the adjacency list of a `LatticeMaze`.
+    Uses `coord_tokenizer` to tokenize coords if that is part of the design of that `_AdjListTokenizer`.
+    - `target_tokenizer`: Tokenizer element which tokenizes the target(s) of a `TargetedLatticeMaze`.
+    Uses `coord_tokenizer` to tokenize coords if that is part of the design of that `_TargetTokenizer`.
+    - `path_tokenizer`: Tokenizer element which tokenizes the solution path of a `SolvedMaze`.
+    Uses `coord_tokenizer` to tokenize coords if that is part of the design of that `_PathTokenizer`.
+
+    # Development
+    - To ensure backwards compatibility, the default constructor must always return a tokenizer equivalent to the legacy `TokenizationMode.AOTP_UT_Uniform`.
+    - Furthermore, the mapping reflected in `from_legacy` must also be maintained.
+    - Updates to `MazeTokenizer2` or the `TokenizerElement` hierarchy must maintain that behavior.
+    """
+
+    prompt_sequencer: PromptSequencers._PromptSequencer = serializable_field(
+        default=PromptSequencers.AOTP(),
+        loading_fn=lambda x: _load_tokenizer_element(x, PromptSequencers),
+    )
+    coord_tokenizer: CoordTokenizers._CoordTokenizer = serializable_field(
+        default=CoordTokenizers.UT(),
+        loading_fn=lambda x: _load_tokenizer_element(x, CoordTokenizers),
+    )
+    adj_list_tokenizer: AdjListTokenizers._AdjListTokenizer = serializable_field(
+        default=AdjListTokenizers.Coords(),
+        loading_fn=lambda x: _load_tokenizer_element(x, AdjListTokenizers),
+    )
+    target_tokenizer: TargetTokenizers._TargetTokenizer = serializable_field(
+        default=TargetTokenizers.Unlabeled(),
+        loading_fn=lambda x: _load_tokenizer_element(x, TargetTokenizers),
+    )
+    path_tokenizer: PathTokenizers._PathTokenizer = serializable_field(
+        default=PathTokenizers.Coords(),
+        loading_fn=lambda x: _load_tokenizer_element(x, PathTokenizers),
+    )
+
+    def __repr__(self) -> str:
+        return "-".join(
+            [type(self).__name__, *(repr(el) for el in self._tokenizer_elements)]
+        )
+
+    @cached_property
+    def _tokenizer_elements(self):
+        return [
+            self.coord_tokenizer,
+            self.adj_list_tokenizer,
+            self.target_tokenizer,
+            self.path_tokenizer,
+            self.prompt_sequencer,
+        ]
+
+    @property
+    def name(self) -> str:
+        """Serializes MazeTokenizer into a key for encoding in zanj"""
+        return repr(self)
+
+    def summary(self) -> dict[str, Any]:
+        return {
+            name: getattr(self, name)
+            for name in [
+                "prompt_sequencer",
+                "coord_tokenizer",
+                "adj_list_tokenizer",
+                "target_tokenizer",
+                "path_tokenizer",
+            ]
+        }
+
+    @classmethod
+    def from_name(cls, key: str) -> "MazeTokenizer2":
+        """Builds a MazeTokenizer from the output of `MazeTokenizer2.name`"""
+        raise NotImplementedError
+
+    @classmethod
+    def from_legacy(
+        cls, legacy_maze_tokenizer: MazeTokenizer | TokenizationMode
+    ) -> "MazeTokenizer2":
+        """Maps a legacy `MazeTokenizer` to its equivalent `MazeTokenizer2` instance."""
+        if isinstance(legacy_maze_tokenizer, MazeTokenizer):
+            legacy_maze_tokenizer = legacy_maze_tokenizer.tokenization_mode
+        return {
+            TokenizationMode.AOTP_UT_uniform: MazeTokenizer2(),
+            TokenizationMode.AOTP_UT_rasterized: MazeTokenizer2(),
+            TokenizationMode.AOTP_CTT_indexed: MazeTokenizer2(
+                coord_tokenizer=CoordTokenizers.CTT()
+            ),
+        }[legacy_maze_tokenizer]
+
+    def to_tokens(
+        self,
+        maze: "LatticeMaze",
+    ) -> list[str]:
+        """Converts maze into a list of tokens."""
+        return self.prompt_sequencer.to_tokens(
+            maze.connection_list,
+            getattr(maze, "start_pos", None),
+            [
+                getattr(maze, "end_pos", None)
+            ],  # TargetTokenizer requires target: Iterable[Coord]
+            getattr(maze, "solution", None),
+            self.coord_tokenizer,
+            self.adj_list_tokenizer,
+            self.target_tokenizer,
+            self.path_tokenizer,
+        )
+
+    @classmethod
+    def from_tokens(
+        cls,
+        tokens: str | list[str],
+    ) -> "MazeTokenizer2":
+        """
+        Infers most MazeTokenizer parameters from a full set of tokens.
+        Could be useful for adapting old code to new `MazeTokenizer`.
+        Would probably need a couple of other pieces of info besides just tokens.
+        - max_grid_size
+        - rasterization_mode: Only needed if UT tokens
+        - Anything else?
+        """
+        # Don't need directly, but something similar needed for LatticeMaze.from_tokens
+        raise NotImplementedError(
+            "recovering maze objects from MazeTokenizer2-produces strings not implemented yet"
+        )
+
+    @property
+    def token_arr(self) -> list[str] | None:
+        return VOCAB_LIST
+
+    @property
+    def tokenizer_map(self) -> dict[str, int]:
+        """map from token to index"""
+        return VOCAB_TOKEN_TO_INDEX
+
+    @property
+    def vocab_size(self) -> int:
+        return len(VOCAB_LIST)
+
+    @property
+    def n_tokens(self) -> int:
+        raise NameError(
+            "`MazeTokenizer2.n_tokens` has been removed. Use `len(maze_dataset.VOCAB_LIST)` instead."
+        )
+
+    @property
+    def padding_token_index(self) -> int:
+        return VOCAB_TOKEN_TO_INDEX[VOCAB.PADDING]
+
+    # conversion functions
+    # ============================================================
+
+    def coords_to_strings(self, coords: list[CoordTup | Coord]) -> list[str]:
+        return list(flatten([self.coord_tokenizer.to_tokens(c) for c in coords]))
+
+    @staticmethod
+    def strings_to_coords(
+        text: str,
+        when_noncoord: WhenMissing = "skip",
+    ) -> list[str | CoordTup]:
+        warnings.warn(
+            "`MazeTokenizer2.strings_to_coords` only supports legacy UT strings. Will be replaced by a more generalized function in a future release.",
+            TokenizerPendingDeprecationWarning,
+        )
+        return strings_to_coords(text=text, when_noncoord=when_noncoord)
+
+    @staticmethod
+    def encode(text: str | list[str]) -> list[int]:
+        """encode a string or list of strings into a list of tokens"""
+        try:
+            if isinstance(text, str):
+                text = text.split()
+            return [VOCAB_TOKEN_TO_INDEX[token] for token in text]
+        except KeyError as e:
+            raise TokenError(
+                f"Token {e} not found",
+                f"in `VOCAB`.",
+            ) from e
+
+    @staticmethod
+    def decode(
+        token_ids: Sequence[int], joined_tokens: bool = False
+    ) -> list[str] | str:
+        """decode a list of tokens into a string or list of strings"""
+        try:
+            output: list[str] = [VOCAB_LIST[token_id] for token_id in token_ids]
+        except IndexError as e:
+            raise TokenError(f"Token index '{e}' not found in `VOCAB`.") from e
+        if joined_tokens:
+            return " ".join(output)
+        else:
+            return output
+
+    # utils
+    # =============
+
+    def is_AOTP(self):
+        warnings.warn(
+            "`MazeTokenizer2.is_AOTP` will be replaced by a more generalized function in a future release.",
+            TokenizerPendingDeprecationWarning,
+        )
+        return isinstance(self.prompt_sequencer, PromptSequencers.AOTP)
+
+    def is_UT(self):
+        warnings.warn(
+            "`MazeTokenizer2.is_UT` will be replaced by a more generalized function in a future release.",
+            TokenizerPendingDeprecationWarning,
+        )
+        return isinstance(self.coord_tokenizer, CoordTokenizers.UT)
+
+
+def _all_tokenizers() -> Iterable[MazeTokenizer2]:
+    """Returns an iterable of all the supported and tested tokenizers.
+    Other tokenizers may be possible to construct, but they are untested and not guaranteed to work.
+    """
+    return [MazeTokenizer2(), MazeTokenizer2(coord_tokenizer=CoordTokenizers.CTT())]
+
+
+ALL_TOKENIZERS: Iterable[MazeTokenizer2] = _all_tokenizers()

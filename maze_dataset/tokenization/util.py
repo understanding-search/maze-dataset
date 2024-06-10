@@ -2,13 +2,29 @@
 
 import re
 import typing
-from typing import Callable
+import warnings
+from collections import Counter
+from typing import Callable, Generator, Iterable, Type
 
 import numpy as np
+from jaxtyping import Float, Int8
 from muutils.misc import list_join
 
-from maze_dataset.constants import CoordTup
+from maze_dataset.constants import ConnectionList, CoordTup
 from maze_dataset.utils import WhenMissing
+
+
+class TokenizerDeprecationWarning(DeprecationWarning):
+    """Deprecation warnings related to the `MazeTokenizer2` upgrade."""
+
+    pass
+
+
+class TokenizerPendingDeprecationWarning(PendingDeprecationWarning):
+    """Pending deprecation warnings related to the `MazeTokenizer2` upgrade."""
+
+    pass
+
 
 # coordinate to strings
 # ==================================================
@@ -36,6 +52,10 @@ def _coord_to_strings_indexed(coord: typing.Sequence[int]) -> list[str]:
 def str_is_coord(coord_str: str, allow_whitespace: bool = True) -> bool:
     """return True if the string represents a coordinate, False otherwise"""
 
+    warnings.warn(
+        "`util.str_is_coord` only supports legacy UT strings. Function will be replaced with a generalized version in a future release.",
+        TokenizerPendingDeprecationWarning,
+    )
     strip_func: Callable[[str], str] = lambda x: x.strip() if allow_whitespace else x
 
     coord_str = strip_func(coord_str)
@@ -99,6 +119,10 @@ def strings_to_coords(
     returns list[CoordTup] if `when_noncoord` is "skip" or "error"
     returns list[str | CoordTup] if `when_noncoord` is "include"
     """
+    warnings.warn(
+        "`util.strings_to_coords` only supports legacy UT strings. Function will be replaced with a generalized version in a future release.",
+        TokenizerPendingDeprecationWarning,
+    )
     tokens_joined: str = text if isinstance(text, str) else " ".join(text)
     tokens_processed: list[str] = coords_string_split_UT(tokens_joined)
     result: list[str] = list()
@@ -146,3 +170,146 @@ def coords_to_strings(
         else:
             result.extend(coord_to_strings_func(coord))
     return result
+
+
+def connection_list_to_adj_list(
+    conn_list: ConnectionList,
+    shuffle_d0: bool = True,
+    shuffle_d1: bool = True,
+) -> Int8[np.ndarray, "conn start_end=2 coord=2"]:
+    """converts a `ConnectionList` (special lattice format) to a shuffled adjacency list
+
+    # Parameters:
+    - `conn_list: ConnectionList`
+        special internal format for graphs which are subgraphs of a lattice
+    - `shuffle_d0: bool`
+        shuffle the adjacency list along the 0th axis (order of pairs)
+    - `shuffle_d1: bool`
+        shuffle the adjacency list along the 1st axis (order of coordinates in each pair)
+
+
+    # Returns:
+     - `Int8[np.ndarray, "conn start_end=2 coord=2"]`
+        adjacency list in the shape `(n_connections, 2, 2)`
+    """
+
+    n_connections: int = conn_list.sum()
+    adj_list: Int8[np.ndarray, "conn start_end=2 coord=2"] = np.full(
+        (n_connections, 2, 2),
+        -1,
+    )
+
+    if shuffle_d1:
+        flip_d1: Float[np.array, "conn"] = np.random.rand(n_connections)
+
+    # loop over all nonzero elements of the connection list
+    i: int = 0
+    for d, x, y in np.ndindex(conn_list.shape):
+        if conn_list[d, x, y]:
+            c_start: CoordTup = (x, y)
+            c_end: CoordTup = (
+                x + (1 if d == 0 else 0),
+                y + (1 if d == 1 else 0),
+            )
+            adj_list[i, 0] = np.array(c_start)
+            adj_list[i, 1] = np.array(c_end)
+
+            # flip if shuffling
+            if shuffle_d1 and (flip_d1[i] > 0.5):
+                c_s, c_e = adj_list[i, 0].copy(), adj_list[i, 1].copy()
+                adj_list[i, 0] = c_e
+                adj_list[i, 1] = c_s
+
+            i += 1
+
+    if shuffle_d0:
+        np.random.shuffle(adj_list)
+
+    return adj_list
+
+
+def equal_except_adj_list_sequence(rollout1: list[str], rollout2: list[str]) -> bool:
+    """Returns if the rollout strings are equal, allowing for differently sequenced adjacency lists.
+    <ADJLIST_START> and <ADJLIST_END> tokens must be in the rollouts.
+    Intended ONLY for determining if two tokenization schemes are the same for rollouts generated from the same maze.
+    This function should NOT be used to determine if two rollouts encode the same `LatticeMaze` object.
+
+    # Warning: CTT False Positives
+    This function is not robustly correct for some corner cases using `CoordTokenizers.CTT`.
+    If rollouts are passed for identical tokenizers processing two slightly different mazes, a false positive is possible.
+    More specifically, some cases of zero-sum adding and removing of connections in a maze within square regions along the diagonal will produce a false positive.
+    """
+
+    def get_token_regions(toks: list[str]) -> tuple[list[str], list[str]]:
+        adj_list_start, adj_list_end = toks.index("<ADJLIST_START>") + 1, toks.index(
+            "<ADJLIST_END>"
+        )
+        adj_list = toks[adj_list_start:adj_list_end]
+        non_adj_list = toks[:adj_list_start] + toks[adj_list_end:]
+        return adj_list, non_adj_list
+
+    if len(rollout1) != len(rollout2):
+        return False
+    if ("<ADJLIST_START>" in rollout1) ^ ("<ADJLIST_START>" in rollout2):
+        return False
+    if ("<ADJLIST_END>" in rollout1) ^ ("<ADJLIST_END>" in rollout2):
+        return False
+
+    adj_list1, non_adj_list1 = get_token_regions(rollout1)
+    adj_list2, non_adj_list2 = get_token_regions(rollout2)
+    if non_adj_list1 != non_adj_list2:
+        return False
+    counter1: Counter = Counter(adj_list1)
+    counter2: Counter = Counter(adj_list2)
+    return counter1 == counter2
+
+
+def flatten(it: Iterable[any], levels_to_flatten: int | None = None) -> Generator:
+    """
+    Flattens an arbitrarily nested iterable.
+    Flattens all iterable data types except for `str` and `bytes`.
+
+    # Returns
+    Generator over the flattened sequence.
+
+    # Parameters
+    - `it`: Any arbitrarily nested iterable.
+    - `levels_to_flatten`: Number of levels to flatten by. If `None`, performs full flattening.
+    """
+    for x in it:
+        # TODO: swap type check with more general check for __iter__() or __next__() or whatever
+        if (
+            hasattr(x, "__iter__")
+            and not isinstance(x, (str, bytes))
+            and (levels_to_flatten is None or levels_to_flatten > 0)
+        ):
+            yield from flatten(
+                x,
+                levels_to_flatten=(
+                    None if levels_to_flatten is None else levels_to_flatten - 1
+                ),
+            )
+        else:
+            yield x
+
+
+def get_all_subclasses(class_: Type, include_self: bool = False) -> set[Type]:
+    """
+    Returns a list of all subclasses of `class_`, including subclasses of subclasses, etc.
+
+    # Parameters
+    - include_self: Whether to include `class_` itself in the returned list
+    `class_`: Superclass
+
+    # Returns
+    Set of subclasses without duplicates in no guaranteed order.
+    """
+    subs: list[list] = [
+        get_all_subclasses(sub, include_self=True)
+        for sub in class_.__subclasses__()
+        if sub is not None
+    ]
+    subs: set = set(flatten(subs))
+    if include_self:
+        subs.add((class_))
+    return subs
