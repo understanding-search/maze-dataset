@@ -63,3 +63,6 @@ jobs:
       
       - name: Notebook tests
         run: make test_notebooks
+      
+      - name: All Tokenizer Tests
+        run: make test_all_tok
