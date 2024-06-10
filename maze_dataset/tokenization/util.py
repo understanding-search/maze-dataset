@@ -266,11 +266,9 @@ def flatten(it: Iterable[any], levels_to_flatten: int | None = None) -> Generato
             and (levels_to_flatten is None or levels_to_flatten > 0)
         ):
             yield from flatten(
-                x, 
-                levels_to_flatten = (
-                    None 
-                    if levels_to_flatten is None 
-                    else levels_to_flatten - 1
+                x,
+                levels_to_flatten=(
+                    None if levels_to_flatten is None else levels_to_flatten - 1
                 ),
             )
         else:
