@@ -49,8 +49,8 @@ from maze_dataset.util import (
 )
 from maze_dataset.utils import (
     WhenMissing,
-    empty_sequence_if_attr_false,
     corner_first_ndindex,
+    empty_sequence_if_attr_false,
     lattice_connection_array,
 )
 
@@ -928,8 +928,8 @@ class AdjListTokenizers(_TokenizerElementNamespace):
             )
             if self.walls:
                 conn_list = np.logical_not(maze.connection_list)
-                conn_list[0,-1,:] = False
-                conn_list[1,:,-1] = False
+                conn_list[0, -1, :] = False
+                conn_list[1, :, -1] = False
             adj_list = connection_list_to_adj_list(maze.connection_list)
             return itertools.chain.from_iterable(
                 [
@@ -949,7 +949,6 @@ class AdjListTokenizers(_TokenizerElementNamespace):
             loading_fn=lambda x: _load_tokenizer_element(x, EdgePermuters),
         )
         coord_first: bool = serializable_field(default=True)
-
 
         def _single_connection_tokens(
             self,
