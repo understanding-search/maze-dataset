@@ -1,22 +1,13 @@
 import itertools
-import os
-import random
 import re
-from collections import Counter, namedtuple
+from collections import namedtuple
 from itertools import product
-from typing import Callable, Iterable, Sequence
+from typing import Iterable
 
-import frozendict
 import numpy as np
-import pytest
-from jaxtyping import Int
 from pytest import mark, param
-from zanj import ZANJ
 
 from maze_dataset import (
-    VOCAB,
-    VOCAB_LIST,
-    ConnectionArray,
     Coord,
     CoordTup,
     LatticeMaze,
@@ -31,22 +22,16 @@ from maze_dataset.plotting.print_tokens import color_maze_tokens_AOTP
 from maze_dataset.tokenization import (
     AdjListTokenizers,
     CoordTokenizers,
-    EdgePermuters,
     MazeTokenizer,
     MazeTokenizer2,
     PathTokenizers,
     PromptSequencers,
-    StepSizes,
     StepTokenizers,
     TargetTokenizers,
     TokenizationMode,
     TokenizerElement,
 )
-from maze_dataset.util import (
-    connection_list_to_adj_list,
-    equal_except_adj_list_sequence,
-)
-
+from maze_dataset.util import equal_except_adj_list_sequence
 
 NUM_TOKENIZERS_TO_TEST = 100
 GRID_N = 5
@@ -419,8 +404,6 @@ def test_from_tokens_backwards_compatible(
 # ===========================
 
 
-
-
 @mark.parametrize(
     "el, result",
     [
@@ -474,9 +457,6 @@ def test_tokenizer_element_is_valid(el: TokenizerElement, result: bool):
     assert el.is_valid() == result
 
 
-
-
-
 @mark.parametrize(
     "tokenizer, result",
     [
@@ -490,6 +470,3 @@ def test_tokenizer_element_is_valid(el: TokenizerElement, result: bool):
 )
 def test_is_legacy_equivalent(tokenizer: MazeTokenizer2, result: bool):
     assert tokenizer.is_legacy_equivalent() == result
-
-
-

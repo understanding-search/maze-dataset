@@ -38,6 +38,7 @@ from maze_dataset.tokenization import (
 )
 from maze_dataset.utils import all_instances
 
+
 @cache
 def _get_all_tokenizers() -> list[MazeTokenizer2]:
     return all_instances(
@@ -61,6 +62,7 @@ EVERY_TEST_TOKENIZERS: list[MazeTokenizer2] = [
 
 
 # TODO: this is pretty bad because it makes it opaque as to when we are actually accessing this massive list of tokenizers
+
 
 @cache
 def all_tokenizers_list() -> list[MazeTokenizer2]:
@@ -96,7 +98,9 @@ def sample_tokenizers_for_test(n: int) -> list[MazeTokenizer2]:
 
 def save_hashes() -> Int64[np.int64, "tokenizer"]:
     """Computes, sorts, and saves the hashes of every member of `ALL_TOKENIZERS`."""
-    hashes_array = np.array([hash(obj) for obj in _get_all_tokenizers()], dtype=np.int64)
+    hashes_array = np.array(
+        [hash(obj) for obj in _get_all_tokenizers()], dtype=np.int64
+    )
     sorted_hashes, counts = np.unique(hashes_array, return_counts=True)
     if sorted_hashes.shape[0] != hashes_array.shape[0]:
         collisions = sorted_hashes[counts > 1]

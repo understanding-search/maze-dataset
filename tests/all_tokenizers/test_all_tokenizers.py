@@ -1,9 +1,7 @@
 import itertools
 import os
 import random
-import re
 from collections import Counter, namedtuple
-from itertools import product
 from typing import Callable, Iterable, Sequence
 
 import frozendict
@@ -17,7 +15,6 @@ from maze_dataset import (
     VOCAB,
     VOCAB_LIST,
     ConnectionArray,
-    Coord,
     CoordTup,
     LatticeMaze,
     LatticeMazeGenerators,
@@ -27,19 +24,14 @@ from maze_dataset import (
     TargetedLatticeMaze,
 )
 from maze_dataset.generation import LatticeMazeGenerators
-from maze_dataset.plotting.print_tokens import color_maze_tokens_AOTP
 from maze_dataset.tokenization import (
-    AdjListTokenizers,
     CoordTokenizers,
     EdgePermuters,
-    MazeTokenizer,
     MazeTokenizer2,
     PathTokenizers,
     PromptSequencers,
     StepSizes,
     StepTokenizers,
-    TargetTokenizers,
-    TokenizationMode,
     TokenizerElement,
 )
 from maze_dataset.tokenization.all_tokenizers import (
@@ -49,12 +41,8 @@ from maze_dataset.tokenization.all_tokenizers import (
     save_hashes,
 )
 from maze_dataset.tokenization.maze_tokenizer import _load_tokenizer_hashes
-from maze_dataset.util import (
-    connection_list_to_adj_list,
-    equal_except_adj_list_sequence,
-)
+from maze_dataset.util import connection_list_to_adj_list
 from maze_dataset.utils import all_instances
-
 
 # TODO: this needs to be cleaned up, and duplicated functionality in `test_tokenizer.py`
 NUM_TOKENIZERS_TO_TEST = 100
@@ -222,8 +210,6 @@ def test_all_instances_tokenizerelement(class_: type):
     assert len({hash(elem) for elem in all_vals}) == len(all_vals)
 
 
-
-
 @mark.parametrize(
     "ep,maze",
     [
@@ -260,7 +246,8 @@ def test_edge_permuters(ep: EdgePermuters._EdgePermuter, maze: LatticeMaze):
             assert np.array_equal(permuted[:n, 0, :], permuted[n:, 1, :])
             assert np.array_equal(permuted[:n, 1, :], permuted[n:, 0, :])
             assert edges is not permuted
-            
+
+
 def test_all_tokenizer_hashes():
     loaded_hashes = save_hashes()
     assert np.array_equal(_load_tokenizer_hashes(), loaded_hashes)
@@ -322,7 +309,6 @@ def test_path_tokenizers(pt: PathTokenizers._PathTokenizer, manual_maze: _MANUAL
     )
 
 
-
 def _helper_test_path_tokenizers(
     pt: PathTokenizers._PathTokenizer,
     maze: SolvedMaze,
@@ -357,7 +343,6 @@ def _helper_test_path_tokenizers(
     # if StepTokenizers.Relative() in pt.step_tokenizers:
     #     c = Counter(path_toks)
     #     assert c[VOCAB.PATH_LEFT] + c[VOCAB.PATH_RIGHT] + c[VOCAB.PATH_FORWARD] + c[VOCAB.PATH_BACKWARD] == len(footprint_inds)-1
-
 
 
 SAMPLE_MIN: int = len(EVERY_TEST_TOKENIZERS)
