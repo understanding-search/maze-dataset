@@ -521,6 +521,14 @@ def all_instances(
             f"Type {type_} either has unbounded possible values or is not supported."
         )
 
+def get_hashable_eq_attrs(dc: IsDataclass) -> tuple[Any]:
+    """Returns a tuple of all fields used for equality comparison.
+    Essentially used to generate a hashable dataclass representation of a dataclass for equality comparison even if it's not frozen.
+    """
+    return *(
+        getattr(dc, fld.name)
+        for fld in filter(lambda x: x.compare, dc.__dataclass_fields__.values())
+    ), type(dc)
 
 def dataclass_set_equals(
     coll1: Iterable[IsDataclass], coll2: Iterable[IsDataclass]
@@ -531,18 +539,10 @@ def dataclass_set_equals(
     Collections of them may be compared using this function.
     """
 
-    def get_hashable_eq_attrs(dc: IsDataclass) -> tuple[Any]:
-        """Returns a tuple of all fields used for equality comparison.
-        Essentially used to generate a hashable dataclass representation of a dataclass for equality comparison even if it's not frozen.
-        """
-        return *(
-            getattr(dc, fld.name)
-            for fld in filter(lambda x: x.compare, dc.__dataclass_fields__.values())
-        ), type(dc)
-
-    return {get_hashable_eq_attrs(x) for x in coll1} == {
-        get_hashable_eq_attrs(y) for y in coll2
-    }
+    return (
+        {get_hashable_eq_attrs(x) for x in coll1}
+        ==  {get_hashable_eq_attrs(y) for y in coll2}
+    )
 
 
 def isinstance_by_type_name(o: object, type_name: str):

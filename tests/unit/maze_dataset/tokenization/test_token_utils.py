@@ -581,6 +581,7 @@ class DC9(DC7):
         pass
 
 
+# TODO: this can definitely be generated programmatically
 @mark.parametrize(
     "type_, result",
     [
@@ -723,6 +724,7 @@ def test_all_instances(
         assert set(all_instances(type_)) == set(result)
 
 
+# @mivanit: this was really difficult to understand
 @mark.parametrize(
     "type_, validation_funcs, assertion",
     [
@@ -735,20 +737,26 @@ def test_all_instances(
         for i, (type_, vfs, assertion) in enumerate(
             [
                 (
+                    # type
                     PathTokenizers._PathTokenizer,
+                    # validation_funcs
                     frozendict.frozendict({}),
+                    # assertion
                     lambda x: PathTokenizers.StepSequence(
                         step_tokenizers=(StepTokenizers.Distance(),)
                     )
                     in x,
                 ),
                 (
+                    # type
                     PathTokenizers._PathTokenizer,
+                    # validation_funcs
                     frozendict.frozendict(
                         {
                             PathTokenizers._PathTokenizer: lambda x: x.is_valid(),
                         }
                     ),
+                    # assertion
                     lambda x: PathTokenizers.StepSequence(
                         step_tokenizers=(StepTokenizers.Distance(),)
                     )
@@ -772,6 +780,7 @@ def test_all_instances2(
     ],
     assertion: Callable[[list[FiniteValued]], bool],
 ):
+    # TODO: error here
     assert assertion(all_instances(type_, validation_funcs))
 
 

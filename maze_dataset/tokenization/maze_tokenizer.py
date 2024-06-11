@@ -1296,7 +1296,8 @@ class PathTokenizers(_TokenizerElementNamespace):
             if len(set(self.step_tokenizers)) != len(self.step_tokenizers):
                 # Uninteresting: repeated elements are not useful
                 return False
-            if self.step_tokenizers == (StepTokenizers.Distance(),):
+
+            if len(self.step_tokenizers) == 1 and isinstance(self.step_tokenizers[0], StepTokenizers.Distance):
                 # Untrainable: `Distance` alone cannot encode a path. >=1 `StepTokenizer` which indicates direction/location is required.
                 return False
             else:
