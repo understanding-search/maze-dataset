@@ -1,6 +1,5 @@
 from __future__ import annotations  # for type hinting self as return value
 
-import warnings
 from copy import deepcopy
 from dataclasses import dataclass
 
@@ -474,20 +473,12 @@ class MazePlot:
         return img
 
     def _plot_path(self, path_format: PathFormat) -> None:
-        if len(path_format.path) == 0:
-            warnings.warn(f"Empty path, skipping plotting\n{path_format = }")
-            return
         p_transformed = np.array(
             [self._rowcol_to_coord(coord) for coord in path_format.path]
         )
         if path_format.quiver_kwargs is not None:
-            try:
-                x: np.ndarray = p_transformed[:, 0]
-                y: np.ndarray = p_transformed[:, 1]
-            except Exception as e:
-                raise ValueError(
-                    f"Error in plotting quiver path:\n{path_format = }\n{p_transformed = }\n{e}"
-                ) from e
+            x: np.ndarray = p_transformed[:, 0]
+            y: np.ndarray = p_transformed[:, 1]
 
             # Generate colors from the colormap
             if path_format.cmap is not None:

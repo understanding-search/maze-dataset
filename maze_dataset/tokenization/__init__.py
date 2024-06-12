@@ -1,19 +1,19 @@
 from maze_dataset.tokenization.maze_tokenizer import (
-    ALL_TOKENIZER_HASHES,
     AdjListTokenizers,
-    CoordTokenizers,
     EdgeGroupings,
     EdgePermuters,
     EdgeSubsets,
+    CoordTokenizers,
     MazeTokenizer,
     MazeTokenizer2,
     PathTokenizers,
-    PromptSequencers,
     StepSizes,
     StepTokenizers,
+    PromptSequencers,
     TargetTokenizers,
     TokenizationMode,
     TokenizerElement,
+    ALL_TOKENIZER_HASHES,
     get_tokens_up_to_path_start,
 )
 

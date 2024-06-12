@@ -95,12 +95,6 @@ unit:
 	$(POETRY_RUN_PYTHON) -m pytest $(PYTEST_OPTIONS) tests/unit
 
 
-.PHONY: test_all_tok
-test_all_tok:
-	@echo "run tests on all tokenizers"
-	$(POETRY_RUN_PYTHON) -m pytest $(PYTEST_OPTIONS) tests/all_tokenizers
-
-
 .PHONY: convert_notebooks
 convert_notebooks:
 	@echo "convert notebooks in $(NOTEBOOKS_DIR) using muutils.nbutils.convert_ipynb_to_script.py"

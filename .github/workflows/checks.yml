@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   pull_request:
     branches:
-      - '*'
+      - main
   push:
     branches:
       - main
@@ -63,6 +63,3 @@ jobs:
       
       - name: Notebook tests
         run: make test_notebooks
-      
-      - name: All Tokenizer Tests
-        run: make test_all_tok

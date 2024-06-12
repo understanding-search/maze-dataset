@@ -1,30 +1,30 @@
-import abc
+from typing import Iterable, TypeVar, Callable, Literal
 from dataclasses import dataclass
-from typing import Callable, Iterable
 
+import pytest
+from pytest import mark, param
+import abc
 import frozendict
 import numpy as np
-import pytest
 from jaxtyping import Int
-from pytest import mark, param
 
-from maze_dataset.constants import VOCAB
 from maze_dataset.dataset.maze_dataset import MazeDatasetConfig
+from maze_dataset.tokenization import (
+    get_tokens_up_to_path_start,
+    PathTokenizers,
+    StepSizes,
+    StepTokenizers,
+    MazeTokenizer2,
+    MazeTokenizer,
+    TokenizationMode,
+)
 from maze_dataset.token_utils import (
     get_adj_list_tokens,
     get_origin_tokens,
     get_path_tokens,
-    get_relative_direction,
     get_target_tokens,
     tokens_between,
-)
-from maze_dataset.tokenization import (
-    MazeTokenizer,
-    MazeTokenizer2,
-    PathTokenizers,
-    StepTokenizers,
-    TokenizationMode,
-    get_tokens_up_to_path_start,
+    get_relative_direction,
 )
 from maze_dataset.util import (
     _coord_to_strings_UT,
@@ -33,14 +33,16 @@ from maze_dataset.util import (
     strings_to_coords,
 )
 from maze_dataset.utils import (
-    FiniteValued,
-    IsDataclass,
-    all_instances,
+    flatten, 
+    all_instances, 
     dataclass_set_equals,
-    flatten,
     get_all_subclasses,
     isinstance_by_type_name,
-)
+    manhattan_distance,
+    IsDataclass,
+    FiniteValued,
+    )
+from maze_dataset.constants import VOCAB, ConnectionArray, Connection
 
 MAZE_TOKENS: tuple[list[str], str] = (
     "<ADJLIST_START> (0,1) <--> (1,1) ; (1,0) <--> (1,1) ; (0,1) <--> (0,0) ; <ADJLIST_END> <ORIGIN_START> (1,0) <ORIGIN_END> <TARGET_START> (1,1) <TARGET_END> <PATH_START> (1,0) (1,1) <PATH_END>".split(),
@@ -559,29 +561,22 @@ class DC6:
 @dataclass(frozen=True)
 class DC7(abc.ABC):
     x: bool
-
     @abc.abstractmethod
-    def foo():
-        pass
+    def foo(): pass
 
 
 @dataclass(frozen=True)
 class DC8(DC7):
     x: bool = False
-
-    def foo():
-        pass
-
-
+    def foo(): pass
+    
+    
 @dataclass(frozen=True)
 class DC9(DC7):
     y: bool = True
-
-    def foo():
-        pass
+    def foo(): pass
 
 
-# TODO: this can definitely be generated programmatically
 @mark.parametrize(
     "type_, result",
     [
@@ -592,129 +587,117 @@ class DC9(DC7):
         )
         for type_, result in (
             [
-                (
-                    DC1,
-                    [
-                        DC1(False, False),
-                        DC1(False, True),
-                        DC1(True, False),
-                        DC1(True, True),
-                    ],
+                (DC1,
+                 [
+                    DC1(False, False),
+                    DC1(False, True),
+                    DC1(True, False),
+                    DC1(True, True),
+                 ]
                 ),
-                (
-                    DC2,
-                    [
-                        DC2(False, False),
-                        DC2(False, True),
-                        DC2(True, False),
-                        DC2(True, True),
-                    ],
+                (DC2,
+                 [
+                    DC2(False, False),
+                    DC2(False, True),
+                    DC2(True, False),
+                    DC2(True, True),
+                 ]
                 ),
-                (
-                    DC3,
-                    [
-                        DC3(DC2(False, False)),
-                        DC3(DC2(False, True)),
-                        DC3(DC2(True, False)),
-                        DC3(DC2(True, True)),
-                    ],
+                (DC3,
+                 [
+                    DC3(DC2(False, False)),
+                    DC3(DC2(False, True)),
+                    DC3(DC2(True, False)),
+                    DC3(DC2(True, True)),
+                 ]
                 ),
-                (
-                    DC4,
-                    [
-                        DC4(DC2(False, False), True),
-                        DC4(DC2(False, True), True),
-                        DC4(DC2(True, False), True),
-                        DC4(DC2(True, True), True),
-                        DC4(DC2(False, False), False),
-                        DC4(DC2(False, True), False),
-                        DC4(DC2(True, False), False),
-                        DC4(DC2(True, True), False),
-                    ],
+                (DC4,
+                 [
+                    DC4(DC2(False, False), True),
+                    DC4(DC2(False, True), True),
+                    DC4(DC2(True, False), True),
+                    DC4(DC2(True, True), True),
+                    DC4(DC2(False, False), False),
+                    DC4(DC2(False, True), False),
+                    DC4(DC2(True, False), False),
+                    DC4(DC2(True, True), False),
+                 ]
                 ),
                 (DC5, TypeError),
                 (DC6, TypeError),
                 (bool, [True, False]),
                 (int, TypeError),
                 (str, TypeError),
-                (
-                    tuple[bool],
-                    [
-                        (True,),
-                        (False,),
-                    ],
+                (Literal[0, 1, 2], [0, 1, 2]),
+                (tuple[bool], 
+                 [
+                     (True,),
+                     (False,),
+                 ]
                 ),
-                (
-                    tuple[bool, bool],
-                    [
-                        (True, True),
-                        (True, False),
-                        (False, True),
-                        (False, False),
-                    ],
+                (tuple[bool, bool], 
+                 [
+                     (True, True),
+                     (True, False),
+                     (False, True),
+                     (False, False),
+                 ]
                 ),
-                (
-                    DC8,
-                    [
-                        DC8(False),
-                        DC8(True),
-                    ],
+                (DC8,
+                 [
+                    DC8(False),
+                    DC8(True),
+                 ]
                 ),
-                (
-                    DC7,
-                    [
-                        DC8(False),
-                        DC8(True),
-                        DC9(False, False),
-                        DC9(False, True),
-                        DC9(True, False),
-                        DC9(True, True),
-                    ],
+                (DC7,
+                 [
+                    DC8(False),
+                    DC8(True),
+                    DC9(False, False),
+                    DC9(False, True),
+                    DC9(True, False),
+                    DC9(True, True),
+                 ]
                 ),
-                (
-                    tuple[DC7],
-                    [
-                        (DC8(False),),
-                        (DC8(True),),
-                        (DC9(False, False),),
-                        (DC9(False, True),),
-                        (DC9(True, False),),
-                        (DC9(True, True),),
-                    ],
+                (tuple[DC7], 
+                 [
+                     (DC8(False),),
+                     (DC8(True),),
+                     (DC9(False, False),),
+                     (DC9(False, True),),
+                     (DC9(True, False),),
+                     (DC9(True, True),),
+                 ]
                 ),
-                (
-                    tuple[DC8, DC8],
-                    [
-                        (DC8(False), DC8(False)),
-                        (DC8(False), DC8(True)),
-                        (DC8(True), DC8(False)),
-                        (DC8(True), DC8(True)),
-                    ],
+                (tuple[DC8, DC8], 
+                 [
+                     (DC8(False), DC8(False)),
+                     (DC8(False), DC8(True)),
+                     (DC8(True), DC8(False)),
+                     (DC8(True), DC8(True)),
+                 ]
                 ),
-                (
-                    tuple[DC7, bool],
-                    [
-                        (DC8(False), True),
-                        (DC8(True), True),
-                        (DC9(False, False), True),
-                        (DC9(False, True), True),
-                        (DC9(True, False), True),
-                        (DC9(True, True), True),
-                        (DC8(False), False),
-                        (DC8(True), False),
-                        (DC9(False, False), False),
-                        (DC9(False, True), False),
-                        (DC9(True, False), False),
-                        (DC9(True, True), False),
-                    ],
+                (tuple[DC7, bool], 
+                 [
+                     (DC8(False), True),
+                     (DC8(True), True),
+                     (DC9(False, False), True),
+                     (DC9(False, True), True),
+                     (DC9(True, False), True),
+                     (DC9(True, True), True),
+                     (DC8(False), False),
+                     (DC8(True), False),
+                     (DC9(False, False), False),
+                     (DC9(False, True), False),
+                     (DC9(True, False), False),
+                     (DC9(True, True), False),
+                 ]
                 ),
             ]
         )
     ],
 )
-def test_all_instances(
-    type_: FiniteValued, result: type[Exception] | Iterable[FiniteValued]
-):
+def test_all_instances(type_: FiniteValued, result: type[Exception] | Iterable[FiniteValued]):
     if isinstance(result, type) and issubclass(result, Exception):
         with pytest.raises(result):
             all_instances(type_)
@@ -724,7 +707,7 @@ def test_all_instances(
         assert set(all_instances(type_)) == set(result)
 
 
-# @mivanit: this was really difficult to understand
+
 @mark.parametrize(
     "type_, validation_funcs, assertion",
     [
@@ -736,53 +719,34 @@ def test_all_instances(
         )
         for i, (type_, vfs, assertion) in enumerate(
             [
-                (
-                    # type
-                    PathTokenizers._PathTokenizer,
-                    # validation_funcs
-                    frozendict.frozendict({}),
-                    # assertion
-                    lambda x: PathTokenizers.StepSequence(
-                        step_tokenizers=(StepTokenizers.Distance(),)
-                    )
-                    in x,
+                (PathTokenizers.PathTokenizer,
+                 frozendict.frozendict({}),
+                 lambda x: PathTokenizers.StepSequence(
+                     step_tokenizers=(StepTokenizers.Distance(),)
+                     ) in x
                 ),
-                (
-                    # type
-                    PathTokenizers._PathTokenizer,
-                    # validation_funcs
-                    frozendict.frozendict(
-                        {
-                            PathTokenizers._PathTokenizer: lambda x: x.is_valid(),
-                        }
-                    ),
-                    # assertion
-                    lambda x: PathTokenizers.StepSequence(
+                (PathTokenizers.PathTokenizer,
+                 frozendict.frozendict({
+                     PathTokenizers.PathTokenizer: lambda x: x.is_valid(),
+                 }),
+                 lambda x: 
+                     PathTokenizers.StepSequence(
                         step_tokenizers=(StepTokenizers.Distance(),)
-                    )
-                    not in x
-                    and PathTokenizers.StepSequence(
-                        step_tokenizers=(
-                            StepTokenizers.Coord(),
-                            StepTokenizers.Coord(),
-                        )
-                    )
-                    not in x,
+                     ) not in x
+                     and
+                     PathTokenizers.StepSequence(
+                        step_tokenizers=(StepTokenizers.Coord(), StepTokenizers.Coord(),)
+                     ) not in x
                 ),
             ]
         )
     ],
 )
 def test_all_instances2(
-    type_: FiniteValued,
-    validation_funcs: frozendict.frozendict[
-        FiniteValued, Callable[[FiniteValued], bool]
-    ],
-    assertion: Callable[[list[FiniteValued]], bool],
-):
-    # TODO: error here
+    type_: FiniteValued, 
+    validation_funcs: frozendict.frozendict[FiniteValued, Callable[[FiniteValued], bool]], 
+    assertion: Callable[[list[FiniteValued]], bool]):
     assert assertion(all_instances(type_, validation_funcs))
-
 
 @mark.parametrize(
     "coll1, coll2, result",
@@ -804,7 +768,7 @@ def test_all_instances2(
                         DC1(True, False),
                         DC1(True, True),
                     ],
-                    False,
+                    False
                 ),
                 (
                     [
@@ -815,7 +779,7 @@ def test_all_instances2(
                         DC1(False, False),
                         DC1(False, True),
                     ],
-                    True,
+                    True
                 ),
                 (
                     [
@@ -826,7 +790,7 @@ def test_all_instances2(
                         DC2(False, False),
                         DC2(False, True),
                     ],
-                    False,
+                    False
                 ),
                 (
                     [
@@ -836,7 +800,7 @@ def test_all_instances2(
                     [
                         DC3(False),
                     ],
-                    True,
+                    True
                 ),
                 ([], [], True),
                 ([DC5], [DC5], AttributeError),
@@ -844,18 +808,14 @@ def test_all_instances2(
         )
     ],
 )
-def test_dataclass_set_equals(
-    coll1: Iterable[IsDataclass],
-    coll2: Iterable[IsDataclass],
-    result: bool | type[Exception],
-):
+def test_dataclass_set_equals(coll1: Iterable[IsDataclass], coll2: Iterable[IsDataclass], result: bool | type[Exception]):
     if isinstance(result, type) and issubclass(result, Exception):
         with pytest.raises(result):
             dataclass_set_equals(coll1, coll2)
     else:
         assert dataclass_set_equals(coll1, coll2) == result
-
-
+        
+       
 @mark.parametrize(
     "o, type_name, result",
     [
@@ -867,29 +827,25 @@ def test_dataclass_set_equals(
         )
         for o, name, res in (
             [
-                (True, "bool", True),
-                (True, "int", True),
-                (1, "int", True),
-                (1, "bool", False),
-                (MazeTokenizer(), "MazeTokenizer", True),
-                (MazeTokenizer(), "TokenizationMode", False),
-                (MazeTokenizer2(), "MazeTokenizer2", True),
-                (MazeTokenizer2(), "MazeTokenizer", False),
+                (True,"bool",True),
+                (True,"int",True),
+                (1,"int",True),
+                (1,"bool",False),
+                (MazeTokenizer(),"MazeTokenizer",True),
+                (MazeTokenizer(),"TokenizationMode",False),
+                (MazeTokenizer2(),"MazeTokenizer2",True),
+                (MazeTokenizer2(),"MazeTokenizer",False),
                 (TokenizationMode.AOTP_CTT_indexed, "TokenizationMode", True),
                 (TokenizationMode.AOTP_UT_uniform, "MazeTokenizer", False),
-                (StepTokenizers.Distance(), "_StepTokenizer", True),
+                (StepTokenizers.Distance(), "StepTokenizer", True),
                 (StepTokenizers.Distance(), "TokenizerElement", True),
-                (PathTokenizers.StepSequence(), "StepSequence", True),
-                (PathTokenizers.StepSequence(), "_PathTokenizer", True),
-                (MazeTokenizer2, "MazeTokenizer2", False),
+                (MazeTokenizer2,"MazeTokenizer2",False),
                 (TokenizationMode, "TokenizationMode", False),
             ]
         )
     ],
-)
-def test_isinstance_by_type_name(
-    o: object, type_name: str, result: bool | type[Exception]
-):
+) 
+def test_isinstance_by_type_name(o: object, type_name: str, result: bool | type[Exception]):
     if isinstance(result, type) and issubclass(result, Exception):
         with pytest.raises(result):
             isinstance_by_type_name(o, type_name)
@@ -907,41 +863,70 @@ def test_isinstance_by_type_name(
         )
         for coords, res in (
             [
-                ([[0, 0], [0, 1], [1, 1]], VOCAB.PATH_RIGHT),
-                ([[0, 0], [1, 0], [1, 1]], VOCAB.PATH_LEFT),
-                ([[0, 0], [0, 1], [0, 2]], VOCAB.PATH_FORWARD),
-                ([[0, 0], [0, 1], [0, 0]], VOCAB.PATH_BACKWARD),
-                ([[0, 0], [0, 1], [0, 1]], VOCAB.PATH_STAY),
-                ([[1, 1], [0, 1], [0, 0]], VOCAB.PATH_LEFT),
-                ([[1, 1], [1, 0], [0, 0]], VOCAB.PATH_RIGHT),
-                ([[0, 2], [0, 1], [0, 0]], VOCAB.PATH_FORWARD),
-                ([[0, 0], [0, 1], [0, 0]], VOCAB.PATH_BACKWARD),
-                ([[0, 1], [0, 1], [0, 0]], ValueError),
-                ([[0, 1], [1, 1], [0, 0]], ValueError),
-                ([[1, 0], [1, 1], [0, 0]], ValueError),
-                ([[0, 1], [0, 2], [0, 0]], ValueError),
-                ([[0, 1], [0, 0], [0, 0]], VOCAB.PATH_STAY),
-                ([[1, 1], [0, 0], [0, 1]], ValueError),
-                ([[1, 1], [0, 0], [1, 0]], ValueError),
-                ([[0, 2], [0, 0], [0, 1]], ValueError),
-                ([[0, 0], [0, 0], [0, 1]], ValueError),
-                ([[0, 1], [0, 0], [0, 1]], VOCAB.PATH_BACKWARD),
-                ([[-1, 0], [0, 0], [1, 0]], VOCAB.PATH_FORWARD),
-                ([[-1, 0], [0, 0], [0, 1]], VOCAB.PATH_LEFT),
-                ([[-1, 0], [0, 0], [-1, 0]], VOCAB.PATH_BACKWARD),
-                ([[-1, 0], [0, 0], [0, -1]], VOCAB.PATH_RIGHT),
-                ([[-1, 0], [0, 0], [1, 0], [2, 0]], ValueError),
-                ([[-1, 0], [0, 0]], ValueError),
-                ([[-1, 0, 0], [0, 0, 0]], ValueError),
+                ([[0,0],[0,1],[1,1]], VOCAB.PATH_RIGHT),
+                ([[0,0],[1,0],[1,1]], VOCAB.PATH_LEFT),
+                ([[0,0],[0,1],[0,2]], VOCAB.PATH_FORWARD),
+                ([[0,0],[0,1],[0,0]], VOCAB.PATH_BACKWARD),
+                ([[0,0],[0,1],[0,1]], VOCAB.PATH_STAY),
+                ([[1,1],[0,1],[0,0]], VOCAB.PATH_LEFT),
+                ([[1,1],[1,0],[0,0]], VOCAB.PATH_RIGHT),
+                ([[0,2],[0,1],[0,0]], VOCAB.PATH_FORWARD),
+                ([[0,0],[0,1],[0,0]], VOCAB.PATH_BACKWARD),
+                ([[0,1],[0,1],[0,0]], ValueError),
+                ([[0,1],[1,1],[0,0]], ValueError),
+                ([[1,0],[1,1],[0,0]], ValueError),
+                ([[0,1],[0,2],[0,0]], ValueError),
+                ([[0,1],[0,0],[0,0]], VOCAB.PATH_STAY),
+                ([[1,1],[0,0],[0,1]], ValueError),
+                ([[1,1],[0,0],[1,0]], ValueError),
+                ([[0,2],[0,0],[0,1]], ValueError),
+                ([[0,0],[0,0],[0,1]], ValueError),
+                ([[0,1],[0,0],[0,1]], VOCAB.PATH_BACKWARD),
+                ([[-1,0],[0,0],[1,0]], VOCAB.PATH_FORWARD),
+                ([[-1,0],[0,0],[0,1]], VOCAB.PATH_LEFT),
+                ([[-1,0],[0,0],[-1,0]], VOCAB.PATH_BACKWARD),
+                ([[-1,0],[0,0],[0,-1]], VOCAB.PATH_RIGHT),
+                ([[-1,0],[0,0],[1,0],[2,0]], ValueError),
+                ([[-1,0],[0,0]], ValueError),
+                ([[-1,0,0],[0,0,0]], ValueError),
             ]
         )
     ],
-)
-def test_get_relative_direction(
-    coords: Int[np.ndarray, "prev_cur_next=3 axis=2"], result: str | type[Exception]
-):
+) 
+def test_get_relative_direction(coords: Int[np.ndarray, "prev_cur_next=3 axis=2"], result: str | type[Exception]):
     if isinstance(result, type) and issubclass(result, Exception):
         with pytest.raises(result):
             get_relative_direction(coords)
         return
     assert get_relative_direction(coords) == result
+
+
+@mark.parametrize(
+    "edges, result",
+    [
+        param(
+            edges,
+            res,
+            id=f"{edges}",
+        )
+        for edges, res in (
+            [
+                (np.array([[0,0],[0,1]]), 1),
+                (np.array([[1,0],[0,1]]), 2),
+                (np.array([[-1,0],[0,1]]), 2),
+                (np.array([[0,0],[5,3]]), 8),
+                (np.array([[[0,0],[0,1]],
+                           [[1,0],[0,1]],
+                           [[-1,0],[0,1]],
+                           [[0,0],[5,3]]]), [1, 2, 2, 8]),
+                (np.array([[[0,0],[5,3]]]), [8]),
+            ]
+        )
+    ],
+) 
+def test_manhattan_distance(edges: ConnectionArray | Connection, result: Int[np.ndarray, "edges"] | Int[np.ndarray, ""] | type[Exception]):
+    if isinstance(result, type) and issubclass(result, Exception):
+        with pytest.raises(result):
+            manhattan_distance(edges)
+        return
+    assert np.array_equal(manhattan_distance(edges), np.array(result, dtype=np.int8))
