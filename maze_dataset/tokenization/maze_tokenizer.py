@@ -981,7 +981,6 @@ class AdjListTokenizers(_TokenizerElementNamespace):
 
         def to_tokens(self, conn_list: ConnectionArray) -> list[str]:
             raise NotImplementedError("TODO")
-            
 
     @serializable_dataclass(frozen=True, kw_only=True)
     class AdjListCardinal(_AdjListTokenizer):
