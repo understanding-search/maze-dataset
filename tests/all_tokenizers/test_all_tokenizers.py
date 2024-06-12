@@ -15,6 +15,7 @@ from maze_dataset import (
     VOCAB,
     VOCAB_LIST,
     ConnectionArray,
+    CoordArray,
     CoordTup,
     LatticeMaze,
     LatticeMazeGenerators,
@@ -26,7 +27,9 @@ from maze_dataset import (
 from maze_dataset.generation import LatticeMazeGenerators
 from maze_dataset.tokenization import (
     CoordTokenizers,
+    EdgeGroupings,
     EdgePermuters,
+    EdgeSubsets,
     MazeTokenizer2,
     PathTokenizers,
     PromptSequencers,
@@ -42,7 +45,7 @@ from maze_dataset.tokenization.all_tokenizers import (
 )
 from maze_dataset.tokenization.maze_tokenizer import _load_tokenizer_hashes
 from maze_dataset.util import connection_list_to_adj_list
-from maze_dataset.utils import all_instances
+from maze_dataset.utils import all_instances, flatten, manhattan_distance
 
 # TODO: this needs to be cleaned up, and duplicated functionality in `test_tokenizer.py`
 NUM_TOKENIZERS_TO_TEST = 100
@@ -567,3 +570,228 @@ def test_has_element(
 )
 def test_is_tested_tokenizer(tokenizer: MazeTokenizer2):
     assert tokenizer.is_tested_tokenizer()
+
+
+def _helper_test_path_tokenizers(
+    pt: PathTokenizers.PathTokenizer,
+    maze: SolvedMaze,
+    footprint_inds: Sequence[int],
+):
+    ct: CoordTokenizers._CoordTokenizer = CoordTokenizers.UT()
+    path_toks: list[str] = pt.to_tokens(maze, ct)
+    path_toks_set: set[str] = set(path_toks)
+    footprint_inds: Int[np.ndarray, "footprint_index"] = np.array(footprint_inds)
+    footprints: Int[np.ndarray, "footprint_index row_col=2"] = maze.solution[
+        footprint_inds
+    ]
+    if StepTokenizers.Coord() in pt.step_tokenizers:
+        non_steps: set[CoordTup] = set(tuple(c) for c in maze.solution) - set(
+            tuple(c) for c in footprints
+        )
+        assert all([ct.to_tokens(coord)[0] in path_toks_set for coord in footprints])
+        assert all([ct.to_tokens(coord)[0] not in path_toks_set for coord in non_steps])
+    if StepTokenizers.Distance() in pt.step_tokenizers:
+        distances: list[int] = footprint_inds[1:] - footprint_inds[:-1]
+        assert (
+            len(
+                Counter(getattr(VOCAB, f"I_{d:03}") for d in distances)
+                - Counter(path_toks)
+            )
+            == 0
+        )
+    # TODO: Uncomment tests when restoring full breadth of TokenizerElements
+    # if StepTokenizers.Cardinal() in pt.step_tokenizers:
+    #     c = Counter(path_toks)
+    #     assert c[VOCAB.PATH_NORTH] + c[VOCAB.PATH_SOUTH] + c[VOCAB.PATH_EAST] + c[VOCAB.PATH_WEST] == len(footprint_inds)-1
+    # if StepTokenizers.Relative() in pt.step_tokenizers:
+    #     c = Counter(path_toks)
+    #     assert c[VOCAB.PATH_LEFT] + c[VOCAB.PATH_RIGHT] + c[VOCAB.PATH_FORWARD] + c[VOCAB.PATH_BACKWARD] == len(footprint_inds)-1
+
+
+@mark.parametrize(
+    "pt,manual_maze",
+    [
+        param(tokenizer, maze_kv[1], id=f"{tokenizer.name}-{maze_kv[0]}")
+        for maze_kv, tokenizer in itertools.product(
+            _ASCII_MAZES.items(),
+            random.sample(
+                all_instances(
+                    PathTokenizers.PathTokenizer,
+                    frozendict.frozendict({TokenizerElement: lambda x: x.is_valid()}),
+                ),
+                min(
+                    3, NUM_TOKENIZERS_TO_TEST
+                ),  # TODO: Get rid of "3" when reinstantiating all `StepTokenizer` leaf classes
+            ),
+        )
+    ],
+)
+def test_path_tokenizers(pt: PathTokenizers.PathTokenizer, manual_maze: _MANUAL_MAZE):
+    solved_maze: SolvedMaze = SolvedMaze.from_ascii("\n".join(manual_maze.ascii))
+    match type(pt.step_size):
+        case StepSizes.Singles:
+            footprint_inds = range(solved_maze.solution.shape[0])
+        case StepSizes.Straightaways:
+            swy_coordtup_set: set[CoordTup] = set(
+                tuple(c) for c in manual_maze.straightaway_footprints
+            )
+            footprint_inds: list[int] = [
+                i
+                for i, c in enumerate(solved_maze.solution)
+                if tuple(c) in swy_coordtup_set
+            ]
+        case StepSizes.Forks:
+            footprint_inds = solved_maze.get_solution_forking_points(
+                always_include_endpoints=True
+            )[0]
+        case StepSizes.ForksAndStraightaways:
+            swy_step_inds: list[int] = StepSizes.Straightaways()._step_single_indices(
+                solved_maze
+            )
+            footprint_inds: Int[np.ndarray, "footprint_index"] = np.concatenate(
+                (
+                    solved_maze.get_solution_forking_points(
+                        always_include_endpoints=True
+                    )[0],
+                    swy_step_inds,
+                )
+            )
+            footprint_inds, _ = np.unique(footprint_inds, axis=0, return_index=True)
+    _helper_test_path_tokenizers(
+        pt,
+        solved_maze,
+        footprint_inds,
+    )
+
+
+@mark.parametrize(
+    "ep,maze",
+    [
+        param(tokenizer, maze, id=f"{tokenizer.name}-maze[{i}]")
+        for (i, maze), tokenizer in itertools.product(
+            enumerate(MIXED_MAZES[:6]),
+            all_instances(
+                EdgePermuters._EdgePermuter,
+                frozendict.frozendict({TokenizerElement: lambda x: x.is_valid()}),
+            ),
+        )
+    ],
+)
+def test_edge_permuters(ep: EdgePermuters._EdgePermuter, maze: LatticeMaze):
+    edges: ConnectionArray = connection_list_to_adj_list(maze.connection_list)
+    edges_copy = np.copy(edges)
+    old_shape = edges.shape
+    permuted: ConnectionArray = ep._permute(edges)
+    match ep:
+        case EdgePermuters.RandomCoord():
+            assert permuted.shape == old_shape
+            assert edges is permuted
+            i = 0
+            while np.array_equal(permuted, edges_copy) and i < 5:
+                # Permute again in case for small mazes the random selection happened to not change anything
+                permuted: ConnectionArray = ep._permute(permuted)
+                i += 1
+            assert not np.array_equal(permuted, edges_copy)
+        case EdgePermuters.BothCoords():
+            new_shape = old_shape[0] * 2, *old_shape[1:]
+            n = old_shape[0]
+            assert permuted.shape == new_shape
+            assert np.array_equal(permuted[:n, ...], edges_copy)
+            assert np.array_equal(permuted[:n, 0, :], permuted[n:, 1, :])
+            assert np.array_equal(permuted[:n, 1, :], permuted[n:, 0, :])
+            assert edges is not permuted
+
+
+@mark.parametrize(
+    "es,maze",
+    [
+        param(tokenizer, maze, id=f"{tokenizer.name}-maze[{i}]")
+        for (i, maze), tokenizer in itertools.product(
+            enumerate(MIXED_MAZES[:6]),
+            all_instances(
+                EdgeSubsets.EdgeSubset,
+                frozendict.frozendict({TokenizerElement: lambda x: x.is_valid()}),
+            ),
+        )
+    ],
+)
+def test_edge_subsets(es: EdgeSubsets.EdgeSubset, maze: LatticeMaze):
+    edges: ConnectionArray = es._get_edges(maze)
+    n: int = maze.grid_n
+    match type(es):
+        case EdgeSubsets.AllLatticeEdges:
+            assert_shape: tuple = (4 * n * (n - 1), 2, 2)
+        case EdgeSubsets.ConnectionEdges:
+            if not es.walls:
+                assert_shape: tuple = (np.count_nonzero(maze.connection_list), 2, 2)
+            else:
+                assert_shape: tuple = (
+                    2 * n * (n - 1) - np.count_nonzero(maze.connection_list),
+                    2,
+                    2,
+                )
+    assert edges.dtype == np.int8
+    assert assert_shape == tuple(edges.shape)
+    assert assert_shape == tuple(
+        np.unique(edges, axis=0).shape
+    )  # All edges are unique (swapping leading/trailing coords is considered different)
+    assert np.array_equal(
+        manhattan_distance(edges), np.array([1] * assert_shape[0], dtype=np.int8)
+    )
+
+
+@mark.parametrize(
+    "tok_elem,es,maze",
+    [
+        param(tok_elem, es, maze, id=f"{tok_elem.name}-{es.name}-maze[{i}]")
+        for (i, maze), tok_elem, es in itertools.product(
+            enumerate(MIXED_MAZES[:6]),
+            all_instances(
+                EdgeGroupings.EdgeGrouping,
+                frozendict.frozendict(
+                    {
+                        TokenizerElement: lambda x: x.is_valid(),
+                        # Add a condition to prune the range space that doesn't affect functionality being tested
+                        EdgeGroupings.ByLeadingCoord: lambda x: x.intra
+                        and x.connection_token_ordinal == 1,
+                    }
+                ),
+            ),
+            all_instances(
+                EdgeSubsets.EdgeSubset,
+                frozendict.frozendict({TokenizerElement: lambda x: x.is_valid()}),
+            ),
+        )
+    ],
+)
+def test_edge_subsets(
+    tok_elem: EdgeGroupings.EdgeGrouping, es: EdgeSubsets.EdgeSubset, maze: LatticeMaze
+):
+    edges: ConnectionArray = es._get_edges(maze)
+    n: int = maze.grid_n
+    groups: Sequence[ConnectionArray] = tok_elem._group_edges(edges)
+    match type(tok_elem):
+        case EdgeGroupings.Ungrouped:
+            assert_shape = edges.shape[0], 1, 2, 2
+            assert tuple(groups.shape) == assert_shape
+        case EdgeGroupings.ByLeadingCoord:
+            assert len(groups) == np.unique(edges[:, 0, :], axis=0).shape[0]
+            assert sum(g.shape[0] for g in groups) == edges.shape[0]
+            trailing_coords: list[CoordArray] = [g[:, 1, :] for g in groups]
+            # vector_diffs is the position vector difference between the trailing coords of each group
+            # These are stacked into a single array since we don't care about maintaining group separation
+            vector_diffs: CoordArray = np.stack(
+                list(flatten([np.diff(g[:, 1, :], axis=0) for g in groups], 1))
+            )
+            if tok_elem.shuffle_group:
+                allowed_diffs = {(1, -1), (1, 1), (0, 2), (2, 0)}
+                # The set of all 2D vectors between any 2 coords adjacent to a central coord
+                allowed_diffs = allowed_diffs.union(
+                    {(-d[0], -d[1]) for d in allowed_diffs}
+                )
+            else:
+                # If vector_diffs are lexicographically sorted, these are the only possible values. Any other value indicates an error in sorting
+                allowed_diffs = {(1, -1), (1, 1), (0, 2), (2, 0)}
+            assert all(
+                tuple(diff) in allowed_diffs for diff in np.unique(vector_diffs, axis=0)
+            )

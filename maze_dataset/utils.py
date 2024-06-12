@@ -26,7 +26,7 @@ from typing import (
 
 import frozendict
 import numpy as np
-from jaxtyping import Bool, Int8
+from jaxtyping import Bool, Int, Int8
 from muutils.statcounter import StatCounter
 
 WhenMissing = Literal["except", "skip", "include"]
@@ -39,7 +39,54 @@ class IsDataclass(Protocol):
     __dataclass_fields__: ClassVar[dict[str, Any]]
 
 
-FiniteValued = TypeVar("FiniteValued", bool, IsDataclass, enum.Enum)
+"""
+# `FiniteValued`
+The intended definition of this type is not possible to fully define via the Python 3.10 typing library.
+This custom generic type is a generic domain of many types which have a finite, discrete range space.
+It was created to define the domain of types for the `all_instances` function, since this function relies heavily on static typing. 
+It may later be used in related applications.
+These types may be nested in an arbitrarily deep tree via Container Types and Superclass Types (see below).
+The leaves of the tree must always be Primitive Types. 
+
+# `FiniteValued` Subtypes
+*: Indicates that this subtype is not yet supported by `all_instances`
+
+## Non-`FiniteValued` (Unbounded) Types
+These are NOT valid subtypes, but are listed for illustrative purposes.
+This list is not comprehensive.
+While the finite nature of digital computers means that the cardinality of these types is technically finite, 
+they are considered unbounded types in this context.
+- No container subtype may contain any of these unbounded subtypes.
+- `int`
+- `float`
+- `str`
+- `list`
+- `set`: Set types without a fixed length are unbounded
+- `tuple`: Tuple types without a fixed length are unbounded
+
+## Primitive Types
+Primitive types are non-nested types which resolve directly to a concrete range of values 
+- `bool`: has 2 possible values
+- `enum.Enum`: The range of a concrete `Enum` subclass is its set of enum members
+- `typing.Literal`: Every type constructed using `Literal` has a finite set of possible literal values in its definition.
+This is the preferred way to include limited ranges of non-`FiniteValued` types such as `int` or `str` in a `FiniteValued` hierarchy.
+
+## Container Types
+Container types are types which contain zero or more fields of `FiniteValued` type.
+The range of a container type is the cartesian product of their field types, except for `set[FiniteValued]`.
+- `tuple[FiniteValued]`: Tuples of fixed length whose elements are each `FiniteValued`.
+- `IsDataclass`: Concrete dataclasses whose fields are `FiniteValued`.
+- *Standard concrete class: Regular classes could be supported just like dataclasses if all their data members are `FiniteValued`-typed.
+- *`set[FiniteValued]`: Sets of fixed length of a `FiniteValued` type.
+
+## Superclass Types
+Superclass types don't directly contain data members like container types.
+Their range is the union of the ranges of their subtypes.
+- Abstract dataclasses: Abstract dataclasses whose subclasses are all `FiniteValued` superclass or container types
+- *Standard abstract classes: Abstract dataclasses whose subclasses are all `FiniteValued` superclass or container types
+- `UnionType`: Any union of `FiniteValued` types, e.g., bool | Literal[2, 3]
+"""
+FiniteValued = TypeVar("FiniteValued", bound=bool | IsDataclass | enum.Enum)
 
 
 def bool_array_from_string(
@@ -119,9 +166,28 @@ def corner_first_ndindex(n: int, ndim: int = 2) -> list[tuple]:
     """
 
 
+def manhattan_distance(
+    edges: (
+        Int[np.ndarray, "edges coord=2 row_col=2"]
+        | Int[np.ndarray, "coord=2 row_col=2"]
+    ),
+) -> Int[np.ndarray, "edges"] | Int[np.ndarray, ""]:
+    """Returns the Manhattan distance between two coords."""
+    if len(edges.shape) == 3:
+        return np.linalg.norm(edges[:, 0, :] - edges[:, 1, :], axis=1, ord=1).astype(
+            np.int8
+        )
+    elif len(edges.shape) == 2:
+        return np.linalg.norm(edges[0, :] - edges[1, :], ord=1).astype(np.int8)
+    else:
+        raise ValueError(
+            f"{edges} has shape {edges.shape}, but must be match the shape in the type hints."
+        )
+
+
 def lattice_connection_array(
     n: int,
-) -> Int8[np.ndarray, "edges leading_trailing_coord=2 row_column=2"]:
+) -> Int8[np.ndarray, "edges leading_trailing_coord=2 row_col=2"]:
     """
     Returns a 3D NumPy array containing all the edges in a 2D square lattice of size n x n.
     Thanks Claude.
@@ -513,6 +579,9 @@ def all_instances(
             ),
             validation_funcs,
         )
+    elif get_origin(type_) is Literal:
+        # Literal: return all Literal arguments
+        return _apply_validation_func(type_, list(get_args(type_)), validation_funcs)
     elif type(type_) == enum.EnumMeta:  # `issubclass(type_, enum.Enum)` doesn't work
         # Enum: return all Enum members
         raise NotImplementedError(f"Support for Enums not yet implemented.")
@@ -520,6 +589,7 @@ def all_instances(
         raise TypeError(
             f"Type {type_} either has unbounded possible values or is not supported."
         )
+
 
 def get_hashable_eq_attrs(dc: IsDataclass) -> tuple[Any]:
     """Returns a tuple of all fields used for equality comparison.
@@ -530,6 +600,7 @@ def get_hashable_eq_attrs(dc: IsDataclass) -> tuple[Any]:
         for fld in filter(lambda x: x.compare, dc.__dataclass_fields__.values())
     ), type(dc)
 
+
 def dataclass_set_equals(
     coll1: Iterable[IsDataclass], coll2: Iterable[IsDataclass]
 ) -> bool:
@@ -539,10 +610,9 @@ def dataclass_set_equals(
     Collections of them may be compared using this function.
     """
 
-    return (
-        {get_hashable_eq_attrs(x) for x in coll1}
-        ==  {get_hashable_eq_attrs(y) for y in coll2}
-    )
+    return {get_hashable_eq_attrs(x) for x in coll1} == {
+        get_hashable_eq_attrs(y) for y in coll2
+    }
 
 
 def isinstance_by_type_name(o: object, type_name: str):

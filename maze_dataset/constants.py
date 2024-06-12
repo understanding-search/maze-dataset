@@ -6,12 +6,13 @@ from jaxtyping import Bool, Int8
 
 from maze_dataset.utils import corner_first_ndindex
 
-Coord = Int8[np.ndarray, "x y"]
+Coord = Int8[np.ndarray, "row_col"]
 CoordTup = tuple[int, int]
-CoordArray = Int8[np.ndarray, "coord x y"]
+CoordArray = Int8[np.ndarray, "coord row_col"]
 CoordList = list[CoordTup]
-ConnectionList = Bool[np.ndarray, "lattice_dim x y"]
-ConnectionArray = Int8[np.ndarray, "edges leading_trailing_coord=2 row_column=2"]
+Connection = Int8[np.ndarray, "coord=2 row_col=2"]
+ConnectionList = Bool[np.ndarray, "lattice_dim=2 row col"]
+ConnectionArray = Int8[np.ndarray, "edges leading_trailing_coord=2 row_col=2"]
 
 
 class SpecialTokensError(Exception):
