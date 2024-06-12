@@ -1,7 +1,7 @@
 import numpy as np
 import pytest
 
-from maze_dataset.tokenization.util import (
+from maze_dataset.util import (
     _coord_to_strings_indexed,
     _coord_to_strings_UT,
     coord_str_to_coord_np,

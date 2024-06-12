@@ -8,7 +8,7 @@ packages = [{include = "maze_dataset"}]
 repository = "https://github.com/understanding-search/maze-dataset"
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = "^3.10.6"
 torch = { version = ">=1.13.1", source = "torch_cpu" }
 matplotlib = "^3.7.0"
 muutils = "^0.5.8"
@@ -17,6 +17,7 @@ jupyter = "^1.0.0"
 ipykernel = "^6.22.0"
 jaxtyping = "^0.2.19"
 tqdm = "^4.65.0"
+frozendict = "^2.4.4"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.3.1"
@@ -44,7 +45,10 @@ filterwarnings = [
     "ignore:`np\\.\\w*` is a deprecated alias for:DeprecationWarning",
 
     # Warning from matplotlib. Issue: https://github.com/matplotlib/matplotlib/issues/25244
-    "ignore:Deprecated call to `pkg_resources.declare_namespace:DeprecationWarning"
+    "ignore:Deprecated call to `pkg_resources.declare_namespace:DeprecationWarning",
+
+    # temporary fix for lots of deprecation warnings for old tokenizers
+    "ignore::maze_dataset.util.TokenizerPendingDeprecationWarning",
 ]
 testpaths = "tests"
 norecursedirs="maze_dataset/utils/test_helpers"

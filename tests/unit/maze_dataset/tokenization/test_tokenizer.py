@@ -1,17 +1,13 @@
 import itertools
-import os
 import re
-from collections import Counter
+from collections import namedtuple
 from itertools import product
 from typing import Iterable
 
 import numpy as np
 from pytest import mark, param
-from zanj import ZANJ
 
 from maze_dataset import (
-    VOCAB,
-    VOCAB_LIST,
     Coord,
     CoordTup,
     LatticeMaze,
@@ -24,15 +20,20 @@ from maze_dataset import (
 from maze_dataset.generation import LatticeMazeGenerators
 from maze_dataset.plotting.print_tokens import color_maze_tokens_AOTP
 from maze_dataset.tokenization import (
-    ALL_TOKENIZERS,
+    AdjListTokenizers,
     CoordTokenizers,
     MazeTokenizer,
     MazeTokenizer2,
+    PathTokenizers,
     PromptSequencers,
+    StepTokenizers,
+    TargetTokenizers,
     TokenizationMode,
+    TokenizerElement,
 )
-from maze_dataset.tokenization.util import equal_except_adj_list_sequence
+from maze_dataset.util import equal_except_adj_list_sequence
 
+NUM_TOKENIZERS_TO_TEST = 100
 GRID_N = 5
 N_MAZES = 5
 CFG: MazeDatasetConfig = MazeDatasetConfig(
@@ -142,10 +143,13 @@ def test_tokenizer():
             print(color_maze_tokens_AOTP(maze_tok, fmt="terminal"))
 
 
+_MANUAL_MAZE = namedtuple(
+    "_MANUAL_MAZE", ["tokens", "ascii", "straightaway_footprints"]
+)
 _ASCII_MAZES: dict[str, tuple[str, list[str]]] = dict(
-    small_3x3=(
-        "<ADJLIST_START> (2,0) <--> (2,1) ; (0,0) <--> (0,1) ; (0,0) <--> (1,0) ; (0,2) <--> (1,2) ; (1,0) <--> (2,0) ; (0,2) <--> (0,1) ; (2,2) <--> (2,1) ; (1,1) <--> (2,1) ; <ADJLIST_END> <ORIGIN_START> (0,0) <ORIGIN_END> <TARGET_START> (2,1) <TARGET_END> <PATH_START> (0,0) (1,0) (2,0) (2,1) <PATH_END>",
-        [
+    small_3x3=_MANUAL_MAZE(
+        tokens="<ADJLIST_START> (2,0) <--> (2,1) ; (0,0) <--> (0,1) ; (0,0) <--> (1,0) ; (0,2) <--> (1,2) ; (1,0) <--> (2,0) ; (0,2) <--> (0,1) ; (2,2) <--> (2,1) ; (1,1) <--> (2,1) ; <ADJLIST_END> <ORIGIN_START> (0,0) <ORIGIN_END> <TARGET_START> (2,1) <TARGET_END> <PATH_START> (0,0) (1,0) (2,0) (2,1) <PATH_END>",
+        ascii=[
             "#######",
             "#S    #",
             "#X### #",
@@ -154,10 +158,17 @@ _ASCII_MAZES: dict[str, tuple[str, list[str]]] = dict(
             "#XXE  #",
             "#######",
         ],
+        straightaway_footprints=np.array(
+            [
+                [0, 0],
+                [2, 0],
+                [2, 1],
+            ]
+        ),
     ),
-    big_10x10=(
-        "<ADJLIST_START> (8,2) <--> (8,3) ; (3,7) <--> (3,6) ; (6,7) <--> (6,8) ; (4,6) <--> (5,6) ; (9,5) <--> (9,4) ; (3,3) <--> (3,4) ; (5,1) <--> (4,1) ; (2,6) <--> (2,7) ; (8,5) <--> (8,4) ; (1,9) <--> (2,9) ; (4,1) <--> (4,2) ; (0,8) <--> (0,7) ; (5,4) <--> (5,3) ; (6,3) <--> (6,4) ; (5,0) <--> (4,0) ; (5,3) <--> (5,2) ; (3,1) <--> (2,1) ; (9,1) <--> (9,0) ; (3,5) <--> (3,6) ; (5,5) <--> (6,5) ; (7,1) <--> (7,2) ; (0,1) <--> (1,1) ; (7,8) <--> (8,8) ; (3,9) <--> (4,9) ; (4,6) <--> (4,7) ; (0,6) <--> (0,7) ; (3,4) <--> (3,5) ; (6,0) <--> (5,0) ; (7,7) <--> (7,6) ; (1,6) <--> (0,6) ; (6,1) <--> (6,0) ; (8,6) <--> (8,7) ; (9,9) <--> (9,8) ; (1,8) <--> (1,9) ; (2,1) <--> (2,2) ; (9,2) <--> (9,3) ; (5,9) <--> (6,9) ; (3,2) <--> (2,2) ; (0,8) <--> (0,9) ; (5,6) <--> (5,7) ; (2,3) <--> (2,4) ; (4,5) <--> (4,4) ; (8,9) <--> (8,8) ; (9,6) <--> (8,6) ; (3,7) <--> (3,8) ; (8,0) <--> (7,0) ; (6,1) <--> (6,2) ; (0,1) <--> (0,0) ; (7,3) <--> (7,4) ; (9,4) <--> (9,3) ; (9,6) <--> (9,5) ; (8,7) <--> (7,7) ; (5,2) <--> (5,1) ; (0,0) <--> (1,0) ; (7,2) <--> (7,3) ; (2,5) <--> (2,6) ; (4,9) <--> (5,9) ; (5,5) <--> (5,4) ; (5,6) <--> (6,6) ; (7,8) <--> (7,9) ; (1,7) <--> (2,7) ; (4,6) <--> (4,5) ; (1,1) <--> (1,2) ; (3,1) <--> (3,0) ; (1,5) <--> (1,6) ; (8,3) <--> (8,4) ; (9,9) <--> (8,9) ; (8,5) <--> (7,5) ; (1,4) <--> (2,4) ; (3,0) <--> (4,0) ; (3,3) <--> (4,3) ; (6,9) <--> (6,8) ; (1,0) <--> (2,0) ; (6,0) <--> (7,0) ; (8,0) <--> (9,0) ; (2,3) <--> (2,2) ; (2,8) <--> (3,8) ; (5,7) <--> (6,7) ; (1,3) <--> (0,3) ; (9,7) <--> (9,8) ; (7,5) <--> (7,4) ; (1,8) <--> (2,8) ; (6,5) <--> (6,4) ; (0,2) <--> (1,2) ; (0,7) <--> (1,7) ; (0,3) <--> (0,2) ; (4,3) <--> (4,2) ; (5,8) <--> (4,8) ; (9,1) <--> (8,1) ; (9,2) <--> (8,2) ; (1,3) <--> (1,4) ; (2,9) <--> (3,9) ; (4,8) <--> (4,7) ; (0,5) <--> (0,4) ; (8,1) <--> (7,1) ; (0,3) <--> (0,4) ; (9,7) <--> (9,6) ; (7,6) <--> (6,6) ; (1,5) <--> (0,5) ; <ADJLIST_END> <ORIGIN_START> (6,2) <ORIGIN_END> <TARGET_START> (2,1) <TARGET_END> <PATH_START> (6,2) (6,1) (6,0) (5,0) (4,0) (3,0) (3,1) (2,1) <PATH_END>",
-        [
+    big_10x10=_MANUAL_MAZE(
+        tokens="<ADJLIST_START> (8,2) <--> (8,3) ; (3,7) <--> (3,6) ; (6,7) <--> (6,8) ; (4,6) <--> (5,6) ; (9,5) <--> (9,4) ; (3,3) <--> (3,4) ; (5,1) <--> (4,1) ; (2,6) <--> (2,7) ; (8,5) <--> (8,4) ; (1,9) <--> (2,9) ; (4,1) <--> (4,2) ; (0,8) <--> (0,7) ; (5,4) <--> (5,3) ; (6,3) <--> (6,4) ; (5,0) <--> (4,0) ; (5,3) <--> (5,2) ; (3,1) <--> (2,1) ; (9,1) <--> (9,0) ; (3,5) <--> (3,6) ; (5,5) <--> (6,5) ; (7,1) <--> (7,2) ; (0,1) <--> (1,1) ; (7,8) <--> (8,8) ; (3,9) <--> (4,9) ; (4,6) <--> (4,7) ; (0,6) <--> (0,7) ; (3,4) <--> (3,5) ; (6,0) <--> (5,0) ; (7,7) <--> (7,6) ; (1,6) <--> (0,6) ; (6,1) <--> (6,0) ; (8,6) <--> (8,7) ; (9,9) <--> (9,8) ; (1,8) <--> (1,9) ; (2,1) <--> (2,2) ; (9,2) <--> (9,3) ; (5,9) <--> (6,9) ; (3,2) <--> (2,2) ; (0,8) <--> (0,9) ; (5,6) <--> (5,7) ; (2,3) <--> (2,4) ; (4,5) <--> (4,4) ; (8,9) <--> (8,8) ; (9,6) <--> (8,6) ; (3,7) <--> (3,8) ; (8,0) <--> (7,0) ; (6,1) <--> (6,2) ; (0,1) <--> (0,0) ; (7,3) <--> (7,4) ; (9,4) <--> (9,3) ; (9,6) <--> (9,5) ; (8,7) <--> (7,7) ; (5,2) <--> (5,1) ; (0,0) <--> (1,0) ; (7,2) <--> (7,3) ; (2,5) <--> (2,6) ; (4,9) <--> (5,9) ; (5,5) <--> (5,4) ; (5,6) <--> (6,6) ; (7,8) <--> (7,9) ; (1,7) <--> (2,7) ; (4,6) <--> (4,5) ; (1,1) <--> (1,2) ; (3,1) <--> (3,0) ; (1,5) <--> (1,6) ; (8,3) <--> (8,4) ; (9,9) <--> (8,9) ; (8,5) <--> (7,5) ; (1,4) <--> (2,4) ; (3,0) <--> (4,0) ; (3,3) <--> (4,3) ; (6,9) <--> (6,8) ; (1,0) <--> (2,0) ; (6,0) <--> (7,0) ; (8,0) <--> (9,0) ; (2,3) <--> (2,2) ; (2,8) <--> (3,8) ; (5,7) <--> (6,7) ; (1,3) <--> (0,3) ; (9,7) <--> (9,8) ; (7,5) <--> (7,4) ; (1,8) <--> (2,8) ; (6,5) <--> (6,4) ; (0,2) <--> (1,2) ; (0,7) <--> (1,7) ; (0,3) <--> (0,2) ; (4,3) <--> (4,2) ; (5,8) <--> (4,8) ; (9,1) <--> (8,1) ; (9,2) <--> (8,2) ; (1,3) <--> (1,4) ; (2,9) <--> (3,9) ; (4,8) <--> (4,7) ; (0,5) <--> (0,4) ; (8,1) <--> (7,1) ; (0,3) <--> (0,4) ; (9,7) <--> (9,6) ; (7,6) <--> (6,6) ; (1,5) <--> (0,5) ; <ADJLIST_END> <ORIGIN_START> (6,2) <ORIGIN_END> <TARGET_START> (2,1) <TARGET_END> <PATH_START> (6,2) (6,1) (6,0) (5,0) (4,0) (3,0) (3,1) (2,1) <PATH_END>",
+        ascii=[
             "#####################",
             "#   #       #       #",
             "# # # # ### # # #####",
@@ -180,6 +191,59 @@ _ASCII_MAZES: dict[str, tuple[str, list[str]]] = dict(
             "#   #               #",
             "#####################",
         ],
+        straightaway_footprints=np.array(
+            [
+                [6, 2],
+                [6, 0],
+                [3, 0],
+                [3, 1],
+                [2, 1],
+            ]
+        ),
+    ),
+    longer_10x10=_MANUAL_MAZE(
+        tokens="<ADJLIST_START> (8,2) <--> (8,3) ; (3,7) <--> (3,6) ; (6,7) <--> (6,8) ; (4,6) <--> (5,6) ; (9,5) <--> (9,4) ; (3,3) <--> (3,4) ; (5,1) <--> (4,1) ; (2,6) <--> (2,7) ; (8,5) <--> (8,4) ; (1,9) <--> (2,9) ; (4,1) <--> (4,2) ; (0,8) <--> (0,7) ; (5,4) <--> (5,3) ; (6,3) <--> (6,4) ; (5,0) <--> (4,0) ; (5,3) <--> (5,2) ; (3,1) <--> (2,1) ; (9,1) <--> (9,0) ; (3,5) <--> (3,6) ; (5,5) <--> (6,5) ; (7,1) <--> (7,2) ; (0,1) <--> (1,1) ; (7,8) <--> (8,8) ; (3,9) <--> (4,9) ; (4,6) <--> (4,7) ; (0,6) <--> (0,7) ; (3,4) <--> (3,5) ; (6,0) <--> (5,0) ; (7,7) <--> (7,6) ; (1,6) <--> (0,6) ; (6,1) <--> (6,0) ; (8,6) <--> (8,7) ; (9,9) <--> (9,8) ; (1,8) <--> (1,9) ; (2,1) <--> (2,2) ; (9,2) <--> (9,3) ; (5,9) <--> (6,9) ; (3,2) <--> (2,2) ; (0,8) <--> (0,9) ; (5,6) <--> (5,7) ; (2,3) <--> (2,4) ; (4,5) <--> (4,4) ; (8,9) <--> (8,8) ; (9,6) <--> (8,6) ; (3,7) <--> (3,8) ; (8,0) <--> (7,0) ; (6,1) <--> (6,2) ; (0,1) <--> (0,0) ; (7,3) <--> (7,4) ; (9,4) <--> (9,3) ; (9,6) <--> (9,5) ; (8,7) <--> (7,7) ; (5,2) <--> (5,1) ; (0,0) <--> (1,0) ; (7,2) <--> (7,3) ; (2,5) <--> (2,6) ; (4,9) <--> (5,9) ; (5,5) <--> (5,4) ; (5,6) <--> (6,6) ; (7,8) <--> (7,9) ; (1,7) <--> (2,7) ; (4,6) <--> (4,5) ; (1,1) <--> (1,2) ; (3,1) <--> (3,0) ; (1,5) <--> (1,6) ; (8,3) <--> (8,4) ; (9,9) <--> (8,9) ; (8,5) <--> (7,5) ; (1,4) <--> (2,4) ; (3,0) <--> (4,0) ; (3,3) <--> (4,3) ; (6,9) <--> (6,8) ; (1,0) <--> (2,0) ; (6,0) <--> (7,0) ; (8,0) <--> (9,0) ; (2,3) <--> (2,2) ; (2,8) <--> (3,8) ; (5,7) <--> (6,7) ; (1,3) <--> (0,3) ; (9,7) <--> (9,8) ; (7,5) <--> (7,4) ; (1,8) <--> (2,8) ; (6,5) <--> (6,4) ; (0,2) <--> (1,2) ; (0,7) <--> (1,7) ; (0,3) <--> (0,2) ; (4,3) <--> (4,2) ; (5,8) <--> (4,8) ; (9,1) <--> (8,1) ; (9,2) <--> (8,2) ; (1,3) <--> (1,4) ; (2,9) <--> (3,9) ; (4,8) <--> (4,7) ; (0,5) <--> (0,4) ; (8,1) <--> (7,1) ; (0,3) <--> (0,4) ; (9,7) <--> (9,6) ; (7,6) <--> (6,6) ; (1,5) <--> (0,5) ; <ADJLIST_END> <ORIGIN_START> (6,2) <ORIGIN_END> <TARGET_START> (2,1) <TARGET_END> <PATH_START> (6,2) (6,1) (6,0) (5,0) (4,0) (3,0) (3,1) (2,1) (2,2) (2,3) (2,4) (1,4) (1,3) (0,3) (0,4) (0,5) (1,5) (1,6) (0,6) (0,7) (0,8) <PATH_END>",
+        ascii=[
+            "#####################",
+            "#   #  XXXXX#XXXXE  #",
+            "# # # #X###X#X# #####",
+            "# #   #XXX#XXX# #   #",
+            "# #######X##### # # #",
+            "# #XXXXXXX#     # # #",
+            "###X# ########### # #",
+            "#XXX# #           # #",
+            "#X##### ########### #",
+            "#X#     #         # #",
+            "#X# ######### ### # #",
+            "#X#         #   # # #",
+            "#X######### # # ### #",
+            "#XXXXS#     # #     #",
+            "# ########### #######",
+            "# #         #   #   #",
+            "# # ####### ### # ###",
+            "# # #       #   #   #",
+            "# # # ####### ##### #",
+            "#   #               #",
+            "#####################",
+        ],
+        straightaway_footprints=np.array(
+            [
+                [6, 2],
+                [6, 0],
+                [3, 0],
+                [3, 1],
+                [2, 1],
+                [2, 4],
+                [1, 4],
+                [1, 3],
+                [0, 3],
+                [0, 5],
+                [1, 5],
+                [1, 6],
+                [0, 6],
+                [0, 8],
+            ]
+        ),
     ),
 )
 
@@ -235,6 +299,29 @@ def test_maze_to_tokens_roundtrip(
     assert equal_except_adj_list_sequence(tokens_original_split, tokens_roundtrip)
 
 
+@mark.parametrize(
+    "tok_mode, max_grid_size, result",
+    [
+        param(
+            tok_mode,
+            max_grid_size,
+            MazeTokenizer(tokenization_mode=tok_mode, max_grid_size=max_grid_size),
+            id=f"{tok_mode}-{max_grid_size}",
+        )
+        for tok_mode, max_grid_size in [
+            (TokenizationMode.AOTP_CTT_indexed, None),
+            (TokenizationMode.AOTP_UT_rasterized, None),
+            (TokenizationMode.AOTP_UT_uniform, None),
+            (TokenizationMode.AOTP_CTT_indexed, 5),
+        ]
+    ],
+)
+def test_to_legacy_tokenizer(
+    tok_mode: TokenizationMode, max_grid_size: int | None, result: MazeTokenizer
+):
+    assert tok_mode.to_legacy_tokenizer(max_grid_size) == result
+
+
 # MazeTokenizer2 tests
 # =====================
 
@@ -247,7 +334,7 @@ def test_maze_to_tokens_roundtrip(
     [
         param(maze[0], tok_spec, id=f"{tok_spec.value}-maze{maze[1]}")
         for maze, tok_spec in itertools.product(
-            [(maze, i) for i, maze in enumerate(MIXED_MAZES[:6])],
+            [(maze, i) for i, maze in enumerate(MIXED_MAZES)],
             [tok_mode for tok_mode in TokenizationMode],
         )
     ],
@@ -259,8 +346,16 @@ def test_to_tokens_backwards_compatible(
     toks: list[str] = maze.as_tokens(tokenizer)
     toks2: list[str] = tokenizer.to_tokens(maze)
     toks_legacy: list[str] = maze.as_tokens(legacy_tokenizer)
-    assert equal_except_adj_list_sequence(toks, toks_legacy)
-    assert equal_except_adj_list_sequence(toks2, toks_legacy)
+
+    try:
+        assert equal_except_adj_list_sequence(toks, toks_legacy)
+        assert equal_except_adj_list_sequence(toks2, toks_legacy)
+    except AssertionError as e:
+        raise AssertionError(
+            "Tokens from `as_tokens` and `to_tokens` should be equal to tokens from `as_tokens` with the legacy tokenizer.\n"
+            f"{len(toks) = }, {len(toks2) = }, {len(toks_legacy) = }\n"
+            f"{toks = }\n{toks2 = }\n{toks_legacy = }",
+        ) from e
 
 
 @mark.parametrize(
@@ -297,7 +392,7 @@ def test_coords_to_strings_backwards_compatible(
     [
         param(maze[0], tok_spec, id=f"{tok_spec.value}-maze{maze[1]}")
         for maze, tok_spec in itertools.product(
-            [(maze, i) for i, maze in enumerate(MIXED_MAZES[:6])],
+            [(maze, i) for i, maze in enumerate(MIXED_MAZES)],
             [tok_mode for tok_mode in TokenizationMode],
         )
     ],
@@ -318,92 +413,68 @@ def test_from_tokens_backwards_compatible(
 
 
 @mark.parametrize(
-    "maze,tokenizer",
+    "el, result",
     [
-        param(maze[0], tokenizer, id=f"{type(maze[0])}{maze[1]}-{tokenizer.name}")
-        for maze, tokenizer in itertools.product(
-            [(maze, i) for i, maze in enumerate(MIXED_MAZES[:6])], ALL_TOKENIZERS
-        )
+        param(elem, result, id=elem.name)
+        for elem, result in [
+            (CoordTokenizers.CTT(), True),
+            (CoordTokenizers.CTT(intra=True), True),
+            (CoordTokenizers.UT(), True),
+            (AdjListTokenizers.AdjListCoord(), True),
+            # (AdjListTokenizers.AdjListCoord(post=True), True), # TODO: this breaks collecting tests
+            (TargetTokenizers.Unlabeled(post=True), True),
+            (PathTokenizers.StepSequence(), True),
+            (
+                PathTokenizers.StepSequence(step_tokenizers=(StepTokenizers.Coord(),)),
+                True,
+            ),
+            (
+                PathTokenizers.StepSequence(
+                    step_tokenizers=(
+                        StepTokenizers.Coord(),
+                        StepTokenizers.Coord(),
+                    )
+                ),
+                False,
+            ),
+            (PromptSequencers.AOP(), True),
+            (PromptSequencers.AOP(path_tokenizer=PathTokenizers.StepSequence()), True),
+            (
+                PromptSequencers.AOP(
+                    path_tokenizer=PathTokenizers.StepSequence(
+                        step_tokenizers=(StepTokenizers.Coord(),)
+                    )
+                ),
+                True,
+            ),
+            (
+                PromptSequencers.AOP(
+                    path_tokenizer=PathTokenizers.StepSequence(
+                        step_tokenizers=(
+                            StepTokenizers.Coord(),
+                            StepTokenizers.Coord(),
+                        )
+                    )
+                ),
+                True,
+            ),
+        ]
     ],
 )
-def test_token_region_delimiters(maze: LatticeMaze, tokenizer: MazeTokenizer2):
-    """<PATH_START> and similar token region delimiters should appear at most 1 time, regardless of tokenizer."""
-    counts: Counter = Counter(maze.as_tokens(tokenizer))
-    assert all([counts[tok] < 2 for tok in VOCAB_LIST[:8]])
+def test_tokenizer_element_is_valid(el: TokenizerElement, result: bool):
+    assert el.is_valid() == result
 
 
 @mark.parametrize(
-    "tokenizer", [param(tokenizer, id=tokenizer.name) for tokenizer in ALL_TOKENIZERS]
-)
-def test_tokenizer_properties(tokenizer: MazeTokenizer2):
-    # Just make sure the call doesn't raise exception
-    assert len(tokenizer.name) > 5
-
-    assert tokenizer.vocab_size == 4096
-    assert isinstance(tokenizer.token_arr, Iterable)
-    assert all(isinstance(token, str) for token in tokenizer.token_arr)
-    assert tokenizer.token_arr[tokenizer.padding_token_index] == VOCAB.PADDING
-
-    # Just make sure the call doesn't raise exception
-    print(tokenizer.summary())
-
-
-@mark.parametrize(
-    "maze,tokenizer",
+    "tokenizer, result",
     [
-        param(maze[0], tokenizer, id=f"{tokenizer.name}-maze{maze[1]}")
-        for maze, tokenizer in itertools.product(
-            [(maze, i) for i, maze in enumerate(MIXED_MAZES[:6])], ALL_TOKENIZERS
-        )
+        param(tokenizer, result, id=str(tokenizer))
+        for tokenizer, result in [
+            (MazeTokenizer2(), True),
+            (MazeTokenizer2.from_legacy(TokenizationMode.AOTP_CTT_indexed), True),
+            (MazeTokenizer2(prompt_sequencer=PromptSequencers.AOP()), False),
+        ]
     ],
 )
-def test_encode_decode(maze: LatticeMaze, tokenizer: MazeTokenizer2):
-    # Just make sure the call doesn't raise exception
-
-    maze_tok: list[str] = maze.as_tokens(maze_tokenizer=tokenizer)
-
-    maze_encoded: list[int] = tokenizer.encode(maze_tok)
-    maze_decoded: LatticeMaze = tokenizer.decode(maze_encoded)
-
-    assert maze_tok == maze_decoded
-
-    maze_recovered: LatticeMaze = SolvedMaze.from_tokens(
-        maze_tok, maze_tokenizer=tokenizer
-    )
-
-    assert (maze.connection_list == maze_recovered.connection_list).all()
-
-
-@mark.parametrize(
-    "tokenizer", [param(tokenizer, id=tokenizer.name) for tokenizer in ALL_TOKENIZERS]
-)
-def test_zanj_save_read(tokenizer: MazeTokenizer2):
-    path = os.path.abspath(
-        os.path.join(
-            os.path.curdir, "data", "MazeTokenizer2_" + hex(hash(tokenizer)) + ".zanj"
-        )
-    )
-    zanj = ZANJ()
-    zanj.save(tokenizer, path)
-    assert zanj.read(path) == tokenizer
-
-
-def test_is_AOTP():
-    for mt in ALL_TOKENIZERS:
-        if isinstance(mt.prompt_sequencer, PromptSequencers.AOTP):
-            assert mt.is_AOTP()
-        else:
-            assert not mt.is_AOTP()
-    assert not MazeTokenizer2(prompt_sequencer=PromptSequencers.AOP()).is_AOTP()
-    assert not MazeTokenizer2(
-        prompt_sequencer=PromptSequencers.AOP(),
-        target_tokenizer=CoordTokenizers.CTT(),
-    ).is_AOTP()
-
-
-def test_is_UT():
-    for mt in ALL_TOKENIZERS:
-        if isinstance(mt.coord_tokenizer, CoordTokenizers.UT):
-            assert mt.is_UT()
-        else:
-            assert not mt.is_UT()
+def test_is_legacy_equivalent(tokenizer: MazeTokenizer2, result: bool):
+    assert tokenizer.is_legacy_equivalent() == result

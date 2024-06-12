@@ -9,6 +9,8 @@ from maze_dataset.constants import CoordArray
 from maze_dataset.maze import ConnectionList, Coord, LatticeMaze, SolvedMaze
 from maze_dataset.maze.lattice_maze import NEIGHBORS_MASK, _fill_edges_with_walls
 
+numpy_rng = np.random.default_rng()
+
 
 def _random_start_coord(grid_shape: Coord, start_coord: Coord | None) -> Coord:
     if start_coord is None:

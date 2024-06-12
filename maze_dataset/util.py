@@ -11,7 +11,7 @@ from jaxtyping import Float, Int8
 from muutils.misc import list_join
 
 from maze_dataset.constants import ConnectionList, CoordTup
-from maze_dataset.utils import WhenMissing
+from maze_dataset.utils import WhenMissing, flatten
 
 
 class TokenizerDeprecationWarning(DeprecationWarning):
@@ -195,12 +195,11 @@ def connection_list_to_adj_list(
 
     n_connections: int = conn_list.sum()
     adj_list: Int8[np.ndarray, "conn start_end=2 coord=2"] = np.full(
-        (n_connections, 2, 2),
-        -1,
+        (n_connections, 2, 2), -1, dtype=np.int8
     )
 
     if shuffle_d1:
-        flip_d1: Float[np.array, "conn"] = np.random.rand(n_connections)
+        flip_d1: Float[np.ndarray, "conn"] = np.random.rand(n_connections)
 
     # loop over all nonzero elements of the connection list
     i: int = 0
@@ -211,8 +210,8 @@ def connection_list_to_adj_list(
                 x + (1 if d == 0 else 0),
                 y + (1 if d == 1 else 0),
             )
-            adj_list[i, 0] = np.array(c_start)
-            adj_list[i, 1] = np.array(c_end)
+            adj_list[i, 0] = np.array(c_start, dtype=np.int8)
+            adj_list[i, 1] = np.array(c_end, dtype=np.int8)
 
             # flip if shuffling
             if shuffle_d1 and (flip_d1[i] > 0.5):

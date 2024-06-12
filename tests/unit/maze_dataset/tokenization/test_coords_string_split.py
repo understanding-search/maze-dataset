@@ -1,4 +1,4 @@
-from maze_dataset.tokenization.util import coords_string_split_UT
+from maze_dataset.util import coords_string_split_UT
 
 
 def test_coords_string_split_UT():
