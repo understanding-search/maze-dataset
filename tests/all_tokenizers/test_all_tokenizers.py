@@ -15,6 +15,7 @@ from maze_dataset import (
     VOCAB,
     VOCAB_LIST,
     ConnectionArray,
+    CoordArray,
     CoordTup,
     LatticeMaze,
     LatticeMazeGenerators,
@@ -26,7 +27,9 @@ from maze_dataset import (
 from maze_dataset.generation import LatticeMazeGenerators
 from maze_dataset.tokenization import (
     CoordTokenizers,
+    EdgeGroupings,
     EdgePermuters,
+    EdgeSubsets,
     MazeTokenizer2,
     PathTokenizers,
     PromptSequencers,
@@ -42,7 +45,7 @@ from maze_dataset.tokenization.all_tokenizers import (
 )
 from maze_dataset.tokenization.maze_tokenizer import _load_tokenizer_hashes
 from maze_dataset.util import connection_list_to_adj_list
-from maze_dataset.utils import all_instances
+from maze_dataset.utils import all_instances, flatten, manhattan_distance
 
 # TODO: this needs to be cleaned up, and duplicated functionality in `test_tokenizer.py`
 NUM_TOKENIZERS_TO_TEST = 100
