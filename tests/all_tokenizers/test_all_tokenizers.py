@@ -577,7 +577,7 @@ def _helper_test_path_tokenizers(
     maze: SolvedMaze,
     footprint_inds: Sequence[int],
 ):
-    ct: CoordTokenizers.CoordTokenizer = CoordTokenizers.UT()
+    ct: CoordTokenizers._CoordTokenizer = CoordTokenizers.UT()
     path_toks: list[str] = pt.to_tokens(maze, ct)
     path_toks_set: set[str] = set(path_toks)
     footprint_inds: Int[np.ndarray, "footprint_index"] = np.array(footprint_inds)
@@ -671,13 +671,13 @@ def test_path_tokenizers(pt: PathTokenizers.PathTokenizer, manual_maze: _MANUAL_
         for (i, maze), tokenizer in itertools.product(
             enumerate(MIXED_MAZES[:6]),
             all_instances(
-                EdgePermuters.EdgePermuter,
+                EdgePermuters._EdgePermuter,
                 frozendict.frozendict({TokenizerElement: lambda x: x.is_valid()}),
             ),
         )
     ],
 )
-def test_edge_permuters(ep: EdgePermuters.EdgePermuter, maze: LatticeMaze):
+def test_edge_permuters(ep: EdgePermuters._EdgePermuter, maze: LatticeMaze):
     edges: ConnectionArray = connection_list_to_adj_list(maze.connection_list)
     edges_copy = np.copy(edges)
     old_shape = edges.shape

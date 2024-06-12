@@ -686,10 +686,10 @@ class EdgeGroupings(_TokenizerElementNamespace):
         def _token_params(self) -> "EdgeGroupings._GroupingTokenParams":
             """Returns the tok.nization hyperparameters necessary for an `AdjListTokenizer` to tokenize.
 
-            These hyperparameters are not used by `EdgeGrouping` internally.
-            They are located in `EdgeGrouping` rather than in `AdjListTokenizer`
-            since the hyperparameter space is a function of the `EdgeGrouping` subclass.
-            This function resolves the `EdgeGrouping` hyperparameter space which is non-uniform across subclasses
+            These hyperparameters are not used by `_EdgeGrouping` internally.
+            They are located in `_EdgeGrouping` rather than in `AdjListTokenizer`
+            since the hyperparameter space is a function of the `_EdgeGrouping` subclass.
+            This function resolves the `_EdgeGrouping` hyperparameter space which is non-uniform across subclasses
             into a uniform private interface used by `AdjListTokenizer`.
             """
             pass
@@ -920,7 +920,7 @@ class AdjListTokenizers(_TokenizerElementNamespace):
         pre: bool = serializable_field(default=False)
         post: bool = serializable_field(default=True)
         shuffle_d0: bool = serializable_field(default=True)
-        edge_grouping: EdgeGroupings.EdgeGrouping = serializable_field(
+        edge_grouping: EdgeGroupings._EdgeGrouping = serializable_field(
             default=EdgeGroupings.Ungrouped(),
             loading_fn=lambda x: _load_tokenizer_element(x, EdgeGroupings),
         )
@@ -938,13 +938,13 @@ class AdjListTokenizers(_TokenizerElementNamespace):
             self,
             edges: ConnectionArray,
             maze: LatticeMaze,
-            ct: CoordTokenizers.CoordTokenizer,
+            ct: CoordTokenizers._CoordTokenizer,
             group_params: EdgeGroupings._GroupingTokenParams,
         ) -> list[str]:
             pass
 
         def to_tokens(
-            self, maze: LatticeMaze, ct: CoordTokenizers.CoordTokenizer
+            self, maze: LatticeMaze, ct: CoordTokenizers._CoordTokenizer
         ) -> list[str]:
             edges: ConnectionArray = self.edge_subset._get_edges(maze)
             edges: ConnectionArray = self.edge_permuter._permute(edges)
@@ -965,7 +965,7 @@ class AdjListTokenizers(_TokenizerElementNamespace):
     class AdjListCoord(_AdjListTokenizer):
         """Represents an edge group as tokens for the leading coord followed by coord tokens for the other group members."""
 
-        edge_permuter: EdgePermuters.EdgePermuter = serializable_field(
+        edge_permuter: EdgePermuters._EdgePermuter = serializable_field(
             default=EdgePermuters.RandomCoord(),
             loading_fn=lambda x: _load_tokenizer_element(x, EdgePermuters),
         )
@@ -974,10 +974,14 @@ class AdjListTokenizers(_TokenizerElementNamespace):
             self,
             edges: ConnectionArray,
             maze: LatticeMaze,
-            ct: CoordTokenizers.CoordTokenizer,
+            ct: CoordTokenizers._CoordTokenizer,
             group_params: EdgeGroupings._GroupingTokenParams,
         ) -> list[str]:
             pass
+
+        def to_tokens(self, conn_list: ConnectionArray) -> list[str]:
+            raise NotImplementedError("TODO")
+            
 
     @serializable_dataclass(frozen=True, kw_only=True)
     class AdjListCardinal(_AdjListTokenizer):
@@ -987,7 +991,7 @@ class AdjListTokenizers(_TokenizerElementNamespace):
         - `coord_first`: Whether the leading coord token(s) should come before or after the sequence of cardinal tokens.
         """
 
-        edge_permuter: EdgePermuters.EdgePermuter = serializable_field(
+        edge_permuter: EdgePermuters._EdgePermuter = serializable_field(
             default=EdgePermuters.BothCoords(),
             loading_fn=lambda x: _load_tokenizer_element(x, EdgePermuters),
         )
@@ -1633,14 +1637,6 @@ class MazeTokenizer2(SerializableDataclass):
     # Parameters
     - `prompt_sequencer`: Tokenizer element which assembles token regions (adjacency list, origin, target, path) into a complete prompt.
 
-    - `coord_tokenizer`: Tokenizer element which tokenizes a single `Coord` aka maze position.
-    - `adj_list_tokenizer`: Tokenizer element which tokenizes the adjacency list of a `LatticeMaze`.
-    Uses `coord_tokenizer` to tokenize coords if that is part of the design of that `_AdjListTokenizer`.
-    - `target_tokenizer`: Tokenizer element which tokenizes the target(s) of a `TargetedLatticeMaze`.
-    Uses `coord_tokenizer` to tokenize coords if that is part of the design of that `_TargetTokenizer`.
-    - `path_tokenizer`: Tokenizer element which tokenizes the solution path of a `SolvedMaze`.
-    Uses `coord_tokenizer` to tokenize coords if that is part of the design of that `_PathTokenizer`.
-
     # Development
     - To ensure backwards compatibility, the default constructor must always return a tokenizer equivalent to the legacy `TokenizationMode.AOTP_UT_Uniform`.
     - Furthermore, the mapping reflected in `from_legacy` must also be maintained.
@@ -1650,22 +1646,6 @@ class MazeTokenizer2(SerializableDataclass):
     prompt_sequencer: PromptSequencers._PromptSequencer = serializable_field(
         default=PromptSequencers.AOTP(),
         loading_fn=lambda x: _load_tokenizer_element(x, PromptSequencers),
-    )
-    coord_tokenizer: CoordTokenizers._CoordTokenizer = serializable_field(
-        default=CoordTokenizers.UT(),
-        loading_fn=lambda x: _load_tokenizer_element(x, CoordTokenizers),
-    )
-    adj_list_tokenizer: AdjListTokenizers._AdjListTokenizer = serializable_field(
-        default=AdjListTokenizers.Coords(),
-        loading_fn=lambda x: _load_tokenizer_element(x, AdjListTokenizers),
-    )
-    target_tokenizer: TargetTokenizers._TargetTokenizer = serializable_field(
-        default=TargetTokenizers.Unlabeled(),
-        loading_fn=lambda x: _load_tokenizer_element(x, TargetTokenizers),
-    )
-    path_tokenizer: PathTokenizers._PathTokenizer = serializable_field(
-        default=PathTokenizers.Coords(),
-        loading_fn=lambda x: _load_tokenizer_element(x, PathTokenizers),
     )
 
     # Information Querying Methods
