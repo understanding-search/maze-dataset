@@ -786,6 +786,14 @@ class EdgePermuters(_TokenizerElementNamespace):
             pass
 
     @serializable_dataclass(frozen=True, kw_only=True)
+    class Sorted(_EdgePermuter):
+        """returns a sorted representation. useful for checking consistency"""
+
+        @staticmethod
+        def _permute(lattice_edges: ConnectionList) -> ConnectionArray:
+            return np.sort(lattice_edges, axis=0)
+
+    @serializable_dataclass(frozen=True, kw_only=True)
     class RandomCoord(_EdgePermuter):
         """Permutes randomly."""
 
@@ -891,7 +899,6 @@ class AdjListTokenizers(_TokenizerElementNamespace):
             warnings.warn(
                 "no validation implemented for AdjListTokenizers",
             )
-
             return True
 
         # Define some (abstract) methods
@@ -917,6 +924,7 @@ class AdjListTokenizers(_TokenizerElementNamespace):
           - `evens`, `odds`: The leading coord is the one belonging to that coord subset. See `EdgeSubsets.ChessboardSublattice` for details.
         """
 
+        # TODO: this should be `None` or a string, I think
         pre: bool = serializable_field(default=False)
         post: bool = serializable_field(default=True)
         shuffle_d0: bool = serializable_field(default=True)
@@ -933,32 +941,46 @@ class AdjListTokenizers(_TokenizerElementNamespace):
             loading_fn=lambda x: _load_tokenizer_element(x, EdgePermuters),
         )
 
-        @abc.abstractmethod
         def _tokenize_edge_group(
             self,
             edges: ConnectionArray,
             maze: LatticeMaze,
-            ct: CoordTokenizers._CoordTokenizer,
+            coord_tokenizer: CoordTokenizers._CoordTokenizer,
             group_params: EdgeGroupings._GroupingTokenParams,
         ) -> list[str]:
-            pass
+            # first, we need to permute the edges
+            edges: ConnectionArray = self.edge_permuter._permute(edges)
+            # then, we need to group the edges
+            groups: Sequence[ConnectionArray] = self.edge_grouping._group_edges(edges)
+            # finally, we need to tokenize the groups
+            return list(flatten([
+                [
+                    empty_sequence_if_attr_false([VOCAB.ADJLIST_PRE], self, "pre"),
+                    [
+                        coord_tokenizer.to_tokens(g[group_params["connection_token_ordinal"]])
+                        for g in group
+                    ],
+                    empty_sequence_if_attr_false([VOCAB.ADJACENCY_ENDLINE], self, "post")
+                ]
+                for group in groups
+            ]))
 
         def to_tokens(
-            self, maze: LatticeMaze, ct: CoordTokenizers._CoordTokenizer
+            self, maze: LatticeMaze, coord_tokenizer: CoordTokenizers._CoordTokenizer
         ) -> list[str]:
             edges: ConnectionArray = self.edge_subset._get_edges(maze)
             edges: ConnectionArray = self.edge_permuter._permute(edges)
             group_params: EdgeGroupings._GroupingTokenParams = (
                 self.edge_grouping._token_params()
             )
-            tokens: list[str] = [
+            tokens: list[str] = flatten([
                 *empty_sequence_if_attr_false((VOCAB.ADJLIST_PRE,), self, "pre"),
                 *[
-                    self._tokenize_edge_group(g, maze, ct, group_params)
+                    self._tokenize_edge_group(g, maze, coord_tokenizer, group_params)
                     for g in self.edge_grouping._group_edges(edges)
-                ]
-                * empty_sequence_if_attr_false((VOCAB.ADJLIST_PRE,), self, "post"),
-            ]
+                ],
+                # *empty_sequence_if_attr_false((VOCAB.ADJLIST_PRE,), self, "post"), # TODO: this doesn't feel right
+            ])
             return tokens
 
     @serializable_dataclass(frozen=True, kw_only=True)
@@ -974,13 +996,19 @@ class AdjListTokenizers(_TokenizerElementNamespace):
             self,
             edges: ConnectionArray,
             maze: LatticeMaze,
-            ct: CoordTokenizers._CoordTokenizer,
+            coord_tokenizer: CoordTokenizers._CoordTokenizer,
             group_params: EdgeGroupings._GroupingTokenParams,
         ) -> list[str]:
             pass
 
-        def to_tokens(self, conn_list: ConnectionArray) -> list[str]:
-            raise NotImplementedError("TODO")
+        def to_tokens(
+            self,
+            maze: LatticeMaze,
+            coord_tokenizer: CoordTokenizers._CoordTokenizer,
+        ) -> list[str]:
+            raise NotImplementedError("to_tokens not implemented for AdjListCoord")
+            
+
 
     @serializable_dataclass(frozen=True, kw_only=True)
     class AdjListCardinal(_AdjListTokenizer):
@@ -1399,7 +1427,7 @@ class PromptSequencers(_TokenizerElementNamespace):
             loading_fn=lambda x: _load_tokenizer_element(x, CoordTokenizers),
         )
         adj_list_tokenizer: AdjListTokenizers._AdjListTokenizer = serializable_field(
-            default=AdjListTokenizers.AdjListCoord(),
+            default=AdjListTokenizers.Coords(),
             loading_fn=lambda x: _load_tokenizer_element(x, AdjListTokenizers),
         )
 

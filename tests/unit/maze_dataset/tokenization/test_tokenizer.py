@@ -346,8 +346,16 @@ def test_to_tokens_backwards_compatible(
     toks: list[str] = maze.as_tokens(tokenizer)
     toks2: list[str] = tokenizer.to_tokens(maze)
     toks_legacy: list[str] = maze.as_tokens(legacy_tokenizer)
-    assert equal_except_adj_list_sequence(toks, toks_legacy)
-    assert equal_except_adj_list_sequence(toks2, toks_legacy)
+
+    try:
+        assert equal_except_adj_list_sequence(toks, toks_legacy)
+        assert equal_except_adj_list_sequence(toks2, toks_legacy)
+    except AssertionError as e:
+        raise AssertionError(
+            "Tokens from `as_tokens` and `to_tokens` should be equal to tokens from `as_tokens` with the legacy tokenizer.\n"
+            f"{len(toks) = }, {len(toks2) = }, {len(toks_legacy) = }\n"
+            f"{toks = }\n{toks2 = }\n{toks_legacy = }",
+        ) from e
 
 
 @mark.parametrize(
