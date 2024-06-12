@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "maze-dataset"
-version = "0.5.2"
+version = "0.5.3"
 description = ""
 authors = ["Michael Ivanitskiy <miv@knc.ai>", "Dan Valentine <danvalentine256@gmail.com>", "Rusheb Shah <rusheb.shah@gmail.com>", "Lucia Quirke <luciaq@canva.com>", "Can Rager <can.rager@posteo.de>", "Alex Spies <alexfspies@gmail.com>", "Chris Mathwin <cwmathwin@gmail.com>", "Tilman Rauker <traeuker@googlemail.com>", "Guillaume Corlouer <guillaume.corlouer@gmail.com>"]
 readme = "README.md"
@@ -45,7 +45,10 @@ filterwarnings = [
     "ignore:`np\\.\\w*` is a deprecated alias for:DeprecationWarning",
 
     # Warning from matplotlib. Issue: https://github.com/matplotlib/matplotlib/issues/25244
-    "ignore:Deprecated call to `pkg_resources.declare_namespace:DeprecationWarning"
+    "ignore:Deprecated call to `pkg_resources.declare_namespace:DeprecationWarning",
+
+    # temporary fix for lots of deprecation warnings for old tokenizers
+    "ignore::maze_dataset.util.TokenizerPendingDeprecationWarning",
 ]
 testpaths = "tests"
 norecursedirs="maze_dataset/utils/test_helpers"

@@ -20,18 +20,14 @@ from maze_dataset.constants import (
     CoordArray,
     CoordTup,
 )
-from maze_dataset.utils import isinstance_by_type_name
 from maze_dataset.token_utils import (
-    get_origin_tokens, 
     get_adj_list_tokens,
+    get_origin_tokens,
     get_path_tokens,
     get_target_tokens,
 )
-from maze_dataset.util import (
-    TokenizerPendingDeprecationWarning,
-    TokenizerDeprecationWarning,
-    connection_list_to_adj_list,
-)
+from maze_dataset.util import TokenizerDeprecationWarning, connection_list_to_adj_list
+from maze_dataset.utils import isinstance_by_type_name
 
 if typing.TYPE_CHECKING:
     from maze_dataset.tokenization import (
@@ -436,27 +432,27 @@ class LatticeMaze(SerializableDataclass):
             SPECIAL_TOKENS.ADJLIST_END,
         ]
 
+    def _as_adj_list_tokens(self) -> list[str | CoordTup]:
+        return [
+            SPECIAL_TOKENS.ADJLIST_START,
+            *chain.from_iterable(
+                [
+                    [
+                        tuple(c_s),
+                        SPECIAL_TOKENS.CONNECTOR,
+                        tuple(c_e),
+                        SPECIAL_TOKENS.ADJACENCY_ENDLINE,
+                    ]
+                    for c_s, c_e in self.as_adj_list()
+                ]
+            ),
+            SPECIAL_TOKENS.ADJLIST_END,
+        ]
+
     def _as_coords_and_special_AOTP(self) -> list[CoordTup | str]:
         """turn the maze into adjacency list, origin, target, and solution -- keep coords as tuples"""
 
-        def _as_adj_list_tokens(self_) -> list[str | CoordTup]:
-            return [
-                SPECIAL_TOKENS.ADJLIST_START,
-                *chain.from_iterable(
-                    [
-                        [
-                            tuple(c_s),
-                            SPECIAL_TOKENS.CONNECTOR,
-                            tuple(c_e),
-                            SPECIAL_TOKENS.ADJACENCY_ENDLINE,
-                        ]
-                        for c_s, c_e in self_.as_adj_list()
-                    ]
-                ),
-                SPECIAL_TOKENS.ADJLIST_END,
-            ]
-
-        output: list[str] = _as_adj_list_tokens(self)
+        output: list[str] = self._as_adj_list_tokens()
         # if getattr(self, "start_pos", None) is not None:
         if isinstance(self, TargetedLatticeMaze):
             output += self._get_start_pos_tokens()
@@ -466,10 +462,15 @@ class LatticeMaze(SerializableDataclass):
             output += self._get_solution_tokens()
         return output
 
-    def _as_tokens(self, maze_tokenizer: "MazeTokenizer | TokenizationMode") -> list[str]:
+    def _as_tokens(
+        self, maze_tokenizer: "MazeTokenizer | TokenizationMode"
+    ) -> list[str]:
         if isinstance_by_type_name(maze_tokenizer, "TokenizationMode"):
             maze_tokenizer = maze_tokenizer.to_legacy_tokenizer()
-        if isinstance_by_type_name(maze_tokenizer, "MazeTokenizer") and maze_tokenizer.is_AOTP():
+        if (
+            isinstance_by_type_name(maze_tokenizer, "MazeTokenizer")
+            and maze_tokenizer.is_AOTP()
+        ):
             coords_raw: list[CoordTup | str] = self._as_coords_and_special_AOTP()
             coords_processed: list[str] = maze_tokenizer.coords_to_strings(
                 coords=coords_raw, when_noncoord="include"
@@ -595,7 +596,10 @@ class LatticeMaze(SerializableDataclass):
     ) -> "LatticeMaze":
         if isinstance_by_type_name(maze_tokenizer, "TokenizationMode"):
             maze_tokenizer = maze_tokenizer.to_legacy_tokenizer()
-        if isinstance_by_type_name(maze_tokenizer, "MazeTokenizer2") and not maze_tokenizer.is_legacy_equivalent():
+        if (
+            isinstance_by_type_name(maze_tokenizer, "MazeTokenizer2")
+            and not maze_tokenizer.is_legacy_equivalent()
+        ):
             raise NotImplementedError(
                 f"Only legacy tokenizers and their exact `MazeTokenizer2` analogs supported, not {maze_tokenizer}."
             )
@@ -1091,8 +1095,8 @@ class SolvedMaze(TargetedLatticeMaze):
 
     def get_solution_forking_points(
         self,
-        always_include_endpoints: bool = False, 
-        ) -> tuple[list[int], CoordArray]:
+        always_include_endpoints: bool = False,
+    ) -> tuple[list[int], CoordArray]:
         """coordinates and their indicies from the solution where a fork is present
 
         - if the start point is not a dead end, this counts as a fork
@@ -1106,7 +1110,9 @@ class SolvedMaze(TargetedLatticeMaze):
             # since the previous coord doesn't count as a choice
             is_endpoint: bool = idx == 0 or idx == self.solution.shape[0] - 1
             theshold: int = 1 if is_endpoint else 2
-            if self.get_coord_neighbors(coord).shape[0] > theshold or (is_endpoint and always_include_endpoints):
+            if self.get_coord_neighbors(coord).shape[0] > theshold or (
+                is_endpoint and always_include_endpoints
+            ):
                 output_idxs.append(idx)
                 output_coords.append(coord)
 

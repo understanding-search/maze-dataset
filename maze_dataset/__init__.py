@@ -6,6 +6,7 @@ from maze_dataset.constants import (
     Connection,
     ConnectionList,
     ConnectionArray,
+    ConnectionList,
     Coord,
     CoordArray,
     CoordList,

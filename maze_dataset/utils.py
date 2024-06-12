@@ -1,30 +1,30 @@
 import cProfile
+import enum
+import itertools
 import math
 import pstats
 import timeit
 import typing
+from dataclasses import field
+from functools import cache
+from types import UnionType
 from typing import (
-    Any, 
-    Callable, 
-    Iterable, 
-    Literal, 
-    Mapping, 
-    NamedTuple, 
-    TypeVar,
+    Any,
+    Callable,
+    ClassVar,
     Generator,
+    Iterable,
+    Literal,
+    Mapping,
+    NamedTuple,
     Protocol,
-    runtime_checkable,
+    TypeVar,
     get_args,
     get_origin,
-    ClassVar,
-    )
-from types import UnionType
-import frozendict
-from dataclasses import field
-import itertools
-from functools import cache
-import enum
+    runtime_checkable,
+)
 
+import frozendict
 import numpy as np
 from jaxtyping import Bool, Int8, Int
 from muutils.statcounter import StatCounter
@@ -182,24 +182,44 @@ def lattice_connection_array(n: int) -> Int8[np.ndarray, "edges leading_trailing
     """
     Returns a 3D NumPy array containing all the edges in a 2D square lattice of size n x n.
     Thanks Claude.
-    
+
     # Parameters
     - `n`: The size of the square lattice.
-        
+
     # Returns
     - np.ndarray: A 3D NumPy array of shape (2*n*(n-1), 2, 2) containing the coordinates of the edges in the 2D square lattice.
     """
-    row_coords, col_coords = np.meshgrid(np.arange(n, dtype=np.int8), np.arange(n, dtype=np.int8), indexing='ij', )
-    
+    row_coords, col_coords = np.meshgrid(
+        np.arange(n, dtype=np.int8),
+        np.arange(n, dtype=np.int8),
+        indexing="ij",
+    )
+
     # Horizontal edges
-    horiz_edges = np.column_stack((row_coords[:, :-1].ravel(), col_coords[:, :-1].ravel(),
-                                    row_coords[:, 1:].ravel(), col_coords[:, 1:].ravel()))
+    horiz_edges = np.column_stack(
+        (
+            row_coords[:, :-1].ravel(),
+            col_coords[:, :-1].ravel(),
+            row_coords[:, 1:].ravel(),
+            col_coords[:, 1:].ravel(),
+        )
+    )
 
     # Vertical edges
-    vert_edges = np.column_stack((row_coords[:-1, :].ravel(), col_coords[:-1, :].ravel(),
-                                   row_coords[1:, :].ravel(), col_coords[1:, :].ravel()))
-    
-    return np.concatenate((horiz_edges.reshape(n**2-n, 2, 2), vert_edges.reshape(n**2-n, 2, 2)), axis=0)
+    vert_edges = np.column_stack(
+        (
+            row_coords[:-1, :].ravel(),
+            col_coords[:-1, :].ravel(),
+            row_coords[1:, :].ravel(),
+            col_coords[1:, :].ravel(),
+        )
+    )
+
+    return np.concatenate(
+        (horiz_edges.reshape(n**2 - n, 2, 2), vert_edges.reshape(n**2 - n, 2, 2)),
+        axis=0,
+    )
+
 
 def adj_list_to_nested_set(adj_list: list) -> set:
     """Used for comparison of adj_lists
@@ -349,13 +369,28 @@ def timeit_fancy(
     )
 
 
-def unpackable_if_true_attribute(
-    iterable: Iterable[any], attr_owner: Any, attr_name: str
+def empty_sequence_if_attr_false(
+    itr: Iterable[Any],
+    attr_owner: Any,
+    attr_name: str,
 ) -> Iterable[any]:
-    """Returns `iterable` if `attr_owner` has the attribute `attr_name` and it boolean casts to `True`.
+    """Returns `itr` if `attr_owner` has the attribute `attr_name` and it boolean casts to `True`. Returns an empty sequence otherwise.
+
     Particularly useful for optionally inserting delimiters into a sequence depending on an `TokenizerElement` attribute.
+
+    # Parameters:
+    - `itr: Iterable[Any]`
+        The iterable to return if the attribute is `True`.
+    - `attr_owner: Any`
+        The object to check for the attribute.
+    - `attr_name: str`
+        The name of the attribute to check.
+
+    # Returns:
+    - `itr: Iterable` if `attr_owner` has the attribute `attr_name` and it boolean casts to `True`, otherwise an empty sequence.
+    - `()` an empty sequence if the attribute is `False` or not present.
     """
-    return iterable if bool(getattr(attr_owner, attr_name, False)) else ()
+    return itr if bool(getattr(attr_owner, attr_name, False)) else ()
 
 
 def flatten(it: Iterable[any], levels_to_flatten: int | None = None) -> Generator:
@@ -386,11 +421,11 @@ def flatten(it: Iterable[any], levels_to_flatten: int | None = None) -> Generato
 
 def is_abstract(cls):
     if not hasattr(cls, "__abstractmethods__"):
-        return False # an ordinary class
+        return False  # an ordinary class
     elif len(cls.__abstractmethods__) == 0:
-        return False # a concrete implementation of an abstract class
+        return False  # a concrete implementation of an abstract class
     else:
-        return True # an abstract class
+        return True  # an abstract class
 
 
 def get_all_subclasses(class_: type, include_self=False) -> set[type]:
@@ -401,7 +436,7 @@ def get_all_subclasses(class_: type, include_self=False) -> set[type]:
     # Parameters
     - `include_self`: Whether to include `class_` itself in the returned list
     - `class_`: Superclass
-    
+
     # Development
     Since most class hierarchies are small, the inefficiencies of the existing recursive implementation aren't problematic.
     It might be valuable to refactor with memoization if the need arises to use this function on a very large class hierarchy.
@@ -415,15 +450,16 @@ def get_all_subclasses(class_: type, include_self=False) -> set[type]:
     if include_self:
         subs.add((class_))
     return subs
-    
+
 
 def _apply_validation_func(
     type_: FiniteValued,
-    vals: list[FiniteValued], 
-    validation_funcs: frozendict.frozendict[FiniteValued, Callable[[FiniteValued], bool]] | None = None
-    ) -> list[FiniteValued]:
-    """Helper function for `all_instances`
-    """
+    vals: list[FiniteValued],
+    validation_funcs: (
+        frozendict.frozendict[FiniteValued, Callable[[FiniteValued], bool]] | None
+    ) = None,
+) -> list[FiniteValued]:
+    """Helper function for `all_instances`"""
     if validation_funcs is None or len(vals) == 0:
         return vals
     if hasattr(type_, "__mro__"):  # UnionType doesn't have `__mro__`
@@ -437,18 +473,20 @@ def _apply_validation_func(
 
 @cache
 def all_instances(
-    type_: FiniteValued, 
-    validation_funcs: frozendict.frozendict[FiniteValued, Callable[[FiniteValued], bool]] | None = None
-    ) -> list[FiniteValued]:
+    type_: FiniteValued,
+    validation_funcs: (
+        frozendict.frozendict[FiniteValued, Callable[[FiniteValued], bool]] | None
+    ) = None,
+) -> list[FiniteValued]:
     """Returns all possible values of an instance of `type_` if finite instances exist.
     Do not use with types whose members contain circular references.
     Function is susceptible to infinite recursion if `type_` is a dataclass whose member tree includes another instance of `type_`.
-    
+
     # Parameters
     - `type_`: A finite-valued type. See section "Supported `type_` Values" for more details.
     - `validation_funcs`: A mapping of types to auxiliary functions to validate instances of that type.
     This optional argument can provide an additional, more precise layer of validation for the instances generated beyond what type hinting alone can provide.
-        
+
     # Supported `type_` Values
     `type_` may be:
     - `FiniteValued`
@@ -457,7 +495,7 @@ def all_instances(
     `tuple[bool, ...]` is NOT supported, since the length of the tuple is not fixed.
     - Nested versions of any of the types in this list
     - A `UnionType` of any of the types in this list
-    
+
     # `validation_funcs` Details
     `validation_funcs` is applied after all instances have been generated according to type hints.
     If `type_` is in `validation_funcs`, then the list of instances is filtered by `validation_funcs[type_](instance)`.
@@ -474,21 +512,53 @@ def all_instances(
         # Concrete dataclass: construct dataclass instances with all possible combinations of fields
         fields: list[field] = type_.__dataclass_fields__
         fields_to_types: dict[str, type] = {f: fields[f].type for f in fields}
-        all_arg_sequences: Iterable = itertools.product(*[all_instances(arg_type, validation_funcs) for arg_type in fields_to_types.values()])
-        return _apply_validation_func(type_, [type_(**{fld: arg for fld, arg in zip(fields_to_types.keys(), args)}) 
-                for args in all_arg_sequences], validation_funcs)
+        all_arg_sequences: Iterable = itertools.product(
+            *[
+                all_instances(arg_type, validation_funcs)
+                for arg_type in fields_to_types.values()
+            ]
+        )
+        return _apply_validation_func(
+            type_,
+            [
+                type_(**{fld: arg for fld, arg in zip(fields_to_types.keys(), args)})
+                for args in all_arg_sequences
+            ],
+            validation_funcs,
+        )
     elif hasattr(type_, "__dataclass_fields__") and is_abstract(type_):
         # Abstract dataclass: call `all_instances` on each subclass
-        return _apply_validation_func(type_, list(flatten([all_instances(sub, validation_funcs) for sub in type_.__subclasses__()], levels_to_flatten=1)), validation_funcs)
-    elif get_origin(type_) == tuple: # Only matches Generic type tuple since regular tuple is not finite-valued
+        return _apply_validation_func(
+            type_,
+            list(
+                flatten(
+                    [
+                        all_instances(sub, validation_funcs)
+                        for sub in type_.__subclasses__()
+                    ],
+                    levels_to_flatten=1,
+                )
+            ),
+            validation_funcs,
+        )
+    elif (
+        get_origin(type_) == tuple
+    ):  # Only matches Generic type tuple since regular tuple is not finite-valued
         # Generic tuple: Similar to concrete dataclass. Construct all possible combinations of tuple fields.
-        return _apply_validation_func(type_, [
-            tuple(combo) for combo in
-            itertools.product(
-                *[all_instances(tup_item, validation_funcs) for tup_item in get_args(type_)]
-            )
-        ], validation_funcs)
-    elif get_origin(type_) == UnionType: 
+        return _apply_validation_func(
+            type_,
+            [
+                tuple(combo)
+                for combo in itertools.product(
+                    *[
+                        all_instances(tup_item, validation_funcs)
+                        for tup_item in get_args(type_)
+                    ]
+                )
+            ],
+            validation_funcs,
+        )
+    elif get_origin(type_) == UnionType:
         # Union: call `all_instances` for each type in the Union
         return _apply_validation_func(type_, list(flatten([all_instances(sub, validation_funcs) for sub in get_args(type_)], levels_to_flatten=1)), validation_funcs)
     elif get_origin(type_) is Literal:
@@ -498,29 +568,39 @@ def all_instances(
         # Enum: return all Enum members
         raise NotImplementedError(f"Support for Enums not yet implemented.")
     else:
-        raise TypeError(f"Type {type_} either has unbounded possible values or is not supported.")
-    
-    
-def dataclass_set_equals(coll1: Iterable[IsDataclass], coll2: Iterable[IsDataclass]) -> bool:
+        raise TypeError(
+            f"Type {type_} either has unbounded possible values or is not supported."
+        )
+
+def get_hashable_eq_attrs(dc: IsDataclass) -> tuple[Any]:
+    """Returns a tuple of all fields used for equality comparison.
+    Essentially used to generate a hashable dataclass representation of a dataclass for equality comparison even if it's not frozen.
+    """
+    return *(
+        getattr(dc, fld.name)
+        for fld in filter(lambda x: x.compare, dc.__dataclass_fields__.values())
+    ), type(dc)
+
+def dataclass_set_equals(
+    coll1: Iterable[IsDataclass], coll2: Iterable[IsDataclass]
+) -> bool:
     """Compares 2 collections of dataclass instances as if they were sets.
     Duplicates are ignored in the same manner as a set.
     Unfrozen dataclasses can't be placed in sets since they're not hashable.
     Collections of them may be compared using this function.
     """
-    def get_hashable_eq_attrs(dc: IsDataclass) -> tuple[Any]:
-        """Returns a tuple of all fields used for equality comparison.
-        Essentially used to generate a hashable dataclass representation of a dataclass for equality comparison even if it's not frozen.
-        """
-        return *(getattr(dc, fld.name) for fld in filter(lambda x: x.compare, dc.__dataclass_fields__.values())), type(dc)
-    
-    return {get_hashable_eq_attrs(x) for x in coll1} == {get_hashable_eq_attrs(y) for y in coll2}
+
+    return (
+        {get_hashable_eq_attrs(x) for x in coll1}
+        ==  {get_hashable_eq_attrs(y) for y in coll2}
+    )
 
 
 def isinstance_by_type_name(o: object, type_name: str):
     """Behaves like stdlib `isinstance` except it accepts a string representation of the type rather than the type itself.
     This is a hacky function intended to circumvent the need to import a type into a module.
     It is susceptible to type name collisions.
-    
+
     # Parameters
     `o`: Object (not the type itself) whose type to interrogate
     `type_name`: The string returned by `type_.__name__`.

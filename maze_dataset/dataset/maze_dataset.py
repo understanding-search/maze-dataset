@@ -654,6 +654,7 @@ class MazeDatasetFilters:
         dataset: MazeDataset,
         clear_in_mazes: bool = True,
         inplace: bool = True,
+        allow_fail: bool = False,
     ) -> MazeDataset:
         if dataset.generation_metadata_collected is not None:
             return dataset
@@ -669,6 +670,13 @@ class MazeDatasetFilters:
             defaultdict(Counter)
         )
         for maze in new_dataset:
+            if maze.generation_meta is None:
+                if allow_fail:
+                    break
+                else:
+                    raise ValueError(
+                        "generation meta is not present in a maze, cannot collect generation meta"
+                    )
             for key, value in maze.generation_meta.items():
                 if isinstance(value, (bool, int, float, str)):
                     gen_meta_lists[key][value] += 1
