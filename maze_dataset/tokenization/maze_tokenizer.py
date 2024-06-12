@@ -5,21 +5,11 @@ import itertools
 import warnings
 from enum import Enum
 from functools import cached_property
-from typing import (
-    TYPE_CHECKING, 
-    Any, 
-    Callable, 
-    Iterable, 
-    Mapping, 
-    Sequence, 
-    Literal,
-    TypedDict,
-)
-from jaxtyping import Int64, Int8, Int
 from pathlib import Path
+from typing import Any, Callable, Iterable, Literal, Mapping, Sequence, TypedDict
 
 import numpy as np
-from jaxtyping import Int64
+from jaxtyping import Int, Int64
 from muutils.json_serialize import (
     SerializableDataclass,
     serializable_dataclass,
@@ -667,10 +657,10 @@ class EdgeGroupings(_TokenizerElementNamespace):
     """Namespace for `EdgeGrouping` subclass hierarchy used by `AdjListTokenizer`."""
 
     key = "edge_grouping"
-    
+
     class _GroupingTokenParams(TypedDict):
-        """A uniform private hyperparameter interface used by `AdjListTokenizer`.
-        """
+        """A uniform private hyperparameter interface used by `AdjListTokenizer`."""
+
         connection_token_ordinal: Literal[0, 1, 2]
         intra: bool
 
@@ -684,11 +674,11 @@ class EdgeGroupings(_TokenizerElementNamespace):
 
         def is_valid(self) -> bool:
             return True
-        
+
         @abc.abstractmethod
         def _group_edges(self, edges: ConnectionArray) -> Sequence[ConnectionArray]:
             """Divides a ConnectionArray into groups of edges.
-            Shuffles/sequences within each group if applicable. 
+            Shuffles/sequences within each group if applicable.
             """
             pass
 
@@ -697,14 +687,12 @@ class EdgeGroupings(_TokenizerElementNamespace):
             """Returns the tok.nization hyperparameters necessary for an `AdjListTokenizer` to tokenize.
 
             These hyperparameters are not used by `EdgeGrouping` internally.
-            They are located in `EdgeGrouping` rather than in `AdjListTokenizer` 
+            They are located in `EdgeGrouping` rather than in `AdjListTokenizer`
             since the hyperparameter space is a function of the `EdgeGrouping` subclass.
             This function resolves the `EdgeGrouping` hyperparameter space which is non-uniform across subclasses
             into a uniform private interface used by `AdjListTokenizer`.
             """
             pass
-    
-    
 
     @serializable_dataclass(frozen=True, kw_only=True)
     class Ungrouped(_EdgeGrouping):
@@ -716,16 +704,14 @@ class EdgeGroupings(_TokenizerElementNamespace):
         """
 
         connection_token_ordinal: Literal[0, 1, 2] = serializable_field(default=1)
-        
+
         def _token_params(self) -> "EdgeGroupings._GroupingTokenParams":
-             return EdgeGroupings._GroupingTokenParams(
-                 connection_token_ordinal=self.connection_token_ordinal,
-                 intra=False
-             )
+            return EdgeGroupings._GroupingTokenParams(
+                connection_token_ordinal=self.connection_token_ordinal, intra=False
+            )
 
         def _group_edges(self, edges: ConnectionList) -> Sequence[ConnectionList]:
             return np.expand_dims(edges, 1)
-        
 
     @serializable_dataclass(frozen=True, kw_only=True)
     class ByLeadingCoord(_EdgeGrouping):
@@ -744,22 +730,26 @@ class EdgeGroupings(_TokenizerElementNamespace):
         intra: bool = serializable_field(default=True)
         shuffle_group: bool = serializable_field(default=True)
         connection_token_ordinal: Literal[0, 1] = serializable_field(default=0)
-        
+
         def _token_params(self) -> "EdgeGroupings._GroupingTokenParams":
-             return EdgeGroupings._GroupingTokenParams(
-                 connection_token_ordinal=self.connection_token_ordinal,
-                 intra=self.intra
-             )
-        
+            return EdgeGroupings._GroupingTokenParams(
+                connection_token_ordinal=self.connection_token_ordinal, intra=self.intra
+            )
+
         def _group_edges(self, edges: ConnectionArray) -> Sequence[ConnectionArray]:
             # Adapted from: https://stackoverflow.com/questions/38013778/is-there-any-numpy-group-by-function
-            index_array: Int[np.ndarray, "sort_indices=edges"] = np.lexsort((edges[:,1,1], edges[:,1,0], edges[:,0,1], edges[:,0,0]))
-            sorted_edges: ConnectionArray = edges[index_array,...]
-            groups: list[ConnectionArray] = np.split(sorted_edges, np.unique(sorted_edges[:,0,:], return_index=True, axis=0)[1][1:])
+            index_array: Int[np.ndarray, "sort_indices=edges"] = np.lexsort(
+                (edges[:, 1, 1], edges[:, 1, 0], edges[:, 0, 1], edges[:, 0, 0])
+            )
+            sorted_edges: ConnectionArray = edges[index_array, ...]
+            groups: list[ConnectionArray] = np.split(
+                sorted_edges,
+                np.unique(sorted_edges[:, 0, :], return_index=True, axis=0)[1][1:],
+            )
             if self.shuffle_group:
                 [numpy_rng.shuffle(g, axis=0) for g in groups]
             return groups
-            
+
 
 class EdgePermuters(_TokenizerElementNamespace):
     """Namespace for `EdgePermuter` subclass hierarchy used by `AdjListTokenizer`."""
@@ -847,6 +837,7 @@ class EdgeSubsets(_TokenizerElementNamespace):
         All 2n**2-2n edges of the lattice are tokenized.
         If a wall exists on that edge, the edge is tokenized in the same manner, using `VOCAB.ADJLIST_WALL` in place of `VOCAB.CONNECTOR`.
         """
+
         def _get_edges(self, maze: LatticeMaze) -> ConnectionArray:
             lattice_edges: ConnectionArray = lattice_connection_array(maze.grid_n)
             return np.append(lattice_edges, np.flip(lattice_edges, axis=1), axis=0)
@@ -863,7 +854,7 @@ class EdgeSubsets(_TokenizerElementNamespace):
         """
 
         walls: bool = serializable_field(default=False)
-        
+
         def _get_edges(self, maze: LatticeMaze) -> ConnectionArray:
             conn_list: ConnectionList = maze.connection_list
             if self.walls:
@@ -944,43 +935,50 @@ class AdjListTokenizers(_TokenizerElementNamespace):
 
         @abc.abstractmethod
         def _tokenize_edge_group(
-            self, 
-            edges: ConnectionArray, 
+            self,
+            edges: ConnectionArray,
             maze: LatticeMaze,
             ct: CoordTokenizers.CoordTokenizer,
             group_params: EdgeGroupings._GroupingTokenParams,
-            ) -> list[str]:
+        ) -> list[str]:
             pass
 
-        def to_tokens(self, maze: LatticeMaze, ct: CoordTokenizers.CoordTokenizer) -> list[str]:
+        def to_tokens(
+            self, maze: LatticeMaze, ct: CoordTokenizers.CoordTokenizer
+        ) -> list[str]:
             edges: ConnectionArray = self.edge_subset._get_edges(maze)
             edges: ConnectionArray = self.edge_permuter._permute(edges)
-            group_params: EdgeGroupings._GroupingTokenParams = self.edge_grouping._token_params()
+            group_params: EdgeGroupings._GroupingTokenParams = (
+                self.edge_grouping._token_params()
+            )
             tokens: list[str] = [
                 *empty_sequence_if_attr_false((VOCAB.ADJLIST_PRE,), self, "pre"),
-                *[self._tokenize_edge_group(g, maze, ct, group_params) for g in self.edge_grouping._group_edges(edges)]
-                *empty_sequence_if_attr_false((VOCAB.ADJLIST_PRE,), self, "post"),
+                *[
+                    self._tokenize_edge_group(g, maze, ct, group_params)
+                    for g in self.edge_grouping._group_edges(edges)
+                ]
+                * empty_sequence_if_attr_false((VOCAB.ADJLIST_PRE,), self, "post"),
             ]
             return tokens
-        
+
     @serializable_dataclass(frozen=True, kw_only=True)
     class AdjListCoord(_AdjListTokenizer):
-        """Represents an edge group as tokens for the leading coord followed by coord tokens for the other group members.
-        """
+        """Represents an edge group as tokens for the leading coord followed by coord tokens for the other group members."""
+
         edge_permuter: EdgePermuters.EdgePermuter = serializable_field(
             default=EdgePermuters.RandomCoord(),
             loading_fn=lambda x: _load_tokenizer_element(x, EdgePermuters),
         )
 
         def _tokenize_edge_group(
-            self, 
-            edges: ConnectionArray, 
+            self,
+            edges: ConnectionArray,
             maze: LatticeMaze,
             ct: CoordTokenizers.CoordTokenizer,
             group_params: EdgeGroupings._GroupingTokenParams,
-            ) -> list[str]:
+        ) -> list[str]:
             pass
-        
+
     @serializable_dataclass(frozen=True, kw_only=True)
     class AdjListCardinal(_AdjListTokenizer):
         """Represents an edge group as coord tokens for the leading coord and cardinal tokens relative to the leading coord for the other group members.
@@ -988,6 +986,7 @@ class AdjListTokenizers(_TokenizerElementNamespace):
         # Parameters
         - `coord_first`: Whether the leading coord token(s) should come before or after the sequence of cardinal tokens.
         """
+
         edge_permuter: EdgePermuters.EdgePermuter = serializable_field(
             default=EdgePermuters.BothCoords(),
             loading_fn=lambda x: _load_tokenizer_element(x, EdgePermuters),
@@ -1341,7 +1340,9 @@ class PathTokenizers(_TokenizerElementNamespace):
                 # Uninteresting: repeated elements are not useful
                 return False
 
-            if len(self.step_tokenizers) == 1 and isinstance(self.step_tokenizers[0], StepTokenizers.Distance):
+            if len(self.step_tokenizers) == 1 and isinstance(
+                self.step_tokenizers[0], StepTokenizers.Distance
+            ):
                 # Untrainable: `Distance` alone cannot encode a path. >=1 `StepTokenizer` which indicates direction/location is required.
                 return False
             else:

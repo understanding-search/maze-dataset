@@ -1,11 +1,6 @@
-from typing import Iterable, TypeVar, Callable, Literal
-from dataclasses import dataclass
-
-import pytest
-from pytest import mark, param
 import abc
 from dataclasses import dataclass
-from typing import Callable, Iterable
+from typing import Callable, Iterable, Literal
 
 import frozendict
 import numpy as np
@@ -13,7 +8,7 @@ import pytest
 from jaxtyping import Int
 from pytest import mark, param
 
-from maze_dataset.constants import VOCAB
+from maze_dataset.constants import VOCAB, Connection, ConnectionArray
 from maze_dataset.dataset.maze_dataset import MazeDatasetConfig
 from maze_dataset.token_utils import (
     get_adj_list_tokens,
@@ -46,10 +41,7 @@ from maze_dataset.utils import (
     get_all_subclasses,
     isinstance_by_type_name,
     manhattan_distance,
-    IsDataclass,
-    FiniteValued,
 )
-from maze_dataset.constants import VOCAB, ConnectionArray, Connection
 
 MAZE_TOKENS: tuple[list[str], str] = (
     "<ADJLIST_START> (0,1) <--> (1,1) ; (1,0) <--> (1,1) ; (0,1) <--> (0,0) ; <ADJLIST_END> <ORIGIN_START> (1,0) <ORIGIN_END> <TARGET_START> (1,1) <TARGET_END> <PATH_START> (1,0) (1,1) <PATH_END>".split(),
@@ -647,11 +639,12 @@ class DC9(DC7):
                 (int, TypeError),
                 (str, TypeError),
                 (Literal[0, 1, 2], [0, 1, 2]),
-                (tuple[bool], 
-                 [
-                     (True,),
-                     (False,),
-                 ]
+                (
+                    tuple[bool],
+                    [
+                        (True,),
+                        (False,),
+                    ],
                 ),
                 (
                     tuple[bool, bool],
@@ -966,20 +959,30 @@ def test_get_relative_direction(
         )
         for edges, res in (
             [
-                (np.array([[0,0],[0,1]]), 1),
-                (np.array([[1,0],[0,1]]), 2),
-                (np.array([[-1,0],[0,1]]), 2),
-                (np.array([[0,0],[5,3]]), 8),
-                (np.array([[[0,0],[0,1]],
-                           [[1,0],[0,1]],
-                           [[-1,0],[0,1]],
-                           [[0,0],[5,3]]]), [1, 2, 2, 8]),
-                (np.array([[[0,0],[5,3]]]), [8]),
+                (np.array([[0, 0], [0, 1]]), 1),
+                (np.array([[1, 0], [0, 1]]), 2),
+                (np.array([[-1, 0], [0, 1]]), 2),
+                (np.array([[0, 0], [5, 3]]), 8),
+                (
+                    np.array(
+                        [
+                            [[0, 0], [0, 1]],
+                            [[1, 0], [0, 1]],
+                            [[-1, 0], [0, 1]],
+                            [[0, 0], [5, 3]],
+                        ]
+                    ),
+                    [1, 2, 2, 8],
+                ),
+                (np.array([[[0, 0], [5, 3]]]), [8]),
             ]
         )
     ],
-) 
-def test_manhattan_distance(edges: ConnectionArray | Connection, result: Int[np.ndarray, "edges"] | Int[np.ndarray, ""] | type[Exception]):
+)
+def test_manhattan_distance(
+    edges: ConnectionArray | Connection,
+    result: Int[np.ndarray, "edges"] | Int[np.ndarray, ""] | type[Exception],
+):
     if isinstance(result, type) and issubclass(result, Exception):
         with pytest.raises(result):
             manhattan_distance(edges)

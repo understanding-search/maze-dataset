@@ -4,7 +4,6 @@ from maze_dataset.constants import (
     VOCAB_LIST,
     VOCAB_TOKEN_TO_INDEX,
     Connection,
-    ConnectionList,
     ConnectionArray,
     ConnectionList,
     Coord,

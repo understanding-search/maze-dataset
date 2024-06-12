@@ -26,7 +26,7 @@ from typing import (
 
 import frozendict
 import numpy as np
-from jaxtyping import Bool, Int8, Int
+from jaxtyping import Bool, Int, Int8
 from muutils.statcounter import StatCounter
 
 WhenMissing = Literal["except", "skip", "include"]
@@ -38,7 +38,7 @@ class IsDataclass(Protocol):
     # https://stackoverflow.com/questions/54668000/type-hint-for-an-instance-of-a-non-specific-dataclass
     __dataclass_fields__: ClassVar[dict[str, Any]]
 
-    
+
 """
 # `FiniteValued`
 The intended definition of this type is not possible to fully define via the Python 3.10 typing library.
@@ -165,20 +165,29 @@ def corner_first_ndindex(n: int, ndim: int = 2) -> list[tuple]:
     return indices[sorted_order]
     """
 
+
 def manhattan_distance(
-        edges: Int[np.ndarray, "edges coord=2 row_col=2"] | Int[np.ndarray, "coord=2 row_col=2"],
-        ) -> Int[np.ndarray, "edges"] | Int[np.ndarray, ""]:
-    """ Returns the Manhattan distance between two coords.
-    """
+    edges: (
+        Int[np.ndarray, "edges coord=2 row_col=2"]
+        | Int[np.ndarray, "coord=2 row_col=2"]
+    ),
+) -> Int[np.ndarray, "edges"] | Int[np.ndarray, ""]:
+    """Returns the Manhattan distance between two coords."""
     if len(edges.shape) == 3:
-        return np.linalg.norm(edges[:,0,:]-edges[:,1,:], axis=1, ord=1).astype(np.int8)
+        return np.linalg.norm(edges[:, 0, :] - edges[:, 1, :], axis=1, ord=1).astype(
+            np.int8
+        )
     elif len(edges.shape) == 2:
-        return np.linalg.norm(edges[0,:]-edges[1,:], ord=1).astype(np.int8)
-    else: 
-        raise ValueError(f"{edges} has shape {edges.shape}, but must be match the shape in the type hints.")
+        return np.linalg.norm(edges[0, :] - edges[1, :], ord=1).astype(np.int8)
+    else:
+        raise ValueError(
+            f"{edges} has shape {edges.shape}, but must be match the shape in the type hints."
+        )
 
 
-def lattice_connection_array(n: int) -> Int8[np.ndarray, "edges leading_trailing_coord=2 row_col=2"]:
+def lattice_connection_array(
+    n: int,
+) -> Int8[np.ndarray, "edges leading_trailing_coord=2 row_col=2"]:
     """
     Returns a 3D NumPy array containing all the edges in a 2D square lattice of size n x n.
     Thanks Claude.
@@ -560,17 +569,27 @@ def all_instances(
         )
     elif get_origin(type_) == UnionType:
         # Union: call `all_instances` for each type in the Union
-        return _apply_validation_func(type_, list(flatten([all_instances(sub, validation_funcs) for sub in get_args(type_)], levels_to_flatten=1)), validation_funcs)
+        return _apply_validation_func(
+            type_,
+            list(
+                flatten(
+                    [all_instances(sub, validation_funcs) for sub in get_args(type_)],
+                    levels_to_flatten=1,
+                )
+            ),
+            validation_funcs,
+        )
     elif get_origin(type_) is Literal:
         # Literal: return all Literal arguments
         return _apply_validation_func(type_, list(get_args(type_)), validation_funcs)
-    elif type(type_) == enum.EnumMeta: # `issubclass(type_, enum.Enum)` doesn't work
+    elif type(type_) == enum.EnumMeta:  # `issubclass(type_, enum.Enum)` doesn't work
         # Enum: return all Enum members
         raise NotImplementedError(f"Support for Enums not yet implemented.")
     else:
         raise TypeError(
             f"Type {type_} either has unbounded possible values or is not supported."
         )
+
 
 def get_hashable_eq_attrs(dc: IsDataclass) -> tuple[Any]:
     """Returns a tuple of all fields used for equality comparison.
@@ -581,6 +600,7 @@ def get_hashable_eq_attrs(dc: IsDataclass) -> tuple[Any]:
         for fld in filter(lambda x: x.compare, dc.__dataclass_fields__.values())
     ), type(dc)
 
+
 def dataclass_set_equals(
     coll1: Iterable[IsDataclass], coll2: Iterable[IsDataclass]
 ) -> bool:
@@ -590,10 +610,9 @@ def dataclass_set_equals(
     Collections of them may be compared using this function.
     """
 
-    return (
-        {get_hashable_eq_attrs(x) for x in coll1}
-        ==  {get_hashable_eq_attrs(y) for y in coll2}
-    )
+    return {get_hashable_eq_attrs(x) for x in coll1} == {
+        get_hashable_eq_attrs(y) for y in coll2
+    }
 
 
 def isinstance_by_type_name(o: object, type_name: str):

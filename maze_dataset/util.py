@@ -195,9 +195,7 @@ def connection_list_to_adj_list(
 
     n_connections: int = conn_list.sum()
     adj_list: Int8[np.ndarray, "conn start_end=2 coord=2"] = np.full(
-        (n_connections, 2, 2),
-        -1,
-        dtype=np.int8
+        (n_connections, 2, 2), -1, dtype=np.int8
     )
 
     if shuffle_d1:
