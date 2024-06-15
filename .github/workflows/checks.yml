@@ -62,8 +62,8 @@ jobs:
 
       - name: Check versions
         run: |
-          python --version
-          pip show torch
+          poetry run python --version
+          poetry run python -m pip show torch
 
       - name: Unit tests
         run: make unit
