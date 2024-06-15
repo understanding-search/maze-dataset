@@ -3,6 +3,8 @@ data/**
 tests/_temp/**
 .coverage
 htmlcov/
+.vscode/**
+notebooks/data/**
 
 .pypi-token
 .commit_log
