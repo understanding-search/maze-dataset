@@ -42,11 +42,11 @@ jobs:
           - python: "3.10"
             torch: "1.13.1"
           - python: "3.10"
-            torch: "2.3.1"
+            torch: "2.3"
           - python: "3.11"
-            torch: "2.3.1"
+            torch: "2.3"
           - python: "3.12"
-            torch: "2.3.1"
+            torch: "2.3"
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
