@@ -1,4 +1,5 @@
 """mostly taken from `demo_latticemaze.ipynb`"""
+
 import os
 
 import matplotlib.pyplot as plt
