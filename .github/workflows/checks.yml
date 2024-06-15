@@ -52,9 +52,10 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.versions.python }}
-      - name: Check python version
+      - name: Check versions
         run: |
           python --version
+          pip show torch
 
       - name: Install dependencies
         run: |
