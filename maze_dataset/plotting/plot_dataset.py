@@ -7,7 +7,7 @@ def plot_dataset_mazes(
     ds: MazeDataset,
     count: int | None = None,
     figsize_mult: tuple[float, float] = (1.0, 2.0),
-    title: bool = True,
+    title: bool | str = True,
 ) -> tuple:
     count = count or len(ds)
     if count == 0:
@@ -26,14 +26,17 @@ def plot_dataset_mazes(
 
     # set title
     if title:
-        kwargs: dict = {
-            "grid_n": ds.cfg.grid_n,
-            # "n_mazes": ds.cfg.n_mazes,
-            **ds.cfg.maze_ctor_kwargs,
-        }
-        fig.suptitle(
-            f"{ds.cfg.to_fname()}\n{ds.cfg.maze_ctor.__name__}({', '.join(f'{k}={v}' for k, v in kwargs.items())})"
-        )
+        if isinstance(title, str):
+            fig.suptitle(title)
+        else:
+            kwargs: dict = {
+                "grid_n": ds.cfg.grid_n,
+                # "n_mazes": ds.cfg.n_mazes,
+                **ds.cfg.maze_ctor_kwargs,
+            }
+            fig.suptitle(
+                f"{ds.cfg.to_fname()}\n{ds.cfg.maze_ctor.__name__}({', '.join(f'{k}={v}' for k, v in kwargs.items())})"
+            )
 
     # tight layout
     fig.tight_layout()

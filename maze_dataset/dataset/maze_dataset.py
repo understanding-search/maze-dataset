@@ -88,6 +88,17 @@ class MazeDatasetConfig(GPTDatasetConfig):
         ),
     )
 
+    endpoint_kwargs: dict = serializable_field(
+        default_factory=dict,
+        serialization_fn=lambda kwargs: kwargs,
+        loading_fn=lambda data: (
+            dict()
+            if data.get("endpoint_kwargs", None)
+            is None  # this should handle the backwards compatibility
+            else data["endpoint_kwargs"]
+        ),
+    )
+
     @property
     def grid_shape(self) -> CoordTup:
         return (self.grid_n, self.grid_n)
@@ -138,7 +149,7 @@ def _generate_maze_helper(index: int) -> SolvedMaze:
         grid_shape=_GLOBAL_WORKER_CONFIG.grid_shape_np,
         **_GLOBAL_WORKER_CONFIG.maze_ctor_kwargs,
     )
-    solution = maze.generate_random_path()
+    solution = maze.generate_random_path(**_GLOBAL_WORKER_CONFIG.endpoint_kwargs)
     assert solution is not None, f"{solution = }"
     assert len(solution) > 0, f"{solution = }"
     assert isinstance(solution, np.ndarray), f"{solution = }"
