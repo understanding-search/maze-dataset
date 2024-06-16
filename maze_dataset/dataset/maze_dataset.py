@@ -195,7 +195,7 @@ class MazeDataset(GPTDataset):
         self.generation_metadata_collected: dict | None = generation_metadata_collected
 
     def data_hash(self) -> int:
-        return stable_hash(tuple(self.mazes))
+        return stable_hash(str(tuple([x.serialize() for x in self.mazes])))
 
     def __getitem__(self, i: int) -> SolvedMaze:
         return self.mazes[i]
