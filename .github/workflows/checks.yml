@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: pycln
         run: |
@@ -42,21 +42,28 @@ jobs:
           - python: "3.10"
             torch: "1.13.1"
           - python: "3.10"
-            torch: "2.0.1"
+            torch: "2.3.1"
           - python: "3.11"
-            torch: "2.0.1"
+            torch: "2.3.1"
+          - python: "3.12"
+            torch: "2.3.1"
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
         with:
-          python-version: ${{ matrix.python-version }}
-
+          python-version: ${{ matrix.versions.python }}
+          
       - name: Install dependencies
         run: |
           curl -sSL https://install.python-poetry.org | python3 -
           poetry lock --check
           poetry add torch@${{ matrix.versions.torch }}+cpu --source torch_cpu
           poetry install
+
+      - name: Check versions
+        run: |
+          poetry run python --version
+          poetry run python -m pip show torch
 
       - name: Unit tests
         run: make unit
