@@ -17,6 +17,7 @@ from maze_dataset.constants import (
     SPECIAL_TOKENS,
     Coord,
     CoordArray,
+    CoordList,
     CoordTup,
 )
 from maze_dataset.tokenization import (
@@ -313,11 +314,13 @@ class LatticeMaze(SerializableDataclass):
 
         TODO: other connected components?
         """
-        if self.generation_meta.get("fully_connected", False):
+        if (self.generation_meta is None) or (
+            self.generation_meta.get("fully_connected", False)
+        ):
             # for fully connected case, pick any two positions
             return self.get_nodes()
         else:
-            # if not fully connected, pick two positions from the connected component
+            # if metadata provided, use visited cells
             visited_cells: set[CoordTup] | None = self.generation_meta.get(
                 "visited_cells", None
             )
@@ -330,24 +333,67 @@ class LatticeMaze(SerializableDataclass):
                 visited_cells_np: Int[np.ndarray, "N 2"] = np.array(list(visited_cells))
                 return visited_cells_np
 
-    def generate_random_path(self, except_when_invalid: bool = True) -> CoordArray:
-        """return a path between randomly chosen start and end nodes within the connected component"""
+    def generate_random_path(
+        self,
+        except_when_invalid: bool = True,
+        allowed_start: CoordList | None = None,
+        allowed_end: CoordList | None = None,
+        deadend_start: bool = False,
+        deadend_end: bool = False,
+    ) -> CoordArray:
+        """return a path between randomly chosen start and end nodes within the connected component
+
+        Note that setting special conditions on start and end positions might cause the same position to be selected as both start and end.
+
+        # Parameters:
+         - `except_when_invalid : bool`
+            deprecated. setting this to `False` will cause an error.
+           (defaults to `True`)
+         - `allowed_start : CoordList | None`
+            a list of allowed start positions. If `None`, any position in the connected component is allowed
+           (defaults to `None`)
+         - `allowed_end : CoordList | None`
+            a list of allowed end positions. If `None`, any position in the connected component is allowed
+           (defaults to `None`)
+         - `deadend_start : bool`
+            whether to ***force*** the start position to be a deadend (defaults to `False`)
+           (defaults to `False`)
+         - `deadend_end : bool`
+            whether to ***force*** the end position to be a deadend (defaults to `False`)
+           (defaults to `False`)
+
+        # Returns:
+         - `CoordArray`
+            a path between the selected start and end positions
+
+        # Raises:
+         - `ValueError` : if the connected component has less than 2 nodes and `except_when_invalid` is `True`
+        """
 
         # we can't create a "path" in a single-node maze
-        assert self.grid_shape[0] > 1 and self.grid_shape[1] > 1
+        assert (
+            self.grid_shape[0] > 1 and self.grid_shape[1] > 1
+        ), f"can't create path in single-node maze: {self.as_ascii()}"
 
+        # get connected component
         connected_component: CoordArray = self.get_connected_component()
+
+        # initialize start and end positions
         positions: Int[np.int8, "2 2"]
-        if len(connected_component) < 2:
-            if except_when_invalid:
-                raise ValueError(
-                    f"connected component has less than 2 nodes: {connected_component}",
-                    self.as_ascii(),
-                )
-            assert len(connected_component) == 1
-            # just connect it to itself
-            positions = np.array([connected_component[0], connected_component[0]])
-        else:
+
+        # handle deprecated parameter
+        if not except_when_invalid:
+            raise DeprecationWarning(
+                "except_when_invalid is deprecated. Set it to the default `True` to avoid this warning."
+            )
+
+        # if no special conditions on start and end positions
+        if (allowed_start, allowed_end, deadend_start, deadend_end) == (
+            None,
+            None,
+            False,
+            False,
+        ):
             positions = connected_component[
                 np.random.choice(
                     len(connected_component),
@@ -356,7 +402,47 @@ class LatticeMaze(SerializableDataclass):
                 )
             ]
 
-        return self.find_shortest_path(positions[0], positions[1])
+            return self.find_shortest_path(positions[0], positions[1])
+
+        # handle special conditions
+        connected_component_set: set[CoordTup] = set(map(tuple, connected_component))
+        # copy connected component set
+        allowed_start_set: set[CoordTup] = connected_component_set.copy()
+        allowed_end_set: set[CoordTup] = connected_component_set.copy()
+
+        # filter by explicitly allowed start and end positions
+        if allowed_start is not None:
+            allowed_start_set = set(map(tuple, allowed_start)) & connected_component_set
+
+        if allowed_end is not None:
+            allowed_end_set = set(map(tuple, allowed_end)) & connected_component_set
+
+        # filter by forcing deadends
+        if deadend_start:
+            allowed_start_set = set(
+                filter(
+                    lambda x: len(self.get_coord_neighbors(x)) == 1, allowed_start_set
+                )
+            )
+
+        if deadend_end:
+            allowed_end_set = set(
+                filter(lambda x: len(self.get_coord_neighbors(x)) == 1, allowed_end_set)
+            )
+
+        # check we have valid positions
+        if len(allowed_start_set) == 0 or len(allowed_end_set) == 0:
+            raise ValueError("no valid start or end positions found")
+
+        # randomly select start and end positions
+        start_pos: CoordTup = tuple(
+            list(allowed_start_set)[np.random.randint(0, len(allowed_start_set))]
+        )
+        end_pos: CoordTup = tuple(
+            list(allowed_end_set)[np.random.randint(0, len(allowed_end_set))]
+        )
+
+        return self.find_shortest_path(start_pos, end_pos)
 
     # ============================================================
     # to and from adjacency list
