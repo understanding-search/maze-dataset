@@ -41,6 +41,10 @@ from maze_dataset.utils import all_instances
 
 @cache
 def _get_all_tokenizers() -> list[MazeTokenizer2]:
+    """
+    Computes a complete list of all valid tokenizers.
+    Warning: This is an expensive function.
+    """
     return all_instances(
         MazeTokenizer2,
         validation_funcs=frozendict.frozendict(
@@ -65,20 +69,20 @@ EVERY_TEST_TOKENIZERS: list[MazeTokenizer2] = [
 
 
 @cache
-def all_tokenizers_list() -> list[MazeTokenizer2]:
-    """Casts ALL_TOKENIZERS to a list."""
-    return list(_get_all_tokenizers())
+def all_tokenizers_set() -> set[MazeTokenizer2]:
+    """Casts ALL_TOKENIZERS to a set."""
+    return set(_get_all_tokenizers())
 
 
 @cache
 def _all_tokenizers_except_every_test_tokenizers() -> list[MazeTokenizer2]:
     """Returns"""
-    return list(_get_all_tokenizers().difference(EVERY_TEST_TOKENIZERS))
+    return list(all_tokenizers_set().difference(EVERY_TEST_TOKENIZERS))
 
 
 def sample_all_tokenizers(n: int) -> list[MazeTokenizer2]:
     """Samples `n` tokenizers from `ALL_TOKENIZERS`."""
-    return random.sample(all_tokenizers_list(), n)
+    return random.sample(_get_all_tokenizers(), n)
 
 
 def sample_tokenizers_for_test(n: int) -> list[MazeTokenizer2]:

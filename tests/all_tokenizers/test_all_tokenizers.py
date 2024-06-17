@@ -573,7 +573,7 @@ def test_is_tested_tokenizer(tokenizer: MazeTokenizer2):
 
 
 def _helper_test_path_tokenizers(
-    pt: PathTokenizers.PathTokenizer,
+    pt: PathTokenizers._PathTokenizer,
     maze: SolvedMaze,
     footprint_inds: Sequence[int],
 ):
@@ -616,7 +616,7 @@ def _helper_test_path_tokenizers(
             _ASCII_MAZES.items(),
             random.sample(
                 all_instances(
-                    PathTokenizers.PathTokenizer,
+                    PathTokenizers._PathTokenizer,
                     frozendict.frozendict({TokenizerElement: lambda x: x.is_valid()}),
                 ),
                 min(
@@ -626,7 +626,7 @@ def _helper_test_path_tokenizers(
         )
     ],
 )
-def test_path_tokenizers(pt: PathTokenizers.PathTokenizer, manual_maze: _MANUAL_MAZE):
+def test_path_tokenizers(pt: PathTokenizers._PathTokenizer, manual_maze: _MANUAL_MAZE):
     solved_maze: SolvedMaze = SolvedMaze.from_ascii("\n".join(manual_maze.ascii))
     match type(pt.step_size):
         case StepSizes.Singles:
@@ -709,13 +709,13 @@ def test_edge_permuters(ep: EdgePermuters._EdgePermuter, maze: LatticeMaze):
         for (i, maze), tokenizer in itertools.product(
             enumerate(MIXED_MAZES[:6]),
             all_instances(
-                EdgeSubsets.EdgeSubset,
+                EdgeSubsets._EdgeSubset,
                 frozendict.frozendict({TokenizerElement: lambda x: x.is_valid()}),
             ),
         )
     ],
 )
-def test_edge_subsets(es: EdgeSubsets.EdgeSubset, maze: LatticeMaze):
+def test_edge_subsets(es: EdgeSubsets._EdgeSubset, maze: LatticeMaze):
     edges: ConnectionArray = es._get_edges(maze)
     n: int = maze.grid_n
     match type(es):
@@ -747,7 +747,7 @@ def test_edge_subsets(es: EdgeSubsets.EdgeSubset, maze: LatticeMaze):
         for (i, maze), tok_elem, es in itertools.product(
             enumerate(MIXED_MAZES[:6]),
             all_instances(
-                EdgeGroupings.EdgeGrouping,
+                EdgeGroupings._EdgeGrouping,
                 frozendict.frozendict(
                     {
                         TokenizerElement: lambda x: x.is_valid(),
@@ -758,14 +758,14 @@ def test_edge_subsets(es: EdgeSubsets.EdgeSubset, maze: LatticeMaze):
                 ),
             ),
             all_instances(
-                EdgeSubsets.EdgeSubset,
+                EdgeSubsets._EdgeSubset,
                 frozendict.frozendict({TokenizerElement: lambda x: x.is_valid()}),
             ),
         )
     ],
 )
 def test_edge_subsets(
-    tok_elem: EdgeGroupings.EdgeGrouping, es: EdgeSubsets.EdgeSubset, maze: LatticeMaze
+    tok_elem: EdgeGroupings._EdgeGrouping, es: EdgeSubsets._EdgeSubset, maze: LatticeMaze
 ):
     edges: ConnectionArray = es._get_edges(maze)
     n: int = maze.grid_n
