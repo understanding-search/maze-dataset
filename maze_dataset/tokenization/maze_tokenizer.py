@@ -1108,6 +1108,7 @@ class TargetTokenizers(_TokenizerElementNamespace):
 class StepSizes(_TokenizerElementNamespace):
     key = "step_size"
 
+    @serializable_dataclass(frozen=True, kw_only=True)
     class _StepSize(TokenizerElement, abc.ABC):
         @classmethod
         def attribute_key(cls) -> str:
@@ -1129,11 +1130,15 @@ class StepSizes(_TokenizerElementNamespace):
             # No invalid instances possible within data member type hint bounds
             return True
 
+
+    @serializable_dataclass(frozen=True, kw_only=True)
     class Singles(_StepSize):
         def _step_single_indices(self, maze: SolvedMaze) -> list[int]:
             """Returns the indices of `maze.solution` corresponding to the steps to be tokenized."""
             return list(range(maze.solution.shape[0]))
 
+
+    @serializable_dataclass(frozen=True, kw_only=True)
     class Straightaways(_StepSize):
         def _step_single_indices(self, maze: SolvedMaze) -> list[int]:
             """Returns the indices of `maze.solution` corresponding to the steps to be tokenized."""
@@ -1146,11 +1151,15 @@ class StepSizes(_TokenizerElementNamespace):
             indices.append(i)
             return indices
 
+
+    @serializable_dataclass(frozen=True, kw_only=True)
     class Forks(_StepSize):
         def _step_single_indices(self, maze: SolvedMaze) -> list[int]:
             """Returns the indices of `maze.solution` corresponding to the steps to be tokenized."""
             return maze.get_solution_forking_points(always_include_endpoints=True)[0]
 
+
+    @serializable_dataclass(frozen=True, kw_only=True)
     class ForksAndStraightaways(_StepSize):
         def _step_single_indices(self, maze: SolvedMaze) -> list[int]:
             """Returns the indices of `maze.solution` corresponding to the steps to be tokenized."""
@@ -1169,6 +1178,7 @@ class StepSizes(_TokenizerElementNamespace):
 class StepTokenizers(_TokenizerElementNamespace):
     key = "step_tokenizers"
 
+    @serializable_dataclass(frozen=True, kw_only=True)
     class _StepTokenizer(TokenizerElement, abc.ABC):
         @classmethod
         def attribute_key(cls) -> str:
@@ -1197,6 +1207,8 @@ class StepTokenizers(_TokenizerElementNamespace):
             # No invalid instances possible within data member type hint bounds
             return True
 
+
+    @serializable_dataclass(frozen=True, kw_only=True)
     class Coord(_StepTokenizer):
         def to_tokens(
             self,
@@ -1207,6 +1219,8 @@ class StepTokenizers(_TokenizerElementNamespace):
         ) -> list[str]:
             return coord_tokenizer.to_tokens(maze.solution[end_index, ...])
 
+
+    @serializable_dataclass(frozen=True, kw_only=True)
     class Cardinal(_StepTokenizer):
         @abc.abstractmethod  # TODO: Delete to reinstantiate as valid `StepTokenizer` concrete class
         def to_tokens(
@@ -1216,6 +1230,8 @@ class StepTokenizers(_TokenizerElementNamespace):
                 get_cardinal_direction(maze.solution[start_index : start_index + 2])
             ]
 
+
+    @serializable_dataclass(frozen=True, kw_only=True)
     class Relative(_StepTokenizer):
         """Tokenizes a solution step using relative first-person directions (right, left, forward, etc.).
         To simplify the indeterminacy, at the start of a solution the "agent" solving the maze is assumed to be facing NORTH.
@@ -1243,6 +1259,8 @@ class StepTokenizers(_TokenizerElementNamespace):
                 get_relative_direction(maze.solution[start_index - 1 : start_index + 2])
             ]
 
+
+    @serializable_dataclass(frozen=True, kw_only=True)
     class Distance(_StepTokenizer):
         def to_tokens(
             self, maze: SolvedMaze, start_index: int, end_index: int, **kwargs
