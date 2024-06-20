@@ -1,9 +1,10 @@
 import abc
 from dataclasses import dataclass
 from typing import Callable, Iterable, Literal
-
+from collections import Counter
 import frozendict
 import itertools
+import random
 import numpy as np
 import pytest
 from jaxtyping import Int
@@ -12,6 +13,7 @@ from pytest import mark, param
 from maze_dataset import LatticeMaze
 from maze_dataset.constants import VOCAB, Connection, ConnectionArray, ConnectionList
 from maze_dataset.dataset.maze_dataset import MazeDatasetConfig
+from maze_dataset.generation import numpy_rng
 from maze_dataset.token_utils import (
     get_adj_list_tokens,
     get_origin_tokens,
@@ -25,6 +27,8 @@ from maze_dataset.tokenization import (
     MazeTokenizer2,
     PathTokenizers,
     StepTokenizers,
+    EdgeSubsets,
+    EdgePermuters,
     TokenizationMode,
     get_tokens_up_to_path_start,
 )
@@ -46,6 +50,7 @@ from maze_dataset.utils import (
     manhattan_distance,
     lattice_connection_array,
 )
+from maze_dataset.testing_utils import MAZE_DATASET, GRID_N
 
 MAZE_TOKENS: tuple[list[str], str] = (
     "<ADJLIST_START> (0,1) <--> (1,1) ; (1,0) <--> (1,1) ; (0,1) <--> (0,0) ; <ADJLIST_END> <ORIGIN_START> (1,0) <ORIGIN_END> <TARGET_START> (1,1) <TARGET_END> <PATH_START> (1,0) (1,1) <PATH_END>".split(),
@@ -1008,18 +1013,28 @@ def test_lattice_connection_arrray(n):
     assert tuple(np.unique(edges, axis=0).shape) == (2*n*(n-1), 2, 2)
 
 
-# @mark.parametrize(
-#     "edges, maze",
-#     [
-#         param(
-#             edges,
-#             res,
-#             id=f"{edges}",
-#         )
-#         for edges, res in itertools.product(
-#             ..., 
-#         )
-#     ],
-# )
-# def test_is_connection(edges: ConnectionArray, maze: LatticeMaze):
-#     output = is_connection(edges, maze.connection_list)
+@mark.parametrize(
+    "edges, maze",
+    [
+        param(
+            edges(),
+            maze,
+            id=f"edges[{i}]; maze[{j}]",
+        )
+        for (i, edges), (j, maze) in itertools.product(
+            enumerate([
+                lambda: lattice_connection_array(GRID_N),
+                lambda: np.flip(lattice_connection_array(GRID_N), axis=1),
+                lambda: lattice_connection_array(GRID_N - 1),
+                lambda: numpy_rng.choice(lattice_connection_array(GRID_N), 2*GRID_N, axis=0),
+                lambda: numpy_rng.choice(lattice_connection_array(GRID_N), 1, axis=0),
+            ]), 
+            enumerate(MAZE_DATASET.mazes)
+        )
+    ],
+)
+def test_is_connection(edges: ConnectionArray, maze: LatticeMaze):
+    output = is_connection(edges, maze.connection_list)
+    sorted_edges = np.sort(edges, axis=1)
+    edge_direction = ((sorted_edges[:,1,:] - sorted_edges[:,0,:])[:,0] == 0).astype(np.int8)
+    assert np.array_equal(output, maze.connection_list[edge_direction, sorted_edges[:,0,0], sorted_edges[:,0,1]])

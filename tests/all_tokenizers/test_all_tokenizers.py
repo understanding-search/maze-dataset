@@ -52,15 +52,14 @@ from maze_dataset.testing_utils import (
     MANUAL_MAZE,
 )
 
-# TODO: this needs to be cleaned up, and duplicated functionality in `test_tokenizer.py`
+# Size of the sample from `all_tokenizers.ALL_TOKENIZERS` to test
 NUM_TOKENIZERS_TO_TEST = 100
 
 
 def test_all_tokenizers():
-    ALL_TOKENIZERS = _get_all_tokenizers()
-    assert len(ALL_TOKENIZERS) > 400
-    assert len(_get_all_tokenizers()) == len(ALL_TOKENIZERS)
-    assert len({hash(mt) for mt in ALL_TOKENIZERS}) == len(ALL_TOKENIZERS)
+    all_tokenizers = _get_all_tokenizers()
+    assert len(all_tokenizers) > 400
+    assert len({hash(mt) for mt in all_tokenizers}) == len(all_tokenizers)
 
 
 @mark.parametrize(
