@@ -185,7 +185,8 @@ def connection_list_to_adj_list(
     - `shuffle_d0: bool`
         shuffle the adjacency list along the 0th axis (order of pairs)
     - `shuffle_d1: bool`
-        shuffle the adjacency list along the 1st axis (order of coordinates in each pair)
+        shuffle the adjacency list along the 1st axis (order of coordinates in each pair).
+        If `False`, all pairs have the smaller coord first.
 
 
     # Returns:

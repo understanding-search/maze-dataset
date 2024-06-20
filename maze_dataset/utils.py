@@ -187,7 +187,7 @@ def manhattan_distance(
 
 def lattice_connection_array(
     n: int,
-) -> Int8[np.ndarray, "edges leading_trailing_coord=2 row_col=2"]:
+) -> Int8[np.ndarray, "edges=2*n*(n-1) leading_trailing_coord=2 row_col=2"]:
     """
     Returns a 3D NumPy array containing all the edges in a 2D square lattice of size n x n.
     Thanks Claude.
@@ -196,7 +196,8 @@ def lattice_connection_array(
     - `n`: The size of the square lattice.
 
     # Returns
-    - np.ndarray: A 3D NumPy array of shape (2*n*(n-1), 2, 2) containing the coordinates of the edges in the 2D square lattice.
+    np.ndarray: A 3D NumPy array of shape containing the coordinates of the edges in the 2D square lattice.
+    In each pair, the coord with the smaller sum always comes first.
     """
     row_coords, col_coords = np.meshgrid(
         np.arange(n, dtype=np.int8),

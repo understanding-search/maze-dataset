@@ -41,6 +41,7 @@ from maze_dataset.utils import (
     get_all_subclasses,
     isinstance_by_type_name,
     manhattan_distance,
+    lattice_connection_array,
 )
 
 MAZE_TOKENS: tuple[list[str], str] = (
@@ -988,3 +989,17 @@ def test_manhattan_distance(
             manhattan_distance(edges)
         return
     assert np.array_equal(manhattan_distance(edges), np.array(result, dtype=np.int8))
+
+
+@mark.parametrize(
+    "n",
+    [
+        param(n)
+        for n in [2, 3, 5, 20]
+    ],
+)
+def test_lattice_connection_arrray(n):
+    edges = lattice_connection_array(n)
+    assert tuple(edges.shape) == (2*n*(n-1), 2, 2)
+    assert np.all(np.sum(edges[:,1], axis=1) > np.sum(edges[:,0], axis=1))
+    assert tuple(np.unique(edges, axis=0).shape) == (2*n*(n-1), 2, 2)

@@ -9,7 +9,7 @@ from pathlib import Path
 from typing import Any, Callable, Iterable, Literal, Mapping, Sequence, TypedDict
 
 import numpy as np
-from jaxtyping import Int, Int64
+from jaxtyping import Int, Int64, Bool
 from muutils.json_serialize import (
     SerializableDataclass,
     serializable_dataclass,
@@ -663,6 +663,7 @@ class EdgeGroupings(_TokenizerElementNamespace):
 
         connection_token_ordinal: Literal[0, 1, 2]
         intra: bool
+        grouped: bool
 
     @serializable_dataclass(frozen=True, kw_only=True)
     class _EdgeGrouping(TokenizerElement, abc.ABC):
@@ -707,7 +708,9 @@ class EdgeGroupings(_TokenizerElementNamespace):
 
         def _token_params(self) -> "EdgeGroupings._GroupingTokenParams":
             return EdgeGroupings._GroupingTokenParams(
-                connection_token_ordinal=self.connection_token_ordinal, intra=False
+                connection_token_ordinal=self.connection_token_ordinal, 
+                intra=False,
+                grouped=False,
             )
 
         def _group_edges(self, edges: ConnectionList) -> Sequence[ConnectionList]:
@@ -733,7 +736,9 @@ class EdgeGroupings(_TokenizerElementNamespace):
 
         def _token_params(self) -> "EdgeGroupings._GroupingTokenParams":
             return EdgeGroupings._GroupingTokenParams(
-                connection_token_ordinal=self.connection_token_ordinal, intra=self.intra
+                connection_token_ordinal=self.connection_token_ordinal, 
+                intra=self.intra,
+                grouped=True,
             )
 
         def _group_edges(self, edges: ConnectionArray) -> Sequence[ConnectionArray]:
@@ -834,6 +839,9 @@ class EdgeSubsets(_TokenizerElementNamespace):
 
         @abc.abstractmethod
         def _get_edges(self, maze: LatticeMaze) -> ConnectionArray:
+            """
+            Returns the set of lattice edges to be tokenized.
+            """
             pass
 
     @serializable_dataclass(frozen=True, kw_only=True)
@@ -978,21 +986,25 @@ class AdjListTokenizers(_TokenizerElementNamespace):
             group_params: EdgeGroupings._GroupingTokenParams,
         ) -> list[str]:
             cxn_ord: int = group_params["connection_token_ordinal"]
-            if edges.shape[0] == 1:
-                # If group is length 1, i.e., ungrouped
-                ...
-            else:
+            if group_params["grouped"]:
                 # If grouped
-                return list(flatten(
-                    [
-                        coord_tokenizer.to_tokens(edges[0,0]),
-                        *[
-                            empty_sequence_if_attr_false((VOCAB.ADJLIST_INTRA,), group_params, 'intra'),
-                            ...
-                            for edge in edges
-                        ],
-                    ]
-                ))
+                permutation: list[int] = [0, 2] if group_params["intra"] else []
+                permutation.insert(cxn_ord, 1)
+                smaller_coord = np.sum(edges[:,1], axis=2) > np.sum(edges[:,0], axis=2)
+            else:
+                # If ungrouped
+                permutation = [0, 1] if cxn_ord == 0 else [1, 0]
+            return [] 
+                # return list(flatten(
+                #     [
+                #         coord_tokenizer.to_tokens(edges[0,0]),
+                        # *[
+                        #     empty_sequence_if_attr_false((VOCAB.ADJLIST_INTRA,), group_params, 'intra'),
+                        #     ...
+                        #     for edge in edges
+                        # ],
+                #     ]
+                # ))
 
 
     @serializable_dataclass(frozen=True, kw_only=True)
