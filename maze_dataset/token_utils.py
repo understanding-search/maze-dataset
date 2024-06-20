@@ -140,6 +140,3 @@ def get_relative_direction(coords: Int[np.ndarray, "prev_cur_next=3 axis=2"]) ->
             return VOCAB.PATH_LEFT
         case -1:
             return VOCAB.PATH_RIGHT
-
-
-a = 1

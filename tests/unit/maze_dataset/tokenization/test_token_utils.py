@@ -3,12 +3,14 @@ from dataclasses import dataclass
 from typing import Callable, Iterable, Literal
 
 import frozendict
+import itertools
 import numpy as np
 import pytest
 from jaxtyping import Int
 from pytest import mark, param
 
-from maze_dataset.constants import VOCAB, Connection, ConnectionArray
+from maze_dataset import LatticeMaze
+from maze_dataset.constants import VOCAB, Connection, ConnectionArray, ConnectionList
 from maze_dataset.dataset.maze_dataset import MazeDatasetConfig
 from maze_dataset.token_utils import (
     get_adj_list_tokens,
@@ -31,6 +33,7 @@ from maze_dataset.util import (
     coords_to_strings,
     equal_except_adj_list_sequence,
     strings_to_coords,
+    is_connection,
 )
 from maze_dataset.utils import (
     FiniteValued,
@@ -1003,3 +1006,20 @@ def test_lattice_connection_arrray(n):
     assert tuple(edges.shape) == (2*n*(n-1), 2, 2)
     assert np.all(np.sum(edges[:,1], axis=1) > np.sum(edges[:,0], axis=1))
     assert tuple(np.unique(edges, axis=0).shape) == (2*n*(n-1), 2, 2)
+
+
+# @mark.parametrize(
+#     "edges, maze",
+#     [
+#         param(
+#             edges,
+#             res,
+#             id=f"{edges}",
+#         )
+#         for edges, res in itertools.product(
+#             ..., 
+#         )
+#     ],
+# )
+# def test_is_connection(edges: ConnectionArray, maze: LatticeMaze):
+#     output = is_connection(edges, maze.connection_list)
