@@ -811,7 +811,7 @@ class EdgePermuters(_TokenizerElementNamespace):
     class BothCoords(_EdgePermuter):
         """Includes both possible permutations of every edge in the output.
         Since input ConnectionList has only 1 instance of each edge,
-        a call to `BothCoords._permute` will modify `lattice_edges` in-place to double `shape[1]`.
+        a call to `BothCoords._permute` will modify `lattice_edges` in-place, doubling `shape[0]`.
         """
         @staticmethod
         def _permute(lattice_edges: ConnectionArray) -> ConnectionArray:
@@ -854,7 +854,7 @@ class EdgeSubsets(_TokenizerElementNamespace):
         def _get_edges(self, maze: LatticeMaze) -> ConnectionArray:
             return lattice_connection_array(maze.grid_n)
             
-            
+
     @serializable_dataclass(frozen=True, kw_only=True)
     class ConnectionEdges(_EdgeSubset):
         """
@@ -959,14 +959,14 @@ class AdjListTokenizers(_TokenizerElementNamespace):
             # then, we need to group the edges
             groups: Sequence[ConnectionArray] = self.edge_grouping._group_edges(edges)
             # Tokenize each group with optional delimiters
-            tokens: list[str] = flatten([
+            tokens: list[str] = list(flatten([
                 [
                     *empty_sequence_if_attr_false((VOCAB.ADJLIST_PRE,), self, "pre"),
                     *self._tokenize_edge_grouping(group, maze, coord_tokenizer, group_params),
                     *empty_sequence_if_attr_false((VOCAB.ADJACENCY_ENDLINE,), self, "post"),
                 ]
             for group in groups
-            ])
+            ]))
             return tokens
 
     @serializable_dataclass(frozen=True, kw_only=True)
@@ -1008,8 +1008,8 @@ class AdjListTokenizers(_TokenizerElementNamespace):
                 # If ungrouped
                 permutation = [0, 2] if cxn_ord == 0 else [1, 0]
                 permutation.insert(cxn_ord, 1)
-                tokenize_callables.insert(lambda i: coord_tokenizer.to_tokens(edges[i,0]), 0)
-                token_funcs = [token_funcs[i] for i in permutation]
+                tokenize_callables.insert(0, lambda i: coord_tokenizer.to_tokens(edges[i,0]))
+                token_callables = [token_callables[i] for i in permutation]
                 
                 return flatten([
                     [
