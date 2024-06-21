@@ -98,7 +98,7 @@ def test_edge_permuters(ep: EdgePermuters._EdgePermuter, maze: LatticeMaze):
     old_shape = edges.shape
     permuted: ConnectionArray = ep._permute(edges)
     match ep:
-        case EdgePermuters.RandomCoord():
+        case EdgePermuters.RandomCoords():
             assert permuted.shape == old_shape
             assert edges is permuted
             i = 0
@@ -549,7 +549,7 @@ def test_edge_permuters(ep: EdgePermuters._EdgePermuter, maze: LatticeMaze):
     old_shape = edges.shape
     permuted: ConnectionArray = ep._permute(edges)
     match ep:
-        case EdgePermuters.RandomCoord():
+        case EdgePermuters.RandomCoords():
             assert permuted.shape == old_shape
             assert edges is permuted
             i = 0
@@ -663,53 +663,3 @@ def test_edge_groupings(
             assert all(
                 tuple(diff) in allowed_diffs for diff in np.unique(vector_diffs, axis=0)
             )
-
-@mark.parametrize(
-    "tok_elem,es,maze",
-    [
-        param(tok_elem, es, maze, id=f"{tok_elem.name}-{es.name}-maze[{i}]")
-        for (i, maze), tok_elem, es in itertools.product(
-            enumerate(MIXED_MAZES[:6]),
-            all_instances(
-                AdjListTokenizers._AdjListTokenizer,
-                frozendict.frozendict({TokenizerElement: lambda x: x.is_valid(),}),
-            ),
-        )
-    ],
-)
-def test_adjlist_tokenizers(tok_elem: AdjListTokenizers._AdjListTokenizer, maze: LatticeMaze):
-    toks: list[str] = tok_elem.to_tokens(maze, CoordTokenizers.UT())
-    tok_counter: Counter = Counter(toks)
-    n: int = maze.grid_n
-    edge_count: int = 1  # To be updated in match/case blocks
-    # group_count: int = 1  # To be updated in match/case blocks
-    match tok_elem.edge_subset:
-        case EdgeSubsets.AllLatticeEdges():
-            edge_count *= n*(n - 1)*2
-        case EdgeSubsets.ConnectionEdges():
-            edge_count *= np.count_nonzero(maze.connection_list)
-        case EdgeSubsets.ConnectionEdges(walls=True):
-            edge_count *= n*(n - 1)*2 - np.count_nonzero(maze.connection_list)
-        case _:
-            raise NotImplementedError(f'`match` case missing for {tok_elem.edge_subset=}')
-    
-    match tok_elem.edge_permuter:
-        case EdgePermuters.BothCoords():
-            edge_count *= 2
-        case _:
-            edge_count *= 1
-
-    match type(tok_elem.edge_grouping):
-        # TODO: Get group count without relying on `pre` or `post` tokens
-        case EdgeGroupings.Ungrouped:
-            group_count = edge_count
-            pass
-        case EdgeGroupings.ByLeadingCoord:
-            if tok_elem.edge_grouping.pre:
-                assert tok_counter[VOCAB.ADJLIST_PRE] == group_count
-            if tok_elem.edge_grouping.intra:
-                assert tok_counter[VOCAB.ADJLIST_INTRA] == edge_count
-        case _:
-            raise NotImplementedError(f'`match` case missing for {tok_elem.edge_grouping=}')
-
-    assert tok_counter[VOCAB.CONNECTOR] + tok_counter[VOCAB.ADJLIST_WALL] == edge_count

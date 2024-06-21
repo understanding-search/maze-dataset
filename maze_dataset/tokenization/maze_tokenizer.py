@@ -792,7 +792,7 @@ class EdgePermuters(_TokenizerElementNamespace):
             pass
 
     @serializable_dataclass(frozen=True, kw_only=True)
-    class Sorted(_EdgePermuter):
+    class SortedCoords(_EdgePermuter):
         """returns a sorted representation. useful for checking consistency"""
         @staticmethod
         def _permute(lattice_edges: ConnectionArray) -> ConnectionArray:
@@ -804,11 +804,10 @@ class EdgePermuters(_TokenizerElementNamespace):
             ]
 
     @serializable_dataclass(frozen=True, kw_only=True)
-    class RandomCoord(_EdgePermuter):
+    class RandomCoords(_EdgePermuter):
         """Permutes randomly."""
         @staticmethod
         def _permute(lattice_edges: ConnectionArray) -> ConnectionArray:
-            # return np.random.shuffle(lattice_edges.transpose((1,0,2,3))).transpose((1,0,2,3))
             numpy_rng.shuffle(lattice_edges, 1)
             return lattice_edges
 
@@ -922,7 +921,7 @@ class AdjListTokenizers(_TokenizerElementNamespace):
             loading_fn=lambda x: _load_tokenizer_element(x, EdgeSubsets),
         )
         edge_permuter: EdgePermuters._EdgePermuter = serializable_field(
-            default=EdgePermuters.RandomCoord(),
+            default=EdgePermuters.RandomCoords(),
             loading_fn=lambda x: _load_tokenizer_element(x, EdgePermuters),
         )
 
@@ -1025,7 +1024,7 @@ class AdjListTokenizers(_TokenizerElementNamespace):
         """Represents an edge group as tokens for the leading coord followed by coord tokens for the other group members."""
 
         edge_permuter: EdgePermuters._EdgePermuter = serializable_field(
-            default=EdgePermuters.RandomCoord(),
+            default=EdgePermuters.RandomCoords(),
             loading_fn=lambda x: _load_tokenizer_element(x, EdgePermuters),
         )
 

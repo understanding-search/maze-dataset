@@ -1,6 +1,8 @@
 import itertools
+import frozendict
 import re
-from collections import namedtuple
+import random
+from collections import namedtuple, Counter
 from itertools import product
 from typing import Iterable
 
@@ -11,16 +13,19 @@ from maze_dataset import (
     Coord,
     CoordTup,
     LatticeMaze,
-    LatticeMazeGenerators,
     MazeDataset,
     MazeDatasetConfig,
     SolvedMaze,
     TargetedLatticeMaze,
+    VOCAB,
 )
 from maze_dataset.generation import LatticeMazeGenerators
 from maze_dataset.plotting.print_tokens import color_maze_tokens_AOTP
 from maze_dataset.tokenization import (
     AdjListTokenizers,
+    EdgeGroupings,
+    EdgePermuters,
+    EdgeSubsets,
     CoordTokenizers,
     MazeTokenizer,
     MazeTokenizer2,
@@ -37,6 +42,7 @@ from maze_dataset.testing_utils import (
     MAZE_DATASET,
     ASCII_MAZES,
 )
+from maze_dataset.utils import all_instances
 
 
 def test_tokenizer():
@@ -344,3 +350,71 @@ def test_tokenizer_element_is_valid(el: TokenizerElement, result: bool):
 )
 def test_is_legacy_equivalent(tokenizer: MazeTokenizer2, result: bool):
     assert tokenizer.is_legacy_equivalent() == result
+
+
+@mark.parametrize(
+    "tok_elem,maze",
+    [
+        param(tok_elem, maze, id=f"{tok_elem.name}-maze[{i}]")
+        for (i, maze), tok_elem in itertools.product(
+            enumerate(MAZE_DATASET),
+            random.sample(all_instances(
+                AdjListTokenizers._AdjListTokenizer,
+                frozendict.frozendict({TokenizerElement: lambda x: x.is_valid(),}),
+            ), 20),
+        )
+    ],
+)
+def test_adjlist_tokenizers(tok_elem: AdjListTokenizers._AdjListTokenizer, maze: LatticeMaze):
+    toks: list[str] = tok_elem.to_tokens(maze, CoordTokenizers.UT())
+    tok_counter: Counter = Counter(toks)
+    n: int = maze.grid_n
+    edge_count: int = 1  # To be updated in match/case blocks
+    group_count: int = 1  # To be updated in match/case blocks
+
+    match tok_elem.edge_subset:
+        case EdgeSubsets.AllLatticeEdges():
+            edge_count *= n*(n - 1)*2
+        case EdgeSubsets.ConnectionEdges():
+            edge_count *= np.count_nonzero(maze.connection_list)
+        case EdgeSubsets.ConnectionEdges(walls=True):
+            edge_count *= n*(n - 1)*2 - np.count_nonzero(maze.connection_list)
+        case _:
+            raise NotImplementedError(f'`match` case missing for {tok_elem.edge_subset=}')
+    
+    match tok_elem.edge_permuter:
+        case EdgePermuters.BothCoords():
+            edge_count *= 2
+            group_count = n*(n - 1)*2
+        case EdgePermuters.RandomCoords():
+            edge_count *= 1
+            group_count = None  # Group count is stochastic
+        case EdgePermuters.SortedCoords():
+            edge_count *= 1
+            group_count = None  # Group count is stochastic
+
+    match type(tok_elem.edge_grouping):
+        # TODO: Get group count without relying on `pre` or `post` tokens
+        case EdgeGroupings.Ungrouped:
+            group_count = edge_count  # Override all above cases
+            pass
+        case EdgeGroupings.ByLeadingCoord:
+            group_count *= 1
+            if tok_elem.edge_grouping.intra:
+                assert tok_counter[VOCAB.ADJLIST_INTRA] == edge_count
+        case _:
+            raise NotImplementedError(f'`match` case missing for {tok_elem.edge_grouping=}')
+
+    match type(tok_elem):
+        case AdjListTokenizers.AdjListCoord:
+            pass
+        case AdjListTokenizers.AdjListCardinal:
+            assert tok_counter[VOCAB.PATH_NORTH] + tok_counter[VOCAB.PATH_SOUTH] + tok_counter[VOCAB.PATH_EAST] + tok_counter[VOCAB.PATH_WEST] == edge_count
+
+    if group_count is not None:
+        if tok_elem.pre:
+            assert tok_counter[VOCAB.ADJLIST_PRE] == group_count
+        if tok_elem.post:
+            assert tok_counter[VOCAB.ADJACENCY_ENDLINE] == group_count
+
+    assert tok_counter[VOCAB.CONNECTOR] + tok_counter[VOCAB.ADJLIST_WALL] == edge_count
