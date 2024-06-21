@@ -35,6 +35,7 @@ from maze_dataset.tokenization import (
     PromptSequencers,
     StepSizes,
     StepTokenizers,
+    AdjListTokenizers,
     TokenizerElement,
 )
 from maze_dataset.tokenization.all_tokenizers import (
@@ -662,3 +663,21 @@ def test_edge_groupings(
             assert all(
                 tuple(diff) in allowed_diffs for diff in np.unique(vector_diffs, axis=0)
             )
+
+@mark.parametrize(
+    "tok_elem,es,maze",
+    [
+        param(tok_elem, es, maze, id=f"{tok_elem.name}-{es.name}-maze[{i}]")
+        for (i, maze), tok_elem, es in itertools.product(
+            enumerate(MIXED_MAZES[:6]),
+            all_instances(
+                AdjListTokenizers._AdjListTokenizer,
+                frozendict.frozendict({TokenizerElement: lambda x: x.is_valid(),}),
+            ),
+        )
+    ],
+)
+def test_adjlist_tokenizers(
+    tok_elem: AdjListTokenizers._AdjListTokenizer, maze: LatticeMaze
+):
+    ...

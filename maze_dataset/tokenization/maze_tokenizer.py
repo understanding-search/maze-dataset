@@ -851,11 +851,10 @@ class EdgeSubsets(_TokenizerElementNamespace):
         All 2n**2-2n edges of the lattice are tokenized.
         If a wall exists on that edge, the edge is tokenized in the same manner, using `VOCAB.ADJLIST_WALL` in place of `VOCAB.CONNECTOR`.
         """
-
         def _get_edges(self, maze: LatticeMaze) -> ConnectionArray:
-            lattice_edges: ConnectionArray = lattice_connection_array(maze.grid_n)
-            return np.append(lattice_edges, np.flip(lattice_edges, axis=1), axis=0)
-
+            return lattice_connection_array(maze.grid_n)
+            
+            
     @serializable_dataclass(frozen=True, kw_only=True)
     class ConnectionEdges(_EdgeSubset):
         """
@@ -1000,8 +999,8 @@ class AdjListTokenizers(_TokenizerElementNamespace):
                 return flatten([
                     coord_tokenizer.to_tokens(edges[0,0]),
                     [
-                        [tok_callable(i) for tok_callable in tokenize_callables],
-                        empty_sequence_if_attr_false((VOCAB.ADJLIST_INTRA,), group_params, 'intra')
+                        [*[tok_callable(i) for tok_callable in tokenize_callables],
+                        *empty_sequence_if_attr_false((VOCAB.ADJLIST_INTRA,), group_params, 'intra')]
                         for i in edges.shape[0]
                     ]
                 ])
@@ -1013,20 +1012,12 @@ class AdjListTokenizers(_TokenizerElementNamespace):
                 token_funcs = [token_funcs[i] for i in permutation]
                 
                 return flatten([
-                    [tok_callable(i) for tok_callable in tokenize_callables],
-                    empty_sequence_if_attr_false((VOCAB.ADJLIST_INTRA,), group_params, 'intra')
-                    for i in edges.shape[0]
+                    [
+                        [*[tok_callable(i) for tok_callable in tokenize_callables],
+                        *empty_sequence_if_attr_false((VOCAB.ADJLIST_INTRA,), group_params, 'intra')]
+                        for i in edges.shape[0]
+                    ]
                 ])
-                # return list(flatten(
-                #     [
-                #         coord_tokenizer.to_tokens(edges[0,0]),
-                        # *[
-                        #     empty_sequence_if_attr_false((VOCAB.ADJLIST_INTRA,), group_params, 'intra'),
-                        #     ...
-                        #     for edge in edges
-                        # ],
-                #     ]
-                # ))
 
 
     @serializable_dataclass(frozen=True, kw_only=True)
