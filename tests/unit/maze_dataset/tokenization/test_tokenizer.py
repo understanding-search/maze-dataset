@@ -8,6 +8,7 @@ from typing import Iterable
 
 import numpy as np
 from pytest import mark, param
+from muutils.mlutils import GLOBAL_SEED
 
 from maze_dataset import (
     Coord,
@@ -351,7 +352,7 @@ def test_tokenizer_element_is_valid(el: TokenizerElement, result: bool):
 def test_is_legacy_equivalent(tokenizer: MazeTokenizer2, result: bool):
     assert tokenizer.is_legacy_equivalent() == result
 
-
+random.seed(GLOBAL_SEED)
 @mark.parametrize(
     "tok_elem,maze",
     [
@@ -399,7 +400,8 @@ def test_adjlist_tokenizers(tok_elem: AdjListTokenizers._AdjListTokenizer, maze:
             group_count = edge_count  # Override all above cases
             pass
         case EdgeGroupings.ByLeadingCoord:
-            group_count *= 1
+            if group_count is not None:
+                group_count *= 1
             if tok_elem.edge_grouping.intra:
                 assert tok_counter[VOCAB.ADJLIST_INTRA] == edge_count
         case _:
