@@ -101,12 +101,12 @@ def get_target_tokens(tokens: list[str]) -> list[str]:
     )
 
 
-def get_cardinal_direction(coords: Int[np.ndarray, "start_end=2 axis=2"]) -> str:
+def get_cardinal_direction(coords: Int[np.ndarray, "start_end=2 row_col=2"]) -> str:
     """Returns the cardinal direction token corresponding to traveling from `coords[0]` to `coords[1]`."""
     return CARDINAL_MAP[tuple(coords[1] - coords[0])]
 
 
-def get_relative_direction(coords: Int[np.ndarray, "prev_cur_next=3 axis=2"]) -> str:
+def get_relative_direction(coords: Int[np.ndarray, "prev_cur_next=3 row_col=2"]) -> str:
     """Returns the relative first-person direction token corresponding to traveling from `coords[1]` to `coords[2]`.
     # Parameters
     - `coords`: Contains 3 Coords, each of which must neighbor the previous Coord.

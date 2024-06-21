@@ -39,56 +39,6 @@ class IsDataclass(Protocol):
     __dataclass_fields__: ClassVar[dict[str, Any]]
 
 
-"""
-# `FiniteValued`
-The intended definition of this type is not possible to fully define via the Python 3.10 typing library.
-This custom generic type is a generic domain of many types which have a finite, discrete range space.
-It was created to define the domain of types for the `all_instances` function, since this function relies heavily on static typing. 
-It may later be used in related applications.
-These types may be nested in an arbitrarily deep tree via Container Types and Superclass Types (see below).
-The leaves of the tree must always be Primitive Types. 
-
-# `FiniteValued` Subtypes
-*: Indicates that this subtype is not yet supported by `all_instances`
-
-## Non-`FiniteValued` (Unbounded) Types
-These are NOT valid subtypes, but are listed for illustrative purposes.
-This list is not comprehensive.
-While the finite nature of digital computers means that the cardinality of these types is technically finite, 
-they are considered unbounded types in this context.
-- No container subtype may contain any of these unbounded subtypes.
-- `int`
-- `float`
-- `str`
-- `list`
-- `set`: Set types without a fixed length are unbounded
-- `tuple`: Tuple types without a fixed length are unbounded
-
-## Primitive Types
-Primitive types are non-nested types which resolve directly to a concrete range of values 
-- `bool`: has 2 possible values
-- `enum.Enum`: The range of a concrete `Enum` subclass is its set of enum members
-- `typing.Literal`: Every type constructed using `Literal` has a finite set of possible literal values in its definition.
-This is the preferred way to include limited ranges of non-`FiniteValued` types such as `int` or `str` in a `FiniteValued` hierarchy.
-
-## Container Types
-Container types are types which contain zero or more fields of `FiniteValued` type.
-The range of a container type is the cartesian product of their field types, except for `set[FiniteValued]`.
-- `tuple[FiniteValued]`: Tuples of fixed length whose elements are each `FiniteValued`.
-- `IsDataclass`: Concrete dataclasses whose fields are `FiniteValued`.
-- *Standard concrete class: Regular classes could be supported just like dataclasses if all their data members are `FiniteValued`-typed.
-- *`set[FiniteValued]`: Sets of fixed length of a `FiniteValued` type.
-
-## Superclass Types
-Superclass types don't directly contain data members like container types.
-Their range is the union of the ranges of their subtypes.
-- Abstract dataclasses: Abstract dataclasses whose subclasses are all `FiniteValued` superclass or container types
-- *Standard abstract classes: Abstract dataclasses whose subclasses are all `FiniteValued` superclass or container types
-- `UnionType`: Any union of `FiniteValued` types, e.g., bool | Literal[2, 3]
-"""
-FiniteValued = TypeVar("FiniteValued", bound=bool | IsDataclass | enum.Enum)
-
-
 def bool_array_from_string(
     string: str, shape: list[int], true_symbol: str = "T"
 ) -> Bool[np.ndarray, "*shape"]:
@@ -460,6 +410,57 @@ def get_all_subclasses(class_: type, include_self=False) -> set[type]:
     if include_self:
         subs.add((class_))
     return subs
+
+
+"""
+# `FiniteValued`
+The details of this type are not possible to fully define via the Python 3.10 typing library.
+This custom generic type is a generic domain of many types which have a finite, discrete, and well-defined range space.
+It was created to define the domain of supported types for the `all_instances` function, since it relies heavily on static typing. 
+It may later be used in related applications.
+These types may be nested in an arbitrarily deep tree via Container Types and Superclass Types (see below).
+The leaves of the tree must always be Primitive Types. 
+
+# `FiniteValued` Subtypes
+*: Indicates that this subtype is not yet supported by `all_instances`
+
+## Non-`FiniteValued` (Unbounded) Types
+These are NOT valid subtypes, and are listed for illustrative purposes only.
+This list is not comprehensive.
+While the finite nature of digital computers means that the cardinality of these types is technically finite, 
+they are considered unbounded types in this context.
+- No Container subtype may contain any of these unbounded subtypes.
+- `int`
+- `float`
+- `str`
+- `list`
+- `set`: Set types without a `FiniteValued` argument are unbounded
+- `tuple`: Tuple types without a fixed length are unbounded
+
+## Primitive Types
+Primitive types are non-nested types which resolve directly to a concrete range of values 
+- `bool`: has 2 possible values
+- `enum.Enum`: The range of a concrete `Enum` subclass is its set of enum members
+- `typing.Literal`: Every type constructed using `Literal` has a finite set of possible literal values in its definition.
+This is the preferred way to include limited ranges of non-`FiniteValued` types such as `int` or `str` in a `FiniteValued` hierarchy.
+
+## Container Types
+Container types are types which contain zero or more fields of `FiniteValued` type.
+The range of a container type is the cartesian product of their field types, except for `set[FiniteValued]`.
+- `tuple[FiniteValued]`: Tuples of fixed length whose elements are each `FiniteValued`.
+- `IsDataclass`: Concrete dataclasses whose fields are `FiniteValued`.
+- *Standard concrete class: Regular classes could be supported just like dataclasses if all their data members are `FiniteValued`-typed.
+- *`set[FiniteValued]`: Sets of fixed length of a `FiniteValued` type.
+
+## Superclass Types
+Superclass types don't directly contain data members like container types.
+Their range is the union of the ranges of their subtypes.
+- Abstract dataclasses: Abstract dataclasses whose subclasses are all `FiniteValued` superclass or container types
+- *`IsDataclass`: Concrete dataclasses which also have their own subclasses.
+- *Standard abstract classes: Abstract dataclasses whose subclasses are all `FiniteValued` superclass or container types
+- `UnionType`: Any union of `FiniteValued` types, e.g., bool | Literal[2, 3]
+"""
+FiniteValued = TypeVar("FiniteValued", bound=bool | IsDataclass | enum.Enum)
 
 
 def _apply_validation_func(

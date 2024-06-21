@@ -937,6 +937,9 @@ class AdjListTokenizers(_TokenizerElementNamespace):
             )
             return True
         
+        # @abc.abstractmethod
+        # def _tokenization_callables()
+
         @abc.abstractmethod
         def _tokenize_edge_grouping(
             self,
@@ -999,22 +1002,22 @@ class AdjListTokenizers(_TokenizerElementNamespace):
                 ]
             if group_params["grouped"]:
                 # If grouped
-                permutation: list[int] = [0, 1] if cxn_ord == 0 else [1, 0]
-                tokenize_callables = [tokenize_callables[i] for i in permutation]
+                callable_permutation: list[int] = [0, 1] if cxn_ord == 0 else [1, 0]
+                tokenize_callables = [tokenize_callables[i] for i in callable_permutation]
                 return flatten([
                     coord_tokenizer.to_tokens(edges[0,0]),
                     [
                         [*[tok_callable(i) for tok_callable in tokenize_callables],
-                        *empty_sequence_if_attr_false((VOCAB.ADJLIST_INTRA,), group_params, 'intra')]
+                        *((VOCAB.ADJLIST_INTRA,) if group_params['intra'] else ())]
                         for i in range(edges.shape[0])
                     ]
                 ])
             else:
                 # If ungrouped
-                permutation = [0, 2]
-                permutation.insert(cxn_ord, 1)
+                callable_permutation = [0, 2]
+                callable_permutation.insert(cxn_ord, 1)
                 tokenize_callables.insert(0, lambda i: coord_tokenizer.to_tokens(edges[i,0]))
-                tokenize_callables = [tokenize_callables[i] for i in permutation]
+                tokenize_callables = [tokenize_callables[i] for i in callable_permutation]
                 
                 return flatten([
                     [
@@ -1037,20 +1040,19 @@ class AdjListTokenizers(_TokenizerElementNamespace):
             default=EdgePermuters.BothCoords(),
             loading_fn=lambda x: _load_tokenizer_element(x, EdgePermuters),
         )
-        coord_first: bool = serializable_field(default=True)
 
-        def _single_connection_tokens(
-            self,
-            coord1: Coord,
-            coord2: Coord,
-            coord_tokenizer: CoordTokenizers._CoordTokenizer,
-        ) -> list[str]:
-            return [
-                *coord_tokenizer.to_tokens(coord1),
-                *([VOCAB.CONNECTOR] if self.intra else ()),
-                *coord_tokenizer.to_tokens(coord2),
-                *([VOCAB.ADJACENCY_ENDLINE] if self.post else ()),
-            ]
+        # def _single_connection_tokens(
+        #     self,
+        #     coord1: Coord,
+        #     coord2: Coord,
+        #     coord_tokenizer: CoordTokenizers._CoordTokenizer,
+        # ) -> list[str]:
+        #     return [
+        #         *coord_tokenizer.to_tokens(coord1),
+        #         *([VOCAB.CONNECTOR] if self.intra else ()),
+        #         *coord_tokenizer.to_tokens(coord2),
+        #         *([VOCAB.ADJACENCY_ENDLINE] if self.post else ()),
+        #     ]
 
         def _tokenize_edge_grouping(
             self,
@@ -1059,8 +1061,42 @@ class AdjListTokenizers(_TokenizerElementNamespace):
             coord_tokenizer: CoordTokenizers._CoordTokenizer,
             group_params: EdgeGroupings._GroupingTokenParams,
         ) -> Sequence[str]:
-            # TODO
-            raise NotImplementedError
+            cxn_ord: int = group_params["connection_token_ordinal"]
+            is_conn: Bool[np.ndarray, "edges"] = is_connection(edges, maze.connection_list)
+            # Map from `is_conn` to the tokens which represent connections and walls
+            conn_token_map: dict[bool, str] = {True: VOCAB.CONNECTOR, False: VOCAB.ADJLIST_WALL}
+            # `tokenize_callables`: Sequence of callables which take an index in `edges` and return part of that edge tokenization
+            # The sequence is initialized as [leading coord, connector, trailing coord], and it's then permuted according to the `AdjListTokenizer` parameters.
+            tokenize_callables = [
+                lambda i: conn_token_map[is_conn[i]],
+                lambda i: get_cardinal_direction(edges[i])
+                ]
+            if group_params["grouped"]:
+                # If grouped
+                callable_permutation: list[int] = [0, 1] if cxn_ord == 0 else [1, 0]
+                tokenize_callables = [tokenize_callables[i] for i in callable_permutation]
+                return flatten([
+                    coord_tokenizer.to_tokens(edges[0,0]),
+                    [
+                        [*[tok_callable(i) for tok_callable in tokenize_callables],
+                        *((VOCAB.ADJLIST_INTRA,) if group_params['intra'] else ())]
+                        for i in range(edges.shape[0])
+                    ]
+                ])
+            else:
+                # If ungrouped
+                callable_permutation = [0, 2]
+                callable_permutation.insert(cxn_ord, 1)
+                tokenize_callables.insert(0, lambda i: coord_tokenizer.to_tokens(edges[i,0]))
+                tokenize_callables = [tokenize_callables[i] for i in callable_permutation]
+                
+                return flatten([
+                    [
+                        [*[tok_callable(i) for tok_callable in tokenize_callables],
+                        *empty_sequence_if_attr_false((VOCAB.ADJLIST_INTRA,), group_params, 'intra')]
+                        for i in range(edges.shape[0])
+                    ]
+                ])
             
         # def to_tokens(
         #     self,
