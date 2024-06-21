@@ -46,6 +46,7 @@ from maze_dataset.util import (
     coords_to_strings,
     flatten,
     strings_to_coords,
+    is_connection,
 )
 from maze_dataset.utils import (
     WhenMissing,
@@ -986,15 +987,36 @@ class AdjListTokenizers(_TokenizerElementNamespace):
             group_params: EdgeGroupings._GroupingTokenParams,
         ) -> list[str]:
             cxn_ord: int = group_params["connection_token_ordinal"]
+            is_conn: Bool[np.ndarray, "edges"] = is_connection(edges, maze.connection_list)
+            conn_token_map: dict[bool, str] = {True: VOCAB.CONNECTOR, False: VOCAB.ADJLIST_WALL}
+            tokenize_callables = [
+                lambda i: conn_token_map[is_conn[i]],
+                lambda i: coord_tokenizer.to_tokens(edges[i,1])
+                ]
             if group_params["grouped"]:
                 # If grouped
-                permutation: list[int] = [0, 2] if group_params["intra"] else []
-                permutation.insert(cxn_ord, 1)
-                smaller_coord = np.sum(edges[:,1], axis=2) > np.sum(edges[:,0], axis=2)
+                permutation: list[int] = [0, 1] if cxn_ord == 0 else [1, 0]
+                tokenize_callables = [tokenize_callables[i] for i in permutation]
+                return flatten([
+                    coord_tokenizer.to_tokens(edges[0,0]),
+                    [
+                        [tok_callable(i) for tok_callable in tokenize_callables],
+                        empty_sequence_if_attr_false((VOCAB.ADJLIST_INTRA,), group_params, 'intra')
+                        for i in edges.shape[0]
+                    ]
+                ])
             else:
                 # If ungrouped
-                permutation = [0, 1] if cxn_ord == 0 else [1, 0]
-            return [] 
+                permutation = [0, 2] if cxn_ord == 0 else [1, 0]
+                permutation.insert(cxn_ord, 1)
+                tokenize_callables.insert(lambda i: coord_tokenizer.to_tokens(edges[i,0]), 0)
+                token_funcs = [token_funcs[i] for i in permutation]
+                
+                return flatten([
+                    [tok_callable(i) for tok_callable in tokenize_callables],
+                    empty_sequence_if_attr_false((VOCAB.ADJLIST_INTRA,), group_params, 'intra')
+                    for i in edges.shape[0]
+                ])
                 # return list(flatten(
                 #     [
                 #         coord_tokenizer.to_tokens(edges[0,0]),

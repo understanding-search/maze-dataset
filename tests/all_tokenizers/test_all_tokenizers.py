@@ -635,6 +635,8 @@ def test_edge_groupings(
     edges: ConnectionArray = es._get_edges(maze)
     n: int = maze.grid_n
     groups: Sequence[ConnectionArray] = tok_elem._group_edges(edges)
+
+    assert all(not np.any(np.diff(g[:,0], axis=0)) for g in groups) # Asserts that the leading coord is the same for all edges within each group
     match type(tok_elem):
         case EdgeGroupings.Ungrouped:
             assert_shape = edges.shape[0], 1, 2, 2

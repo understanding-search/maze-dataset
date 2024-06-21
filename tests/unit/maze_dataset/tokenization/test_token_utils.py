@@ -1,10 +1,8 @@
 import abc
 from dataclasses import dataclass
 from typing import Callable, Iterable, Literal
-from collections import Counter
 import frozendict
 import itertools
-import random
 import numpy as np
 import pytest
 from jaxtyping import Int
