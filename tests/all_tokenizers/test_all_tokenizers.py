@@ -700,10 +700,13 @@ def test_adjlist_tokenizers(tok_elem: AdjListTokenizers._AdjListTokenizer, maze:
             edge_count *= 1
 
     match type(tok_elem.edge_grouping):
+        # TODO: Get group count without relying on `pre` or `post` tokens
         case EdgeGroupings.Ungrouped:
-            # group_count = edge_count
+            group_count = edge_count
             pass
         case EdgeGroupings.ByLeadingCoord:
+            if tok_elem.edge_grouping.pre:
+                assert tok_counter[VOCAB.ADJLIST_PRE] == group_count
             if tok_elem.edge_grouping.intra:
                 assert tok_counter[VOCAB.ADJLIST_INTRA] == edge_count
         case _:
