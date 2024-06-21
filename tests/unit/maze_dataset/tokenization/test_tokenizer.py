@@ -376,7 +376,7 @@ def test_adjlist_tokenizers(tok_elem: AdjListTokenizers._AdjListTokenizer, maze:
     match tok_elem.edge_subset:
         case EdgeSubsets.AllLatticeEdges():
             edge_count *= n*(n - 1)*2
-        case EdgeSubsets.ConnectionEdges():
+        case EdgeSubsets.ConnectionEdges(walls=False):
             edge_count *= np.count_nonzero(maze.connection_list)
         case EdgeSubsets.ConnectionEdges(walls=True):
             edge_count *= n*(n - 1)*2 - np.count_nonzero(maze.connection_list)
@@ -386,11 +386,11 @@ def test_adjlist_tokenizers(tok_elem: AdjListTokenizers._AdjListTokenizer, maze:
     match tok_elem.edge_permuter:
         case EdgePermuters.BothCoords():
             edge_count *= 2
-            group_count = n*(n - 1)*2
-        case EdgePermuters.RandomCoords():
-            edge_count *= 1
-            group_count = None  # Group count is stochastic
-        case EdgePermuters.SortedCoords():
+            if tok_elem.edge_subset == EdgeSubsets.ConnectionEdges(walls=True):
+                ...
+            else:
+                ...
+        case EdgePermuters.RandomCoords() | EdgePermuters.SortedCoords():
             edge_count *= 1
             group_count = None  # Group count is stochastic
 
