@@ -796,7 +796,12 @@ class EdgePermuters(_TokenizerElementNamespace):
         """returns a sorted representation. useful for checking consistency"""
         @staticmethod
         def _permute(lattice_edges: ConnectionArray) -> ConnectionArray:
-            return np.sort(lattice_edges, axis=0)
+            return lattice_edges[
+                np.lexsort(
+                    (lattice_edges[:, 1, 1], lattice_edges[:, 1, 0], lattice_edges[:, 0, 1], lattice_edges[:, 0, 0])
+                ),
+                ...
+            ]
 
     @serializable_dataclass(frozen=True, kw_only=True)
     class RandomCoord(_EdgePermuter):
@@ -939,7 +944,7 @@ class AdjListTokenizers(_TokenizerElementNamespace):
             maze: LatticeMaze,
             coord_tokenizer: CoordTokenizers._CoordTokenizer,
             group_params: EdgeGroupings._GroupingTokenParams,
-        ) -> list[str]:
+        ) -> Sequence[str]:
             """
             Tokenizes a single edge grouping.
             Implemented in subclasses.
@@ -984,7 +989,7 @@ class AdjListTokenizers(_TokenizerElementNamespace):
             maze: LatticeMaze,
             coord_tokenizer: CoordTokenizers._CoordTokenizer,
             group_params: EdgeGroupings._GroupingTokenParams,
-        ) -> list[str]:
+        ) -> Sequence[str]:
             cxn_ord: int = group_params["connection_token_ordinal"]
             is_conn: Bool[np.ndarray, "edges"] = is_connection(edges, maze.connection_list)
             conn_token_map: dict[bool, str] = {True: VOCAB.CONNECTOR, False: VOCAB.ADJLIST_WALL}
@@ -1001,21 +1006,21 @@ class AdjListTokenizers(_TokenizerElementNamespace):
                     [
                         [*[tok_callable(i) for tok_callable in tokenize_callables],
                         *empty_sequence_if_attr_false((VOCAB.ADJLIST_INTRA,), group_params, 'intra')]
-                        for i in edges.shape[0]
+                        for i in range(edges.shape[0])
                     ]
                 ])
             else:
                 # If ungrouped
-                permutation = [0, 2] if cxn_ord == 0 else [1, 0]
+                permutation = [0, 2]
                 permutation.insert(cxn_ord, 1)
                 tokenize_callables.insert(0, lambda i: coord_tokenizer.to_tokens(edges[i,0]))
-                token_callables = [token_callables[i] for i in permutation]
+                tokenize_callables = [tokenize_callables[i] for i in permutation]
                 
                 return flatten([
                     [
                         [*[tok_callable(i) for tok_callable in tokenize_callables],
                         *empty_sequence_if_attr_false((VOCAB.ADJLIST_INTRA,), group_params, 'intra')]
-                        for i in edges.shape[0]
+                        for i in range(edges.shape[0])
                     ]
                 ])
 
@@ -1053,7 +1058,7 @@ class AdjListTokenizers(_TokenizerElementNamespace):
             maze: LatticeMaze,
             coord_tokenizer: CoordTokenizers._CoordTokenizer,
             group_params: EdgeGroupings._GroupingTokenParams,
-        ) -> list[str]:
+        ) -> Sequence[str]:
             # TODO
             raise NotImplementedError
             

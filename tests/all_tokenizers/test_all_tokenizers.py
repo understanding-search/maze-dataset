@@ -677,7 +677,36 @@ def test_edge_groupings(
         )
     ],
 )
-def test_adjlist_tokenizers(
-    tok_elem: AdjListTokenizers._AdjListTokenizer, maze: LatticeMaze
-):
-    ...
+def test_adjlist_tokenizers(tok_elem: AdjListTokenizers._AdjListTokenizer, maze: LatticeMaze):
+    toks: list[str] = tok_elem.to_tokens(maze, CoordTokenizers.UT())
+    tok_counter: Counter = Counter(toks)
+    n: int = maze.grid_n
+    edge_count: int = 1  # To be updated in match/case blocks
+    # group_count: int = 1  # To be updated in match/case blocks
+    match tok_elem.edge_subset:
+        case EdgeSubsets.AllLatticeEdges():
+            edge_count *= n*(n - 1)*2
+        case EdgeSubsets.ConnectionEdges():
+            edge_count *= np.count_nonzero(maze.connection_list)
+        case EdgeSubsets.ConnectionEdges(walls=True):
+            edge_count *= n*(n - 1)*2 - np.count_nonzero(maze.connection_list)
+        case _:
+            raise NotImplementedError(f'`match` case missing for {tok_elem.edge_subset=}')
+    
+    match tok_elem.edge_permuter:
+        case EdgePermuters.BothCoords():
+            edge_count *= 2
+        case _:
+            edge_count *= 1
+
+    match type(tok_elem.edge_grouping):
+        case EdgeGroupings.Ungrouped:
+            # group_count = edge_count
+            pass
+        case EdgeGroupings.ByLeadingCoord:
+            if tok_elem.edge_grouping.intra:
+                assert tok_counter[VOCAB.ADJLIST_INTRA] == edge_count
+        case _:
+            raise NotImplementedError(f'`match` case missing for {tok_elem.edge_grouping=}')
+
+    assert tok_counter[VOCAB.CONNECTOR] + tok_counter[VOCAB.ADJLIST_WALL] == edge_count
