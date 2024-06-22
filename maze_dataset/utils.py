@@ -6,7 +6,7 @@ import pstats
 import timeit
 import typing
 from dataclasses import field
-from functools import cache
+from functools import cache, wraps
 from types import UnionType
 from typing import (
     Any,
@@ -489,14 +489,40 @@ def _apply_validation_func(
                 continue
             vals = list(filter(validation_funcs[superclass], vals))
             break  # Only the first validation function hit in the mro is applied
+    elif get_origin(type_) == Literal:
+        out = []
+        for v in vals:
+            for superclass in type(v).__mro__:
+                if superclass not in validation_funcs:
+                    continue
+                if validation_funcs[superclass](v):
+                    out.append(v)
+                break  # Only the first validation function hit in the mro is applied
+        return out
     return vals
 
 
+def _all_instances_wrapper(f):
+    @wraps(f)
+    def wrapper(*args, **kwargs):
+        print(f"args:\t{args}\nkwargs:\t{kwargs}")
+        if len(args) >= 2:
+            validation_funcs = frozendict.frozendict(args[1])
+        elif "validation_funcs" in kwargs:
+            validation_funcs = frozendict.frozendict(kwargs["validation_funcs"])
+        else:
+            validation_funcs = None
+        return _apply_validation_func(args[0], f(args[0]), validation_funcs)
+    ...
+    return wrapper
+
+
+@_all_instances_wrapper
 @cache
 def all_instances(
     type_: FiniteValued,
     validation_funcs: (
-        frozendict.frozendict[FiniteValued, Callable[[FiniteValued], bool]] | None
+        dict[FiniteValued, Callable[[FiniteValued], bool]] | frozendict.frozendict[FiniteValued, Callable[[FiniteValued], bool]] | None
     ) = None,
 ) -> list[FiniteValued]:
     """Returns all possible values of an instance of `type_` if finite instances exist.
@@ -528,7 +554,7 @@ def all_instances(
     If no superclass of `type_` is found, then no filter is applied.
     """
     if type_ == bool:
-        return _apply_validation_func(type_, [True, False], validation_funcs)
+        return [True, False]
     elif hasattr(type_, "__dataclass_fields__") and not is_abstract(type_):
         # Concrete dataclass: construct dataclass instances with all possible combinations of fields
         fields: list[field] = type_.__dataclass_fields__
@@ -539,61 +565,45 @@ def all_instances(
                 for arg_type in fields_to_types.values()
             ]
         )
-        return _apply_validation_func(
-            type_,
-            [
-                type_(**{fld: arg for fld, arg in zip(fields_to_types.keys(), args)})
-                for args in all_arg_sequences
-            ],
-            validation_funcs,
-        )
+        return [
+            type_(**{fld: arg for fld, arg in zip(fields_to_types.keys(), args)})
+            for args in all_arg_sequences
+        ]
     elif hasattr(type_, "__dataclass_fields__") and is_abstract(type_):
         # Abstract dataclass: call `all_instances` on each subclass
-        return _apply_validation_func(
-            type_,
-            list(
-                flatten(
-                    [
-                        all_instances(sub, validation_funcs)
-                        for sub in type_.__subclasses__()
-                    ],
-                    levels_to_flatten=1,
-                )
-            ),
-            validation_funcs,
+        return list(
+            flatten(
+                [
+                    all_instances(sub, validation_funcs)
+                    for sub in type_.__subclasses__()
+                ],
+                levels_to_flatten=1,
+            )
         )
     elif (
         get_origin(type_) == tuple
     ):  # Only matches Generic type tuple since regular tuple is not finite-valued
         # Generic tuple: Similar to concrete dataclass. Construct all possible combinations of tuple fields.
-        return _apply_validation_func(
-            type_,
-            [
-                tuple(combo)
-                for combo in itertools.product(
-                    *[
-                        all_instances(tup_item, validation_funcs)
-                        for tup_item in get_args(type_)
-                    ]
-                )
-            ],
-            validation_funcs,
-        )
+        return [
+            tuple(combo)
+            for combo in itertools.product(
+                *[
+                    all_instances(tup_item, validation_funcs)
+                    for tup_item in get_args(type_)
+                ]
+            )
+        ]
     elif get_origin(type_) == UnionType:
         # Union: call `all_instances` for each type in the Union
-        return _apply_validation_func(
-            type_,
-            list(
-                flatten(
-                    [all_instances(sub, validation_funcs) for sub in get_args(type_)],
-                    levels_to_flatten=1,
-                )
-            ),
-            validation_funcs,
+        return list(
+            flatten(
+                [all_instances(sub, validation_funcs) for sub in get_args(type_)],
+                levels_to_flatten=1,
+            )
         )
     elif get_origin(type_) is Literal:
         # Literal: return all Literal arguments
-        return _apply_validation_func(type_, list(get_args(type_)), validation_funcs)
+        return list(get_args(type_))
     elif type(type_) == enum.EnumMeta:  # `issubclass(type_, enum.Enum)` doesn't work
         # Enum: return all Enum members
         raise NotImplementedError(f"Support for Enums not yet implemented.")
@@ -638,3 +648,7 @@ def isinstance_by_type_name(o: object, type_name: str):
     Generic types are not supported, only types that would appear in `type_.__mro__`.
     """
     return type_name in {s.__name__ for s in type(o).__mro__}
+
+T = Literal[1, 2, 3]
+all_instances(bool, {bool: lambda x: x})
+all_instances(T, {int: lambda x: x>2})
