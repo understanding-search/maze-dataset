@@ -490,25 +490,28 @@ def _apply_validation_func(
             vals = list(filter(validation_funcs[superclass], vals))
             break  # Only the first validation function hit in the mro is applied
     elif get_origin(type_) == Literal:
-        out = []
-        for v in vals:
-            for superclass in type(v).__mro__:
-                if superclass not in validation_funcs:
-                    continue
-                if validation_funcs[superclass](v):
-                    out.append(v)
-                break  # Only the first validation function hit in the mro is applied
-        return out
+        return list(flatten((_apply_validation_func(type(v), [v], validation_funcs) for v in get_args(type_)), levels_to_flatten=1))
+        # for v in vals:
+        #     for superclass in type(v).__mro__:
+        #         if superclass not in validation_funcs:
+        #             continue
+        #         if validation_funcs[superclass](v):
+        #             out.append(v)
+        #         break  # Only the first validation function hit in the mro is applied
+        # return out
     return vals
 
 
 def _all_instances_wrapper(f):
+    """
+    Converts dicts to frozendicts to allow caching and applies `_apply_validation_func`.
+    """
     @wraps(f)
     def wrapper(*args, **kwargs):
         print(f"args:\t{args}\nkwargs:\t{kwargs}")
-        if len(args) >= 2:
+        if len(args) >= 2 and args[1] is not None:
             validation_funcs = frozendict.frozendict(args[1])
-        elif "validation_funcs" in kwargs:
+        elif "validation_funcs" in kwargs and kwargs["validation_funcs"] is not None:
             validation_funcs = frozendict.frozendict(kwargs["validation_funcs"])
         else:
             validation_funcs = None
@@ -530,11 +533,12 @@ def all_instances(
     Function is susceptible to infinite recursion if `type_` is a dataclass whose member tree includes another instance of `type_`.
 
     # Parameters
-    - `type_`: A finite-valued type. See section "Supported `type_` Values" for more details.
+    - `type_`: A finite-valued type. See docstring on `FiniteValued` for full details.
     - `validation_funcs`: A mapping of types to auxiliary functions to validate instances of that type.
     This optional argument can provide an additional, more precise layer of validation for the instances generated beyond what type hinting alone can provide.
 
-    # Supported `type_` Values
+    ## Supported `type_` Values
+    See docstring on `FiniteValued` for full details.
     `type_` may be:
     - `FiniteValued`
     - A finite-valued, fixed-length Generic tuple type.
@@ -543,7 +547,7 @@ def all_instances(
     - Nested versions of any of the types in this list
     - A `UnionType` of any of the types in this list
 
-    # `validation_funcs` Details
+    ## `validation_funcs` Details
     `validation_funcs` is applied after all instances have been generated according to type hints.
     If `type_` is in `validation_funcs`, then the list of instances is filtered by `validation_funcs[type_](instance)`.
     `validation_funcs` is passed down for all recursive calls of `all_instances`.
@@ -649,6 +653,6 @@ def isinstance_by_type_name(o: object, type_name: str):
     """
     return type_name in {s.__name__ for s in type(o).__mro__}
 
-T = Literal[1, 2, 3]
-all_instances(bool, {bool: lambda x: x})
-all_instances(T, {int: lambda x: x>2})
+# T = Literal[1, 2, 3]
+# all_instances(bool, {bool: lambda x: x})
+# all_instances(T, {int: lambda x: x>2})

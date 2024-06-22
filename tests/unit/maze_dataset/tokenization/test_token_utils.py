@@ -591,17 +591,19 @@ class DC9(DC7):
 
 # TODO: this can definitely be generated programmatically
 @mark.parametrize(
-    "type_, result",
+    "type_, validation_funcs, result",
     [
         param(
             type_,
+            vfs,
             result,
-            id=type_.__name__,
+            id=f"{type_}-vfs[{len(vfs) if vfs is not None else 'None'}]",
         )
-        for type_, result in (
+        for type_, vfs, result in (
             [
                 (
-                    DC1,
+                    DC1, 
+                    None,
                     [
                         DC1(False, False),
                         DC1(False, True),
@@ -610,7 +612,8 @@ class DC9(DC7):
                     ],
                 ),
                 (
-                    DC2,
+                    DC2, 
+                    None,
                     [
                         DC2(False, False),
                         DC2(False, True),
@@ -619,7 +622,16 @@ class DC9(DC7):
                     ],
                 ),
                 (
-                    DC3,
+                    DC2, 
+                    {DC2: lambda dc: dc.x ^ dc.y},
+                    [
+                        DC2(False, True),
+                        DC2(True, False),
+                    ],
+                ),
+                (
+                    DC3, 
+                    None,
                     [
                         DC3(DC2(False, False)),
                         DC3(DC2(False, True)),
@@ -628,7 +640,8 @@ class DC9(DC7):
                     ],
                 ),
                 (
-                    DC4,
+                    DC4, 
+                    None,
                     [
                         DC4(DC2(False, False), True),
                         DC4(DC2(False, True), True),
@@ -640,21 +653,36 @@ class DC9(DC7):
                         DC4(DC2(True, True), False),
                     ],
                 ),
-                (DC5, TypeError),
-                (DC6, TypeError),
-                (bool, [True, False]),
-                (int, TypeError),
-                (str, TypeError),
-                (Literal[0, 1, 2], [0, 1, 2]),
                 (
-                    tuple[bool],
+                    DC4, 
+                    {DC2: lambda dc: dc.x ^ dc.y},
+                    [
+                        DC4(DC2(False, True), True),
+                        DC4(DC2(True, False), True),
+                        DC4(DC2(False, True), False),
+                        DC4(DC2(True, False), False),
+                    ],
+                ),
+                (DC5, None, TypeError),
+                (DC6, None, TypeError),
+                (bool, None, [True, False]),
+                (bool, {bool: lambda x: x}, [True]),
+                (bool, {bool: lambda x: not x}, [False]),
+                (int, None, TypeError),
+                (str, None, TypeError),
+                (Literal[0, 1, 2], None, [0, 1, 2]),
+                (Literal[0, 1, 2], {int: lambda x: x % 2 == 0}, [0, 2]),
+                (
+                    tuple[bool], 
+                    None,
                     [
                         (True,),
                         (False,),
                     ],
                 ),
                 (
-                    tuple[bool, bool],
+                    tuple[bool, bool], 
+                    None,
                     [
                         (True, True),
                         (True, False),
@@ -663,14 +691,23 @@ class DC9(DC7):
                     ],
                 ),
                 (
-                    DC8,
+                    tuple[bool, bool], 
+                    {bool: lambda x: x},
+                    [
+                        (True, True),
+                    ]
+                ),
+                (
+                    DC8, 
+                    None,
                     [
                         DC8(False),
                         DC8(True),
                     ],
                 ),
                 (
-                    DC7,
+                    DC7, 
+                    None,
                     [
                         DC8(False),
                         DC8(True),
@@ -681,7 +718,8 @@ class DC9(DC7):
                     ],
                 ),
                 (
-                    tuple[DC7],
+                    tuple[DC7], 
+                    None,
                     [
                         (DC8(False),),
                         (DC8(True),),
@@ -692,7 +730,18 @@ class DC9(DC7):
                     ],
                 ),
                 (
-                    tuple[DC8, DC8],
+                    tuple[DC7], 
+                    {DC9: lambda dc: dc.x == dc.y},
+                    [
+                        (DC8(False),),
+                        (DC8(True),),
+                        (DC9(False, False),),
+                        (DC9(True, True),),
+                    ],
+                ),
+                (
+                    tuple[DC8, DC8], 
+                    None,
                     [
                         (DC8(False), DC8(False)),
                         (DC8(False), DC8(True)),
@@ -701,7 +750,8 @@ class DC9(DC7):
                     ],
                 ),
                 (
-                    tuple[DC7, bool],
+                    tuple[DC7, bool], 
+                    None,
                     [
                         (DC8(False), True),
                         (DC8(True), True),
@@ -722,15 +772,15 @@ class DC9(DC7):
     ],
 )
 def test_all_instances(
-    type_: FiniteValued, result: type[Exception] | Iterable[FiniteValued]
+    type_: FiniteValued, validation_funcs: dict[FiniteValued, Callable[[FiniteValued], bool]] | None, result: type[Exception] | Iterable[FiniteValued]
 ):
     if isinstance(result, type) and issubclass(result, Exception):
         with pytest.raises(result):
-            all_instances(type_)
+            all_instances(type_, validation_funcs)
     elif hasattr(type_, "__dataclass_fields__"):
-        assert dataclass_set_equals(all_instances(type_), result)
+        assert dataclass_set_equals(all_instances(type_, validation_funcs), result)
     else:
-        assert set(all_instances(type_)) == set(result)
+        assert set(all_instances(type_, validation_funcs)) == set(result)
 
 
 # @mivanit: this was really difficult to understand
