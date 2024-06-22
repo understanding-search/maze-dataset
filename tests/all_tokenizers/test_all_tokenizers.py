@@ -30,7 +30,7 @@ from maze_dataset.tokenization import (
     EdgeGroupings,
     EdgePermuters,
     EdgeSubsets,
-    MazeTokenizer2,
+    MazeTokenizerModular,
     PathTokenizers,
     PromptSequencers,
     StepSizes,
@@ -104,12 +104,12 @@ def test_sample_tokenizers_for_test(n: int, result: type[Exception] | None):
         with pytest.raises(result):
             sample_tokenizers_for_test(n)
         return
-    mts: list[MazeTokenizer2] = sample_tokenizers_for_test(n)
-    mts_set: set[MazeTokenizer2] = set(mts)
+    mts: list[MazeTokenizerModular] = sample_tokenizers_for_test(n)
+    mts_set: set[MazeTokenizerModular] = set(mts)
     assert len(mts) == len(mts_set)
     assert set(EVERY_TEST_TOKENIZERS).issubset(mts_set)
     if n > SAMPLE_MIN + 1:
-        mts2: list[MazeTokenizer2] = sample_tokenizers_for_test(n)
+        mts2: list[MazeTokenizerModular] = sample_tokenizers_for_test(n)
         assert set(mts2) != mts_set  # Check that succesive samples are different
 
 
@@ -123,7 +123,7 @@ def test_sample_tokenizers_for_test(n: int, result: type[Exception] | None):
         )
     ],
 )
-def test_token_region_delimiters(maze: LatticeMaze, tokenizer: MazeTokenizer2):
+def test_token_region_delimiters(maze: LatticeMaze, tokenizer: MazeTokenizerModular):
     """<PATH_START> and similar token region delimiters should appear at most 1 time, regardless of tokenizer."""
     counts: Counter = Counter(maze.as_tokens(tokenizer))
     assert all([counts[tok] < 2 for tok in VOCAB_LIST[:8]])
@@ -136,7 +136,7 @@ def test_token_region_delimiters(maze: LatticeMaze, tokenizer: MazeTokenizer2):
         for tokenizer in sample_tokenizers_for_test(NUM_TOKENIZERS_TO_TEST)
     ],
 )
-def test_tokenizer_properties(tokenizer: MazeTokenizer2):
+def test_tokenizer_properties(tokenizer: MazeTokenizerModular):
     # Just make sure the call doesn't raise exception
     assert len(tokenizer.name) > 5
 
@@ -159,7 +159,7 @@ def test_tokenizer_properties(tokenizer: MazeTokenizer2):
         )
     ],
 )
-def test_encode_decode(maze: LatticeMaze, tokenizer: MazeTokenizer2):
+def test_encode_decode(maze: LatticeMaze, tokenizer: MazeTokenizerModular):
     maze_tok: list[str] = maze.as_tokens(maze_tokenizer=tokenizer)
     maze_encoded: list[int] = tokenizer.encode(maze_tok)
     maze_decoded: LatticeMaze = tokenizer.decode(maze_encoded)
@@ -173,10 +173,10 @@ def test_encode_decode(maze: LatticeMaze, tokenizer: MazeTokenizer2):
         for tokenizer in sample_tokenizers_for_test(NUM_TOKENIZERS_TO_TEST)
     ],
 )
-def test_zanj_save_read(tokenizer: MazeTokenizer2):
+def test_zanj_save_read(tokenizer: MazeTokenizerModular):
     path = os.path.abspath(
         os.path.join(
-            os.path.curdir, "data", "MazeTokenizer2_" + hex(hash(tokenizer)) + ".zanj"
+            os.path.curdir, "data", "MazeTokenizerModular_" + hex(hash(tokenizer)) + ".zanj"
         )
     )
     zanj = ZANJ()
@@ -191,7 +191,7 @@ def test_zanj_save_read(tokenizer: MazeTokenizer2):
         for tokenizer in sample_tokenizers_for_test(NUM_TOKENIZERS_TO_TEST)
     ],
 )
-def test_is_AOTP(tokenizer: MazeTokenizer2):
+def test_is_AOTP(tokenizer: MazeTokenizerModular):
     if isinstance(tokenizer.prompt_sequencer, PromptSequencers.AOTP):
         assert tokenizer.is_AOTP()
     else:
@@ -205,7 +205,7 @@ def test_is_AOTP(tokenizer: MazeTokenizer2):
         for tokenizer in sample_tokenizers_for_test(NUM_TOKENIZERS_TO_TEST)
     ],
 )
-def test_is_UT(tokenizer: MazeTokenizer2):
+def test_is_UT(tokenizer: MazeTokenizerModular):
     if isinstance(tokenizer.prompt_sequencer.coord_tokenizer, CoordTokenizers.UT):
         assert tokenizer.is_UT()
     else:
@@ -290,9 +290,9 @@ _has_elems_type = (
     ],
 )
 def test_has_element(
-    tokenizer: MazeTokenizer2,
+    tokenizer: MazeTokenizerModular,
     elems: _has_elems_type,
-    result_func: Callable[[MazeTokenizer2, _has_elems_type], bool],
+    result_func: Callable[[MazeTokenizerModular, _has_elems_type], bool],
 ):
     assert tokenizer.has_element(elems) == result_func(tokenizer, elems)
 
@@ -304,5 +304,5 @@ def test_has_element(
         for tokenizer in sample_tokenizers_for_test(NUM_TOKENIZERS_TO_TEST)
     ],
 )
-def test_is_tested_tokenizer(tokenizer: MazeTokenizer2):
+def test_is_tested_tokenizer(tokenizer: MazeTokenizerModular):
     assert tokenizer.is_tested_tokenizer()

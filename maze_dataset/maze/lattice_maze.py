@@ -32,7 +32,7 @@ from maze_dataset.utils import isinstance_by_type_name
 if typing.TYPE_CHECKING:
     from maze_dataset.tokenization import (
         MazeTokenizer,
-        MazeTokenizer2,
+        MazeTokenizerModular,
         TokenizationMode,
     )
 
@@ -492,17 +492,17 @@ class LatticeMaze(SerializableDataclass):
 
     def as_tokens(
         self,
-        maze_tokenizer: "MazeTokenizer | TokenizationMode | MazeTokenizer2",
+        maze_tokenizer: "MazeTokenizer | TokenizationMode | MazeTokenizerModular",
     ) -> list[str]:
         """serialize maze and solution to tokens"""
-        if isinstance_by_type_name(maze_tokenizer, "MazeTokenizer2"):
+        if isinstance_by_type_name(maze_tokenizer, "MazeTokenizerModular"):
             return maze_tokenizer.to_tokens(self)
         else:
             return self._as_tokens(maze_tokenizer)
 
     @classmethod
     def _from_tokens_AOTP(
-        cls, tokens: list[str], maze_tokenizer: "MazeTokenizer | MazeTokenizer2"
+        cls, tokens: list[str], maze_tokenizer: "MazeTokenizer | MazeTokenizerModular"
     ) -> "LatticeMaze":
         """create a LatticeMaze from a list of tokens"""
 
@@ -603,16 +603,16 @@ class LatticeMaze(SerializableDataclass):
     def from_tokens(
         cls,
         tokens: list[str],
-        maze_tokenizer: "MazeTokenizer | TokenizationMode | MazeTokenizer2",
+        maze_tokenizer: "MazeTokenizer | TokenizationMode | MazeTokenizerModular",
     ) -> "LatticeMaze":
         if isinstance_by_type_name(maze_tokenizer, "TokenizationMode"):
             maze_tokenizer = maze_tokenizer.to_legacy_tokenizer()
         if (
-            isinstance_by_type_name(maze_tokenizer, "MazeTokenizer2")
+            isinstance_by_type_name(maze_tokenizer, "MazeTokenizerModular")
             and not maze_tokenizer.is_legacy_equivalent()
         ):
             raise NotImplementedError(
-                f"Only legacy tokenizers and their exact `MazeTokenizer2` analogs supported, not {maze_tokenizer}."
+                f"Only legacy tokenizers and their exact `MazeTokenizerModular` analogs supported, not {maze_tokenizer}."
             )
 
         if isinstance(tokens, str):

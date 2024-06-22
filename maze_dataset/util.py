@@ -15,13 +15,13 @@ from maze_dataset.utils import WhenMissing, flatten
 
 
 class TokenizerDeprecationWarning(DeprecationWarning):
-    """Deprecation warnings related to the `MazeTokenizer2` upgrade."""
+    """Deprecation warnings related to the `MazeTokenizerModular` upgrade."""
 
     pass
 
 
 class TokenizerPendingDeprecationWarning(PendingDeprecationWarning):
-    """Pending deprecation warnings related to the `MazeTokenizer2` upgrade."""
+    """Pending deprecation warnings related to the `MazeTokenizerModular` upgrade."""
 
     pass
 

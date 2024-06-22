@@ -32,7 +32,7 @@ from maze_dataset.tokenization import (
     EdgeSubsets,
     CoordTokenizers,
     MazeTokenizer,
-    MazeTokenizer2,
+    MazeTokenizerModular,
     PathTokenizers,
     PromptSequencers,
     StepTokenizers,
@@ -207,7 +207,7 @@ def test_to_legacy_tokenizer(
     assert tok_mode.to_legacy_tokenizer(max_grid_size) == result
 
 
-# MazeTokenizer2 tests
+# MazeTokenizerModular tests
 # =====================
 
 # Backwards compatibility tests
@@ -227,7 +227,7 @@ def test_to_legacy_tokenizer(
 def test_to_tokens_backwards_compatible(
     maze: SolvedMaze, legacy_tokenizer: TokenizationMode
 ):
-    tokenizer: MazeTokenizer2 = MazeTokenizer2.from_legacy(legacy_tokenizer)
+    tokenizer: MazeTokenizerModular = MazeTokenizerModular.from_legacy(legacy_tokenizer)
     toks: list[str] = maze.as_tokens(tokenizer)
     toks2: list[str] = tokenizer.to_tokens(maze)
     toks_legacy: list[str] = maze.as_tokens(legacy_tokenizer)
@@ -265,7 +265,7 @@ def test_to_tokens_backwards_compatible(
 def test_coords_to_strings_backwards_compatible(
     coords: list[Coord, CoordTup], legacy_tok_mode: TokenizationMode
 ):
-    tokenizer: MazeTokenizer2 = MazeTokenizer2.from_legacy(legacy_tok_mode)
+    tokenizer: MazeTokenizerModular = MazeTokenizerModular.from_legacy(legacy_tok_mode)
     legacy_tokenizer = MazeTokenizer(tokenization_mode=legacy_tok_mode)
     strings: list[str] = tokenizer.coords_to_strings(coords)
     strings_legacy: list[str] = legacy_tokenizer.coords_to_strings(coords)
@@ -285,7 +285,7 @@ def test_coords_to_strings_backwards_compatible(
 def test_from_tokens_backwards_compatible(
     maze: LatticeMaze, tok_mode: TokenizationMode
 ):
-    tokenizer = MazeTokenizer2.from_legacy(tok_mode)
+    tokenizer = MazeTokenizerModular.from_legacy(tok_mode)
     toks = maze.as_tokens(tok_mode)
     # Equality test of `as_tokens` output done in a separate unit test
     maze_legacy: LatticeMaze = LatticeMaze.from_tokens(toks, tok_mode)
@@ -355,13 +355,13 @@ def test_tokenizer_element_is_valid(el: TokenizerElement, result: bool):
     [
         param(tokenizer, result, id=str(tokenizer))
         for tokenizer, result in [
-            (MazeTokenizer2(), True),
-            (MazeTokenizer2.from_legacy(TokenizationMode.AOTP_CTT_indexed), True),
-            (MazeTokenizer2(prompt_sequencer=PromptSequencers.AOP()), False),
+            (MazeTokenizerModular(), True),
+            (MazeTokenizerModular.from_legacy(TokenizationMode.AOTP_CTT_indexed), True),
+            (MazeTokenizerModular(prompt_sequencer=PromptSequencers.AOP()), False),
         ]
     ],
 )
-def test_is_legacy_equivalent(tokenizer: MazeTokenizer2, result: bool):
+def test_is_legacy_equivalent(tokenizer: MazeTokenizerModular, result: bool):
     assert tokenizer.is_legacy_equivalent() == result
 
 

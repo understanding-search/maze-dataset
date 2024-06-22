@@ -107,7 +107,7 @@ def get_tokens_up_to_path_start(
     tokenization_mode: TokenizationMode = TokenizationMode.AOTP_UT_uniform,
 ) -> list[str]:
     warnings.warn(
-        "`maze_tokenizer.get_tokens_up_to_path_start` will be deprecated for a `MazeTokenizer2`-compatible function in a future release.",
+        "`maze_tokenizer.get_tokens_up_to_path_start` will be deprecated for a `MazeTokenizerModular`-compatible function in a future release.",
         TokenizerPendingDeprecationWarning,
     )
     path_start_idx: int = tokens.index(SPECIAL_TOKENS.PATH_START) + 1
@@ -540,7 +540,7 @@ class TokenizerElement(SerializableDataclass, abc.ABC):
     @classmethod
     @abc.abstractmethod
     def attribute_key(cls) -> str:
-        """Returns the binding used in `MazeTokenizer2` for that type of `TokenizerElement`."""
+        """Returns the binding used in `MazeTokenizerModular` for that type of `TokenizerElement`."""
         raise NotImplementedError
 
     def to_tokens(self, *args, **kwargs) -> list[str]:
@@ -552,7 +552,7 @@ class TokenizerElement(SerializableDataclass, abc.ABC):
 
     @abc.abstractmethod
     def is_valid(self) -> bool:
-        """Returns if `self` contains data members capable of producing an overall valid `MazeTokenizer2`.
+        """Returns if `self` contains data members capable of producing an overall valid `MazeTokenizerModular`.
         Some `TokenizerElement` instances may be created which are not useful despite obeying data member type hints.
         `is_valid` allows for more precise detection of invalid `TokenizerElement`s beyond type hinting alone.
         If type hints are sufficient to constrain the possible instances of some subclass, then this method may simply `return True` for that subclass.
@@ -573,7 +573,7 @@ class TokenizerElement(SerializableDataclass, abc.ABC):
         ## Nesting
         In general, when implementing this method, there is no need to recursively call `is_valid` on nested `TokenizerElement`s contained in the class.
         In other words, failures of `is_valid` need not bubble up to the top of the nested `TokenizerElement` tree.
-        `MazeTokenizer2.is_valid` calls `is_valid` on each of its `TokenizerElement`s individually, so failure at any level will be detected.
+        `MazeTokenizerModular.is_valid` calls `is_valid` on each of its `TokenizerElement`s individually, so failure at any level will be detected.
 
         ## Types of Invalidity
         If it's judged to be useful, the types of invalidity could be implemented with an Enum or similar rather than only living in comments.
@@ -586,7 +586,7 @@ class _TokenizerElementNamespace(abc.ABC):
     """ABC for namespaces
 
     # Properties
-    - key: The binding used in `MazeTokenizer2` for instances of the classes contained within that `_TokenizerElementNamespace`.
+    - key: The binding used in `MazeTokenizerModular` for instances of the classes contained within that `_TokenizerElementNamespace`.
     """
 
     key: str = NotImplementedError
@@ -1698,7 +1698,7 @@ class PromptSequencers(_TokenizerElementNamespace):
 
 
 @serializable_dataclass(frozen=True, kw_only=True)
-class MazeTokenizer2(SerializableDataclass):
+class MazeTokenizerModular(SerializableDataclass):
     """Tokenizer for mazes
 
     # Parameters
@@ -1707,7 +1707,7 @@ class MazeTokenizer2(SerializableDataclass):
     # Development
     - To ensure backwards compatibility, the default constructor must always return a tokenizer equivalent to the legacy `TokenizationMode.AOTP_UT_Uniform`.
     - Furthermore, the mapping reflected in `from_legacy` must also be maintained.
-    - Updates to `MazeTokenizer2` or the `TokenizerElement` hierarchy must maintain that behavior.
+    - Updates to `MazeTokenizerModular` or the `TokenizerElement` hierarchy must maintain that behavior.
     """
 
     prompt_sequencer: PromptSequencers._PromptSequencer = serializable_field(
@@ -1740,7 +1740,7 @@ class MazeTokenizer2(SerializableDataclass):
             | Iterable[type[TokenizerElement] | TokenizerElement]
         ),
     ) -> bool:
-        """Returns True if the `MazeTokenizer2` instance contains ALL of the items specified in `elements`.
+        """Returns True if the `MazeTokenizerModular` instance contains ALL of the items specified in `elements`.
 
         Querying with a partial subset of `TokenizerElement` fields is not currently supported.
         To do such a query, assemble multiple calls to `has_elements`.
@@ -1779,7 +1779,7 @@ class MazeTokenizer2(SerializableDataclass):
         """Returns if `self` has identical stringification behavior as any legacy `MazeTokenizer`."""
         return any(
             [
-                self == MazeTokenizer2.from_legacy(tok_mode)
+                self == MazeTokenizerModular.from_legacy(tok_mode)
                 for tok_mode in TokenizationMode
             ]
         )
@@ -1795,14 +1795,14 @@ class MazeTokenizer2(SerializableDataclass):
 
     def is_AOTP(self) -> bool:
         warnings.warn(
-            "`MazeTokenizer2.is_AOTP` is deprecated. Use `MazeTokenizer2.has_element(PromptSequencers.AOTP)` instead.",
+            "`MazeTokenizerModular.is_AOTP` is deprecated. Use `MazeTokenizerModular.has_element(PromptSequencers.AOTP)` instead.",
             TokenizerDeprecationWarning,
         )
         return self.has_element(PromptSequencers.AOTP)
 
     def is_UT(self) -> bool:
         warnings.warn(
-            "`MazeTokenizer2.is_UT` is deprecated. Use `MazeTokenizer2.has_element(CoordTokenizers.UT)` instead.",
+            "`MazeTokenizerModular.is_UT` is deprecated. Use `MazeTokenizerModular.has_element(CoordTokenizers.UT)` instead.",
             TokenizerDeprecationWarning,
         )
         return self.has_element(CoordTokenizers.UT)
@@ -1813,14 +1813,14 @@ class MazeTokenizer2(SerializableDataclass):
     @classmethod
     def from_legacy(
         cls, legacy_maze_tokenizer: MazeTokenizer | TokenizationMode
-    ) -> "MazeTokenizer2":
-        """Maps a legacy `MazeTokenizer` to its equivalent `MazeTokenizer2` instance."""
+    ) -> "MazeTokenizerModular":
+        """Maps a legacy `MazeTokenizer` to its equivalent `MazeTokenizerModular` instance."""
         if isinstance(legacy_maze_tokenizer, MazeTokenizer):
             legacy_maze_tokenizer = legacy_maze_tokenizer.tokenization_mode
         return {
-            TokenizationMode.AOTP_UT_uniform: MazeTokenizer2(),
-            TokenizationMode.AOTP_UT_rasterized: MazeTokenizer2(),
-            TokenizationMode.AOTP_CTT_indexed: MazeTokenizer2(
+            TokenizationMode.AOTP_UT_uniform: MazeTokenizerModular(),
+            TokenizationMode.AOTP_UT_rasterized: MazeTokenizerModular(),
+            TokenizationMode.AOTP_CTT_indexed: MazeTokenizerModular(
                 prompt_sequencer=PromptSequencers.AOTP(
                     coord_tokenizer=CoordTokenizers.CTT()
                 )
@@ -1851,7 +1851,7 @@ class MazeTokenizer2(SerializableDataclass):
     def from_tokens(
         cls,
         tokens: str | list[str],
-    ) -> "MazeTokenizer2":
+    ) -> "MazeTokenizerModular":
         """
         Infers most MazeTokenizer parameters from a full set of tokens.
         Could be useful for adapting old code to new `MazeTokenizer`.
@@ -1862,7 +1862,7 @@ class MazeTokenizer2(SerializableDataclass):
         """
         # Don't need directly, but something similar needed for LatticeMaze.from_tokens
         raise NotImplementedError(
-            "recovering maze objects from MazeTokenizer2-produces strings not implemented yet"
+            "recovering maze objects from MazeTokenizerModular-produces strings not implemented yet"
         )
 
     @property
@@ -1881,7 +1881,7 @@ class MazeTokenizer2(SerializableDataclass):
     @property
     def n_tokens(self) -> int:
         raise NameError(
-            "`MazeTokenizer2.n_tokens` has been removed. Use `len(maze_dataset.VOCAB_LIST)` instead."
+            "`MazeTokenizerModular.n_tokens` has been removed. Use `len(maze_dataset.VOCAB_LIST)` instead."
         )
 
     @property
@@ -1911,7 +1911,7 @@ class MazeTokenizer2(SerializableDataclass):
         when_noncoord: WhenMissing = "skip",
     ) -> list[str | CoordTup]:
         warnings.warn(
-            "`MazeTokenizer2.strings_to_coords` only supports legacy UT strings.",
+            "`MazeTokenizerModular.strings_to_coords` only supports legacy UT strings.",
             TokenizerPendingDeprecationWarning,
         )
         return strings_to_coords(text=text, when_noncoord=when_noncoord)
@@ -1944,9 +1944,9 @@ class MazeTokenizer2(SerializableDataclass):
             return output
 
 
-def _load_tokenizer_hashes() -> Int64[np.int64, "MazeTokenizer2"]:
+def _load_tokenizer_hashes() -> Int64[np.int64, "MazeTokenizerModular"]:
     """Loads the sorted list of `sall_tokenizers.ALL_TOKENIZERS` hashes from disk."""
-    return np.load(Path(__file__).parent / "MazeTokenizer2_hashes.npy")
+    return np.load(Path(__file__).parent / "MazeTokenizerModular_hashes.npy")
 
 
-ALL_TOKENIZER_HASHES: Int64[np.int64, "MazeTokenizer2"] = _load_tokenizer_hashes()
+ALL_TOKENIZER_HASHES: Int64[np.int64, "MazeTokenizerModular"] = _load_tokenizer_hashes()

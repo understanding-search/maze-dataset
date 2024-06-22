@@ -22,7 +22,7 @@ from maze_dataset.token_utils import (
 )
 from maze_dataset.tokenization import (
     MazeTokenizer,
-    MazeTokenizer2,
+    MazeTokenizerModular,
     PathTokenizers,
     StepTokenizers,
     EdgeSubsets,
@@ -882,15 +882,15 @@ def test_dataclass_set_equals(
                 (1, "bool", False),
                 (MazeTokenizer(), "MazeTokenizer", True),
                 (MazeTokenizer(), "TokenizationMode", False),
-                (MazeTokenizer2(), "MazeTokenizer2", True),
-                (MazeTokenizer2(), "MazeTokenizer", False),
+                (MazeTokenizerModular(), "MazeTokenizerModular", True),
+                (MazeTokenizerModular(), "MazeTokenizer", False),
                 (TokenizationMode.AOTP_CTT_indexed, "TokenizationMode", True),
                 (TokenizationMode.AOTP_UT_uniform, "MazeTokenizer", False),
                 (StepTokenizers.Distance(), "_StepTokenizer", True),
                 (StepTokenizers.Distance(), "TokenizerElement", True),
                 (PathTokenizers.StepSequence(), "StepSequence", True),
                 (PathTokenizers.StepSequence(), "_PathTokenizer", True),
-                (MazeTokenizer2, "MazeTokenizer2", False),
+                (MazeTokenizerModular, "MazeTokenizerModular", False),
                 (TokenizationMode, "TokenizationMode", False),
             ]
         )
