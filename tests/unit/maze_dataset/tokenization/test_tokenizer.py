@@ -415,7 +415,7 @@ def _helper_test_path_tokenizers(
                     frozendict.frozendict({TokenizerElement: lambda x: x.is_valid()}),
                 ),
                 min(
-                    3, NUM_TOKENIZERS_TO_TEST
+                    20, NUM_TOKENIZERS_TO_TEST
                 ),  # TODO: Get rid of "3" when reinstantiating all `StepTokenizer` leaf classes
             ),
         )
@@ -515,7 +515,7 @@ def test_edge_subsets(es: EdgeSubsets._EdgeSubset, maze: LatticeMaze):
     n: int = maze.grid_n
     match type(es):
         case EdgeSubsets.AllLatticeEdges:
-            assert_shape: tuple = (4 * n * (n - 1), 2, 2)
+            assert_shape: tuple = (2 * n * (n - 1), 2, 2)
         case EdgeSubsets.ConnectionEdges:
             if not es.walls:
                 assert_shape: tuple = (np.count_nonzero(maze.connection_list), 2, 2)
@@ -533,6 +533,44 @@ def test_edge_subsets(es: EdgeSubsets._EdgeSubset, maze: LatticeMaze):
     assert np.array_equal(
         manhattan_distance(edges), np.array([1] * assert_shape[0], dtype=np.int8)
     )
+
+
+@mark.parametrize(
+    "ep,maze",
+    [
+        param(tokenizer, maze, id=f"{tokenizer.name}-maze[{i}]")
+        for (i, maze), tokenizer in itertools.product(
+            enumerate(MIXED_MAZES[:6]),
+            all_instances(
+                EdgePermuters._EdgePermuter,
+                frozendict.frozendict({TokenizerElement: lambda x: x.is_valid()}),
+            ),
+        )
+    ],
+)
+def test_edge_permuters(ep: EdgePermuters._EdgePermuter, maze: LatticeMaze):
+    edges: ConnectionArray = connection_list_to_adj_list(maze.connection_list)
+    edges_copy = np.copy(edges)
+    old_shape = edges.shape
+    permuted: ConnectionArray = ep._permute(edges)
+    match ep:
+        case EdgePermuters.RandomCoords():
+            assert permuted.shape == old_shape
+            assert edges is permuted
+            i = 0
+            while np.array_equal(permuted, edges_copy) and i < 5:
+                # Permute again in case for small mazes the random selection happened to not change anything
+                permuted: ConnectionArray = ep._permute(permuted)
+                i += 1
+            assert not np.array_equal(permuted, edges_copy)
+        case EdgePermuters.BothCoords():
+            new_shape = old_shape[0] * 2, *old_shape[1:]
+            n = old_shape[0]
+            assert permuted.shape == new_shape
+            assert np.array_equal(permuted[:n, ...], edges_copy)
+            assert np.array_equal(permuted[:n, 0, :], permuted[n:, 1, :])
+            assert np.array_equal(permuted[:n, 1, :], permuted[n:, 0, :])
+            assert edges is not permuted
 
 
 @mark.parametrize(

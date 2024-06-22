@@ -34,6 +34,7 @@ from maze_dataset.tokenization import (
     CoordTokenizers,
     MazeTokenizer2,
     PromptSequencers,
+    StepTokenizers,
     TokenizerElement,
 )
 from maze_dataset.utils import all_instances
@@ -51,6 +52,7 @@ def _get_all_tokenizers() -> list[MazeTokenizer2]:
             {
                 TokenizerElement: lambda x: x.is_valid(),
                 MazeTokenizer2: lambda x: x.is_valid(),
+                StepTokenizers.StepTokenizerPermutation: lambda x: len(set(x)) == len(x) and x != (StepTokenizers.Distance(), ),
             }
         ),
     )
