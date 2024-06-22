@@ -362,7 +362,7 @@ random.seed(GLOBAL_SEED)
             random.sample(all_instances(
                 AdjListTokenizers._AdjListTokenizer,
                 frozendict.frozendict({TokenizerElement: lambda x: x.is_valid(),}),
-            ), 20),
+            ), 100),
         )
     ],
 )
