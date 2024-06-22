@@ -135,6 +135,16 @@ def manhattan_distance(
         )
 
 
+def lattice_max_degrees(n: int) -> Int8[np.ndarray, "row col"]:
+    """
+    Returns an array with the maximum possible degree for each coord.
+    """
+    out = np.full((n,n), 2)
+    out[1:-1,:] += 1
+    out[:,1:-1] += 1
+    return out
+
+
 def lattice_connection_array(
     n: int,
 ) -> Int8[np.ndarray, "edges=2*n*(n-1) leading_trailing_coord=2 row_col=2"]:

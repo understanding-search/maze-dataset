@@ -43,7 +43,7 @@ from maze_dataset.testing_utils import (
     MAZE_DATASET,
     ASCII_MAZES,
 )
-from maze_dataset.utils import all_instances
+from maze_dataset.utils import all_instances, lattice_max_degrees
 
 
 def test_tokenizer():
@@ -387,9 +387,9 @@ def test_adjlist_tokenizers(tok_elem: AdjListTokenizers._AdjListTokenizer, maze:
         case EdgePermuters.BothCoords():
             edge_count *= 2
             if tok_elem.edge_subset == EdgeSubsets.ConnectionEdges(walls=True):
-                ...
+                group_count *= np.count_nonzero(lattice_max_degrees(n) - maze.coord_degrees() > 0)  # All coords with 1 adjacent wall, not counting outer boundaries
             else:
-                ...
+                group_count *= np.count_nonzero(maze.coord_degrees() > 0)  # All coords with >0 connections 
         case EdgePermuters.RandomCoords() | EdgePermuters.SortedCoords():
             edge_count *= 1
             group_count = None  # Group count is stochastic
