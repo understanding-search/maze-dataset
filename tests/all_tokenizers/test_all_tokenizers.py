@@ -257,6 +257,22 @@ _has_elems_type = (
                     ),
                 ),
                 (
+                    StepSizes.Singles, 
+                    lambda mt, els: isinstance(
+                        mt.path_tokenizer.step_size, els
+                    )
+                ),
+                (
+                    StepTokenizers.Coord, 
+                    lambda mt, els: any(
+                        isinstance(step_tok, els) for step_tok in mt.path_tokenizer.step_tokenizers
+                    )
+                ),
+                (
+                    [CoordTokenizers.CTT()],
+                    lambda mt, els: mt.prompt_sequencer.coord_tokenizer == els[0],
+                ),
+                (
                     [CoordTokenizers.CTT, PathTokenizers.StepSequence],
                     lambda mt, els: isinstance(
                         mt.prompt_sequencer.coord_tokenizer, els[0]

@@ -1085,7 +1085,7 @@ class TargetTokenizers(_TokenizerElementNamespace):
         @abc.abstractmethod
         def to_tokens(
             self,
-            targets: Iterable[Coord],
+            targets: Sequence[Coord],
             coord_tokenizer: CoordTokenizers._CoordTokenizer,
         ) -> list[str]:
             """Returns tokens representing the target."""
@@ -1105,7 +1105,7 @@ class TargetTokenizers(_TokenizerElementNamespace):
 
         def to_tokens(
             self,
-            targets: Iterable[Coord],
+            targets: Sequence[Coord],
             coord_tokenizer: CoordTokenizers._CoordTokenizer,
         ) -> list[str]:
             return list(
@@ -1515,14 +1515,6 @@ class PromptSequencers(_TokenizerElementNamespace):
         def to_tokens(
             self,
             maze: LatticeMaze,
-            # adj_list: Int8[np.ndarray, "conn start_end coord"],
-            # origin: Coord | None,
-            # target: Iterable[Coord] | None,
-            # path: CoordArray | None,
-            # coord_tokenizer: CoordTokenizers._CoordTokenizer,
-            # adj_list_tokenizer: AdjListTokenizers._AdjListTokenizer,
-            # target_tokenizer: TargetTokenizers._TargetTokenizer,
-            # path_tokenizer: PathTokenizers._PathTokenizer,
             *args,
             **kwargs,
         ) -> list[str]:
@@ -1537,14 +1529,6 @@ class PromptSequencers(_TokenizerElementNamespace):
         def _get_prompt_regions(
             self,
             maze: LatticeMaze,
-            # adj_list: Int8[np.ndarray, "conn start_end coord"],
-            # origin: Coord | None,
-            # target: Iterable[Coord] | None,
-            # path: CoordArray | None,
-            # coord_tokenizer: CoordTokenizers._CoordTokenizer,
-            # adj_list_tokenizer: AdjListTokenizers._AdjListTokenizer,
-            # target_tokenizer: TargetTokenizers._TargetTokenizer,
-            # path_tokenizer: PathTokenizers._PathTokenizer,
             *args,
             **kwargs,
         ) -> list[list[str]]:
@@ -1747,7 +1731,7 @@ class MazeTokenizerModular(SerializableDataclass):
 
         # Parameters
         - `elements`: Singleton or iterable of `TokenizerElement` instances or classes.
-        If an instance is provided, then comparison is done via equality.
+        If an instance is provided, then comparison is done via instance equality.
         If a class is provided, then comparison isdone via `isinstance`. I.e., any instance of that class is accepted.
         """
 
