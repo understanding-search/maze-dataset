@@ -47,6 +47,7 @@ from maze_dataset.testing_utils import (
     MAZE_DATASET,
     ASCII_MAZES,
     MANUAL_MAZE,
+    LEGACY_AND_EQUIVALENT_TOKENIZERS,
 )
 from maze_dataset.utils import (
     all_instances, 
@@ -134,30 +135,26 @@ def test_tokenizer():
 
 
 @mark.parametrize(
-    "maze_ascii, tok_mode, tokens",
+    "maze_ascii, tokenizer, tokens",
     [
         param(
             ASCII_MAZES[maze_ascii_key][1],  # maze_ascii
-            tok_mode,  # tok_mode
+            tokenizer,  # tok_mode
             ASCII_MAZES[maze_ascii_key][0],  # tokens
-            id=f"{tok_mode.name}_{maze_ascii_key}",
+            id=f"{tokenizer.name}_{maze_ascii_key}",
         )
-        for maze_ascii_key, tok_mode in product(
+        for maze_ascii_key, tokenizer in product(
             ["small_3x3", "big_10x10"],
-            [
-                TokenizationMode.AOTP_UT_uniform,
-                TokenizationMode.AOTP_UT_rasterized,
-                TokenizationMode.AOTP_CTT_indexed,
-            ],
+            LEGACY_AND_EQUIVALENT_TOKENIZERS,
         )
     ],
 )
 def test_maze_to_tokens_roundtrip(
     maze_ascii: list[str],
-    tok_mode: TokenizationMode,
+    tokenizer: MazeTokenizer | MazeTokenizerModular,
     tokens: str,
 ):
-    if tok_mode == TokenizationMode.AOTP_CTT_indexed:
+    if not tokenizer.is_UT():
         # The hardcoded `tokens` assumes a UT tokenizer.
         # Here we modify `tokens` to match what a `AOTP_CTT_indexed` tokenizer would produce.
         tokens = re.sub(r"\(([0-9]),([0-9])\)", r"(\1 , \2)", tokens)
@@ -168,8 +165,6 @@ def test_maze_to_tokens_roundtrip(
     # join into a single string, and get a maze out
     ascii_str: str = "\n".join(maze_ascii)
     maze: SolvedMaze = SolvedMaze.from_ascii(ascii_str)
-    # init tokenizer
-    tokenizer: MazeTokenizer = MazeTokenizer(tokenization_mode=tok_mode)
 
     # maze as tokens
     tokens_from_maze: list[str] = maze.as_tokens(tokenizer)

@@ -1,4 +1,4 @@
-"""TokenizationMode enum and the MazeTokenizer class"""
+"""MazeTokenizerModular and the legacy TokenizationMode enum, MazeTokenizer class"""
 
 import abc
 import itertools
@@ -1798,7 +1798,7 @@ class MazeTokenizerModular(SerializableDataclass):
     def from_legacy(
         cls, legacy_maze_tokenizer: MazeTokenizer | TokenizationMode
     ) -> "MazeTokenizerModular":
-        """Maps a legacy `MazeTokenizer` to its equivalent `MazeTokenizerModular` instance."""
+        """Maps a legacy `MazeTokenizer` or `TokenizationMode` to its equivalent `MazeTokenizerModular` instance."""
         if isinstance(legacy_maze_tokenizer, MazeTokenizer):
             legacy_maze_tokenizer = legacy_maze_tokenizer.tokenization_mode
         return {
@@ -1837,16 +1837,10 @@ class MazeTokenizerModular(SerializableDataclass):
         tokens: str | list[str],
     ) -> "MazeTokenizerModular":
         """
-        Infers most MazeTokenizer parameters from a full set of tokens.
-        Could be useful for adapting old code to new `MazeTokenizer`.
-        Would probably need a couple of other pieces of info besides just tokens.
-        - max_grid_size
-        - rasterization_mode: Only needed if UT tokens
-        - Anything else?
+        Infers most `MazeTokenizerModular` parameters from a full sequence of tokens.
         """
-        # Don't need directly, but something similar needed for LatticeMaze.from_tokens
         raise NotImplementedError(
-            "recovering maze objects from MazeTokenizerModular-produces strings not implemented yet"
+            "Recovering tokenizer objects from MazeTokenizerModular-produced strings is not implemented"
         )
 
     @property

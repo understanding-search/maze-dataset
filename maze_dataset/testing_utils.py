@@ -18,6 +18,11 @@ from maze_dataset import (
     TargetedLatticeMaze,
 )
 from maze_dataset.generation import LatticeMazeGenerators
+from maze_dataset.tokenization import (
+    MazeTokenizer,
+    TokenizationMode,
+    MazeTokenizerModular,
+)
 
 GRID_N: Final[int] = 5
 N_MAZES: Final[int] = 5
@@ -160,3 +165,9 @@ ASCII_MAZES: Final[frozendict.frozendict[str, MANUAL_MAZE]] = frozendict.frozend
     ),
 )
 
+# A list of legacy `MazeTokenizer`s and their `MazeTokenizerModular` equivalents.
+# Used for unit tests where both versions are supported
+LEGACY_AND_EQUIVALENT_TOKENIZERS: list[MazeTokenizer, MazeTokenizerModular] = [
+    *[MazeTokenizer(tokenization_mode=tok_mode, max_grid_size=20) for tok_mode in TokenizationMode],
+    *[MazeTokenizerModular.from_legacy(tok_mode) for tok_mode in TokenizationMode]
+]

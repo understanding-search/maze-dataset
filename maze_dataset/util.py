@@ -1,4 +1,4 @@
-"""utilities required by MazeTokenizer"""
+"""utilities required by maze_tokenizer.py"""
 
 import re
 import typing
