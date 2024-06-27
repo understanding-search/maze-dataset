@@ -799,7 +799,7 @@ def test_all_instances(
                     # type
                     PathTokenizers._PathTokenizer,
                     # validation_funcs
-                    frozendict.frozendict({}),
+                    dict(),
                     # assertion
                     lambda x: PathTokenizers.StepSequence(
                         step_tokenizers=(StepTokenizers.Distance(),)
@@ -810,23 +810,20 @@ def test_all_instances(
                     # type
                     PathTokenizers._PathTokenizer,
                     # validation_funcs
-                    frozendict.frozendict(
-                        {
-                            PathTokenizers._PathTokenizer: lambda x: x.is_valid(),
-                        }
-                    ),
+                    {PathTokenizers._PathTokenizer: lambda x: x.is_valid()},
                     # assertion
-                    lambda x: PathTokenizers.StepSequence(
-                        step_tokenizers=(StepTokenizers.Distance(),)
-                    )
-                    not in x
-                    and PathTokenizers.StepSequence(
-                        step_tokenizers=(
-                            StepTokenizers.Coord(),
-                            StepTokenizers.Coord(),
+                    lambda x: 
+                        PathTokenizers.StepSequence(
+                            step_tokenizers=(StepTokenizers.Distance(),)
                         )
-                    )
-                    not in x,
+                        not in x
+                        and PathTokenizers.StepSequence(
+                            step_tokenizers=(
+                                StepTokenizers.Coord(),
+                                StepTokenizers.Coord(),
+                            )
+                        )
+                        not in x,
                 ),
             ]
         )

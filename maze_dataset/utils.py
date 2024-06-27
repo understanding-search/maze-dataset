@@ -515,7 +515,7 @@ def _all_instances_wrapper(f):
             validation_funcs = frozendict.frozendict(kwargs["validation_funcs"])
         else:
             validation_funcs = None
-        return _apply_validation_func(args[0], f(args[0]), validation_funcs)
+        return _apply_validation_func(args[0], f(args[0], validation_funcs), validation_funcs)
     ...
     return wrapper
 
@@ -652,7 +652,3 @@ def isinstance_by_type_name(o: object, type_name: str):
     Generic types are not supported, only types that would appear in `type_.__mro__`.
     """
     return type_name in {s.__name__ for s in type(o).__mro__}
-
-# T = Literal[1, 2, 3]
-# all_instances(bool, {bool: lambda x: x})
-# all_instances(T, {int: lambda x: x>2})
