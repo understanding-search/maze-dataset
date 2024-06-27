@@ -1,4 +1,4 @@
-from maze_dataset.util import flatten, get_all_subclasses
+from maze_dataset.utils import flatten, get_all_subclasses
 
 
 # Testing the flatten function
