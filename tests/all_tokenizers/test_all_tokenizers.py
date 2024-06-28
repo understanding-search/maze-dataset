@@ -68,14 +68,14 @@ def test_all_tokenizers():
     [param(c, id=c.__name__) for c in TokenizerElement.__subclasses__()],
 )
 def test_all_instances_tokenizerelement(class_: type):
-    all_vals = all_instances(
+    all_vals = list(all_instances(
         class_,
         validation_funcs=frozendict.frozendict(
             {
                 TokenizerElement: lambda x: x.is_valid(),
             }
         ),
-    )
+    ))
     assert len({hash(elem) for elem in all_vals}) == len(all_vals)
 
 

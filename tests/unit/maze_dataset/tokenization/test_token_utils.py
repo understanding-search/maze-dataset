@@ -776,7 +776,7 @@ def test_all_instances(
 ):
     if isinstance(result, type) and issubclass(result, Exception):
         with pytest.raises(result):
-            all_instances(type_, validation_funcs)
+            list(all_instances(type_, validation_funcs))
     elif hasattr(type_, "__dataclass_fields__"):
         assert dataclass_set_equals(all_instances(type_, validation_funcs), result)
     else:
@@ -836,7 +836,6 @@ def test_all_instances2(
     ],
     assertion: Callable[[list[FiniteValued]], bool],
 ):
-    # TODO: error here
     assert assertion(all_instances(type_, validation_funcs))
 
 
