@@ -499,8 +499,15 @@ class TokenizerElement(SerializableDataclass, abc.ABC):
             set(cls.__mro__).intersection(set(TokenizerElement.__subclasses__())).pop()
         )
 
-    def _tokenizer_elements(self) -> list["TokenizerElement"]:
-        """Returns a list of all `TokenizerElement` instances contained in the subtree."""
+    def _tokenizer_elements(self, deep: bool = True) -> list["TokenizerElement"]:
+        """
+        Returns a list of all `TokenizerElement` instances contained in the subtree.
+        Currently only detects `TokenizerElement` instances which are either direct attributes of another instance or
+        which sit inside a `tuple` without further nesting. 
+
+        # Parameters
+        - `deep: bool`: Whether to return elements nested arbitrarily deeply or just a single layer.
+        """
         if not any(type(el) == tuple for el in self.__dict__.values()):
             return list(
                 flatten(
@@ -509,6 +516,8 @@ class TokenizerElement(SerializableDataclass, abc.ABC):
                         for el in self.__dict__.values()
                         if isinstance(el, TokenizerElement)
                     ]
+                    if deep 
+                    else filter(lambda x: isinstance(x, TokenizerElement), self.__dict__.values())
                 )
             )
         else:
@@ -519,6 +528,8 @@ class TokenizerElement(SerializableDataclass, abc.ABC):
                         for el in self.__dict__.values()
                         if isinstance(el, TokenizerElement)
                     ]
+                    if deep 
+                    else filter(lambda x: isinstance(x, TokenizerElement), self.__dict__.values())
                 )
             )
             tuple_elems: list[TokenizerElement] = list(
@@ -529,6 +540,8 @@ class TokenizerElement(SerializableDataclass, abc.ABC):
                             for tup_el in el
                             if isinstance(tup_el, TokenizerElement)
                         ]
+                        if deep 
+                        else filter(lambda x: isinstance(x, TokenizerElement), el)
                         for el in self.__dict__.values()
                         if isinstance(el, tuple)
                     ]
@@ -536,6 +549,10 @@ class TokenizerElement(SerializableDataclass, abc.ABC):
             )
             non_tuple_elems.extend(tuple_elems)
             return non_tuple_elems
+
+    def tokenizer_element_tree(self, depth: int = 0, abstract: bool = False):
+        name: str =  '\t'*depth + (type(self).__name__ if not abstract else type(self)._level_one_subclass().__name__)
+        return name + '\n' + ''.join(el.tokenizer_element_tree(depth + 1, abstract) for el in self._tokenizer_elements(deep=False))
 
     @classmethod
     @abc.abstractmethod

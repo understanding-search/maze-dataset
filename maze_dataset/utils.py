@@ -426,8 +426,7 @@ def get_all_subclasses(class_: type, include_self=False) -> set[type]:
 # `FiniteValued`
 The details of this type are not possible to fully define via the Python 3.10 typing library.
 This custom generic type is a generic domain of many types which have a finite, discrete, and well-defined range space.
-It was created to define the domain of supported types for the `all_instances` function, since it relies heavily on static typing. 
-It may later be used in related applications.
+`FiniteValued` defines the domain of supported types for the `all_instances` function, since that function relies heavily on static typing. 
 These types may be nested in an arbitrarily deep tree via Container Types and Superclass Types (see below).
 The leaves of the tree must always be Primitive Types. 
 
@@ -437,7 +436,7 @@ The leaves of the tree must always be Primitive Types.
 ## Non-`FiniteValued` (Unbounded) Types
 These are NOT valid subtypes, and are listed for illustrative purposes only.
 This list is not comprehensive.
-While the finite nature of digital computers means that the cardinality of these types is technically finite, 
+While the finite and discrete nature of digital computers means that the cardinality of these types is technically finite, 
 they are considered unbounded types in this context.
 - No Container subtype may contain any of these unbounded subtypes.
 - `int`
@@ -491,14 +490,6 @@ def _apply_validation_func(
             break  # Only the first validation function hit in the mro is applied
     elif get_origin(type_) == Literal:
         return list(flatten((_apply_validation_func(type(v), [v], validation_funcs) for v in get_args(type_)), levels_to_flatten=1))
-        # for v in vals:
-        #     for superclass in type(v).__mro__:
-        #         if superclass not in validation_funcs:
-        #             continue
-        #         if validation_funcs[superclass](v):
-        #             out.append(v)
-        #         break  # Only the first validation function hit in the mro is applied
-        # return out
     return vals
 
 
@@ -508,7 +499,6 @@ def _all_instances_wrapper(f):
     """
     @wraps(f)
     def wrapper(*args, **kwargs):
-        print(f"args:\t{args}\nkwargs:\t{kwargs}")
         if len(args) >= 2 and args[1] is not None:
             validation_funcs = frozendict.frozendict(args[1])
         elif "validation_funcs" in kwargs and kwargs["validation_funcs"] is not None:
@@ -524,11 +514,12 @@ def _all_instances_wrapper(f):
 @cache
 def all_instances(
     type_: FiniteValued,
-    validation_funcs: (
-        dict[FiniteValued, Callable[[FiniteValued], bool]] | frozendict.frozendict[FiniteValued, Callable[[FiniteValued], bool]] | None
-    ) = None,
+    validation_funcs: dict[FiniteValued, Callable[[FiniteValued], bool]] | None = None,
 ) -> list[FiniteValued]:
-    """Returns all possible values of an instance of `type_` if finite instances exist.
+    """
+    Returns all possible values of an instance of `type_` if finite instances exist.
+    Uses type hinting to construct the possible values.
+    All nested elements of `type_` must themselves be typed.
     Do not use with types whose members contain circular references.
     Function is susceptible to infinite recursion if `type_` is a dataclass whose member tree includes another instance of `type_`.
 
@@ -536,6 +527,7 @@ def all_instances(
     - `type_`: A finite-valued type. See docstring on `FiniteValued` for full details.
     - `validation_funcs`: A mapping of types to auxiliary functions to validate instances of that type.
     This optional argument can provide an additional, more precise layer of validation for the instances generated beyond what type hinting alone can provide.
+    See `validation_funcs` Details section below.
 
     ## Supported `type_` Values
     See docstring on `FiniteValued` for full details.
