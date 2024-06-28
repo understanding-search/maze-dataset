@@ -474,22 +474,22 @@ FiniteValued = TypeVar("FiniteValued", bound=bool | IsDataclass | enum.Enum)
 
 def _apply_validation_func(
     type_: FiniteValued,
-    vals: list[FiniteValued],
+    vals: Generator[FiniteValued, None, None],
     validation_funcs: (
         frozendict.frozendict[FiniteValued, Callable[[FiniteValued], bool]] | None
     ) = None,
-) -> list[FiniteValued]:
+) -> Generator[FiniteValued, None, None]:
     """Helper function for `all_instances`"""
-    if validation_funcs is None or len(vals) == 0:
+    if validation_funcs is None:  # or len(vals) == 0:
         return vals
     if hasattr(type_, "__mro__"):  # UnionType doesn't have `__mro__`
         for superclass in type_.__mro__:
             if superclass not in validation_funcs:
                 continue
-            vals = list(filter(validation_funcs[superclass], vals))
+            vals = filter(validation_funcs[superclass], vals)
             break  # Only the first validation function hit in the mro is applied
     elif get_origin(type_) == Literal:
-        return list(flatten((_apply_validation_func(type(v), [v], validation_funcs) for v in get_args(type_)), levels_to_flatten=1))
+        return flatten((_apply_validation_func(type(v), [v], validation_funcs) for v in get_args(type_)), levels_to_flatten=1)
     return vals
 
 
@@ -506,16 +506,15 @@ def _all_instances_wrapper(f):
         else:
             validation_funcs = None
         return _apply_validation_func(args[0], f(args[0], validation_funcs), validation_funcs)
-    ...
     return wrapper
 
 
 @_all_instances_wrapper
-@cache
+# @cache
 def all_instances(
     type_: FiniteValued,
     validation_funcs: dict[FiniteValued, Callable[[FiniteValued], bool]] | None = None,
-) -> list[FiniteValued]:
+) -> Generator[FiniteValued, None, None]:
     """
     Returns all possible values of an instance of `type_` if finite instances exist.
     Uses type hinting to construct the possible values.
@@ -550,7 +549,7 @@ def all_instances(
     If no superclass of `type_` is found, then no filter is applied.
     """
     if type_ == bool:
-        return [True, False]
+        yield from [True, False]
     elif hasattr(type_, "__dataclass_fields__") and not is_abstract(type_):
         # Concrete dataclass: construct dataclass instances with all possible combinations of fields
         fields: list[field] = type_.__dataclass_fields__
@@ -561,45 +560,41 @@ def all_instances(
                 for arg_type in fields_to_types.values()
             ]
         )
-        return [
+        yield from (
             type_(**{fld: arg for fld, arg in zip(fields_to_types.keys(), args)})
             for args in all_arg_sequences
-        ]
+        )
     elif hasattr(type_, "__dataclass_fields__") and is_abstract(type_):
         # Abstract dataclass: call `all_instances` on each subclass
-        return list(
-            flatten(
-                [
-                    all_instances(sub, validation_funcs)
-                    for sub in type_.__subclasses__()
-                ],
-                levels_to_flatten=1,
-            )
+        yield from flatten(
+            (
+                all_instances(sub, validation_funcs)
+                for sub in type_.__subclasses__()
+            ),
+            levels_to_flatten=1,
         )
     elif (
         get_origin(type_) == tuple
     ):  # Only matches Generic type tuple since regular tuple is not finite-valued
         # Generic tuple: Similar to concrete dataclass. Construct all possible combinations of tuple fields.
-        return [
+        yield from (
             tuple(combo)
             for combo in itertools.product(
-                *[
+                *(
                     all_instances(tup_item, validation_funcs)
                     for tup_item in get_args(type_)
-                ]
+                )
             )
-        ]
+        )
     elif get_origin(type_) == UnionType:
         # Union: call `all_instances` for each type in the Union
-        return list(
-            flatten(
-                [all_instances(sub, validation_funcs) for sub in get_args(type_)],
-                levels_to_flatten=1,
-            )
+        yield from flatten(
+            [all_instances(sub, validation_funcs) for sub in get_args(type_)],
+            levels_to_flatten=1,
         )
     elif get_origin(type_) is Literal:
         # Literal: return all Literal arguments
-        return list(get_args(type_))
+        yield from get_args(type_)
     elif type(type_) == enum.EnumMeta:  # `issubclass(type_, enum.Enum)` doesn't work
         # Enum: return all Enum members
         raise NotImplementedError(f"Support for Enums not yet implemented.")

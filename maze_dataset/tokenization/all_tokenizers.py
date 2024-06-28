@@ -46,16 +46,17 @@ def _get_all_tokenizers() -> list[MazeTokenizerModular]:
     Computes a complete list of all valid tokenizers.
     Warning: This is an expensive function.
     """
-    return all_instances(
+    return list(all_instances(
         MazeTokenizerModular,
         validation_funcs=frozendict.frozendict(
             {
                 TokenizerElement: lambda x: x.is_valid(),
-                MazeTokenizerModular: lambda x: x.is_valid(),
+                # Currently no need for `MazeTokenizerModular.is_valid` since it contains no special cases not already covered by `TokenizerElement.is_valid`
+                # MazeTokenizerModular: lambda x: x.is_valid(),
                 StepTokenizers.StepTokenizerPermutation: lambda x: len(set(x)) == len(x) and x != (StepTokenizers.Distance(), ),
             }
         ),
-    )
+    ))
 
 
 EVERY_TEST_TOKENIZERS: list[MazeTokenizerModular] = [
