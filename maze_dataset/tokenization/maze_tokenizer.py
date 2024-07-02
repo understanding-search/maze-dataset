@@ -499,7 +499,7 @@ class TokenizerElement(SerializableDataclass, abc.ABC):
             set(cls.__mro__).intersection(set(TokenizerElement.__subclasses__())).pop()
         )
 
-    def _tokenizer_elements(self, deep: bool = True) -> list["TokenizerElement"]:
+    def tokenizer_elements(self, deep: bool = True) -> list["TokenizerElement"]:
         """
         Returns a list of all `TokenizerElement` instances contained in the subtree.
         Currently only detects `TokenizerElement` instances which are either direct attributes of another instance or
@@ -512,19 +512,19 @@ class TokenizerElement(SerializableDataclass, abc.ABC):
             return list(
                 flatten(
                     [
-                        [el] + el._tokenizer_elements()
+                        [el] + el.tokenizer_elements()
                         for el in self.__dict__.values()
                         if isinstance(el, TokenizerElement)
                     ]
-                    if deep 
-                    else filter(lambda x: isinstance(x, TokenizerElement), self.__dict__.values())
                 )
+                if deep 
+                else filter(lambda x: isinstance(x, TokenizerElement), self.__dict__.values())
             )
         else:
             non_tuple_elems: list[TokenizerElement] = list(
                 flatten(
                     [
-                        [el] + el._tokenizer_elements()
+                        [el] + el.tokenizer_elements()
                         for el in self.__dict__.values()
                         if isinstance(el, TokenizerElement)
                     ]
@@ -536,7 +536,7 @@ class TokenizerElement(SerializableDataclass, abc.ABC):
                 flatten(
                     [
                         [
-                            [tup_el] + tup_el._tokenizer_elements()
+                            [tup_el] + tup_el.tokenizer_elements()
                             for tup_el in el
                             if isinstance(tup_el, TokenizerElement)
                         ]
@@ -550,9 +550,16 @@ class TokenizerElement(SerializableDataclass, abc.ABC):
             non_tuple_elems.extend(tuple_elems)
             return non_tuple_elems
 
-    def tokenizer_element_tree(self, depth: int = 0, abstract: bool = False):
+    def tokenizer_element_tree(self, depth: int = 0, abstract: bool = False) -> str:
+        """
+        Returns a string representation of the tree of tokenizer elements contained in `self`.
+
+        # Parameters
+        - `depth: int`: Current depth in the tree. Used internally for recursion, no need to specify.
+        - `abstract: bool`: Whether to print the name of the abstract base class or the concrete class for each `TokenizerElement` instance.
+        """
         name: str =  '\t'*depth + (type(self).__name__ if not abstract else type(self)._level_one_subclass().__name__)
-        return name + '\n' + ''.join(el.tokenizer_element_tree(depth + 1, abstract) for el in self._tokenizer_elements(deep=False))
+        return name + '\n' + ''.join(el.tokenizer_element_tree(depth + 1, abstract) for el in self.tokenizer_elements(deep=False))
 
     @classmethod
     @abc.abstractmethod
@@ -1719,8 +1726,18 @@ class MazeTokenizerModular(SerializableDataclass):
     # Information Querying Methods
 
     @cached_property
-    def _tokenizer_elements(self):
-        return [self.prompt_sequencer, *self.prompt_sequencer._tokenizer_elements()]
+    def tokenizer_elements(self):
+        return [self.prompt_sequencer, *self.prompt_sequencer.tokenizer_elements()]
+
+    def tokenizer_element_tree(self, abstract: bool = False):
+        """
+        Returns a string representation of the tree of tokenizer elements contained in `self`.
+
+        # Parameters
+        - `abstract: bool`: Whether to print the name of the abstract base class or the concrete class for each `TokenizerElement` instance.
+        """
+        
+        return "\n".join([type(self).__name__, self.prompt_sequencer.tokenizer_element_tree(abstract=abstract, depth=1)])
 
     @property
     def name(self) -> str:
@@ -1730,7 +1747,7 @@ class MazeTokenizerModular(SerializableDataclass):
     def summary(self) -> dict[str, TokenizerElement]:
         return {
             # "prompt_sequencer": self.prompt_sequencer.name,
-            **{elem.attribute_key(): elem for elem in self._tokenizer_elements}
+            **{elem.attribute_key(): elem for elem in self.tokenizer_elements}
         }
 
     def has_element(
@@ -1764,9 +1781,9 @@ class MazeTokenizerModular(SerializableDataclass):
         def has_element_singular(el: type[TokenizerElement] | TokenizerElement):
             type_check(el)
             if isinstance(el, type):
-                return any([isinstance(e, el) for e in self._tokenizer_elements])
+                return any([isinstance(e, el) for e in self.tokenizer_elements])
             else:
-                return el in self._tokenizer_elements
+                return el in self.tokenizer_elements
 
         if not isinstance(elements, Iterable):
             return has_element_singular(elements)
@@ -1774,7 +1791,7 @@ class MazeTokenizerModular(SerializableDataclass):
             return all([has_element_singular(e) for e in elements])
 
     def is_valid(self):
-        return all([el.is_valid() for el in self._tokenizer_elements])
+        return all([el.is_valid() for el in self.tokenizer_elements])
 
     def is_legacy_equivalent(self) -> bool:
         """Returns if `self` has identical stringification behavior as any legacy `MazeTokenizer`."""

@@ -480,7 +480,7 @@ def _apply_validation_func(
     ) = None,
 ) -> Generator[FiniteValued, None, None]:
     """Helper function for `all_instances`"""
-    if validation_funcs is None:  # or len(vals) == 0:
+    if validation_funcs is None:
         return vals
     if hasattr(type_, "__mro__"):  # UnionType doesn't have `__mro__`
         for superclass in type_.__mro__:
