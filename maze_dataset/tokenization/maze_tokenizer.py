@@ -1261,7 +1261,7 @@ class StepTokenizers(_TokenizerElementNamespace):
 
     @serializable_dataclass(frozen=True, kw_only=True)
     class Cardinal(_StepTokenizer):
-        # @abc.abstractmethod  # TODO: Delete to reinstantiate as valid `StepTokenizer` concrete class
+        @abc.abstractmethod  # TODO: Delete to reinstantiate as valid `StepTokenizer` concrete class
         def to_tokens(
             self, maze: SolvedMaze, start_index: int, end_index: int, **kwargs
         ) -> list[str]:
@@ -1276,7 +1276,7 @@ class StepTokenizers(_TokenizerElementNamespace):
         To simplify the indeterminacy, at the start of a solution the "agent" solving the maze is assumed to be facing NORTH.
         """
 
-        # @abc.abstractmethod  # TODO: Delete to reinstantiate as valid `StepTokenizer` concrete class
+        @abc.abstractmethod  # TODO: Delete to reinstantiate as valid `StepTokenizer` concrete class
         def to_tokens(
             self, maze: SolvedMaze, start_index: int, end_index: int, **kwargs
         ) -> list[str]:
