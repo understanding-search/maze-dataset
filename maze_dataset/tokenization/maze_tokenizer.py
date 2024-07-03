@@ -1,7 +1,6 @@
 """MazeTokenizerModular and the legacy TokenizationMode enum, MazeTokenizer class"""
 
 import abc
-import itertools
 import warnings
 from enum import Enum
 from functools import cached_property
@@ -9,7 +8,7 @@ from pathlib import Path
 from typing import Any, Callable, Iterable, Literal, Mapping, Sequence, TypedDict
 
 import numpy as np
-from jaxtyping import Int, Int64, Bool
+from jaxtyping import Bool, Int, Int64
 from muutils.json_serialize import (
     SerializableDataclass,
     serializable_dataclass,
@@ -45,8 +44,8 @@ from maze_dataset.util import (
     connection_list_to_adj_list,
     coords_to_strings,
     flatten,
-    strings_to_coords,
     is_connection,
+    strings_to_coords,
 )
 from maze_dataset.utils import (
     WhenMissing,
@@ -471,7 +470,7 @@ class TokenizerElement(SerializableDataclass, abc.ABC):
                 return f"{k}={v}"
 
         members_str: str = ", ".join(
-            [_stringify(k, v) for k, v in self.__dict__.items() if k != '_type']
+            [_stringify(k, v) for k, v in self.__dict__.items() if k != "_type"]
         )
         r = f"{type(self).__name__}({members_str})"
         if "." in r and r.index("(") > r.index("."):
@@ -493,7 +492,7 @@ class TokenizerElement(SerializableDataclass, abc.ABC):
         """
         super().__init_subclass__(**kwargs)
         cls._type = serializable_field(init=True, repr=False, default=repr(cls))
-        cls.__annotations__['_type'] = Literal[repr(cls)]  # type: ignore
+        cls.__annotations__["_type"] = Literal[repr(cls)]  # type: ignore
 
     # def __hash__(self):
     #     """Hashing algorithm to identify unique `TokenizerElement` instances.
@@ -516,7 +515,7 @@ class TokenizerElement(SerializableDataclass, abc.ABC):
         """
         Returns a list of all `TokenizerElement` instances contained in the subtree.
         Currently only detects `TokenizerElement` instances which are either direct attributes of another instance or
-        which sit inside a `tuple` without further nesting. 
+        which sit inside a `tuple` without further nesting.
 
         # Parameters
         - `deep: bool`: Whether to return elements nested arbitrarily deeply or just a single layer.
@@ -530,8 +529,10 @@ class TokenizerElement(SerializableDataclass, abc.ABC):
                         if isinstance(el, TokenizerElement)
                     ]
                 )
-                if deep 
-                else filter(lambda x: isinstance(x, TokenizerElement), self.__dict__.values())
+                if deep
+                else filter(
+                    lambda x: isinstance(x, TokenizerElement), self.__dict__.values()
+                )
             )
         else:
             non_tuple_elems: list[TokenizerElement] = list(
@@ -541,20 +542,25 @@ class TokenizerElement(SerializableDataclass, abc.ABC):
                         for el in self.__dict__.values()
                         if isinstance(el, TokenizerElement)
                     ]
-                    if deep 
-                    else filter(lambda x: isinstance(x, TokenizerElement), self.__dict__.values())
+                    if deep
+                    else filter(
+                        lambda x: isinstance(x, TokenizerElement),
+                        self.__dict__.values(),
+                    )
                 )
             )
             tuple_elems: list[TokenizerElement] = list(
                 flatten(
                     [
-                        [
-                            [tup_el] + tup_el.tokenizer_elements()
-                            for tup_el in el
-                            if isinstance(tup_el, TokenizerElement)
-                        ]
-                        if deep 
-                        else filter(lambda x: isinstance(x, TokenizerElement), el)
+                        (
+                            [
+                                [tup_el] + tup_el.tokenizer_elements()
+                                for tup_el in el
+                                if isinstance(tup_el, TokenizerElement)
+                            ]
+                            if deep
+                            else filter(lambda x: isinstance(x, TokenizerElement), el)
+                        )
                         for el in self.__dict__.values()
                         if isinstance(el, tuple)
                     ]
@@ -571,8 +577,19 @@ class TokenizerElement(SerializableDataclass, abc.ABC):
         - `depth: int`: Current depth in the tree. Used internally for recursion, no need to specify.
         - `abstract: bool`: Whether to print the name of the abstract base class or the concrete class for each `TokenizerElement` instance.
         """
-        name: str =  '\t'*depth + (type(self).__name__ if not abstract else type(self)._level_one_subclass().__name__)
-        return name + '\n' + ''.join(el.tokenizer_element_tree(depth + 1, abstract) for el in self.tokenizer_elements(deep=False))
+        name: str = "\t" * depth + (
+            type(self).__name__
+            if not abstract
+            else type(self)._level_one_subclass().__name__
+        )
+        return (
+            name
+            + "\n"
+            + "".join(
+                el.tokenizer_element_tree(depth + 1, abstract)
+                for el in self.tokenizer_elements(deep=False)
+            )
+        )
 
     @classmethod
     @abc.abstractmethod
@@ -746,7 +763,7 @@ class EdgeGroupings(_TokenizerElementNamespace):
 
         def _token_params(self) -> "EdgeGroupings._GroupingTokenParams":
             return EdgeGroupings._GroupingTokenParams(
-                connection_token_ordinal=self.connection_token_ordinal, 
+                connection_token_ordinal=self.connection_token_ordinal,
                 intra=False,
                 grouped=False,
             )
@@ -774,7 +791,7 @@ class EdgeGroupings(_TokenizerElementNamespace):
 
         def _token_params(self) -> "EdgeGroupings._GroupingTokenParams":
             return EdgeGroupings._GroupingTokenParams(
-                connection_token_ordinal=self.connection_token_ordinal, 
+                connection_token_ordinal=self.connection_token_ordinal,
                 intra=self.intra,
                 grouped=True,
             )
@@ -831,18 +848,25 @@ class EdgePermuters(_TokenizerElementNamespace):
     @serializable_dataclass(frozen=True, kw_only=True)
     class SortedCoords(_EdgePermuter):
         """returns a sorted representation. useful for checking consistency"""
+
         @staticmethod
         def _permute(lattice_edges: ConnectionArray) -> ConnectionArray:
             return lattice_edges[
                 np.lexsort(
-                    (lattice_edges[:, 1, 1], lattice_edges[:, 1, 0], lattice_edges[:, 0, 1], lattice_edges[:, 0, 0])
+                    (
+                        lattice_edges[:, 1, 1],
+                        lattice_edges[:, 1, 0],
+                        lattice_edges[:, 0, 1],
+                        lattice_edges[:, 0, 0],
+                    )
                 ),
-                ...
+                ...,
             ]
 
     @serializable_dataclass(frozen=True, kw_only=True)
     class RandomCoords(_EdgePermuter):
         """Permutes randomly."""
+
         @staticmethod
         def _permute(lattice_edges: ConnectionArray) -> ConnectionArray:
             numpy_rng.shuffle(lattice_edges, 1)
@@ -854,6 +878,7 @@ class EdgePermuters(_TokenizerElementNamespace):
         Since input ConnectionList has only 1 instance of each edge,
         a call to `BothCoords._permute` will modify `lattice_edges` in-place, doubling `shape[0]`.
         """
+
         @staticmethod
         def _permute(lattice_edges: ConnectionArray) -> ConnectionArray:
             return np.append(lattice_edges, np.flip(lattice_edges, axis=1), axis=0)
@@ -892,9 +917,9 @@ class EdgeSubsets(_TokenizerElementNamespace):
         All 2n**2-2n edges of the lattice are tokenized.
         If a wall exists on that edge, the edge is tokenized in the same manner, using `VOCAB.ADJLIST_WALL` in place of `VOCAB.CONNECTOR`.
         """
+
         def _get_edges(self, maze: LatticeMaze) -> ConnectionArray:
             return lattice_connection_array(maze.grid_n)
-            
 
     @serializable_dataclass(frozen=True, kw_only=True)
     class ConnectionEdges(_EdgeSubset):
@@ -929,7 +954,7 @@ class AdjListTokenizers(_TokenizerElementNamespace):
         Specifies how the adjacency list is tokenized.
         Tokenization behavior is decomposed into specification of edge subsets, groupings, and permutations.
         See documentation of `EdgeSubset` and `EdgeGrouping` classes for more details.
-        
+
         # Parameters
         - `pre`: Whether all edge groupings include a preceding delimiter token
         - `post`: Whether all edge groupings include a following delimiter token
@@ -944,7 +969,6 @@ class AdjListTokenizers(_TokenizerElementNamespace):
           - `all`: Each edge appears twice in the tokenization, appearing with both leading coords.
           - `evens`, `odds`: The leading coord is the one belonging to that coord subset. See `EdgeSubsets.ChessboardSublattice` for details.
         """
-      
 
         pre: bool = serializable_field(default=False)
         post: bool = serializable_field(default=True)
@@ -972,7 +996,7 @@ class AdjListTokenizers(_TokenizerElementNamespace):
                 "no validation implemented for AdjListTokenizers",
             )
             return True
-        
+
         @abc.abstractmethod
         def _tokenization_callables(
             self,
@@ -980,18 +1004,17 @@ class AdjListTokenizers(_TokenizerElementNamespace):
             is_conn: Bool[np.ndarray, "edges"],
             coord_tokenizer: CoordTokenizers._CoordTokenizer,
             *args,
-            **kwargs
+            **kwargs,
         ):
             """
             Returns a sequence of callables which take an index in `edges` and return parts of that edge tokenization.
-            
+
             # Returns
             - `[0]`: leading coord tokens
             - `[1]`: connector tokens
             - `[2]`: trailing coord tokens
             """
             pass
-
 
         def _tokenize_edge_grouping(
             self,
@@ -1004,34 +1027,62 @@ class AdjListTokenizers(_TokenizerElementNamespace):
             Tokenizes a single edge grouping.
             """
             cxn_ord: int = group_params["connection_token_ordinal"]
-            is_conn: Bool[np.ndarray, "edges"] = is_connection(edges, maze.connection_list)
-            tokenize_callables = self._tokenization_callables(edges, is_conn, coord_tokenizer)
+            is_conn: Bool[np.ndarray, "edges"] = is_connection(
+                edges, maze.connection_list
+            )
+            tokenize_callables = self._tokenization_callables(
+                edges, is_conn, coord_tokenizer
+            )
 
             if group_params["grouped"]:
                 # If grouped
                 callable_permutation: list[int] = [1, 2] if cxn_ord == 0 else [2, 1]
-                repeated_callables = [tokenize_callables[i] for i in callable_permutation]
-                return flatten([
-                    tokenize_callables[0](0),
+                repeated_callables = [
+                    tokenize_callables[i] for i in callable_permutation
+                ]
+                return flatten(
                     [
-                        [*[tok_callable(i) for tok_callable in repeated_callables],
-                        *((VOCAB.ADJLIST_INTRA,) if group_params['intra'] else ())]
-                        for i in range(edges.shape[0])
+                        tokenize_callables[0](0),
+                        [
+                            [
+                                *[
+                                    tok_callable(i)
+                                    for tok_callable in repeated_callables
+                                ],
+                                *(
+                                    (VOCAB.ADJLIST_INTRA,)
+                                    if group_params["intra"]
+                                    else ()
+                                ),
+                            ]
+                            for i in range(edges.shape[0])
+                        ],
                     ]
-                ])
+                )
             else:
                 # If ungrouped
                 callable_permutation = [0, 2]
                 callable_permutation.insert(cxn_ord, 1)
-                tokenize_callables = [tokenize_callables[i] for i in callable_permutation]
-                
-                return flatten([
+                tokenize_callables = [
+                    tokenize_callables[i] for i in callable_permutation
+                ]
+
+                return flatten(
                     [
-                        [*[tok_callable(i) for tok_callable in tokenize_callables],
-                        *empty_sequence_if_attr_false((VOCAB.ADJLIST_INTRA,), group_params, 'intra')]
-                        for i in range(edges.shape[0])
+                        [
+                            [
+                                *[
+                                    tok_callable(i)
+                                    for tok_callable in tokenize_callables
+                                ],
+                                *empty_sequence_if_attr_false(
+                                    (VOCAB.ADJLIST_INTRA,), group_params, "intra"
+                                ),
+                            ]
+                            for i in range(edges.shape[0])
+                        ]
                     ]
-                ])
+                )
 
         def to_tokens(
             self, maze: LatticeMaze, coord_tokenizer: CoordTokenizers._CoordTokenizer
@@ -1046,14 +1097,24 @@ class AdjListTokenizers(_TokenizerElementNamespace):
             # then, we need to group the edges
             groups: Sequence[ConnectionArray] = self.edge_grouping._group_edges(edges)
             # Tokenize each group with optional delimiters
-            tokens: list[str] = list(flatten([
-                [
-                    *empty_sequence_if_attr_false((VOCAB.ADJLIST_PRE,), self, "pre"),
-                    *self._tokenize_edge_grouping(group, maze, coord_tokenizer, group_params),
-                    *empty_sequence_if_attr_false((VOCAB.ADJACENCY_ENDLINE,), self, "post"),
-                ]
-            for group in groups
-            ]))
+            tokens: list[str] = list(
+                flatten(
+                    [
+                        [
+                            *empty_sequence_if_attr_false(
+                                (VOCAB.ADJLIST_PRE,), self, "pre"
+                            ),
+                            *self._tokenize_edge_grouping(
+                                group, maze, coord_tokenizer, group_params
+                            ),
+                            *empty_sequence_if_attr_false(
+                                (VOCAB.ADJACENCY_ENDLINE,), self, "post"
+                            ),
+                        ]
+                        for group in groups
+                    ]
+                )
+            )
             return tokens
 
     @serializable_dataclass(frozen=True, kw_only=True)
@@ -1071,16 +1132,18 @@ class AdjListTokenizers(_TokenizerElementNamespace):
             is_conn: Bool[np.ndarray, "edges"],
             coord_tokenizer: CoordTokenizers._CoordTokenizer,
             *args,
-            **kwargs
+            **kwargs,
         ):
             # Map from `is_conn` to the tokens which represent connections and walls
-            conn_token_map: dict[bool, str] = {True: VOCAB.CONNECTOR, False: VOCAB.ADJLIST_WALL}
+            conn_token_map: dict[bool, str] = {
+                True: VOCAB.CONNECTOR,
+                False: VOCAB.ADJLIST_WALL,
+            }
             return [
-                lambda i: coord_tokenizer.to_tokens(edges[i,0]),
+                lambda i: coord_tokenizer.to_tokens(edges[i, 0]),
                 lambda i: conn_token_map[is_conn[i]],
-                lambda i: coord_tokenizer.to_tokens(edges[i,1])
+                lambda i: coord_tokenizer.to_tokens(edges[i, 1]),
             ]
-
 
     @serializable_dataclass(frozen=True, kw_only=True)
     class AdjListCardinal(_AdjListTokenizer):
@@ -1101,15 +1164,18 @@ class AdjListTokenizers(_TokenizerElementNamespace):
             is_conn: Bool[np.ndarray, "edges"],
             coord_tokenizer: CoordTokenizers._CoordTokenizer,
             *args,
-            **kwargs
+            **kwargs,
         ):
             # Map from `is_conn` to the tokens which represent connections and walls
-            conn_token_map: dict[bool, str] = {True: VOCAB.CONNECTOR, False: VOCAB.ADJLIST_WALL}
+            conn_token_map: dict[bool, str] = {
+                True: VOCAB.CONNECTOR,
+                False: VOCAB.ADJLIST_WALL,
+            }
             return [
-                lambda i: coord_tokenizer.to_tokens(edges[i,0]),
+                lambda i: coord_tokenizer.to_tokens(edges[i, 0]),
                 lambda i: conn_token_map[is_conn[i]],
-                lambda i: get_cardinal_direction(edges[i])
-                ]
+                lambda i: get_cardinal_direction(edges[i]),
+            ]
 
 
 class TargetTokenizers(_TokenizerElementNamespace):
@@ -1189,13 +1255,11 @@ class StepSizes(_TokenizerElementNamespace):
             # No invalid instances possible within data member type hint bounds
             return True
 
-
     @serializable_dataclass(frozen=True, kw_only=True)
     class Singles(_StepSize):
         def _step_single_indices(self, maze: SolvedMaze) -> list[int]:
             """Returns the indices of `maze.solution` corresponding to the steps to be tokenized."""
             return list(range(maze.solution.shape[0]))
-
 
     @serializable_dataclass(frozen=True, kw_only=True)
     class Straightaways(_StepSize):
@@ -1210,13 +1274,11 @@ class StepSizes(_TokenizerElementNamespace):
             indices.append(i)
             return indices
 
-
     @serializable_dataclass(frozen=True, kw_only=True)
     class Forks(_StepSize):
         def _step_single_indices(self, maze: SolvedMaze) -> list[int]:
             """Returns the indices of `maze.solution` corresponding to the steps to be tokenized."""
             return maze.get_solution_forking_points(always_include_endpoints=True)[0]
-
 
     @serializable_dataclass(frozen=True, kw_only=True)
     class ForksAndStraightaways(_StepSize):
@@ -1266,7 +1328,6 @@ class StepTokenizers(_TokenizerElementNamespace):
             # No invalid instances possible within data member type hint bounds
             return True
 
-
     @serializable_dataclass(frozen=True, kw_only=True)
     class Coord(_StepTokenizer):
         def to_tokens(
@@ -1278,7 +1339,6 @@ class StepTokenizers(_TokenizerElementNamespace):
         ) -> list[str]:
             return coord_tokenizer.to_tokens(maze.solution[end_index, ...])
 
-
     @serializable_dataclass(frozen=True, kw_only=True)
     class Cardinal(_StepTokenizer):
         @abc.abstractmethod  # TODO: Delete to reinstantiate as valid `StepTokenizer` concrete class
@@ -1288,7 +1348,6 @@ class StepTokenizers(_TokenizerElementNamespace):
             return [
                 get_cardinal_direction(maze.solution[start_index : start_index + 2])
             ]
-
 
     @serializable_dataclass(frozen=True, kw_only=True)
     class Relative(_StepTokenizer):
@@ -1317,7 +1376,6 @@ class StepTokenizers(_TokenizerElementNamespace):
             return [
                 get_relative_direction(maze.solution[start_index - 1 : start_index + 2])
             ]
-
 
     @serializable_dataclass(frozen=True, kw_only=True)
     class Distance(_StepTokenizer):
@@ -1749,8 +1807,15 @@ class MazeTokenizerModular(SerializableDataclass):
         # Parameters
         - `abstract: bool`: Whether to print the name of the abstract base class or the concrete class for each `TokenizerElement` instance.
         """
-        
-        return "\n".join([type(self).__name__, self.prompt_sequencer.tokenizer_element_tree(abstract=abstract, depth=1)])
+
+        return "\n".join(
+            [
+                type(self).__name__,
+                self.prompt_sequencer.tokenizer_element_tree(
+                    abstract=abstract, depth=1
+                ),
+            ]
+        )
 
     @property
     def name(self) -> str:

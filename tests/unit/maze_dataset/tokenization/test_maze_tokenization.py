@@ -1,18 +1,21 @@
 from pytest import mark, param
 
-from maze_dataset.utils import flatten
 from maze_dataset import (
     LatticeMazeGenerators,
     MazeDataset,
     MazeDatasetConfig,
     SolvedMaze,
 )
-from maze_dataset.tokenization import MazeTokenizer, TokenizationMode, MazeTokenizerModular
 from maze_dataset.testing_utils import LEGACY_AND_EQUIVALENT_TOKENIZERS
+from maze_dataset.tokenization import MazeTokenizer, MazeTokenizerModular
+
 
 @mark.parametrize(
     "tokenizer",
-    [param(tokenizer, id=tokenizer.name) for tokenizer in LEGACY_AND_EQUIVALENT_TOKENIZERS],
+    [
+        param(tokenizer, id=tokenizer.name)
+        for tokenizer in LEGACY_AND_EQUIVALENT_TOKENIZERS
+    ],
 )
 def test_tokenization_roundtrip(tokenizer: MazeTokenizer | MazeTokenizerModular):
     dataset: MazeDataset = MazeDataset.from_config(

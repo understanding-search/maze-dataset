@@ -192,10 +192,14 @@ class LatticeMaze(SerializableDataclass):
         Returns an array with the connectivity degree of each coord.
         I.e., how many neighbors each coord has.
         """
-        int_conn: Int8[np.ndarray, "lattice_dim=2 row col"] = self.connection_list.astype(np.int8)
-        degrees: Int8[np.ndarray, "row col"] = np.sum(int_conn, axis=0)  # Connections to east and south
-        degrees[:,1:] += int_conn[1,:,:-1]  # Connections to west
-        degrees[1:,:] += int_conn[0,:-1,:]  # Connections to north
+        int_conn: Int8[np.ndarray, "lattice_dim=2 row col"] = (
+            self.connection_list.astype(np.int8)
+        )
+        degrees: Int8[np.ndarray, "row col"] = np.sum(
+            int_conn, axis=0
+        )  # Connections to east and south
+        degrees[:, 1:] += int_conn[1, :, :-1]  # Connections to west
+        degrees[1:, :] += int_conn[0, :-1, :]  # Connections to north
         return degrees
 
     def get_coord_neighbors(self, c: Coord) -> CoordArray:

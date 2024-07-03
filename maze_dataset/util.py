@@ -4,14 +4,14 @@ import re
 import typing
 import warnings
 from collections import Counter
-from typing import Callable, Generator, Iterable, Type
+from typing import Callable
 
 import numpy as np
-from jaxtyping import Float, Int8, Bool
+from jaxtyping import Bool, Float, Int8
 from muutils.misc import list_join
 
-from maze_dataset.constants import ConnectionList, CoordTup, ConnectionArray
-from maze_dataset.utils import WhenMissing, flatten
+from maze_dataset.constants import ConnectionArray, ConnectionList, CoordTup
+from maze_dataset.utils import WhenMissing
 
 
 class TokenizerDeprecationWarning(DeprecationWarning):
@@ -264,10 +264,14 @@ def equal_except_adj_list_sequence(rollout1: list[str], rollout2: list[str]) -> 
     return counter1 == counter2
 
 
-def is_connection(edges: ConnectionArray, connection_list: ConnectionList) -> Bool[np.ndarray, "is_connection=edges"]:
+def is_connection(
+    edges: ConnectionArray, connection_list: ConnectionList
+) -> Bool[np.ndarray, "is_connection=edges"]:
     """
     Returns if each edge in `edges` is a connection (`True`) or wall (`False`) in `connection_list`.
     """
     sorted_edges = np.sort(edges, axis=1)
-    edge_direction = ((sorted_edges[:,1,:] - sorted_edges[:,0,:])[:,0] == 0).astype(np.int8)
-    return connection_list[edge_direction, sorted_edges[:,0,0], sorted_edges[:,0,1]]
+    edge_direction = (
+        (sorted_edges[:, 1, :] - sorted_edges[:, 0, :])[:, 0] == 0
+    ).astype(np.int8)
+    return connection_list[edge_direction, sorted_edges[:, 0, 0], sorted_edges[:, 0, 1]]

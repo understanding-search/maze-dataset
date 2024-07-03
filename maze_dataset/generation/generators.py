@@ -13,6 +13,7 @@ from maze_dataset.maze.lattice_maze import NEIGHBORS_MASK, _fill_edges_with_wall
 numpy_rng = np.random.default_rng(GLOBAL_SEED)
 random.seed(GLOBAL_SEED)
 
+
 def _random_start_coord(grid_shape: Coord, start_coord: Coord | None) -> Coord:
     if start_coord is None:
         start_coord: Coord = np.random.randint(

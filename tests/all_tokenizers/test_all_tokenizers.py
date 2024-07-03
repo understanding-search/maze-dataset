@@ -1,41 +1,23 @@
 import itertools
 import os
-import random
-from collections import Counter, namedtuple
-from typing import Callable, Iterable, Sequence
+from collections import Counter
+from typing import Callable, Iterable
 
 import frozendict
 import numpy as np
 import pytest
-from jaxtyping import Int
 from pytest import mark, param
 from zanj import ZANJ
 
-from maze_dataset import (
-    VOCAB,
-    VOCAB_LIST,
-    ConnectionArray,
-    CoordArray,
-    CoordTup,
-    LatticeMaze,
-    LatticeMazeGenerators,
-    MazeDataset,
-    MazeDatasetConfig,
-    SolvedMaze,
-    TargetedLatticeMaze,
-)
-from maze_dataset.generation import LatticeMazeGenerators
+from maze_dataset import VOCAB, VOCAB_LIST, LatticeMaze
+from maze_dataset.testing_utils import MIXED_MAZES
 from maze_dataset.tokenization import (
     CoordTokenizers,
-    EdgeGroupings,
-    EdgePermuters,
-    EdgeSubsets,
     MazeTokenizerModular,
     PathTokenizers,
     PromptSequencers,
     StepSizes,
     StepTokenizers,
-    AdjListTokenizers,
     TokenizerElement,
 )
 from maze_dataset.tokenization.all_tokenizers import (
@@ -45,13 +27,7 @@ from maze_dataset.tokenization.all_tokenizers import (
     save_hashes,
 )
 from maze_dataset.tokenization.maze_tokenizer import _load_tokenizer_hashes
-from maze_dataset.util import connection_list_to_adj_list
-from maze_dataset.utils import all_instances, flatten, manhattan_distance
-from maze_dataset.testing_utils import (
-    MIXED_MAZES,
-    ASCII_MAZES,
-    MANUAL_MAZE,
-)
+from maze_dataset.utils import all_instances
 
 # Size of the sample from `all_tokenizers.ALL_TOKENIZERS` to test
 NUM_TOKENIZERS_TO_TEST = 100
@@ -68,14 +44,16 @@ def test_all_tokenizers():
     [param(c, id=c.__name__) for c in TokenizerElement.__subclasses__()],
 )
 def test_all_instances_tokenizerelement(class_: type):
-    all_vals = list(all_instances(
-        class_,
-        validation_funcs=frozendict.frozendict(
-            {
-                TokenizerElement: lambda x: x.is_valid(),
-            }
-        ),
-    ))
+    all_vals = list(
+        all_instances(
+            class_,
+            validation_funcs=frozendict.frozendict(
+                {
+                    TokenizerElement: lambda x: x.is_valid(),
+                }
+            ),
+        )
+    )
     assert len({hash(elem) for elem in all_vals}) == len(all_vals)
 
 
@@ -176,7 +154,9 @@ def test_encode_decode(maze: LatticeMaze, tokenizer: MazeTokenizerModular):
 def test_zanj_save_read(tokenizer: MazeTokenizerModular):
     path = os.path.abspath(
         os.path.join(
-            os.path.curdir, "data", "MazeTokenizerModular_" + hex(hash(tokenizer)) + ".zanj"
+            os.path.curdir,
+            "data",
+            "MazeTokenizerModular_" + hex(hash(tokenizer)) + ".zanj",
         )
     )
     zanj = ZANJ()
@@ -257,16 +237,15 @@ _has_elems_type = (
                     ),
                 ),
                 (
-                    StepSizes.Singles, 
-                    lambda mt, els: isinstance(
-                        mt.path_tokenizer.step_size, els
-                    )
+                    StepSizes.Singles,
+                    lambda mt, els: isinstance(mt.path_tokenizer.step_size, els),
                 ),
                 (
-                    StepTokenizers.Coord, 
+                    StepTokenizers.Coord,
                     lambda mt, els: any(
-                        isinstance(step_tok, els) for step_tok in mt.path_tokenizer.step_tokenizers
-                    )
+                        isinstance(step_tok, els)
+                        for step_tok in mt.path_tokenizer.step_tokenizers
+                    ),
                 ),
                 (
                     [CoordTokenizers.CTT()],

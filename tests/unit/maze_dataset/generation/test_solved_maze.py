@@ -2,12 +2,16 @@ from pytest import mark, param
 
 from maze_dataset import SolvedMaze
 from maze_dataset.generation.generators import get_maze_with_solution
-from maze_dataset.tokenization import MazeTokenizer, MazeTokenizerModular
 from maze_dataset.testing_utils import LEGACY_AND_EQUIVALENT_TOKENIZERS
+from maze_dataset.tokenization import MazeTokenizer, MazeTokenizerModular
+
 
 @mark.parametrize(
     "tokenizer",
-    [param(tokenizer, id=tokenizer.name) for tokenizer in LEGACY_AND_EQUIVALENT_TOKENIZERS],
+    [
+        param(tokenizer, id=tokenizer.name)
+        for tokenizer in LEGACY_AND_EQUIVALENT_TOKENIZERS
+    ],
 )
 def test_from_tokens(tokenizer: MazeTokenizer | MazeTokenizerModular):
     maze_size: int = 2

@@ -6,7 +6,7 @@ import pstats
 import timeit
 import typing
 from dataclasses import field
-from functools import cache, wraps
+from functools import wraps
 from types import UnionType
 from typing import (
     Any,
@@ -139,9 +139,9 @@ def lattice_max_degrees(n: int) -> Int8[np.ndarray, "row col"]:
     """
     Returns an array with the maximum possible degree for each coord.
     """
-    out = np.full((n,n), 2)
-    out[1:-1,:] += 1
-    out[:,1:-1] += 1
+    out = np.full((n, n), 2)
+    out[1:-1, :] += 1
+    out[:, 1:-1] += 1
     return out
 
 
@@ -491,7 +491,13 @@ def _apply_validation_func(
             vals = filter(validation_funcs[superclass], vals)
             break  # Only the first validation function hit in the mro is applied
     elif get_origin(type_) == Literal:
-        return flatten((_apply_validation_func(type(v), [v], validation_funcs) for v in get_args(type_)), levels_to_flatten=1)
+        return flatten(
+            (
+                _apply_validation_func(type(v), [v], validation_funcs)
+                for v in get_args(type_)
+            ),
+            levels_to_flatten=1,
+        )
     return vals
 
 
@@ -499,6 +505,7 @@ def _all_instances_wrapper(f):
     """
     Converts dicts to frozendicts to allow caching and applies `_apply_validation_func`.
     """
+
     @wraps(f)
     def wrapper(*args, **kwargs):
         if len(args) >= 2 and args[1] is not None:
@@ -507,7 +514,10 @@ def _all_instances_wrapper(f):
             validation_funcs = frozendict.frozendict(kwargs["validation_funcs"])
         else:
             validation_funcs = None
-        return _apply_validation_func(args[0], f(args[0], validation_funcs), validation_funcs)
+        return _apply_validation_func(
+            args[0], f(args[0], validation_funcs), validation_funcs
+        )
+
     return wrapper
 
 
@@ -569,10 +579,7 @@ def all_instances(
     elif hasattr(type_, "__dataclass_fields__") and is_abstract(type_):
         # Abstract dataclass: call `all_instances` on each subclass
         yield from flatten(
-            (
-                all_instances(sub, validation_funcs)
-                for sub in type_.__subclasses__()
-            ),
+            (all_instances(sub, validation_funcs) for sub in type_.__subclasses__()),
             levels_to_flatten=1,
         )
     elif (

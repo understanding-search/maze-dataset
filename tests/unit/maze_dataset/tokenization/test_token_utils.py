@@ -1,18 +1,19 @@
 import abc
+import itertools
 from dataclasses import dataclass
 from typing import Callable, Iterable, Literal
+
 import frozendict
-import itertools
-from functools import partial
 import numpy as np
 import pytest
 from jaxtyping import Int
 from pytest import mark, param
 
 from maze_dataset import LatticeMaze
-from maze_dataset.constants import VOCAB, Connection, ConnectionArray, ConnectionList
+from maze_dataset.constants import VOCAB, Connection, ConnectionArray
 from maze_dataset.dataset.maze_dataset import MazeDatasetConfig
 from maze_dataset.generation import numpy_rng
+from maze_dataset.testing_utils import GRID_N, MAZE_DATASET
 from maze_dataset.token_utils import (
     get_adj_list_tokens,
     get_origin_tokens,
@@ -26,8 +27,6 @@ from maze_dataset.tokenization import (
     MazeTokenizerModular,
     PathTokenizers,
     StepTokenizers,
-    EdgeSubsets,
-    EdgePermuters,
     TokenizationMode,
     get_tokens_up_to_path_start,
 )
@@ -35,8 +34,8 @@ from maze_dataset.util import (
     _coord_to_strings_UT,
     coords_to_strings,
     equal_except_adj_list_sequence,
-    strings_to_coords,
     is_connection,
+    strings_to_coords,
 )
 from maze_dataset.utils import (
     FiniteValued,
@@ -46,10 +45,9 @@ from maze_dataset.utils import (
     flatten,
     get_all_subclasses,
     isinstance_by_type_name,
-    manhattan_distance,
     lattice_connection_array,
+    manhattan_distance,
 )
-from maze_dataset.testing_utils import MAZE_DATASET, GRID_N
 
 MAZE_TOKENS: tuple[list[str], str] = (
     "<ADJLIST_START> (0,1) <--> (1,1) ; (1,0) <--> (1,1) ; (0,1) <--> (0,0) ; <ADJLIST_END> <ORIGIN_START> (1,0) <ORIGIN_END> <TARGET_START> (1,1) <TARGET_END> <PATH_START> (1,0) (1,1) <PATH_END>".split(),
@@ -603,7 +601,7 @@ class DC9(DC7):
         for type_, vfs, result in (
             [
                 (
-                    DC1, 
+                    DC1,
                     None,
                     [
                         DC1(False, False),
@@ -613,7 +611,7 @@ class DC9(DC7):
                     ],
                 ),
                 (
-                    DC2, 
+                    DC2,
                     None,
                     [
                         DC2(False, False),
@@ -623,7 +621,7 @@ class DC9(DC7):
                     ],
                 ),
                 (
-                    DC2, 
+                    DC2,
                     {DC2: lambda dc: dc.x ^ dc.y},
                     [
                         DC2(False, True),
@@ -631,7 +629,7 @@ class DC9(DC7):
                     ],
                 ),
                 (
-                    DC1 | DC2, 
+                    DC1 | DC2,
                     {DC2: lambda dc: dc.x ^ dc.y},
                     [
                         DC2(False, True),
@@ -643,7 +641,7 @@ class DC9(DC7):
                     ],
                 ),
                 (
-                    DC1 | DC2, 
+                    DC1 | DC2,
                     {
                         DC1: lambda dc: dc.x == dc.y,
                         DC2: lambda dc: dc.x ^ dc.y,
@@ -656,7 +654,7 @@ class DC9(DC7):
                     ],
                 ),
                 (
-                    DC3, 
+                    DC3,
                     None,
                     [
                         DC3(DC2(False, False)),
@@ -666,7 +664,7 @@ class DC9(DC7):
                     ],
                 ),
                 (
-                    DC4, 
+                    DC4,
                     None,
                     [
                         DC4(DC2(False, False), True),
@@ -680,7 +678,7 @@ class DC9(DC7):
                     ],
                 ),
                 (
-                    DC4, 
+                    DC4,
                     {DC2: lambda dc: dc.x ^ dc.y},
                     [
                         DC4(DC2(False, True), True),
@@ -702,7 +700,7 @@ class DC9(DC7):
                 (bool | Literal[0, 1, 2], {bool: lambda x: x}, [0, 1, 2, True]),
                 (bool | Literal[0, 1, 2], {int: lambda x: x % 2}, [1, True]),
                 (
-                    tuple[bool], 
+                    tuple[bool],
                     None,
                     [
                         (True,),
@@ -710,7 +708,7 @@ class DC9(DC7):
                     ],
                 ),
                 (
-                    tuple[bool, bool], 
+                    tuple[bool, bool],
                     None,
                     [
                         (True, True),
@@ -720,14 +718,14 @@ class DC9(DC7):
                     ],
                 ),
                 (
-                    tuple[bool, bool], 
+                    tuple[bool, bool],
                     {bool: lambda x: x},
                     [
                         (True, True),
-                    ]
+                    ],
                 ),
                 (
-                    DC8, 
+                    DC8,
                     None,
                     [
                         DC8(False),
@@ -735,7 +733,7 @@ class DC9(DC7):
                     ],
                 ),
                 (
-                    DC7, 
+                    DC7,
                     None,
                     [
                         DC8(False),
@@ -747,7 +745,7 @@ class DC9(DC7):
                     ],
                 ),
                 (
-                    tuple[DC7], 
+                    tuple[DC7],
                     None,
                     [
                         (DC8(False),),
@@ -759,7 +757,7 @@ class DC9(DC7):
                     ],
                 ),
                 (
-                    tuple[DC7], 
+                    tuple[DC7],
                     {DC9: lambda dc: dc.x == dc.y},
                     [
                         (DC8(False),),
@@ -769,7 +767,7 @@ class DC9(DC7):
                     ],
                 ),
                 (
-                    tuple[DC8, DC8], 
+                    tuple[DC8, DC8],
                     None,
                     [
                         (DC8(False), DC8(False)),
@@ -779,7 +777,7 @@ class DC9(DC7):
                     ],
                 ),
                 (
-                    tuple[DC7, bool], 
+                    tuple[DC7, bool],
                     None,
                     [
                         (DC8(False), True),
@@ -801,7 +799,9 @@ class DC9(DC7):
     ],
 )
 def test_all_instances(
-    type_: FiniteValued, validation_funcs: dict[FiniteValued, Callable[[FiniteValued], bool]] | None, result: type[Exception] | Iterable[FiniteValued]
+    type_: FiniteValued,
+    validation_funcs: dict[FiniteValued, Callable[[FiniteValued], bool]] | None,
+    result: type[Exception] | Iterable[FiniteValued],
 ):
     if isinstance(result, type) and issubclass(result, Exception):
         with pytest.raises(result):
@@ -810,8 +810,13 @@ def test_all_instances(
         assert dataclass_set_equals(all_instances(type_, validation_funcs), result)
     else:  # General case, due to nesting, results might contain some dataclasses and some other types
         out = list(all_instances(type_, validation_funcs))
-        assert dataclass_set_equals(filter(lambda x: isinstance(x, IsDataclass), out), filter(lambda x: isinstance(x, IsDataclass), result))
-        assert set(filter(lambda x: not isinstance(x, IsDataclass), out)) == set(filter(lambda x: not isinstance(x, IsDataclass), result))
+        assert dataclass_set_equals(
+            filter(lambda x: isinstance(x, IsDataclass), out),
+            filter(lambda x: isinstance(x, IsDataclass), result),
+        )
+        assert set(filter(lambda x: not isinstance(x, IsDataclass), out)) == set(
+            filter(lambda x: not isinstance(x, IsDataclass), result)
+        )
 
 
 # @mivanit: this was really difficult to understand
@@ -843,18 +848,17 @@ def test_all_instances(
                     # validation_funcs
                     {PathTokenizers._PathTokenizer: lambda x: x.is_valid()},
                     # assertion
-                    lambda x: 
-                        PathTokenizers.StepSequence(
-                            step_tokenizers=(StepTokenizers.Distance(),)
+                    lambda x: PathTokenizers.StepSequence(
+                        step_tokenizers=(StepTokenizers.Distance(),)
+                    )
+                    not in x
+                    and PathTokenizers.StepSequence(
+                        step_tokenizers=(
+                            StepTokenizers.Coord(),
+                            StepTokenizers.Coord(),
                         )
-                        not in x
-                        and PathTokenizers.StepSequence(
-                            step_tokenizers=(
-                                StepTokenizers.Coord(),
-                                StepTokenizers.Coord(),
-                            )
-                        )
-                        not in x,
+                    )
+                    not in x,
                 ),
             ]
         )
@@ -1076,16 +1080,13 @@ def test_manhattan_distance(
 
 @mark.parametrize(
     "n",
-    [
-        param(n)
-        for n in [2, 3, 5, 20]
-    ],
+    [param(n) for n in [2, 3, 5, 20]],
 )
 def test_lattice_connection_arrray(n):
     edges = lattice_connection_array(n)
-    assert tuple(edges.shape) == (2*n*(n-1), 2, 2)
-    assert np.all(np.sum(edges[:,1], axis=1) > np.sum(edges[:,0], axis=1))
-    assert tuple(np.unique(edges, axis=0).shape) == (2*n*(n-1), 2, 2)
+    assert tuple(edges.shape) == (2 * n * (n - 1), 2, 2)
+    assert np.all(np.sum(edges[:, 1], axis=1) > np.sum(edges[:, 0], axis=1))
+    assert tuple(np.unique(edges, axis=0).shape) == (2 * n * (n - 1), 2, 2)
 
 
 @mark.parametrize(
@@ -1097,19 +1098,32 @@ def test_lattice_connection_arrray(n):
             id=f"edges[{i}]; maze[{j}]",
         )
         for (i, edges), (j, maze) in itertools.product(
-            enumerate([
-                lambda: lattice_connection_array(GRID_N),
-                lambda: np.flip(lattice_connection_array(GRID_N), axis=1),
-                lambda: lattice_connection_array(GRID_N - 1),
-                lambda: numpy_rng.choice(lattice_connection_array(GRID_N), 2*GRID_N, axis=0),
-                lambda: numpy_rng.choice(lattice_connection_array(GRID_N), 1, axis=0),
-            ]), 
-            enumerate(MAZE_DATASET.mazes)
+            enumerate(
+                [
+                    lambda: lattice_connection_array(GRID_N),
+                    lambda: np.flip(lattice_connection_array(GRID_N), axis=1),
+                    lambda: lattice_connection_array(GRID_N - 1),
+                    lambda: numpy_rng.choice(
+                        lattice_connection_array(GRID_N), 2 * GRID_N, axis=0
+                    ),
+                    lambda: numpy_rng.choice(
+                        lattice_connection_array(GRID_N), 1, axis=0
+                    ),
+                ]
+            ),
+            enumerate(MAZE_DATASET.mazes),
         )
     ],
 )
 def test_is_connection(edges: ConnectionArray, maze: LatticeMaze):
     output = is_connection(edges, maze.connection_list)
     sorted_edges = np.sort(edges, axis=1)
-    edge_direction = ((sorted_edges[:,1,:] - sorted_edges[:,0,:])[:,0] == 0).astype(np.int8)
-    assert np.array_equal(output, maze.connection_list[edge_direction, sorted_edges[:,0,0], sorted_edges[:,0,1]])
+    edge_direction = (
+        (sorted_edges[:, 1, :] - sorted_edges[:, 0, :])[:, 0] == 0
+    ).astype(np.int8)
+    assert np.array_equal(
+        output,
+        maze.connection_list[
+            edge_direction, sorted_edges[:, 0, 0], sorted_edges[:, 0, 1]
+        ],
+    )

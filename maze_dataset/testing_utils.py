@@ -2,11 +2,12 @@
 Shared utilities for tests only.
 Do not import into any module outside of the tests directory.
 """
+
 import itertools
-import numpy as np
 from typing import Final, NamedTuple
+
 import frozendict
-from jaxtyping import Int
+import numpy as np
 
 from maze_dataset import (
     CoordArray,
@@ -20,8 +21,8 @@ from maze_dataset import (
 from maze_dataset.generation import LatticeMazeGenerators
 from maze_dataset.tokenization import (
     MazeTokenizer,
-    TokenizationMode,
     MazeTokenizerModular,
+    TokenizationMode,
 )
 
 GRID_N: Final[int] = 5
@@ -168,6 +169,9 @@ ASCII_MAZES: Final[frozendict.frozendict[str, MANUAL_MAZE]] = frozendict.frozend
 # A list of legacy `MazeTokenizer`s and their `MazeTokenizerModular` equivalents.
 # Used for unit tests where both versions are supported
 LEGACY_AND_EQUIVALENT_TOKENIZERS: list[MazeTokenizer, MazeTokenizerModular] = [
-    *[MazeTokenizer(tokenization_mode=tok_mode, max_grid_size=20) for tok_mode in TokenizationMode],
-    *[MazeTokenizerModular.from_legacy(tok_mode) for tok_mode in TokenizationMode]
+    *[
+        MazeTokenizer(tokenization_mode=tok_mode, max_grid_size=20)
+        for tok_mode in TokenizationMode
+    ],
+    *[MazeTokenizerModular.from_legacy(tok_mode) for tok_mode in TokenizationMode],
 ]
