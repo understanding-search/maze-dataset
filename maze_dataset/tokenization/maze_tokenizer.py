@@ -590,6 +590,31 @@ class TokenizerElement(SerializableDataclass, abc.ABC):
                 for el in self.tokenizer_elements(deep=False)
             )
         )
+    
+    def tokenizer_element_dict(self) -> dict:
+        """
+        Returns a dictionary representation of the tree of tokenizer elements contained in `self`.
+        """
+        return {
+            type(self).__name__: {
+                key: (
+                    val.tokenizer_element_dict() 
+                    if isinstance(val, TokenizerElement) 
+                    else (
+                        val
+                        if not isinstance(val, tuple)
+                        else [
+                            el.tokenizer_element_dict()
+                            if isinstance(el, TokenizerElement)
+                            else el
+                            for el in val
+                        ]
+                    )
+                )
+                for key, val in self.__dict__.items()
+                if key != "_type"
+            }
+        }
 
     @classmethod
     @abc.abstractmethod
@@ -1800,7 +1825,7 @@ class MazeTokenizerModular(SerializableDataclass):
     def tokenizer_elements(self):
         return [self.prompt_sequencer, *self.prompt_sequencer.tokenizer_elements()]
 
-    def tokenizer_element_tree(self, abstract: bool = False):
+    def tokenizer_element_tree(self, abstract: bool = False) -> str:
         """
         Returns a string representation of the tree of tokenizer elements contained in `self`.
 
@@ -1816,6 +1841,11 @@ class MazeTokenizerModular(SerializableDataclass):
                 ),
             ]
         )
+    
+    def tokenizer_element_dict(self) -> dict:
+        return {
+            type(self).__name__: self.prompt_sequencer.tokenizer_element_dict()
+        }
 
     @property
     def name(self) -> str:
