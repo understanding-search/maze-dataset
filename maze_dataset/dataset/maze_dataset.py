@@ -75,6 +75,7 @@ class MazeDatasetConfig(GPTDatasetConfig):
             "source_code": safe_getsource(gen_func),
         },
         loading_fn=lambda data: _load_maze_ctor(data["maze_ctor"]),
+        assert_type=False,  # TODO: check the type here once muutils supports checking Callable signatures
     )
 
     maze_ctor_kwargs: dict = serializable_field(

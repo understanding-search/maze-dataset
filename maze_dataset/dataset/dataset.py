@@ -48,7 +48,10 @@ class GPTDatasetConfig(SerializableDataclass):
 
     seed: int | None = serializable_field(default=DEFAULT_SEED)
     applied_filters: list[dict[typing.Literal["name", "kwargs"], str | dict]] = (
-        serializable_field(default_factory=list)
+        serializable_field(
+            default_factory=list,
+            assert_type=False,  # TODO: check the type here once muutils supports checking Callable signatures
+        )
     )
 
     def __post_init__(self):
