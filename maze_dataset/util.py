@@ -8,8 +8,8 @@ from typing import Callable
 
 import numpy as np
 from jaxtyping import Bool, Float, Int8
-from muutils.misc import list_join
 from muutils.errormode import ErrorMode
+from muutils.misc import list_join
 
 from maze_dataset.constants import ConnectionArray, ConnectionList, CoordTup
 from maze_dataset.utils import WhenMissing
@@ -230,12 +230,12 @@ def connection_list_to_adj_list(
 
 
 def equal_except_adj_list_sequence(
-        rollout1: list[str], 
-        rollout2: list[str],
-        do_except: bool = False,
-        when_counter_mismatch: ErrorMode = ErrorMode.EXCEPT,
-        when_len_mismatch: ErrorMode = ErrorMode.EXCEPT,
-    ) -> bool:
+    rollout1: list[str],
+    rollout2: list[str],
+    do_except: bool = False,
+    when_counter_mismatch: ErrorMode = ErrorMode.EXCEPT,
+    when_len_mismatch: ErrorMode = ErrorMode.EXCEPT,
+) -> bool:
     """Returns if the rollout strings are equal, allowing for differently sequenced adjacency lists.
     <ADJLIST_START> and <ADJLIST_END> tokens must be in the rollouts.
     Intended ONLY for determining if two tokenization schemes are the same for rollouts generated from the same maze.
@@ -257,33 +257,46 @@ def equal_except_adj_list_sequence(
 
     if len(rollout1) != len(rollout2):
         if do_except:
-            when_len_mismatch.process(f"Rollouts are not the same length: {len(rollout1)} != {len(rollout2)}")
+            when_len_mismatch.process(
+                f"Rollouts are not the same length: {len(rollout1)} != {len(rollout2)}"
+            )
         return False
     if ("<ADJLIST_START>" in rollout1) ^ ("<ADJLIST_START>" in rollout2):
         if do_except:
-            raise ValueError(f"Rollouts do not have the same <ADJLIST_START> token: `{'<ADJLIST_START>' in rollout1 = }` != `{'<ADJLIST_START>' in rollout2 = }`")
+            raise ValueError(
+                f"Rollouts do not have the same <ADJLIST_START> token: `{'<ADJLIST_START>' in rollout1 = }` != `{'<ADJLIST_START>' in rollout2 = }`"
+            )
         return False
     if ("<ADJLIST_END>" in rollout1) ^ ("<ADJLIST_END>" in rollout2):
         if do_except:
-            raise ValueError(f"Rollouts do not have the same <ADJLIST_END> token: `{'<ADJLIST_END>' in rollout1 = }` != `{'<ADJLIST_END>' in rollout2 = }`")
+            raise ValueError(
+                f"Rollouts do not have the same <ADJLIST_END> token: `{'<ADJLIST_END>' in rollout1 = }` != `{'<ADJLIST_END>' in rollout2 = }`"
+            )
         return False
 
     adj_list1, non_adj_list1 = get_token_regions(rollout1)
     adj_list2, non_adj_list2 = get_token_regions(rollout2)
     if non_adj_list1 != non_adj_list2:
         if do_except:
-            when_len_mismatch.process(f"Non-adjacency list tokens are not the same:\n{non_adj_list1}\n!=\n{non_adj_list2}")
-            raise ValueError(f"Non-adjacency list tokens are not the same:\n{non_adj_list1}\n!=\n{non_adj_list2}")
+            when_len_mismatch.process(
+                f"Non-adjacency list tokens are not the same:\n{non_adj_list1}\n!=\n{non_adj_list2}"
+            )
+            raise ValueError(
+                f"Non-adjacency list tokens are not the same:\n{non_adj_list1}\n!=\n{non_adj_list2}"
+            )
         return False
     counter1: Counter = Counter(adj_list1)
     counter2: Counter = Counter(adj_list2)
     counters_eq: bool = counter1 == counter2
     if not counters_eq:
         if do_except:
-            when_counter_mismatch.process(f"Adjacency list counters are not the same:\n{counter1}\n!=\n{counter2}\n{counter1 - counter2 = }")
+            when_counter_mismatch.process(
+                f"Adjacency list counters are not the same:\n{counter1}\n!=\n{counter2}\n{counter1 - counter2 = }"
+            )
         return False
 
     return True
+
 
 def is_connection(
     edges: ConnectionArray, connection_list: ConnectionList
