@@ -471,7 +471,7 @@ class TokenizerElement(SerializableDataclass, abc.ABC):
                 return f"{k}={v}"
 
         members_str: str = ", ".join(
-            [_stringify(k, v) for k, v in self.__dict__.items()]
+            [_stringify(k, v) for k, v in self.__dict__.items() if k != '_type']
         )
         r = f"{type(self).__name__}({members_str})"
         if "." in r and r.index("(") > r.index("."):
@@ -483,9 +483,17 @@ class TokenizerElement(SerializableDataclass, abc.ABC):
         return self.name
 
     def __init_subclass__(cls, **kwargs):
+        """
+        Hack: dataclass hashes don't include the class itself in the hash function inputs.
+        This causes dataclasses with identical fields but different types to hash identically.
+        This hack circumvents this by adding a slightly hidden field to every subclass with a value of `repr(cls)`.
+        To maintain compatibility with `all_instances`, the static type of the new field can only have 1 possible value.
+        So we type it as a singleton `Literal` type.
+        Ignore Pylance complaining about the arg to `Literal` being an expression.
+        """
         super().__init_subclass__(**kwargs)
         cls._type = serializable_field(init=True, repr=False, default=repr(cls))
-        cls.__annotations__['_type'] = Literal[repr(cls)]
+        cls.__annotations__['_type'] = Literal[repr(cls)]  # type: ignore
 
     # def __hash__(self):
     #     """Hashing algorithm to identify unique `TokenizerElement` instances.

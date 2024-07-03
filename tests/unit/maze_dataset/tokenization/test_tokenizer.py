@@ -405,13 +405,13 @@ def _helper_test_path_tokenizers(
         for maze_kv, tokenizer in itertools.product(
             ASCII_MAZES.items(),
             random.sample(
-                all_instances(
+                list(all_instances(
                     PathTokenizers._PathTokenizer,
-                    frozendict.frozendict({TokenizerElement: lambda x: x.is_valid()}),
-                ),
+                    {TokenizerElement: lambda x: x.is_valid()},
+                )),
                 min(
                     20, NUM_TOKENIZERS_TO_TEST
-                ),  # TODO: Get rid of "3" when reinstantiating all `StepTokenizer` leaf classes
+                ),  # TODO: Get rid of literal and `min` when reinstantiating all `StepTokenizer` leaf classes
             ),
         )
     ],
@@ -634,10 +634,10 @@ random.seed(GLOBAL_SEED)
         param(tok_elem, maze, id=f"{tok_elem.name}-maze[{i}]")
         for (i, maze), tok_elem in itertools.product(
             enumerate(MAZE_DATASET),
-            random.sample(all_instances(
+            random.sample(list(all_instances(
                 AdjListTokenizers._AdjListTokenizer,
-                frozendict.frozendict({TokenizerElement: lambda x: x.is_valid(),}),
-            ), 100),
+                {TokenizerElement: lambda x: x.is_valid(),},
+            )), 100),
         )
     ],
 )
