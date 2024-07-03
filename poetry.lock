@@ -1861,22 +1861,25 @@ tests = ["pytest (>=4.6)"]
 
 [[package]]
 name = "muutils"
-version = "0.5.11"
-description = "A collection of miscellaneous python utilities"
+version = "0.6.1"
+description = "miscellaneous python utilities"
 optional = false
-python-versions = "<4.0,>=3.10"
+python-versions = "<4.0,>=3.8"
 files = [
-    {file = "muutils-0.5.11-py3-none-any.whl", hash = "sha256:81b33c1a9714da81cfbe9a80e55457ec11a5a052e028c9a3747ba886f29d57ac"},
-    {file = "muutils-0.5.11.tar.gz", hash = "sha256:83e8ba34f779c664b77cb77db5953072d68a72f4dc6afbde124b9bab29ac28fb"},
+    {file = "muutils-0.6.1-py3-none-any.whl", hash = "sha256:58397319f438dbec7fbab72d7155c8257d8d7fc79c6205a1d67c65960e8ab9db"},
+    {file = "muutils-0.6.1.tar.gz", hash = "sha256:49f1f5d1de31026d9622a2737bd272ad692f43f7c171c544922057042c8eb89f"},
 ]
 
 [package.dependencies]
-jaxtyping = {version = ">=0.2.12,<0.3.0", optional = true, markers = "extra == \"array\""}
-numpy = {version = ">=1.22.4,<2.0.0", optional = true, markers = "extra == \"array\""}
+jaxtyping = {version = ">=0.2.12,<0.3.0", optional = true, markers = "extra == \"array\" or extra == \"array-no-torch\""}
+numpy = {version = ">=1.26.4,<2.0.0", optional = true, markers = "python_version >= \"3.9\" and (extra == \"array\" or extra == \"array-no-torch\")"}
 torch = {version = ">=1.13.1", optional = true, markers = "extra == \"array\""}
 
 [package.extras]
-array = ["jaxtyping (>=0.2.12,<0.3.0)", "numpy (>=1.22.4,<2.0.0)", "torch (>=1.13.1)"]
+array = ["jaxtyping (>=0.2.12,<0.3.0)", "numpy (>=1.24.4,<2.0.0)", "numpy (>=1.26.4,<2.0.0)", "torch (>=1.13.1)"]
+array-no-torch = ["jaxtyping (>=0.2.12,<0.3.0)", "numpy (>=1.24.4,<2.0.0)", "numpy (>=1.26.4,<2.0.0)"]
+notebook = ["ipython (>=8.20.0,<9.0.0)"]
+zanj = ["zanj (>=0.3.0,<0.4.0)"]
 
 [[package]]
 name = "mypy"
@@ -3498,17 +3501,18 @@ files = [
 
 [[package]]
 name = "zanj"
-version = "0.2.3"
+version = "0.3.1"
 description = "save and load complex objects to disk without pickling"
 optional = false
-python-versions = "<4.0,>=3.10"
+python-versions = "<4.0,>=3.8"
 files = [
-    {file = "zanj-0.2.3-py3-none-any.whl", hash = "sha256:4992eba4b7b48264da9a243922d69f9689c1d6b11e7915b49e84aeda61b43297"},
-    {file = "zanj-0.2.3.tar.gz", hash = "sha256:d0d45ddda07911723d2c2e57db84b1613b1498f66eb418af197d192c89fb87e9"},
+    {file = "zanj-0.3.1-py3-none-any.whl", hash = "sha256:9a8ea449f95c49ee8823499e79311332c5fcc05e9a2ab46d413db8593a554e3f"},
+    {file = "zanj-0.3.1.tar.gz", hash = "sha256:caedd60fc66174efb0dab5f757612114fb6157cd7c44200a4488bb65b0c8d9b1"},
 ]
 
 [package.dependencies]
-muutils = {version = ">=0.5.1,<0.7.0", extras = ["array"]}
+muutils = {version = ">=0.6.1,<0.7.0", extras = ["array"]}
+numpy = {version = ">=1.26.4,<2.0.0", markers = "python_version >= \"3.9\""}
 
 [package.extras]
 pandas = ["pandas (>=1.5.3)"]
@@ -3516,4 +3520,4 @@ pandas = ["pandas (>=1.5.3)"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10.6"
-content-hash = "8c75d4a90ac60d6efa44b06d090f5d1b066d6ee8e617bb951f0b2551a9665ec3"
+content-hash = "e34b2cdc0c7e474be30069b95b346ee800d55368ff5d19e62c8f554ec595e132"
