@@ -84,7 +84,7 @@ def color_tokens_cmap(
     weights_norm = matplotlib.colors.Normalize()(weights)
 
     if isinstance(cmap, str):
-        cmap = matplotlib.cm.get_cmap(cmap)
+        cmap = matplotlib.colormaps.get_cmap(cmap)
 
     colors: RGBArray = cmap(weights_norm)[:, :3] * 255
 
