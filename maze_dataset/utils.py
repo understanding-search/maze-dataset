@@ -482,7 +482,9 @@ def _apply_validation_func(
     """Helper function for `all_instances`"""
     if validation_funcs is None:
         return vals
-    if hasattr(type_, "__mro__"):  # UnionType doesn't have `__mro__`
+    if type_ in validation_funcs:
+        return filter(validation_funcs[type_], vals)
+    elif hasattr(type_, "__mro__"):  # UnionType doesn't have `__mro__`
         for superclass in type_.__mro__:
             if superclass not in validation_funcs:
                 continue
@@ -586,7 +588,7 @@ def all_instances(
                 )
             )
         )
-    elif get_origin(type_) == UnionType:
+    elif get_origin(type_) in (UnionType, typing.Union):
         # Union: call `all_instances` for each type in the Union
         yield from flatten(
             [all_instances(sub, validation_funcs) for sub in get_args(type_)],

@@ -3,6 +3,7 @@ from dataclasses import dataclass
 from typing import Callable, Iterable, Literal
 import frozendict
 import itertools
+from functools import partial
 import numpy as np
 import pytest
 from jaxtyping import Int
@@ -630,6 +631,31 @@ class DC9(DC7):
                     ],
                 ),
                 (
+                    DC1 | DC2, 
+                    {DC2: lambda dc: dc.x ^ dc.y},
+                    [
+                        DC2(False, True),
+                        DC2(True, False),
+                        DC1(False, False),
+                        DC1(False, True),
+                        DC1(True, False),
+                        DC1(True, True),
+                    ],
+                ),
+                (
+                    DC1 | DC2, 
+                    {
+                        DC1: lambda dc: dc.x == dc.y,
+                        DC2: lambda dc: dc.x ^ dc.y,
+                    },
+                    [
+                        DC2(False, True),
+                        DC2(True, False),
+                        DC1(False, False),
+                        DC1(True, True),
+                    ],
+                ),
+                (
                     DC3, 
                     None,
                     [
@@ -672,6 +698,9 @@ class DC9(DC7):
                 (str, None, TypeError),
                 (Literal[0, 1, 2], None, [0, 1, 2]),
                 (Literal[0, 1, 2], {int: lambda x: x % 2 == 0}, [0, 2]),
+                (bool | Literal[0, 1, 2], dict(), [0, 1, 2, True, False]),
+                (bool | Literal[0, 1, 2], {bool: lambda x: x}, [0, 1, 2, True]),
+                (bool | Literal[0, 1, 2], {int: lambda x: x % 2}, [1, True]),
                 (
                     tuple[bool], 
                     None,
@@ -779,8 +808,10 @@ def test_all_instances(
             list(all_instances(type_, validation_funcs))
     elif hasattr(type_, "__dataclass_fields__"):
         assert dataclass_set_equals(all_instances(type_, validation_funcs), result)
-    else:
-        assert set(all_instances(type_, validation_funcs)) == set(result)
+    else:  # General case, due to nesting, results might contain some dataclasses and some other types
+        out = list(all_instances(type_, validation_funcs))
+        assert dataclass_set_equals(filter(lambda x: isinstance(x, IsDataclass), out), filter(lambda x: isinstance(x, IsDataclass), result))
+        assert set(filter(lambda x: not isinstance(x, IsDataclass), out)) == set(filter(lambda x: not isinstance(x, IsDataclass), result))
 
 
 # @mivanit: this was really difficult to understand
