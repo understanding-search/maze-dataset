@@ -1013,7 +1013,9 @@ class AdjListTokenizers(_TokenizerElementNamespace):
 
         @classmethod
         def attribute_key(cls) -> str:
-            return cls.key
+            # TODO: unsure if this is correct?!
+            return AdjListTokenizers.key
+            # return cls.key
 
         def is_valid(self) -> bool:
             # TODO
