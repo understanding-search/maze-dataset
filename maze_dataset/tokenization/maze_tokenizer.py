@@ -43,7 +43,6 @@ from maze_dataset.util import (
     _coord_to_strings_UT,
     connection_list_to_adj_list,
     coords_to_strings,
-    flatten,
     is_connection,
     strings_to_coords,
 )
@@ -51,6 +50,7 @@ from maze_dataset.utils import (
     WhenMissing,
     corner_first_ndindex,
     empty_sequence_if_attr_false,
+    flatten,
     lattice_connection_array,
 )
 
