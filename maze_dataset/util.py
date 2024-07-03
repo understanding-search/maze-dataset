@@ -234,7 +234,7 @@ def equal_except_adj_list_sequence(
         rollout2: list[str],
         do_except: bool = False,
         when_counter_mismatch: ErrorMode = ErrorMode.EXCEPT,
-        when_adjlist_len_mismatch: ErrorMode = ErrorMode.EXCEPT,
+        when_len_mismatch: ErrorMode = ErrorMode.EXCEPT,
     ) -> bool:
     """Returns if the rollout strings are equal, allowing for differently sequenced adjacency lists.
     <ADJLIST_START> and <ADJLIST_END> tokens must be in the rollouts.
@@ -257,7 +257,7 @@ def equal_except_adj_list_sequence(
 
     if len(rollout1) != len(rollout2):
         if do_except:
-            raise ValueError(f"Rollouts are not the same length: {len(rollout1)} != {len(rollout2)}")
+            when_len_mismatch.process(f"Rollouts are not the same length: {len(rollout1)} != {len(rollout2)}")
         return False
     if ("<ADJLIST_START>" in rollout1) ^ ("<ADJLIST_START>" in rollout2):
         if do_except:
@@ -272,7 +272,7 @@ def equal_except_adj_list_sequence(
     adj_list2, non_adj_list2 = get_token_regions(rollout2)
     if non_adj_list1 != non_adj_list2:
         if do_except:
-            when_adjlist_len_mismatch.process(f"Non-adjacency list tokens are not the same:\n{non_adj_list1}\n!=\n{non_adj_list2}")
+            when_len_mismatch.process(f"Non-adjacency list tokens are not the same:\n{non_adj_list1}\n!=\n{non_adj_list2}")
             raise ValueError(f"Non-adjacency list tokens are not the same:\n{non_adj_list1}\n!=\n{non_adj_list2}")
         return False
     counter1: Counter = Counter(adj_list1)
