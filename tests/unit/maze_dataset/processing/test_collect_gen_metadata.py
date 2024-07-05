@@ -46,6 +46,9 @@ def test_remove_duplicates_large():
     )
     print(f"Generated {len(dataset)} mazes")
 
+    print(f"\t{dataset.generation_metadata_collected = }")
+    print(f"\t{dataset.mazes[0].generation_meta = }")
+
     dataset = dataset.filter_by.remove_duplicates(
         minimum_difference_connection_list=0, minimum_difference_solution=1
     )
