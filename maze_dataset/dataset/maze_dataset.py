@@ -310,12 +310,15 @@ class MazeDataset(GPTDataset):
         elif data["__format__"] == "MazeDataset:minimal_soln_cat":
             return cls._load_minimal_soln_cat(data)
         elif data["__format__"] == "MazeDataset":
-            if SERIALIZE_MINIMAL_THRESHOLD == -1:  # Allow access to `_load_legacy` for profiling
+            if (
+                SERIALIZE_MINIMAL_THRESHOLD == -1
+            ):  # Allow access to `_load_legacy` for profiling
                 return cls._load_legacy(data)
             return cls._load_full(data)
         else:
-            raise KeyError(f"`__format__` string {data['__format__']} is not a recognized `MazeDataset` format.")
-            
+            raise KeyError(
+                f"`__format__` string {data['__format__']} is not a recognized `MazeDataset` format."
+            )
 
     @classmethod
     def _load_full(cls, data: JSONitem) -> "MazeDataset":
@@ -704,7 +707,9 @@ class MazeDatasetFilters:
         if dataset.generation_metadata_collected is not None:
             return dataset
         else:
-            assert dataset[0].generation_meta is not None, "generation meta is not collected and original is not present"
+            assert (
+                dataset[0].generation_meta is not None
+            ), "generation meta is not collected and original is not present"
         # if the generation meta is already collected, don't collect it again, do nothing
 
         new_dataset: MazeDataset

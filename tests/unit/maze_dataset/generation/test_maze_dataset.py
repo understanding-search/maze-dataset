@@ -91,7 +91,7 @@ class TestMazeDataset:
             z = ZANJ()
             roundtrip_zanj = z.read(p)
             assert roundtrip_zanj == d
-            
+
         cfgs = [self.config]
         cfgs.extend(
             [
@@ -111,16 +111,17 @@ class TestMazeDataset:
         for c in cfgs:
             dataset = MazeDataset.generate(c, gen_parallel=False)
             path = os.path.abspath(
-                os.path.join(os.getcwd(), "..", "data", dataset.cfg.to_fname() + ".zanj")
+                os.path.join(
+                    os.getcwd(), "..", "data", dataset.cfg.to_fname() + ".zanj"
+                )
             )
             # Test with full serialization
             set_serialize_minimal_threshold(None)
             save_and_read(dataset, path)
-            
+
             # Test with minimal serialization
             set_serialize_minimal_threshold(0)
             save_and_read(dataset, path)
-            
 
     def test_custom_maze_filter(self):
         connection_list = bool_array_from_string(
