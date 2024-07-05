@@ -48,7 +48,8 @@ def _load_maze_ctor(maze_ctor_serialized: str | dict) -> Callable:
     elif isinstance(maze_ctor_serialized, str):
         # this is a version I switched to for a while but now we are switching back
         warnings.warn(
-            f"you are loading an old model/config in `_load_maze_ctor()`!!! this should not be happening, please report to miv@knc.ai"
+            f"you are loading an old model/config in `_load_maze_ctor()`!!! this should not be happening, please report: "
+            + "https://github.com/understanding-search/maze-dataset/issues/new"
         )
         return GENERATORS_MAP[maze_ctor_serialized]
     else:
@@ -75,6 +76,7 @@ class MazeDatasetConfig(GPTDatasetConfig):
             "source_code": safe_getsource(gen_func),
         },
         loading_fn=lambda data: _load_maze_ctor(data["maze_ctor"]),
+        assert_type=False,  # TODO: check the type here once muutils supports checking Callable signatures
     )
 
     maze_ctor_kwargs: dict = serializable_field(
