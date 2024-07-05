@@ -203,11 +203,7 @@ class MazeDataset(GPTDataset):
         return self.mazes[i]
 
     def __deepcopy__(self, memo) -> "MazeDataset":
-        print(f"before deepcopy: {self.generation_metadata_collected = }")
-        print(f"\t{self.mazes[0].generation_meta = }")
-        output = MazeDataset.load(self.serialize())
-        print(f"after deepcopy: {output.generation_metadata_collected = }")
-        return output
+        return MazeDataset.load(self.serialize())
 
     def as_tokens(
         self,
@@ -689,7 +685,6 @@ class MazeDatasetFilters:
         inplace: bool = True,
         allow_fail: bool = False,
     ) -> MazeDataset:
-        print(f"{dataset.generation_metadata_collected = }")
         if dataset.generation_metadata_collected is not None:
             return dataset
         # if the generation meta is already collected, don't collect it again, do nothing
