@@ -48,7 +48,8 @@ def _load_maze_ctor(maze_ctor_serialized: str | dict) -> Callable:
     elif isinstance(maze_ctor_serialized, str):
         # this is a version I switched to for a while but now we are switching back
         warnings.warn(
-            f"you are loading an old model/config in `_load_maze_ctor()`!!! this should not be happening, please report to miv@knc.ai"
+            f"you are loading an old model/config in `_load_maze_ctor()`!!! this should not be happening, please report: "
+            + "https://github.com/understanding-search/maze-dataset/issues/new"
         )
         return GENERATORS_MAP[maze_ctor_serialized]
     else:
@@ -75,6 +76,7 @@ class MazeDatasetConfig(GPTDatasetConfig):
             "source_code": safe_getsource(gen_func),
         },
         loading_fn=lambda data: _load_maze_ctor(data["maze_ctor"]),
+        assert_type=False,  # TODO: check the type here once muutils supports checking Callable signatures
     )
 
     maze_ctor_kwargs: dict = serializable_field(
@@ -558,11 +560,13 @@ class MazeDatasetFilters:
     @register_dataset_filter
     @staticmethod
     def cut_percentile_shortest(
-        # percentile is 1-100, not 0-1, as this is what np.percentile expects
         dataset: MazeDataset,
         percentile: float = 10.0,
     ) -> MazeDataset:
-        """cut the shortest `percentile` of mazes from the dataset"""
+        """cut the shortest `percentile` of mazes from the dataset
+
+        `percentile` is 1-100, not 0-1, as this is what `np.percentile` expects
+        """
         lengths: np.ndarray = np.array([len(m.solution) for m in dataset])
         cutoff: int = int(np.percentile(lengths, percentile))
 
@@ -591,6 +595,7 @@ class MazeDatasetFilters:
         dataset: MazeDataset,
         minimum_difference_connection_list: int | None = 1,
         minimum_difference_solution: int | None = 1,
+        _max_dataset_len_threshold: int = 1000,
     ) -> MazeDataset:
         """remove duplicates from a dataset, keeping the **LAST** unique maze
 
@@ -603,9 +608,10 @@ class MazeDatasetFilters:
         - if two solutions are of different lengths, they will never be considered duplicates
             TODO: check for overlap?
         """
-        if len(dataset) > 1000:
+        if len(dataset) > _max_dataset_len_threshold:
             raise ValueError(
-                "this method is currently very slow for large datasets, consider using `remove_duplicates_fast` instead"
+                "this method is currently very slow for large datasets, consider using `remove_duplicates_fast` instead\n",
+                "if you know what you're doing, change `_max_dataset_len_threshold`",
             )
 
         unique_mazes: list[SolvedMaze] = list()
@@ -639,7 +645,13 @@ class MazeDatasetFilters:
             if a_unique:
                 unique_mazes.append(maze_a)
 
-        return copy.deepcopy(MazeDataset(cfg=dataset.cfg, mazes=unique_mazes))
+        return copy.deepcopy(
+            MazeDataset(
+                cfg=dataset.cfg,
+                mazes=unique_mazes,
+                generation_metadata_collected=dataset.generation_metadata_collected,
+            )
+        )
 
     @register_dataset_filter
     @staticmethod
@@ -647,7 +659,13 @@ class MazeDatasetFilters:
         """remove duplicates from a dataset"""
 
         unique_mazes = list(dict.fromkeys(dataset.mazes))
-        return copy.deepcopy(MazeDataset(cfg=dataset.cfg, mazes=unique_mazes))
+        return copy.deepcopy(
+            MazeDataset(
+                cfg=dataset.cfg,
+                mazes=unique_mazes,
+                generation_metadata_collected=dataset.generation_metadata_collected,
+            )
+        )
 
     @register_dataset_filter
     @staticmethod
