@@ -306,6 +306,14 @@ def test_remove_duplicates():
     assert dataset_deduped.mazes == [dataset.mazes[3], dataset.mazes[4]]
 
 
+def test_data_hash():
+    dataset: MazeDataset = _helper_dataset_from_ascii(DUPE_DATASET)
+    hash_1 = dataset.data_hash()
+    hash_2 = dataset.data_hash()
+
+    assert hash_1 == hash_2
+
+
 def test_remove_duplicates_fast():
     dataset: MazeDataset = _helper_dataset_from_ascii(DUPE_DATASET)
     dataset_deduped: MazeDataset = dataset.filter_by.remove_duplicates_fast()
