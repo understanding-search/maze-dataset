@@ -488,10 +488,11 @@ class TokenizerElement(SerializableDataclass, abc.ABC):
         This hack circumvents this by adding a slightly hidden field to every subclass with a value of `repr(cls)`.
         To maintain compatibility with `all_instances`, the static type of the new field can only have 1 possible value.
         So we type it as a singleton `Literal` type.
+        muutils 0.6.1 doesn't support `Literal` type validation, so `assert_type=False`.
         Ignore Pylance complaining about the arg to `Literal` being an expression.
         """
         super().__init_subclass__(**kwargs)
-        cls._type = serializable_field(init=True, repr=False, default=repr(cls))
+        cls._type = serializable_field(init=True, repr=False, default=repr(cls), assert_type=False)
         cls.__annotations__["_type"] = Literal[repr(cls)]  # type: ignore
 
     # def __hash__(self):
@@ -1455,9 +1456,7 @@ class PathTokenizers(_TokenizerElementNamespace):
         )
         step_tokenizers: StepTokenizers.StepTokenizerPermutation = serializable_field(
             default=(StepTokenizers.Coord(),),
-            loading_fn=lambda x: tuple(
-                _load_tokenizer_element(y, StepTokenizers) for y in x
-            ),
+            loading_fn=lambda x: tuple(x[StepTokenizers.key]),
         )
         pre: bool = serializable_field(default=False)
         intra: bool = serializable_field(default=False)
