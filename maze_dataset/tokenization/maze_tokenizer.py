@@ -1015,9 +1015,7 @@ class AdjListTokenizers(_TokenizerElementNamespace):
 
         @classmethod
         def attribute_key(cls) -> str:
-            # TODO: unsure if this is correct?!
             return AdjListTokenizers.key
-            # return cls.key
 
         def is_valid(self) -> bool:
             # TODO
@@ -2067,7 +2065,7 @@ class MazeTokenizerModular(SerializableDataclass):
 
 
 def _load_tokenizer_hashes() -> Int64[np.int64, "MazeTokenizerModular"]:
-    """Loads the sorted list of `sall_tokenizers.ALL_TOKENIZERS` hashes from disk."""
+    """Loads the sorted list of `all_tokenizers.ALL_TOKENIZERS` hashes from disk."""
     return np.load(Path(__file__).parent / "MazeTokenizerModular_hashes.npy")
 
 

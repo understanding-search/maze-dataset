@@ -41,7 +41,7 @@ from maze_dataset.utils import all_instances
 
 
 @cache
-def _get_all_tokenizers() -> list[MazeTokenizerModular]:
+def get_all_tokenizers() -> list[MazeTokenizerModular]:
     """
     Computes a complete list of all valid tokenizers.
     Warning: This is an expensive function.
@@ -68,7 +68,7 @@ EVERY_TEST_TOKENIZERS: list[MazeTokenizerModular] = [
     MazeTokenizerModular(
         prompt_sequencer=PromptSequencers.AOTP(coord_tokenizer=CoordTokenizers.CTT())
     ),
-    # TODO: add more here
+    # TODO: add more here as specific tokenizers become canonical and frequently used
 ]
 
 
@@ -78,7 +78,7 @@ EVERY_TEST_TOKENIZERS: list[MazeTokenizerModular] = [
 @cache
 def all_tokenizers_set() -> set[MazeTokenizerModular]:
     """Casts ALL_TOKENIZERS to a set."""
-    return set(_get_all_tokenizers())
+    return set(get_all_tokenizers())
 
 
 @cache
@@ -89,7 +89,7 @@ def _all_tokenizers_except_every_test_tokenizers() -> list[MazeTokenizerModular]
 
 def sample_all_tokenizers(n: int) -> list[MazeTokenizerModular]:
     """Samples `n` tokenizers from `ALL_TOKENIZERS`."""
-    return random.sample(_get_all_tokenizers(), n)
+    return random.sample(get_all_tokenizers(), n)
 
 
 def sample_tokenizers_for_test(n: int) -> list[MazeTokenizerModular]:
@@ -110,7 +110,7 @@ def sample_tokenizers_for_test(n: int) -> list[MazeTokenizerModular]:
 def save_hashes() -> Int64[np.int64, "tokenizer"]:
     """Computes, sorts, and saves the hashes of every member of `ALL_TOKENIZERS`."""
     hashes_array = np.array(
-        [hash(obj) for obj in _get_all_tokenizers()], dtype=np.int64
+        [hash(obj) for obj in get_all_tokenizers()], dtype=np.int64
     )
     sorted_hashes, counts = np.unique(hashes_array, return_counts=True)
     if sorted_hashes.shape[0] != hashes_array.shape[0]:

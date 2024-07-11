@@ -22,7 +22,7 @@ from maze_dataset.tokenization import (
 )
 from maze_dataset.tokenization.all_tokenizers import (
     EVERY_TEST_TOKENIZERS,
-    _get_all_tokenizers,
+    get_all_tokenizers,
     sample_tokenizers_for_test,
     save_hashes,
 )
@@ -32,9 +32,12 @@ from maze_dataset.utils import all_instances
 # Size of the sample from `all_tokenizers.ALL_TOKENIZERS` to test
 NUM_TOKENIZERS_TO_TEST = 100
 
+@pytest.fixture(scope="session")
+def save_tokenizer_hashes():
+    save_hashes()
 
 def test_all_tokenizers():
-    all_tokenizers = _get_all_tokenizers()
+    all_tokenizers = get_all_tokenizers()
     assert len(all_tokenizers) > 400
     assert len({hash(mt) for mt in all_tokenizers}) == len(all_tokenizers)
 
@@ -238,13 +241,13 @@ _has_elems_type = (
                 ),
                 (
                     StepSizes.Singles,
-                    lambda mt, els: isinstance(mt.path_tokenizer.step_size, els),
+                    lambda mt, els: isinstance(mt.prompt_sequencer.path_tokenizer.step_size, els),
                 ),
                 (
                     StepTokenizers.Coord,
                     lambda mt, els: any(
                         isinstance(step_tok, els)
-                        for step_tok in mt.path_tokenizer.step_tokenizers
+                        for step_tok in mt.prompt_sequencer.path_tokenizer.step_tokenizers
                     ),
                 ),
                 (
@@ -299,5 +302,5 @@ def test_has_element(
         for tokenizer in sample_tokenizers_for_test(NUM_TOKENIZERS_TO_TEST)
     ],
 )
-def test_is_tested_tokenizer(tokenizer: MazeTokenizerModular):
+def test_is_tested_tokenizer(tokenizer: MazeTokenizerModular, save_tokenizer_hashes):
     assert tokenizer.is_tested_tokenizer()
