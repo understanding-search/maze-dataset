@@ -1802,7 +1802,11 @@ class PromptSequencers(_TokenizerElementNamespace):
             ]
 
 
-@serializable_dataclass(frozen=True, kw_only=True)
+@serializable_dataclass(
+    frozen=True, 
+    kw_only=True,
+    properties_to_serialize=["tokenizer_element_tree_concrete", "name"]
+)
 class MazeTokenizerModular(SerializableDataclass):
     """Tokenizer for mazes
 
@@ -1842,6 +1846,13 @@ class MazeTokenizerModular(SerializableDataclass):
                 ),
             ]
         )
+
+    @property
+    def tokenizer_element_tree_concrete(self):
+        """
+        Property wrapper for `tokenizer_element_tree` so that it can be used in `properties_to_serialize`.
+        """
+        return self.tokenizer_element_tree()
 
     def tokenizer_element_dict(self) -> dict:
         return {type(self).__name__: self.prompt_sequencer.tokenizer_element_dict()}
