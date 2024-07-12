@@ -1430,7 +1430,7 @@ class PathTokenizers(_TokenizerElementNamespace):
 
         @abc.abstractmethod
         def to_tokens(
-            self, path: list[Coord], coord_tokenizer: CoordTokenizers._CoordTokenizer
+            self, maze: SolvedMaze, coord_tokenizer: CoordTokenizers._CoordTokenizer
         ) -> list[str]:
             """Returns tokens representing the solution path."""
             pass
@@ -1539,34 +1539,6 @@ class PathTokenizers(_TokenizerElementNamespace):
                 return False
             else:
                 return True
-
-    @serializable_dataclass(frozen=True, kw_only=True)
-    class Coords(StepSequence):
-        """Represents a path as a sequence of tokens for all the coords traversed.
-
-        # Parameters
-        - `post`: Whether all coords include an integral following delimiter token
-        """
-
-        post: bool = serializable_field(default=False)
-
-        def _single_step_tokens(
-            self, c0: Coord, c1: Coord, coord_tokenizer: CoordTokenizers._CoordTokenizer
-        ) -> list[str]:
-            return [
-                *coord_tokenizer.to_tokens(c1),
-                *empty_sequence_if_attr_false([VOCAB.PATH_POST], self, "post"),
-            ]
-
-        def _leading_tokens(
-            self, c: CoordArray, coord_tokenizer: CoordTokenizers._CoordTokenizer
-        ) -> list[str]:
-            return coord_tokenizer.to_tokens(c)
-
-        def _trailing_tokens(
-            self, c: CoordArray, coord_tokenizer: CoordTokenizers._CoordTokenizer
-        ) -> list[str]:
-            return ()
 
 
 class PromptSequencers(_TokenizerElementNamespace):

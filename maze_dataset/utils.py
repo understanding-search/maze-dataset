@@ -269,7 +269,7 @@ FancyTimeitResult = NamedTuple(
 
 def timeit_fancy(
     cmd: Callable[[], T] | str,
-    setup: str = lambda: None,
+    setup: str | Callable = lambda: None,
     repeats: int = 5,
     namespace: dict[str, Any] | None = None,
     get_return: bool = True,
