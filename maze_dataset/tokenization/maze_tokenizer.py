@@ -1840,6 +1840,27 @@ class MazeTokenizerModular(SerializableDataclass):
             **{elem.attribute_key(): elem for elem in self.tokenizer_elements}
         }
 
+    @staticmethod
+    def _type_check(obj: any) -> None:
+        """Helper method for `has_element`"""
+        if not (
+            isinstance(obj, TokenizerElement)
+            or (isinstance(obj, type) and issubclass(obj, TokenizerElement))
+        ):
+            raise TypeError(
+                f"{obj} is not a `TokenizerElement` instance or subclass."
+            )
+        
+
+    def _has_element_singular(self, el: type[TokenizerElement] | TokenizerElement):
+        """Helper method for `has_element`"""
+        self._type_check(el)
+        if isinstance(el, type):
+            return any([isinstance(e, el) for e in self.tokenizer_elements])
+        else:
+            return el in self.tokenizer_elements
+        
+
     def has_element(
         self,
         elements: (
@@ -1858,27 +1879,10 @@ class MazeTokenizerModular(SerializableDataclass):
         If an instance is provided, then comparison is done via instance equality.
         If a class is provided, then comparison isdone via `isinstance`. I.e., any instance of that class is accepted.
         """
-
-        def type_check(obj: any) -> None:
-            if not (
-                isinstance(obj, TokenizerElement)
-                or (isinstance(obj, type) and issubclass(obj, TokenizerElement))
-            ):
-                raise TypeError(
-                    f"{elements} is not a `TokenizerElement` instance or subclass."
-                )
-
-        def has_element_singular(el: type[TokenizerElement] | TokenizerElement):
-            type_check(el)
-            if isinstance(el, type):
-                return any([isinstance(e, el) for e in self.tokenizer_elements])
-            else:
-                return el in self.tokenizer_elements
-
         if not isinstance(elements, Iterable):
-            return has_element_singular(elements)
+            return self._has_element_singular(elements)
         else:
-            return all([has_element_singular(e) for e in elements])
+            return all([self._has_element_singular(e) for e in elements])
 
     def is_valid(self):
         return all([el.is_valid() for el in self.tokenizer_elements])

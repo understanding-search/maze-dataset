@@ -29,6 +29,7 @@ from pathlib import Path
 import frozendict
 import numpy as np
 from jaxtyping import Int64
+from typing import Callable
 
 from maze_dataset.tokenization import (
     CoordTokenizers,
@@ -37,8 +38,16 @@ from maze_dataset.tokenization import (
     StepTokenizers,
     TokenizerElement,
 )
-from maze_dataset.utils import all_instances
+from maze_dataset.utils import all_instances, FiniteValued
 
+MAZE_TOKENIZER_MODULAR_DEFAULT_VALIDATION_FUNCS: frozendict.frozendict[type, Callable[[FiniteValued], bool]] = frozendict.frozendict({
+    TokenizerElement: lambda x: x.is_valid(),
+    # Currently no need for `MazeTokenizerModular.is_valid` since it contains no special cases not already covered by `TokenizerElement.is_valid`
+    # MazeTokenizerModular: lambda x: x.is_valid(),
+    StepTokenizers.StepTokenizerPermutation: lambda x: len(set(x))
+    == len(x)
+    and x != (StepTokenizers.Distance(),),
+})
 
 @cache
 def get_all_tokenizers() -> list[MazeTokenizerModular]:
@@ -49,16 +58,7 @@ def get_all_tokenizers() -> list[MazeTokenizerModular]:
     return list(
         all_instances(
             MazeTokenizerModular,
-            validation_funcs=frozendict.frozendict(
-                {
-                    TokenizerElement: lambda x: x.is_valid(),
-                    # Currently no need for `MazeTokenizerModular.is_valid` since it contains no special cases not already covered by `TokenizerElement.is_valid`
-                    # MazeTokenizerModular: lambda x: x.is_valid(),
-                    StepTokenizers.StepTokenizerPermutation: lambda x: len(set(x))
-                    == len(x)
-                    and x != (StepTokenizers.Distance(),),
-                }
-            ),
+            validation_funcs=MAZE_TOKENIZER_MODULAR_DEFAULT_VALIDATION_FUNCS
         )
     )
 
