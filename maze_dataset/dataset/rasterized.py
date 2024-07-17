@@ -8,63 +8,7 @@ from torch.utils.data import Dataset
 
 from maze_dataset import MazeDataset, MazeDatasetConfig
 from maze_dataset.maze import PixelColors, SolvedMaze
-from maze_dataset.maze.lattice_maze import PixelGrid
-
-_RIC_PADS: dict = {
-    "left": ((1, 0), (0, 0)),
-    "right": ((0, 1), (0, 0)),
-    "up": ((0, 0), (1, 0)),
-    "down": ((0, 0), (0, 1)),
-}
-
-# Define slices for each direction
-_RIC_SLICES: dict = {
-    "left": (slice(1, None), slice(None, None)),
-    "right": (slice(None, -1), slice(None, None)),
-    "up": (slice(None, None), slice(1, None)),
-    "down": (slice(None, None), slice(None, -1)),
-}
-
-
-def _remove_isolated_cells(
-    image: Int[np.ndarray, "RGB x y"]
-) -> Int[np.ndarray, "RGB x y"]:
-    """
-    Removes isolated cells from an image. An isolated cell is a cell that is surrounded by walls on all sides.
-    """
-    masks: dict[str, np.ndarray] = {
-        d: np.all(
-            np.pad(
-                image[_RIC_SLICES[d][0], _RIC_SLICES[d][1], :] == PixelColors.WALL,
-                np.array((*_RIC_PADS[d], (0, 0)), dtype=np.int8),
-                mode="constant",
-                constant_values=True,
-            ),
-            axis=2,
-        )
-        for d in _RIC_SLICES.keys()
-    }
-
-    # Create a mask for non-wall cells
-    mask_non_wall = np.all(image != PixelColors.WALL, axis=2)
-
-    # print(f"{mask_non_wall.shape = }")
-    # print(f"{ {k: masks[k].shape for k in masks.keys()} = }")
-
-    # print(f"{mask_non_wall = }")
-    # print(f"{masks['down'] = }")
-
-    # Combine the masks
-    mask = mask_non_wall & masks["left"] & masks["right"] & masks["up"] & masks["down"]
-
-    # Apply the mask
-    output_image = np.where(
-        np.stack([mask] * 3, axis=-1),
-        PixelColors.WALL,
-        image,
-    )
-
-    return output_image
+from maze_dataset.maze.lattice_maze import PixelGrid, _remove_isolated_cells
 
 
 def _extend_pixels(
