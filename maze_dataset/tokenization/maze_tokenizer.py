@@ -447,6 +447,20 @@ class MazeTokenizer(SerializableDataclass):
                     pass
 
 
+def mark_as_unsupported(cls: "type[TokenizerElement]") -> "type[TokenizerElement]":
+    """mark a TokenizerElement as unsupported.
+    
+    It won't show up in ALL_TOKENIZERS and thus wont be tested, but should still work in principle"""
+    @staticmethod
+    @abc.abstractmethod
+    def _unsupported():
+        raise NotImplementedError(f"{cls.__name__} is not supported")
+
+    setattr(cls, "_unsupported", _unsupported)
+
+    return cls
+
+
 @serializable_dataclass(frozen=True, kw_only=True)
 class TokenizerElement(SerializableDataclass, abc.ABC):
     """Superclass for tokenizer elements.
@@ -799,6 +813,7 @@ class EdgeGroupings(_TokenizerElementNamespace):
         def _group_edges(self, edges: ConnectionList) -> Sequence[ConnectionList]:
             return np.expand_dims(edges, 1)
 
+    @mark_as_unsupported
     @serializable_dataclass(frozen=True, kw_only=True)
     class ByLeadingCoord(_EdgeGrouping):
         """All edges with the same leading coord are grouped together.
@@ -998,7 +1013,7 @@ class AdjListTokenizers(_TokenizerElementNamespace):
           - `evens`, `odds`: The leading coord is the one belonging to that coord subset. See `EdgeSubsets.ChessboardSublattice` for details.
         """
 
-        pre: bool = serializable_field(default=False)
+        pre: Literal[False] = serializable_field(default=False)
         post: bool = serializable_field(default=True)
         shuffle_d0: bool = serializable_field(default=True)
         edge_grouping: EdgeGroupings._EdgeGrouping = serializable_field(
@@ -1289,6 +1304,7 @@ class StepSizes(_TokenizerElementNamespace):
             """Returns the indices of `maze.solution` corresponding to the steps to be tokenized."""
             return list(range(maze.solution.shape[0]))
 
+    @mark_as_unsupported
     @serializable_dataclass(frozen=True, kw_only=True)
     class Straightaways(_StepSize):
         def _step_single_indices(self, maze: SolvedMaze) -> list[int]:
@@ -1308,6 +1324,7 @@ class StepSizes(_TokenizerElementNamespace):
             """Returns the indices of `maze.solution` corresponding to the steps to be tokenized."""
             return maze.get_solution_forking_points(always_include_endpoints=True)[0]
 
+    @mark_as_unsupported
     @serializable_dataclass(frozen=True, kw_only=True)
     class ForksAndStraightaways(_StepSize):
         def _step_single_indices(self, maze: SolvedMaze) -> list[int]:
