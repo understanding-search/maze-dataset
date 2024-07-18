@@ -40,9 +40,10 @@ from maze_dataset.tokenization import (
 )
 from maze_dataset.utils import all_instances, FiniteValued
 
+# Always include this as the first item in the dict `validation_funcs` whenever using `all_instances` with `MazeTokenizerModular`
 MAZE_TOKENIZER_MODULAR_DEFAULT_VALIDATION_FUNCS: frozendict.frozendict[type, Callable[[FiniteValued], bool]] = frozendict.frozendict({
     TokenizerElement: lambda x: x.is_valid(),
-    # Currently no need for `MazeTokenizerModular.is_valid` since it contains no special cases not already covered by `TokenizerElement.is_valid`
+    # Currently no need for `MazeTokenizerModular.is_valid` since that method contains no special cases not already covered by `TokenizerElement.is_valid`
     # MazeTokenizerModular: lambda x: x.is_valid(),
     StepTokenizers.StepTokenizerPermutation: lambda x: len(set(x))
     == len(x)

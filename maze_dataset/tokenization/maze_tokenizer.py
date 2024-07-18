@@ -1469,6 +1469,7 @@ class PathTokenizers(_TokenizerElementNamespace):
         )
         step_tokenizers: StepTokenizers.StepTokenizerPermutation = serializable_field(
             default=(StepTokenizers.Coord(),),
+            serialization_fn=lambda x: str([y.serialize() for y in x]),
             loading_fn=lambda x: tuple(x[StepTokenizers.key]),
         )
         pre: bool = serializable_field(default=False)

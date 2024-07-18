@@ -302,12 +302,22 @@ def _apply_validation_func(
         frozendict.frozendict[FiniteValued, Callable[[FiniteValued], bool]] | None
     ) = None,
 ) -> Generator[FiniteValued, None, None]:
-    """Helper function for `all_instances`"""
+    """
+    Helper function for `all_instances`.
+    Filters `vals` according to `validation_funcs`.
+    If `type_` is a regular type, searches in MRO order in `validation_funcs` and applies the first match, if any.
+    Handles generic types supported by `all_instances` with special `if` clauses.
+
+    # Parameters
+    - `type_: FiniteValued`: A type
+    - `vals: Generator[FiniteValued, None, None]`: Instances of `type_`
+    - `validation_funcs: dict`: Collection of types mapped to filtering validation functions
+    """
     if validation_funcs is None:
         return vals
-    if type_ in validation_funcs:
+    if type_ in validation_funcs: # Only possible catch of UnionTypes
         return filter(validation_funcs[type_], vals)
-    elif hasattr(type_, "__mro__"):  # UnionType doesn't have `__mro__`
+    elif hasattr(type_, "__mro__"):  # Generic types like UnionType, Literal don't have `__mro__`
         for superclass in type_.__mro__:
             if superclass not in validation_funcs:
                 continue
