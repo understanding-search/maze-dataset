@@ -15,6 +15,7 @@ from muutils.json_serialize import (
     serializable_field,
 )
 from muutils.kappa import Kappa
+from muutils.misc import flatten, empty_sequence_if_attr_false
 from zanj.loading import load_item_recursive
 
 # from maze_dataset import SolvedMaze
@@ -49,8 +50,6 @@ from maze_dataset.util import (
 from maze_dataset.utils import (
     WhenMissing,
     corner_first_ndindex,
-    empty_sequence_if_attr_false,
-    flatten,
     lattice_connection_array,
 )
 

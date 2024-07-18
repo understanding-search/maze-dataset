@@ -8,6 +8,13 @@ import numpy as np
 import pytest
 from jaxtyping import Int
 from pytest import mark, param
+from muutils.misc import (
+    flatten,
+    dataclass_set_equals,
+    get_all_subclasses,
+    isinstance_by_type_name,
+    IsDataclass,
+)
 
 from maze_dataset import LatticeMaze
 from maze_dataset.constants import VOCAB, Connection, ConnectionArray
@@ -39,12 +46,7 @@ from maze_dataset.util import (
 )
 from maze_dataset.utils import (
     FiniteValued,
-    IsDataclass,
     all_instances,
-    dataclass_set_equals,
-    flatten,
-    get_all_subclasses,
-    isinstance_by_type_name,
     lattice_connection_array,
     manhattan_distance,
 )

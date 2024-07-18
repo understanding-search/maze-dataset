@@ -9,6 +9,7 @@ import frozendict
 import numpy as np
 from jaxtyping import Int
 from muutils.mlutils import GLOBAL_SEED
+from muutils.misc import flatten
 from pytest import mark, param
 
 from maze_dataset import (
@@ -53,7 +54,6 @@ from maze_dataset.util import (
 )
 from maze_dataset.utils import (
     all_instances,
-    flatten,
     lattice_max_degrees,
     manhattan_distance,
 )
