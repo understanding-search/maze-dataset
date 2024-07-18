@@ -347,6 +347,7 @@ def _all_instances_wrapper(f):
             validation_funcs = frozendict.frozendict(kwargs["validation_funcs"])
         else:
             validation_funcs = None
+        # TODO: I think I can add back caching in here
         return _apply_validation_func(
             args[0], f(args[0], validation_funcs), validation_funcs
         )
