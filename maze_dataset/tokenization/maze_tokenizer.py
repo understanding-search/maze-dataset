@@ -1380,9 +1380,9 @@ class StepTokenizers(_TokenizerElementNamespace):
         ) -> list[str]:
             return coord_tokenizer.to_tokens(maze.solution[end_index, ...])
 
+    @mark_as_unsupported
     @serializable_dataclass(frozen=True, kw_only=True)
     class Cardinal(_StepTokenizer):
-        @abc.abstractmethod  # TODO: Delete to reinstantiate as valid `StepTokenizer` concrete class
         def to_tokens(
             self, maze: SolvedMaze, start_index: int, end_index: int, **kwargs
         ) -> list[str]:
@@ -1390,13 +1390,13 @@ class StepTokenizers(_TokenizerElementNamespace):
                 get_cardinal_direction(maze.solution[start_index : start_index + 2])
             ]
 
+    @mark_as_unsupported
     @serializable_dataclass(frozen=True, kw_only=True)
     class Relative(_StepTokenizer):
         """Tokenizes a solution step using relative first-person directions (right, left, forward, etc.).
         To simplify the indeterminacy, at the start of a solution the "agent" solving the maze is assumed to be facing NORTH.
         """
 
-        @abc.abstractmethod  # TODO: Delete to reinstantiate as valid `StepTokenizer` concrete class
         def to_tokens(
             self, maze: SolvedMaze, start_index: int, end_index: int, **kwargs
         ) -> list[str]:
