@@ -798,7 +798,7 @@ class EdgeGroupings(_TokenizerElementNamespace):
         Edge tokenizations contain 3 parts: a leading coord, a connector (or wall) token, and either a second coord or cardinal direction tokenization.
         """
 
-        connection_token_ordinal: Literal[0, 1, 2] = serializable_field(default=1)
+        connection_token_ordinal: Literal[0, 1, 2] = serializable_field(default=1, assert_type=False)
 
         def _token_params(self) -> "EdgeGroupings._GroupingTokenParams":
             return EdgeGroupings._GroupingTokenParams(
@@ -827,7 +827,7 @@ class EdgeGroupings(_TokenizerElementNamespace):
 
         intra: bool = serializable_field(default=True)
         shuffle_group: bool = serializable_field(default=True)
-        connection_token_ordinal: Literal[0, 1] = serializable_field(default=0)
+        connection_token_ordinal: Literal[0, 1] = serializable_field(default=0, assert_type=False)
 
         def _token_params(self) -> "EdgeGroupings._GroupingTokenParams":
             return EdgeGroupings._GroupingTokenParams(
@@ -1010,7 +1010,7 @@ class AdjListTokenizers(_TokenizerElementNamespace):
           - `evens`, `odds`: The leading coord is the one belonging to that coord subset. See `EdgeSubsets.ChessboardSublattice` for details.
         """
 
-        pre: Literal[False] = serializable_field(default=False)
+        pre: Literal[False] = serializable_field(default=False, assert_type=False)
         post: bool = serializable_field(default=True)
         shuffle_d0: bool = serializable_field(default=True)
         edge_grouping: EdgeGroupings._EdgeGrouping = serializable_field(
@@ -1470,7 +1470,7 @@ class PathTokenizers(_TokenizerElementNamespace):
         )
         step_tokenizers: StepTokenizers.StepTokenizerPermutation = serializable_field(
             default=(StepTokenizers.Coord(),),
-            serialization_fn=lambda x: str([y.serialize() for y in x]),
+            serialization_fn=lambda x: [y.serialize() for y in x],
             loading_fn=lambda x: tuple(x[StepTokenizers.key]),
         )
         pre: bool = serializable_field(default=False)
