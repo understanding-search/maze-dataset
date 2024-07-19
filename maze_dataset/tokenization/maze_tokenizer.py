@@ -1031,10 +1031,7 @@ class AdjListTokenizers(_TokenizerElementNamespace):
             return AdjListTokenizers.key
 
         def is_valid(self) -> bool:
-            # TODO
-            warnings.warn(
-                "no validation implemented for AdjListTokenizers",
-            )
+            # No invalid instances possible within data member type hint bounds
             return True
 
         @abc.abstractmethod
@@ -1381,7 +1378,7 @@ class StepTokenizers(_TokenizerElementNamespace):
         ) -> list[str]:
             return coord_tokenizer.to_tokens(maze.solution[end_index, ...])
 
-    @mark_as_unsupported
+
     @serializable_dataclass(frozen=True, kw_only=True)
     class Cardinal(_StepTokenizer):
         def to_tokens(
@@ -1391,7 +1388,7 @@ class StepTokenizers(_TokenizerElementNamespace):
                 get_cardinal_direction(maze.solution[start_index : start_index + 2])
             ]
 
-    @mark_as_unsupported
+
     @serializable_dataclass(frozen=True, kw_only=True)
     class Relative(_StepTokenizer):
         """Tokenizes a solution step using relative first-person directions (right, left, forward, etc.).

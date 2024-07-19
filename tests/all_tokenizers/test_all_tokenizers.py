@@ -22,6 +22,7 @@ from maze_dataset.tokenization import (
 )
 from maze_dataset.tokenization.all_tokenizers import (
     EVERY_TEST_TOKENIZERS,
+    MAZE_TOKENIZER_MODULAR_DEFAULT_VALIDATION_FUNCS,
     get_all_tokenizers,
     sample_tokenizers_for_test,
     save_hashes,
@@ -50,11 +51,7 @@ def test_all_instances_tokenizerelement(class_: type):
     all_vals = list(
         all_instances(
             class_,
-            validation_funcs=frozendict.frozendict(
-                {
-                    TokenizerElement: lambda x: x.is_valid(),
-                }
-            ),
+            validation_funcs=MAZE_TOKENIZER_MODULAR_DEFAULT_VALIDATION_FUNCS
         )
     )
     assert len({hash(elem) for elem in all_vals}) == len(all_vals)
