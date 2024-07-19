@@ -18,7 +18,7 @@ from maze_dataset.tokenization import (
     PromptSequencers,
     StepSizes,
     StepTokenizers,
-    TokenizerElement,
+    _TokenizerElement,
 )
 from maze_dataset.tokenization.all_tokenizers import (
     EVERY_TEST_TOKENIZERS,
@@ -45,7 +45,7 @@ def test_all_tokenizers():
 
 @mark.parametrize(
     "class_",
-    [param(c, id=c.__name__) for c in TokenizerElement.__subclasses__()],
+    [param(c, id=c.__name__) for c in _TokenizerElement.__subclasses__()],
 )
 def test_all_instances_tokenizerelement(class_: type):
     all_vals = list(
@@ -193,9 +193,9 @@ def test_is_UT(tokenizer: MazeTokenizerModular):
 
 
 _has_elems_type = (
-    type[TokenizerElement]
-    | TokenizerElement
-    | Iterable[type[TokenizerElement] | TokenizerElement]
+    type[_TokenizerElement]
+    | _TokenizerElement
+    | Iterable[type[_TokenizerElement] | _TokenizerElement]
 )
 
 

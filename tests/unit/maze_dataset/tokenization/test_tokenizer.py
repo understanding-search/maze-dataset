@@ -46,7 +46,7 @@ from maze_dataset.tokenization import (
     StepTokenizers,
     TargetTokenizers,
     TokenizationMode,
-    TokenizerElement,
+    _TokenizerElement,
 )
 from maze_dataset.util import (
     connection_list_to_adj_list,
@@ -344,7 +344,7 @@ def test_from_tokens_backwards_compatible(
         ]
     ],
 )
-def test_tokenizer_element_is_valid(el: TokenizerElement, result: bool):
+def test_tokenizer_element_is_valid(el: _TokenizerElement, result: bool):
     assert el.is_valid() == result
 
 
@@ -390,7 +390,7 @@ def _helper_test_path_tokenizers(
             )
             == 0
         )
-    # TODO: Uncomment tests when restoring full breadth of TokenizerElements
+    # TODO: Uncomment tests when restoring full breadth of _TokenizerElements
     # if StepTokenizers.Cardinal() in pt.step_tokenizers:
     #     c = Counter(path_toks)
     #     assert c[VOCAB.PATH_NORTH] + c[VOCAB.PATH_SOUTH] + c[VOCAB.PATH_EAST] + c[VOCAB.PATH_WEST] == len(footprint_inds)-1
@@ -409,7 +409,7 @@ def _helper_test_path_tokenizers(
                 list(
                     all_instances(
                         PathTokenizers._PathTokenizer,
-                        {TokenizerElement: lambda x: x.is_valid()},
+                        {_TokenizerElement: lambda x: x.is_valid()},
                     )
                 ),
                 min(
@@ -465,7 +465,7 @@ def test_path_tokenizers(pt: PathTokenizers._PathTokenizer, manual_maze: MANUAL_
             enumerate(MIXED_MAZES[:6]),
             all_instances(
                 EdgePermuters._EdgePermuter,
-                frozendict.frozendict({TokenizerElement: lambda x: x.is_valid()}),
+                frozendict.frozendict({_TokenizerElement: lambda x: x.is_valid()}),
             ),
         )
     ],
@@ -503,7 +503,7 @@ def test_edge_permuters(ep: EdgePermuters._EdgePermuter, maze: LatticeMaze):
             enumerate(MIXED_MAZES[:6]),
             all_instances(
                 EdgeSubsets._EdgeSubset,
-                frozendict.frozendict({TokenizerElement: lambda x: x.is_valid()}),
+                frozendict.frozendict({_TokenizerElement: lambda x: x.is_valid()}),
             ),
         )
     ],
@@ -541,7 +541,7 @@ def test_edge_subsets(es: EdgeSubsets._EdgeSubset, maze: LatticeMaze):
             enumerate(MIXED_MAZES[:6]),
             all_instances(
                 EdgePermuters._EdgePermuter,
-                frozendict.frozendict({TokenizerElement: lambda x: x.is_valid()}),
+                frozendict.frozendict({_TokenizerElement: lambda x: x.is_valid()}),
             ),
         )
     ],
@@ -581,7 +581,7 @@ def test_edge_permuters(ep: EdgePermuters._EdgePermuter, maze: LatticeMaze):
                 EdgeGroupings._EdgeGrouping,
                 frozendict.frozendict(
                     {
-                        TokenizerElement: lambda x: x.is_valid(),
+                        _TokenizerElement: lambda x: x.is_valid(),
                         # Add a condition to prune the range space that doesn't affect functionality being tested
                         EdgeGroupings.ByLeadingCoord: lambda x: x.intra
                         and x.connection_token_ordinal == 1,
@@ -590,7 +590,7 @@ def test_edge_permuters(ep: EdgePermuters._EdgePermuter, maze: LatticeMaze):
             ),
             all_instances(
                 EdgeSubsets._EdgeSubset,
-                frozendict.frozendict({TokenizerElement: lambda x: x.is_valid()}),
+                frozendict.frozendict({_TokenizerElement: lambda x: x.is_valid()}),
             ),
         )
     ],
@@ -648,7 +648,7 @@ random.seed(GLOBAL_SEED)
                     all_instances(
                         AdjListTokenizers._AdjListTokenizer,
                         {
-                            TokenizerElement: lambda x: x.is_valid(),
+                            _TokenizerElement: lambda x: x.is_valid(),
                         },
                     )
                 ),

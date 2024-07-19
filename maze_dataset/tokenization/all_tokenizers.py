@@ -15,7 +15,7 @@ In general, uses for this module are limited to development of the library and s
   - `ALL_TOKENIZERS` may be subsequently filtered using `MazeTokenizerModular.has_element`
 For other uses, it's likely that the computational expense can be avoided by using
 - `maze_tokenizer.ALL_TOKENIZER_HASHES` for membership checks
-- `utils.all_instances` for generating smaller subsets of `MazeTokenizerModular` or `TokenizerElement` objects 
+- `utils.all_instances` for generating smaller subsets of `MazeTokenizerModular` or `_TokenizerElement` objects 
 
 # `EVERY_TEST_TOKENIZERS`
 A collection of the tokenizers which should always be included in unit tests when test fuzzing is used.
@@ -36,14 +36,14 @@ from maze_dataset.tokenization import (
     MazeTokenizerModular,
     PromptSequencers,
     StepTokenizers,
-    TokenizerElement,
+    _TokenizerElement,
 )
 from maze_dataset.utils import all_instances, FiniteValued
 
 # Always include this as the first item in the dict `validation_funcs` whenever using `all_instances` with `MazeTokenizerModular`
 MAZE_TOKENIZER_MODULAR_DEFAULT_VALIDATION_FUNCS: frozendict.frozendict[type, Callable[[FiniteValued], bool]] = frozendict.frozendict({
-    TokenizerElement: lambda x: x.is_valid(),
-    # Currently no need for `MazeTokenizerModular.is_valid` since that method contains no special cases not already covered by `TokenizerElement.is_valid`
+    _TokenizerElement: lambda x: x.is_valid(),
+    # Currently no need for `MazeTokenizerModular.is_valid` since that method contains no special cases not already covered by `_TokenizerElement.is_valid`
     # MazeTokenizerModular: lambda x: x.is_valid(),
     StepTokenizers.StepTokenizerPermutation: lambda x: len(set(x))
     == len(x)

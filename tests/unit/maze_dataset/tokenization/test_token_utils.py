@@ -970,7 +970,7 @@ def test_dataclass_set_equals(
                 (TokenizationMode.AOTP_CTT_indexed, "TokenizationMode", True),
                 (TokenizationMode.AOTP_UT_uniform, "MazeTokenizer", False),
                 (StepTokenizers.Distance(), "_StepTokenizer", True),
-                (StepTokenizers.Distance(), "TokenizerElement", True),
+                (StepTokenizers.Distance(), "_TokenizerElement", True),
                 (PathTokenizers.StepSequence(), "StepSequence", True),
                 (PathTokenizers.StepSequence(), "_PathTokenizer", True),
                 (MazeTokenizerModular, "MazeTokenizerModular", False),

@@ -13,14 +13,14 @@ from maze_dataset.tokenization.maze_tokenizer import (
     StepTokenizers,
     TargetTokenizers,
     TokenizationMode,
-    TokenizerElement,
+    _TokenizerElement,
     get_tokens_up_to_path_start,
 )
 
 __all__ = [
     "MazeTokenizer",
     "TokenizationMode",
-    "TokenizerElement",
+    "_TokenizerElement",
     "MazeTokenizerModular",
     "PromptSequencers",
     "CoordTokenizers",
