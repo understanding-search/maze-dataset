@@ -3,7 +3,7 @@ import itertools
 import math
 import typing
 from dataclasses import field
-from functools import wraps
+from functools import wraps, cache
 from types import UnionType
 from typing import (
     Any,
@@ -341,16 +341,25 @@ def _all_instances_wrapper(f):
 
     @wraps(f)
     def wrapper(*args, **kwargs):
+        @cache
+        def cached_wrapper(
+            type_: type, 
+            all_instances_func: Callable,
+            validation_funcs: frozendict.frozendict[FiniteValued, Callable[[FiniteValued], bool]] | None,
+            ):
+            return _apply_validation_func(type_, all_instances_func(type_, validation_funcs), validation_funcs)
+
         if len(args) >= 2 and args[1] is not None:
-            validation_funcs = frozendict.frozendict(args[1])
+            validation_funcs: frozendict.frozendict = frozendict.frozendict(args[1])
         elif "validation_funcs" in kwargs and kwargs["validation_funcs"] is not None:
-            validation_funcs = frozendict.frozendict(kwargs["validation_funcs"])
+            validation_funcs: frozendict.frozendict = frozendict.frozendict(kwargs["validation_funcs"])
         else:
             validation_funcs = None
         # TODO: I think I can add back caching in here
-        return _apply_validation_func(
-            args[0], f(args[0], validation_funcs), validation_funcs
-        )
+        # return _apply_validation_func(
+        #     args[0], f(args[0], validation_funcs), validation_funcs
+        # )
+        return cached_wrapper(args[0], f, validation_funcs)
 
     return wrapper
 
