@@ -19,6 +19,8 @@ from maze_dataset.tokenization import (
     StepSizes,
     StepTokenizers,
     _TokenizerElement,
+    EdgeGroupings,
+    EdgePermuters,
 )
 from maze_dataset.tokenization.all_tokenizers import (
     EVERY_TEST_TOKENIZERS,
@@ -28,7 +30,9 @@ from maze_dataset.tokenization.all_tokenizers import (
     save_hashes,
 )
 from maze_dataset.tokenization.maze_tokenizer import _load_tokenizer_hashes
+from maze_dataset.token_utils import tokens_between
 from maze_dataset.utils import all_instances
+from maze_dataset.util import equal_except_adj_list_sequence
 
 # Size of the sample from `all_tokenizers.ALL_TOKENIZERS` to test
 NUM_TOKENIZERS_TO_TEST = 100
@@ -105,6 +109,30 @@ def test_token_region_delimiters(maze: LatticeMaze, tokenizer: MazeTokenizerModu
     """<PATH_START> and similar token region delimiters should appear at most 1 time, regardless of tokenizer."""
     counts: Counter = Counter(maze.as_tokens(tokenizer))
     assert all([counts[tok] < 2 for tok in VOCAB_LIST[:8]])
+
+
+@mark.parametrize(
+    "maze,tokenizer",
+    [
+        param(maze[0], tokenizer, id=f"{type(maze[0])}{maze[1]}-{tokenizer.name}")
+        for maze, tokenizer in itertools.product(
+            [(maze, i) for i, maze in enumerate(MIXED_MAZES[:6])],
+            sample_tokenizers_for_test(NUM_TOKENIZERS_TO_TEST),
+        )
+    ],
+)
+def test_token_stability(maze: LatticeMaze, tokenizer: MazeTokenizerModular):
+    """Tests consistency of tokenizations over multiple method calls."""
+    tokens1: list[str] = maze.as_tokens(tokenizer)
+    tokens2: list[str] = maze.as_tokens(tokenizer)
+    if tokenizer.has_element(EdgeGroupings.ByLeadingCoord, EdgePermuters.RandomCoords):
+        # In this case, the adjlist is expected to have different token counts over multiple calls
+        # Exclude that region from the test
+        counts1: Counter = Counter(tokens_between(tokens1, VOCAB.ADJLIST_END, VOCAB.PATH_END, True, True))
+        counts2: Counter = Counter(tokens_between(tokens2, VOCAB.ADJLIST_END, VOCAB.PATH_END, True, True))
+        assert counts1 == counts2
+    else:
+        assert equal_except_adj_list_sequence(tokenizer, tokens2)
 
 
 @mark.parametrize(
