@@ -34,19 +34,19 @@ from maze_dataset.constants import (
 from maze_dataset.generation import numpy_rng
 from maze_dataset.maze.lattice_maze import LatticeMaze, SolvedMaze
 from maze_dataset.token_utils import (
-    get_cardinal_direction,
-    get_relative_direction,
-    tokens_between,
-)
-from maze_dataset.util import (
     TokenizerDeprecationWarning,
     TokenizerPendingDeprecationWarning,
-    _coord_to_strings_indexed,
     _coord_to_strings_UT,
+    _coord_to_strings_indexed,
     connection_list_to_adj_list,
     coords_to_strings,
-    is_connection,
+    get_cardinal_direction,
+    get_relative_direction,
     strings_to_coords,
+    tokens_between,
+)
+from maze_dataset.token_utils import (
+    is_connection,
 )
 from maze_dataset.utils import (
     WhenMissing,

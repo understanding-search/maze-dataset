@@ -32,6 +32,7 @@ from maze_dataset.testing_utils import (
     MAZE_DATASET,
     MIXED_MAZES,
 )
+from maze_dataset.token_utils import connection_list_to_adj_list
 from maze_dataset.tokenization import (
     AdjListTokenizers,
     CoordTokenizers,
@@ -48,8 +49,7 @@ from maze_dataset.tokenization import (
     TokenizationMode,
     _TokenizerElement,
 )
-from maze_dataset.util import (
-    connection_list_to_adj_list,
+from maze_dataset.token_utils import (
     equal_except_adj_list_sequence,
 )
 from maze_dataset.utils import (

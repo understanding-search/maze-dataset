@@ -22,11 +22,15 @@ from maze_dataset.dataset.maze_dataset import MazeDatasetConfig
 from maze_dataset.generation import numpy_rng
 from maze_dataset.testing_utils import GRID_N, MAZE_DATASET
 from maze_dataset.token_utils import (
+    _coord_to_strings_UT,
+    coords_to_strings,
+    equal_except_adj_list_sequence,
     get_adj_list_tokens,
     get_origin_tokens,
     get_path_tokens,
     get_relative_direction,
     get_target_tokens,
+    strings_to_coords,
     tokens_between,
 )
 from maze_dataset.tokenization import (
@@ -37,12 +41,8 @@ from maze_dataset.tokenization import (
     TokenizationMode,
     get_tokens_up_to_path_start,
 )
-from maze_dataset.util import (
-    _coord_to_strings_UT,
-    coords_to_strings,
-    equal_except_adj_list_sequence,
+from maze_dataset.token_utils import (
     is_connection,
-    strings_to_coords,
 )
 from maze_dataset.utils import (
     FiniteValued,

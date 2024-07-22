@@ -25,12 +25,13 @@ from maze_dataset.constants import (
     CoordTup,
 )
 from maze_dataset.token_utils import (
+    TokenizerDeprecationWarning,
     get_adj_list_tokens,
     get_origin_tokens,
     get_path_tokens,
     get_target_tokens,
 )
-from maze_dataset.util import TokenizerDeprecationWarning, connection_list_to_adj_list
+from maze_dataset.token_utils import connection_list_to_adj_list
 
 if typing.TYPE_CHECKING:
     from maze_dataset.tokenization import (

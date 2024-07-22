@@ -32,7 +32,7 @@ from maze_dataset.tokenization.all_tokenizers import (
 from maze_dataset.tokenization.maze_tokenizer import _load_tokenizer_hashes
 from maze_dataset.token_utils import tokens_between
 from maze_dataset.utils import all_instances
-from maze_dataset.util import equal_except_adj_list_sequence
+from maze_dataset.token_utils import equal_except_adj_list_sequence
 
 # Size of the sample from `all_tokenizers.ALL_TOKENIZERS` to test
 NUM_TOKENIZERS_TO_TEST = 100

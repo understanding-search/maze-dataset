@@ -51,7 +51,7 @@ filterwarnings = [
     "ignore:Deprecated call to `pkg_resources.declare_namespace:DeprecationWarning",
 
     # temporary fix for lots of deprecation warnings for old tokenizers
-    "ignore::maze_dataset.util.TokenizerPendingDeprecationWarning",
+    "ignore::maze_dataset.token_utils.TokenizerPendingDeprecationWarning",
 ]
 testpaths = "tests"
 norecursedirs="maze_dataset/utils/test_helpers"
