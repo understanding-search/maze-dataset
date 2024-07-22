@@ -450,7 +450,11 @@ class MazeTokenizer(SerializableDataclass):
 def mark_as_unsupported(cls: "type[_TokenizerElement]") -> "type[_TokenizerElement]":
     """mark a _TokenizerElement as unsupported.
     
-    It won't show up in ALL_TOKENIZERS and thus wont be tested, but should still work in principle"""
+    Classes marked with this decoratorr won't show up in ALL_TOKENIZERS and thus wont be tested.
+    The classes marked in release 1.0.0 did work reliably before being marked, but they can't be instantiated since the decorator adds an abstract method.
+    The decorator exists to prune the space of tokenizers returned by `all_instances` both for testing and usage.
+    Previously, the space was too large, resulting in impractical runtimes.
+    """
     @staticmethod
     @abc.abstractmethod
     def _unsupported():

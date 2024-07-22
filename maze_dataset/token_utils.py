@@ -304,62 +304,6 @@ def coords_to_strings(
     return result
 
 
-def connection_list_to_adj_list(
-    conn_list: ConnectionList,
-    shuffle_d0: bool = True,
-    shuffle_d1: bool = True,
-) -> Int8[np.ndarray, "conn start_end=2 coord=2"]:
-    """converts a `ConnectionList` (special lattice format) to a shuffled adjacency list
-
-    # Parameters:
-    - `conn_list: ConnectionList`
-        special internal format for graphs which are subgraphs of a lattice
-    - `shuffle_d0: bool`
-        shuffle the adjacency list along the 0th axis (order of pairs)
-    - `shuffle_d1: bool`
-        shuffle the adjacency list along the 1st axis (order of coordinates in each pair).
-        If `False`, all pairs have the smaller coord first.
-
-
-    # Returns:
-     - `Int8[np.ndarray, "conn start_end=2 coord=2"]`
-        adjacency list in the shape `(n_connections, 2, 2)`
-    """
-
-    n_connections: int = conn_list.sum()
-    adj_list: Int8[np.ndarray, "conn start_end=2 coord=2"] = np.full(
-        (n_connections, 2, 2), -1, dtype=np.int8
-    )
-
-    if shuffle_d1:
-        flip_d1: Float[np.ndarray, "conn"] = np.random.rand(n_connections)
-
-    # loop over all nonzero elements of the connection list
-    i: int = 0
-    for d, x, y in np.ndindex(conn_list.shape):
-        if conn_list[d, x, y]:
-            c_start: CoordTup = (x, y)
-            c_end: CoordTup = (
-                x + (1 if d == 0 else 0),
-                y + (1 if d == 1 else 0),
-            )
-            adj_list[i, 0] = np.array(c_start, dtype=np.int8)
-            adj_list[i, 1] = np.array(c_end, dtype=np.int8)
-
-            # flip if shuffling
-            if shuffle_d1 and (flip_d1[i] > 0.5):
-                c_s, c_e = adj_list[i, 0].copy(), adj_list[i, 1].copy()
-                adj_list[i, 0] = c_e
-                adj_list[i, 1] = c_s
-
-            i += 1
-
-    if shuffle_d0:
-        np.random.shuffle(adj_list)
-
-    return adj_list
-
-
 def equal_except_adj_list_sequence(
     rollout1: list[str],
     rollout2: list[str],
@@ -427,6 +371,62 @@ def equal_except_adj_list_sequence(
         return False
 
     return True
+
+
+def connection_list_to_adj_list(
+    conn_list: ConnectionList,
+    shuffle_d0: bool = True,
+    shuffle_d1: bool = True,
+) -> Int8[np.ndarray, "conn start_end=2 coord=2"]:
+    """converts a `ConnectionList` (special lattice format) to a shuffled adjacency list
+
+    # Parameters:
+    - `conn_list: ConnectionList`
+        special internal format for graphs which are subgraphs of a lattice
+    - `shuffle_d0: bool`
+        shuffle the adjacency list along the 0th axis (order of pairs)
+    - `shuffle_d1: bool`
+        shuffle the adjacency list along the 1st axis (order of coordinates in each pair).
+        If `False`, all pairs have the smaller coord first.
+
+
+    # Returns:
+     - `Int8[np.ndarray, "conn start_end=2 coord=2"]`
+        adjacency list in the shape `(n_connections, 2, 2)`
+    """
+
+    n_connections: int = conn_list.sum()
+    adj_list: Int8[np.ndarray, "conn start_end=2 coord=2"] = np.full(
+        (n_connections, 2, 2), -1, dtype=np.int8
+    )
+
+    if shuffle_d1:
+        flip_d1: Float[np.ndarray, "conn"] = np.random.rand(n_connections)
+
+    # loop over all nonzero elements of the connection list
+    i: int = 0
+    for d, x, y in np.ndindex(conn_list.shape):
+        if conn_list[d, x, y]:
+            c_start: CoordTup = (x, y)
+            c_end: CoordTup = (
+                x + (1 if d == 0 else 0),
+                y + (1 if d == 1 else 0),
+            )
+            adj_list[i, 0] = np.array(c_start, dtype=np.int8)
+            adj_list[i, 1] = np.array(c_end, dtype=np.int8)
+
+            # flip if shuffling
+            if shuffle_d1 and (flip_d1[i] > 0.5):
+                c_s, c_e = adj_list[i, 0].copy(), adj_list[i, 1].copy()
+                adj_list[i, 0] = c_e
+                adj_list[i, 1] = c_s
+
+            i += 1
+
+    if shuffle_d0:
+        np.random.shuffle(adj_list)
+
+    return adj_list
 
 
 def is_connection(

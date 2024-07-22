@@ -30,8 +30,8 @@ from maze_dataset.token_utils import (
     get_path_tokens,
     get_relative_direction,
     get_target_tokens,
-    strings_to_coords,
     is_connection,
+    strings_to_coords,
     tokens_between,
 )
 from maze_dataset.tokenization import (
