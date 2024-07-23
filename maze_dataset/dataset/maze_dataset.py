@@ -57,10 +57,18 @@ def _load_maze_ctor(maze_ctor_serialized: str | dict) -> Callable:
             f"maze_ctor_serialized is of type {type(maze_ctor_serialized)}, expected str or dict"
         )
 
+
 EndpointKwargsType = dict[
-    typing.Literal["except_when_invalid", "allowed_start", "allowed_end", "deadend_start", "deadend_end"],
-    bool | None | list[tuple[int,int]]
+    typing.Literal[
+        "except_when_invalid",
+        "allowed_start",
+        "allowed_end",
+        "deadend_start",
+        "deadend_end",
+    ],
+    bool | None | list[tuple[int, int]],
 ]
+
 
 @serializable_dataclass(kw_only=True, properties_to_serialize=["grid_shape"])
 class MazeDatasetConfig(GPTDatasetConfig):
@@ -104,9 +112,10 @@ class MazeDatasetConfig(GPTDatasetConfig):
             else {
                 k: (
                     # bools and Nones are fine
-                    v if (isinstance(v, bool) or v is None)
+                    v
+                    if (isinstance(v, bool) or v is None)
                     # assume its a CoordList
-                    else [tuple(x) for x in v] # muutils/zanj saves tuples as lists
+                    else [tuple(x) for x in v]  # muutils/zanj saves tuples as lists
                 )
                 for k, v in data["endpoint_kwargs"].items()
             }
