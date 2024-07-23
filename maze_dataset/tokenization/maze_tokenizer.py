@@ -926,7 +926,6 @@ class EdgePermuters(__TokenizerElementNamespace):
             numpy_rng.shuffle(lattice_edges, 1)
             return lattice_edges
 
-    @mark_as_unsupported
     @serializable_dataclass(frozen=True, kw_only=True)
     class BothCoords(_EdgePermuter):
         """Includes both possible permutations of every edge in the output.
