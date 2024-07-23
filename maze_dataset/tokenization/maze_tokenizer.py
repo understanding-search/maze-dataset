@@ -2,6 +2,7 @@
 
 import abc
 import warnings
+import json
 from enum import Enum
 from functools import cached_property
 from pathlib import Path
@@ -15,6 +16,7 @@ from muutils.json_serialize import (
     serializable_field,
 )
 from muutils.kappa import Kappa
+from muutils.misc import flatten, empty_sequence_if_attr_false, stable_hash
 from zanj.loading import load_item_recursive
 
 # from maze_dataset import SolvedMaze
@@ -32,25 +34,23 @@ from maze_dataset.constants import (
 from maze_dataset.generation import numpy_rng
 from maze_dataset.maze.lattice_maze import LatticeMaze, SolvedMaze
 from maze_dataset.token_utils import (
-    get_cardinal_direction,
-    get_relative_direction,
-    tokens_between,
-)
-from maze_dataset.util import (
     TokenizerDeprecationWarning,
     TokenizerPendingDeprecationWarning,
-    _coord_to_strings_indexed,
     _coord_to_strings_UT,
+    _coord_to_strings_indexed,
     connection_list_to_adj_list,
     coords_to_strings,
-    is_connection,
+    get_cardinal_direction,
+    get_relative_direction,
     strings_to_coords,
+    tokens_between,
+)
+from maze_dataset.token_utils import (
+    is_connection,
 )
 from maze_dataset.utils import (
     WhenMissing,
     corner_first_ndindex,
-    empty_sequence_if_attr_false,
-    flatten,
     lattice_connection_array,
 )
 
@@ -447,26 +447,31 @@ class MazeTokenizer(SerializableDataclass):
                     pass
 
 
-def mark_as_unsupported(cls: "type[TokenizerElement]") -> "type[TokenizerElement]":
-    """mark a TokenizerElement as unsupported.
+def mark_as_unsupported(cls: "type[_TokenizerElement]") -> "type[_TokenizerElement]":
+    """mark a _TokenizerElement as unsupported.
     
-    It won't show up in ALL_TOKENIZERS and thus wont be tested, but should still work in principle"""
+    Classes marked with this decoratorr won't show up in ALL_TOKENIZERS and thus wont be tested.
+    The classes marked in release 1.0.0 did work reliably before being marked, but they can't be instantiated since the decorator adds an abstract method.
+    The decorator exists to prune the space of tokenizers returned by `all_instances` both for testing and usage.
+    Previously, the space was too large, resulting in impractical runtimes.
+    """
     @staticmethod
     @abc.abstractmethod
     def _unsupported():
         raise NotImplementedError(f"{cls.__name__} is not supported")
 
     setattr(cls, "_unsupported", _unsupported)
+    setattr(cls, "__abstractmethods__", getattr(cls, "__abstractmethods__", frozenset()).union(frozenset([_unsupported])))
 
     return cls
 
 
 @serializable_dataclass(frozen=True, kw_only=True)
-class TokenizerElement(SerializableDataclass, abc.ABC):
+class _TokenizerElement(SerializableDataclass, abc.ABC):
     """Superclass for tokenizer elements.
 
     # Development
-    Due to the functionality of `ALL_TOKENIZERS`, `TokenizerElement` subclasses may only contain fields of type `utils.FiniteValued`.
+    Due to the functionality of `ALL_TOKENIZERS`, `_TokenizerElement` subclasses may only contain fields of type `utils.FiniteValued`.
     Implementing a subclass with an `int` or `float`-typed field, for example, is not supported.
     In the event that adding such fields is deemed necessary, `ALL_TOKENIZERS` must be updated.
     """
@@ -476,7 +481,7 @@ class TokenizerElement(SerializableDataclass, abc.ABC):
         def _stringify(k: str, v: Any):
             if isinstance(v, bool):
                 return f"{k}={str(v)[0]}"
-            if isinstance(v, TokenizerElement):
+            if isinstance(v, _TokenizerElement):
                 return v.name
             if isinstance(v, tuple):
                 return f"{k}={''.join(['(', *[str(x)+', ' for x in v], ')'])}"
@@ -509,27 +514,23 @@ class TokenizerElement(SerializableDataclass, abc.ABC):
         cls._type = serializable_field(init=True, repr=False, default=repr(cls), assert_type=False)
         cls.__annotations__["_type"] = Literal[repr(cls)]  # type: ignore
 
-    # def __hash__(self):
-    #     """Hashing algorithm to identify unique `TokenizerElement` instances.
-    #     Default dataclass `__hash__` operates on fields only, so instances of distinct but empty dataclass instances can collide.
-    #     For example, this causes problems with `StepTokenizers.Singles()`, and `StepTokenizers.Straightaways()` hashing identically.
-    #     """
-    #     return hash(
-    #         hash(repr(type(self)))
-    #         ^ (hash(hash((key, val)) for key, val in self.__dict__.items()) ** 3)
-    #     )
+    def __hash__(self):
+        """
+        Stable hash to identify unique `_TokenizerElement` instances.
+        """
+        return stable_hash(json.dumps(self.serialize()))
 
     @classmethod
-    def _level_one_subclass(cls) -> type["TokenizerElement"]:
-        """Returns the immediate subclass of `TokenizerElement` of which `cls` is an instance."""
+    def _level_one_subclass(cls) -> type["_TokenizerElement"]:
+        """Returns the immediate subclass of `_TokenizerElement` of which `cls` is an instance."""
         return (
-            set(cls.__mro__).intersection(set(TokenizerElement.__subclasses__())).pop()
+            set(cls.__mro__).intersection(set(_TokenizerElement.__subclasses__())).pop()
         )
 
-    def tokenizer_elements(self, deep: bool = True) -> list["TokenizerElement"]:
+    def tokenizer_elements(self, deep: bool = True) -> list["_TokenizerElement"]:
         """
-        Returns a list of all `TokenizerElement` instances contained in the subtree.
-        Currently only detects `TokenizerElement` instances which are either direct attributes of another instance or
+        Returns a list of all `_TokenizerElement` instances contained in the subtree.
+        Currently only detects `_TokenizerElement` instances which are either direct attributes of another instance or
         which sit inside a `tuple` without further nesting.
 
         # Parameters
@@ -541,40 +542,40 @@ class TokenizerElement(SerializableDataclass, abc.ABC):
                     [
                         [el] + el.tokenizer_elements()
                         for el in self.__dict__.values()
-                        if isinstance(el, TokenizerElement)
+                        if isinstance(el, _TokenizerElement)
                     ]
                 )
                 if deep
                 else filter(
-                    lambda x: isinstance(x, TokenizerElement), self.__dict__.values()
+                    lambda x: isinstance(x, _TokenizerElement), self.__dict__.values()
                 )
             )
         else:
-            non_tuple_elems: list[TokenizerElement] = list(
+            non_tuple_elems: list[_TokenizerElement] = list(
                 flatten(
                     [
                         [el] + el.tokenizer_elements()
                         for el in self.__dict__.values()
-                        if isinstance(el, TokenizerElement)
+                        if isinstance(el, _TokenizerElement)
                     ]
                     if deep
                     else filter(
-                        lambda x: isinstance(x, TokenizerElement),
+                        lambda x: isinstance(x, _TokenizerElement),
                         self.__dict__.values(),
                     )
                 )
             )
-            tuple_elems: list[TokenizerElement] = list(
+            tuple_elems: list[_TokenizerElement] = list(
                 flatten(
                     [
                         (
                             [
                                 [tup_el] + tup_el.tokenizer_elements()
                                 for tup_el in el
-                                if isinstance(tup_el, TokenizerElement)
+                                if isinstance(tup_el, _TokenizerElement)
                             ]
                             if deep
-                            else filter(lambda x: isinstance(x, TokenizerElement), el)
+                            else filter(lambda x: isinstance(x, _TokenizerElement), el)
                         )
                         for el in self.__dict__.values()
                         if isinstance(el, tuple)
@@ -590,7 +591,7 @@ class TokenizerElement(SerializableDataclass, abc.ABC):
 
         # Parameters
         - `depth: int`: Current depth in the tree. Used internally for recursion, no need to specify.
-        - `abstract: bool`: Whether to print the name of the abstract base class or the concrete class for each `TokenizerElement` instance.
+        - `abstract: bool`: Whether to print the name of the abstract base class or the concrete class for each `_TokenizerElement` instance.
         """
         name: str = "\t" * depth + (
             type(self).__name__
@@ -614,14 +615,14 @@ class TokenizerElement(SerializableDataclass, abc.ABC):
             type(self).__name__: {
                 key: (
                     val.tokenizer_element_dict()
-                    if isinstance(val, TokenizerElement)
+                    if isinstance(val, _TokenizerElement)
                     else (
                         val
                         if not isinstance(val, tuple)
                         else [
                             (
                                 el.tokenizer_element_dict()
-                                if isinstance(el, TokenizerElement)
+                                if isinstance(el, _TokenizerElement)
                                 else el
                             )
                             for el in val
@@ -636,12 +637,12 @@ class TokenizerElement(SerializableDataclass, abc.ABC):
     @classmethod
     @abc.abstractmethod
     def attribute_key(cls) -> str:
-        """Returns the binding used in `MazeTokenizerModular` for that type of `TokenizerElement`."""
+        """Returns the binding used in `MazeTokenizerModular` for that type of `_TokenizerElement`."""
         raise NotImplementedError
 
     def to_tokens(self, *args, **kwargs) -> list[str]:
         """Converts a maze element into a list of tokens.
-        Not all `TokenizerElement` subclasses produce tokens, so this is not an abstract method.
+        Not all `_TokenizerElement` subclasses produce tokens, so this is not an abstract method.
         Those subclasses which do produce tokens should override this method.
         """
         raise NotImplementedError
@@ -649,15 +650,15 @@ class TokenizerElement(SerializableDataclass, abc.ABC):
     @abc.abstractmethod
     def is_valid(self) -> bool:
         """Returns if `self` contains data members capable of producing an overall valid `MazeTokenizerModular`.
-        Some `TokenizerElement` instances may be created which are not useful despite obeying data member type hints.
-        `is_valid` allows for more precise detection of invalid `TokenizerElement`s beyond type hinting alone.
+        Some `_TokenizerElement` instances may be created which are not useful despite obeying data member type hints.
+        `is_valid` allows for more precise detection of invalid `_TokenizerElement`s beyond type hinting alone.
         If type hints are sufficient to constrain the possible instances of some subclass, then this method may simply `return True` for that subclass.
 
         # Types of Invalidity
         In nontrivial implementations of this method, each conditional clause should contain a comment classifying the reason for invalidity and one of the types below.
         Invalidity types, in ascending order of invalidity:
         - Uninteresting: These tokenizers might be used to train functional models, but the schemes are not interesting to study.
-        E.g., `TokenizerElement`s which are strictly worse than some alternative.
+        E.g., `_TokenizerElement`s which are strictly worse than some alternative.
         - Duplicate: These tokenizers have identical tokenization behavior as some other valid tokenizers.
         - Untrainable: Training functional models using these tokenizers would be (nearly) impossible.
         - Erroneous: These tokenizers might raise exceptions during use.
@@ -667,34 +668,34 @@ class TokenizerElement(SerializableDataclass, abc.ABC):
         When adding new subclasses or data members, the developer should check if any such blanket statement of validity still holds and update it as neccesary.
 
         ## Nesting
-        In general, when implementing this method, there is no need to recursively call `is_valid` on nested `TokenizerElement`s contained in the class.
-        In other words, failures of `is_valid` need not bubble up to the top of the nested `TokenizerElement` tree.
-        `MazeTokenizerModular.is_valid` calls `is_valid` on each of its `TokenizerElement`s individually, so failure at any level will be detected.
+        In general, when implementing this method, there is no need to recursively call `is_valid` on nested `_TokenizerElement`s contained in the class.
+        In other words, failures of `is_valid` need not bubble up to the top of the nested `_TokenizerElement` tree.
+        `MazeTokenizerModular.is_valid` calls `is_valid` on each of its `_TokenizerElement`s individually, so failure at any level will be detected.
 
         ## Types of Invalidity
         If it's judged to be useful, the types of invalidity could be implemented with an Enum or similar rather than only living in comments.
-        This could be used to create more or less stringent filters on the valid `TokenizerElement` instances.
+        This could be used to create more or less stringent filters on the valid `_TokenizerElement` instances.
         """
         raise NotImplementedError
 
 
-class _TokenizerElementNamespace(abc.ABC):
+class __TokenizerElementNamespace(abc.ABC):
     """ABC for namespaces
 
     # Properties
-    - key: The binding used in `MazeTokenizerModular` for instances of the classes contained within that `_TokenizerElementNamespace`.
+    - key: The binding used in `MazeTokenizerModular` for instances of the classes contained within that `__TokenizerElementNamespace`.
     """
 
     key: str = NotImplementedError
 
 
 def _load_tokenizer_element(
-    data: dict[str, Any], namespace: type[_TokenizerElementNamespace]
-) -> TokenizerElement:
+    data: dict[str, Any], namespace: type[__TokenizerElementNamespace]
+) -> _TokenizerElement:
     key: str = namespace.key
     format: str = data[key]["__format__"]
     cls_name: str = format.split("(")[0]
-    cls: type[TokenizerElement] = getattr(namespace, cls_name)
+    cls: type[_TokenizerElement] = getattr(namespace, cls_name)
     kwargs: dict[str, Any] = {
         k: load_item_recursive(data[key][k], tuple()) for k, v in data[key].items()
     }
@@ -703,11 +704,11 @@ def _load_tokenizer_element(
     return cls(**kwargs)
 
 
-class CoordTokenizers(_TokenizerElementNamespace):
+class CoordTokenizers(__TokenizerElementNamespace):
     key = "coord_tokenizer"
 
     @serializable_dataclass(frozen=True, kw_only=True)
-    class _CoordTokenizer(TokenizerElement, abc.ABC):
+    class _CoordTokenizer(_TokenizerElement, abc.ABC):
         @abc.abstractmethod
         def to_tokens(self, coord: Coord | CoordTup) -> list[str]:
             pass
@@ -750,7 +751,7 @@ class CoordTokenizers(_TokenizerElementNamespace):
             ]
 
 
-class EdgeGroupings(_TokenizerElementNamespace):
+class EdgeGroupings(__TokenizerElementNamespace):
     """Namespace for `EdgeGrouping` subclass hierarchy used by `AdjListTokenizer`."""
 
     key = "edge_grouping"
@@ -763,7 +764,7 @@ class EdgeGroupings(_TokenizerElementNamespace):
         grouped: bool
 
     @serializable_dataclass(frozen=True, kw_only=True)
-    class _EdgeGrouping(TokenizerElement, abc.ABC):
+    class _EdgeGrouping(_TokenizerElement, abc.ABC):
         """Specifies if/how multiple coord-coord connections are grouped together in a token subsequence called a edge grouping."""
 
         @classmethod
@@ -801,7 +802,7 @@ class EdgeGroupings(_TokenizerElementNamespace):
         Edge tokenizations contain 3 parts: a leading coord, a connector (or wall) token, and either a second coord or cardinal direction tokenization.
         """
 
-        connection_token_ordinal: Literal[0, 1, 2] = serializable_field(default=1)
+        connection_token_ordinal: Literal[0, 1, 2] = serializable_field(default=1, assert_type=False)
 
         def _token_params(self) -> "EdgeGroupings._GroupingTokenParams":
             return EdgeGroupings._GroupingTokenParams(
@@ -830,7 +831,7 @@ class EdgeGroupings(_TokenizerElementNamespace):
 
         intra: bool = serializable_field(default=True)
         shuffle_group: bool = serializable_field(default=True)
-        connection_token_ordinal: Literal[0, 1] = serializable_field(default=0)
+        connection_token_ordinal: Literal[0, 1] = serializable_field(default=0, assert_type=False)
 
         def _token_params(self) -> "EdgeGroupings._GroupingTokenParams":
             return EdgeGroupings._GroupingTokenParams(
@@ -854,13 +855,13 @@ class EdgeGroupings(_TokenizerElementNamespace):
             return groups
 
 
-class EdgePermuters(_TokenizerElementNamespace):
+class EdgePermuters(__TokenizerElementNamespace):
     """Namespace for `EdgePermuter` subclass hierarchy used by `AdjListTokenizer`."""
 
     key = "edge_permuter"
 
     @serializable_dataclass(frozen=True, kw_only=True)
-    class _EdgePermuter(TokenizerElement, abc.ABC):
+    class _EdgePermuter(_TokenizerElement, abc.ABC):
         """Specifies how to sequence the two coords that encode a lattice edge."""
 
         @classmethod
@@ -928,7 +929,7 @@ class EdgePermuters(_TokenizerElementNamespace):
             return np.append(lattice_edges, np.flip(lattice_edges, axis=1), axis=0)
 
 
-class EdgeSubsets(_TokenizerElementNamespace):
+class EdgeSubsets(__TokenizerElementNamespace):
     """
     Namespace for `EdgeSubset` subclass hierarchy used by `AdjListTokenizer`.
     """
@@ -936,7 +937,7 @@ class EdgeSubsets(_TokenizerElementNamespace):
     key = "edge_subset"
 
     @serializable_dataclass(frozen=True, kw_only=True)
-    class _EdgeSubset(TokenizerElement, abc.ABC):
+    class _EdgeSubset(_TokenizerElement, abc.ABC):
         """
         Component of an `AdjListTokenizers._AdjListTokenizer` which specifies the subset of lattice edges to be tokenized.
         """
@@ -989,11 +990,11 @@ class EdgeSubsets(_TokenizerElementNamespace):
             )
 
 
-class AdjListTokenizers(_TokenizerElementNamespace):
+class AdjListTokenizers(__TokenizerElementNamespace):
     key = "adj_list_tokenizer"
 
     @serializable_dataclass(frozen=True, kw_only=True)
-    class _AdjListTokenizer(TokenizerElement, abc.ABC):
+    class _AdjListTokenizer(_TokenizerElement, abc.ABC):
         """
         Specifies how the adjacency list is tokenized.
         Tokenization behavior is decomposed into specification of edge subsets, groupings, and permutations.
@@ -1014,7 +1015,7 @@ class AdjListTokenizers(_TokenizerElementNamespace):
           - `evens`, `odds`: The leading coord is the one belonging to that coord subset. See `EdgeSubsets.ChessboardSublattice` for details.
         """
 
-        pre: Literal[False] = serializable_field(default=False)
+        pre: Literal[False] = serializable_field(default=False, assert_type=False)
         post: bool = serializable_field(default=True)
         shuffle_d0: bool = serializable_field(default=True)
         edge_grouping: EdgeGroupings._EdgeGrouping = serializable_field(
@@ -1035,10 +1036,7 @@ class AdjListTokenizers(_TokenizerElementNamespace):
             return AdjListTokenizers.key
 
         def is_valid(self) -> bool:
-            # TODO
-            warnings.warn(
-                "no validation implemented for AdjListTokenizers",
-            )
+            # No invalid instances possible within data member type hint bounds
             return True
 
         @abc.abstractmethod
@@ -1222,11 +1220,11 @@ class AdjListTokenizers(_TokenizerElementNamespace):
             ]
 
 
-class TargetTokenizers(_TokenizerElementNamespace):
+class TargetTokenizers(__TokenizerElementNamespace):
     key = "target_tokenizer"
 
     @serializable_dataclass(frozen=True, kw_only=True)
-    class _TargetTokenizer(TokenizerElement, abc.ABC):
+    class _TargetTokenizer(_TokenizerElement, abc.ABC):
         """Superclass of tokenizers for maze targets."""
 
         @abc.abstractmethod
@@ -1274,11 +1272,11 @@ class TargetTokenizers(_TokenizerElementNamespace):
             return True
 
 
-class StepSizes(_TokenizerElementNamespace):
+class StepSizes(__TokenizerElementNamespace):
     key = "step_size"
 
     @serializable_dataclass(frozen=True, kw_only=True)
-    class _StepSize(TokenizerElement, abc.ABC):
+    class _StepSize(_TokenizerElement, abc.ABC):
         @classmethod
         def attribute_key(cls) -> str:
             return StepSizes.key
@@ -1342,11 +1340,11 @@ class StepSizes(_TokenizerElementNamespace):
             )
 
 
-class StepTokenizers(_TokenizerElementNamespace):
+class StepTokenizers(__TokenizerElementNamespace):
     key = "step_tokenizers"
 
     @serializable_dataclass(frozen=True, kw_only=True)
-    class _StepTokenizer(TokenizerElement, abc.ABC):
+    class _StepTokenizer(_TokenizerElement, abc.ABC):
         @classmethod
         def attribute_key(cls) -> str:
             return StepTokenizers.key
@@ -1385,9 +1383,9 @@ class StepTokenizers(_TokenizerElementNamespace):
         ) -> list[str]:
             return coord_tokenizer.to_tokens(maze.solution[end_index, ...])
 
+
     @serializable_dataclass(frozen=True, kw_only=True)
     class Cardinal(_StepTokenizer):
-        @abc.abstractmethod  # TODO: Delete to reinstantiate as valid `StepTokenizer` concrete class
         def to_tokens(
             self, maze: SolvedMaze, start_index: int, end_index: int, **kwargs
         ) -> list[str]:
@@ -1395,13 +1393,13 @@ class StepTokenizers(_TokenizerElementNamespace):
                 get_cardinal_direction(maze.solution[start_index : start_index + 2])
             ]
 
+
     @serializable_dataclass(frozen=True, kw_only=True)
     class Relative(_StepTokenizer):
         """Tokenizes a solution step using relative first-person directions (right, left, forward, etc.).
         To simplify the indeterminacy, at the start of a solution the "agent" solving the maze is assumed to be facing NORTH.
         """
 
-        @abc.abstractmethod  # TODO: Delete to reinstantiate as valid `StepTokenizer` concrete class
         def to_tokens(
             self, maze: SolvedMaze, start_index: int, end_index: int, **kwargs
         ) -> list[str]:
@@ -1439,11 +1437,11 @@ class StepTokenizers(_TokenizerElementNamespace):
     )
 
 
-class PathTokenizers(_TokenizerElementNamespace):
+class PathTokenizers(__TokenizerElementNamespace):
     key = "path_tokenizer"
 
     @serializable_dataclass(frozen=True, kw_only=True)
-    class _PathTokenizer(TokenizerElement, abc.ABC):
+    class _PathTokenizer(_TokenizerElement, abc.ABC):
         """Superclass of tokenizers for maze solution paths."""
 
         @abc.abstractmethod
@@ -1474,6 +1472,7 @@ class PathTokenizers(_TokenizerElementNamespace):
         )
         step_tokenizers: StepTokenizers.StepTokenizerPermutation = serializable_field(
             default=(StepTokenizers.Coord(),),
+            serialization_fn=lambda x: [y.serialize() for y in x],
             loading_fn=lambda x: tuple(x[StepTokenizers.key]),
         )
         pre: bool = serializable_field(default=False)
@@ -1559,11 +1558,11 @@ class PathTokenizers(_TokenizerElementNamespace):
                 return True
 
 
-class PromptSequencers(_TokenizerElementNamespace):
+class PromptSequencers(__TokenizerElementNamespace):
     key = "prompt_sequencer"
 
     @serializable_dataclass(frozen=True, kw_only=True)
-    class _PromptSequencer(TokenizerElement, abc.ABC):
+    class _PromptSequencer(_TokenizerElement, abc.ABC):
         """
         Sequences regions into a complete tokenization.
 
@@ -1806,13 +1805,19 @@ class MazeTokenizerModular(SerializableDataclass):
     # Development
     - To ensure backwards compatibility, the default constructor must always return a tokenizer equivalent to the legacy `TokenizationMode.AOTP_UT_Uniform`.
     - Furthermore, the mapping reflected in `from_legacy` must also be maintained.
-    - Updates to `MazeTokenizerModular` or the `TokenizerElement` hierarchy must maintain that behavior.
+    - Updates to `MazeTokenizerModular` or the `_TokenizerElement` hierarchy must maintain that behavior.
     """
 
     prompt_sequencer: PromptSequencers._PromptSequencer = serializable_field(
         default=PromptSequencers.AOTP(),
         loading_fn=lambda x: _load_tokenizer_element(x, PromptSequencers),
     )
+
+    def __hash__(self):
+        """
+        Stable hash to identify unique `MazeTokenizerModular` instances.
+        """
+        return stable_hash(json.dumps(self.serialize()))
 
     # Information Querying Methods
 
@@ -1825,7 +1830,7 @@ class MazeTokenizerModular(SerializableDataclass):
         Returns a string representation of the tree of tokenizer elements contained in `self`.
 
         # Parameters
-        - `abstract: bool`: Whether to print the name of the abstract base class or the concrete class for each `TokenizerElement` instance.
+        - `abstract: bool`: Whether to print the name of the abstract base class or the concrete class for each `_TokenizerElement` instance.
         """
 
         return "\n".join(
@@ -1852,7 +1857,7 @@ class MazeTokenizerModular(SerializableDataclass):
         """Serializes MazeTokenizer into a key for encoding in zanj"""
         return "-".join([type(self).__name__, self.prompt_sequencer.name])
 
-    def summary(self) -> dict[str, TokenizerElement]:
+    def summary(self) -> dict[str, _TokenizerElement]:
         return {
             # "prompt_sequencer": self.prompt_sequencer.name,
             **{elem.attribute_key(): elem for elem in self.tokenizer_elements}
@@ -1862,15 +1867,15 @@ class MazeTokenizerModular(SerializableDataclass):
     def _type_check(obj: any) -> None:
         """Helper method for `has_element`"""
         if not (
-            isinstance(obj, TokenizerElement)
-            or (isinstance(obj, type) and issubclass(obj, TokenizerElement))
+            isinstance(obj, _TokenizerElement)
+            or (isinstance(obj, type) and issubclass(obj, _TokenizerElement))
         ):
             raise TypeError(
-                f"{obj} is not a `TokenizerElement` instance or subclass."
+                f"{obj} is not a `_TokenizerElement` instance or subclass."
             )
         
 
-    def _has_element_singular(self, el: type[TokenizerElement] | TokenizerElement):
+    def _has_element_singular(self, el: type[_TokenizerElement] | _TokenizerElement):
         """Helper method for `has_element`"""
         self._type_check(el)
         if isinstance(el, type):
@@ -1882,18 +1887,18 @@ class MazeTokenizerModular(SerializableDataclass):
     def has_element(
         self,
         elements: (
-            type[TokenizerElement]
-            | TokenizerElement
-            | Iterable[type[TokenizerElement] | TokenizerElement]
+            type[_TokenizerElement]
+            | _TokenizerElement
+            | Iterable[type[_TokenizerElement] | _TokenizerElement]
         ),
     ) -> bool:
         """Returns True if the `MazeTokenizerModular` instance contains ALL of the items specified in `elements`.
 
-        Querying with a partial subset of `TokenizerElement` fields is not currently supported.
+        Querying with a partial subset of `_TokenizerElement` fields is not currently supported.
         To do such a query, assemble multiple calls to `has_elements`.
 
         # Parameters
-        - `elements`: Singleton or iterable of `TokenizerElement` instances or classes.
+        - `elements`: Singleton or iterable of `_TokenizerElement` instances or classes.
         If an instance is provided, then comparison is done via instance equality.
         If a class is provided, then comparison isdone via `isinstance`. I.e., any instance of that class is accepted.
         """

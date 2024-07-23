@@ -11,7 +11,7 @@ repository = "https://github.com/understanding-search/maze-dataset"
 python = "^3.10.6"
 torch = { version = ">=1.13.1", source = "torch_cpu" }
 matplotlib = "^3.7.0"
-muutils = "^0.6.1"
+muutils = "^0.6.3"
 zanj = "^0.3.1"
 jupyter = "^1.0.0"
 ipykernel = "^6.22.0"
@@ -51,7 +51,7 @@ filterwarnings = [
     "ignore:Deprecated call to `pkg_resources.declare_namespace:DeprecationWarning",
 
     # temporary fix for lots of deprecation warnings for old tokenizers
-    "ignore::maze_dataset.util.TokenizerPendingDeprecationWarning",
+    "ignore::maze_dataset.token_utils.TokenizerPendingDeprecationWarning",
 ]
 testpaths = "tests"
 norecursedirs="maze_dataset/utils/test_helpers"

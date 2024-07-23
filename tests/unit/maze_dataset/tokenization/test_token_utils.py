@@ -8,6 +8,13 @@ import numpy as np
 import pytest
 from jaxtyping import Int
 from pytest import mark, param
+from muutils.misc import (
+    flatten,
+    dataclass_set_equals,
+    get_all_subclasses,
+    isinstance_by_type_name,
+    IsDataclass,
+)
 
 from maze_dataset import LatticeMaze
 from maze_dataset.constants import VOCAB, Connection, ConnectionArray
@@ -15,11 +22,16 @@ from maze_dataset.dataset.maze_dataset import MazeDatasetConfig
 from maze_dataset.generation import numpy_rng
 from maze_dataset.testing_utils import GRID_N, MAZE_DATASET
 from maze_dataset.token_utils import (
+    _coord_to_strings_UT,
+    coords_to_strings,
+    equal_except_adj_list_sequence,
     get_adj_list_tokens,
     get_origin_tokens,
     get_path_tokens,
     get_relative_direction,
     get_target_tokens,
+    is_connection,
+    strings_to_coords,
     tokens_between,
 )
 from maze_dataset.tokenization import (
@@ -30,21 +42,9 @@ from maze_dataset.tokenization import (
     TokenizationMode,
     get_tokens_up_to_path_start,
 )
-from maze_dataset.util import (
-    _coord_to_strings_UT,
-    coords_to_strings,
-    equal_except_adj_list_sequence,
-    is_connection,
-    strings_to_coords,
-)
 from maze_dataset.utils import (
     FiniteValued,
-    IsDataclass,
     all_instances,
-    dataclass_set_equals,
-    flatten,
-    get_all_subclasses,
-    isinstance_by_type_name,
     lattice_connection_array,
     manhattan_distance,
 )
@@ -460,74 +460,6 @@ def test_equal_except_adj_list_sequence():
     # )
 
 
-@mark.parametrize(
-    "deep, flat, depth",
-    [
-        param(
-            iter_tuple[0],
-            iter_tuple[1],
-            iter_tuple[2],
-            id=f"{i}",
-        )
-        for i, iter_tuple in enumerate(
-            [
-                ([1, 2, 3, 4], [1, 2, 3, 4], None),
-                ((1, 2, 3, 4), [1, 2, 3, 4], None),
-                ((j for j in [1, 2, 3, 4]), [1, 2, 3, 4], None),
-                (["a", "b", "c", "d"], ["a", "b", "c", "d"], None),
-                ("funky duck", [c for c in "funky duck"], None),
-                (["funky", "duck"], ["funky", "duck"], None),
-                (b"funky duck", [b for b in b"funky duck"], None),
-                ([b"funky", b"duck"], [b"funky", b"duck"], None),
-                ([[1, 2, 3, 4]], [1, 2, 3, 4], None),
-                ([[[[1, 2, 3, 4]]]], [1, 2, 3, 4], None),
-                ([[[[1], 2], 3], 4], [1, 2, 3, 4], None),
-                ([[1, 2], [[3]], (4,)], [1, 2, 3, 4], None),
-                ([[[1, 2, 3, 4]]], [[1, 2, 3, 4]], 1),
-                ([[[1, 2, 3, 4]]], [1, 2, 3, 4], 2),
-                ([[1, 2], [[3]], (4,)], [1, 2, [3], 4], 1),
-                ([[1, 2], [(3,)], (4,)], [1, 2, (3,), 4], 1),
-                ([[[[1], 2], 3], 4], [[1], 2, 3, 4], 2),
-            ]
-        )
-    ],
-)
-def test_flatten(deep: Iterable[any], flat: Iterable[any], depth: int | None):
-    assert list(flatten(deep, depth)) == flat
-
-
-def test_get_all_subclasses():
-    class A:
-        pass
-
-    class B(A):
-        pass
-
-    class C(A):
-        pass
-
-    class D(B, C):
-        pass
-
-    class E(B):
-        pass
-
-    class F(D):
-        pass
-
-    class Z:
-        pass
-
-    assert get_all_subclasses(A) == {B, C, D, E, F}
-    assert get_all_subclasses(A, include_self=True) == {A, B, C, D, E, F}
-    assert get_all_subclasses(B) == {D, E, F}
-    assert get_all_subclasses(C) == {D, F}
-    assert get_all_subclasses(D) == {F}
-    assert get_all_subclasses(D, include_self=True) == {D, F}
-    assert get_all_subclasses(Z) == set()
-    assert get_all_subclasses(Z, include_self=True) == {Z}
-
-
 # Test classes
 @dataclass
 class DC1:
@@ -872,119 +804,6 @@ def test_all_instances2(
     assertion: Callable[[list[FiniteValued]], bool],
 ):
     assert assertion(all_instances(type_, validation_funcs))
-
-
-@mark.parametrize(
-    "coll1, coll2, result",
-    [
-        param(
-            c1,
-            c2,
-            res,
-            id=f"{c1}_{c2}",
-        )
-        for c1, c2, res in (
-            [
-                (
-                    [
-                        DC1(False, False),
-                        DC1(False, True),
-                    ],
-                    [
-                        DC1(True, False),
-                        DC1(True, True),
-                    ],
-                    False,
-                ),
-                (
-                    [
-                        DC1(False, False),
-                        DC1(False, True),
-                    ],
-                    [
-                        DC1(False, False),
-                        DC1(False, True),
-                    ],
-                    True,
-                ),
-                (
-                    [
-                        DC1(False, False),
-                        DC1(False, True),
-                    ],
-                    [
-                        DC2(False, False),
-                        DC2(False, True),
-                    ],
-                    False,
-                ),
-                (
-                    [
-                        DC3(False),
-                        DC3(False),
-                    ],
-                    [
-                        DC3(False),
-                    ],
-                    True,
-                ),
-                ([], [], True),
-                ([DC5], [DC5], AttributeError),
-            ]
-        )
-    ],
-)
-def test_dataclass_set_equals(
-    coll1: Iterable[IsDataclass],
-    coll2: Iterable[IsDataclass],
-    result: bool | type[Exception],
-):
-    if isinstance(result, type) and issubclass(result, Exception):
-        with pytest.raises(result):
-            dataclass_set_equals(coll1, coll2)
-    else:
-        assert dataclass_set_equals(coll1, coll2) == result
-
-
-@mark.parametrize(
-    "o, type_name, result",
-    [
-        param(
-            o,
-            name,
-            res,
-            id=f"{o}_{name}",
-        )
-        for o, name, res in (
-            [
-                (True, "bool", True),
-                (True, "int", True),
-                (1, "int", True),
-                (1, "bool", False),
-                (MazeTokenizer(), "MazeTokenizer", True),
-                (MazeTokenizer(), "TokenizationMode", False),
-                (MazeTokenizerModular(), "MazeTokenizerModular", True),
-                (MazeTokenizerModular(), "MazeTokenizer", False),
-                (TokenizationMode.AOTP_CTT_indexed, "TokenizationMode", True),
-                (TokenizationMode.AOTP_UT_uniform, "MazeTokenizer", False),
-                (StepTokenizers.Distance(), "_StepTokenizer", True),
-                (StepTokenizers.Distance(), "TokenizerElement", True),
-                (PathTokenizers.StepSequence(), "StepSequence", True),
-                (PathTokenizers.StepSequence(), "_PathTokenizer", True),
-                (MazeTokenizerModular, "MazeTokenizerModular", False),
-                (TokenizationMode, "TokenizationMode", False),
-            ]
-        )
-    ],
-)
-def test_isinstance_by_type_name(
-    o: object, type_name: str, result: bool | type[Exception]
-):
-    if isinstance(result, type) and issubclass(result, Exception):
-        with pytest.raises(result):
-            isinstance_by_type_name(o, type_name)
-    else:
-        assert isinstance_by_type_name(o, type_name) == result
 
 
 @mark.parametrize(

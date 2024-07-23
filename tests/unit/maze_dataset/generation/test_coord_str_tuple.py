@@ -1,14 +1,9 @@
 import numpy as np
 import pytest
 
-from maze_dataset.util import (
-    _coord_to_strings_indexed,
-    _coord_to_strings_UT,
-    coord_str_to_coord_np,
-    coord_str_to_tuple,
-    coord_str_to_tuple_noneable,
+from maze_dataset.token_utils import _coord_to_strings_UT, _coord_to_strings_indexed, coord_str_to_coord_np, coord_str_to_tuple, coord_str_to_tuple_noneable, str_is_coord
+from maze_dataset.token_utils import (
     coords_to_strings,
-    str_is_coord,
 )
 
 
