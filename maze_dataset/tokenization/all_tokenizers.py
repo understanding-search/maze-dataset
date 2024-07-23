@@ -25,11 +25,11 @@ This collection should be expanded as specific tokenizers become canonical or po
 import random
 from functools import cache
 from pathlib import Path
+from typing import Callable
 
 import frozendict
 import numpy as np
 from jaxtyping import Int64
-from typing import Callable
 
 from maze_dataset.tokenization import (
     CoordTokenizers,
@@ -38,17 +38,21 @@ from maze_dataset.tokenization import (
     StepTokenizers,
     _TokenizerElement,
 )
-from maze_dataset.utils import all_instances, FiniteValued
+from maze_dataset.utils import FiniteValued, all_instances
 
 # Always include this as the first item in the dict `validation_funcs` whenever using `all_instances` with `MazeTokenizerModular`
-MAZE_TOKENIZER_MODULAR_DEFAULT_VALIDATION_FUNCS: frozendict.frozendict[type, Callable[[FiniteValued], bool]] = frozendict.frozendict({
-    _TokenizerElement: lambda x: x.is_valid(),
-    # Currently no need for `MazeTokenizerModular.is_valid` since that method contains no special cases not already covered by `_TokenizerElement.is_valid`
-    # MazeTokenizerModular: lambda x: x.is_valid(),
-    StepTokenizers.StepTokenizerPermutation: lambda x: len(set(x))
-    == len(x)
-    and x != (StepTokenizers.Distance(),),
-})
+MAZE_TOKENIZER_MODULAR_DEFAULT_VALIDATION_FUNCS: frozendict.frozendict[
+    type, Callable[[FiniteValued], bool]
+] = frozendict.frozendict(
+    {
+        _TokenizerElement: lambda x: x.is_valid(),
+        # Currently no need for `MazeTokenizerModular.is_valid` since that method contains no special cases not already covered by `_TokenizerElement.is_valid`
+        # MazeTokenizerModular: lambda x: x.is_valid(),
+        StepTokenizers.StepTokenizerPermutation: lambda x: len(set(x)) == len(x)
+        and x != (StepTokenizers.Distance(),),
+    }
+)
+
 
 @cache
 def get_all_tokenizers() -> list[MazeTokenizerModular]:
@@ -59,7 +63,7 @@ def get_all_tokenizers() -> list[MazeTokenizerModular]:
     return list(
         all_instances(
             MazeTokenizerModular,
-            validation_funcs=MAZE_TOKENIZER_MODULAR_DEFAULT_VALIDATION_FUNCS
+            validation_funcs=MAZE_TOKENIZER_MODULAR_DEFAULT_VALIDATION_FUNCS,
         )
     )
 
@@ -110,9 +114,7 @@ def sample_tokenizers_for_test(n: int) -> list[MazeTokenizerModular]:
 
 def save_hashes() -> Int64[np.int64, "tokenizer"]:
     """Computes, sorts, and saves the hashes of every member of `ALL_TOKENIZERS`."""
-    hashes_array = np.array(
-        [hash(obj) for obj in get_all_tokenizers()], dtype=np.int64
-    )
+    hashes_array = np.array([hash(obj) for obj in get_all_tokenizers()], dtype=np.int64)
     sorted_hashes, counts = np.unique(hashes_array, return_counts=True)
     if sorted_hashes.shape[0] != hashes_array.shape[0]:
         collisions = sorted_hashes[counts > 1]

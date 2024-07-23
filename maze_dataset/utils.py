@@ -3,10 +3,9 @@ import itertools
 import math
 import typing
 from dataclasses import field
-from functools import wraps, cache
+from functools import cache, wraps
 from types import UnionType
 from typing import (
-    Any,
     Callable,
     Generator,
     Iterable,
@@ -20,11 +19,7 @@ from typing import (
 import frozendict
 import numpy as np
 from jaxtyping import Bool, Int, Int8
-from muutils.misc import (
-    IsDataclass,
-    is_abstract,
-    flatten,
-)
+from muutils.misc import IsDataclass, flatten, is_abstract
 
 WhenMissing = Literal["except", "skip", "include"]
 
@@ -315,9 +310,11 @@ def _apply_validation_func(
     """
     if validation_funcs is None:
         return vals
-    if type_ in validation_funcs: # Only possible catch of UnionTypes
+    if type_ in validation_funcs:  # Only possible catch of UnionTypes
         return filter(validation_funcs[type_], vals)
-    elif hasattr(type_, "__mro__"):  # Generic types like UnionType, Literal don't have `__mro__`
+    elif hasattr(
+        type_, "__mro__"
+    ):  # Generic types like UnionType, Literal don't have `__mro__`
         for superclass in type_.__mro__:
             if superclass not in validation_funcs:
                 continue
@@ -343,16 +340,23 @@ def _all_instances_wrapper(f):
     def wrapper(*args, **kwargs):
         @cache
         def cached_wrapper(
-            type_: type, 
+            type_: type,
             all_instances_func: Callable,
-            validation_funcs: frozendict.frozendict[FiniteValued, Callable[[FiniteValued], bool]] | None,
-            ):
-            return _apply_validation_func(type_, all_instances_func(type_, validation_funcs), validation_funcs)
+            validation_funcs: (
+                frozendict.frozendict[FiniteValued, Callable[[FiniteValued], bool]]
+                | None
+            ),
+        ):
+            return _apply_validation_func(
+                type_, all_instances_func(type_, validation_funcs), validation_funcs
+            )
 
         if len(args) >= 2 and args[1] is not None:
             validation_funcs: frozendict.frozendict = frozendict.frozendict(args[1])
         elif "validation_funcs" in kwargs and kwargs["validation_funcs"] is not None:
-            validation_funcs: frozendict.frozendict = frozendict.frozendict(kwargs["validation_funcs"])
+            validation_funcs: frozendict.frozendict = frozendict.frozendict(
+                kwargs["validation_funcs"]
+            )
         else:
             validation_funcs = None
         # TODO: I think I can add back caching in here
@@ -454,5 +458,3 @@ def all_instances(
         raise TypeError(
             f"Type {type_} either has unbounded possible values or is not supported."
         )
-
-

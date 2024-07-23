@@ -10,10 +10,7 @@ from muutils.json_serialize.serializable_dataclass import (
     serializable_dataclass,
     serializable_field,
 )
-from muutils.misc import list_split
-from muutils.misc import (
-    isinstance_by_type_name,
-)
+from muutils.misc import isinstance_by_type_name, list_split
 
 from maze_dataset.constants import (
     NEIGHBORS_MASK,
@@ -26,12 +23,12 @@ from maze_dataset.constants import (
 )
 from maze_dataset.token_utils import (
     TokenizerDeprecationWarning,
+    connection_list_to_adj_list,
     get_adj_list_tokens,
     get_origin_tokens,
     get_path_tokens,
     get_target_tokens,
 )
-from maze_dataset.token_utils import connection_list_to_adj_list
 
 if typing.TYPE_CHECKING:
     from maze_dataset.tokenization import (

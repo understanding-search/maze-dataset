@@ -8,8 +8,8 @@ from typing import Iterable, Sequence
 import frozendict
 import numpy as np
 from jaxtyping import Int
-from muutils.mlutils import GLOBAL_SEED
 from muutils.misc import flatten
+from muutils.mlutils import GLOBAL_SEED
 from pytest import mark, param
 
 from maze_dataset import (
@@ -32,7 +32,10 @@ from maze_dataset.testing_utils import (
     MAZE_DATASET,
     MIXED_MAZES,
 )
-from maze_dataset.token_utils import connection_list_to_adj_list
+from maze_dataset.token_utils import (
+    connection_list_to_adj_list,
+    equal_except_adj_list_sequence,
+)
 from maze_dataset.tokenization import (
     AdjListTokenizers,
     CoordTokenizers,
@@ -49,14 +52,7 @@ from maze_dataset.tokenization import (
     TokenizationMode,
     _TokenizerElement,
 )
-from maze_dataset.token_utils import (
-    equal_except_adj_list_sequence,
-)
-from maze_dataset.utils import (
-    all_instances,
-    lattice_max_degrees,
-    manhattan_distance,
-)
+from maze_dataset.utils import all_instances, lattice_max_degrees, manhattan_distance
 
 # Use for test fuzzing when there are too many possible tokenizers
 NUM_TOKENIZERS_TO_TEST = 100
@@ -392,10 +388,22 @@ def _helper_test_path_tokenizers(
         )
     if StepTokenizers.Cardinal() in pt.step_tokenizers:
         c = Counter(path_toks)
-        assert c[VOCAB.PATH_NORTH] + c[VOCAB.PATH_SOUTH] + c[VOCAB.PATH_EAST] + c[VOCAB.PATH_WEST] == len(footprint_inds)-1
+        assert (
+            c[VOCAB.PATH_NORTH]
+            + c[VOCAB.PATH_SOUTH]
+            + c[VOCAB.PATH_EAST]
+            + c[VOCAB.PATH_WEST]
+            == len(footprint_inds) - 1
+        )
     if StepTokenizers.Relative() in pt.step_tokenizers:
         c = Counter(path_toks)
-        assert c[VOCAB.PATH_LEFT] + c[VOCAB.PATH_RIGHT] + c[VOCAB.PATH_FORWARD] + c[VOCAB.PATH_BACKWARD] == len(footprint_inds)-1
+        assert (
+            c[VOCAB.PATH_LEFT]
+            + c[VOCAB.PATH_RIGHT]
+            + c[VOCAB.PATH_FORWARD]
+            + c[VOCAB.PATH_BACKWARD]
+            == len(footprint_inds) - 1
+        )
 
 
 @mark.parametrize(

@@ -1,17 +1,24 @@
 """a whole bunch of utilities for tokenization"""
 
 import typing
-import numpy as np
 import warnings
-
 from collections import Counter
 from typing import Callable
+
+import numpy as np
+from jaxtyping import Bool, Float, Int, Int8
 from muutils.errormode import ErrorMode
 from muutils.misc import list_join
-from jaxtyping import Bool, Float, Int, Int8
 
+from maze_dataset.constants import (
+    CARDINAL_MAP,
+    SPECIAL_TOKENS,
+    VOCAB,
+    ConnectionArray,
+    ConnectionList,
+    CoordTup,
+)
 from maze_dataset.utils import WhenMissing
-from maze_dataset.constants import CARDINAL_MAP, SPECIAL_TOKENS, VOCAB, ConnectionArray, ConnectionList, CoordTup
 
 # filtering things from a prompt or generated text
 # ==================================================

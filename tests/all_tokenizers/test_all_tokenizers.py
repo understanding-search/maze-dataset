@@ -3,7 +3,6 @@ import os
 from collections import Counter
 from typing import Callable, Iterable
 
-import frozendict
 import numpy as np
 import pytest
 from pytest import mark, param
@@ -11,16 +10,17 @@ from zanj import ZANJ
 
 from maze_dataset import VOCAB, VOCAB_LIST, LatticeMaze
 from maze_dataset.testing_utils import MIXED_MAZES
+from maze_dataset.token_utils import equal_except_adj_list_sequence, tokens_between
 from maze_dataset.tokenization import (
     CoordTokenizers,
+    EdgeGroupings,
+    EdgePermuters,
     MazeTokenizerModular,
     PathTokenizers,
     PromptSequencers,
     StepSizes,
     StepTokenizers,
     _TokenizerElement,
-    EdgeGroupings,
-    EdgePermuters,
 )
 from maze_dataset.tokenization.all_tokenizers import (
     EVERY_TEST_TOKENIZERS,
@@ -30,16 +30,16 @@ from maze_dataset.tokenization.all_tokenizers import (
     save_hashes,
 )
 from maze_dataset.tokenization.maze_tokenizer import _load_tokenizer_hashes
-from maze_dataset.token_utils import tokens_between
 from maze_dataset.utils import all_instances
-from maze_dataset.token_utils import equal_except_adj_list_sequence
 
 # Size of the sample from `all_tokenizers.ALL_TOKENIZERS` to test
 NUM_TOKENIZERS_TO_TEST = 100
 
+
 @pytest.fixture(scope="session")
 def save_tokenizer_hashes():
     save_hashes()
+
 
 def test_all_tokenizers():
     all_tokenizers = get_all_tokenizers()
@@ -54,8 +54,7 @@ def test_all_tokenizers():
 def test_all_instances_tokenizerelement(class_: type):
     all_vals = list(
         all_instances(
-            class_,
-            validation_funcs=MAZE_TOKENIZER_MODULAR_DEFAULT_VALIDATION_FUNCS
+            class_, validation_funcs=MAZE_TOKENIZER_MODULAR_DEFAULT_VALIDATION_FUNCS
         )
     )
     assert len({hash(elem) for elem in all_vals}) == len(all_vals)
@@ -128,8 +127,12 @@ def test_token_stability(maze: LatticeMaze, tokenizer: MazeTokenizerModular):
     if tokenizer.has_element(EdgeGroupings.ByLeadingCoord, EdgePermuters.RandomCoords):
         # In this case, the adjlist is expected to have different token counts over multiple calls
         # Exclude that region from the test
-        counts1: Counter = Counter(tokens_between(tokens1, VOCAB.ADJLIST_END, VOCAB.PATH_END, True, True))
-        counts2: Counter = Counter(tokens_between(tokens2, VOCAB.ADJLIST_END, VOCAB.PATH_END, True, True))
+        counts1: Counter = Counter(
+            tokens_between(tokens1, VOCAB.ADJLIST_END, VOCAB.PATH_END, True, True)
+        )
+        counts2: Counter = Counter(
+            tokens_between(tokens2, VOCAB.ADJLIST_END, VOCAB.PATH_END, True, True)
+        )
         assert counts1 == counts2
     else:
         assert equal_except_adj_list_sequence(tokenizer, tokens2)
@@ -266,7 +269,9 @@ _has_elems_type = (
                 ),
                 (
                     StepSizes.Singles,
-                    lambda mt, els: isinstance(mt.prompt_sequencer.path_tokenizer.step_size, els),
+                    lambda mt, els: isinstance(
+                        mt.prompt_sequencer.path_tokenizer.step_size, els
+                    ),
                 ),
                 (
                     StepTokenizers.Coord,

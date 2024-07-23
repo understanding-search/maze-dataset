@@ -7,14 +7,8 @@ import frozendict
 import numpy as np
 import pytest
 from jaxtyping import Int
+from muutils.misc import IsDataclass, dataclass_set_equals
 from pytest import mark, param
-from muutils.misc import (
-    flatten,
-    dataclass_set_equals,
-    get_all_subclasses,
-    isinstance_by_type_name,
-    IsDataclass,
-)
 
 from maze_dataset import LatticeMaze
 from maze_dataset.constants import VOCAB, Connection, ConnectionArray
@@ -35,11 +29,8 @@ from maze_dataset.token_utils import (
     tokens_between,
 )
 from maze_dataset.tokenization import (
-    MazeTokenizer,
-    MazeTokenizerModular,
     PathTokenizers,
     StepTokenizers,
-    TokenizationMode,
     get_tokens_up_to_path_start,
 )
 from maze_dataset.utils import (

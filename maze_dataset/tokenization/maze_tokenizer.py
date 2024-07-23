@@ -1,8 +1,8 @@
 """MazeTokenizerModular and the legacy TokenizationMode enum, MazeTokenizer class"""
 
 import abc
-import warnings
 import json
+import warnings
 from enum import Enum
 from functools import cached_property
 from pathlib import Path
@@ -16,7 +16,7 @@ from muutils.json_serialize import (
     serializable_field,
 )
 from muutils.kappa import Kappa
-from muutils.misc import flatten, empty_sequence_if_attr_false, stable_hash
+from muutils.misc import empty_sequence_if_attr_false, flatten, stable_hash
 from zanj.loading import load_item_recursive
 
 # from maze_dataset import SolvedMaze
@@ -28,7 +28,6 @@ from maze_dataset.constants import (
     ConnectionArray,
     ConnectionList,
     Coord,
-    CoordArray,
     CoordTup,
 )
 from maze_dataset.generation import numpy_rng
@@ -36,17 +35,15 @@ from maze_dataset.maze.lattice_maze import LatticeMaze, SolvedMaze
 from maze_dataset.token_utils import (
     TokenizerDeprecationWarning,
     TokenizerPendingDeprecationWarning,
-    _coord_to_strings_UT,
     _coord_to_strings_indexed,
+    _coord_to_strings_UT,
     connection_list_to_adj_list,
     coords_to_strings,
     get_cardinal_direction,
     get_relative_direction,
+    is_connection,
     strings_to_coords,
     tokens_between,
-)
-from maze_dataset.token_utils import (
-    is_connection,
 )
 from maze_dataset.utils import (
     WhenMissing,
@@ -449,19 +446,26 @@ class MazeTokenizer(SerializableDataclass):
 
 def mark_as_unsupported(cls: "type[_TokenizerElement]") -> "type[_TokenizerElement]":
     """mark a _TokenizerElement as unsupported.
-    
+
     Classes marked with this decoratorr won't show up in ALL_TOKENIZERS and thus wont be tested.
     The classes marked in release 1.0.0 did work reliably before being marked, but they can't be instantiated since the decorator adds an abstract method.
     The decorator exists to prune the space of tokenizers returned by `all_instances` both for testing and usage.
     Previously, the space was too large, resulting in impractical runtimes.
     """
+
     @staticmethod
     @abc.abstractmethod
     def _unsupported():
         raise NotImplementedError(f"{cls.__name__} is not supported")
 
     setattr(cls, "_unsupported", _unsupported)
-    setattr(cls, "__abstractmethods__", getattr(cls, "__abstractmethods__", frozenset()).union(frozenset([_unsupported])))
+    setattr(
+        cls,
+        "__abstractmethods__",
+        getattr(cls, "__abstractmethods__", frozenset()).union(
+            frozenset([_unsupported])
+        ),
+    )
 
     return cls
 
@@ -511,7 +515,9 @@ class _TokenizerElement(SerializableDataclass, abc.ABC):
         Ignore Pylance complaining about the arg to `Literal` being an expression.
         """
         super().__init_subclass__(**kwargs)
-        cls._type = serializable_field(init=True, repr=False, default=repr(cls), assert_type=False)
+        cls._type = serializable_field(
+            init=True, repr=False, default=repr(cls), assert_type=False
+        )
         cls.__annotations__["_type"] = Literal[repr(cls)]  # type: ignore
 
     def __hash__(self):
@@ -802,7 +808,9 @@ class EdgeGroupings(__TokenizerElementNamespace):
         Edge tokenizations contain 3 parts: a leading coord, a connector (or wall) token, and either a second coord or cardinal direction tokenization.
         """
 
-        connection_token_ordinal: Literal[0, 1, 2] = serializable_field(default=1, assert_type=False)
+        connection_token_ordinal: Literal[0, 1, 2] = serializable_field(
+            default=1, assert_type=False
+        )
 
         def _token_params(self) -> "EdgeGroupings._GroupingTokenParams":
             return EdgeGroupings._GroupingTokenParams(
@@ -831,7 +839,9 @@ class EdgeGroupings(__TokenizerElementNamespace):
 
         intra: bool = serializable_field(default=True)
         shuffle_group: bool = serializable_field(default=True)
-        connection_token_ordinal: Literal[0, 1] = serializable_field(default=0, assert_type=False)
+        connection_token_ordinal: Literal[0, 1] = serializable_field(
+            default=0, assert_type=False
+        )
 
         def _token_params(self) -> "EdgeGroupings._GroupingTokenParams":
             return EdgeGroupings._GroupingTokenParams(
@@ -1383,7 +1393,6 @@ class StepTokenizers(__TokenizerElementNamespace):
         ) -> list[str]:
             return coord_tokenizer.to_tokens(maze.solution[end_index, ...])
 
-
     @serializable_dataclass(frozen=True, kw_only=True)
     class Cardinal(_StepTokenizer):
         def to_tokens(
@@ -1392,7 +1401,6 @@ class StepTokenizers(__TokenizerElementNamespace):
             return [
                 get_cardinal_direction(maze.solution[start_index : start_index + 2])
             ]
-
 
     @serializable_dataclass(frozen=True, kw_only=True)
     class Relative(_StepTokenizer):
@@ -1792,9 +1800,9 @@ class PromptSequencers(__TokenizerElementNamespace):
 
 
 @serializable_dataclass(
-    frozen=True, 
+    frozen=True,
     kw_only=True,
-    properties_to_serialize=["tokenizer_element_tree_concrete", "name"]
+    properties_to_serialize=["tokenizer_element_tree_concrete", "name"],
 )
 class MazeTokenizerModular(SerializableDataclass):
     """Tokenizer for mazes
@@ -1870,10 +1878,7 @@ class MazeTokenizerModular(SerializableDataclass):
             isinstance(obj, _TokenizerElement)
             or (isinstance(obj, type) and issubclass(obj, _TokenizerElement))
         ):
-            raise TypeError(
-                f"{obj} is not a `_TokenizerElement` instance or subclass."
-            )
-        
+            raise TypeError(f"{obj} is not a `_TokenizerElement` instance or subclass.")
 
     def _has_element_singular(self, el: type[_TokenizerElement] | _TokenizerElement):
         """Helper method for `has_element`"""
@@ -1882,7 +1887,6 @@ class MazeTokenizerModular(SerializableDataclass):
             return any([isinstance(e, el) for e in self.tokenizer_elements])
         else:
             return el in self.tokenizer_elements
-        
 
     def has_element(
         self,
