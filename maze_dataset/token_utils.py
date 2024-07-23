@@ -1,7 +1,7 @@
 """a whole bunch of utilities for tokenization"""
 
-import typing
 import re
+import typing
 import warnings
 from collections import Counter
 from typing import Callable
