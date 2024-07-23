@@ -1,5 +1,5 @@
 import copy
-import os
+from pathlib import Path
 
 import numpy as np
 import pytest
@@ -99,12 +99,13 @@ class TestMazeDataset:
         )
         for c in cfgs:
             d = MazeDataset.generate(c, gen_parallel=False)
-            p = os.path.abspath(
-                os.path.join(os.getcwd(), "..", "data", d.cfg.to_fname() + ".zanj")
-            )
+            p = Path("tests/_temp/test_maze_dataset/") / (d.cfg.to_fname() + ".zanj")
             d.save(file_path=p)
             # read as MazeDataset
             roundtrip = MazeDataset.read(p)
+            assert d.cfg.diff(roundtrip.cfg) == dict()
+            assert roundtrip.cfg == d.cfg
+            assert roundtrip.mazes == d.mazes
             assert roundtrip == d
             # read from zanj
             z = ZANJ()
