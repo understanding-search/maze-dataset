@@ -30,6 +30,8 @@ from typing import Callable
 import frozendict
 import numpy as np
 from jaxtyping import Int64
+from muutils.spinner import SpinnerContext
+from tqdm import tqdm
 
 from maze_dataset.tokenization import (
     CoordTokenizers,
@@ -112,14 +114,37 @@ def sample_tokenizers_for_test(n: int) -> list[MazeTokenizerModular]:
     return sample
 
 
-def save_hashes() -> Int64[np.int64, "tokenizer"]:
+def save_hashes(
+    path: Path | None = None,
+    verbose: bool = False,
+) -> Int64[np.int64, "tokenizers"]:
     """Computes, sorts, and saves the hashes of every member of `ALL_TOKENIZERS`."""
-    hashes_array = np.array([hash(obj) for obj in get_all_tokenizers()], dtype=np.int64)
+    # get all tokenizers
+    if verbose:
+        with SpinnerContext():
+            all_tokenizers = get_all_tokenizers()
+    else:
+        all_tokenizers = get_all_tokenizers()
+
+    # compute hashes
+    hashes_array: Int64[np.ndarray, "tokenizers+dupes"] = np.array(
+        [
+            hash(obj)  # uses stable hash
+            for obj in tqdm(all_tokenizers, disable=not verbose)
+        ],
+        dtype=np.int64,
+    )
+
+    # make sure there are no dupes
     sorted_hashes, counts = np.unique(hashes_array, return_counts=True)
     if sorted_hashes.shape[0] != hashes_array.shape[0]:
         collisions = sorted_hashes[counts > 1]
         raise ValueError(
             f"{hashes_array.shape[0] - sorted_hashes.shape[0]} tokenizer hash collisions: {collisions}\nReport error to the developer to increase the hash size or otherwise update the tokenizer hashing algorithm."
         )
-    np.save(Path(__file__).parent / "MazeTokenizerModular_hashes.npy", sorted_hashes)
+
+    # save and return
+    if path is None:
+        path = Path(__file__).parent / "MazeTokenizerModular_hashes.npy"
+    np.save(path, sorted_hashes)
     return sorted_hashes

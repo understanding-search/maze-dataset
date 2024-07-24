@@ -2,7 +2,7 @@ import enum
 import itertools
 import math
 import typing
-from dataclasses import field
+from dataclasses import Field
 from functools import cache, wraps
 from types import UnionType
 from typing import (
@@ -382,10 +382,13 @@ def all_instances(
     Function is susceptible to infinite recursion if `type_` is a dataclass whose member tree includes another instance of `type_`.
 
     # Parameters
-    - `type_`: A finite-valued type. See docstring on `FiniteValued` for full details.
-    - `validation_funcs`: A mapping of types to auxiliary functions to validate instances of that type.
-    This optional argument can provide an additional, more precise layer of validation for the instances generated beyond what type hinting alone can provide.
-    See `validation_funcs` Details section below.
+    - `type_: FiniteValued`
+        A finite-valued type. See docstring on `FiniteValued` for full details.
+    - `validation_funcs: dict[FiniteValued, Callable[[FiniteValued], bool]] | None`
+        A mapping of types to auxiliary functions to validate instances of that type.
+        This optional argument can provide an additional, more precise layer of validation for the instances generated beyond what type hinting alone can provide.
+        See `validation_funcs` Details section below.
+        (default: `None`)
 
     ## Supported `type_` Values
     See docstring on `FiniteValued` for full details.
@@ -398,20 +401,20 @@ def all_instances(
     - A `UnionType` of any of the types in this list
 
     ## `validation_funcs` Details
-    `validation_funcs` is applied after all instances have been generated according to type hints.
-    If `type_` is in `validation_funcs`, then the list of instances is filtered by `validation_funcs[type_](instance)`.
-    `validation_funcs` is passed down for all recursive calls of `all_instances`.
-    This allows for improved performance through maximal pruning of the exponential tree.
-    `validation_funcs` supports subclass checking.
-    If `type_` is not found in `validation_funcs`, then the search is performed iteratively in mro order.
-    If a superclass of `type_` is found while searching in mro order, that validation function is applied and the list is returned.
-    If no superclass of `type_` is found, then no filter is applied.
+    - `validation_funcs` is applied after all instances have been generated according to type hints.
+    - If `type_` is in `validation_funcs`, then the list of instances is filtered by `validation_funcs[type_](instance)`.
+    - `validation_funcs` is passed down for all recursive calls of `all_instances`.
+    - This allows for improved performance through maximal pruning of the exponential tree.
+    - `validation_funcs` supports subclass checking.
+    - If `type_` is not found in `validation_funcs`, then the search is performed iteratively in mro order.
+    - If a superclass of `type_` is found while searching in mro order, that validation function is applied and the list is returned.
+    - If no superclass of `type_` is found, then no filter is applied.
     """
     if type_ == bool:
         yield from [True, False]
     elif hasattr(type_, "__dataclass_fields__") and not is_abstract(type_):
         # Concrete dataclass: construct dataclass instances with all possible combinations of fields
-        fields: list[field] = type_.__dataclass_fields__
+        fields: list[Field] = type_.__dataclass_fields__
         fields_to_types: dict[str, type] = {f: fields[f].type for f in fields}
         all_arg_sequences: Iterable = itertools.product(
             *[

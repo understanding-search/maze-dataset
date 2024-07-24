@@ -94,9 +94,13 @@ unit:
 	@echo "run unit tests"
 	$(POETRY_RUN_PYTHON) -m pytest $(PYTEST_OPTIONS) tests/unit
 
+.PHONY: save_tok_hashes
+save_tok_hashes:
+	@echo "generate and save tokenizer hashes"
+	$(POETRY_RUN_PYTHON) -m maze_dataset.tokenization.save_hashes
 
 .PHONY: test_all_tok
-test_all_tok:
+test_all_tok: save_tok_hashes
 	@echo "run tests on all tokenizers"
 	$(POETRY_RUN_PYTHON) -m pytest $(PYTEST_OPTIONS) tests/all_tokenizers
 
