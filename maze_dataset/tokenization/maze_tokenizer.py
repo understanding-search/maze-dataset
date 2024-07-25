@@ -523,7 +523,7 @@ class _TokenizerElement(SerializableDataclass, abc.ABC):
     def __hash__(self):
         "Stable hash to identify unique `MazeTokenizerModular` instances. uses name"
         return int.from_bytes(
-            hashlib.md5(self.name.encode("utf-8")).digest(),
+            hashlib.blake2b(self.name.encode("utf-8")).digest(),
             byteorder="big",
         )
 
@@ -1824,7 +1824,7 @@ class MazeTokenizerModular(SerializableDataclass):
     def __hash__(self):
         "Stable hash to identify unique `MazeTokenizerModular` instances. uses name"
         return int.from_bytes(
-            hashlib.md5(self.name.encode("utf-8")).digest(),
+            hashlib.blake2b(self.name.encode("utf-8")).digest(),
             byteorder="big",
         )
 
@@ -2071,9 +2071,16 @@ class MazeTokenizerModular(SerializableDataclass):
             return output
 
 
-def _load_tokenizer_hashes() -> Int64[np.int64, "MazeTokenizerModular"]:
+def _load_tokenizer_hashes() -> Int64[np.ndarray, "n_tokenizers"]:
     """Loads the sorted list of `all_tokenizers.ALL_TOKENIZERS` hashes from disk."""
-    return np.load(Path(__file__).parent / "MazeTokenizerModular_hashes.npy")
+    return np.load(Path(__file__).parent / "MazeTokenizerModular_hashes.npz")["hashes"]
 
 
-ALL_TOKENIZER_HASHES: Int64[np.int64, "MazeTokenizerModular"] = _load_tokenizer_hashes()
+ALL_TOKENIZER_HASHES: Int64[np.ndarray, "n_tokenizers"] = np.array([], dtype=np.int64)
+try:
+    ALL_TOKENIZER_HASHES = _load_tokenizer_hashes()
+except FileNotFoundError:
+    warnings.warn(
+        "Tokenizers hashes cannot be loaded, some things might fail. run `make save_tok_hashes`",
+        TokenizerPendingDeprecationWarning,
+    )

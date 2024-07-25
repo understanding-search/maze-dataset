@@ -22,6 +22,7 @@ A collection of the tokenizers which should always be included in unit tests whe
 This collection should be expanded as specific tokenizers become canonical or popular.
 """
 
+import functools
 import multiprocessing
 import random
 from functools import cache
@@ -30,8 +31,8 @@ from typing import Callable
 
 import frozendict
 import numpy as np
-from jaxtyping import Int64
-from muutils.spinner import SpinnerContext
+from jaxtyping import Int64, Int64
+from muutils.spinner import SpinnerContext, NoOpContextManager
 from tqdm import tqdm
 
 from maze_dataset.tokenization import (
@@ -115,26 +116,14 @@ def sample_tokenizers_for_test(n: int) -> list[MazeTokenizerModular]:
     return sample
 
 
-class NoOpContextManager:
-    """A context manager that does nothing."""
-
-    def __init__(self, *args, **kwargs):
-        pass
-
-    def __enter__(self):
-        return self
-
-    def __exit__(self, exc_type, exc_value, traceback):
-        pass
-
-
 def save_hashes(
     path: Path | None = None,
     verbose: bool = False,
     parallelize: bool | int = False,
-) -> Int64[np.int64, "tokenizers"]:
+) -> Int64[np.ndarray, "tokenizers"]:
     """Computes, sorts, and saves the hashes of every member of `ALL_TOKENIZERS`."""
-    spinner = SpinnerContext if verbose else NoOpContextManager
+    spinner = functools.partial(SpinnerContext, spinner_chars="square_dot")  if verbose else NoOpContextManager
+
     # get all tokenizers
     with spinner(initial_value="getting all tokenizers..."):
         all_tokenizers = get_all_tokenizers()
@@ -142,32 +131,28 @@ def save_hashes(
     # compute hashes
     if parallelize:
         n_cpus: int = (
-            parallelize if int(parallelize) > 1 else multiprocessing.cpu_count()
+            parallelize if int(parallelize) > 1 else multiprocessing.cpu_count() - 1
         )
-        if verbose:
-            print(f"Using {n_cpus} processes to compute hashes...")
-        with multiprocessing.Pool(processes=n_cpus) as pool:
-            hashes_list: list[int] = list(
-                tqdm(
-                    pool.imap(hash, all_tokenizers),
-                    total=len(all_tokenizers),
-                    disable=not verbose,
-                )
+        with spinner(initial_value=f"using {n_cpus} processes to compute {len(all_tokenizers)} tokenizer hashes..."):
+            with multiprocessing.Pool(processes=n_cpus) as pool:
+                hashes_list: list[int] = list(pool.map(hash, all_tokenizers))
+
+        with spinner(initial_value="converting hashes to numpy array..."):
+            hashes_array: "Int64[np.ndarray, 'tokenizers+dupes']" = np.array(
+                hashes_list, dtype=np.int64
             )
-        hashes_array: "Int64[np.ndarray, 'tokenizers+dupes']" = np.array(
-            hashes_list, dtype=np.int64
-        )
     else:
-        hashes_array: "Int64[np.ndarray, 'tokenizers+dupes']" = np.array(
-            [
-                hash(obj)  # uses stable hash
-                for obj in tqdm(all_tokenizers, disable=not verbose)
-            ],
-            dtype=np.int64,
-        )
+        with spinner(initial_value=f"computing {len(all_tokenizers)} tokenizer hashes..."):
+            hashes_array: "Int64[np.ndarray, 'tokenizers+dupes']" = np.array(
+                [
+                    hash(obj)  # uses stable hash
+                    for obj in tqdm(all_tokenizers, disable=not verbose)
+                ],
+                dtype=np.int64,
+            )
 
     # make sure there are no dupes
-    with spinner(initial_value="checking for hash collisions..."):
+    with spinner(initial_value="sorting and checking for hash collisions..."):
         sorted_hashes, counts = np.unique(hashes_array, return_counts=True)
         if sorted_hashes.shape[0] != hashes_array.shape[0]:
             collisions = sorted_hashes[counts > 1]
@@ -178,7 +163,10 @@ def save_hashes(
     # save and return
     with spinner(initial_value="saving hashes..."):
         if path is None:
-            path = Path(__file__).parent / "MazeTokenizerModular_hashes.npy"
-        np.save(path, sorted_hashes)
+            path = Path(__file__).parent / "MazeTokenizerModular_hashes.npz"
+        np.savez_compressed(
+            path,
+            hashes=sorted_hashes,
+        )
 
     return sorted_hashes

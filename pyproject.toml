@@ -11,7 +11,7 @@ repository = "https://github.com/understanding-search/maze-dataset"
 python = "^3.10.6"
 torch = { version = ">=1.13.1", source = "torch_cpu" }
 matplotlib = "^3.7.0"
-muutils = "^0.6.6"
+muutils = "^0.6.7"
 zanj = "^0.3.1"
 jupyter = "^1.0.0"
 ipykernel = "^6.22.0"
