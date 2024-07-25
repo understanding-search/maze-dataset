@@ -1,7 +1,7 @@
 """MazeTokenizerModular and the legacy TokenizationMode enum, MazeTokenizer class"""
 
 import abc
-import json
+import hashlib
 import warnings
 from enum import Enum
 from functools import cached_property
@@ -16,7 +16,7 @@ from muutils.json_serialize import (
     serializable_field,
 )
 from muutils.kappa import Kappa
-from muutils.misc import empty_sequence_if_attr_false, flatten, stable_hash
+from muutils.misc import empty_sequence_if_attr_false, flatten
 from zanj.loading import load_item_recursive
 
 # from maze_dataset import SolvedMaze
@@ -495,11 +495,11 @@ class _TokenizerElement(SerializableDataclass, abc.ABC):
         members_str: str = ", ".join(
             [_stringify(k, v) for k, v in self.__dict__.items() if k != "_type"]
         )
-        r = f"{type(self).__name__}({members_str})"
-        if "." in r and r.index("(") > r.index("."):
-            return "".join(r.split(".")[1:])
+        output: str = f"{type(self).__name__}({members_str})"
+        if "." in output and output.index("(") > output.index("."):
+            return "".join(output.split(".")[1:])
         else:
-            return r
+            return output
 
     def __str__(self):
         return self.name
@@ -521,10 +521,11 @@ class _TokenizerElement(SerializableDataclass, abc.ABC):
         cls.__annotations__["_type"] = Literal[repr(cls)]  # type: ignore
 
     def __hash__(self):
-        """
-        Stable hash to identify unique `_TokenizerElement` instances.
-        """
-        return stable_hash(json.dumps(self.serialize()))
+        "Stable hash to identify unique `MazeTokenizerModular` instances. uses name"
+        return int.from_bytes(
+            hashlib.md5(self.name.encode("utf-8")).digest(),
+            byteorder="big",
+        )
 
     @classmethod
     def _level_one_subclass(cls) -> type["_TokenizerElement"]:
@@ -1821,10 +1822,11 @@ class MazeTokenizerModular(SerializableDataclass):
     )
 
     def __hash__(self):
-        """
-        Stable hash to identify unique `MazeTokenizerModular` instances.
-        """
-        return stable_hash(json.dumps(self.serialize()))
+        "Stable hash to identify unique `MazeTokenizerModular` instances. uses name"
+        return int.from_bytes(
+            hashlib.md5(self.name.encode("utf-8")).digest(),
+            byteorder="big",
+        )
 
     # Information Querying Methods
 
