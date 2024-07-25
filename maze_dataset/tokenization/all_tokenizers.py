@@ -22,6 +22,7 @@ A collection of the tokenizers which should always be included in unit tests whe
 This collection should be expanded as specific tokenizers become canonical or popular.
 """
 
+import multiprocessing
 import random
 from functools import cache
 from pathlib import Path
@@ -114,37 +115,70 @@ def sample_tokenizers_for_test(n: int) -> list[MazeTokenizerModular]:
     return sample
 
 
+class NoOpContextManager:
+    """A context manager that does nothing."""
+
+    def __init__(self, *args, **kwargs):
+        pass
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        pass
+
+
 def save_hashes(
     path: Path | None = None,
     verbose: bool = False,
+    parallelize: bool | int = False,
 ) -> Int64[np.int64, "tokenizers"]:
     """Computes, sorts, and saves the hashes of every member of `ALL_TOKENIZERS`."""
+    spinner = SpinnerContext if verbose else NoOpContextManager
     # get all tokenizers
-    if verbose:
-        with SpinnerContext():
-            all_tokenizers = get_all_tokenizers()
-    else:
+    with spinner(initial_value="getting all tokenizers..."):
         all_tokenizers = get_all_tokenizers()
 
     # compute hashes
-    hashes_array: Int64[np.ndarray, "tokenizers+dupes"] = np.array(
-        [
-            hash(obj)  # uses stable hash
-            for obj in tqdm(all_tokenizers, disable=not verbose)
-        ],
-        dtype=np.int64,
-    )
-
-    # make sure there are no dupes
-    sorted_hashes, counts = np.unique(hashes_array, return_counts=True)
-    if sorted_hashes.shape[0] != hashes_array.shape[0]:
-        collisions = sorted_hashes[counts > 1]
-        raise ValueError(
-            f"{hashes_array.shape[0] - sorted_hashes.shape[0]} tokenizer hash collisions: {collisions}\nReport error to the developer to increase the hash size or otherwise update the tokenizer hashing algorithm."
+    if parallelize:
+        n_cpus: int = (
+            parallelize if int(parallelize) > 1 else multiprocessing.cpu_count()
+        )
+        if verbose:
+            print(f"Using {n_cpus} processes to compute hashes...")
+        with multiprocessing.Pool(processes=n_cpus) as pool:
+            hashes_list: list[int] = list(
+                tqdm(
+                    pool.imap(hash, all_tokenizers),
+                    total=len(all_tokenizers),
+                    disable=not verbose,
+                )
+            )
+        hashes_array: "Int64[np.ndarray, 'tokenizers+dupes']" = np.array(
+            hashes_list, dtype=np.int64
+        )
+    else:
+        hashes_array: "Int64[np.ndarray, 'tokenizers+dupes']" = np.array(
+            [
+                hash(obj)  # uses stable hash
+                for obj in tqdm(all_tokenizers, disable=not verbose)
+            ],
+            dtype=np.int64,
         )
 
+    # make sure there are no dupes
+    with spinner(initial_value="checking for hash collisions..."):
+        sorted_hashes, counts = np.unique(hashes_array, return_counts=True)
+        if sorted_hashes.shape[0] != hashes_array.shape[0]:
+            collisions = sorted_hashes[counts > 1]
+            raise ValueError(
+                f"{hashes_array.shape[0] - sorted_hashes.shape[0]} tokenizer hash collisions: {collisions}\nReport error to the developer to increase the hash size or otherwise update the tokenizer hashing algorithm."
+            )
+
     # save and return
-    if path is None:
-        path = Path(__file__).parent / "MazeTokenizerModular_hashes.npy"
-    np.save(path, sorted_hashes)
+    with spinner(initial_value="saving hashes..."):
+        if path is None:
+            path = Path(__file__).parent / "MazeTokenizerModular_hashes.npy"
+        np.save(path, sorted_hashes)
+
     return sorted_hashes
