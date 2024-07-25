@@ -412,52 +412,54 @@ def all_instances(
     """
     if type_ == bool:
         yield from [True, False]
-    elif hasattr(type_, "__dataclass_fields__") and not is_abstract(type_):
-        # Concrete dataclass: construct dataclass instances with all possible combinations of fields
-        fields: list[Field] = type_.__dataclass_fields__
-        fields_to_types: dict[str, type] = {f: fields[f].type for f in fields}
-        all_arg_sequences: Iterable = itertools.product(
-            *[
-                all_instances(arg_type, validation_funcs)
-                for arg_type in fields_to_types.values()
-            ]
-        )
-        yield from (
-            type_(**{fld: arg for fld, arg in zip(fields_to_types.keys(), args)})
-            for args in all_arg_sequences
-        )
-    elif hasattr(type_, "__dataclass_fields__") and is_abstract(type_):
-        # Abstract dataclass: call `all_instances` on each subclass
-        yield from flatten(
-            (all_instances(sub, validation_funcs) for sub in type_.__subclasses__()),
-            levels_to_flatten=1,
-        )
-    elif (
-        get_origin(type_) == tuple
-    ):  # Only matches Generic type tuple since regular tuple is not finite-valued
-        # Generic tuple: Similar to concrete dataclass. Construct all possible combinations of tuple fields.
-        yield from (
-            tuple(combo)
-            for combo in itertools.product(
-                *(
-                    all_instances(tup_item, validation_funcs)
-                    for tup_item in get_args(type_)
+    elif hasattr(type_, "__dataclass_fields__"):
+        if is_abstract(type_):
+            # Abstract dataclass: call `all_instances` on each subclass
+            yield from flatten(
+                (
+                    all_instances(sub, validation_funcs)
+                    for sub in type_.__subclasses__()
+                ),
+                levels_to_flatten=1,
+            )
+        else:
+            # Concrete dataclass: construct dataclass instances with all possible combinations of fields
+            fields: list[Field] = type_.__dataclass_fields__
+            fields_to_types: dict[str, type] = {f: fields[f].type for f in fields}
+            all_arg_sequences: Iterable = itertools.product(
+                *[
+                    all_instances(arg_type, validation_funcs)
+                    for arg_type in fields_to_types.values()
+                ]
+            )
+            yield from (
+                type_(**{fld: arg for fld, arg in zip(fields_to_types.keys(), args)})
+                for args in all_arg_sequences
+            )
+    else:
+        type_origin = get_origin(type_)
+        if type_origin == tuple:
+            # Only matches Generic type tuple since regular tuple is not finite-valued
+            # Generic tuple: Similar to concrete dataclass. Construct all possible combinations of tuple fields.
+            yield from (
+                tuple(combo)
+                for combo in itertools.product(
+                    *(
+                        all_instances(tup_item, validation_funcs)
+                        for tup_item in get_args(type_)
+                    )
                 )
             )
-        )
-    elif get_origin(type_) in (UnionType, typing.Union):
-        # Union: call `all_instances` for each type in the Union
-        yield from flatten(
-            [all_instances(sub, validation_funcs) for sub in get_args(type_)],
-            levels_to_flatten=1,
-        )
-    elif get_origin(type_) is Literal:
-        # Literal: return all Literal arguments
-        yield from get_args(type_)
-    elif type(type_) == enum.EnumMeta:  # `issubclass(type_, enum.Enum)` doesn't work
-        # Enum: return all Enum members
-        raise NotImplementedError(f"Support for Enums not yet implemented.")
-    else:
-        raise TypeError(
-            f"Type {type_} either has unbounded possible values or is not supported."
-        )
+        elif type_origin in (UnionType, typing.Union):
+            # Union: call `all_instances` for each type in the Union
+            yield from flatten(
+                [all_instances(sub, validation_funcs) for sub in get_args(type_)],
+                levels_to_flatten=1,
+            )
+        elif type_origin is Literal:
+            # Literal: return all Literal arguments
+            yield from get_args(type_)
+        else:
+            raise TypeError(
+                f"Type {type_} either has unbounded possible values or is not supported (Enum is not supported)."
+            )
