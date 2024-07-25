@@ -101,13 +101,16 @@ def sample_all_tokenizers(n: int) -> list[MazeTokenizerModular]:
     return random.sample(get_all_tokenizers(), n)
 
 
-def sample_tokenizers_for_test(n: int) -> list[MazeTokenizerModular]:
+def sample_tokenizers_for_test(n: int | None) -> list[MazeTokenizerModular]:
     """Returns a sample of size `n` of unique elements from `ALL_TOKENIZERS`,
     always including every element in `EVERY_TEST_TOKENIZERS`.
     """
+    if n is None:
+        return get_all_tokenizers()
+
     if n < len(EVERY_TEST_TOKENIZERS):
         raise ValueError(
-            f"`n` must be at least {len(EVERY_TEST_TOKENIZERS)} such that the sample can contain `EVERY_TEST_TOKENIZERS`."
+            f"`n` must be at least {len(EVERY_TEST_TOKENIZERS) = } such that the sample can contain `EVERY_TEST_TOKENIZERS`."
         )
     sample: list[MazeTokenizerModular] = random.sample(
         _all_tokenizers_except_every_test_tokenizers(), n - len(EVERY_TEST_TOKENIZERS)

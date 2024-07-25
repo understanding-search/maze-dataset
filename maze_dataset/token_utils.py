@@ -312,6 +312,15 @@ def coords_to_strings(
     return result
 
 
+def get_token_regions(toks: list[str]) -> tuple[list[str], list[str]]:
+    adj_list_start, adj_list_end = toks.index("<ADJLIST_START>") + 1, toks.index(
+        "<ADJLIST_END>"
+    )
+    adj_list = toks[adj_list_start:adj_list_end]
+    non_adj_list = toks[:adj_list_start] + toks[adj_list_end:]
+    return adj_list, non_adj_list
+
+
 def equal_except_adj_list_sequence(
     rollout1: list[str],
     rollout2: list[str],
@@ -329,14 +338,6 @@ def equal_except_adj_list_sequence(
     If rollouts are passed for identical tokenizers processing two slightly different mazes, a false positive is possible.
     More specifically, some cases of zero-sum adding and removing of connections in a maze within square regions along the diagonal will produce a false positive.
     """
-
-    def get_token_regions(toks: list[str]) -> tuple[list[str], list[str]]:
-        adj_list_start, adj_list_end = toks.index("<ADJLIST_START>") + 1, toks.index(
-            "<ADJLIST_END>"
-        )
-        adj_list = toks[adj_list_start:adj_list_end]
-        non_adj_list = toks[:adj_list_start] + toks[adj_list_end:]
-        return adj_list, non_adj_list
 
     if len(rollout1) != len(rollout2):
         if do_except:

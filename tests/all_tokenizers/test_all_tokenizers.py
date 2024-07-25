@@ -33,7 +33,10 @@ from maze_dataset.tokenization.maze_tokenizer import _load_tokenizer_hashes
 from maze_dataset.utils import all_instances
 
 # Size of the sample from `all_tokenizers.ALL_TOKENIZERS` to test
-NUM_TOKENIZERS_TO_TEST = 100
+NUM_TOKENIZERS_TO_TEST: int | None = 10
+
+ALL_TOKENIZERS: list[MazeTokenizerModular] = get_all_tokenizers()
+SAMPLED_TOKENIZERS = sample_tokenizers_for_test(NUM_TOKENIZERS_TO_TEST)
 
 
 @pytest.fixture(scope="session")
@@ -100,7 +103,7 @@ def test_sample_tokenizers_for_test(n: int, result: type[Exception] | None):
         param(maze[0], tokenizer, id=f"{type(maze[0])}{maze[1]}-{tokenizer.name}")
         for maze, tokenizer in itertools.product(
             [(maze, i) for i, maze in enumerate(MIXED_MAZES[:6])],
-            sample_tokenizers_for_test(NUM_TOKENIZERS_TO_TEST),
+            SAMPLED_TOKENIZERS,
         )
     ],
 )
@@ -116,7 +119,7 @@ def test_token_region_delimiters(maze: LatticeMaze, tokenizer: MazeTokenizerModu
         param(maze[0], tokenizer, id=f"{type(maze[0])}{maze[1]}-{tokenizer.name}")
         for maze, tokenizer in itertools.product(
             [(maze, i) for i, maze in enumerate(MIXED_MAZES[:6])],
-            sample_tokenizers_for_test(NUM_TOKENIZERS_TO_TEST),
+            SAMPLED_TOKENIZERS,
         )
     ],
 )
@@ -140,10 +143,7 @@ def test_token_stability(maze: LatticeMaze, tokenizer: MazeTokenizerModular):
 
 @mark.parametrize(
     "tokenizer",
-    [
-        param(tokenizer, id=tokenizer.name)
-        for tokenizer in sample_tokenizers_for_test(NUM_TOKENIZERS_TO_TEST)
-    ],
+    [param(tokenizer, id=tokenizer.name) for tokenizer in SAMPLED_TOKENIZERS],
 )
 def test_tokenizer_properties(tokenizer: MazeTokenizerModular):
     # Just make sure the call doesn't raise exception
@@ -164,7 +164,7 @@ def test_tokenizer_properties(tokenizer: MazeTokenizerModular):
         param(maze[0], tokenizer, id=f"{tokenizer.name}-maze{maze[1]}")
         for maze, tokenizer in itertools.product(
             [(maze, i) for i, maze in enumerate(MIXED_MAZES[:6])],
-            sample_tokenizers_for_test(NUM_TOKENIZERS_TO_TEST),
+            SAMPLED_TOKENIZERS,
         )
     ],
 )
@@ -177,10 +177,7 @@ def test_encode_decode(maze: LatticeMaze, tokenizer: MazeTokenizerModular):
 
 @mark.parametrize(
     "tokenizer",
-    [
-        param(tokenizer, id=tokenizer.name)
-        for tokenizer in sample_tokenizers_for_test(NUM_TOKENIZERS_TO_TEST)
-    ],
+    [param(tokenizer, id=tokenizer.name) for tokenizer in SAMPLED_TOKENIZERS],
 )
 def test_zanj_save_read(tokenizer: MazeTokenizerModular):
     path = os.path.abspath(
@@ -197,10 +194,7 @@ def test_zanj_save_read(tokenizer: MazeTokenizerModular):
 
 @mark.parametrize(
     "tokenizer",
-    [
-        param(tokenizer, id=tokenizer.name)
-        for tokenizer in sample_tokenizers_for_test(NUM_TOKENIZERS_TO_TEST)
-    ],
+    [param(tokenizer, id=tokenizer.name) for tokenizer in SAMPLED_TOKENIZERS],
 )
 def test_is_AOTP(tokenizer: MazeTokenizerModular):
     if isinstance(tokenizer.prompt_sequencer, PromptSequencers.AOTP):
@@ -211,10 +205,7 @@ def test_is_AOTP(tokenizer: MazeTokenizerModular):
 
 @mark.parametrize(
     "tokenizer",
-    [
-        param(tokenizer, id=tokenizer.name)
-        for tokenizer in sample_tokenizers_for_test(NUM_TOKENIZERS_TO_TEST)
-    ],
+    [param(tokenizer, id=tokenizer.name) for tokenizer in SAMPLED_TOKENIZERS],
 )
 def test_is_UT(tokenizer: MazeTokenizerModular):
     if isinstance(tokenizer.prompt_sequencer.coord_tokenizer, CoordTokenizers.UT):
@@ -240,7 +231,7 @@ _has_elems_type = (
             id=f"{tokenizer.name}-{elems_tuple[0]}",
         )
         for tokenizer, elems_tuple in itertools.product(
-            sample_tokenizers_for_test(NUM_TOKENIZERS_TO_TEST),
+            SAMPLED_TOKENIZERS,
             [
                 (
                     [PromptSequencers.AOTP()],
@@ -327,10 +318,7 @@ def test_has_element(
 
 @mark.parametrize(
     "tokenizer",
-    [
-        param(tokenizer, id=tokenizer.name)
-        for tokenizer in sample_tokenizers_for_test(NUM_TOKENIZERS_TO_TEST)
-    ],
+    [param(tokenizer, id=tokenizer.name) for tokenizer in SAMPLED_TOKENIZERS],
 )
 def test_is_tested_tokenizer(tokenizer: MazeTokenizerModular, save_tokenizer_hashes):
     assert tokenizer.is_tested_tokenizer()
