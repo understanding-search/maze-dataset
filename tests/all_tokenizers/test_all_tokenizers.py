@@ -33,7 +33,7 @@ from maze_dataset.tokenization.maze_tokenizer import _load_tokenizer_hashes
 from maze_dataset.utils import all_instances
 
 # Size of the sample from `all_tokenizers.ALL_TOKENIZERS` to test
-NUM_TOKENIZERS_TO_TEST: int | None = 10
+NUM_TOKENIZERS_TO_TEST: int | None = 100
 
 ALL_TOKENIZERS: list[MazeTokenizerModular] = get_all_tokenizers()
 SAMPLED_TOKENIZERS = sample_tokenizers_for_test(NUM_TOKENIZERS_TO_TEST)
