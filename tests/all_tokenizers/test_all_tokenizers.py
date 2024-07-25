@@ -135,7 +135,7 @@ def test_token_stability(maze: LatticeMaze, tokenizer: MazeTokenizerModular):
         )
         assert counts1 == counts2
     else:
-        assert equal_except_adj_list_sequence(tokenizer, tokens2)
+        assert equal_except_adj_list_sequence(tokens1, tokens2)
 
 
 @mark.parametrize(
