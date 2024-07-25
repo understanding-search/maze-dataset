@@ -124,7 +124,7 @@ def test_token_stability(maze: LatticeMaze, tokenizer: MazeTokenizerModular):
     """Tests consistency of tokenizations over multiple method calls."""
     tokens1: list[str] = maze.as_tokens(tokenizer)
     tokens2: list[str] = maze.as_tokens(tokenizer)
-    if tokenizer.has_element(EdgeGroupings.ByLeadingCoord) or tokenizer.has_element(EdgePermuters.RandomCoords):
+    if tokenizer.has_element(EdgeGroupings.ByLeadingCoord, EdgePermuters.RandomCoords):
         # In this case, the adjlist is expected to have different token counts over multiple calls
         # Exclude that region from the test
         counts1: Counter = Counter(
