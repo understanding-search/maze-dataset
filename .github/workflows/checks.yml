@@ -48,7 +48,7 @@ jobs:
           poetry install
 
       - name: All Tokenizer Tests
-        run: make test_all_tok NUM_TOKENIZERS_TO_TEST=1000
+        run: make test_all_tok NUM_TOKENIZERS_TO_TEST=1000 PYTEST_PARALLEL=1
 
   test:
     name: Test
