@@ -102,7 +102,7 @@ save_tok_hashes:
 .PHONY: test_all_tok
 test_all_tok: save_tok_hashes
 	@echo "run tests on all tokenizers"
-	$(POETRY_RUN_PYTHON) -m pytest $(PYTEST_OPTIONS) -n auto --verbosity=-1 --tb=line tests/all_tokenizers
+	$(POETRY_RUN_PYTHON) -m pytest $(PYTEST_OPTIONS) -n auto --verbosity=-1 tests/all_tokenizers
 
 
 .PHONY: convert_notebooks

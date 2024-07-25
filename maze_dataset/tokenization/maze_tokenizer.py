@@ -1891,7 +1891,7 @@ class MazeTokenizerModular(SerializableDataclass):
 
     def has_element(
         self,
-        *elements: Iterable[type[_TokenizerElement] | _TokenizerElement],
+        *elements: Sequence[type[_TokenizerElement] | _TokenizerElement],
     ) -> bool:
         """Returns True if the `MazeTokenizerModular` instance contains ALL of the items specified in `elements`.
 
@@ -1903,6 +1903,8 @@ class MazeTokenizerModular(SerializableDataclass):
         If an instance is provided, then comparison is done via instance equality.
         If a class is provided, then comparison isdone via `isinstance`. I.e., any instance of that class is accepted.
         """
+        if len(elements) == 1 and isinstance(elements[0], Iterable):
+            elements = elements[0]
         return all([self._has_element_singular(e) for e in elements])
 
     def is_valid(self):
