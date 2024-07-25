@@ -33,7 +33,12 @@ from maze_dataset.tokenization.maze_tokenizer import _load_tokenizer_hashes
 from maze_dataset.utils import all_instances
 
 # Size of the sample from `all_tokenizers.ALL_TOKENIZERS` to test
-NUM_TOKENIZERS_TO_TEST: int | None = 100
+# get from env, or set to default value of 100
+_os_env_num_tokenizers: str = os.getenv("NUM_TOKENIZERS_TO_TEST", "100")
+NUM_TOKENIZERS_TO_TEST: int | None = (
+    int(_os_env_num_tokenizers) if _os_env_num_tokenizers.isdigit() else None
+)
+print(f"{NUM_TOKENIZERS_TO_TEST = }")
 
 ALL_TOKENIZERS: list[MazeTokenizerModular] = get_all_tokenizers()
 SAMPLED_TOKENIZERS = sample_tokenizers_for_test(NUM_TOKENIZERS_TO_TEST)
