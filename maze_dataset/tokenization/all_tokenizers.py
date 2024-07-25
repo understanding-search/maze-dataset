@@ -31,8 +31,8 @@ from typing import Callable
 
 import frozendict
 import numpy as np
-from jaxtyping import Int64, Int64
-from muutils.spinner import SpinnerContext, NoOpContextManager
+from jaxtyping import Int64
+from muutils.spinner import NoOpContextManager, SpinnerContext
 from tqdm import tqdm
 
 from maze_dataset.tokenization import (
@@ -122,7 +122,11 @@ def save_hashes(
     parallelize: bool | int = False,
 ) -> Int64[np.ndarray, "tokenizers"]:
     """Computes, sorts, and saves the hashes of every member of `ALL_TOKENIZERS`."""
-    spinner = functools.partial(SpinnerContext, spinner_chars="square_dot")  if verbose else NoOpContextManager
+    spinner = (
+        functools.partial(SpinnerContext, spinner_chars="square_dot")
+        if verbose
+        else NoOpContextManager
+    )
 
     # get all tokenizers
     with spinner(initial_value="getting all tokenizers..."):
@@ -133,7 +137,9 @@ def save_hashes(
         n_cpus: int = (
             parallelize if int(parallelize) > 1 else multiprocessing.cpu_count() - 1
         )
-        with spinner(initial_value=f"using {n_cpus} processes to compute {len(all_tokenizers)} tokenizer hashes..."):
+        with spinner(
+            initial_value=f"using {n_cpus} processes to compute {len(all_tokenizers)} tokenizer hashes..."
+        ):
             with multiprocessing.Pool(processes=n_cpus) as pool:
                 hashes_list: list[int] = list(pool.map(hash, all_tokenizers))
 
@@ -142,7 +148,9 @@ def save_hashes(
                 hashes_list, dtype=np.int64
             )
     else:
-        with spinner(initial_value=f"computing {len(all_tokenizers)} tokenizer hashes..."):
+        with spinner(
+            initial_value=f"computing {len(all_tokenizers)} tokenizer hashes..."
+        ):
             hashes_array: "Int64[np.ndarray, 'tokenizers+dupes']" = np.array(
                 [
                     hash(obj)  # uses stable hash
