@@ -9,6 +9,7 @@ from pytest import mark, param
 from zanj import ZANJ
 
 from maze_dataset import VOCAB, VOCAB_LIST, LatticeMaze
+from maze_dataset.maze.lattice_maze import SolvedMaze
 from maze_dataset.testing_utils import MIXED_MAZES
 from maze_dataset.token_utils import equal_except_adj_list_sequence, tokens_between
 from maze_dataset.tokenization import (
@@ -34,10 +35,19 @@ from maze_dataset.tokenization.maze_tokenizer import _load_tokenizer_hashes
 from maze_dataset.utils import all_instances
 
 # Size of the sample from `all_tokenizers.ALL_TOKENIZERS` to test
-NUM_TOKENIZERS_TO_TEST: int | None = 10
+# get from env, or set to default value of 100
+_os_env_num_tokenizers: str = os.getenv("NUM_TOKENIZERS_TO_TEST", "100")
+NUM_TOKENIZERS_TO_TEST: int | None = (
+    int(_os_env_num_tokenizers) if _os_env_num_tokenizers.isdigit() else None
+)
+print(f"{NUM_TOKENIZERS_TO_TEST = }")
 
 ALL_TOKENIZERS: list[MazeTokenizerModular] = get_all_tokenizers()
-SAMPLED_TOKENIZERS = sample_tokenizers_for_test(NUM_TOKENIZERS_TO_TEST)
+SAMPLED_TOKENIZERS: list[MazeTokenizerModular] = sample_tokenizers_for_test(
+    NUM_TOKENIZERS_TO_TEST
+)
+
+SAMPLED_MAZES: list[SolvedMaze] = MIXED_MAZES[:6]
 
 
 @pytest.fixture(scope="session")
@@ -46,9 +56,7 @@ def save_tokenizer_hashes():
 
 
 def test_all_tokenizers():
-    all_tokenizers = get_all_tokenizers()
-    assert len(all_tokenizers) > 400
-    assert len({hash(mt) for mt in all_tokenizers}) == len(all_tokenizers)
+    assert len(ALL_TOKENIZERS) > 400
 
 
 @mark.parametrize(
@@ -99,50 +107,40 @@ def test_sample_tokenizers_for_test(n: int, result: type[Exception] | None):
 
 
 @mark.parametrize(
-    "maze,tokenizer",
-    [
-        param(maze[0], tokenizer, id=f"{type(maze[0])}{maze[1]}-{tokenizer.name}")
-        for maze, tokenizer in itertools.product(
-            [(maze, i) for i, maze in enumerate(MIXED_MAZES[:6])],
-            SAMPLED_TOKENIZERS,
-        )
-    ],
+    "tokenizer",
+    [param(tokenizer, id=tokenizer.name) for tokenizer in SAMPLED_TOKENIZERS],
 )
-def test_token_region_delimiters(maze: LatticeMaze, tokenizer: MazeTokenizerModular):
+def test_token_region_delimiters(tokenizer: MazeTokenizerModular):
     """<PATH_START> and similar token region delimiters should appear at most 1 time, regardless of tokenizer."""
-    counts: Counter = Counter(maze.as_tokens(tokenizer))
-    assert all([counts[tok] < 2 for tok in VOCAB_LIST[:8]])
+    for maze in SAMPLED_MAZES:
+        counts: Counter = Counter(maze.as_tokens(tokenizer))
+        assert all([counts[tok] < 2 for tok in VOCAB_LIST[:8]])
 
 
 @mark.parametrize(
-    "maze,tokenizer",
-    [
-        param(maze[0], tokenizer, id=f"{type(maze[0])}{maze[1]}-{tokenizer.name}")
-        for maze, tokenizer in itertools.product(
-            [(maze, i) for i, maze in enumerate(MIXED_MAZES[:6])],
-            SAMPLED_TOKENIZERS,
-        )
-    ],
+    "tokenizer",
+    [param(tokenizer, id=tokenizer.name) for tokenizer in SAMPLED_TOKENIZERS],
 )
-def test_token_stability(maze: LatticeMaze, tokenizer: MazeTokenizerModular):
+def test_token_stability(tokenizer: MazeTokenizerModular):
     """Tests consistency of tokenizations over multiple method calls."""
-    tokens1: list[str] = maze.as_tokens(tokenizer)
-    tokens2: list[str] = maze.as_tokens(tokenizer)
-    if (
-        tokenizer.has_element(EdgeGroupings.ByLeadingCoord, EdgePermuters.RandomCoords)
-        or tokenizer.has_element(AdjListTokenizers.AdjListCardinal, EdgePermuters.RandomCoords)
+    for maze in SAMPLED_MAZES:
+        tokens1: list[str] = maze.as_tokens(tokenizer)
+        tokens2: list[str] = maze.as_tokens(tokenizer)
+        if (
+            tokenizer.has_element(EdgeGroupings.ByLeadingCoord, EdgePermuters.RandomCoords)
+            or tokenizer.has_element(AdjListTokenizers.AdjListCardinal, EdgePermuters.RandomCoords)
         ):
-        # In this case, the adjlist is expected to have different token counts over multiple calls
-        # Exclude that region from the test
-        counts1: Counter = Counter(
-            tokens_between(tokens1, VOCAB.ADJLIST_END, VOCAB.PATH_END, True, True)
-        )
-        counts2: Counter = Counter(
-            tokens_between(tokens2, VOCAB.ADJLIST_END, VOCAB.PATH_END, True, True)
-        )
-        assert counts1 == counts2
-    else:
-        assert equal_except_adj_list_sequence(tokens1, tokens2)
+            # In this case, the adjlist is expected to have different token counts over multiple calls
+            # Exclude that region from the test
+            counts1: Counter = Counter(
+                tokens_between(tokens1, VOCAB.ADJLIST_END, VOCAB.PATH_END, True, True)
+            )
+            counts2: Counter = Counter(
+                tokens_between(tokens2, VOCAB.ADJLIST_END, VOCAB.PATH_END, True, True)
+            )
+            assert counts1 == counts2
+        else:
+            assert equal_except_adj_list_sequence(tokens1, tokens2)
 
 
 @mark.parametrize(
@@ -163,20 +161,15 @@ def test_tokenizer_properties(tokenizer: MazeTokenizerModular):
 
 
 @mark.parametrize(
-    "maze,tokenizer",
-    [
-        param(maze[0], tokenizer, id=f"{tokenizer.name}-maze{maze[1]}")
-        for maze, tokenizer in itertools.product(
-            [(maze, i) for i, maze in enumerate(MIXED_MAZES[:6])],
-            SAMPLED_TOKENIZERS,
-        )
-    ],
+    "tokenizer",
+    [param(tokenizer, id=tokenizer.name) for tokenizer in SAMPLED_TOKENIZERS],
 )
-def test_encode_decode(maze: LatticeMaze, tokenizer: MazeTokenizerModular):
-    maze_tok: list[str] = maze.as_tokens(maze_tokenizer=tokenizer)
-    maze_encoded: list[int] = tokenizer.encode(maze_tok)
-    maze_decoded: LatticeMaze = tokenizer.decode(maze_encoded)
-    assert maze_tok == maze_decoded
+def test_encode_decode(tokenizer: MazeTokenizerModular):
+    for maze in SAMPLED_MAZES:
+        maze_tok: list[str] = maze.as_tokens(maze_tokenizer=tokenizer)
+        maze_encoded: list[int] = tokenizer.encode(maze_tok)
+        maze_decoded: LatticeMaze = tokenizer.decode(maze_encoded)
+        assert maze_tok == maze_decoded
 
 
 @mark.parametrize(

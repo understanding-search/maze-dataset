@@ -65,12 +65,18 @@ check-format: clean
 # coverage reports & benchmarks
 # --------------------------------------------------
 # whether to run pytest with coverage report generation
+PYTEST_OPTIONS ?=
+
 COV ?= 1
 
 ifeq ($(COV),1)
-    PYTEST_OPTIONS=--cov=.
-else
-    PYTEST_OPTIONS=
+    PYTEST_OPTIONS+=--cov=.
+endif
+
+PYTEST_PARALLEL ?= 0
+
+ifeq ($(PYTEST_PARALLEL),1)
+	PYTEST_OPTIONS+=-n auto
 endif
 
 .PHONY: cov
@@ -102,7 +108,7 @@ save_tok_hashes:
 .PHONY: test_all_tok
 test_all_tok: save_tok_hashes
 	@echo "run tests on all tokenizers"
-	$(POETRY_RUN_PYTHON) -m pytest $(PYTEST_OPTIONS) -n auto --verbosity=-1 tests/all_tokenizers
+	$(POETRY_RUN_PYTHON) -m pytest $(PYTEST_OPTIONS) --verbosity=-1 --durations=0 tests/all_tokenizers
 
 
 .PHONY: convert_notebooks
