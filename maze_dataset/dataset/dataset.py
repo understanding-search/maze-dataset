@@ -282,7 +282,7 @@ class GPTDataset(Dataset):
                             "other": [
                                 {
                                     "name": "collect_generation_meta",
-                                    "args": [],
+                                    "args": (),
                                     "kwargs": {},
                                 }
                             ],
