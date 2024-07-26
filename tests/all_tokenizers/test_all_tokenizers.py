@@ -132,13 +132,11 @@ def test_token_stability(tokenizer: MazeTokenizerModular):
         ):
             # In this case, the adjlist is expected to have different token counts over multiple calls
             # Exclude that region from the test
-            counts1: Counter = Counter(
-                tokens_between(tokens1, VOCAB.ADJLIST_END, VOCAB.PATH_END, True, True)
-            )
-            counts2: Counter = Counter(
-                tokens_between(tokens2, VOCAB.ADJLIST_END, VOCAB.PATH_END, True, True)
-            )
-            assert counts1 == counts2
+            non_adjlist1 = tokens1[:tokens1.index(VOCAB.ADJLIST_START)]
+            non_adjlist1.extend(tokens1[tokens1.index(VOCAB.ADJLIST_END):])
+            non_adjlist2 = tokens2[:tokens2.index(VOCAB.ADJLIST_START)]
+            non_adjlist2.extend(tokens2[tokens2.index(VOCAB.ADJLIST_END):])
+            assert non_adjlist1 == non_adjlist2
         else:
             assert equal_except_adj_list_sequence(tokens1, tokens2)
 
