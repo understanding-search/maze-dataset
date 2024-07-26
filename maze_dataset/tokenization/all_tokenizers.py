@@ -46,7 +46,7 @@ from maze_dataset.utils import FiniteValued, all_instances
 
 # Always include this as the first item in the dict `validation_funcs` whenever using `all_instances` with `MazeTokenizerModular`
 MAZE_TOKENIZER_MODULAR_DEFAULT_VALIDATION_FUNCS: frozendict.frozendict[
-    type, Callable[[FiniteValued], bool]
+    type[FiniteValued], Callable[[FiniteValued], bool]
 ] = frozendict.frozendict(
     {
         _TokenizerElement: lambda x: x.is_valid(),
