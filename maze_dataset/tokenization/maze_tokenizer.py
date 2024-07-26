@@ -1896,7 +1896,7 @@ class MazeTokenizerModular(SerializableDataclass):
     # Information Querying Methods
 
     @cached_property
-    def tokenizer_elements(self):
+    def tokenizer_elements(self) -> list[_TokenizerElement]:
         return [self.prompt_sequencer, *self.prompt_sequencer.tokenizer_elements()]
 
     def tokenizer_element_tree(self, abstract: bool = False) -> str:
@@ -1940,7 +1940,7 @@ class MazeTokenizerModular(SerializableDataclass):
         """
         return {
             # "prompt_sequencer": self.prompt_sequencer.name,
-            **{elem.attribute_key(): elem for elem in self.tokenizer_elements}
+            **{elem.attribute_key(): elem.name for elem in self.tokenizer_elements}
         }
 
     @staticmethod
