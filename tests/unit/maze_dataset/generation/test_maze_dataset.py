@@ -125,6 +125,8 @@ class TestMazeDataset:
             # read as MazeDataset
             roundtrip = MazeDataset.read(p)
             assert d.cfg.diff(roundtrip.cfg) == dict()
+            cfg_diff = roundtrip.cfg.diff(d.cfg)
+            assert cfg_diff == {}
             assert roundtrip.cfg == d.cfg
             assert roundtrip.mazes == d.mazes
             assert roundtrip == d

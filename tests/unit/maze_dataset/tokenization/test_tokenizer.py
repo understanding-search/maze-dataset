@@ -58,6 +58,31 @@ from maze_dataset.utils import all_instances, lattice_max_degrees, manhattan_dis
 NUM_TOKENIZERS_TO_TEST = 100
 
 
+@mark.parametrize(
+    "tok_mode, max_grid_size",
+    list(
+        product(
+            [
+                TokenizationMode.AOTP_UT_rasterized,
+                TokenizationMode.AOTP_UT_uniform,
+                TokenizationMode.AOTP_CTT_indexed,
+            ],
+            [None, 3, 100],
+        )
+    ),
+)
+def test_tokenizer_serialization(tok_mode: TokenizationMode, max_grid_size: int | None):
+    tokenizer: MazeTokenizer = MazeTokenizer(
+        tokenization_mode=tok_mode, max_grid_size=max_grid_size
+    )
+
+    serialized: dict = tokenizer.serialize()
+    print(serialized)
+    tokenizer_loaded: MazeTokenizer = MazeTokenizer.load(serialized)
+
+    assert tokenizer == tokenizer_loaded
+
+
 def test_tokenizer():
     cfg: MazeDatasetConfig = MazeDatasetConfig(
         name="test",

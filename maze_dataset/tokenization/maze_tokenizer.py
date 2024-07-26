@@ -120,7 +120,7 @@ def get_tokens_up_to_path_start(
 
 _MAZETOKENIZER_PROPERTIES_TO_SERIALIZE: list[str] = [
     "name",
-    "grid_size",
+    "max_grid_size",
     "token_arr",
     "tokenizer_map",
     "vocab_size",

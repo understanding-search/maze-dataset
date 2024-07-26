@@ -24,7 +24,8 @@ def test_tokenization_roundtrip(tokenizer: MazeTokenizer | MazeTokenizerModular)
             grid_n=5,
             n_mazes=5,
             maze_ctor=LatticeMazeGenerators.gen_dfs,
-        )
+        ),
+        allow_generation_metadata_filter_mismatch=True,
     )
 
     dataset_tokenized: list[list[str]] = dataset.as_tokens(tokenizer)
