@@ -417,7 +417,7 @@ def _helper_test_path_tokenizers(
                         {_TokenizerElement: lambda x: x.is_valid()},
                     )
                 ),
-                NUM_TOKENIZERS_TO_TEST
+                NUM_TOKENIZERS_TO_TEST,
             ),
         )
     ],

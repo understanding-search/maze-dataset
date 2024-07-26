@@ -686,8 +686,7 @@ class __TokenizerElementNamespace(abc.ABC):
 def _load_tokenizer_element(
     data: dict[str, Any], namespace: type[__TokenizerElementNamespace]
 ) -> _TokenizerElement:
-    """Loads a `TokenizerElement` stored via zanj. 
-    """
+    """Loads a `TokenizerElement` stored via zanj."""
     key: str = namespace.key
     format: str = data[key]["__format__"]
     cls_name: str = format.split("(")[0]
@@ -708,6 +707,7 @@ class CoordTokenizers(__TokenizerElementNamespace):
         """
         Superclass for classes which tokenize singular coords in a maze.
         """
+
         @abc.abstractmethod
         def to_tokens(self, coord: Coord | CoordTup) -> list[str]:
             pass
@@ -722,8 +722,8 @@ class CoordTokenizers(__TokenizerElementNamespace):
 
     @serializable_dataclass(frozen=True, kw_only=True)
     class UT(_CoordTokenizer):
-        """ Unique token coordinate tokenizer.
-        """
+        """Unique token coordinate tokenizer."""
+
         def to_tokens(self, coord: Coord | CoordTup) -> list[str]:
             return ["".join(["(", str(coord[0]), ",", str(coord[1]), ")"])]
 
@@ -1284,6 +1284,7 @@ class StepSizes(__TokenizerElementNamespace):
         """
         Specifies which coords in `maze.solution` are used to represent the path.
         """
+
         @classmethod
         def attribute_key(cls) -> str:
             return StepSizes.key
@@ -1308,8 +1309,9 @@ class StepSizes(__TokenizerElementNamespace):
     class Singles(_StepSize):
         """
         Every coord in `maze.solution` is represented.
-        Legacy tokenizers all use this behavior. 
+        Legacy tokenizers all use this behavior.
         """
+
         def _step_single_indices(self, maze: SolvedMaze) -> list[int]:
             """Returns the indices of `maze.solution` corresponding to the steps to be tokenized."""
             return list(range(maze.solution.shape[0]))
@@ -1319,9 +1321,10 @@ class StepSizes(__TokenizerElementNamespace):
     class Straightaways(_StepSize):
         """
         Only coords where the path turns are represented in the path.
-        I.e., the path is represented as a sequence of straightaways, 
+        I.e., the path is represented as a sequence of straightaways,
         specified by the coords at the turns.
         """
+
         def _step_single_indices(self, maze: SolvedMaze) -> list[int]:
             """Returns the indices of `maze.solution` corresponding to the steps to be tokenized."""
             last_turn_coord: Coord = maze.solution[0, ...]
@@ -1338,8 +1341,9 @@ class StepSizes(__TokenizerElementNamespace):
         """
         Only coords at forks, where the path has >=2 options for the next step are included.
         Excludes the option of backtracking.
-        The starting and ending coords are always included. 
+        The starting and ending coords are always included.
         """
+
         def _step_single_indices(self, maze: SolvedMaze) -> list[int]:
             """Returns the indices of `maze.solution` corresponding to the steps to be tokenized."""
             return maze.get_solution_forking_points(always_include_endpoints=True)[0]
@@ -1351,6 +1355,7 @@ class StepSizes(__TokenizerElementNamespace):
         Includes the union of the coords included by `Forks` and `Straightaways`.
         See documentation for those classes for details.
         """
+
         def _step_single_indices(self, maze: SolvedMaze) -> list[int]:
             """Returns the indices of `maze.solution` corresponding to the steps to be tokenized."""
             return list(
@@ -1373,6 +1378,7 @@ class StepTokenizers(__TokenizerElementNamespace):
         """
         Specifies how a single step (as specified by an instance of `_StepSize`) is tokenized.
         """
+
         @classmethod
         def attribute_key(cls) -> str:
             return StepTokenizers.key
@@ -1405,6 +1411,7 @@ class StepTokenizers(__TokenizerElementNamespace):
         """
         A direct tokenization of the end position coord represents the step.
         """
+
         def to_tokens(
             self,
             maze: SolvedMaze,
@@ -1420,6 +1427,7 @@ class StepTokenizers(__TokenizerElementNamespace):
         A step is tokenized with a cardinal direction token.
         It is the direction of the step from the starting position along the solution.
         """
+
         def to_tokens(
             self, maze: SolvedMaze, start_index: int, end_index: int, **kwargs
         ) -> list[str]:
@@ -1463,6 +1471,7 @@ class StepTokenizers(__TokenizerElementNamespace):
         `Distance` must be combined with at least one other `_StepTokenizer` in a `StepTokenizerPermutation`.
         This constraint is enforced in `_PathTokenizer.is_valid`.
         """
+
         def to_tokens(
             self, maze: SolvedMaze, start_index: int, end_index: int, **kwargs
         ) -> list[str]:
@@ -1972,7 +1981,7 @@ class MazeTokenizerModular(SerializableDataclass):
     def is_tested_tokenizer(self) -> bool:
         """
         Returns if the tokenizer is returned by `all_tokenizers._get_all_tokenizers`, the set of tested and reliable tokenizers.
-        Since evaluating `all_tokenizers._get_all_tokenizers` is expensive, 
+        Since evaluating `all_tokenizers._get_all_tokenizers` is expensive,
         instead checks for membership of `self`'s hash in `ALL_TOKENIZER_HASHES`.
         """
         hash_index: int = np.searchsorted(ALL_TOKENIZER_HASHES, hash(self))
