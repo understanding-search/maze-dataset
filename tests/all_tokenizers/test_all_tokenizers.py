@@ -10,7 +10,7 @@ from zanj import ZANJ
 from maze_dataset import VOCAB, VOCAB_LIST, LatticeMaze
 from maze_dataset.maze.lattice_maze import SolvedMaze
 from maze_dataset.testing_utils import MIXED_MAZES
-from maze_dataset.token_utils import equal_except_adj_list_sequence, tokens_between
+from maze_dataset.token_utils import equal_except_adj_list_sequence
 from maze_dataset.tokenization import (
     AdjListTokenizers,
     CoordTokenizers,
@@ -126,10 +126,10 @@ def test_token_stability(tokenizer: MazeTokenizerModular):
         ):
             # In this case, the adjlist is expected to have different token counts over multiple calls
             # Exclude that region from the test
-            non_adjlist1 = tokens1[:tokens1.index(VOCAB.ADJLIST_START)]
-            non_adjlist1.extend(tokens1[tokens1.index(VOCAB.ADJLIST_END):])
-            non_adjlist2 = tokens2[:tokens2.index(VOCAB.ADJLIST_START)]
-            non_adjlist2.extend(tokens2[tokens2.index(VOCAB.ADJLIST_END):])
+            non_adjlist1 = tokens1[: tokens1.index(VOCAB.ADJLIST_START)]
+            non_adjlist1.extend(tokens1[tokens1.index(VOCAB.ADJLIST_END) :])
+            non_adjlist2 = tokens2[: tokens2.index(VOCAB.ADJLIST_START)]
+            non_adjlist2.extend(tokens2[tokens2.index(VOCAB.ADJLIST_END) :])
             assert non_adjlist1 == non_adjlist2
         else:
             assert equal_except_adj_list_sequence(tokens1, tokens2)
