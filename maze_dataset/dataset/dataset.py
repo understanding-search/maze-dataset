@@ -34,6 +34,24 @@ def _dtype_serialization_fn(datatype: torch.dtype | np.dtype) -> str:
     return x_str
 
 
+def _load_applied_filters(
+    filters: list[dict[typing.Literal["name", "args", "kwargs"], str | list | dict]],
+) -> list[dict[typing.Literal["name", "args", "kwargs"], str | list | dict]]:
+    try:
+        return [
+            dict(
+                name=filter_info["name"],
+                args=tuple(
+                    filter_info["args"]
+                ),  # muutils/zanj save tuples as lists, and this causes problems
+                kwargs=dict(filter_info["kwargs"]),
+            )
+            for filter_info in filters
+        ]
+    except Exception as e:
+        raise ValueError(f"failed to load applied filters:\n{filters}") from e
+
+
 @serializable_dataclass(kw_only=True)
 class GPTDatasetConfig(SerializableDataclass):
     """base GPTDatasetConfig class"""
@@ -47,11 +65,12 @@ class GPTDatasetConfig(SerializableDataclass):
     # --------------------------------------------------
 
     seed: int | None = serializable_field(default=DEFAULT_SEED)
-    applied_filters: list[dict[typing.Literal["name", "kwargs"], str | dict]] = (
-        serializable_field(
-            default_factory=list,
-            assert_type=False,  # TODO: check the type here once muutils supports checking Callable signatures
-        )
+    applied_filters: list[
+        dict[typing.Literal["name", "args", "kwargs"], str | list | dict]
+    ] = serializable_field(
+        default_factory=list,
+        deserialize_fn=_load_applied_filters,
+        assert_type=False,  # TODO: check the type here once muutils supports checking Callable signatures
     )
 
     def __post_init__(self):

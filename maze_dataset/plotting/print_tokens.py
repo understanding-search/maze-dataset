@@ -7,7 +7,7 @@ from IPython.display import HTML, display
 from jaxtyping import UInt8
 
 from maze_dataset.constants import SPECIAL_TOKENS
-from maze_dataset.tokenization import tokens_between
+from maze_dataset.token_utils import tokens_between
 
 RGBArray = UInt8[np.ndarray, "n 3"]
 
