@@ -9,6 +9,7 @@ on:
       - 'maze_dataset/tokenization/*.py'
       - 'maze_dataset/tokenization/MazeTokenizerModular_hashes.npz'
       - 'notebooks/demo_mazetokenizermodular.ipynb'
+      - 'tests/all_tokenizers/*.py'
   workflow_dispatch:
     inputs:
       n_to_test:
