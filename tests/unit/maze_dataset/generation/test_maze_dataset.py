@@ -105,6 +105,10 @@ class TestMazeDataset:
             d.save(file_path=p)
             # read as MazeDataset
             roundtrip = MazeDataset.read(p)
+            cfg_diff = roundtrip.cfg.diff(d.cfg)
+            assert cfg_diff == {}
+            assert roundtrip.cfg == d.cfg
+            assert roundtrip.mazes == d.mazes
             assert roundtrip == d
             # read from zanj
             z = ZANJ()

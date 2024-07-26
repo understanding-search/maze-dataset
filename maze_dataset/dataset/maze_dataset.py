@@ -235,6 +235,7 @@ class MazeDataset(GPTDataset):
     def __eq__(self, other: typing.Any) -> bool:
         if not isinstance(other, MazeDataset):
             return NotImplemented
+        # TODO: compare hashes of data instead of the data itself?
         return self.cfg == other.cfg and self.mazes == other.mazes
 
     @classmethod

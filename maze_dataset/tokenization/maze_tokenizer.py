@@ -66,7 +66,7 @@ def is_UT(tokenization_mode: TokenizationMode) -> bool:
 
 _MAZETOKENIZER_PROPERTIES_TO_SERIALIZE: list[str] = [
     "name",
-    "grid_size",
+    "max_grid_size",
     "token_arr",
     "tokenizer_map",
     "vocab_size",

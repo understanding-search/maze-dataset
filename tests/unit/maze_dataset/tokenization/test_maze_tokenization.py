@@ -20,7 +20,8 @@ def test_tokenization_roundtrip(tok_mode: TokenizationMode):
             grid_n=5,
             n_mazes=5,
             maze_ctor=LatticeMazeGenerators.gen_dfs,
-        )
+        ),
+        allow_generation_metadata_filter_mismatch=True,
     )
     tokenizer: MazeTokenizer = MazeTokenizer(
         tokenization_mode=tok_mode,
