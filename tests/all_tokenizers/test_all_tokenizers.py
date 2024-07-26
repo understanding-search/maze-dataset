@@ -12,6 +12,7 @@ from maze_dataset.maze.lattice_maze import SolvedMaze
 from maze_dataset.testing_utils import MIXED_MAZES
 from maze_dataset.token_utils import equal_except_adj_list_sequence, tokens_between
 from maze_dataset.tokenization import (
+    AdjListTokenizers,
     CoordTokenizers,
     EdgeGroupings,
     EdgePermuters,
@@ -20,7 +21,6 @@ from maze_dataset.tokenization import (
     PromptSequencers,
     StepSizes,
     StepTokenizers,
-    AdjListTokenizers,
     _TokenizerElement,
 )
 from maze_dataset.tokenization.all_tokenizers import (
@@ -119,9 +119,10 @@ def test_token_stability(tokenizer: MazeTokenizerModular):
     for maze in SAMPLED_MAZES:
         tokens1: list[str] = maze.as_tokens(tokenizer)
         tokens2: list[str] = maze.as_tokens(tokenizer)
-        if (
-            tokenizer.has_element(EdgeGroupings.ByLeadingCoord, EdgePermuters.RandomCoords)
-            or tokenizer.has_element(AdjListTokenizers.AdjListCardinal, EdgePermuters.RandomCoords)
+        if tokenizer.has_element(
+            EdgeGroupings.ByLeadingCoord, EdgePermuters.RandomCoords
+        ) or tokenizer.has_element(
+            AdjListTokenizers.AdjListCardinal, EdgePermuters.RandomCoords
         ):
             # In this case, the adjlist is expected to have different token counts over multiple calls
             # Exclude that region from the test
