@@ -1,5 +1,5 @@
 import copy
-import os
+from pathlib import Path
 
 import numpy as np
 import pytest
@@ -81,6 +81,7 @@ class TestMazeDataset:
             d = MazeDataset.generate(c, gen_parallel=False)
             assert MazeDataset.load(d._serialize_minimal()) == d
 
+    # TODO: clean up and parametrize this test
     def test_save_read_minimal(self):
         def save_and_read(d: MazeDataset, p: str):
             d.save(file_path=p)
@@ -109,19 +110,28 @@ class TestMazeDataset:
             ]
         )
         for c in cfgs:
-            dataset = MazeDataset.generate(c, gen_parallel=False)
-            path = os.path.abspath(
-                os.path.join(
-                    os.getcwd(), "..", "data", dataset.cfg.to_fname() + ".zanj"
-                )
-            )
+            d = MazeDataset.generate(c, gen_parallel=False)
+            p = Path("tests/_temp/test_maze_dataset/") / (d.cfg.to_fname() + ".zanj")
+
             # Test with full serialization
             set_serialize_minimal_threshold(None)
-            save_and_read(dataset, path)
+            save_and_read(d, p)
 
             # Test with minimal serialization
             set_serialize_minimal_threshold(0)
-            save_and_read(dataset, path)
+            save_and_read(d, p)
+
+            d.save(file_path=p)
+            # read as MazeDataset
+            roundtrip = MazeDataset.read(p)
+            assert d.cfg.diff(roundtrip.cfg) == dict()
+            assert roundtrip.cfg == d.cfg
+            assert roundtrip.mazes == d.mazes
+            assert roundtrip == d
+            # read from zanj
+            z = ZANJ()
+            roundtrip_zanj = z.read(p)
+            assert roundtrip_zanj == d
 
     def test_custom_maze_filter(self):
         connection_list = bool_array_from_string(

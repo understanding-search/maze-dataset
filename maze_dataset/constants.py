@@ -6,11 +6,13 @@ from jaxtyping import Bool, Int8
 
 from maze_dataset.utils import corner_first_ndindex
 
-Coord = Int8[np.ndarray, "x y"]
+Coord = Int8[np.ndarray, "row_col"]
 CoordTup = tuple[int, int]
-CoordArray = Int8[np.ndarray, "coord x y"]
+CoordArray = Int8[np.ndarray, "coord row_col"]
 CoordList = list[CoordTup]
-ConnectionList = Bool[np.ndarray, "lattice_dim x y"]
+Connection = Int8[np.ndarray, "coord=2 row_col=2"]
+ConnectionList = Bool[np.ndarray, "lattice_dim=2 row col"]
+ConnectionArray = Int8[np.ndarray, "edges leading_trailing_coord=2 row_col=2"]
 
 
 class SpecialTokensError(Exception):
@@ -155,14 +157,18 @@ _VOCAB_FIELDS: list = [
     ("PATH_STAY", str, field(default="STAY")),
     *[
         (f"I_{i:03}", str, field(default=f"+{i}")) for i in range(256)
-    ],  # General purpose positive int tokens
+    ],  # General purpose positive int tokens. Used by `StepTokenizers.Distance`.
     *[
         (f"CTT_{i}", str, field(default=f"{i}")) for i in range(128)
     ],  # Coord tuple tokens
     *[
         (f"I_N{-i:03}", str, field(default=f"{i}")) for i in range(-256, 0)
     ],  # General purpose negative int tokens
-    *[(f"RESERVE_{i}", str, field(default=f"<RESERVE_{i}>")) for i in range(704, 1596)],
+    ("PATH_PRE", str, field(default="STEP")),
+    ("ADJLIST_PRE", str, field(default="ADJ_GROUP")),
+    ("ADJLIST_INTRA", str, field(default="&")),
+    ("ADJLIST_WALL", str, field(default="<XX>")),
+    *[(f"RESERVE_{i}", str, field(default=f"<RESERVE_{i}>")) for i in range(708, 1596)],
     *[
         (f"UT_{x:02}_{y:02}", str, field(default=f"({x},{y})"))
         for x, y in corner_first_ndindex(50)
@@ -178,3 +184,11 @@ _VOCAB_BASE: type = make_dataclass(
 VOCAB: _VOCAB_BASE = _VOCAB_BASE()
 VOCAB_LIST: list[str] = list(VOCAB.values())
 VOCAB_TOKEN_TO_INDEX: dict[str, int] = {token: i for i, token in enumerate(VOCAB_LIST)}
+
+# CARDINAL_MAP: Maps tuple(coord1 - coord0) : cardinal direction
+CARDINAL_MAP: dict[tuple[int, int], str] = {
+    (-1, 0): VOCAB.PATH_NORTH,
+    (1, 0): VOCAB.PATH_SOUTH,
+    (0, -1): VOCAB.PATH_WEST,
+    (0, 1): VOCAB.PATH_EAST,
+}

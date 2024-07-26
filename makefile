@@ -65,12 +65,18 @@ check-format: clean
 # coverage reports & benchmarks
 # --------------------------------------------------
 # whether to run pytest with coverage report generation
+PYTEST_OPTIONS ?=
+
 COV ?= 1
 
 ifeq ($(COV),1)
-    PYTEST_OPTIONS=--cov=.
-else
-    PYTEST_OPTIONS=
+    PYTEST_OPTIONS+=--cov=.
+endif
+
+PYTEST_PARALLEL ?= 0
+
+ifeq ($(PYTEST_PARALLEL),1)
+	PYTEST_OPTIONS+=-n auto
 endif
 
 .PHONY: cov
@@ -93,6 +99,22 @@ benchmark:
 unit:
 	@echo "run unit tests"
 	$(POETRY_RUN_PYTHON) -m pytest $(PYTEST_OPTIONS) tests/unit
+
+.PHONY: save_tok_hashes
+save_tok_hashes:
+	@echo "generate and save tokenizer hashes"
+	$(POETRY_RUN_PYTHON) -m maze_dataset.tokenization.save_hashes -p
+
+.PHONY: test_tok_hashes
+test_tok_hashes:
+	@echo "re-run tokenizer hashes and compare"
+	$(POETRY_RUN_PYTHON) -m maze_dataset.tokenization.save_hashes -p --check
+
+
+.PHONY: test_all_tok
+test_all_tok: test_tok_hashes
+	@echo "run tests on all tokenizers"
+	$(POETRY_RUN_PYTHON) -m pytest $(PYTEST_OPTIONS) --verbosity=-1 --durations=0 tests/all_tokenizers
 
 
 .PHONY: convert_notebooks

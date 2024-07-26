@@ -10,7 +10,7 @@ from muutils.json_serialize.serializable_dataclass import (
     serializable_dataclass,
     serializable_field,
 )
-from muutils.misc import list_split
+from muutils.misc import isinstance_by_type_name, list_split
 
 from maze_dataset.constants import (
     NEIGHBORS_MASK,
@@ -21,18 +21,21 @@ from maze_dataset.constants import (
     CoordList,
     CoordTup,
 )
-from maze_dataset.tokenization import (
-    MazeTokenizer,
-    MazeTokenizer2,
-    TokenizationMode,
-    get_adj_list_tokens,
-    get_path_tokens,
-)
-from maze_dataset.tokenization.token_utils import get_origin_tokens, get_target_tokens
-from maze_dataset.tokenization.util import (
-    TokenizerPendingDeprecationWarning,
+from maze_dataset.token_utils import (
+    TokenizerDeprecationWarning,
     connection_list_to_adj_list,
+    get_adj_list_tokens,
+    get_origin_tokens,
+    get_path_tokens,
+    get_target_tokens,
 )
+
+if typing.TYPE_CHECKING:
+    from maze_dataset.tokenization import (
+        MazeTokenizer,
+        MazeTokenizerModular,
+        TokenizationMode,
+    )
 
 RGB = tuple[int, int, int]
 
@@ -184,7 +187,25 @@ class LatticeMaze(SerializableDataclass):
                 return False
         return True
 
+    def coord_degrees(self) -> Int8[np.ndarray, "row col"]:
+        """
+        Returns an array with the connectivity degree of each coord.
+        I.e., how many neighbors each coord has.
+        """
+        int_conn: Int8[np.ndarray, "lattice_dim=2 row col"] = (
+            self.connection_list.astype(np.int8)
+        )
+        degrees: Int8[np.ndarray, "row col"] = np.sum(
+            int_conn, axis=0
+        )  # Connections to east and south
+        degrees[:, 1:] += int_conn[1, :, :-1]  # Connections to west
+        degrees[1:, :] += int_conn[0, :-1, :]  # Connections to north
+        return degrees
+
     def get_coord_neighbors(self, c: Coord) -> CoordArray:
+        """
+        Returns an array of the neighboring, connected coords of `c`.
+        """
         neighbors: list[Coord] = [
             neighbor
             for neighbor in (c + NEIGHBORS_MASK)
@@ -497,8 +518,25 @@ class LatticeMaze(SerializableDataclass):
     def as_adj_list_tokens(self) -> list[str | CoordTup]:
         warnings.warn(
             "`LatticeMaze.as_adj_list_tokens` will be removed from the public API in a future release.",
-            TokenizerPendingDeprecationWarning,
+            TokenizerDeprecationWarning,
         )
+        return [
+            SPECIAL_TOKENS.ADJLIST_START,
+            *chain.from_iterable(
+                [
+                    [
+                        tuple(c_s),
+                        SPECIAL_TOKENS.CONNECTOR,
+                        tuple(c_e),
+                        SPECIAL_TOKENS.ADJACENCY_ENDLINE,
+                    ]
+                    for c_s, c_e in self.as_adj_list()
+                ]
+            ),
+            SPECIAL_TOKENS.ADJLIST_END,
+        ]
+
+    def _as_adj_list_tokens(self) -> list[str | CoordTup]:
         return [
             SPECIAL_TOKENS.ADJLIST_START,
             *chain.from_iterable(
@@ -518,37 +556,25 @@ class LatticeMaze(SerializableDataclass):
     def _as_coords_and_special_AOTP(self) -> list[CoordTup | str]:
         """turn the maze into adjacency list, origin, target, and solution -- keep coords as tuples"""
 
-        def _as_adj_list_tokens() -> list[str | CoordTup]:
-            return [
-                SPECIAL_TOKENS.ADJLIST_START,
-                *chain.from_iterable(
-                    [
-                        [
-                            tuple(c_s),
-                            SPECIAL_TOKENS.CONNECTOR,
-                            tuple(c_e),
-                            SPECIAL_TOKENS.ADJACENCY_ENDLINE,
-                        ]
-                        for c_s, c_e in self.as_adj_list()
-                    ]
-                ),
-                SPECIAL_TOKENS.ADJLIST_END,
-            ]
-
-        output: list[str] = _as_adj_list_tokens()
+        output: list[str] = self._as_adj_list_tokens()
         # if getattr(self, "start_pos", None) is not None:
         if isinstance(self, TargetedLatticeMaze):
-            output += self.get_start_pos_tokens()
+            output += self._get_start_pos_tokens()
         if isinstance(self, TargetedLatticeMaze):
-            output += self.get_end_pos_tokens()
+            output += self._get_end_pos_tokens()
         if isinstance(self, SolvedMaze):
-            output += self.get_solution_tokens()
+            output += self._get_solution_tokens()
         return output
 
-    def _as_tokens(self, maze_tokenizer: MazeTokenizer | TokenizationMode) -> list[str]:
-        if isinstance(maze_tokenizer, TokenizationMode):
-            maze_tokenizer = MazeTokenizer(tokenization_mode=maze_tokenizer)
-        if isinstance(maze_tokenizer, MazeTokenizer) and maze_tokenizer.is_AOTP():
+    def _as_tokens(
+        self, maze_tokenizer: "MazeTokenizer | TokenizationMode"
+    ) -> list[str]:
+        if isinstance_by_type_name(maze_tokenizer, "TokenizationMode"):
+            maze_tokenizer = maze_tokenizer.to_legacy_tokenizer()
+        if (
+            isinstance_by_type_name(maze_tokenizer, "MazeTokenizer")
+            and maze_tokenizer.is_AOTP()
+        ):
             coords_raw: list[CoordTup | str] = self._as_coords_and_special_AOTP()
             coords_processed: list[str] = maze_tokenizer.coords_to_strings(
                 coords=coords_raw, when_noncoord="include"
@@ -559,17 +585,17 @@ class LatticeMaze(SerializableDataclass):
 
     def as_tokens(
         self,
-        maze_tokenizer: MazeTokenizer | TokenizationMode | MazeTokenizer2,
+        maze_tokenizer: "MazeTokenizer | TokenizationMode | MazeTokenizerModular",
     ) -> list[str]:
         """serialize maze and solution to tokens"""
-        if isinstance(maze_tokenizer, MazeTokenizer2):
+        if isinstance_by_type_name(maze_tokenizer, "MazeTokenizerModular"):
             return maze_tokenizer.to_tokens(self)
         else:
             return self._as_tokens(maze_tokenizer)
 
     @classmethod
     def _from_tokens_AOTP(
-        cls, tokens: list[str], maze_tokenizer: MazeTokenizer
+        cls, tokens: list[str], maze_tokenizer: "MazeTokenizer | MazeTokenizerModular"
     ) -> "LatticeMaze":
         """create a LatticeMaze from a list of tokens"""
 
@@ -670,15 +696,20 @@ class LatticeMaze(SerializableDataclass):
     def from_tokens(
         cls,
         tokens: list[str],
-        maze_tokenizer: MazeTokenizer | TokenizationMode | MazeTokenizer2,
+        maze_tokenizer: "MazeTokenizer | TokenizationMode | MazeTokenizerModular",
     ) -> "LatticeMaze":
-        if isinstance(maze_tokenizer, TokenizationMode):
-            maze_tokenizer = MazeTokenizer(tokenization_mode=maze_tokenizer)
-        if isinstance(maze_tokenizer, MazeTokenizer2) and maze_tokenizer not in [
-            MazeTokenizer2.from_legacy(tm) for tm in TokenizationMode
-        ]:
+        """
+        Constructs a maze from a tokenization.
+        Only legacy tokenizers and their `MazeTokenizerModular` analogs are supported.
+        """
+        if isinstance_by_type_name(maze_tokenizer, "TokenizationMode"):
+            maze_tokenizer = maze_tokenizer.to_legacy_tokenizer()
+        if (
+            isinstance_by_type_name(maze_tokenizer, "MazeTokenizerModular")
+            and not maze_tokenizer.is_legacy_equivalent()
+        ):
             raise NotImplementedError(
-                f"Only exact conversions of legacy tokenizers supported, not {maze_tokenizer}."
+                f"Only legacy tokenizers and their exact `MazeTokenizerModular` analogs supported, not {maze_tokenizer}."
             )
 
         if isinstance(tokens, str):
@@ -830,7 +861,7 @@ class LatticeMaze(SerializableDataclass):
         connection_list: ConnectionList
         grid_shape: tuple[int, int]
 
-        # if a binary pixel grid, return regular LaticeMaze
+        # if a binary pixel grid, return regular LatticeMaze
         if len(pixel_grid.shape) == 2:
             connection_list, grid_shape = cls._from_pixel_grid_bw(pixel_grid)
             return LatticeMaze(connection_list=connection_list)
@@ -1022,19 +1053,33 @@ class TargetedLatticeMaze(LatticeMaze):
                 f"end_pos {self.end_pos} is out of bounds for grid shape {self.grid_shape}"
             )
 
-    def get_start_pos_tokens(self) -> list[str | CoordTup]:
+    def _get_start_pos_tokens(self) -> list[str | CoordTup]:
         return [
             SPECIAL_TOKENS.ORIGIN_START,
             tuple(self.start_pos),
             SPECIAL_TOKENS.ORIGIN_END,
         ]
 
-    def get_end_pos_tokens(self) -> list[str | CoordTup]:
+    def get_start_pos_tokens(self) -> list[str | CoordTup]:
+        warnings.warn(
+            "`TargetedLatticeMaze.get_start_pos_tokens` will be removed from the public API in a future release.",
+            TokenizerDeprecationWarning,
+        )
+        return self._get_start_pos_tokens()
+
+    def _get_end_pos_tokens(self) -> list[str | CoordTup]:
         return [
             SPECIAL_TOKENS.TARGET_START,
             tuple(self.end_pos),
             SPECIAL_TOKENS.TARGET_END,
         ]
+
+    def get_end_pos_tokens(self) -> list[str | CoordTup]:
+        warnings.warn(
+            "`TargetedLatticeMaze.get_end_pos_tokens` will be removed from the public API in a future release.",
+            TokenizerDeprecationWarning,
+        )
+        return self._get_end_pos_tokens()
 
     @classmethod
     def from_lattice_maze(
@@ -1105,18 +1150,25 @@ class SolvedMaze(TargetedLatticeMaze):
     def __hash__(self) -> int:
         return hash((self.connection_list.tobytes(), self.solution.tobytes()))
 
-    def get_solution_tokens(self) -> list[str | CoordTup]:
+    def _get_solution_tokens(self) -> list[str | CoordTup]:
         return [
             SPECIAL_TOKENS.PATH_START,
             *[tuple(c) for c in self.solution],
             SPECIAL_TOKENS.PATH_END,
         ]
 
+    def get_solution_tokens(self) -> list[str | CoordTup]:
+        warnings.warn(
+            "`LatticeMaze.get_solution_tokens` is deprecated.",
+            TokenizerDeprecationWarning,
+        )
+        return self._get_solution_tokens()
+
     # for backwards compatibility
     @property
     def maze(self) -> LatticeMaze:
         warnings.warn(
-            "maze is deprecated, SolvedMaze now inherits from LatticeMaze.",
+            "`maze` is deprecated, SolvedMaze now inherits from LatticeMaze.",
             DeprecationWarning,
         )
         return LatticeMaze(connection_list=self.connection_list)
@@ -1149,7 +1201,10 @@ class SolvedMaze(TargetedLatticeMaze):
             generation_meta=targeted_lattice_maze.generation_meta,
         )
 
-    def get_solution_forking_points(self) -> tuple[list[int], CoordArray]:
+    def get_solution_forking_points(
+        self,
+        always_include_endpoints: bool = False,
+    ) -> tuple[list[int], CoordArray]:
         """coordinates and their indicies from the solution where a fork is present
 
         - if the start point is not a dead end, this counts as a fork
@@ -1163,7 +1218,9 @@ class SolvedMaze(TargetedLatticeMaze):
             # since the previous coord doesn't count as a choice
             is_endpoint: bool = idx == 0 or idx == self.solution.shape[0] - 1
             theshold: int = 1 if is_endpoint else 2
-            if self.get_coord_neighbors(coord).shape[0] > theshold:
+            if self.get_coord_neighbors(coord).shape[0] > theshold or (
+                is_endpoint and always_include_endpoints
+            ):
                 output_idxs.append(idx)
                 output_coords.append(coord)
 
@@ -1191,3 +1248,94 @@ def detect_pixels_type(data: PixelGrid) -> typing.Type[LatticeMaze]:
             return TargetedLatticeMaze
     else:
         return LatticeMaze
+
+
+def _remove_isolated_cells(
+    image: Int[np.ndarray, "RGB x y"]
+) -> Int[np.ndarray, "RGB x y"]:
+    """
+    Removes isolated cells from an image. An isolated cell is a cell that is surrounded by walls on all sides.
+    """
+    # Create a binary mask where True represents walls
+    wall_mask = np.all(image == PixelColors.WALL, axis=-1)
+
+    # Pad the wall mask to handle edge cases
+    padded_wall_mask = np.pad(
+        wall_mask, ((1, 1), (1, 1)), mode="constant", constant_values=True
+    )
+
+    # Check neighbors in all four directions
+    isolated_mask = (
+        padded_wall_mask[1:-1, 2:]  # right
+        & padded_wall_mask[1:-1, :-2]  # left
+        & padded_wall_mask[2:, 1:-1]  # down
+        & padded_wall_mask[:-2, 1:-1]  # up
+    )
+
+    # Combine with non-wall mask to only affect open cells
+    non_wall_mask = ~wall_mask
+    isolated_mask = isolated_mask & non_wall_mask
+
+    # Create the output image
+    output_image = image.copy()
+    output_image[isolated_mask] = PixelColors.WALL
+
+    return output_image
+
+
+_RIC_PADS: dict = {
+    "left": ((1, 0), (0, 0)),
+    "right": ((0, 1), (0, 0)),
+    "up": ((0, 0), (1, 0)),
+    "down": ((0, 0), (0, 1)),
+}
+
+# Define slices for each direction
+_RIC_SLICES: dict = {
+    "left": (slice(1, None), slice(None, None)),
+    "right": (slice(None, -1), slice(None, None)),
+    "up": (slice(None, None), slice(1, None)),
+    "down": (slice(None, None), slice(None, -1)),
+}
+
+
+def _remove_isolated_cells_old(
+    image: Int[np.ndarray, "RGB x y"]
+) -> Int[np.ndarray, "RGB x y"]:
+    """
+    Removes isolated cells from an image. An isolated cell is a cell that is surrounded by walls on all sides.
+    """
+    warnings.warn("this functin doesn't work and I have no idea why!!!")
+    masks: dict[str, np.ndarray] = {
+        d: np.all(
+            np.pad(
+                image[_RIC_SLICES[d][0], _RIC_SLICES[d][1], :] == PixelColors.WALL,
+                np.array((*_RIC_PADS[d], (0, 0)), dtype=np.int8),
+                mode="constant",
+                constant_values=True,
+            ),
+            axis=2,
+        )
+        for d in _RIC_SLICES.keys()
+    }
+
+    # Create a mask for non-wall cells
+    mask_non_wall = np.all(image != PixelColors.WALL, axis=2)
+
+    # print(f"{mask_non_wall.shape = }")
+    # print(f"{ {k: masks[k].shape for k in masks.keys()} = }")
+
+    # print(f"{mask_non_wall = }")
+    # print(f"{masks['down'] = }")
+
+    # Combine the masks
+    mask = mask_non_wall & masks["left"] & masks["right"] & masks["up"] & masks["down"]
+
+    # Apply the mask
+    output_image = np.where(
+        np.stack([mask] * 3, axis=-1),
+        PixelColors.WALL,
+        image,
+    )
+
+    return output_image

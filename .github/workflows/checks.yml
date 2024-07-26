@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   pull_request:
     branches:
-      - main
+      - '*'
   push:
     branches:
       - main
@@ -31,6 +31,25 @@ jobs:
         run: |
           pip install black
           python -m black --check .
+
+  all_tok_test:
+    name: All Tokenizer Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+          
+      - name: Install dependencies
+        run: |
+          curl -sSL https://install.python-poetry.org | python3 -
+          poetry lock --check
+          poetry install
+
+      - name: All Tokenizer Tests
+        run: make test_all_tok NUM_TOKENIZERS_TO_TEST=1000 PYTEST_PARALLEL=1
+
   test:
     name: Test
     env:
@@ -70,3 +89,6 @@ jobs:
       
       - name: Notebook tests
         run: make test_notebooks
+      
+      - name: All Tokenizer Tests, small sample
+        run: make test_all_tok NUM_TOKENIZERS_TO_TEST=10
