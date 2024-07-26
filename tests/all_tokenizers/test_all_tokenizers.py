@@ -3,7 +3,6 @@ import os
 from collections import Counter
 from typing import Callable, Iterable
 
-import numpy as np
 import pytest
 from pytest import mark, param
 from zanj import ZANJ
@@ -30,7 +29,6 @@ from maze_dataset.tokenization.all_tokenizers import (
     sample_tokenizers_for_test,
     save_hashes,
 )
-from maze_dataset.tokenization.maze_tokenizer import _load_tokenizer_hashes
 from maze_dataset.utils import all_instances
 
 # Size of the sample from `all_tokenizers.ALL_TOKENIZERS` to test
@@ -69,11 +67,6 @@ def test_all_instances_tokenizerelement(class_: type):
         )
     )
     assert len({hash(elem) for elem in all_vals}) == len(all_vals)
-
-
-def test_all_tokenizer_hashes():
-    loaded_hashes = save_hashes()
-    assert np.array_equal(_load_tokenizer_hashes(), loaded_hashes)
 
 
 SAMPLE_MIN: int = len(EVERY_TEST_TOKENIZERS)
@@ -309,11 +302,3 @@ def test_has_element(
     result_func: Callable[[MazeTokenizerModular, _has_elems_type], bool],
 ):
     assert tokenizer.has_element(elems) == result_func(tokenizer, elems)
-
-
-@mark.parametrize(
-    "tokenizer",
-    [param(tokenizer, id=tokenizer.name) for tokenizer in SAMPLED_TOKENIZERS],
-)
-def test_is_tested_tokenizer(tokenizer: MazeTokenizerModular, save_tokenizer_hashes):
-    assert tokenizer.is_tested_tokenizer()

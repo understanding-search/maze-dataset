@@ -126,7 +126,9 @@ def save_hashes(
 ) -> Int64[np.ndarray, "tokenizers"]:
     """Computes, sorts, and saves the hashes of every member of `ALL_TOKENIZERS`."""
     spinner = (
-        functools.partial(SpinnerContext, spinner_chars="square_dot")
+        functools.partial(
+            SpinnerContext, spinner_chars="square_dot", update_interval=0.5
+        )
         if verbose
         else NoOpContextManager
     )
@@ -138,7 +140,7 @@ def save_hashes(
     # compute hashes
     if parallelize:
         n_cpus: int = (
-            parallelize if int(parallelize) > 1 else multiprocessing.cpu_count() - 1
+            parallelize if int(parallelize) > 1 else multiprocessing.cpu_count()
         )
         with spinner(
             initial_value=f"using {n_cpus} processes to compute {len(all_tokenizers)} tokenizer hashes..."
