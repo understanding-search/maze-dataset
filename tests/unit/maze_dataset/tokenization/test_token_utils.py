@@ -511,7 +511,6 @@ class DC9(DC7):
         pass
 
 
-# TODO: this can definitely be generated programmatically
 @mark.parametrize(
     "type_, validation_funcs, result",
     [

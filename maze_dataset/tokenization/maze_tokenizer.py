@@ -59,7 +59,7 @@ class TokenError(ValueError):
 
 
 class TokenizationMode(Enum):
-    """mode of tokenization
+    """LEGACY: mode of tokenization
 
     # Abbreviations:
     - `AOTP`: Ajacency list, Origin, Target, Path
@@ -132,7 +132,7 @@ _MAZETOKENIZER_PROPERTIES_TO_SERIALIZE: list[str] = [
     properties_to_serialize=_MAZETOKENIZER_PROPERTIES_TO_SERIALIZE, kw_only=True
 )
 class MazeTokenizer(SerializableDataclass):
-    """Tokenizer for mazes
+    """LEGACY: Tokenizer for mazes
 
     # Parameters:
      - `tokenization_mode: TokenizationMode`
@@ -451,6 +451,7 @@ def mark_as_unsupported(cls: "type[_TokenizerElement]") -> "type[_TokenizerEleme
     The classes marked in release 1.0.0 did work reliably before being marked, but they can't be instantiated since the decorator adds an abstract method.
     The decorator exists to prune the space of tokenizers returned by `all_instances` both for testing and usage.
     Previously, the space was too large, resulting in impractical runtimes.
+    These decorators could be removed in future releases to expand the space of possible tokenizers.
     """
 
     @staticmethod
@@ -473,6 +474,7 @@ def mark_as_unsupported(cls: "type[_TokenizerElement]") -> "type[_TokenizerEleme
 @serializable_dataclass(frozen=True, kw_only=True)
 class _TokenizerElement(SerializableDataclass, abc.ABC):
     """Superclass for tokenizer elements.
+    Subclasses contain modular functionality for maze tokenization.
 
     # Development
     Due to the functionality of `ALL_TOKENIZERS`, `_TokenizerElement` subclasses may only contain fields of type `utils.FiniteValued`.
@@ -480,20 +482,21 @@ class _TokenizerElement(SerializableDataclass, abc.ABC):
     In the event that adding such fields is deemed necessary, `ALL_TOKENIZERS` must be updated.
     """
 
+    @staticmethod
+    def _stringify(k: str, v: Any):
+        if isinstance(v, bool):
+            return f"{k}={str(v)[0]}"
+        if isinstance(v, _TokenizerElement):
+            return v.name
+        if isinstance(v, tuple):
+            return f"{k}={''.join(['(', *[str(x)+', ' for x in v], ')'])}"
+        else:
+            return f"{k}={v}"
+
     @property
     def name(self) -> str:
-        def _stringify(k: str, v: Any):
-            if isinstance(v, bool):
-                return f"{k}={str(v)[0]}"
-            if isinstance(v, _TokenizerElement):
-                return v.name
-            if isinstance(v, tuple):
-                return f"{k}={''.join(['(', *[str(x)+', ' for x in v], ')'])}"
-            else:
-                return f"{k}={v}"
-
         members_str: str = ", ".join(
-            [_stringify(k, v) for k, v in self.__dict__.items() if k != "_type"]
+            [self._stringify(k, v) for k, v in self.__dict__.items() if k != "_type"]
         )
         output: str = f"{type(self).__name__}({members_str})"
         if "." in output and output.index("(") > output.index("."):
@@ -503,22 +506,6 @@ class _TokenizerElement(SerializableDataclass, abc.ABC):
 
     def __str__(self):
         return self.name
-
-    def __init_subclass__(cls, **kwargs):
-        """
-        Hack: dataclass hashes don't include the class itself in the hash function inputs.
-        This causes dataclasses with identical fields but different types to hash identically.
-        This hack circumvents this by adding a slightly hidden field to every subclass with a value of `repr(cls)`.
-        To maintain compatibility with `all_instances`, the static type of the new field can only have 1 possible value.
-        So we type it as a singleton `Literal` type.
-        muutils 0.6.1 doesn't support `Literal` type validation, so `assert_type=False`.
-        Ignore Pylance complaining about the arg to `Literal` being an expression.
-        """
-        super().__init_subclass__(**kwargs)
-        cls._type = serializable_field(
-            init=True, repr=False, default=repr(cls), assert_type=False
-        )
-        cls.__annotations__["_type"] = Literal[repr(cls)]  # type: ignore
 
     def __hash__(self):
         "Stable hash to identify unique `MazeTokenizerModular` instances. uses name"
@@ -699,6 +686,8 @@ class __TokenizerElementNamespace(abc.ABC):
 def _load_tokenizer_element(
     data: dict[str, Any], namespace: type[__TokenizerElementNamespace]
 ) -> _TokenizerElement:
+    """Loads a `TokenizerElement` stored via zanj. 
+    """
     key: str = namespace.key
     format: str = data[key]["__format__"]
     cls_name: str = format.split("(")[0]
@@ -716,6 +705,9 @@ class CoordTokenizers(__TokenizerElementNamespace):
 
     @serializable_dataclass(frozen=True, kw_only=True)
     class _CoordTokenizer(_TokenizerElement, abc.ABC):
+        """
+        Superclass for classes which tokenize singular coords in a maze.
+        """
         @abc.abstractmethod
         def to_tokens(self, coord: Coord | CoordTup) -> list[str]:
             pass
@@ -730,6 +722,8 @@ class CoordTokenizers(__TokenizerElementNamespace):
 
     @serializable_dataclass(frozen=True, kw_only=True)
     class UT(_CoordTokenizer):
+        """ Unique token coordinate tokenizer.
+        """
         def to_tokens(self, coord: Coord | CoordTup) -> list[str]:
             return ["".join(["(", str(coord[0]), ",", str(coord[1]), ")"])]
 
@@ -1287,6 +1281,9 @@ class StepSizes(__TokenizerElementNamespace):
 
     @serializable_dataclass(frozen=True, kw_only=True)
     class _StepSize(_TokenizerElement, abc.ABC):
+        """
+        Specifies which coords in `maze.solution` are used to represent the path.
+        """
         @classmethod
         def attribute_key(cls) -> str:
             return StepSizes.key
@@ -1309,6 +1306,10 @@ class StepSizes(__TokenizerElementNamespace):
 
     @serializable_dataclass(frozen=True, kw_only=True)
     class Singles(_StepSize):
+        """
+        Every coord in `maze.solution` is represented.
+        Legacy tokenizers all use this behavior. 
+        """
         def _step_single_indices(self, maze: SolvedMaze) -> list[int]:
             """Returns the indices of `maze.solution` corresponding to the steps to be tokenized."""
             return list(range(maze.solution.shape[0]))
@@ -1316,6 +1317,11 @@ class StepSizes(__TokenizerElementNamespace):
     @mark_as_unsupported
     @serializable_dataclass(frozen=True, kw_only=True)
     class Straightaways(_StepSize):
+        """
+        Only coords where the path turns are represented in the path.
+        I.e., the path is represented as a sequence of straightaways, 
+        specified by the coords at the turns.
+        """
         def _step_single_indices(self, maze: SolvedMaze) -> list[int]:
             """Returns the indices of `maze.solution` corresponding to the steps to be tokenized."""
             last_turn_coord: Coord = maze.solution[0, ...]
@@ -1329,6 +1335,11 @@ class StepSizes(__TokenizerElementNamespace):
 
     @serializable_dataclass(frozen=True, kw_only=True)
     class Forks(_StepSize):
+        """
+        Only coords at forks, where the path has >=2 options for the next step are included.
+        Excludes the option of backtracking.
+        The starting and ending coords are always included. 
+        """
         def _step_single_indices(self, maze: SolvedMaze) -> list[int]:
             """Returns the indices of `maze.solution` corresponding to the steps to be tokenized."""
             return maze.get_solution_forking_points(always_include_endpoints=True)[0]
@@ -1336,6 +1347,10 @@ class StepSizes(__TokenizerElementNamespace):
     @mark_as_unsupported
     @serializable_dataclass(frozen=True, kw_only=True)
     class ForksAndStraightaways(_StepSize):
+        """
+        Includes the union of the coords included by `Forks` and `Straightaways`.
+        See documentation for those classes for details.
+        """
         def _step_single_indices(self, maze: SolvedMaze) -> list[int]:
             """Returns the indices of `maze.solution` corresponding to the steps to be tokenized."""
             return list(
@@ -1355,6 +1370,9 @@ class StepTokenizers(__TokenizerElementNamespace):
 
     @serializable_dataclass(frozen=True, kw_only=True)
     class _StepTokenizer(_TokenizerElement, abc.ABC):
+        """
+        Specifies how a single step (as specified by an instance of `_StepSize`) is tokenized.
+        """
         @classmethod
         def attribute_key(cls) -> str:
             return StepTokenizers.key
@@ -1384,6 +1402,9 @@ class StepTokenizers(__TokenizerElementNamespace):
 
     @serializable_dataclass(frozen=True, kw_only=True)
     class Coord(_StepTokenizer):
+        """
+        A direct tokenization of the end position coord represents the step.
+        """
         def to_tokens(
             self,
             maze: SolvedMaze,
@@ -1395,6 +1416,10 @@ class StepTokenizers(__TokenizerElementNamespace):
 
     @serializable_dataclass(frozen=True, kw_only=True)
     class Cardinal(_StepTokenizer):
+        """
+        A step is tokenized with a cardinal direction token.
+        It is the direction of the step from the starting position along the solution.
+        """
         def to_tokens(
             self, maze: SolvedMaze, start_index: int, end_index: int, **kwargs
         ) -> list[str]:
@@ -1406,6 +1431,7 @@ class StepTokenizers(__TokenizerElementNamespace):
     class Relative(_StepTokenizer):
         """Tokenizes a solution step using relative first-person directions (right, left, forward, etc.).
         To simplify the indeterminacy, at the start of a solution the "agent" solving the maze is assumed to be facing NORTH.
+        Similarly to `Cardinal`, the direction is that of the step from the starting position.
         """
 
         def to_tokens(
@@ -1431,12 +1457,23 @@ class StepTokenizers(__TokenizerElementNamespace):
 
     @serializable_dataclass(frozen=True, kw_only=True)
     class Distance(_StepTokenizer):
+        """
+        A count of the number of individual steps from the starting point to the end point.
+        Contains no information about directionality, only the distance traveled in the step.
+        `Distance` must be combined with at least one other `_StepTokenizer` in a `StepTokenizerPermutation`.
+        This constraint is enforced in `_PathTokenizer.is_valid`.
+        """
         def to_tokens(
             self, maze: SolvedMaze, start_index: int, end_index: int, **kwargs
         ) -> list[str]:
             d: int = end_index - start_index
             return [getattr(VOCAB, f"I_{d:03}")]
 
+    """
+    `StepTokenizerPermutation`
+    A sequence of unique `_StepTokenizer`s.
+    This type exists mostly just for the clarity and convenience of `_PathTokenizer` code.
+    """
     StepTokenizerPermutation: type = (
         tuple[_StepTokenizer]
         | tuple[_StepTokenizer, _StepTokenizer]
@@ -1471,7 +1508,9 @@ class PathTokenizers(__TokenizerElementNamespace):
         # Parameters
         - `step_size`: Selects the size of a single step in the sequence
         - `step_tokenizers`: Selects the combination and permutation of tokens
-
+        - `pre`: Whether all steps include an integral preceding delimiter token
+        - `intra`: Whether all steps include a delimiter token after each individual `_StepTokenizer` tokenization.
+        - `post`: Whether all steps include an integral following delimiter token
         """
 
         step_size: StepSizes._StepSize = serializable_field(
@@ -1572,12 +1611,12 @@ class PromptSequencers(__TokenizerElementNamespace):
     @serializable_dataclass(frozen=True, kw_only=True)
     class _PromptSequencer(_TokenizerElement, abc.ABC):
         """
-        Sequences regions into a complete tokenization.
+        Sequences token regions into a complete maze tokenization.
 
         # Parameters
         - `coord_tokenizer`: Tokenizer element which tokenizes a single `Coord` aka maze position.
         - `adj_list_tokenizer`: Tokenizer element which tokenizes the adjacency list of a `LatticeMaze`.
-        Uses `coord_tokenizer` to tokenize coords if that is part of the design of that `AdjListTokenizer`.
+        Uses `coord_tokenizer` to tokenize coords if needed in other `TokenizerElement`s.
         """
 
         coord_tokenizer: CoordTokenizers._CoordTokenizer = serializable_field(
@@ -1766,6 +1805,7 @@ class PromptSequencers(__TokenizerElementNamespace):
     @serializable_dataclass(frozen=True, kw_only=True)
     class AOP(_PromptSequencer):
         """Sequences a prompt as [adjacency list, origin, path].
+        Still includes "<TARGET_START>" and "<TARGET_END>" tokens, but no representation of the target itself.
 
         # Parameters
         - `path_tokenizer`: Tokenizer element which tokenizes the solution path of a `SolvedMaze`.
@@ -1859,6 +1899,9 @@ class MazeTokenizerModular(SerializableDataclass):
         return self.tokenizer_element_tree()
 
     def tokenizer_element_dict(self) -> dict:
+        """
+        Nested dictionary of the internal `TokenizerElement`s.
+        """
         return {type(self).__name__: self.prompt_sequencer.tokenizer_element_dict()}
 
     @property
@@ -1867,6 +1910,9 @@ class MazeTokenizerModular(SerializableDataclass):
         return "-".join([type(self).__name__, self.prompt_sequencer.name])
 
     def summary(self) -> dict[str, _TokenizerElement]:
+        """
+        Single-level dictionary of the internal `TokenizerElement`s.
+        """
         return {
             # "prompt_sequencer": self.prompt_sequencer.name,
             **{elem.attribute_key(): elem for elem in self.tokenizer_elements}
@@ -1908,6 +1954,10 @@ class MazeTokenizerModular(SerializableDataclass):
         return all([self._has_element_singular(e) for e in elements])
 
     def is_valid(self):
+        """
+        Returns `True` if `self` is a valid tokenizer.
+        Evaluates the validity of all of `self.tokenizer_elements` according to each one's method.
+        """
         return all([el.is_valid() for el in self.tokenizer_elements])
 
     def is_legacy_equivalent(self) -> bool:
@@ -1920,7 +1970,11 @@ class MazeTokenizerModular(SerializableDataclass):
         )
 
     def is_tested_tokenizer(self) -> bool:
-        """Returns if the tokenizer is a member of `all_tokenizers.ALL_TOKENIZERS`, the set of tested and reliable tokenizers."""
+        """
+        Returns if the tokenizer is returned by `all_tokenizers._get_all_tokenizers`, the set of tested and reliable tokenizers.
+        Since evaluating `all_tokenizers._get_all_tokenizers` is expensive, 
+        instead checks for membership of `self`'s hash in `ALL_TOKENIZER_HASHES`.
+        """
         hash_index: int = np.searchsorted(ALL_TOKENIZER_HASHES, hash(self))
         return (
             hash_index < len(ALL_TOKENIZER_HASHES)
@@ -1964,24 +2018,6 @@ class MazeTokenizerModular(SerializableDataclass):
 
     # Simple properties
     # =================
-    def to_tokens(
-        self,
-        maze: "LatticeMaze",
-    ) -> list[str]:
-        """Converts maze into a list of tokens."""
-        return self.prompt_sequencer.to_tokens(
-            maze.connection_list,
-            getattr(maze, "start_pos", None),
-            [
-                getattr(maze, "end_pos", None)
-            ],  # TargetTokenizer requires target: Iterable[Coord]
-            getattr(maze, "solution", None),
-            self.coord_tokenizer,
-            self.adj_list_tokenizer,
-            self.target_tokenizer,
-            self.path_tokenizer,
-        )
-
     @classmethod
     def from_tokens(
         cls,
@@ -1991,11 +2027,12 @@ class MazeTokenizerModular(SerializableDataclass):
         Infers most `MazeTokenizerModular` parameters from a full sequence of tokens.
         """
         raise NotImplementedError(
-            "Recovering tokenizer objects from MazeTokenizerModular-produced strings is not implemented"
+            "Recovering tokenizer objects from MazeTokenizerModular-produced strings is not supported"
         )
 
     @property
     def token_arr(self) -> list[str] | None:
+        """map from index to token"""
         return VOCAB_LIST
 
     @property
@@ -2005,6 +2042,7 @@ class MazeTokenizerModular(SerializableDataclass):
 
     @property
     def vocab_size(self) -> int:
+        """Number of tokens in the static vocab"""
         return len(VOCAB_LIST)
 
     @property

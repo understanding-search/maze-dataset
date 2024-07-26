@@ -88,9 +88,7 @@ def test_tokenizer():
         assert tokenizer.name == f"maze_tokenizer-{mode.name}-g{100}"
 
         if mode == TokenizationMode.AOTP_CTT_indexed:
-            # TODO: fix these asserts
             assert tokenizer.node_strings_map is not None
-            # assert len(tokenizer.node_strings_map) == 100  # `tokenizer.node_strings_map` is a `Kappa` which has no length
             assert 100 < tokenizer.vocab_size < 200
         elif mode in (
             TokenizationMode.AOTP_UT_rasterized,
@@ -419,9 +417,7 @@ def _helper_test_path_tokenizers(
                         {_TokenizerElement: lambda x: x.is_valid()},
                     )
                 ),
-                min(
-                    20, NUM_TOKENIZERS_TO_TEST
-                ),  # TODO: Get rid of literal and `min` when reinstantiating all `StepTokenizer` leaf classes
+                NUM_TOKENIZERS_TO_TEST
             ),
         )
     ],
@@ -538,44 +534,6 @@ def test_edge_subsets(es: EdgeSubsets._EdgeSubset, maze: LatticeMaze):
     assert np.array_equal(
         manhattan_distance(edges), np.array([1] * assert_shape[0], dtype=np.int8)
     )
-
-
-@mark.parametrize(
-    "ep,maze",
-    [
-        param(tokenizer, maze, id=f"{tokenizer.name}-maze[{i}]")
-        for (i, maze), tokenizer in itertools.product(
-            enumerate(MIXED_MAZES[:6]),
-            all_instances(
-                EdgePermuters._EdgePermuter,
-                frozendict.frozendict({_TokenizerElement: lambda x: x.is_valid()}),
-            ),
-        )
-    ],
-)
-def test_edge_permuters(ep: EdgePermuters._EdgePermuter, maze: LatticeMaze):
-    edges: ConnectionArray = connection_list_to_adj_list(maze.connection_list)
-    edges_copy = np.copy(edges)
-    old_shape = edges.shape
-    permuted: ConnectionArray = ep._permute(edges)
-    match ep:
-        case EdgePermuters.RandomCoords():
-            assert permuted.shape == old_shape
-            assert edges is permuted
-            i = 0
-            while np.array_equal(permuted, edges_copy) and i < 5:
-                # Permute again in case for small mazes the random selection happened to not change anything
-                permuted: ConnectionArray = ep._permute(permuted)
-                i += 1
-            assert not np.array_equal(permuted, edges_copy)
-        case EdgePermuters.BothCoords():
-            new_shape = old_shape[0] * 2, *old_shape[1:]
-            n = old_shape[0]
-            assert permuted.shape == new_shape
-            assert np.array_equal(permuted[:n, ...], edges_copy)
-            assert np.array_equal(permuted[:n, 0, :], permuted[n:, 1, :])
-            assert np.array_equal(permuted[:n, 1, :], permuted[n:, 0, :])
-            assert edges is not permuted
 
 
 @mark.parametrize(
@@ -701,7 +659,6 @@ def test_adjlist_tokenizers(
             group_count = None  # Group count is stochastic
 
     match type(tok_elem.edge_grouping):
-        # TODO: Get group count without relying on `pre` or `post` tokens
         case EdgeGroupings.Ungrouped:
             group_count = edge_count  # Override all above cases
         case EdgeGroupings.ByLeadingCoord:

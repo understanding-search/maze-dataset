@@ -81,9 +81,6 @@ EVERY_TEST_TOKENIZERS: list[MazeTokenizerModular] = [
 ]
 
 
-# TODO: this is pretty bad because it makes it opaque as to when we are actually accessing this massive list of tokenizers
-
-
 @cache
 def all_tokenizers_set() -> set[MazeTokenizerModular]:
     """Casts ALL_TOKENIZERS to a set."""

@@ -187,7 +187,7 @@ class LatticeMaze(SerializableDataclass):
                 return False
         return True
 
-    def coord_degrees(self):
+    def coord_degrees(self) -> Int8[np.ndarray, "row col"]:
         """
         Returns an array with the connectivity degree of each coord.
         I.e., how many neighbors each coord has.
@@ -203,6 +203,9 @@ class LatticeMaze(SerializableDataclass):
         return degrees
 
     def get_coord_neighbors(self, c: Coord) -> CoordArray:
+        """
+        Returns an array of the neighboring, connected coords of `c`.
+        """
         neighbors: list[Coord] = [
             neighbor
             for neighbor in (c + NEIGHBORS_MASK)
@@ -695,6 +698,10 @@ class LatticeMaze(SerializableDataclass):
         tokens: list[str],
         maze_tokenizer: "MazeTokenizer | TokenizationMode | MazeTokenizerModular",
     ) -> "LatticeMaze":
+        """
+        Constructs a maze from a tokenization.
+        Only legacy tokenizers and their `MazeTokenizerModular` analogs are supported.
+        """
         if isinstance_by_type_name(maze_tokenizer, "TokenizationMode"):
             maze_tokenizer = maze_tokenizer.to_legacy_tokenizer()
         if (
@@ -1161,7 +1168,7 @@ class SolvedMaze(TargetedLatticeMaze):
     @property
     def maze(self) -> LatticeMaze:
         warnings.warn(
-            "maze is deprecated, SolvedMaze now inherits from LatticeMaze.",
+            "`maze` is deprecated, SolvedMaze now inherits from LatticeMaze.",
             DeprecationWarning,
         )
         return LatticeMaze(connection_list=self.connection_list)
