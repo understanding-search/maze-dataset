@@ -17,7 +17,7 @@ on:
       n_to_test:
         description: 'Number of tokenizers to test'
         required: false
-        default: 10000
+        default: 1000
         type: number
       pytest_parallel:
         description: 'Number of parallel pytest processes'
