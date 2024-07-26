@@ -105,8 +105,14 @@ save_tok_hashes:
 	@echo "generate and save tokenizer hashes"
 	$(POETRY_RUN_PYTHON) -m maze_dataset.tokenization.save_hashes -p
 
+.PHONY: test_tok_hashes
+test_tok_hashes:
+	@echo "re-run tokenizer hashes and compare"
+	$(POETRY_RUN_PYTHON) -m maze_dataset.tokenization.save_hashes -p --check
+
+
 .PHONY: test_all_tok
-test_all_tok: save_tok_hashes
+test_all_tok: test_tok_hashes
 	@echo "run tests on all tokenizers"
 	$(POETRY_RUN_PYTHON) -m pytest $(PYTEST_OPTIONS) --verbosity=-1 --durations=0 tests/all_tokenizers
 
