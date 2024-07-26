@@ -226,7 +226,7 @@ class MazeDataset(GPTDataset):
         return self.mazes[i]
 
     def __deepcopy__(self, memo) -> "MazeDataset":
-        return MazeDataset.load(self.serialize())
+        return MazeDataset.load(self._serialize_full())
 
     def as_tokens(
         self,
