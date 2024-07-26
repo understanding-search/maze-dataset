@@ -506,7 +506,7 @@ class _TokenizerElement(SerializableDataclass, abc.ABC):
 
     def __str__(self):
         return self.name
-    
+
     def __init_subclass__(cls, **kwargs):
         """
         Hack: dataclass hashes don't include the class itself in the hash function inputs.
