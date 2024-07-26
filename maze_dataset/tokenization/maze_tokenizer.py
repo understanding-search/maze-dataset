@@ -506,6 +506,22 @@ class _TokenizerElement(SerializableDataclass, abc.ABC):
 
     def __str__(self):
         return self.name
+    
+    def __init_subclass__(cls, **kwargs):
+        """
+        Hack: dataclass hashes don't include the class itself in the hash function inputs.
+        This causes dataclasses with identical fields but different types to hash identically.
+        This hack circumvents this by adding a slightly hidden field to every subclass with a value of `repr(cls)`.
+        To maintain compatibility with `all_instances`, the static type of the new field can only have 1 possible value.
+        So we type it as a singleton `Literal` type.
+        muutils 0.6.1 doesn't support `Literal` type validation, so `assert_type=False`.
+        Ignore Pylance complaining about the arg to `Literal` being an expression.
+        """
+        super().__init_subclass__(**kwargs)
+        cls._type = serializable_field(
+            init=True, repr=False, default=repr(cls), assert_type=False
+        )
+        cls.__annotations__["_type"] = Literal[repr(cls)]  # type: ignore
 
     def __hash__(self):
         "Stable hash to identify unique `MazeTokenizerModular` instances. uses name"
