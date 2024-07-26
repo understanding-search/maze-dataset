@@ -10,6 +10,8 @@ on:
       - 'maze_dataset/tokenization/MazeTokenizerModular_hashes.npz'
       - 'notebooks/demo_mazetokenizermodular.ipynb'
       - 'tests/all_tokenizers/*.py'
+      - 'pyproject.toml' # on new version or update deps
+      - '.lastversion' # on new release
   workflow_dispatch:
     inputs:
       n_to_test:
