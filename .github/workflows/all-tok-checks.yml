@@ -1,0 +1,46 @@
+name: All Tokenizer Checks
+
+on:
+  push:
+    paths:
+      - 'maze_dataset/utils.py' # temporary
+      - 'maze_dataset/token_utils.py' # temporary
+      - 'maze_dataset/constants.py'
+      - 'maze_dataset/tokenization/*.py'
+      - 'maze_dataset/tokenization/MazeTokenizerModular_hashes.npz'
+      - 'notebooks/demo_mazetokenizermodular.ipynb'
+      - 'tests/all_tokenizers/*.py'
+      - 'pyproject.toml' # on new version or update deps
+      - '.lastversion' # on new release
+  workflow_dispatch:
+    inputs:
+      n_to_test:
+        description: 'Number of tokenizers to test'
+        required: false
+        default: 1000
+        type: number
+      pytest_parallel:
+        description: 'Number of parallel pytest processes'
+        required: false
+        default: 1
+        type: number
+
+jobs:
+  all_tok_test:
+    name: All Tokenizer Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+        
+      - name: Install dependencies
+        run: |
+          curl -sSL https://install.python-poetry.org | python3 -
+          poetry lock --check
+          poetry install
+
+      - name: All Tokenizer Tests
+        run: make test_all_tok NUM_TOKENIZERS_TO_TEST=${{ inputs.n_to_test }} PYTEST_PARALLEL=${{ inputs.pytest_parallel }}

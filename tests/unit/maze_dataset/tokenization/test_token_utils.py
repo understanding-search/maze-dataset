@@ -1,31 +1,57 @@
+import abc
+import itertools
+from dataclasses import dataclass
+from typing import Callable, Iterable, Literal
+
+import frozendict
+import numpy as np
 import pytest
+from jaxtyping import Int
+from muutils.misc import IsDataclass, dataclass_set_equals
 from pytest import mark, param
 
+from maze_dataset import LatticeMaze
+from maze_dataset.constants import VOCAB, Connection, ConnectionArray
 from maze_dataset.dataset.maze_dataset import MazeDatasetConfig
-from maze_dataset.tokenization.token_utils import (
+from maze_dataset.generation import numpy_rng
+from maze_dataset.testing_utils import GRID_N, MAZE_DATASET
+from maze_dataset.token_utils import (
+    _coord_to_strings_UT,
+    coords_to_strings,
+    equal_except_adj_list_sequence,
     get_adj_list_tokens,
     get_origin_tokens,
     get_path_tokens,
+    get_relative_direction,
     get_target_tokens,
-    get_tokens_up_to_path_start,
+    is_connection,
+    strings_to_coords,
     tokens_between,
 )
-from maze_dataset.tokenization.util import (
-    _coord_to_strings_UT,
-    coords_to_strings,
-    strings_to_coords,
+from maze_dataset.tokenization import (
+    PathTokenizers,
+    StepTokenizers,
+    get_tokens_up_to_path_start,
+)
+from maze_dataset.utils import (
+    FiniteValued,
+    all_instances,
+    lattice_connection_array,
+    manhattan_distance,
 )
 
-MAZE_TOKENS = (
+MAZE_TOKENS: tuple[list[str], str] = (
     "<ADJLIST_START> (0,1) <--> (1,1) ; (1,0) <--> (1,1) ; (0,1) <--> (0,0) ; <ADJLIST_END> <ORIGIN_START> (1,0) <ORIGIN_END> <TARGET_START> (1,1) <TARGET_END> <PATH_START> (1,0) (1,1) <PATH_END>".split(),
     "AOTP_UT",
 )
-# setattr(MAZE_TOKENS, "name", 'AOTP_UT')
-MAZE_TOKENS_AOTP_CTT_indexed = (
+MAZE_TOKENS_AOTP_CTT_indexed: tuple[list[str], str] = (
     "<ADJLIST_START> ( 0 , 1 ) <--> ( 1 , 1 ) ; ( 1 , 0 ) <--> ( 1 , 1 ) ; ( 0 , 1 ) <--> ( 0 , 0 ) ; <ADJLIST_END> <ORIGIN_START> ( 1 , 0 ) <ORIGIN_END> <TARGET_START> ( 1 , 1 ) <TARGET_END> <PATH_START> ( 1 , 0 ) ( 1 , 1 ) <PATH_END>".split(),
     "AOTP_CTT_indexed",
 )
-TEST_TOKEN_LISTS = [MAZE_TOKENS, MAZE_TOKENS_AOTP_CTT_indexed]
+TEST_TOKEN_LISTS: list[tuple[list[str], str]] = [
+    MAZE_TOKENS,
+    MAZE_TOKENS_AOTP_CTT_indexed,
+]
 
 
 @mark.parametrize(
@@ -358,3 +384,555 @@ def test_coords_to_strings(toks: list[str], tokenizer_name: str):
         coords_to_strings(
             coords, coord_to_strings_func=_coord_to_strings_UT, when_noncoord="error"
         )
+
+
+def test_equal_except_adj_list_sequence():
+    assert equal_except_adj_list_sequence(MAZE_TOKENS[0], MAZE_TOKENS[0])
+    assert not equal_except_adj_list_sequence(
+        MAZE_TOKENS[0], MAZE_TOKENS_AOTP_CTT_indexed[0]
+    )
+    assert equal_except_adj_list_sequence(
+        "<ADJLIST_START> (0,1) <--> (1,1) ; (1,0) <--> (1,1) ; (0,1) <--> (0,0) ; <ADJLIST_END> <ORIGIN_START> (1,0) <ORIGIN_END> <TARGET_START> (1,1) <TARGET_END> <PATH_START> (1,0) (1,1) <PATH_END>".split(),
+        "<ADJLIST_START> (0,1) <--> (1,1) ; (1,0) <--> (1,1) ; (0,1) <--> (0,0) ; <ADJLIST_END> <ORIGIN_START> (1,0) <ORIGIN_END> <TARGET_START> (1,1) <TARGET_END> <PATH_START> (1,0) (1,1) <PATH_END>".split(),
+    )
+    assert equal_except_adj_list_sequence(
+        "<ADJLIST_START> (0,1) <--> (1,1) ; (1,0) <--> (1,1) ; (0,1) <--> (0,0) ; <ADJLIST_END> <ORIGIN_START> (1,0) <ORIGIN_END> <TARGET_START> (1,1) <TARGET_END> <PATH_START> (1,0) (1,1) <PATH_END>".split(),
+        "<ADJLIST_START> (1,0) <--> (1,1) ; (0,1) <--> (0,0) ; (0,1) <--> (1,1) ; <ADJLIST_END> <ORIGIN_START> (1,0) <ORIGIN_END> <TARGET_START> (1,1) <TARGET_END> <PATH_START> (1,0) (1,1) <PATH_END>".split(),
+    )
+    assert equal_except_adj_list_sequence(
+        "<ADJLIST_START> (0,1) <--> (1,1) ; (1,0) <--> (1,1) ; (0,1) <--> (0,0) ; <ADJLIST_END> <ORIGIN_START> (1,0) <ORIGIN_END> <TARGET_START> (1,1) <TARGET_END> <PATH_START> (1,0) (1,1) <PATH_END>".split(),
+        "<ADJLIST_START> (1,1) <--> (0,1) ; (1,0) <--> (1,1) ; (0,1) <--> (0,0) ; <ADJLIST_END> <ORIGIN_START> (1,0) <ORIGIN_END> <TARGET_START> (1,1) <TARGET_END> <PATH_START> (1,0) (1,1) <PATH_END>".split(),
+    )
+    assert not equal_except_adj_list_sequence(
+        "<ADJLIST_START> (0,1) <--> (1,1) ; (1,0) <--> (1,1) ; (0,1) <--> (0,0) ; <ADJLIST_END> <ORIGIN_START> (1,0) <ORIGIN_END> <TARGET_START> (1,1) <TARGET_END> <PATH_START> (1,0) (1,1) <PATH_END>".split(),
+        "<ADJLIST_START> (1,0) <--> (1,1) ; (0,1) <--> (0,0) ; (0,1) <--> (1,1) ; <ADJLIST_END> <ORIGIN_START> (1,0) <ORIGIN_END> <TARGET_START> (1,1) <TARGET_END> <PATH_START> (1,1) (1,0) <PATH_END>".split(),
+    )
+    assert not equal_except_adj_list_sequence(
+        "<ADJLIST_START> (0,1) <--> (1,1) ; (1,0) <--> (1,1) ; (0,1) <--> (0,0) ; <ADJLIST_END> <ORIGIN_START> (1,0) <ORIGIN_END> <TARGET_START> (1,1) <TARGET_END> <PATH_START> (1,0) (1,1) <PATH_END>".split(),
+        "<ADJLIST_START> (0,1) <--> (1,1) ; (1,0) <--> (1,1) ; (0,1) <--> (0,0) ; <ADJLIST_END> <ORIGIN_START> (1,0) <ORIGIN_END> <TARGET_START> (1,1) <TARGET_END> <PATH_START> (1,0) (1,1) <PATH_END> <PATH_END>".split(),
+    )
+    assert not equal_except_adj_list_sequence(
+        "<ADJLIST_START> (0,1) <--> (1,1) ; (1,0) <--> (1,1) ; (0,1) <--> (0,0) ; <ADJLIST_END> (1,0) <ORIGIN_END> <TARGET_START> (1,1) <TARGET_END> <PATH_START> (1,0) (1,1) <PATH_END>".split(),
+        "<ADJLIST_START> (0,1) <--> (1,1) ; (1,0) <--> (1,1) ; (0,1) <--> (0,0) ; <ADJLIST_END> <ORIGIN_START> (1,0) <ORIGIN_END> <TARGET_START> (1,1) <TARGET_END> <PATH_START> (1,0) (1,1) <PATH_END>".split(),
+    )
+    assert not equal_except_adj_list_sequence(
+        "<ADJLIST_START> (0,1) <--> (1,1) ; (1,0) <--> (1,1) ; (0,1) <--> (0,0) ; <ADJLIST_END> <ORIGIN_START> (1,0) <ORIGIN_END> <TARGET_START> (1,1) <TARGET_END> <PATH_START> (1,0) (1,1) <PATH_END>".split(),
+        "(0,1) <--> (1,1) ; (1,0) <--> (1,1) ; (0,1) <--> (0,0) ; <ADJLIST_END> <ORIGIN_START> (1,0) <ORIGIN_END> <TARGET_START> (1,1) <TARGET_END> <PATH_START> (1,0) (1,1) <PATH_END>".split(),
+    )
+    with pytest.raises(ValueError):
+        equal_except_adj_list_sequence(
+            "(0,1) <--> (1,1) ; (1,0) <--> (1,1) ; (0,1) <--> (0,0) ; <ADJLIST_END> <ORIGIN_START> (1,0) <ORIGIN_END> <TARGET_START> (1,1) <TARGET_END> <PATH_START> (1,0) (1,1) <PATH_END>".split(),
+            "(0,1) <--> (1,1) ; (1,0) <--> (1,1) ; (0,1) <--> (0,0) ; <ADJLIST_END> <ORIGIN_START> (1,0) <ORIGIN_END> <TARGET_START> (1,1) <TARGET_END> <PATH_START> (1,0) (1,1) <PATH_END>".split(),
+        )
+    with pytest.raises(ValueError):
+        equal_except_adj_list_sequence(
+            "<ADJLIST_START> (0,1) <--> (1,1) ; (1,0) <--> (1,1) ; (0,1) <--> (0,0) ; <ORIGIN_START> (1,0) <ORIGIN_END> <TARGET_START> (1,1) <TARGET_END> <PATH_START> (1,0) (1,1) <PATH_END>".split(),
+            "<ADJLIST_START> (0,1) <--> (1,1) ; (1,0) <--> (1,1) ; (0,1) <--> (0,0) ; <ORIGIN_START> (1,0) <ORIGIN_END> <TARGET_START> (1,1) <TARGET_END> <PATH_START> (1,0) (1,1) <PATH_END>".split(),
+        )
+    assert not equal_except_adj_list_sequence(
+        "<ADJLIST_START> (0,1) <--> (1,1) ; (1,0) <--> (1,1) ; (0,1) <--> (0,0) ; <ADJLIST_END> <ORIGIN_START> (1,0) <ORIGIN_END> <TARGET_START> (1,1) <TARGET_END> <PATH_START> (1,0) (1,1) <PATH_END>".split(),
+        "<ADJLIST_START> (0,1) <--> (1,1) ; (1,0) <--> (1,1) ; (0,1) <--> (0,0) ; <ORIGIN_START> (1,0) <ORIGIN_END> <TARGET_START> (1,1) <TARGET_END> <PATH_START> (1,0) (1,1) <PATH_END>".split(),
+    )
+
+    # CTT
+    assert equal_except_adj_list_sequence(
+        "<ADJLIST_START> ( 0 , 1 ) <--> ( 1 , 1 ) ; ( 1 , 0 ) <--> ( 1 , 1 ) ; ( 0 , 1 ) <--> ( 0 , 0 ) ; <ADJLIST_END> <ORIGIN_START> ( 1 , 0 ) <ORIGIN_END> <TARGET_START> ( 1 , 1 ) <TARGET_END> <PATH_START> ( 1 , 0 ) ( 1 , 1 ) <PATH_END>".split(),
+        "<ADJLIST_START> ( 0 , 1 ) <--> ( 1 , 1 ) ; ( 1 , 0 ) <--> ( 1 , 1 ) ; ( 0 , 1 ) <--> ( 0 , 0 ) ; <ADJLIST_END> <ORIGIN_START> ( 1 , 0 ) <ORIGIN_END> <TARGET_START> ( 1 , 1 ) <TARGET_END> <PATH_START> ( 1 , 0 ) ( 1 , 1 ) <PATH_END>".split(),
+    )
+    assert equal_except_adj_list_sequence(
+        "<ADJLIST_START> ( 0 , 1 ) <--> ( 1 , 1 ) ; ( 1 , 0 ) <--> ( 1 , 1 ) ; ( 0 , 1 ) <--> ( 0 , 0 ) ; <ADJLIST_END> <ORIGIN_START> ( 1 , 0 ) <ORIGIN_END> <TARGET_START> ( 1 , 1 ) <TARGET_END> <PATH_START> ( 1 , 0 ) ( 1 , 1 ) <PATH_END>".split(),
+        "<ADJLIST_START> ( 1 , 1 ) <--> ( 0 , 1 ) ; ( 1 , 0 ) <--> ( 1 , 1 ) ; ( 0 , 1 ) <--> ( 0 , 0 ) ; <ADJLIST_END> <ORIGIN_START> ( 1 , 0 ) <ORIGIN_END> <TARGET_START> ( 1 , 1 ) <TARGET_END> <PATH_START> ( 1 , 0 ) ( 1 , 1 ) <PATH_END>".split(),
+    )
+    # This inactive test demonstrates the lack of robustness of the function for comparing source `LatticeMaze` objects.
+    # See function documentation for details.
+    # assert not equal_except_adj_list_sequence(
+    #     "<ADJLIST_START> ( 0 , 1 ) <--> ( 1 , 1 ) ; ( 1 , 0 ) <--> ( 1 , 1 ) ; ( 0 , 1 ) <--> ( 0 , 0 ) ; <ADJLIST_END> <ORIGIN_START> ( 1 , 0 ) <ORIGIN_END> <TARGET_START> ( 1 , 1 ) <TARGET_END> <PATH_START> ( 1 , 0 ) ( 1 , 1 ) <PATH_END>".split(),
+    #     "<ADJLIST_START> ( 1 , 0 ) <--> ( 1 , 1 ) ; ( 1 , 0 ) <--> ( 1 , 1 ) ; ( 0 , 1 ) <--> ( 0 , 0 ) ; <ADJLIST_END> <ORIGIN_START> ( 1 , 0 ) <ORIGIN_END> <TARGET_START> ( 1 , 1 ) <TARGET_END> <PATH_START> ( 1 , 0 ) ( 1 , 1 ) <PATH_END>".split()
+    # )
+
+
+# Test classes
+@dataclass
+class DC1:
+    x: bool
+    y: bool = False
+
+
+@dataclass(frozen=True)
+class DC2:
+    x: bool
+    y: bool = False
+
+
+@dataclass(frozen=True)
+class DC3:
+    x: DC2 = DC2(False, False)
+
+
+@dataclass(frozen=True)
+class DC4:
+    x: DC2
+    y: bool = False
+
+
+@dataclass(frozen=True)
+class DC5:
+    x: int
+
+
+@dataclass(frozen=True)
+class DC6:
+    x: DC5
+    y: bool = False
+
+
+@dataclass(frozen=True)
+class DC7(abc.ABC):
+    x: bool
+
+    @abc.abstractmethod
+    def foo():
+        pass
+
+
+@dataclass(frozen=True)
+class DC8(DC7):
+    x: bool = False
+
+    def foo():
+        pass
+
+
+@dataclass(frozen=True)
+class DC9(DC7):
+    y: bool = True
+
+    def foo():
+        pass
+
+
+@mark.parametrize(
+    "type_, validation_funcs, result",
+    [
+        param(
+            type_,
+            vfs,
+            result,
+            id=f"{type_}-vfs[{len(vfs) if vfs is not None else 'None'}]",
+        )
+        for type_, vfs, result in (
+            [
+                (
+                    DC1,
+                    None,
+                    [
+                        DC1(False, False),
+                        DC1(False, True),
+                        DC1(True, False),
+                        DC1(True, True),
+                    ],
+                ),
+                (
+                    DC2,
+                    None,
+                    [
+                        DC2(False, False),
+                        DC2(False, True),
+                        DC2(True, False),
+                        DC2(True, True),
+                    ],
+                ),
+                (
+                    DC2,
+                    {DC2: lambda dc: dc.x ^ dc.y},
+                    [
+                        DC2(False, True),
+                        DC2(True, False),
+                    ],
+                ),
+                (
+                    DC1 | DC2,
+                    {DC2: lambda dc: dc.x ^ dc.y},
+                    [
+                        DC2(False, True),
+                        DC2(True, False),
+                        DC1(False, False),
+                        DC1(False, True),
+                        DC1(True, False),
+                        DC1(True, True),
+                    ],
+                ),
+                (
+                    DC1 | DC2,
+                    {
+                        DC1: lambda dc: dc.x == dc.y,
+                        DC2: lambda dc: dc.x ^ dc.y,
+                    },
+                    [
+                        DC2(False, True),
+                        DC2(True, False),
+                        DC1(False, False),
+                        DC1(True, True),
+                    ],
+                ),
+                (
+                    DC3,
+                    None,
+                    [
+                        DC3(DC2(False, False)),
+                        DC3(DC2(False, True)),
+                        DC3(DC2(True, False)),
+                        DC3(DC2(True, True)),
+                    ],
+                ),
+                (
+                    DC4,
+                    None,
+                    [
+                        DC4(DC2(False, False), True),
+                        DC4(DC2(False, True), True),
+                        DC4(DC2(True, False), True),
+                        DC4(DC2(True, True), True),
+                        DC4(DC2(False, False), False),
+                        DC4(DC2(False, True), False),
+                        DC4(DC2(True, False), False),
+                        DC4(DC2(True, True), False),
+                    ],
+                ),
+                (
+                    DC4,
+                    {DC2: lambda dc: dc.x ^ dc.y},
+                    [
+                        DC4(DC2(False, True), True),
+                        DC4(DC2(True, False), True),
+                        DC4(DC2(False, True), False),
+                        DC4(DC2(True, False), False),
+                    ],
+                ),
+                (DC5, None, TypeError),
+                (DC6, None, TypeError),
+                (bool, None, [True, False]),
+                (bool, {bool: lambda x: x}, [True]),
+                (bool, {bool: lambda x: not x}, [False]),
+                (int, None, TypeError),
+                (str, None, TypeError),
+                (Literal[0, 1, 2], None, [0, 1, 2]),
+                (Literal[0, 1, 2], {int: lambda x: x % 2 == 0}, [0, 2]),
+                (bool | Literal[0, 1, 2], dict(), [0, 1, 2, True, False]),
+                (bool | Literal[0, 1, 2], {bool: lambda x: x}, [0, 1, 2, True]),
+                (bool | Literal[0, 1, 2], {int: lambda x: x % 2}, [1, True]),
+                (
+                    tuple[bool],
+                    None,
+                    [
+                        (True,),
+                        (False,),
+                    ],
+                ),
+                (
+                    tuple[bool, bool],
+                    None,
+                    [
+                        (True, True),
+                        (True, False),
+                        (False, True),
+                        (False, False),
+                    ],
+                ),
+                (
+                    tuple[bool, bool],
+                    {bool: lambda x: x},
+                    [
+                        (True, True),
+                    ],
+                ),
+                (
+                    DC8,
+                    None,
+                    [
+                        DC8(False),
+                        DC8(True),
+                    ],
+                ),
+                (
+                    DC7,
+                    None,
+                    [
+                        DC8(False),
+                        DC8(True),
+                        DC9(False, False),
+                        DC9(False, True),
+                        DC9(True, False),
+                        DC9(True, True),
+                    ],
+                ),
+                (
+                    tuple[DC7],
+                    None,
+                    [
+                        (DC8(False),),
+                        (DC8(True),),
+                        (DC9(False, False),),
+                        (DC9(False, True),),
+                        (DC9(True, False),),
+                        (DC9(True, True),),
+                    ],
+                ),
+                (
+                    tuple[DC7],
+                    {DC9: lambda dc: dc.x == dc.y},
+                    [
+                        (DC8(False),),
+                        (DC8(True),),
+                        (DC9(False, False),),
+                        (DC9(True, True),),
+                    ],
+                ),
+                (
+                    tuple[DC8, DC8],
+                    None,
+                    [
+                        (DC8(False), DC8(False)),
+                        (DC8(False), DC8(True)),
+                        (DC8(True), DC8(False)),
+                        (DC8(True), DC8(True)),
+                    ],
+                ),
+                (
+                    tuple[DC7, bool],
+                    None,
+                    [
+                        (DC8(False), True),
+                        (DC8(True), True),
+                        (DC9(False, False), True),
+                        (DC9(False, True), True),
+                        (DC9(True, False), True),
+                        (DC9(True, True), True),
+                        (DC8(False), False),
+                        (DC8(True), False),
+                        (DC9(False, False), False),
+                        (DC9(False, True), False),
+                        (DC9(True, False), False),
+                        (DC9(True, True), False),
+                    ],
+                ),
+            ]
+        )
+    ],
+)
+def test_all_instances(
+    type_: FiniteValued,
+    validation_funcs: dict[FiniteValued, Callable[[FiniteValued], bool]] | None,
+    result: type[Exception] | Iterable[FiniteValued],
+):
+    if isinstance(result, type) and issubclass(result, Exception):
+        with pytest.raises(result):
+            list(all_instances(type_, validation_funcs))
+    elif hasattr(type_, "__dataclass_fields__"):
+        assert dataclass_set_equals(all_instances(type_, validation_funcs), result)
+    else:  # General case, due to nesting, results might contain some dataclasses and some other types
+        out = list(all_instances(type_, validation_funcs))
+        assert dataclass_set_equals(
+            filter(lambda x: isinstance(x, IsDataclass), out),
+            filter(lambda x: isinstance(x, IsDataclass), result),
+        )
+        assert set(filter(lambda x: not isinstance(x, IsDataclass), out)) == set(
+            filter(lambda x: not isinstance(x, IsDataclass), result)
+        )
+
+
+# @mivanit: this was really difficult to understand
+@mark.parametrize(
+    "type_, validation_funcs, assertion",
+    [
+        param(
+            type_,
+            vfs,
+            assertion,
+            id=f"{i}-{type_.__name__}",
+        )
+        for i, (type_, vfs, assertion) in enumerate(
+            [
+                (
+                    # type
+                    PathTokenizers._PathTokenizer,
+                    # validation_funcs
+                    dict(),
+                    # assertion
+                    lambda x: PathTokenizers.StepSequence(
+                        step_tokenizers=(StepTokenizers.Distance(),)
+                    )
+                    in x,
+                ),
+                (
+                    # type
+                    PathTokenizers._PathTokenizer,
+                    # validation_funcs
+                    {PathTokenizers._PathTokenizer: lambda x: x.is_valid()},
+                    # assertion
+                    lambda x: PathTokenizers.StepSequence(
+                        step_tokenizers=(StepTokenizers.Distance(),)
+                    )
+                    not in x
+                    and PathTokenizers.StepSequence(
+                        step_tokenizers=(
+                            StepTokenizers.Coord(),
+                            StepTokenizers.Coord(),
+                        )
+                    )
+                    not in x,
+                ),
+            ]
+        )
+    ],
+)
+def test_all_instances2(
+    type_: FiniteValued,
+    validation_funcs: frozendict.frozendict[
+        FiniteValued, Callable[[FiniteValued], bool]
+    ],
+    assertion: Callable[[list[FiniteValued]], bool],
+):
+    assert assertion(all_instances(type_, validation_funcs))
+
+
+@mark.parametrize(
+    "coords, result",
+    [
+        param(
+            np.array(coords),
+            res,
+            id=f"{coords}",
+        )
+        for coords, res in (
+            [
+                ([[0, 0], [0, 1], [1, 1]], VOCAB.PATH_RIGHT),
+                ([[0, 0], [1, 0], [1, 1]], VOCAB.PATH_LEFT),
+                ([[0, 0], [0, 1], [0, 2]], VOCAB.PATH_FORWARD),
+                ([[0, 0], [0, 1], [0, 0]], VOCAB.PATH_BACKWARD),
+                ([[0, 0], [0, 1], [0, 1]], VOCAB.PATH_STAY),
+                ([[1, 1], [0, 1], [0, 0]], VOCAB.PATH_LEFT),
+                ([[1, 1], [1, 0], [0, 0]], VOCAB.PATH_RIGHT),
+                ([[0, 2], [0, 1], [0, 0]], VOCAB.PATH_FORWARD),
+                ([[0, 0], [0, 1], [0, 0]], VOCAB.PATH_BACKWARD),
+                ([[0, 1], [0, 1], [0, 0]], ValueError),
+                ([[0, 1], [1, 1], [0, 0]], ValueError),
+                ([[1, 0], [1, 1], [0, 0]], ValueError),
+                ([[0, 1], [0, 2], [0, 0]], ValueError),
+                ([[0, 1], [0, 0], [0, 0]], VOCAB.PATH_STAY),
+                ([[1, 1], [0, 0], [0, 1]], ValueError),
+                ([[1, 1], [0, 0], [1, 0]], ValueError),
+                ([[0, 2], [0, 0], [0, 1]], ValueError),
+                ([[0, 0], [0, 0], [0, 1]], ValueError),
+                ([[0, 1], [0, 0], [0, 1]], VOCAB.PATH_BACKWARD),
+                ([[-1, 0], [0, 0], [1, 0]], VOCAB.PATH_FORWARD),
+                ([[-1, 0], [0, 0], [0, 1]], VOCAB.PATH_LEFT),
+                ([[-1, 0], [0, 0], [-1, 0]], VOCAB.PATH_BACKWARD),
+                ([[-1, 0], [0, 0], [0, -1]], VOCAB.PATH_RIGHT),
+                ([[-1, 0], [0, 0], [1, 0], [2, 0]], ValueError),
+                ([[-1, 0], [0, 0]], ValueError),
+                ([[-1, 0, 0], [0, 0, 0]], ValueError),
+            ]
+        )
+    ],
+)
+def test_get_relative_direction(
+    coords: Int[np.ndarray, "prev_cur_next=3 axis=2"], result: str | type[Exception]
+):
+    if isinstance(result, type) and issubclass(result, Exception):
+        with pytest.raises(result):
+            get_relative_direction(coords)
+        return
+    assert get_relative_direction(coords) == result
+
+
+@mark.parametrize(
+    "edges, result",
+    [
+        param(
+            edges,
+            res,
+            id=f"{edges}",
+        )
+        for edges, res in (
+            [
+                (np.array([[0, 0], [0, 1]]), 1),
+                (np.array([[1, 0], [0, 1]]), 2),
+                (np.array([[-1, 0], [0, 1]]), 2),
+                (np.array([[0, 0], [5, 3]]), 8),
+                (
+                    np.array(
+                        [
+                            [[0, 0], [0, 1]],
+                            [[1, 0], [0, 1]],
+                            [[-1, 0], [0, 1]],
+                            [[0, 0], [5, 3]],
+                        ]
+                    ),
+                    [1, 2, 2, 8],
+                ),
+                (np.array([[[0, 0], [5, 3]]]), [8]),
+            ]
+        )
+    ],
+)
+def test_manhattan_distance(
+    edges: ConnectionArray | Connection,
+    result: Int[np.ndarray, "edges"] | Int[np.ndarray, ""] | type[Exception],
+):
+    if isinstance(result, type) and issubclass(result, Exception):
+        with pytest.raises(result):
+            manhattan_distance(edges)
+        return
+    assert np.array_equal(manhattan_distance(edges), np.array(result, dtype=np.int8))
+
+
+@mark.parametrize(
+    "n",
+    [param(n) for n in [2, 3, 5, 20]],
+)
+def test_lattice_connection_arrray(n):
+    edges = lattice_connection_array(n)
+    assert tuple(edges.shape) == (2 * n * (n - 1), 2, 2)
+    assert np.all(np.sum(edges[:, 1], axis=1) > np.sum(edges[:, 0], axis=1))
+    assert tuple(np.unique(edges, axis=0).shape) == (2 * n * (n - 1), 2, 2)
+
+
+@mark.parametrize(
+    "edges, maze",
+    [
+        param(
+            edges(),
+            maze,
+            id=f"edges[{i}]; maze[{j}]",
+        )
+        for (i, edges), (j, maze) in itertools.product(
+            enumerate(
+                [
+                    lambda: lattice_connection_array(GRID_N),
+                    lambda: np.flip(lattice_connection_array(GRID_N), axis=1),
+                    lambda: lattice_connection_array(GRID_N - 1),
+                    lambda: numpy_rng.choice(
+                        lattice_connection_array(GRID_N), 2 * GRID_N, axis=0
+                    ),
+                    lambda: numpy_rng.choice(
+                        lattice_connection_array(GRID_N), 1, axis=0
+                    ),
+                ]
+            ),
+            enumerate(MAZE_DATASET.mazes),
+        )
+    ],
+)
+def test_is_connection(edges: ConnectionArray, maze: LatticeMaze):
+    output = is_connection(edges, maze.connection_list)
+    sorted_edges = np.sort(edges, axis=1)
+    edge_direction = (
+        (sorted_edges[:, 1, :] - sorted_edges[:, 0, :])[:, 0] == 0
+    ).astype(np.int8)
+    assert np.array_equal(
+        output,
+        maze.connection_list[
+            edge_direction, sorted_edges[:, 0, 0], sorted_edges[:, 0, 1]
+        ],
+    )

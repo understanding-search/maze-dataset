@@ -75,8 +75,8 @@ m.as_ascii()
 # RGB image, optionally without solution or endpoints, suitable for CNNs
 m.as_pixels() 
 # text format for autoreregressive transformers
-from maze_dataset.tokenization import MazeTokenizer, TokenizationMode
-m.as_tokens(maze_tokenizer=MazeTokenizer(
+from maze_dataset.tokenization import MazeTokenizerModular, TokenizationMode
+m.as_tokens(maze_tokenizer=MazeTokenizerModular(
     tokenization_mode=TokenizationMode.AOTP_UT_rasterized, max_grid_size=100,
 ))
 # advanced visualization with many features

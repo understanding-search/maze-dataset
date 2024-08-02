@@ -1,13 +1,18 @@
 import warnings
-from dataclasses import dataclass
+from dataclasses import dataclass, field, make_dataclass
 
 import numpy as np
-from jaxtyping import Int8
+from jaxtyping import Bool, Int8
 
-Coord = Int8[np.ndarray, "x y"]
+from maze_dataset.utils import corner_first_ndindex
+
+Coord = Int8[np.ndarray, "row_col"]
 CoordTup = tuple[int, int]
-CoordArray = Int8[np.ndarray, "coord x y"]
+CoordArray = Int8[np.ndarray, "coord row_col"]
 CoordList = list[CoordTup]
+Connection = Int8[np.ndarray, "coord=2 row_col=2"]
+ConnectionList = Bool[np.ndarray, "lattice_dim=2 row col"]
+ConnectionArray = Int8[np.ndarray, "edges leading_trailing_coord=2 row_col=2"]
 
 
 class SpecialTokensError(Exception):
@@ -115,3 +120,75 @@ NEIGHBORS_MASK: Int8[np.ndarray, "coord point"] = np.array(
         [-1, 0],  # left
     ]
 )
+
+
+_VOCAB_FIELDS: list = [
+    # *[(k, str, field(default=v)) for k, v in SPECIAL_TOKENS.items()],
+    ("COORD_PRE", str, field(default="(")),
+    ("COORD_INTRA", str, field(default=",")),
+    ("COORD_POST", str, field(default=")")),
+    ("TARGET_INTRA", str, field(default="=")),
+    ("TARGET_POST", str, field(default="||")),
+    ("PATH_INTRA", str, field(default=":")),
+    ("PATH_POST", str, field(default="THEN")),
+    ("NEGATIVE", str, field(default="-")),
+    ("UNKNOWN", str, field(default="<UNK>")),
+    *[
+        (f"TARGET_{a}", str, field(default=f"TARGET_{a}"))
+        for a in "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    ],
+    ("TARGET_NORTH", str, field(default="TARGET_NORTH")),
+    ("TARGET_SOUTH", str, field(default="TARGET_SOUTH")),
+    ("TARGET_EAST", str, field(default="TARGET_EAST")),
+    ("TARGET_WEST", str, field(default="TARGET_WEST")),
+    ("TARGET_NORTHEAST", str, field(default="TARGET_NORTHEAST")),
+    ("TARGET_NORTHWEST", str, field(default="TARGET_NORTHWEST")),
+    ("TARGET_SOUTHEAST", str, field(default="TARGET_SOUTHEAST")),
+    ("TARGET_SOUTHWEST", str, field(default="TARGET_SOUTHWEST")),
+    ("TARGET_CENTER", str, field(default="TARGET_CENTER")),
+    ("PATH_NORTH", str, field(default="NORTH")),
+    ("PATH_SOUTH", str, field(default="SOUTH")),
+    ("PATH_EAST", str, field(default="EAST")),
+    ("PATH_WEST", str, field(default="WEST")),
+    ("PATH_FORWARD", str, field(default="FORWARD")),
+    ("PATH_BACKWARD", str, field(default="BACKWARD")),
+    ("PATH_LEFT", str, field(default="LEFT")),
+    ("PATH_RIGHT", str, field(default="RIGHT")),
+    ("PATH_STAY", str, field(default="STAY")),
+    *[
+        (f"I_{i:03}", str, field(default=f"+{i}")) for i in range(256)
+    ],  # General purpose positive int tokens. Used by `StepTokenizers.Distance`.
+    *[
+        (f"CTT_{i}", str, field(default=f"{i}")) for i in range(128)
+    ],  # Coord tuple tokens
+    *[
+        (f"I_N{-i:03}", str, field(default=f"{i}")) for i in range(-256, 0)
+    ],  # General purpose negative int tokens
+    ("PATH_PRE", str, field(default="STEP")),
+    ("ADJLIST_PRE", str, field(default="ADJ_GROUP")),
+    ("ADJLIST_INTRA", str, field(default="&")),
+    ("ADJLIST_WALL", str, field(default="<XX>")),
+    *[(f"RESERVE_{i}", str, field(default=f"<RESERVE_{i}>")) for i in range(708, 1596)],
+    *[
+        (f"UT_{x:02}_{y:02}", str, field(default=f"({x},{y})"))
+        for x, y in corner_first_ndindex(50)
+    ],
+]
+
+
+_VOCAB_BASE: type = make_dataclass(
+    "_VOCAB_BASE", fields=_VOCAB_FIELDS, bases=(_SPECIAL_TOKENS_BASE,), frozen=True
+)
+# TODO: edit __getitem__ to add warning for accessing a RESERVE token
+
+VOCAB: _VOCAB_BASE = _VOCAB_BASE()
+VOCAB_LIST: list[str] = list(VOCAB.values())
+VOCAB_TOKEN_TO_INDEX: dict[str, int] = {token: i for i, token in enumerate(VOCAB_LIST)}
+
+# CARDINAL_MAP: Maps tuple(coord1 - coord0) : cardinal direction
+CARDINAL_MAP: dict[tuple[int, int], str] = {
+    (-1, 0): VOCAB.PATH_NORTH,
+    (1, 0): VOCAB.PATH_SOUTH,
+    (0, -1): VOCAB.PATH_WEST,
+    (0, 1): VOCAB.PATH_EAST,
+}

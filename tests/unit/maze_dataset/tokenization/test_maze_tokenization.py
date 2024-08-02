@@ -6,14 +6,18 @@ from maze_dataset import (
     MazeDatasetConfig,
     SolvedMaze,
 )
-from maze_dataset.tokenization import MazeTokenizer, TokenizationMode
+from maze_dataset.testing_utils import LEGACY_AND_EQUIVALENT_TOKENIZERS
+from maze_dataset.tokenization import MazeTokenizer, MazeTokenizerModular
 
 
 @mark.parametrize(
-    "tok_mode",
-    [param(tok_mode, id=tok_mode.name) for tok_mode in TokenizationMode],
+    "tokenizer",
+    [
+        param(tokenizer, id=tokenizer.name)
+        for tokenizer in LEGACY_AND_EQUIVALENT_TOKENIZERS
+    ],
 )
-def test_tokenization_roundtrip(tok_mode: TokenizationMode):
+def test_tokenization_roundtrip(tokenizer: MazeTokenizer | MazeTokenizerModular):
     dataset: MazeDataset = MazeDataset.from_config(
         MazeDatasetConfig(
             name="test",
@@ -22,10 +26,6 @@ def test_tokenization_roundtrip(tok_mode: TokenizationMode):
             maze_ctor=LatticeMazeGenerators.gen_dfs,
         ),
         allow_generation_metadata_filter_mismatch=True,
-    )
-    tokenizer: MazeTokenizer = MazeTokenizer(
-        tokenization_mode=tok_mode,
-        max_grid_size=20,
     )
 
     dataset_tokenized: list[list[str]] = dataset.as_tokens(tokenizer)
