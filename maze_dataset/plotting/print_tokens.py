@@ -1,10 +1,12 @@
 import html
+import textwrap
 from typing import Literal, Sequence
 
 import matplotlib
 import numpy as np
 from IPython.display import HTML, display
 from jaxtyping import UInt8
+from muutils.misc import flatten
 
 from maze_dataset.constants import SPECIAL_TOKENS
 from maze_dataset.token_utils import tokens_between
@@ -46,8 +48,14 @@ def color_tokens_rgb(
     fmt: FormatType = "html",
     template: str | None = None,
     clr_join: str | None = None,
+    max_length: int | None = None,
 ) -> str:
-    """tokens will not be escaped if `fmt` is None"""
+    """
+    tokens will not be escaped if `fmt` is None
+
+    # Parameters:
+    - `max_length: int | None`: Max number of characters before triggering a line wrap, i.e., making a new colorbox. If `None`, no limit on max length.
+    """
     # process format
     if fmt is None:
         assert template is not None
@@ -57,6 +65,24 @@ def color_tokens_rgb(
         assert clr_join is None
         template = TEMPLATES[fmt]
         clr_join = _COLOR_JOIN[fmt]
+
+    if max_length is not None:
+        wrapped = list(
+            map(
+                lambda x: textwrap.wrap(
+                    x, width=max_length, break_long_words=False, break_on_hyphens=False
+                ),
+                tokens,
+            )
+        )
+        colors = list(
+            flatten(
+                [[colors[i]] * len(wrapped[i]) for i in range(len(wrapped))],
+                levels_to_flatten=1,
+            )
+        )
+        wrapped = list(flatten(wrapped, levels_to_flatten=1))
+        tokens = wrapped
 
     # put everything together
     output = [
@@ -127,9 +153,7 @@ _MAZE_TOKENS_DEFAULT_COLORS: dict[tuple[str, str], tuple[int, int, int]] = {
 
 
 def color_maze_tokens_AOTP(
-    tokens: list[str],
-    fmt: FormatType = "html",
-    template: str | None = None,
+    tokens: list[str], fmt: FormatType = "html", template: str | None = None, **kwargs
 ) -> str:
     output: list[str] = [
         " ".join(
@@ -145,10 +169,7 @@ def color_maze_tokens_AOTP(
     )
 
     return color_tokens_rgb(
-        tokens=output,
-        colors=colors,
-        fmt=fmt,
-        template=template,
+        tokens=output, colors=colors, fmt=fmt, template=template, **kwargs
     )
 
 
