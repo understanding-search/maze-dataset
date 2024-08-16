@@ -1305,7 +1305,7 @@ class StepSizes(__TokenizerElementNamespace):
         def attribute_key(cls) -> str:
             return StepSizes.key
 
-        @abc.abstractmethod
+        @abc.abstractmethod  # TODO: make this a static/class method, allowing ForksAndStraightaways to skip object construction at every call
         def _step_single_indices(self, maze: SolvedMaze) -> list[int]:
             """Returns the indices of `maze.solution` corresponding to the steps to be tokenized."""
             raise NotImplementedError(
