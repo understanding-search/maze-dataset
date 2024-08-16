@@ -2,6 +2,7 @@
 
 import abc
 import hashlib
+import random
 import warnings
 from enum import Enum
 from functools import cached_property
@@ -930,11 +931,11 @@ class EdgePermuters(__TokenizerElementNamespace):
 
     @serializable_dataclass(frozen=True, kw_only=True)
     class RandomCoords(_EdgePermuter):
-        """Permutes randomly."""
+        """Permutes each edge randomly."""
 
         @staticmethod
         def _permute(lattice_edges: ConnectionArray) -> ConnectionArray:
-            numpy_rng.shuffle(lattice_edges, 1)
+            numpy_rng.permuted(lattice_edges, axis=1, out=lattice_edges)
             return lattice_edges
 
     @serializable_dataclass(frozen=True, kw_only=True)
@@ -1158,6 +1159,16 @@ class AdjListTokenizers(__TokenizerElementNamespace):
             )
             # then, we need to group the edges
             groups: Sequence[ConnectionArray] = self.edge_grouping._group_edges(edges)
+            # shuffle the groups if specified
+            if self.shuffle_d0:
+                if isinstance(groups, np.ndarray):
+                    numpy_rng.shuffle(groups, axis=0)
+                elif isinstance(groups, list):
+                    random.shuffle(groups)
+                else:
+                    raise TypeError(
+                        f"`groups` is an unexpected type {type(groups)}. Only types `list` and `np.ndarray` are currently supported."
+                    )
             # Tokenize each group with optional delimiters
             tokens: list[str] = list(
                 flatten(

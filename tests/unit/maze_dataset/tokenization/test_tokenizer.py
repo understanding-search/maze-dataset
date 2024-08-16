@@ -499,8 +499,13 @@ def test_path_tokenizers(pt: PathTokenizers._PathTokenizer, manual_maze: MANUAL_
     ],
 )
 def test_edge_permuters(ep: EdgePermuters._EdgePermuter, maze: LatticeMaze):
-    edges: ConnectionArray = connection_list_to_adj_list(maze.connection_list)
-    edges_copy = np.copy(edges)
+    edges: ConnectionArray = connection_list_to_adj_list(
+        maze.connection_list, shuffle_d0=False, shuffle_d1=False
+    )
+    edges_copy: ConnectionArray = connection_list_to_adj_list(
+        maze.connection_list, shuffle_d0=False, shuffle_d1=False
+    )
+    assert np.array_equal(edges, edges_copy)
     old_shape = edges.shape
     permuted: ConnectionArray = ep._permute(edges)
     match ep:
@@ -508,7 +513,7 @@ def test_edge_permuters(ep: EdgePermuters._EdgePermuter, maze: LatticeMaze):
             assert permuted.shape == old_shape
             assert edges is permuted
             i = 0
-            while np.array_equal(permuted, edges_copy) and i < 5:
+            while np.array_equal(permuted, edges_copy) and i < 2:
                 # Permute again in case for small mazes the random selection happened to not change anything
                 permuted: ConnectionArray = ep._permute(permuted)
                 i += 1
