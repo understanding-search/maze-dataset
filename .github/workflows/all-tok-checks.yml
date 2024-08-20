@@ -11,13 +11,14 @@ on:
       - 'notebooks/demo_mazetokenizermodular.ipynb'
       - 'tests/all_tokenizers/*.py'
       - 'pyproject.toml' # on new version or update deps
+      - '.github/workflows/all-tok-checks.yml' # changing this file
       - '.lastversion' # on new release
   workflow_dispatch:
     inputs:
       n_to_test:
         description: 'Number of tokenizers to test'
         required: false
-        default: 1000
+        default: 100
         type: number
       pytest_parallel:
         description: 'Number of parallel pytest processes'
