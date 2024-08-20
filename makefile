@@ -115,7 +115,7 @@ test_tok_hashes:
 test_all_tok:
 	@echo "run tests on all tokenizers. can pass NUM_TOKENIZERS_TO_TEST arg or SKIP_HASH_TEST"
 	@echo "NUM_TOKENIZERS_TO_TEST=$(NUM_TOKENIZERS_TO_TEST)"
-	@if [ "$(SKIP_HASH_TEST)" = "0" ]; then \
+	@if [ "$(SKIP_HASH_TEST)" != "1" ]; then \
 		echo "Running tokenizer hash tests"; \
 		$(MAKE) test_tok_hashes; \
 	else \
