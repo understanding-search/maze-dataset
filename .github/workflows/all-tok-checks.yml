@@ -18,7 +18,7 @@ on:
       n_to_test:
         description: 'Number of tokenizers to test'
         required: false
-        default: 300
+        default: 1000
         type: number
       pytest_parallel:
         description: '1 to parallelize tests with -n auto, to run without parallelization'
@@ -47,6 +47,6 @@ jobs:
           make test_tok_hashes
       - name: all tokenizer tests
         run: |
-          N_TO_TEST=${{ github.event.inputs.n_to_test || '300' }}
+          N_TO_TEST=${{ github.event.inputs.n_to_test || '1000' }}
           PYTEST_PARALLEL=${{ github.event.inputs.pytest_parallel || '1' }}
           make test_all_tok SKIP_HASH_TEST=1 NUM_TOKENIZERS_TO_TEST=$N_TO_TEST PYTEST_PARALLEL=$PYTEST_PARALLEL
