@@ -26,7 +26,6 @@ from maze_dataset.tokenization import (
 from maze_dataset.tokenization.all_tokenizers import (
     EVERY_TEST_TOKENIZERS,
     MAZE_TOKENIZER_MODULAR_DEFAULT_VALIDATION_FUNCS,
-    get_all_tokenizers,
     sample_tokenizers_for_test,
     save_hashes,
 )
