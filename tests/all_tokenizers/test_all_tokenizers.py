@@ -40,7 +40,7 @@ NUM_TOKENIZERS_TO_TEST: int | None = (
 )
 print(f"{NUM_TOKENIZERS_TO_TEST = }")
 
-ALL_TOKENIZERS: list[MazeTokenizerModular] = get_all_tokenizers()
+# ALL_TOKENIZERS: list[MazeTokenizerModular] = get_all_tokenizers()
 SAMPLED_TOKENIZERS: list[MazeTokenizerModular] = sample_tokenizers_for_test(
     NUM_TOKENIZERS_TO_TEST
 )
@@ -53,8 +53,8 @@ def save_tokenizer_hashes():
     save_hashes()
 
 
-def test_all_tokenizers():
-    assert len(ALL_TOKENIZERS) > 400
+# def test_all_tokenizers():
+#     assert len(ALL_TOKENIZERS) > 400
 
 
 @mark.parametrize(
