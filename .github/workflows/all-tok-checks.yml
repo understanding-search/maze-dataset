@@ -47,4 +47,4 @@ jobs:
         run: |
           N_TO_TEST=${{ github.event.inputs.n_to_test || '100' }}
           PYTEST_PARALLEL=${{ github.event.inputs.pytest_parallel || '1' }}
-          make test_all_tok NUM_TOKENIZERS_TO_TEST=${{ inputs.n_to_test }} PYTEST_PARALLEL=${{ inputs.pytest_parallel }}
+          make test_all_tok NUM_TOKENIZERS_TO_TEST=$N_TO_TEST PYTEST_PARALLEL=$PYTEST_PARALLEL
