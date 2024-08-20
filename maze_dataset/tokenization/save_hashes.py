@@ -87,7 +87,7 @@ if __name__ == "__main__":
         with SpinnerContext(
             spinner_chars="square_dot",
             update_interval=0.5,
-            initial_value="loading saved hashes...",
+            message="loading saved hashes...",
         ):
             read_hashes: np.ndarray = np.load(temp_path)["hashes"]
             read_hashes_pkg: np.ndarray = _load_tokenizer_hashes()
@@ -96,7 +96,7 @@ if __name__ == "__main__":
         with SpinnerContext(
             spinner_chars="square_dot",
             update_interval=0.1,
-            format_string="checking hashes {}",
+            message="checking hashes: ",
         ) as sp:
             sp.update_value("returned vs read")
             assert np.array_equal(returned_hashes, read_hashes)

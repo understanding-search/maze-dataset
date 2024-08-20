@@ -1890,13 +1890,13 @@ tests = ["pytest (>=4.6)"]
 
 [[package]]
 name = "muutils"
-version = "0.6.7"
+version = "0.6.8"
 description = "miscellaneous python utilities"
 optional = false
 python-versions = "<4.0,>=3.8"
 files = [
-    {file = "muutils-0.6.7-py3-none-any.whl", hash = "sha256:91cc352a16f701f00b476fd53d9d3f858d785cc6275faabd620d34150940712c"},
-    {file = "muutils-0.6.7.tar.gz", hash = "sha256:06d40f6e6c5390418b091a7326f7d78bc4470cc5741a13f4a4160c382f8c1eae"},
+    {file = "muutils-0.6.8-py3-none-any.whl", hash = "sha256:bbabb8c5865a3cfedcb0dc12df00326e438c05358164c71f71f633894757d648"},
+    {file = "muutils-0.6.8.tar.gz", hash = "sha256:a5aed51626b40b3bc5ff6fc4c01ec5289859c095ad1cfa54351991452e797fec"},
 ]
 
 [package.dependencies]
@@ -3588,4 +3588,4 @@ pandas = ["pandas (>=1.5.3)"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10.6"
-content-hash = "9fcc8cf7358da79a3d8746e3cc11b67ed396a449cf5aa8c03d0e00b1d5205702"
+content-hash = "8fe039f6ea4e84e496363c9882e32ee2f5ad845813d5d3dea641eb9e9aff5eba"
