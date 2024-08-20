@@ -21,7 +21,7 @@ on:
         default: 100
         type: number
       pytest_parallel:
-        description: 'Number of parallel pytest processes'
+        description: '1 to parallelize tests with -n auto, to run without parallelization'
         required: false
         default: 1
         type: number
@@ -44,4 +44,7 @@ jobs:
           poetry install
 
       - name: All Tokenizer Tests
-        run: make test_all_tok NUM_TOKENIZERS_TO_TEST=${{ inputs.n_to_test }} PYTEST_PARALLEL=${{ inputs.pytest_parallel }}
+        run: |
+          N_TO_TEST=${{ github.event.inputs.n_to_test || '100' }}
+          PYTEST_PARALLEL=${{ github.event.inputs.pytest_parallel || '1' }}
+          make test_all_tok NUM_TOKENIZERS_TO_TEST=${{ inputs.n_to_test }} PYTEST_PARALLEL=${{ inputs.pytest_parallel }}
