@@ -112,9 +112,17 @@ test_tok_hashes:
 
 
 .PHONY: test_all_tok
-test_all_tok: test_tok_hashes
-	@echo "run tests on all tokenizers. can pass NUM_TOKENIZERS_TO_TEST arg"
+test_all_tok:
+	@echo "run tests on all tokenizers. can pass NUM_TOKENIZERS_TO_TEST arg or SKIP_HASH_TEST"
+	@echo "NUM_TOKENIZERS_TO_TEST=$(NUM_TOKENIZERS_TO_TEST)"
+	@if [ "$(SKIP_HASH_TEST)" = "0" ]; then \
+		echo "Running tokenizer hash tests"; \
+		$(MAKE) test_tok_hashes; \
+	else \
+		echo "Skipping tokenizer hash tests"; \
+	fi
 	$(POETRY_RUN_PYTHON) -m pytest $(PYTEST_OPTIONS) --verbosity=-1 --durations=50 tests/all_tokenizers
+
 
 
 .PHONY: convert_notebooks
