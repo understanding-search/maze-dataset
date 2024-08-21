@@ -1,6 +1,6 @@
 """
 Shared utilities for tests only.
-Do not import into any module outside of the tests directory.
+Do not import into any module outside of the tests directory
 """
 
 import itertools
