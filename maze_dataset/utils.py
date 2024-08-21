@@ -5,23 +5,12 @@ import typing
 from dataclasses import Field
 from functools import cache, wraps
 from types import UnionType
-from typing import (
-    Callable,
-    Generator,
-    Iterable,
-    Literal,
-    Mapping,
-    TypeVar,
-    get_args,
-    get_origin,
-)
+from typing import Callable, Generator, Iterable, Literal, TypeVar, get_args, get_origin
 
 import frozendict
 import numpy as np
 from jaxtyping import Bool, Int, Int8
 from muutils.misc import IsDataclass, flatten, is_abstract
-
-WhenMissing = Literal["except", "skip", "include"]
 
 
 def bool_array_from_string(
@@ -188,65 +177,14 @@ def adj_list_to_nested_set(adj_list: list) -> set:
     }
 
 
-_AM_K = typing.TypeVar("_AM_K")
-_AM_V = typing.TypeVar("_AM_V")
-
-
-def apply_mapping(
-    mapping: Mapping[_AM_K, _AM_V],
-    iter: Iterable[_AM_K],
-    when_missing: WhenMissing = "skip",
-) -> list[_AM_V]:
-    """Given an and a mapping, apply the mapping to the iterable with certain options"""
-    output: list[_AM_V] = list()
-    item: _AM_K
-    for item in iter:
-        if item in mapping:
-            output.append(mapping[item])
-            continue
-        match when_missing:
-            case "skip":
-                continue
-            case "include":
-                output.append(item)
-            case "except":
-                raise ValueError(f"item {item} is missing from mapping {mapping}")
-            case _:
-                raise ValueError(f"invalid value for {when_missing = }")
-    return output
-
-
-def apply_mapping_chain(
-    mapping: Mapping[_AM_K, Iterable[_AM_V]],
-    iter: Iterable[_AM_K],
-    when_missing: WhenMissing = "skip",
-) -> list[_AM_V]:
-    """Given a list and a mapping, apply the mapping to the list"""
-    output: list[_AM_V] = list()
-    item: _AM_K
-    for item in iter:
-        if item in mapping:
-            output.extend(mapping[item])
-            continue
-        match when_missing:
-            case "skip":
-                continue
-            case "include":
-                output.append(item)
-            case "except":
-                raise ValueError(f"item {item} is missing from mapping {mapping}")
-            case _:
-                raise ValueError(f"invalid value for {when_missing = }")
-    return output
-
-
+FiniteValued = TypeVar("FiniteValued", bound=bool | IsDataclass | enum.Enum)
 """
 # `FiniteValued`
 The details of this type are not possible to fully define via the Python 3.10 typing library.
 This custom generic type is a generic domain of many types which have a finite, discrete, and well-defined range space.
-`FiniteValued` defines the domain of supported types for the `all_instances` function, since that function relies heavily on static typing. 
+`FiniteValued` defines the domain of supported types for the `all_instances` function, since that function relies heavily on static typing.
 These types may be nested in an arbitrarily deep tree via Container Types and Superclass Types (see below).
-The leaves of the tree must always be Primitive Types. 
+The leaves of the tree must always be Primitive Types.
 
 # `FiniteValued` Subtypes
 *: Indicates that this subtype is not yet supported by `all_instances`
@@ -254,7 +192,7 @@ The leaves of the tree must always be Primitive Types.
 ## Non-`FiniteValued` (Unbounded) Types
 These are NOT valid subtypes, and are listed for illustrative purposes only.
 This list is not comprehensive.
-While the finite and discrete nature of digital computers means that the cardinality of these types is technically finite, 
+While the finite and discrete nature of digital computers means that the cardinality of these types is technically finite,
 they are considered unbounded types in this context.
 - No Container subtype may contain any of these unbounded subtypes.
 - `int`
@@ -265,7 +203,7 @@ they are considered unbounded types in this context.
 - `tuple`: Tuple types without a fixed length are unbounded
 
 ## Primitive Types
-Primitive types are non-nested types which resolve directly to a concrete range of values 
+Primitive types are non-nested types which resolve directly to a concrete range of values
 - `bool`: has 2 possible values
 - *`enum.Enum`: The range of a concrete `Enum` subclass is its set of enum members
 - `typing.Literal`: Every type constructed using `Literal` has a finite set of possible literal values in its definition.
@@ -287,7 +225,6 @@ Their range is the union of the ranges of their subtypes.
 - *Standard abstract classes: Abstract dataclasses whose subclasses are all `FiniteValued` superclass or container types
 - `UnionType`: Any union of `FiniteValued` types, e.g., bool | Literal[2, 3]
 """
-FiniteValued = TypeVar("FiniteValued", bound=bool | IsDataclass | enum.Enum)
 
 
 def _apply_validation_func(

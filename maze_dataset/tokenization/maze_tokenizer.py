@@ -27,6 +27,7 @@ from muutils.json_serialize import (
 )
 from muutils.kappa import Kappa
 from muutils.misc import empty_sequence_if_attr_false, flatten
+from muutils.misc.sequence import WhenMissing
 from zanj.loading import load_item_recursive
 
 # from maze_dataset import SolvedMaze
@@ -54,11 +55,7 @@ from maze_dataset.token_utils import (
     strings_to_coords,
     tokens_between,
 )
-from maze_dataset.utils import (
-    WhenMissing,
-    corner_first_ndindex,
-    lattice_connection_array,
-)
+from maze_dataset.utils import corner_first_ndindex, lattice_connection_array
 
 
 class TokenError(ValueError):
