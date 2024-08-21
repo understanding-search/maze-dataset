@@ -7,7 +7,16 @@ import warnings
 from enum import Enum
 from functools import cached_property
 from pathlib import Path
-from typing import Any, Callable, Iterable, Literal, Mapping, Sequence, TypedDict, TypeVar
+from typing import (
+    Any,
+    Callable,
+    Iterable,
+    Literal,
+    Mapping,
+    Sequence,
+    TypedDict,
+    TypeVar,
+)
 
 import numpy as np
 from jaxtyping import Bool, Int, Int64
@@ -662,7 +671,9 @@ class _TokenizerElement(SerializableDataclass, abc.ABC):
         """
         raise NotImplementedError
 
+
 T = TypeVar("T", bound=_TokenizerElement)
+
 
 def mark_as_unsupported(is_valid: Callable[[T], bool], *args) -> T:
     """mark a _TokenizerElement as unsupported.

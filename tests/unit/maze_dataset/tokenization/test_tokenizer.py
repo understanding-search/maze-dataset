@@ -720,3 +720,31 @@ def test_adjlist_tokenizers(
             assert tok_counter[VOCAB.ADJACENCY_ENDLINE] == group_count
 
     assert tok_counter[VOCAB.CONNECTOR] + tok_counter[VOCAB.ADJLIST_WALL] == edge_count
+
+
+@mark.parametrize(
+    "tok_elem, valid",
+    [
+        param(
+            tok_elem,
+            valid,
+            id=f"{repr(tok_elem)}",
+        )
+        for tok_elem, valid in (
+            [
+                (StepSizes.ForksAndStraightaways(), False),
+                (StepSizes.Straightaways(), False),
+                (StepSizes.Forks(), True),
+                (AdjListTokenizers.AdjListCoord(), True),
+                (AdjListTokenizers.AdjListCoord(pre=True), False),
+                (AdjListTokenizers.AdjListCardinal(), True),
+                (AdjListTokenizers.AdjListCardinal(pre=True), False),
+                (EdgeGroupings.Ungrouped(), True),
+                (EdgeGroupings.ByLeadingCoord(), False),
+                (EdgeGroupings.ByLeadingCoord(connection_token_ordinal=0), False),
+            ]
+        )
+    ],
+)
+def test_unsupported_elements(tok_elem: _TokenizerElement, valid: bool):
+    assert tok_elem.is_valid() == valid
