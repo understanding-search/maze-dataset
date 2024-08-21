@@ -43,7 +43,6 @@ from maze_dataset.constants import (
 from maze_dataset.generation import numpy_rng
 from maze_dataset.maze.lattice_maze import LatticeMaze, SolvedMaze
 from maze_dataset.token_utils import (
-    TokenizerDeprecationWarning,
     TokenizerPendingDeprecationWarning,
     _coord_to_strings_indexed,
     _coord_to_strings_UT,
@@ -2022,17 +2021,9 @@ class MazeTokenizerModular(SerializableDataclass):
         )
 
     def is_AOTP(self) -> bool:
-        warnings.warn(
-            "`MazeTokenizerModular.is_AOTP` is deprecated. Use `MazeTokenizerModular.has_element(PromptSequencers.AOTP)` instead.",
-            TokenizerDeprecationWarning,
-        )
         return self.has_element(PromptSequencers.AOTP)
 
     def is_UT(self) -> bool:
-        warnings.warn(
-            "`MazeTokenizerModular.is_UT` is deprecated. Use `MazeTokenizerModular.has_element(CoordTokenizers.UT)` instead.",
-            TokenizerDeprecationWarning,
-        )
         return self.has_element(CoordTokenizers.UT)
 
     # Alternate Constructors
