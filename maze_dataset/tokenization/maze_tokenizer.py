@@ -497,7 +497,7 @@ class _TokenizerElement(SerializableDataclass, abc.ABC):
     @property
     def name(self) -> str:
         members_str: str = ", ".join(
-            [self._stringify(k, v) for k, v in self.__dict__.items() if k != "_type"]
+            [self._stringify(k, v) for k, v in self.__dict__.items() if k != "_type_"]
         )
         output: str = f"{type(self).__name__}({members_str})"
         if "." in output and output.index("(") > output.index("."):
@@ -519,10 +519,10 @@ class _TokenizerElement(SerializableDataclass, abc.ABC):
         Ignore Pylance complaining about the arg to `Literal` being an expression.
         """
         super().__init_subclass__(**kwargs)
-        cls._type = serializable_field(
+        cls._type_ = serializable_field(
             init=True, repr=False, default=repr(cls), assert_type=False
         )
-        cls.__annotations__["_type"] = Literal[repr(cls)]  # type: ignore
+        cls.__annotations__["_type_"] = Literal[repr(cls)]  # type: ignore
 
     def __hash__(self):
         "Stable hash to identify unique `MazeTokenizerModular` instances. uses name"
@@ -641,7 +641,7 @@ class _TokenizerElement(SerializableDataclass, abc.ABC):
                     )
                 )
                 for key, val in self.__dict__.items()
-                if key != "_type"
+                if key != "_type_"
             }
         }
 
