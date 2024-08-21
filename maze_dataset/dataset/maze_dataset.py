@@ -146,26 +146,23 @@ class MazeDatasetConfig(GPTDatasetConfig):
 
     def summary(self) -> dict:
         """return a summary of the config"""
+        # do we run this to make sure it doesn't error?
         super_summary: dict = super().summary()
         self_ser: dict = self.serialize()
-        return {
-            **dict(
-                name=self.name,
-                fname=self.to_fname(),
-                sdc_hash=self.stable_hash_cfg(),
-                seed=self.seed,
-                seq_len_min=self.seq_len_min,
-                seq_len_max=self.seq_len_max,
-                applied_filters=self.applied_filters,
-            ),
-            **{
-                "grid_n": self_ser["grid_n"],
-                "grid_shape": self_ser["grid_shape"],
-                "n_mazes": self_ser["n_mazes"],
-                "maze_ctor_name": self_ser["maze_ctor"]["__name__"],
-                "maze_ctor_kwargs": self_ser["maze_ctor_kwargs"],
-            },
-        }
+        return dict(
+            name=self.name,
+            fname=self.to_fname(),
+            sdc_hash=self.stable_hash_cfg(),
+            seed=self.seed,
+            seq_len_min=self.seq_len_min,
+            seq_len_max=self.seq_len_max,
+            applied_filters=self.applied_filters,
+            grid_n=self_ser["grid_n"],
+            n_mazes=self_ser["n_mazes"],
+            maze_ctor_name=self_ser["maze_ctor"]["__name__"],
+            maze_ctor_kwargs=self_ser["maze_ctor_kwargs"],
+            endpoint_kwargs=self_ser["endpoint_kwargs"],                
+        )
 
 
 # TODO: don't use this unless generating in parallel!

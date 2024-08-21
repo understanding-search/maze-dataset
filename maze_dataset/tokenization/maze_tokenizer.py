@@ -1945,7 +1945,7 @@ class MazeTokenizerModular(SerializableDataclass):
         """Serializes MazeTokenizer into a key for encoding in zanj"""
         return "-".join([type(self).__name__, self.prompt_sequencer.name])
 
-    def summary(self) -> dict[str, _TokenizerElement]:
+    def summary(self) -> dict[str, str]:
         """
         Single-level dictionary of the internal `TokenizerElement`s.
         """
