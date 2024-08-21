@@ -7,7 +7,16 @@ import warnings
 from enum import Enum
 from functools import cached_property
 from pathlib import Path
-from typing import Any, Callable, Iterable, Literal, Mapping, Sequence, TypedDict
+from typing import (
+    Any,
+    Callable,
+    Iterable,
+    Literal,
+    Mapping,
+    Sequence,
+    TypedDict,
+    TypeVar,
+)
 
 import numpy as np
 from jaxtyping import Bool, Int, Int64
@@ -445,33 +454,6 @@ class MazeTokenizer(SerializableDataclass):
                     pass
 
 
-def mark_as_unsupported(cls: "type[_TokenizerElement]") -> "type[_TokenizerElement]":
-    """mark a _TokenizerElement as unsupported.
-
-    Classes marked with this decoratorr won't show up in ALL_TOKENIZERS and thus wont be tested.
-    The classes marked in release 1.0.0 did work reliably before being marked, but they can't be instantiated since the decorator adds an abstract method.
-    The decorator exists to prune the space of tokenizers returned by `all_instances` both for testing and usage.
-    Previously, the space was too large, resulting in impractical runtimes.
-    These decorators could be removed in future releases to expand the space of possible tokenizers.
-    """
-
-    @staticmethod
-    @abc.abstractmethod
-    def _unsupported():
-        raise NotImplementedError(f"{cls.__name__} is not supported")
-
-    setattr(cls, "_unsupported", _unsupported)
-    setattr(
-        cls,
-        "__abstractmethods__",
-        getattr(cls, "__abstractmethods__", frozenset()).union(
-            frozenset([_unsupported])
-        ),
-    )
-
-    return cls
-
-
 @serializable_dataclass(frozen=True, kw_only=True)
 class _TokenizerElement(SerializableDataclass, abc.ABC):
     """Superclass for tokenizer elements.
@@ -690,6 +672,26 @@ class _TokenizerElement(SerializableDataclass, abc.ABC):
         raise NotImplementedError
 
 
+T = TypeVar("T", bound=_TokenizerElement)
+
+
+def mark_as_unsupported(is_valid: Callable[[T], bool], *args) -> T:
+    """mark a _TokenizerElement as unsupported.
+
+    Classes marked with this decorator won't show up in ALL_TOKENIZERS and thus wont be tested.
+    The classes marked in release 1.0.0 did work reliably before being marked, but they can't be instantiated since the decorator adds an abstract method.
+    The decorator exists to prune the space of tokenizers returned by `all_instances` both for testing and usage.
+    Previously, the space was too large, resulting in impractical runtimes.
+    These decorators could be removed in future releases to expand the space of possible tokenizers.
+    """
+
+    def wrapper(cls):
+        cls.is_valid = is_valid
+        return cls
+
+    return wrapper
+
+
 class __TokenizerElementNamespace(abc.ABC):
     """ABC for namespaces
 
@@ -834,8 +836,8 @@ class EdgeGroupings(__TokenizerElementNamespace):
         def _group_edges(self, edges: ConnectionList) -> Sequence[ConnectionList]:
             return np.expand_dims(edges, 1)
 
-    @mark_as_unsupported
     @serializable_dataclass(frozen=True, kw_only=True)
+    @mark_as_unsupported(lambda self_: False)
     class ByLeadingCoord(_EdgeGrouping):
         """All edges with the same leading coord are grouped together.
 
@@ -1015,6 +1017,7 @@ class AdjListTokenizers(__TokenizerElementNamespace):
     key = "adj_list_tokenizer"
 
     @serializable_dataclass(frozen=True, kw_only=True)
+    @mark_as_unsupported(lambda self_: self_.pre is False)
     class _AdjListTokenizer(_TokenizerElement, abc.ABC):
         """
         Specifies how the adjacency list is tokenized.
@@ -1036,7 +1039,7 @@ class AdjListTokenizers(__TokenizerElementNamespace):
           - `evens`, `odds`: The leading coord is the one belonging to that coord subset. See `EdgeSubsets.ChessboardSublattice` for details.
         """
 
-        pre: Literal[False] = serializable_field(default=False, assert_type=False)
+        pre: bool = serializable_field(default=False, assert_type=False)
         post: bool = serializable_field(default=True)
         shuffle_d0: bool = serializable_field(default=True)
         edge_grouping: EdgeGroupings._EdgeGrouping = serializable_field(
@@ -1343,8 +1346,8 @@ class StepSizes(__TokenizerElementNamespace):
             """Returns the indices of `maze.solution` corresponding to the steps to be tokenized."""
             return list(range(maze.solution.shape[0]))
 
-    @mark_as_unsupported
     @serializable_dataclass(frozen=True, kw_only=True)
+    @mark_as_unsupported(lambda self_: False)
     class Straightaways(_StepSize):
         """
         Only coords where the path turns are represented in the path.
@@ -1375,8 +1378,8 @@ class StepSizes(__TokenizerElementNamespace):
             """Returns the indices of `maze.solution` corresponding to the steps to be tokenized."""
             return maze.get_solution_forking_points(always_include_endpoints=True)[0]
 
-    @mark_as_unsupported
     @serializable_dataclass(frozen=True, kw_only=True)
+    @mark_as_unsupported(lambda self_: False)
     class ForksAndStraightaways(_StepSize):
         """
         Includes the union of the coords included by `Forks` and `Straightaways`.
