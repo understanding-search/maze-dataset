@@ -1890,13 +1890,13 @@ tests = ["pytest (>=4.6)"]
 
 [[package]]
 name = "muutils"
-version = "0.6.8"
+version = "0.6.9"
 description = "miscellaneous python utilities"
 optional = false
 python-versions = "<4.0,>=3.8"
 files = [
-    {file = "muutils-0.6.8-py3-none-any.whl", hash = "sha256:bbabb8c5865a3cfedcb0dc12df00326e438c05358164c71f71f633894757d648"},
-    {file = "muutils-0.6.8.tar.gz", hash = "sha256:a5aed51626b40b3bc5ff6fc4c01ec5289859c095ad1cfa54351991452e797fec"},
+    {file = "muutils-0.6.9-py3-none-any.whl", hash = "sha256:5c0de68eab09378b5e83360632861b065297ab90e7373f9705bec08e0a9712bc"},
+    {file = "muutils-0.6.9.tar.gz", hash = "sha256:78c749b6fa8b07c1397127cdf4d3dc39f5f417cd1c8f197611d0c84aed9f70c5"},
 ]
 
 [package.dependencies]
@@ -3441,13 +3441,13 @@ typing-extensions = ">=3.7.4.3"
 
 [[package]]
 name = "types-python-dateutil"
-version = "2.9.0.20240316"
+version = "2.9.0.20240821"
 description = "Typing stubs for python-dateutil"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "types-python-dateutil-2.9.0.20240316.tar.gz", hash = "sha256:5d2f2e240b86905e40944dd787db6da9263f0deabef1076ddaed797351ec0202"},
-    {file = "types_python_dateutil-2.9.0.20240316-py3-none-any.whl", hash = "sha256:6b8cb66d960771ce5ff974e9dd45e38facb81718cc1e208b10b1baccbfdbee3b"},
+    {file = "types-python-dateutil-2.9.0.20240821.tar.gz", hash = "sha256:9649d1dcb6fef1046fb18bebe9ea2aa0028b160918518c34589a46045f6ebd98"},
+    {file = "types_python_dateutil-2.9.0.20240821-py3-none-any.whl", hash = "sha256:f5889fcb4e63ed4aaa379b44f93c32593d50b9a94c9a60a0c854d8cc3511cd57"},
 ]
 
 [[package]]
@@ -3588,4 +3588,4 @@ pandas = ["pandas (>=1.5.3)"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10.6"
-content-hash = "8fe039f6ea4e84e496363c9882e32ee2f5ad845813d5d3dea641eb9e9aff5eba"
+content-hash = "42b0e7910ad8f37bc1afaac6317092cfb30633a10eb7607f31ef33aa5d2d41f4"
