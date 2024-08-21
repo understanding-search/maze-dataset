@@ -114,7 +114,7 @@ test_tok_hashes:
 .PHONY: test_all_tok
 test_all_tok: test_tok_hashes
 	@echo "run tests on all tokenizers"
-	$(POETRY_RUN_PYTHON) -m pytest $(PYTEST_OPTIONS) --verbosity=-1 --durations=0 tests/all_tokenizers
+	$(POETRY_RUN_PYTHON) -m pytest $(PYTEST_OPTIONS) --verbosity=-1 --durations=50 tests/all_tokenizers
 
 
 .PHONY: convert_notebooks

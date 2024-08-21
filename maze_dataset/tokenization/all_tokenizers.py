@@ -123,15 +123,13 @@ def save_hashes(
 ) -> Int64[np.ndarray, "tokenizers"]:
     """Computes, sorts, and saves the hashes of every member of `ALL_TOKENIZERS`."""
     spinner = (
-        functools.partial(
-            SpinnerContext, spinner_chars="square_dot", update_interval=0.5
-        )
+        functools.partial(SpinnerContext, spinner_chars="square_dot")
         if verbose
         else NoOpContextManager
     )
 
     # get all tokenizers
-    with spinner(initial_value="getting all tokenizers..."):
+    with spinner(initial_value="getting all tokenizers...", update_interval=2.0):
         all_tokenizers = get_all_tokenizers()
 
     # compute hashes
@@ -140,7 +138,8 @@ def save_hashes(
             parallelize if int(parallelize) > 1 else multiprocessing.cpu_count()
         )
         with spinner(
-            initial_value=f"using {n_cpus} processes to compute {len(all_tokenizers)} tokenizer hashes..."
+            initial_value=f"using {n_cpus} processes to compute {len(all_tokenizers)} tokenizer hashes...",
+            update_interval=2.0,
         ):
             with multiprocessing.Pool(processes=n_cpus) as pool:
                 hashes_list: list[int] = list(pool.map(hash, all_tokenizers))
@@ -171,7 +170,7 @@ def save_hashes(
             )
 
     # save and return
-    with spinner(initial_value="saving hashes..."):
+    with spinner(initial_value="saving hashes...", update_interval=0.5):
         if path is None:
             path = Path(__file__).parent / "MazeTokenizerModular_hashes.npz"
         np.savez_compressed(

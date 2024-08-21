@@ -33,6 +33,8 @@ from maze_dataset.tokenization.maze_tokenizer import (
 )
 
 if __name__ == "__main__":
+    # parse args
+    # ==================================================
     import argparse
 
     parser: argparse.ArgumentParser = argparse.ArgumentParser(
@@ -55,20 +57,33 @@ if __name__ == "__main__":
 
     args: argparse.Namespace = parser.parse_args()
 
-    if args.check:
+    if not args.check:
+        # write new hashes
+        # ==================================================
+        all_tokenizers.save_hashes(
+            path=args.path,
+            verbose=not args.quiet,
+            parallelize=args.parallelize,
+        )
+
+    else:
+        # check hashes only
+        # ==================================================
+
         # set up path
         if args.path is not None:
             raise ValueError("cannot use --check with a custom path")
         temp_path: Path = Path("tests/_temp/tok_hashes.npz")
         temp_path.parent.mkdir(parents=True, exist_ok=True)
 
-        # save to temp location
+        # generate and save to temp location
         returned_hashes: np.ndarray = all_tokenizers.save_hashes(
             path=temp_path,
             verbose=not args.quiet,
             parallelize=args.parallelize,
         )
 
+        # load saved hashes
         with SpinnerContext(
             spinner_chars="square_dot",
             update_interval=0.5,
@@ -77,6 +92,7 @@ if __name__ == "__main__":
             read_hashes: np.ndarray = np.load(temp_path)["hashes"]
             read_hashes_pkg: np.ndarray = _load_tokenizer_hashes()
 
+        # compare
         with SpinnerContext(
             spinner_chars="square_dot",
             update_interval=0.1,
@@ -88,9 +104,3 @@ if __name__ == "__main__":
             assert np.array_equal(returned_hashes, read_hashes_pkg)
             sp.update_value("returned vs ALL_TOKENIZER_HASHES")
             assert np.array_equal(read_hashes, ALL_TOKENIZER_HASHES)
-    else:
-        all_tokenizers.save_hashes(
-            path=args.path,
-            verbose=not args.quiet,
-            parallelize=args.parallelize,
-        )

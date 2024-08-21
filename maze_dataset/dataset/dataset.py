@@ -13,7 +13,7 @@ from muutils.json_serialize import (
     serializable_dataclass,
     serializable_field,
 )
-from muutils.misc import sanitize_fname, shorten_numerical_to_str
+from muutils.misc import sanitize_fname, shorten_numerical_to_str, stable_hash
 from muutils.mlutils import DEFAULT_SEED, GLOBAL_SEED, set_reproducibility
 from muutils.tensor_utils import DTYPE_MAP
 from torch.utils.data import Dataset
@@ -105,7 +105,7 @@ class GPTDatasetConfig(SerializableDataclass):
     def to_fname(self) -> str:
         """convert config to a filename"""
         self_json_str: str = json.dumps(self.serialize())
-        self_json_hash: int = int(abs(hash(self_json_str)) % 1e10)
+        self_json_hash: int = int(abs(stable_hash(self_json_str)) % 1e10)
         warnings.warn(
             f"using fallblack to_fname() method for {self.__class__.__name__}, this should be implemented by subclasses!"
         )
@@ -282,7 +282,7 @@ class GPTDataset(Dataset):
                             "other": [
                                 {
                                     "name": "collect_generation_meta",
-                                    "args": [],
+                                    "args": (),
                                     "kwargs": {},
                                 }
                             ],

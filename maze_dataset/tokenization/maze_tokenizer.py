@@ -2,6 +2,7 @@
 
 import abc
 import hashlib
+import random
 import warnings
 from enum import Enum
 from functools import cached_property
@@ -120,7 +121,7 @@ def get_tokens_up_to_path_start(
 
 _MAZETOKENIZER_PROPERTIES_TO_SERIALIZE: list[str] = [
     "name",
-    "grid_size",
+    "max_grid_size",
     "token_arr",
     "tokenizer_map",
     "vocab_size",
@@ -921,11 +922,11 @@ class EdgePermuters(__TokenizerElementNamespace):
 
     @serializable_dataclass(frozen=True, kw_only=True)
     class RandomCoords(_EdgePermuter):
-        """Permutes randomly."""
+        """Permutes each edge randomly."""
 
         @staticmethod
         def _permute(lattice_edges: ConnectionArray) -> ConnectionArray:
-            numpy_rng.shuffle(lattice_edges, 1)
+            numpy_rng.permuted(lattice_edges, axis=1, out=lattice_edges)
             return lattice_edges
 
     @serializable_dataclass(frozen=True, kw_only=True)
@@ -1150,6 +1151,16 @@ class AdjListTokenizers(__TokenizerElementNamespace):
             )
             # then, we need to group the edges
             groups: Sequence[ConnectionArray] = self.edge_grouping._group_edges(edges)
+            # shuffle the groups if specified
+            if self.shuffle_d0:
+                if isinstance(groups, np.ndarray):
+                    numpy_rng.shuffle(groups, axis=0)
+                elif isinstance(groups, list):
+                    random.shuffle(groups)
+                else:
+                    raise TypeError(
+                        f"`groups` is an unexpected type {type(groups)}. Only types `list` and `np.ndarray` are currently supported."
+                    )
             # Tokenize each group with optional delimiters
             tokens: list[str] = list(
                 flatten(
@@ -1297,7 +1308,7 @@ class StepSizes(__TokenizerElementNamespace):
         def attribute_key(cls) -> str:
             return StepSizes.key
 
-        @abc.abstractmethod
+        @abc.abstractmethod  # TODO: make this a static/class method, allowing ForksAndStraightaways to skip object construction at every call
         def _step_single_indices(self, maze: SolvedMaze) -> list[int]:
             """Returns the indices of `maze.solution` corresponding to the steps to be tokenized."""
             raise NotImplementedError(
@@ -1888,7 +1899,7 @@ class MazeTokenizerModular(SerializableDataclass):
     # Information Querying Methods
 
     @cached_property
-    def tokenizer_elements(self):
+    def tokenizer_elements(self) -> list[_TokenizerElement]:
         return [self.prompt_sequencer, *self.prompt_sequencer.tokenizer_elements()]
 
     def tokenizer_element_tree(self, abstract: bool = False) -> str:
@@ -1932,7 +1943,7 @@ class MazeTokenizerModular(SerializableDataclass):
         """
         return {
             # "prompt_sequencer": self.prompt_sequencer.name,
-            **{elem.attribute_key(): elem for elem in self.tokenizer_elements}
+            **{elem.attribute_key(): elem.name for elem in self.tokenizer_elements}
         }
 
     @staticmethod

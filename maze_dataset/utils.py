@@ -267,7 +267,7 @@ they are considered unbounded types in this context.
 ## Primitive Types
 Primitive types are non-nested types which resolve directly to a concrete range of values 
 - `bool`: has 2 possible values
-- `enum.Enum`: The range of a concrete `Enum` subclass is its set of enum members
+- *`enum.Enum`: The range of a concrete `Enum` subclass is its set of enum members
 - `typing.Literal`: Every type constructed using `Literal` has a finite set of possible literal values in its definition.
 This is the preferred way to include limited ranges of non-`FiniteValued` types such as `int` or `str` in a `FiniteValued` hierarchy.
 
@@ -365,7 +365,6 @@ def _all_instances_wrapper(f):
 
 
 @_all_instances_wrapper
-# @cache
 def all_instances(
     type_: FiniteValued,
     validation_funcs: dict[FiniteValued, Callable[[FiniteValued], bool]] | None = None,

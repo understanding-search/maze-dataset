@@ -58,6 +58,31 @@ from maze_dataset.utils import all_instances, lattice_max_degrees, manhattan_dis
 NUM_TOKENIZERS_TO_TEST = 100
 
 
+@mark.parametrize(
+    "tok_mode, max_grid_size",
+    list(
+        product(
+            [
+                TokenizationMode.AOTP_UT_rasterized,
+                TokenizationMode.AOTP_UT_uniform,
+                TokenizationMode.AOTP_CTT_indexed,
+            ],
+            [None, 3, 100],
+        )
+    ),
+)
+def test_tokenizer_serialization(tok_mode: TokenizationMode, max_grid_size: int | None):
+    tokenizer: MazeTokenizer = MazeTokenizer(
+        tokenization_mode=tok_mode, max_grid_size=max_grid_size
+    )
+
+    serialized: dict = tokenizer.serialize()
+    print(serialized)
+    tokenizer_loaded: MazeTokenizer = MazeTokenizer.load(serialized)
+
+    assert tokenizer == tokenizer_loaded
+
+
 def test_tokenizer():
     cfg: MazeDatasetConfig = MazeDatasetConfig(
         name="test",
@@ -474,8 +499,13 @@ def test_path_tokenizers(pt: PathTokenizers._PathTokenizer, manual_maze: MANUAL_
     ],
 )
 def test_edge_permuters(ep: EdgePermuters._EdgePermuter, maze: LatticeMaze):
-    edges: ConnectionArray = connection_list_to_adj_list(maze.connection_list)
-    edges_copy = np.copy(edges)
+    edges: ConnectionArray = connection_list_to_adj_list(
+        maze.connection_list, shuffle_d0=False, shuffle_d1=False
+    )
+    edges_copy: ConnectionArray = connection_list_to_adj_list(
+        maze.connection_list, shuffle_d0=False, shuffle_d1=False
+    )
+    assert np.array_equal(edges, edges_copy)
     old_shape = edges.shape
     permuted: ConnectionArray = ep._permute(edges)
     match ep:
@@ -483,7 +513,7 @@ def test_edge_permuters(ep: EdgePermuters._EdgePermuter, maze: LatticeMaze):
             assert permuted.shape == old_shape
             assert edges is permuted
             i = 0
-            while np.array_equal(permuted, edges_copy) and i < 5:
+            while np.array_equal(permuted, edges_copy) and i < 2:
                 # Permute again in case for small mazes the random selection happened to not change anything
                 permuted: ConnectionArray = ep._permute(permuted)
                 i += 1
