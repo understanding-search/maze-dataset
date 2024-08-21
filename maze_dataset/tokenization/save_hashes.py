@@ -95,8 +95,10 @@ if __name__ == "__main__":
         # compare
         with SpinnerContext(
             spinner_chars="square_dot",
-            update_interval=0.1,
+            update_interval=0.01,
             message="checking hashes: ",
+            format_string="\r{spinner} ({elapsed_time:.2f}s) {message}{value}        ",
+            format_string_when_updated=True,
         ) as sp:
             sp.update_value("returned vs read")
             assert np.array_equal(returned_hashes, read_hashes)

@@ -161,7 +161,7 @@ class MazeDatasetConfig(GPTDatasetConfig):
             n_mazes=self_ser["n_mazes"],
             maze_ctor_name=self_ser["maze_ctor"]["__name__"],
             maze_ctor_kwargs=self_ser["maze_ctor_kwargs"],
-            endpoint_kwargs=self_ser["endpoint_kwargs"],                
+            endpoint_kwargs=self_ser["endpoint_kwargs"],
         )
 
 
