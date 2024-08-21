@@ -666,41 +666,15 @@ T = TypeVar("T", bound=_TokenizerElement)
 def mark_as_unsupported(is_valid: Callable[[T], bool], *args) -> T:
     """mark a _TokenizerElement as unsupported.
 
-    Classes marked with this decoratorr won't show up in ALL_TOKENIZERS and thus wont be tested.
+    Classes marked with this decorator won't show up in ALL_TOKENIZERS and thus wont be tested.
     The classes marked in release 1.0.0 did work reliably before being marked, but they can't be instantiated since the decorator adds an abstract method.
     The decorator exists to prune the space of tokenizers returned by `all_instances` both for testing and usage.
     Previously, the space was too large, resulting in impractical runtimes.
     These decorators could be removed in future releases to expand the space of possible tokenizers.
     """
 
-    # @staticmethod
-    # @abc.abstractmethod
-    # def _unsupported():
-    #     raise NotImplementedError(f"{cls.__name__} is not supported")
-
-    # setattr(cls, "_unsupported", _unsupported)
-    # setattr(
-    #     cls,
-    #     "__abstractmethods__",
-    #     getattr(cls, "__abstractmethods__", frozenset()).union(
-    #         frozenset([_unsupported])
-    #     ),
-    # )
-
-    # def is_valid(self): return False
-
-    # Need to return a function which it itself a decorator
-
     def wrapper(cls):
-
-        def __post_init__(self, *args, **kwargs):
-            # super().__init__(*args, **kwargs)
-            if not self.is_valid():
-                warnings.warn(f"Created an unsupported `_TokenizerElement` {self}.")
-
         cls.is_valid = is_valid
-        cls.__post_init__ = __post_init__
-
         return cls
 
     return wrapper
@@ -1350,8 +1324,8 @@ class StepSizes(__TokenizerElementNamespace):
             """Returns the indices of `maze.solution` corresponding to the steps to be tokenized."""
             return list(range(maze.solution.shape[0]))
 
-    (lambda self_: False)
     @serializable_dataclass(frozen=True, kw_only=True)
+    @mark_as_unsupported(lambda self_: False)
     class Straightaways(_StepSize):
         """
         Only coords where the path turns are represented in the path.
@@ -1382,8 +1356,8 @@ class StepSizes(__TokenizerElementNamespace):
             """Returns the indices of `maze.solution` corresponding to the steps to be tokenized."""
             return maze.get_solution_forking_points(always_include_endpoints=True)[0]
 
-    (lambda self_: False)
     @serializable_dataclass(frozen=True, kw_only=True)
+    @mark_as_unsupported(lambda self_: False)
     class ForksAndStraightaways(_StepSize):
         """
         Includes the union of the coords included by `Forks` and `Straightaways`.
