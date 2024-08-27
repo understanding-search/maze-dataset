@@ -6,6 +6,7 @@ import random
 import warnings
 from enum import Enum
 from functools import cached_property
+from pathlib import Path
 from typing import (
     Any,
     Callable,
@@ -2140,12 +2141,8 @@ class MazeTokenizerModular(SerializableDataclass):
 def _load_tokenizer_hashes() -> Int64[np.ndarray, "n_tokenizers"]:
     """Loads the sorted list of `all_tokenizers.ALL_TOKENIZERS` hashes from disk."""
     try:
-        import pkgutil
-
-        data_bytes = pkgutil.get_data(
-            "maze_dataset", "tokenization/MazeTokenizerModular_hashes.npz"
-        )
-        return np.load(data_bytes)["hashes"]
+        path: Path = Path(__file__).parent / "MazeTokenizerModular_hashes.npz"
+        return np.load(path)["hashes"]
     except FileNotFoundError as e:
         raise FileNotFoundError(
             "Tokenizers hashes cannot be loaded. To fix this:",
@@ -2159,6 +2156,8 @@ try:
     ALL_TOKENIZER_HASHES = _load_tokenizer_hashes()
 except FileNotFoundError:
     warnings.warn(
-        "Tokenizers hashes cannot be loaded, some things might fail. run `make save_tok_hashes`",
+        "Tokenizers hashes cannot be loaded, some things might fail. To fix this:"
+        + "\n- install the package with the `tokenizers` extra: `pip install maze-dataset[tokenizers]` (recommended)"
+        + "\n- run `python -m maze-dataset.tokenization.save_hashes` (not recommended, might break depending on how `maze-dataset` is installed)",
         TokenizerPendingDeprecationWarning,
     )
