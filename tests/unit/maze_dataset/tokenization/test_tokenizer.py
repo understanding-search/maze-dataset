@@ -323,7 +323,7 @@ def test_from_tokens_backwards_compatible(
             (CoordTokenizers.CTT(intra=True), True),
             (CoordTokenizers.UT(), True),
             (AdjListTokenizers.AdjListCoord(), True),
-            # (AdjListTokenizers.AdjListCoord(post=True), True), # TODO: this breaks collecting tests
+            (AdjListTokenizers.AdjListCoord(post=True), True),
             (TargetTokenizers.Unlabeled(post=True), True),
             (PathTokenizers.StepSequence(), True),
             (
