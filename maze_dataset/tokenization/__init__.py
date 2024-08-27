@@ -1,5 +1,4 @@
 from maze_dataset.tokenization.maze_tokenizer import (
-    ALL_TOKENIZER_HASHES,
     AdjListTokenizers,
     CoordTokenizers,
     EdgeGroupings,
@@ -32,7 +31,6 @@ __all__ = [
     "StepSizes",
     "StepTokenizers",
     "PathTokenizers",
-    "ALL_TOKENIZER_HASHES",
     "coord_str_to_tuple",
     "get_tokens_up_to_path_start",
 ]

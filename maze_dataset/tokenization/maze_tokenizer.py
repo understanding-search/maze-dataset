@@ -2008,12 +2008,15 @@ class MazeTokenizerModular(SerializableDataclass):
         """
         Returns if the tokenizer is returned by `all_tokenizers._get_all_tokenizers`, the set of tested and reliable tokenizers.
         Since evaluating `all_tokenizers._get_all_tokenizers` is expensive,
-        instead checks for membership of `self`'s hash in `ALL_TOKENIZER_HASHES`.
+        instead checks for membership of `self`'s hash in `get_all_tokenizer_hashes()`.
         """
-        hash_index: int = np.searchsorted(ALL_TOKENIZER_HASHES, hash(self))
+        all_tokenizer_hashes: Int64[np.ndarray, "n_tokenizers"] = (
+            get_all_tokenizer_hashes()
+        )
+        hash_index: int = np.searchsorted(all_tokenizer_hashes, hash(self))
         return (
-            hash_index < len(ALL_TOKENIZER_HASHES)
-            and ALL_TOKENIZER_HASHES[hash_index] == hash(self)
+            hash_index < len(all_tokenizer_hashes)
+            and all_tokenizer_hashes[hash_index] == hash(self)
             and self.is_valid()
         )
 
@@ -2151,13 +2154,18 @@ def _load_tokenizer_hashes() -> Int64[np.ndarray, "n_tokenizers"]:
         ) from e
 
 
-ALL_TOKENIZER_HASHES: Int64[np.ndarray, "n_tokenizers"] = np.array([], dtype=np.int64)
-try:
-    ALL_TOKENIZER_HASHES = _load_tokenizer_hashes()
-except FileNotFoundError:
-    warnings.warn(
-        "Tokenizers hashes cannot be loaded, some things might fail. To fix this:"
-        + "\n- install the package with the `tokenizers` extra: `pip install maze-dataset[tokenizers]` (recommended)"
-        + "\n- run `python -m maze-dataset.tokenization.save_hashes` (not recommended, might break depending on how `maze-dataset` is installed)",
-        TokenizerPendingDeprecationWarning,
-    )
+_ALL_TOKENIZER_HASHES: Int64[np.ndarray, "n_tokenizers"]
+
+
+def get_all_tokenizer_hashes() -> Int64[np.ndarray, "n_tokenizers"]:
+    global _ALL_TOKENIZER_HASHES
+    try:
+        got_tokenizers: bool = len(_ALL_TOKENIZER_HASHES) > 0
+        if got_tokenizers:
+            return _ALL_TOKENIZER_HASHES
+        else:
+            _ALL_TOKENIZER_HASHES = _load_tokenizer_hashes()
+    except NameError:
+        _ALL_TOKENIZER_HASHES = _load_tokenizer_hashes()
+
+    return _ALL_TOKENIZER_HASHES

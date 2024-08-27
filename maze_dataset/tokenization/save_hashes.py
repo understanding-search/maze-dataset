@@ -28,8 +28,8 @@ from muutils.spinner import SpinnerContext
 
 import maze_dataset.tokenization.all_tokenizers as all_tokenizers
 from maze_dataset.tokenization.maze_tokenizer import (
-    ALL_TOKENIZER_HASHES,
     _load_tokenizer_hashes,
+    get_all_tokenizer_hashes,
 )
 
 if __name__ == "__main__":
@@ -91,6 +91,7 @@ if __name__ == "__main__":
         ):
             read_hashes: np.ndarray = np.load(temp_path)["hashes"]
             read_hashes_pkg: np.ndarray = _load_tokenizer_hashes()
+            read_hashes_wrapped: np.ndarray = get_all_tokenizer_hashes()
 
         # compare
         with SpinnerContext(
@@ -104,5 +105,5 @@ if __name__ == "__main__":
             assert np.array_equal(returned_hashes, read_hashes)
             sp.update_value("returned vs _load_tokenizer_hashes")
             assert np.array_equal(returned_hashes, read_hashes_pkg)
-            sp.update_value("returned vs ALL_TOKENIZER_HASHES")
-            assert np.array_equal(read_hashes, ALL_TOKENIZER_HASHES)
+            sp.update_value("returned vs get_all_tokenizer_hashes()")
+            assert np.array_equal(read_hashes, read_hashes_wrapped)

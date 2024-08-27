@@ -14,7 +14,7 @@ In general, uses for this module are limited to development of the library and s
   - Specific research training models on many tokenization behaviors can use `ALL_TOKENIZERS` as the maximally inclusive collection
   - `ALL_TOKENIZERS` may be subsequently filtered using `MazeTokenizerModular.has_element`
 For other uses, it's likely that the computational expense can be avoided by using
-- `maze_tokenizer.ALL_TOKENIZER_HASHES` for membership checks
+- `maze_tokenizer.get_all_tokenizer_hashes()` for membership checks
 - `utils.all_instances` for generating smaller subsets of `MazeTokenizerModular` or `_TokenizerElement` objects 
 
 # `EVERY_TEST_TOKENIZERS`
