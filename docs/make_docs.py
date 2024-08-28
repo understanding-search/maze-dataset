@@ -179,7 +179,7 @@ if __name__ == "__main__":
 
     if not parsed_args.combined:
         pdoc.pdoc(
-            "maze-dataset",
+            "maze_dataset",
             output_directory=OUTPUT_DIR,
         )
     else:
