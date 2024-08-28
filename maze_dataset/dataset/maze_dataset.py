@@ -33,6 +33,7 @@ from maze_dataset.maze import LatticeMaze, SolvedMaze
 
 # If `n_mazes>=SERIALIZE_MINIMAL_THRESHOLD`, then the MazeDataset will use `serialize_minimal`.
 # Setting to None means that `serialize_minimal` will never be used.
+# Set to -1 to make calls to `read` use `MazeDataset._load_legacy`. Used for profiling only.
 SERIALIZE_MINIMAL_THRESHOLD: int | None = 100
 
 
@@ -145,26 +146,23 @@ class MazeDatasetConfig(GPTDatasetConfig):
 
     def summary(self) -> dict:
         """return a summary of the config"""
+        # do we run this to make sure it doesn't error?
         super_summary: dict = super().summary()
         self_ser: dict = self.serialize()
-        return {
-            **dict(
-                name=self.name,
-                fname=self.to_fname(),
-                sdc_hash=self.stable_hash_cfg(),
-                seed=self.seed,
-                seq_len_min=self.seq_len_min,
-                seq_len_max=self.seq_len_max,
-                applied_filters=self.applied_filters,
-            ),
-            **{
-                "grid_n": self_ser["grid_n"],
-                "grid_shape": self_ser["grid_shape"],
-                "n_mazes": self_ser["n_mazes"],
-                "maze_ctor_name": self_ser["maze_ctor"]["__name__"],
-                "maze_ctor_kwargs": self_ser["maze_ctor_kwargs"],
-            },
-        }
+        return dict(
+            name=self.name,
+            fname=self.to_fname(),
+            sdc_hash=self.stable_hash_cfg(),
+            seed=self.seed,
+            seq_len_min=self.seq_len_min,
+            seq_len_max=self.seq_len_max,
+            applied_filters=self.applied_filters,
+            grid_n=self_ser["grid_n"],
+            n_mazes=self_ser["n_mazes"],
+            maze_ctor_name=self_ser["maze_ctor"]["__name__"],
+            maze_ctor_kwargs=self_ser["maze_ctor_kwargs"],
+            endpoint_kwargs=self_ser["endpoint_kwargs"],
+        )
 
 
 # TODO: don't use this unless generating in parallel!
@@ -225,7 +223,7 @@ class MazeDataset(GPTDataset):
         return self.mazes[i]
 
     def __deepcopy__(self, memo) -> "MazeDataset":
-        return MazeDataset.load(self.serialize())
+        return MazeDataset.load(self._serialize_full())
 
     def as_tokens(
         self,
@@ -331,9 +329,16 @@ class MazeDataset(GPTDataset):
             return cls._load_minimal(data)
         elif data["__format__"] == "MazeDataset:minimal_soln_cat":
             return cls._load_minimal_soln_cat(data)
-        else:
-            assert data["__format__"] == "MazeDataset"
+        elif data["__format__"] == "MazeDataset":
+            if (
+                SERIALIZE_MINIMAL_THRESHOLD == -1
+            ):  # Allow access to `_load_legacy` for profiling
+                return cls._load_legacy(data)
             return cls._load_full(data)
+        else:
+            raise KeyError(
+                f"`__format__` string {data['__format__']} is not a recognized `MazeDataset` format."
+            )
 
     @classmethod
     def _load_full(cls, data: JSONitem) -> "MazeDataset":
@@ -394,6 +399,17 @@ class MazeDataset(GPTDataset):
                     maze_solutions,
                 )
             ],
+        )
+
+    @classmethod
+    def _load_legacy(cls, data: JSONitem) -> "MazeDataset":
+        """Legacy `load` method from <0.5.2. Used exclusively for profiling comparison."""
+        assert data["__format__"] == "MazeDataset"
+        return cls(
+            **{
+                key: load_item_recursive(data[key], tuple())
+                for key in ["cfg", "mazes", "generation_metadata_collected"]
+            }
         )
 
     def serialize(self) -> JSONitem:
@@ -710,6 +726,10 @@ class MazeDatasetFilters:
     ) -> MazeDataset:
         if dataset.generation_metadata_collected is not None:
             return dataset
+        else:
+            assert (
+                dataset[0].generation_meta is not None
+            ), "generation meta is not collected and original is not present"
         # if the generation meta is already collected, don't collect it again, do nothing
 
         new_dataset: MazeDataset

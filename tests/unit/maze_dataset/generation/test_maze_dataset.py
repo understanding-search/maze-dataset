@@ -1,8 +1,9 @@
 import copy
-import os
+from pathlib import Path
 
 import numpy as np
 import pytest
+from pytest import mark, param
 from zanj import ZANJ
 
 from maze_dataset.constants import CoordArray
@@ -14,6 +15,7 @@ from maze_dataset.dataset.maze_dataset import (
     MazeDataset,
     MazeDatasetConfig,
     register_maze_filter,
+    set_serialize_minimal_threshold,
 )
 from maze_dataset.generation.generators import GENERATORS_MAP
 from maze_dataset.maze import SolvedMaze
@@ -24,131 +26,153 @@ class TestMazeDatasetConfig:
     pass
 
 
-class TestMazeDataset:
-    config = MazeDatasetConfig(name="test", grid_n=3, n_mazes=5)
+TEST_CONFIGS = [
+    MazeDatasetConfig(
+        name="test",
+        grid_n=grid_n,
+        n_mazes=n_mazes,
+        maze_ctor=GENERATORS_MAP["gen_dfs"],
+        maze_ctor_kwargs=maze_ctor_kwargs,
+    )
+    for grid_n, n_mazes, maze_ctor_kwargs in [
+        (3, 5, {}),
+        (3, 1, {}),
+        (5, 5, dict(do_forks=False)),
+    ]
+]
 
-    def test_generate_serial(self):
-        dataset = MazeDataset.generate(self.config, gen_parallel=False)
 
-        assert len(dataset) == 5
-        for i, maze in enumerate(dataset):
-            assert maze.grid_shape == (3, 3)
+def test_generate_serial():
+    dataset = MazeDataset.generate(TEST_CONFIGS[0], gen_parallel=False)
 
-    def test_generate_parallel(self):
-        dataset = MazeDataset.generate(
-            self.config, gen_parallel=True, verbose=True, pool_kwargs=dict(processes=2)
+    assert len(dataset) == 5
+    for i, maze in enumerate(dataset):
+        assert maze.grid_shape == (3, 3)
+
+
+def test_generate_parallel():
+    dataset = MazeDataset.generate(
+        TEST_CONFIGS[0], gen_parallel=True, verbose=True, pool_kwargs=dict(processes=2)
+    )
+
+    assert len(dataset) == 5
+    for i, maze in enumerate(dataset):
+        assert maze.grid_shape == (3, 3)
+
+
+def test_data_hash():
+    dataset = MazeDataset.generate(TEST_CONFIGS[0])
+    # TODO: dataset.data_hash doesn't work right now
+
+
+def test_download():
+    with pytest.raises(NotImplementedError):
+        MazeDataset.download(TEST_CONFIGS[0])
+
+
+def test_serialize_load():
+    dataset = MazeDataset.generate(TEST_CONFIGS[0])
+    dataset_copy = MazeDataset.load(dataset.serialize())
+
+    assert dataset.cfg == dataset_copy.cfg
+    for maze, maze_copy in zip(dataset, dataset_copy):
+        assert maze == maze_copy
+
+
+@mark.parametrize(
+    "config",
+    [
+        param(
+            c,
+            id=f"{c.grid_n=}; {c.n_mazes=}; {c.maze_ctor_kwargs=}",
         )
+        for c in TEST_CONFIGS
+    ],
+)
+def test_serialize_load_minimal(config):
+    d = MazeDataset.generate(config, gen_parallel=False)
+    assert MazeDataset.load(d._serialize_minimal()) == d
 
-        assert len(dataset) == 5
-        for i, maze in enumerate(dataset):
-            assert maze.grid_shape == (3, 3)
 
-    def test_data_hash(self):
-        dataset = MazeDataset.generate(self.config)
-        # TODO: dataset.data_hash doesn't work right now
-
-    def test_download(self):
-        with pytest.raises(NotImplementedError):
-            MazeDataset.download(self.config)
-
-    def test_serialize_load(self):
-        dataset = MazeDataset.generate(self.config)
-        dataset_copy = MazeDataset.load(dataset.serialize())
-
-        assert dataset.cfg == dataset_copy.cfg
-        for maze, maze_copy in zip(dataset, dataset_copy):
-            assert maze == maze_copy
-
-    def test_serialize_load_minimal(self):
-        cfgs = [self.config]
-        cfgs.extend(
-            [
-                MazeDatasetConfig(
-                    name="test",
-                    grid_n=grid_n,
-                    n_mazes=n_mazes,
-                    maze_ctor=maze_ctor,
-                    maze_ctor_kwargs=maze_ctor_kwargs,
-                )
-                for grid_n, n_mazes, maze_ctor, maze_ctor_kwargs in [
-                    (3, 1, GENERATORS_MAP["gen_dfs"], {}),
-                    (5, 5, GENERATORS_MAP["gen_dfs"], dict(do_forks=False)),
-                ]
-            ]
+@mark.parametrize(
+    "config",
+    [
+        param(
+            c,
+            id=f"{c.grid_n=}; {c.n_mazes=}; {c.maze_ctor_kwargs=}",
         )
-        for c in cfgs:
-            d = MazeDataset.generate(c, gen_parallel=False)
-            assert MazeDataset.load(d._serialize_minimal()) == d
+        for c in TEST_CONFIGS
+    ],
+)
+def test_save_read_minimal(config):
+    def save_and_read(d: MazeDataset, p: str):
+        d.save(file_path=p)
+        # read as MazeDataset
+        roundtrip = MazeDataset.read(p)
+        assert roundtrip == d
+        # read from zanj
+        z = ZANJ()
+        roundtrip_zanj = z.read(p)
+        assert roundtrip_zanj == d
 
-    def test_save_read_minimal(self):
-        cfgs = [self.config]
-        cfgs.extend(
-            [
-                MazeDatasetConfig(
-                    name="test",
-                    grid_n=grid_n,
-                    n_mazes=n_mazes,
-                    maze_ctor=maze_ctor,
-                    maze_ctor_kwargs=maze_ctor_kwargs,
-                )
-                for grid_n, n_mazes, maze_ctor, maze_ctor_kwargs in [
-                    (3, 1, GENERATORS_MAP["gen_dfs"], {}),
-                    (5, 5, GENERATORS_MAP["gen_dfs"], dict(do_forks=False)),
-                ]
-            ]
-        )
-        for c in cfgs:
-            d = MazeDataset.generate(c, gen_parallel=False)
-            p = os.path.abspath(
-                os.path.join(os.getcwd(), "..", "data", d.cfg.to_fname() + ".zanj")
-            )
-            d.save(file_path=p)
-            # read as MazeDataset
-            roundtrip = MazeDataset.read(p)
-            cfg_diff = roundtrip.cfg.diff(d.cfg)
-            assert cfg_diff == {}
-            assert roundtrip.cfg == d.cfg
-            assert roundtrip.mazes == d.mazes
-            assert roundtrip == d
-            # read from zanj
-            z = ZANJ()
-            roundtrip_zanj = z.read(p)
-            assert roundtrip_zanj == d
+    d = MazeDataset.generate(config, gen_parallel=False)
+    p = Path("tests/_temp/test_maze_dataset/") / (d.cfg.to_fname() + ".zanj")
 
-    def test_custom_maze_filter(self):
-        connection_list = bool_array_from_string(
-            """
-            F T
-            F F
+    # Test with full serialization
+    set_serialize_minimal_threshold(None)
+    save_and_read(d, p)
 
-            T F
-            T F
-            """,
-            shape=[2, 2, 2],
-        )
-        solutions = [
-            [[0, 0], [0, 1], [1, 1]],
-            [[0, 0], [0, 1]],
-            [[0, 0]],
-        ]
+    # Test with minimal serialization
+    set_serialize_minimal_threshold(0)
+    save_and_read(d, p)
 
-        def custom_filter_solution_length(
-            maze: SolvedMaze, solution_length: int
-        ) -> bool:
-            return len(maze.solution) == solution_length
+    d.save(file_path=p)
+    # read as MazeDataset
+    roundtrip = MazeDataset.read(p)
+    assert d.cfg.diff(roundtrip.cfg) == dict()
+    cfg_diff = roundtrip.cfg.diff(d.cfg)
+    assert cfg_diff == {}
+    assert roundtrip.cfg == d.cfg
+    assert roundtrip.mazes == d.mazes
+    assert roundtrip == d
+    # read from zanj
+    z = ZANJ()
+    roundtrip_zanj = z.read(p)
+    assert roundtrip_zanj == d
 
-        mazes = [
-            SolvedMaze(connection_list=connection_list, solution=solution)
-            for solution in solutions
-        ]
-        dataset = MazeDataset(cfg=self.config, mazes=mazes)
 
-        filtered_lambda = dataset.custom_maze_filter(lambda m: len(m.solution) == 1)
-        filtered_func = dataset.custom_maze_filter(
-            custom_filter_solution_length, solution_length=1
-        )
+def test_custom_maze_filter():
+    connection_list = bool_array_from_string(
+        """
+        F T
+        F F
 
-        assert filtered_lambda.mazes == filtered_func.mazes == [mazes[2]]
+        T F
+        T F
+        """,
+        shape=[2, 2, 2],
+    )
+    solutions = [
+        [[0, 0], [0, 1], [1, 1]],
+        [[0, 0], [0, 1]],
+        [[0, 0]],
+    ]
+
+    def custom_filter_solution_length(maze: SolvedMaze, solution_length: int) -> bool:
+        return len(maze.solution) == solution_length
+
+    mazes = [
+        SolvedMaze(connection_list=connection_list, solution=solution)
+        for solution in solutions
+    ]
+    dataset = MazeDataset(cfg=TEST_CONFIGS[0], mazes=mazes)
+
+    filtered_lambda = dataset.custom_maze_filter(lambda m: len(m.solution) == 1)
+    filtered_func = dataset.custom_maze_filter(
+        custom_filter_solution_length, solution_length=1
+    )
+
+    assert filtered_lambda.mazes == filtered_func.mazes == [mazes[2]]
 
 
 class TestMazeDatasetFilters:

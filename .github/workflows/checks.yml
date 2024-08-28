@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   pull_request:
     branches:
-      - main
+      - '*'
   push:
     branches:
       - main
@@ -31,6 +31,7 @@ jobs:
         run: |
           pip install black
           python -m black --check .
+
   test:
     name: Test
     env:
@@ -70,3 +71,6 @@ jobs:
       
       - name: Notebook tests
         run: make test_notebooks
+      
+      - name: Test Tokenizer Hashes
+        run: make test_tok_hashes

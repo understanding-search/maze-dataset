@@ -88,6 +88,7 @@ class GPTDatasetConfig(SerializableDataclass):
 
     def summary(self) -> dict:
         """return a summary of the config"""
+        # do we run this to make sure it doesn't error?
         self_ser: dict = self.serialize()
         return dict(
             name=self.name,
