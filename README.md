@@ -15,7 +15,7 @@ This package includes a variety of [maze generation algorithms](maze_dataset/gen
 
 |   |   |   |   |
 |---|---|---|---|
-| ![Maze generated via percolation](docs/maze_perc.png) |  ![Maze generated via constrained randomized depth first search](docs/maze_dfs_constrained.png)  |  ![Maze with random heatmap](docs/mazeplot_heatmap.png)  |  ![MazePlot with solution](docs/mazeplot_path.png)  |
+| ![Maze generated via percolation](docs/assets/maze_perc.png) |  ![Maze generated via constrained randomized depth first search](docs/assets/maze_dfs_constrained.png)  |  ![Maze with radocs/assets/mazeplot_heatmap.pngot_heatmap.png)  |  ![Mazdocs/assets/mazeplot_path.pngocs/mazeplot_path.png)  |
 
 
 # Usage
@@ -84,7 +84,7 @@ from maze_dataset.plotting import MazePlot
 MazePlot(maze).plot()
 ```
 
-![textual and visual output formats](docs/output_formats.png)
+![textual and visual output formats](docs/assets/output_formats.png)
 
 
 
