@@ -17,7 +17,13 @@ from maze_dataset.tokenization.maze_tokenizer import (
 )
 
 __all__ = [
+    # submodules
+    "all_tokenizers",
+    "maze_tokenizer",
+    "save_hashes",
+    # imports
     "MazeTokenizer",
+    # modular maze tokenization components
     "TokenizationMode",
     "_TokenizerElement",
     "MazeTokenizerModular",
@@ -31,6 +37,7 @@ __all__ = [
     "StepSizes",
     "StepTokenizers",
     "PathTokenizers",
+    # helpers
     "coord_str_to_tuple",
     "get_tokens_up_to_path_start",
 ]

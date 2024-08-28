@@ -1,3 +1,7 @@
+"""
+.. include:: ../README.md
+"""
+
 from maze_dataset.constants import (
     SPECIAL_TOKENS,
     VOCAB,
@@ -24,6 +28,18 @@ from maze_dataset.generation.generators import LatticeMazeGenerators
 from maze_dataset.maze.lattice_maze import LatticeMaze, SolvedMaze, TargetedLatticeMaze
 
 __all__ = [
+    # submodules (with sub-submodules)
+    "dataset",
+    "generation",
+    "maze",
+    "plotting",
+    "tokenization",
+    # submodules
+    "constants",
+    "testing_utils",
+    "token_utils",
+    "utils",
+    # types
     "Coord",
     "CoordTup",
     "CoordList",
@@ -31,17 +47,21 @@ __all__ = [
     "Connection",
     "ConnectionList",
     "ConnectionArray",
+    # constants
     "SPECIAL_TOKENS",
     "VOCAB",
     "VOCAB_LIST",
     "VOCAB_TOKEN_TO_INDEX",
+    # maze classes
     "LatticeMaze",
     "TargetedLatticeMaze",
     "SolvedMaze",
+    # dataset classes
     "MazeDataset",
     "MazeDatasetConfig",
-    "set_serialize_minimal_threshold",
     "MazeDatasetCollection",
     "MazeDatasetCollectionConfig",
+    # other
+    "set_serialize_minimal_threshold",
     "LatticeMazeGenerators",
 ]

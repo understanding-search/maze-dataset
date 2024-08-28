@@ -10,6 +10,9 @@ from maze_dataset.maze.lattice_maze import (
 )
 
 __all__ = [
+    # submodules
+    "lattice_maze",
+    # imports
     "AsciiChars",
     "ConnectionList",
     "Coord",

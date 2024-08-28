@@ -6,6 +6,10 @@ from maze_dataset.generation.generators import (
 )
 
 __all__ = [
+    # submodules
+    "default_generators",
+    "generators",
+    # imports
     "GENERATORS_MAP",
     "LatticeMazeGenerators",
     "get_maze_with_solution",
