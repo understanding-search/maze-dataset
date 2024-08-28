@@ -1,15 +1,14 @@
-from pathlib import Path
 import argparse
-import warnings
-import tomllib
 import inspect
 import re
-
+import tomllib
+import warnings
+from pathlib import Path
 
 import pdoc
-import pdoc.render
 import pdoc.doc
 import pdoc.extract
+import pdoc.render
 import pdoc.render_helpers
 from markupsafe import Markup
 
@@ -168,9 +167,11 @@ if __name__ == "__main__":
         edit_url_map={
             "maze_dataset": "https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/",
         },
-        template_directory=Path("docs/templates/html/")
-        if not parsed_args.combined
-        else Path("docs/templates/markdown/"),
+        template_directory=(
+            Path("docs/templates/html/")
+            if not parsed_args.combined
+            else Path("docs/templates/markdown/")
+        ),
         show_source=True,
         math=True,
         mermaid=True,
@@ -184,11 +185,13 @@ if __name__ == "__main__":
         )
     else:
         use_markdown_format()
-        pdoc_combined("maze_dataset", output_file=OUTPUT_DIR / "combined" / "maze-dataset.md")
+        pdoc_combined(
+            "maze_dataset", output_file=OUTPUT_DIR / "combined" / "maze-dataset.md"
+        )
 
     if parsed_args.serve:
-        import os
         import http.server
+        import os
         import socketserver
 
         port: int = 8000
