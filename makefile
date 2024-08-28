@@ -1,9 +1,11 @@
 PUBLISH_BRANCH := main
 PYPI_TOKEN_FILE := .pypi-token
 LAST_VERSION_FILE := .lastversion
-COVERAGE_REPORTS_DIR := docs/coverage
 PYPROJECT := pyproject.toml
-POETRY_RUN_PYTHON := poetry run python
+PYTHON := poetry run python
+# where to put docs
+DOCS_DIR := docs
+COVERAGE_REPORTS_DIR := $(DOCS_DIR)/coverage
 
 NOTEBOOKS_DIR := notebooks
 CONVERTED_NOTEBOOKS_TEMP_DIR := tests/_temp/notebooks
@@ -21,6 +23,8 @@ COMMIT_LOG_FILE := .commit_log
 COMMIT_LOG_SINCE_LAST_VERSION := $(shell (git log $(LAST_VERSION)..HEAD --pretty=format:"- %s (%h)" | tr '`' "'" ; echo) | tac | tr '\n' '\t')
 #                                                                                    1                2            3       4     5
 
+# pandoc commands (for docs)
+PANDOC ?= pandoc
 
 .PHONY: default
 default: help
@@ -42,54 +46,91 @@ version:
 .PHONY: lint
 lint: clean
 	@echo "run linting: mypy"
-	$(POETRY_RUN_PYTHON) -m mypy --config-file $(PYPROJECT) maze_dataset/
-	$(POETRY_RUN_PYTHON) -m mypy --config-file $(PYPROJECT) tests/
+	$(PYTHON) -m mypy --config-file $(PYPROJECT) maze_dataset/
+	$(PYTHON) -m mypy --config-file $(PYPROJECT) tests/
 
 
 .PHONY: format
 format: clean
 	@echo "run formatting: pycln, isort, and black"
-	$(POETRY_RUN_PYTHON) -m pycln --config $(PYPROJECT) --all .
-	$(POETRY_RUN_PYTHON) -m isort format .
-	$(POETRY_RUN_PYTHON) -m black .
+	$(PYTHON) -m pycln --config $(PYPROJECT) --all .
+	$(PYTHON) -m isort format .
+	$(PYTHON) -m black .
 
 
 .PHONY: check-format
 check-format: clean
 	@echo "check formatting"
-	$(POETRY_RUN_PYTHON) -m pycln --config $(PYPROJECT) --check --all .
-	$(POETRY_RUN_PYTHON) -m isort --check-only .
-	$(POETRY_RUN_PYTHON) -m black --check .
+	$(PYTHON) -m pycln --config $(PYPROJECT) --check --all .
+	$(PYTHON) -m isort --check-only .
+	$(PYTHON) -m black --check .
 
-
-# coverage reports & benchmarks
-# --------------------------------------------------
-# whether to run pytest with coverage report generation
 PYTEST_OPTIONS ?=
-
-COV ?= 1
-
-ifeq ($(COV),1)
-    PYTEST_OPTIONS+=--cov=.
-endif
-
 PYTEST_PARALLEL ?= 0
 
 ifeq ($(PYTEST_PARALLEL),1)
 	PYTEST_OPTIONS+=-n auto
 endif
 
+# docs, coverage reports, and benchmarks
+# --------------------------------------------------
+# whether to run pytest with coverage report generation
+COV ?= 1
+
+ifeq ($(COV),1)
+    PYTEST_OPTIONS+=--cov=.
+endif
+
+.PHONY: docs-html
+docs-html:
+	@echo "generate html docs"
+	$(PYTHON) docs/make_docs.py
+
+.PHONY: docs-md
+docs-md:
+	@echo "generate combined docs in markdown"
+	mkdir $(DOCS_DIR)/combined -p
+	$(PYTHON) docs/make_docs.py --combined
+
+
+.PHONY: docs-combined
+docs-combined: docs-md
+	@echo "generate combined docs in markdown and other formats"
+	@echo "requires pandoc in path"
+	$(PANDOC) -f markdown -t gfm $(DOCS_DIR)/combined/$(PACKAGE_NAME).md -o $(DOCS_DIR)/combined/$(PACKAGE_NAME)_gfm.md
+	$(PANDOC) -f markdown -t plain $(DOCS_DIR)/combined/$(PACKAGE_NAME).md -o $(DOCS_DIR)/combined/$(PACKAGE_NAME).txt
+	$(PANDOC) -f markdown -t html $(DOCS_DIR)/combined/$(PACKAGE_NAME).md -o $(DOCS_DIR)/combined/$(PACKAGE_NAME).html
+
+# $(PANDOC) -f markdown -t pdf $(DOCS_DIR)/combined/$(PACKAGE_NAME).md -o $(DOCS_DIR)/combined/$(PACKAGE_NAME).pdf
+
+
 .PHONY: cov
 cov:
 	@echo "generate coverage reports (run tests manually)"
-	$(POETRY_RUN_PYTHON) -m coverage report -m > $(COVERAGE_REPORTS_DIR)/coverage.txt
-	$(POETRY_RUN_PYTHON) -m coverage_badge -f -o $(COVERAGE_REPORTS_DIR)/coverage.svg
-	$(POETRY_RUN_PYTHON) -m coverage html	
+	mkdir $(COVERAGE_REPORTS_DIR) -p
+	$(PYTHON) -m coverage report -m > $(COVERAGE_REPORTS_DIR)/coverage.txt
+	$(PYTHON) -m coverage_badge -f -o $(COVERAGE_REPORTS_DIR)/coverage.svg
+	$(PYTHON) -m coverage html --directory=$(COVERAGE_REPORTS_DIR)/html/
+	rm -rf $(COVERAGE_REPORTS_DIR)/html/.gitignore
 
 .PHONY: benchmark
 benchmark:
 	@echo "run benchmarks"
-	$(POETRY_RUN_PYTHON) docs/benchmarks/benchmark_generation.py
+	$(PYTHON) docs/benchmarks/benchmark_generation.py
+
+.PHONY: docs
+docs: cov docs-html docs-combined
+	@echo "generate all documentation"
+
+.PHONY: clean-docs
+clean-docs:
+	@echo "clean up docs"
+	rm -rf $(DOCS_DIR)/combined/
+	rm -rf $(DOCS_DIR)/maze-dataset/
+	rm -rf $(COVERAGE_REPORTS_DIR)/
+	rm $(DOCS_DIR)/maze-dataset.html
+	rm $(DOCS_DIR)/index.html
+	rm $(DOCS_DIR)/search.js
 
 
 # testing
@@ -98,17 +139,17 @@ benchmark:
 .PHONY: unit
 unit:
 	@echo "run unit tests"
-	$(POETRY_RUN_PYTHON) -m pytest $(PYTEST_OPTIONS) tests/unit
+	$(PYTHON) -m pytest $(PYTEST_OPTIONS) tests/unit
 
 .PHONY: save_tok_hashes
 save_tok_hashes:
 	@echo "generate and save tokenizer hashes"
-	$(POETRY_RUN_PYTHON) -m maze_dataset.tokenization.save_hashes -p
+	$(PYTHON) -m maze_dataset.tokenization.save_hashes -p
 
 .PHONY: test_tok_hashes
 test_tok_hashes:
 	@echo "re-run tokenizer hashes and compare"
-	$(POETRY_RUN_PYTHON) -m maze_dataset.tokenization.save_hashes -p --check
+	$(PYTHON) -m maze_dataset.tokenization.save_hashes -p --check
 
 
 .PHONY: test_all_tok
@@ -121,20 +162,20 @@ test_all_tok:
 	else \
 		echo "Skipping tokenizer hash tests"; \
 	fi
-	$(POETRY_RUN_PYTHON) -m pytest $(PYTEST_OPTIONS) --verbosity=-1 --durations=50 tests/all_tokenizers
+	$(PYTHON) -m pytest $(PYTEST_OPTIONS) --verbosity=-1 --durations=50 tests/all_tokenizers
 
 
 
 .PHONY: convert_notebooks
 convert_notebooks:
 	@echo "convert notebooks in $(NOTEBOOKS_DIR) using muutils.nbutils.convert_ipynb_to_script.py"
-	$(POETRY_RUN_PYTHON) -m muutils.nbutils.convert_ipynb_to_script $(NOTEBOOKS_DIR) --output_dir $(CONVERTED_NOTEBOOKS_TEMP_DIR) --disable_plots
+	$(PYTHON) -m muutils.nbutils.convert_ipynb_to_script $(NOTEBOOKS_DIR) --output_dir $(CONVERTED_NOTEBOOKS_TEMP_DIR) --disable_plots
 
 
 .PHONY: test_notebooks
 test_notebooks: convert_notebooks
 	@echo "run tests on converted notebooks in $(CONVERTED_NOTEBOOKS_TEMP_DIR) using muutils.nbutils.run_notebook_tests.py"
-	$(POETRY_RUN_PYTHON) -m muutils.nbutils.run_notebook_tests --notebooks-dir=$(NOTEBOOKS_DIR) --converted-notebooks-temp-dir=$(CONVERTED_NOTEBOOKS_TEMP_DIR)
+	$(PYTHON) -m muutils.nbutils.run_notebook_tests --notebooks-dir=$(NOTEBOOKS_DIR) --converted-notebooks-temp-dir=$(CONVERTED_NOTEBOOKS_TEMP_DIR)
 
 
 .PHONY: test
