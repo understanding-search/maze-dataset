@@ -10,8 +10,8 @@ __all__ = [
     "default_generators",
     "generators",
     # imports
-    "GENERATORS_MAP",
     "LatticeMazeGenerators",
+    "GENERATORS_MAP",
     "get_maze_with_solution",
     "numpy_rng",
 ]

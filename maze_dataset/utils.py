@@ -1,3 +1,5 @@
+"misc utilities for the `maze_dataset` package"
+
 import enum
 import itertools
 import math

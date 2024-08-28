@@ -1,4 +1,7 @@
-"""note: these are all GPT-4o generated tests, so they might not be all that useful"""
+"""
+> [!NOTE]
+> these are all GPT-4o generated tests, so they might not be all that useful
+"""
 
 import numpy as np
 import pytest

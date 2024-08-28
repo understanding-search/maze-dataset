@@ -1,3 +1,5 @@
+"`MAZE_DATASET_CONFIGS` contains some default configs for tests and demos"
+
 import copy
 from typing import Mapping
 

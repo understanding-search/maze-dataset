@@ -1,4 +1,4 @@
-"""DEFAULT_GENERATORS is a list of generator name, generator kwargs pairs"""
+"""`DEFAULT_GENERATORS` is a list of generator name, generator kwargs pairs used in tests and demos"""
 
 DEFAULT_GENERATORS: list[tuple[str, dict]] = [
     ("gen_dfs", dict()),

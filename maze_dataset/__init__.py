@@ -39,6 +39,19 @@ __all__ = [
     "testing_utils",
     "token_utils",
     "utils",
+    # main
+    "SolvedMaze",
+    "MazeDatasetConfig",
+    "MazeDataset",
+    # dataset classes
+    "MazeDatasetCollection",
+    "MazeDatasetCollectionConfig",
+    # maze classes
+    "TargetedLatticeMaze",
+    "LatticeMaze",
+    # other
+    "set_serialize_minimal_threshold",
+    "LatticeMazeGenerators",
     # types
     "Coord",
     "CoordTup",
@@ -52,16 +65,4 @@ __all__ = [
     "VOCAB",
     "VOCAB_LIST",
     "VOCAB_TOKEN_TO_INDEX",
-    # maze classes
-    "LatticeMaze",
-    "TargetedLatticeMaze",
-    "SolvedMaze",
-    # dataset classes
-    "MazeDataset",
-    "MazeDatasetConfig",
-    "MazeDatasetCollection",
-    "MazeDatasetCollectionConfig",
-    # other
-    "set_serialize_minimal_threshold",
-    "LatticeMazeGenerators",
 ]

@@ -1,3 +1,7 @@
+"""generation functions have signature `(grid_shape: Coord, **kwargs) -> LatticeMaze` and are methods in `LatticeMazeGenerators`
+
+"""
+
 import random
 import warnings
 from typing import Any, Callable
@@ -15,6 +19,7 @@ random.seed(GLOBAL_SEED)
 
 
 def _random_start_coord(grid_shape: Coord, start_coord: Coord | None) -> Coord:
+    "picking a random start coord within the bounds of `grid_shape` if none is provided"
     if start_coord is None:
         start_coord: Coord = np.random.randint(
             0,  # lower bound
@@ -31,6 +36,7 @@ def get_neighbors_in_bounds(
     coord: Coord,
     grid_shape: Coord,
 ) -> CoordArray:
+    "get all neighbors of a coordinate that are within the bounds of the grid"
     # get all neighbors
     neighbors: CoordArray = coord + NEIGHBORS_MASK
 
@@ -388,6 +394,7 @@ GENERATORS_MAP: dict[str, Callable[[Coord, Any], "LatticeMaze"]] = {
     "gen_dfs_percolation": LatticeMazeGenerators.gen_dfs_percolation,
     "gen_prim": LatticeMazeGenerators.gen_prim,
 }
+"mapping of generator names to generator functions, useful for loading `MazeDatasetConfig`"
 
 
 def get_maze_with_solution(
@@ -395,6 +402,7 @@ def get_maze_with_solution(
     grid_shape: Coord,
     maze_ctor_kwargs: dict | None = None,
 ) -> SolvedMaze:
+    "helper function to get a maze already with a solution"
     if maze_ctor_kwargs is None:
         maze_ctor_kwargs = dict()
     maze: LatticeMaze = GENERATORS_MAP[gen_name](grid_shape, **maze_ctor_kwargs)
