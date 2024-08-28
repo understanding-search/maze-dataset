@@ -1,4 +1,4 @@
-"""MazeTokenizerModular and the legacy TokenizationMode enum, MazeTokenizer class"""
+"""turning a maze into text: `MazeTokenizerModular` and the legacy `TokenizationMode` enum and `MazeTokenizer` class"""
 
 import abc
 import hashlib
@@ -138,7 +138,11 @@ _MAZETOKENIZER_PROPERTIES_TO_SERIALIZE: list[str] = [
     properties_to_serialize=_MAZETOKENIZER_PROPERTIES_TO_SERIALIZE, kw_only=True
 )
 class MazeTokenizer(SerializableDataclass):
-    """LEGACY: Tokenizer for mazes
+    """LEGACY Tokenizer for mazes
+
+    > [!CAUTION]
+    > `MazeTokenizerModular` is the new standard for tokenization. This class is no longer recommended
+    > for use, but will remain for compatibility with existing code.
 
     # Parameters:
      - `tokenization_mode: TokenizationMode`

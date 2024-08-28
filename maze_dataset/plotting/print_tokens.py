@@ -1,3 +1,15 @@
+"""Functions to print tokens with colors in different formats
+
+you can color the tokens by their:
+
+- type (i.e. adjacency list, origin, target, path) using `color_maze_tokens_AOTP`
+- custom weights (i.e. attention weights) using `color_tokens_cmap`
+- entirely custom colors using `color_tokens_rgb`
+
+and the output can be in different formats, specified by `FormatType` (html, latex, terminal)
+
+"""
+
 import html
 import textwrap
 from typing import Literal, Sequence
@@ -12,26 +24,31 @@ from maze_dataset.constants import SPECIAL_TOKENS
 from maze_dataset.token_utils import tokens_between
 
 RGBArray = UInt8[np.ndarray, "n 3"]
+"1D array of RGB values"
 
 FormatType = Literal["html", "latex", "terminal", None]
+"output format for the tokens"
 
 TEMPLATES: dict[FormatType, str] = {
     "html": '<span style="color: black; background-color: rgb({clr})">&nbsp{tok}&nbsp</span>',
     "latex": "\\colorbox[RGB]{{ {clr} }}{{ \\texttt{{ {tok} }} }}",
     "terminal": "\033[30m\033[48;2;{clr}m{tok}\033[0m",
 }
+"templates of printing tokens in different formats"
 
 _COLOR_JOIN: dict[FormatType, str] = {
     "html": ",",
     "latex": ",",
     "terminal": ";",
 }
+"joiner for colors in different formats"
 
 
 def _escape_tok(
     tok: str,
     fmt: FormatType,
 ) -> str:
+    "escape token based on format"
     if fmt == "html":
         return html.escape(tok)
     elif fmt == "latex":
@@ -50,7 +67,8 @@ def color_tokens_rgb(
     clr_join: str | None = None,
     max_length: int | None = None,
 ) -> str:
-    """
+    """color tokens from a list with an RGB color array
+
     tokens will not be escaped if `fmt` is None
 
     # Parameters:
@@ -104,6 +122,7 @@ def color_tokens_cmap(
     template: str | None = None,
     labels: bool = False,
 ):
+    "color tokens given a list of weights and a colormap"
     assert len(tokens) == len(weights), f"{len(tokens)} != {len(weights)}"
     weights = np.array(weights)
     # normalize weights to [0, 1]
@@ -150,11 +169,17 @@ _MAZE_TOKENS_DEFAULT_COLORS: dict[tuple[str, str], tuple[int, int, int]] = {
     (SPECIAL_TOKENS.TARGET_START, SPECIAL_TOKENS.TARGET_END): (234, 209, 220),  # red
     (SPECIAL_TOKENS.PATH_START, SPECIAL_TOKENS.PATH_END): (207, 226, 243),  # blue
 }
+"default colors for maze tokens, roughly matches the format of `as_pixels`"
 
 
 def color_maze_tokens_AOTP(
     tokens: list[str], fmt: FormatType = "html", template: str | None = None, **kwargs
 ) -> str:
+    """color tokens assuming AOTP format
+
+    i.e: adjaceny list, origin, target, path
+
+    """
     output: list[str] = [
         " ".join(
             tokens_between(

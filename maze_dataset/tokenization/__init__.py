@@ -1,3 +1,11 @@
+"""turning a maze into text
+
+- `MazeTokenizerModular` is the new recommended way to do this as of 1.0.0
+- legacy `TokenizationMode` enum and `MazeTokenizer` class for supporting existing code
+- a whole lot of helper classes and functions
+
+"""
+
 from maze_dataset.tokenization.maze_tokenizer import (
     AdjListTokenizers,
     CoordTokenizers,
@@ -21,8 +29,6 @@ __all__ = [
     "all_tokenizers",
     "maze_tokenizer",
     "save_hashes",
-    # imports
-    "MazeTokenizer",
     # modular maze tokenization components
     "TokenizationMode",
     "_TokenizerElement",
@@ -40,4 +46,6 @@ __all__ = [
     # helpers
     "coord_str_to_tuple",
     "get_tokens_up_to_path_start",
+    # old tokenizer
+    "MazeTokenizer",
 ]

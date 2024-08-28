@@ -1,3 +1,5 @@
+"""provides `MazePlot`, which has many tools for plotting mazes with multiple paths, colored nodes, and more"""
+
 from __future__ import annotations  # for type hinting self as return value
 
 import warnings

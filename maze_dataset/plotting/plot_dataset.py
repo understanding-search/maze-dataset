@@ -1,3 +1,8 @@
+"""`plot_dataset_mazes` will plot several mazes using `as_pixels`
+
+`print_dataset_mazes` will use `as_ascii` to print several mazes
+"""
+
 import matplotlib.pyplot as plt  # type: ignore[import]
 
 from maze_dataset.dataset.maze_dataset import MazeDataset
