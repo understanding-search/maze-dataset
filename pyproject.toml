@@ -11,6 +11,7 @@ readme = "README.md"
 
 # source info
 packages = [{include = "maze_dataset"}]
+exclude = ["maze_dataset/tokenization/MazeTokenizerModular_hashes.npz"] # don't ship the hashes
 
 # informational metadata
 keywords = ["maze", "mazes", "labyrinth", "dataset", "procedural", "pathfinding", "tokenization"]
