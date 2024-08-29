@@ -1,11 +1,11 @@
-docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.1.0
+docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.0.0
 
 
 ## Contents
 [![PyPI](https://img.shields.io/pypi/v/maze-dataset)](https://pypi.org/project/maze-dataset/)
 ![PyPI - Downloads](https://img.shields.io/pypi/dm/maze-dataset)
 [![Checks](https://github.com/understanding-search/maze-dataset/actions/workflows/checks.yml/badge.svg)](https://github.com/understanding-search/maze-dataset/actions/workflows/checks.yml)
-[![Coverage](docs/coverage/coverage.svg)](docs/coverage/coverage.txt)
+[![Coverage](data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4NCjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iOTkiIGhlaWdodD0iMjAiPg0KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iYiIgeDI9IjAiIHkyPSIxMDAlIj4NCiAgICAgICAgPHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjYmJiIiBzdG9wLW9wYWNpdHk9Ii4xIi8+DQogICAgICAgIDxzdG9wIG9mZnNldD0iMSIgc3RvcC1vcGFjaXR5PSIuMSIvPg0KICAgIDwvbGluZWFyR3JhZGllbnQ+DQogICAgPG1hc2sgaWQ9ImEiPg0KICAgICAgICA8cmVjdCB3aWR0aD0iOTkiIGhlaWdodD0iMjAiIHJ4PSIzIiBmaWxsPSIjZmZmIi8+DQogICAgPC9tYXNrPg0KICAgIDxnIG1hc2s9InVybCgjYSkiPg0KICAgICAgICA8cGF0aCBmaWxsPSIjNTU1IiBkPSJNMCAwaDYzdjIwSDB6Ii8+DQogICAgICAgIDxwYXRoIGZpbGw9IiNkZmIzMTciIGQ9Ik02MyAwaDM2djIwSDYzeiIvPg0KICAgICAgICA8cGF0aCBmaWxsPSJ1cmwoI2IpIiBkPSJNMCAwaDk5djIwSDB6Ii8+DQogICAgPC9nPg0KICAgIDxnIGZpbGw9IiNmZmYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJEZWphVnUgU2FucyxWZXJkYW5hLEdlbmV2YSxzYW5zLXNlcmlmIiBmb250LXNpemU9IjExIj4NCiAgICAgICAgPHRleHQgeD0iMzEuNSIgeT0iMTUiIGZpbGw9IiMwMTAxMDEiIGZpbGwtb3BhY2l0eT0iLjMiPmNvdmVyYWdlPC90ZXh0Pg0KICAgICAgICA8dGV4dCB4PSIzMS41IiB5PSIxNCI+Y292ZXJhZ2U8L3RleHQ+DQogICAgICAgIDx0ZXh0IHg9IjgwIiB5PSIxNSIgZmlsbD0iIzAxMDEwMSIgZmlsbC1vcGFjaXR5PSIuMyI+NzIlPC90ZXh0Pg0KICAgICAgICA8dGV4dCB4PSI4MCIgeT0iMTQiPjcyJTwvdGV4dD4NCiAgICA8L2c+DQo8L3N2Zz4NCg==)](docs/coverage/coverage.txt)
 ![code size, bytes](https://img.shields.io/github/languages/code-size/understanding-search/maze-dataset)
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/t/understanding-search/maze-dataset)
 ![GitHub closed pull requests](https://img.shields.io/github/issues-pr-closed/understanding-search/maze-dataset)
@@ -177,7 +177,7 @@ If you use this code in your research, please cite [our paper](http://arxiv.org/
 [![PyPI](https://img.shields.io/pypi/v/maze-dataset)](https://pypi.org/project/maze-dataset/)
 ![PyPI - Downloads](https://img.shields.io/pypi/dm/maze-dataset)
 [![Checks](https://github.com/understanding-search/maze-dataset/actions/workflows/checks.yml/badge.svg)](https://github.com/understanding-search/maze-dataset/actions/workflows/checks.yml)
-[![Coverage](docs/coverage/coverage.svg)](docs/coverage/coverage.txt)
+[![Coverage](data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4NCjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iOTkiIGhlaWdodD0iMjAiPg0KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iYiIgeDI9IjAiIHkyPSIxMDAlIj4NCiAgICAgICAgPHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjYmJiIiBzdG9wLW9wYWNpdHk9Ii4xIi8+DQogICAgICAgIDxzdG9wIG9mZnNldD0iMSIgc3RvcC1vcGFjaXR5PSIuMSIvPg0KICAgIDwvbGluZWFyR3JhZGllbnQ+DQogICAgPG1hc2sgaWQ9ImEiPg0KICAgICAgICA8cmVjdCB3aWR0aD0iOTkiIGhlaWdodD0iMjAiIHJ4PSIzIiBmaWxsPSIjZmZmIi8+DQogICAgPC9tYXNrPg0KICAgIDxnIG1hc2s9InVybCgjYSkiPg0KICAgICAgICA8cGF0aCBmaWxsPSIjNTU1IiBkPSJNMCAwaDYzdjIwSDB6Ii8+DQogICAgICAgIDxwYXRoIGZpbGw9IiNkZmIzMTciIGQ9Ik02MyAwaDM2djIwSDYzeiIvPg0KICAgICAgICA8cGF0aCBmaWxsPSJ1cmwoI2IpIiBkPSJNMCAwaDk5djIwSDB6Ii8+DQogICAgPC9nPg0KICAgIDxnIGZpbGw9IiNmZmYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJEZWphVnUgU2FucyxWZXJkYW5hLEdlbmV2YSxzYW5zLXNlcmlmIiBmb250LXNpemU9IjExIj4NCiAgICAgICAgPHRleHQgeD0iMzEuNSIgeT0iMTUiIGZpbGw9IiMwMTAxMDEiIGZpbGwtb3BhY2l0eT0iLjMiPmNvdmVyYWdlPC90ZXh0Pg0KICAgICAgICA8dGV4dCB4PSIzMS41IiB5PSIxNCI+Y292ZXJhZ2U8L3RleHQ+DQogICAgICAgIDx0ZXh0IHg9IjgwIiB5PSIxNSIgZmlsbD0iIzAxMDEwMSIgZmlsbC1vcGFjaXR5PSIuMyI+NzIlPC90ZXh0Pg0KICAgICAgICA8dGV4dCB4PSI4MCIgeT0iMTQiPjcyJTwvdGV4dD4NCiAgICA8L2c+DQo8L3N2Zz4NCg==)](docs/coverage/coverage.txt)
 ![code size, bytes](https://img.shields.io/github/languages/code-size/understanding-search/maze-dataset)
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/t/understanding-search/maze-dataset)
 ![GitHub closed pull requests](https://img.shields.io/github/issues-pr-closed/understanding-search/maze-dataset)
@@ -425,9 +425,10 @@ returns the complement of `get_solution_forking_points` from the path
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/__init__.py#L519-L575)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/__init__.py#L659-L715)
 
 
+returns the class as a dict, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def load` { #SolvedMaze.load }
@@ -436,9 +437,10 @@ returns the complement of `get_solution_forking_points` from the path
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/__init__.py#L582-L646)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/__init__.py#L722-L786)
 
 
+takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def validate_fields_types` { #SolvedMaze.validate_fields_types }
@@ -450,10 +452,10 @@ returns the complement of `get_solution_forking_points` from the path
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/__init__.py#L210-L219)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/__init__.py#L270-L279)
 
 
-validate the types of all the fields on a SerializableDataclass. calls `SerializableDataclass__validate_field_type` for each field
+validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
 
 
 ### Inherited Members                                
@@ -645,9 +647,10 @@ return a summary of the config
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/__init__.py#L519-L575)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/__init__.py#L659-L715)
 
 
+returns the class as a dict, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def load` { #MazeDatasetConfig.load }
@@ -656,9 +659,10 @@ return a summary of the config
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/__init__.py#L582-L646)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/__init__.py#L722-L786)
 
 
+takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def validate_fields_types` { #MazeDatasetConfig.validate_fields_types }
@@ -670,10 +674,10 @@ return a summary of the config
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/__init__.py#L210-L219)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/__init__.py#L270-L279)
 
 
-validate the types of all the fields on a SerializableDataclass. calls `SerializableDataclass__validate_field_type` for each field
+validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
 
 
 ### Inherited Members                                
@@ -1122,9 +1126,10 @@ convert config to a filename
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/__init__.py#L519-L575)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/__init__.py#L659-L715)
 
 
+returns the class as a dict, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def load` { #MazeDatasetCollectionConfig.load }
@@ -1133,9 +1138,10 @@ convert config to a filename
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/__init__.py#L582-L646)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/__init__.py#L722-L786)
 
 
+takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def validate_fields_types` { #MazeDatasetCollectionConfig.validate_fields_types }
@@ -1147,10 +1153,10 @@ convert config to a filename
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/__init__.py#L210-L219)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/__init__.py#L270-L279)
 
 
-validate the types of all the fields on a SerializableDataclass. calls `SerializableDataclass__validate_field_type` for each field
+validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
 
 
 ### Inherited Members                                
@@ -1242,9 +1248,10 @@ A LatticeMaze with a start and end position
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/__init__.py#L519-L575)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/__init__.py#L659-L715)
 
 
+returns the class as a dict, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def load` { #TargetedLatticeMaze.load }
@@ -1253,9 +1260,10 @@ A LatticeMaze with a start and end position
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/__init__.py#L582-L646)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/__init__.py#L722-L786)
 
 
+takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def validate_fields_types` { #TargetedLatticeMaze.validate_fields_types }
@@ -1267,10 +1275,10 @@ A LatticeMaze with a start and end position
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/__init__.py#L210-L219)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/__init__.py#L270-L279)
 
 
-validate the types of all the fields on a SerializableDataclass. calls `SerializableDataclass__validate_field_type` for each field
+validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
 
 
 ### Inherited Members                                
@@ -1705,9 +1713,10 @@ return an ASCII grid of the maze
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/__init__.py#L519-L575)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/__init__.py#L659-L715)
 
 
+returns the class as a dict, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def load` { #LatticeMaze.load }
@@ -1716,9 +1725,10 @@ return an ASCII grid of the maze
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/__init__.py#L582-L646)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/__init__.py#L722-L786)
 
 
+takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def validate_fields_types` { #LatticeMaze.validate_fields_types }
@@ -1730,10 +1740,10 @@ return an ASCII grid of the maze
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/__init__.py#L210-L219)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/__init__.py#L270-L279)
 
 
-validate the types of all the fields on a SerializableDataclass. calls `SerializableDataclass__validate_field_type` for each field
+validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
 
 
 ### Inherited Members                                
@@ -1942,7 +1952,7 @@ dfs and then percolation (adds cycles)
 
 
 
-docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.1.0
+docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.0.0
 
 
 ## Contents
@@ -2085,7 +2095,7 @@ down, up, right, left as vectors
 
 
 
-docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.1.0
+docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.0.0
 
 
 ## Contents
@@ -2443,9 +2453,10 @@ return a summary of the config
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/__init__.py#L519-L575)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/__init__.py#L659-L715)
 
 
+returns the class as a dict, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def load` { #MazeDatasetConfig.load }
@@ -2454,9 +2465,10 @@ return a summary of the config
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/__init__.py#L582-L646)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/__init__.py#L722-L786)
 
 
+takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def validate_fields_types` { #MazeDatasetConfig.validate_fields_types }
@@ -2468,10 +2480,10 @@ return a summary of the config
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/__init__.py#L210-L219)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/__init__.py#L270-L279)
 
 
-validate the types of all the fields on a SerializableDataclass. calls `SerializableDataclass__validate_field_type` for each field
+validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
 
 
 ### Inherited Members                                
@@ -2747,9 +2759,10 @@ convert config to a filename
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/__init__.py#L519-L575)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/__init__.py#L659-L715)
 
 
+returns the class as a dict, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def load` { #MazeDatasetCollectionConfig.load }
@@ -2758,9 +2771,10 @@ convert config to a filename
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/__init__.py#L582-L646)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/__init__.py#L722-L786)
 
 
+takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def validate_fields_types` { #MazeDatasetCollectionConfig.validate_fields_types }
@@ -2772,10 +2786,10 @@ convert config to a filename
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/__init__.py#L210-L219)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/__init__.py#L270-L279)
 
 
-validate the types of all the fields on a SerializableDataclass. calls `SerializableDataclass__validate_field_type` for each field
+validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
 
 
 ### Inherited Members                                
@@ -2793,7 +2807,7 @@ validate the types of all the fields on a SerializableDataclass. calls `Serializ
 
 
 
-docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.1.0
+docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.0.0
 
 
 ## Contents
@@ -2922,9 +2936,10 @@ convert config to a filename
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/collected_dataset.py#L519-L575)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/collected_dataset.py#L659-L715)
 
 
+returns the class as a dict, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def load` { #MazeDatasetCollectionConfig.load }
@@ -2933,9 +2948,10 @@ convert config to a filename
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/collected_dataset.py#L582-L646)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/collected_dataset.py#L722-L786)
 
 
+takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def validate_fields_types` { #MazeDatasetCollectionConfig.validate_fields_types }
@@ -2947,10 +2963,10 @@ convert config to a filename
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/collected_dataset.py#L210-L219)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/collected_dataset.py#L270-L279)
 
 
-validate the types of all the fields on a SerializableDataclass. calls `SerializableDataclass__validate_field_type` for each field
+validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
 
 
 ### Inherited Members                                
@@ -3130,7 +3146,7 @@ for example, adjust number of mazes after filtering
 
 
 
-docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.1.0
+docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.0.0
 
 
 ## Contents
@@ -3161,7 +3177,7 @@ docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) 
 
 
 
-docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.1.0
+docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.0.0
 
 
 ## Contents
@@ -3300,6 +3316,7 @@ convert config to a filename
 [View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/dataset.py#L131-L134)
 
 
+returns the class as a dict, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def load` { #GPTDatasetConfig.load }
@@ -3311,6 +3328,7 @@ convert config to a filename
 [View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/dataset.py#L125-L128)
 
 
+takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def validate_fields_types` { #GPTDatasetConfig.validate_fields_types }
@@ -3322,10 +3340,10 @@ convert config to a filename
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/dataset.py#L210-L219)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/dataset.py#L270-L279)
 
 
-validate the types of all the fields on a SerializableDataclass. calls `SerializableDataclass__validate_field_type` for each field
+validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
 
 
 ### Inherited Members                                
@@ -3656,7 +3674,7 @@ method should be a staticmethod of a namespace class registered with `register_f
 
 
 
-docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.1.0
+docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.0.0
 
 
 ## Contents
@@ -3863,9 +3881,10 @@ return a summary of the config
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/maze_dataset.py#L519-L575)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/maze_dataset.py#L659-L715)
 
 
+returns the class as a dict, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def load` { #MazeDatasetConfig.load }
@@ -3874,9 +3893,10 @@ return a summary of the config
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/maze_dataset.py#L582-L646)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/maze_dataset.py#L722-L786)
 
 
+takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def validate_fields_types` { #MazeDatasetConfig.validate_fields_types }
@@ -3888,10 +3908,10 @@ return a summary of the config
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/maze_dataset.py#L210-L219)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/maze_dataset.py#L270-L279)
 
 
-validate the types of all the fields on a SerializableDataclass. calls `SerializableDataclass__validate_field_type` for each field
+validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
 
 
 ### Inherited Members                                
@@ -4237,7 +4257,7 @@ strip the generation meta from the dataset
 
 
 
-docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.1.0
+docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.0.0
 
 
 ## Contents
@@ -4366,9 +4386,10 @@ see their paper:
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/rasterized.py#L519-L575)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/rasterized.py#L659-L715)
 
 
+returns the class as a dict, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def load` { #RasterizedMazeDatasetConfig.load }
@@ -4377,9 +4398,10 @@ see their paper:
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/rasterized.py#L582-L646)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/rasterized.py#L722-L786)
 
 
+takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def validate_fields_types` { #RasterizedMazeDatasetConfig.validate_fields_types }
@@ -4391,10 +4413,10 @@ see their paper:
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/rasterized.py#L210-L219)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/rasterized.py#L270-L279)
 
 
-validate the types of all the fields on a SerializableDataclass. calls `SerializableDataclass__validate_field_type` for each field
+validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
 
 
 ### Inherited Members                                
@@ -4543,7 +4565,7 @@ output is of structure:
 
 
 
-docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.1.0
+docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.0.0
 
 
 ## Contents
@@ -4730,14 +4752,14 @@ dfs and then percolation (adds cycles)
 helper function to get a maze already with a solution
 
 
-- `numpy_rng = Generator(PCG64) at 0x23467D1E5E0`
+- `numpy_rng = Generator(PCG64) at 0x25FEC55E5E0`
 
 
 
 
 
 
-docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.1.0
+docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.0.0
 
 
 ## Contents
@@ -4768,7 +4790,7 @@ docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) 
 
 
 
-docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.1.0
+docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.0.0
 
 
 ## Contents
@@ -4796,7 +4818,7 @@ generation functions have signature `(grid_shape: Coord, **kwargs) -> LatticeMaz
 
 
 
-- `numpy_rng = Generator(PCG64) at 0x23467D1E5E0`
+- `numpy_rng = Generator(PCG64) at 0x25FEC55E5E0`
 
 
 
@@ -4971,7 +4993,7 @@ helper function to get a maze already with a solution
 
 
 
-docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.1.0
+docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.0.0
 
 
 ## Contents
@@ -5122,9 +5144,10 @@ returns the complement of `get_solution_forking_points` from the path
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/maze/__init__.py#L519-L575)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/maze/__init__.py#L659-L715)
 
 
+returns the class as a dict, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def load` { #SolvedMaze.load }
@@ -5133,9 +5156,10 @@ returns the complement of `get_solution_forking_points` from the path
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/maze/__init__.py#L582-L646)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/maze/__init__.py#L722-L786)
 
 
+takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def validate_fields_types` { #SolvedMaze.validate_fields_types }
@@ -5147,10 +5171,10 @@ returns the complement of `get_solution_forking_points` from the path
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/maze/__init__.py#L210-L219)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/maze/__init__.py#L270-L279)
 
 
-validate the types of all the fields on a SerializableDataclass. calls `SerializableDataclass__validate_field_type` for each field
+validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
 
 
 ### Inherited Members                                
@@ -5267,9 +5291,10 @@ A LatticeMaze with a start and end position
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/maze/__init__.py#L519-L575)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/maze/__init__.py#L659-L715)
 
 
+returns the class as a dict, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def load` { #TargetedLatticeMaze.load }
@@ -5278,9 +5303,10 @@ A LatticeMaze with a start and end position
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/maze/__init__.py#L582-L646)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/maze/__init__.py#L722-L786)
 
 
+takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def validate_fields_types` { #TargetedLatticeMaze.validate_fields_types }
@@ -5292,10 +5318,10 @@ A LatticeMaze with a start and end position
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/maze/__init__.py#L210-L219)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/maze/__init__.py#L270-L279)
 
 
-validate the types of all the fields on a SerializableDataclass. calls `SerializableDataclass__validate_field_type` for each field
+validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
 
 
 ### Inherited Members                                
@@ -5730,9 +5756,10 @@ return an ASCII grid of the maze
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/maze/__init__.py#L519-L575)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/maze/__init__.py#L659-L715)
 
 
+returns the class as a dict, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def load` { #LatticeMaze.load }
@@ -5741,9 +5768,10 @@ return an ASCII grid of the maze
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/maze/__init__.py#L582-L646)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/maze/__init__.py#L722-L786)
 
 
+takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def validate_fields_types` { #LatticeMaze.validate_fields_types }
@@ -5755,10 +5783,10 @@ return an ASCII grid of the maze
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/maze/__init__.py#L210-L219)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/maze/__init__.py#L270-L279)
 
 
-validate the types of all the fields on a SerializableDataclass. calls `SerializableDataclass__validate_field_type` for each field
+validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
 
 
 ### Inherited Members                                
@@ -5879,7 +5907,7 @@ standard colors for pixel grids
 
 
 
-docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.1.0
+docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.0.0
 
 
 
@@ -6441,9 +6469,10 @@ return an ASCII grid of the maze
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/maze/lattice_maze.py#L519-L575)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/maze/lattice_maze.py#L659-L715)
 
 
+returns the class as a dict, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def load` { #LatticeMaze.load }
@@ -6452,9 +6481,10 @@ return an ASCII grid of the maze
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/maze/lattice_maze.py#L582-L646)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/maze/lattice_maze.py#L722-L786)
 
 
+takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def validate_fields_types` { #LatticeMaze.validate_fields_types }
@@ -6466,10 +6496,10 @@ return an ASCII grid of the maze
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/maze/lattice_maze.py#L210-L219)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/maze/lattice_maze.py#L270-L279)
 
 
-validate the types of all the fields on a SerializableDataclass. calls `SerializableDataclass__validate_field_type` for each field
+validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
 
 
 ### Inherited Members                                
@@ -6555,9 +6585,10 @@ A LatticeMaze with a start and end position
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/maze/lattice_maze.py#L519-L575)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/maze/lattice_maze.py#L659-L715)
 
 
+returns the class as a dict, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def load` { #TargetedLatticeMaze.load }
@@ -6566,9 +6597,10 @@ A LatticeMaze with a start and end position
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/maze/lattice_maze.py#L582-L646)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/maze/lattice_maze.py#L722-L786)
 
 
+takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def validate_fields_types` { #TargetedLatticeMaze.validate_fields_types }
@@ -6580,10 +6612,10 @@ A LatticeMaze with a start and end position
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/maze/lattice_maze.py#L210-L219)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/maze/lattice_maze.py#L270-L279)
 
 
-validate the types of all the fields on a SerializableDataclass. calls `SerializableDataclass__validate_field_type` for each field
+validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
 
 
 ### Inherited Members                                
@@ -6736,9 +6768,10 @@ returns the complement of `get_solution_forking_points` from the path
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/maze/lattice_maze.py#L519-L575)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/maze/lattice_maze.py#L659-L715)
 
 
+returns the class as a dict, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def load` { #SolvedMaze.load }
@@ -6747,9 +6780,10 @@ returns the complement of `get_solution_forking_points` from the path
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/maze/lattice_maze.py#L582-L646)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/maze/lattice_maze.py#L722-L786)
 
 
+takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def validate_fields_types` { #SolvedMaze.validate_fields_types }
@@ -6761,10 +6795,10 @@ returns the complement of `get_solution_forking_points` from the path
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/maze/lattice_maze.py#L210-L219)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/maze/lattice_maze.py#L270-L279)
 
 
-validate the types of all the fields on a SerializableDataclass. calls `SerializableDataclass__validate_field_type` for each field
+validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
 
 
 ### Inherited Members                                
@@ -6821,7 +6855,7 @@ Detects the type of pixels data by checking for the presence of start and end pi
 
 
 
-docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.1.0
+docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.0.0
 
 
 ## Contents
@@ -7259,7 +7293,7 @@ tokens will not be escaped if `fmt` is None
 
 
 
-docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.1.0
+docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.0.0
 
 
 ## Contents
@@ -7320,7 +7354,7 @@ docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) 
 
 
 
-docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.1.0
+docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.0.0
 
 
 ## Contents
@@ -7709,7 +7743,7 @@ Plot the maze and paths.
 
 
 
-docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.1.0
+docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.0.0
 
 
 ## Contents
@@ -7763,7 +7797,7 @@ hacky function to plot tokens on a matplotlib axis with colored backgrounds
 
 
 
-docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.1.0
+docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.0.0
 
 
 ## Contents
@@ -7942,7 +7976,7 @@ i.e: adjaceny list, origin, target, path
 
 
 
-docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.1.0
+docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.0.0
 
 
 ## Contents
@@ -8383,7 +8417,7 @@ Alias for field number 2
 
 
 
-docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.1.0
+docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.0.0
 
 
 ## Contents
@@ -8761,7 +8795,7 @@ Returns if each edge in `edges` is a connection (`True`) or wall (`False`) in `c
 
 
 
-docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.1.0
+docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.0.0
 
 
 ## Contents
@@ -9003,9 +9037,10 @@ This could be used to create more or less stringent filters on the valid `_Token
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L519-L575)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L659-L715)
 
 
+returns the class as a dict, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def load` { #_TokenizerElement.load }
@@ -9014,9 +9049,10 @@ This could be used to create more or less stringent filters on the valid `_Token
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L582-L646)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L722-L786)
 
 
+takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def validate_fields_types` { #_TokenizerElement.validate_fields_types }
@@ -9028,10 +9064,10 @@ This could be used to create more or less stringent filters on the valid `_Token
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L210-L219)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L270-L279)
 
 
-validate the types of all the fields on a SerializableDataclass. calls `SerializableDataclass__validate_field_type` for each field
+validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
 
 
 ### Inherited Members                                
@@ -9357,9 +9393,10 @@ decode a list of tokens into a string or list of strings
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L519-L575)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L659-L715)
 
 
+returns the class as a dict, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def load` { #MazeTokenizerModular.load }
@@ -9368,9 +9405,10 @@ decode a list of tokens into a string or list of strings
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L582-L646)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L722-L786)
 
 
+takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def validate_fields_types` { #MazeTokenizerModular.validate_fields_types }
@@ -9382,10 +9420,10 @@ decode a list of tokens into a string or list of strings
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L210-L219)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L270-L279)
 
 
-validate the types of all the fields on a SerializableDataclass. calls `SerializableDataclass__validate_field_type` for each field
+validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
 
 
 ### Inherited Members                                
@@ -9456,9 +9494,10 @@ Uses `coord_tokenizer` to tokenize coords if that is part of the design of that 
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L519-L575)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L659-L715)
 
 
+returns the class as a dict, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def load` { #PromptSequencers.AOTP.load }
@@ -9467,9 +9506,10 @@ Uses `coord_tokenizer` to tokenize coords if that is part of the design of that 
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L582-L646)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L722-L786)
 
 
+takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def validate_fields_types` { #PromptSequencers.AOTP.validate_fields_types }
@@ -9481,10 +9521,10 @@ Uses `coord_tokenizer` to tokenize coords if that is part of the design of that 
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L210-L219)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L270-L279)
 
 
-validate the types of all the fields on a SerializableDataclass. calls `SerializableDataclass__validate_field_type` for each field
+validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
 
 
 ### Inherited Members                                
@@ -9543,9 +9583,10 @@ Uses `coord_tokenizer` to tokenize coords if that is part of the design of that 
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L519-L575)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L659-L715)
 
 
+returns the class as a dict, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def load` { #PromptSequencers.AOP.load }
@@ -9554,9 +9595,10 @@ Uses `coord_tokenizer` to tokenize coords if that is part of the design of that 
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L582-L646)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L722-L786)
 
 
+takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def validate_fields_types` { #PromptSequencers.AOP.validate_fields_types }
@@ -9568,10 +9610,10 @@ Uses `coord_tokenizer` to tokenize coords if that is part of the design of that 
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L210-L219)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L270-L279)
 
 
-validate the types of all the fields on a SerializableDataclass. calls `SerializableDataclass__validate_field_type` for each field
+validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
 
 
 ### Inherited Members                                
@@ -9650,9 +9692,10 @@ Those subclasses which do produce tokens should override this method.
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L519-L575)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L659-L715)
 
 
+returns the class as a dict, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def load` { #CoordTokenizers.UT.load }
@@ -9661,9 +9704,10 @@ Those subclasses which do produce tokens should override this method.
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L582-L646)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L722-L786)
 
 
+takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def validate_fields_types` { #CoordTokenizers.UT.validate_fields_types }
@@ -9675,10 +9719,10 @@ Those subclasses which do produce tokens should override this method.
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L210-L219)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L270-L279)
 
 
-validate the types of all the fields on a SerializableDataclass. calls `SerializableDataclass__validate_field_type` for each field
+validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
 
 
 ### Inherited Members                                
@@ -9761,9 +9805,10 @@ Those subclasses which do produce tokens should override this method.
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L519-L575)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L659-L715)
 
 
+returns the class as a dict, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def load` { #CoordTokenizers.CTT.load }
@@ -9772,9 +9817,10 @@ Those subclasses which do produce tokens should override this method.
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L582-L646)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L722-L786)
 
 
+takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def validate_fields_types` { #CoordTokenizers.CTT.validate_fields_types }
@@ -9786,10 +9832,10 @@ Those subclasses which do produce tokens should override this method.
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L210-L219)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L270-L279)
 
 
-validate the types of all the fields on a SerializableDataclass. calls `SerializableDataclass__validate_field_type` for each field
+validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
 
 
 ### Inherited Members                                
@@ -9859,9 +9905,10 @@ Represents an edge group as tokens for the leading coord followed by coord token
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L519-L575)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L659-L715)
 
 
+returns the class as a dict, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def load` { #AdjListTokenizers.AdjListCoord.load }
@@ -9870,9 +9917,10 @@ Represents an edge group as tokens for the leading coord followed by coord token
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L582-L646)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L722-L786)
 
 
+takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def validate_fields_types` { #AdjListTokenizers.AdjListCoord.validate_fields_types }
@@ -9884,10 +9932,10 @@ Represents an edge group as tokens for the leading coord followed by coord token
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L210-L219)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L270-L279)
 
 
-validate the types of all the fields on a SerializableDataclass. calls `SerializableDataclass__validate_field_type` for each field
+validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
 
 
 ### Inherited Members                                
@@ -9950,9 +9998,10 @@ Represents an edge group as coord tokens for the leading coord and cardinal toke
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L519-L575)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L659-L715)
 
 
+returns the class as a dict, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def load` { #AdjListTokenizers.AdjListCardinal.load }
@@ -9961,9 +10010,10 @@ Represents an edge group as coord tokens for the leading coord and cardinal toke
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L582-L646)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L722-L786)
 
 
+takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def validate_fields_types` { #AdjListTokenizers.AdjListCardinal.validate_fields_types }
@@ -9975,10 +10025,10 @@ Represents an edge group as coord tokens for the leading coord and cardinal toke
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L210-L219)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L270-L279)
 
 
-validate the types of all the fields on a SerializableDataclass. calls `SerializableDataclass__validate_field_type` for each field
+validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
 
 
 ### Inherited Members                                
@@ -10050,9 +10100,10 @@ Edge tokenizations contain 3 parts: a leading coord, a connector (or wall) token
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L519-L575)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L659-L715)
 
 
+returns the class as a dict, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def load` { #EdgeGroupings.Ungrouped.load }
@@ -10061,9 +10112,10 @@ Edge tokenizations contain 3 parts: a leading coord, a connector (or wall) token
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L582-L646)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L722-L786)
 
 
+takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def validate_fields_types` { #EdgeGroupings.Ungrouped.validate_fields_types }
@@ -10075,10 +10127,10 @@ Edge tokenizations contain 3 parts: a leading coord, a connector (or wall) token
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L210-L219)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L270-L279)
 
 
-validate the types of all the fields on a SerializableDataclass. calls `SerializableDataclass__validate_field_type` for each field
+validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
 
 
 ### Inherited Members                                
@@ -10186,9 +10238,10 @@ This could be used to create more or less stringent filters on the valid `_Token
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L519-L575)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L659-L715)
 
 
+returns the class as a dict, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def load` { #EdgeGroupings.ByLeadingCoord.load }
@@ -10197,9 +10250,10 @@ This could be used to create more or less stringent filters on the valid `_Token
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L582-L646)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L722-L786)
 
 
+takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def validate_fields_types` { #EdgeGroupings.ByLeadingCoord.validate_fields_types }
@@ -10211,10 +10265,10 @@ This could be used to create more or less stringent filters on the valid `_Token
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L210-L219)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L270-L279)
 
 
-validate the types of all the fields on a SerializableDataclass. calls `SerializableDataclass__validate_field_type` for each field
+validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
 
 
 ### Inherited Members                                
@@ -10270,9 +10324,10 @@ returns a sorted representation. useful for checking consistency
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L519-L575)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L659-L715)
 
 
+returns the class as a dict, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def load` { #EdgePermuters.SortedCoords.load }
@@ -10281,9 +10336,10 @@ returns a sorted representation. useful for checking consistency
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L582-L646)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L722-L786)
 
 
+takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def validate_fields_types` { #EdgePermuters.SortedCoords.validate_fields_types }
@@ -10295,10 +10351,10 @@ returns a sorted representation. useful for checking consistency
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L210-L219)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L270-L279)
 
 
-validate the types of all the fields on a SerializableDataclass. calls `SerializableDataclass__validate_field_type` for each field
+validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
 
 
 ### Inherited Members                                
@@ -10342,9 +10398,10 @@ Permutes each edge randomly.
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L519-L575)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L659-L715)
 
 
+returns the class as a dict, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def load` { #EdgePermuters.RandomCoords.load }
@@ -10353,9 +10410,10 @@ Permutes each edge randomly.
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L582-L646)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L722-L786)
 
 
+takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def validate_fields_types` { #EdgePermuters.RandomCoords.validate_fields_types }
@@ -10367,10 +10425,10 @@ Permutes each edge randomly.
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L210-L219)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L270-L279)
 
 
-validate the types of all the fields on a SerializableDataclass. calls `SerializableDataclass__validate_field_type` for each field
+validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
 
 
 ### Inherited Members                                
@@ -10416,9 +10474,10 @@ a call to `BothCoords._permute` will modify `lattice_edges` in-place, doubling `
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L519-L575)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L659-L715)
 
 
+returns the class as a dict, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def load` { #EdgePermuters.BothCoords.load }
@@ -10427,9 +10486,10 @@ a call to `BothCoords._permute` will modify `lattice_edges` in-place, doubling `
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L582-L646)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L722-L786)
 
 
+takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def validate_fields_types` { #EdgePermuters.BothCoords.validate_fields_types }
@@ -10441,10 +10501,10 @@ a call to `BothCoords._permute` will modify `lattice_edges` in-place, doubling `
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L210-L219)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L270-L279)
 
 
-validate the types of all the fields on a SerializableDataclass. calls `SerializableDataclass__validate_field_type` for each field
+validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
 
 
 ### Inherited Members                                
@@ -10502,9 +10562,10 @@ If a wall exists on that edge, the edge is tokenized in the same manner, using `
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L519-L575)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L659-L715)
 
 
+returns the class as a dict, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def load` { #EdgeSubsets.AllLatticeEdges.load }
@@ -10513,9 +10574,10 @@ If a wall exists on that edge, the edge is tokenized in the same manner, using `
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L582-L646)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L722-L786)
 
 
+takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def validate_fields_types` { #EdgeSubsets.AllLatticeEdges.validate_fields_types }
@@ -10527,10 +10589,10 @@ If a wall exists on that edge, the edge is tokenized in the same manner, using `
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L210-L219)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L270-L279)
 
 
-validate the types of all the fields on a SerializableDataclass. calls `SerializableDataclass__validate_field_type` for each field
+validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
 
 
 ### Inherited Members                                
@@ -10585,9 +10647,10 @@ If true, `VOCAB.ADJLIST_WALL` is used in place of `VOCAB.CONNECTOR`.
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L519-L575)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L659-L715)
 
 
+returns the class as a dict, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def load` { #EdgeSubsets.ConnectionEdges.load }
@@ -10596,9 +10659,10 @@ If true, `VOCAB.ADJLIST_WALL` is used in place of `VOCAB.CONNECTOR`.
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L582-L646)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L722-L786)
 
 
+takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def validate_fields_types` { #EdgeSubsets.ConnectionEdges.validate_fields_types }
@@ -10610,10 +10674,10 @@ If true, `VOCAB.ADJLIST_WALL` is used in place of `VOCAB.CONNECTOR`.
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L210-L219)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L270-L279)
 
 
-validate the types of all the fields on a SerializableDataclass. calls `SerializableDataclass__validate_field_type` for each field
+validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
 
 
 ### Inherited Members                                
@@ -10733,9 +10797,10 @@ This could be used to create more or less stringent filters on the valid `_Token
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L519-L575)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L659-L715)
 
 
+returns the class as a dict, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def load` { #TargetTokenizers.Unlabeled.load }
@@ -10744,9 +10809,10 @@ This could be used to create more or less stringent filters on the valid `_Token
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L582-L646)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L722-L786)
 
 
+takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def validate_fields_types` { #TargetTokenizers.Unlabeled.validate_fields_types }
@@ -10758,10 +10824,10 @@ This could be used to create more or less stringent filters on the valid `_Token
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L210-L219)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L270-L279)
 
 
-validate the types of all the fields on a SerializableDataclass. calls `SerializableDataclass__validate_field_type` for each field
+validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
 
 
 ### Inherited Members                                
@@ -10820,9 +10886,10 @@ Legacy tokenizers all use this behavior.
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L519-L575)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L659-L715)
 
 
+returns the class as a dict, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def load` { #StepSizes.Singles.load }
@@ -10831,9 +10898,10 @@ Legacy tokenizers all use this behavior.
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L582-L646)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L722-L786)
 
 
+takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def validate_fields_types` { #StepSizes.Singles.validate_fields_types }
@@ -10845,10 +10913,10 @@ Legacy tokenizers all use this behavior.
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L210-L219)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L270-L279)
 
 
-validate the types of all the fields on a SerializableDataclass. calls `SerializableDataclass__validate_field_type` for each field
+validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
 
 
 ### Inherited Members                                
@@ -10932,9 +11000,10 @@ This could be used to create more or less stringent filters on the valid `_Token
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L519-L575)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L659-L715)
 
 
+returns the class as a dict, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def load` { #StepSizes.Straightaways.load }
@@ -10943,9 +11012,10 @@ This could be used to create more or less stringent filters on the valid `_Token
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L582-L646)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L722-L786)
 
 
+takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def validate_fields_types` { #StepSizes.Straightaways.validate_fields_types }
@@ -10957,10 +11027,10 @@ This could be used to create more or less stringent filters on the valid `_Token
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L210-L219)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L270-L279)
 
 
-validate the types of all the fields on a SerializableDataclass. calls `SerializableDataclass__validate_field_type` for each field
+validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
 
 
 ### Inherited Members                                
@@ -11006,9 +11076,10 @@ The starting and ending coords are always included.
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L519-L575)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L659-L715)
 
 
+returns the class as a dict, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def load` { #StepSizes.Forks.load }
@@ -11017,9 +11088,10 @@ The starting and ending coords are always included.
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L582-L646)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L722-L786)
 
 
+takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def validate_fields_types` { #StepSizes.Forks.validate_fields_types }
@@ -11031,10 +11103,10 @@ The starting and ending coords are always included.
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L210-L219)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L270-L279)
 
 
-validate the types of all the fields on a SerializableDataclass. calls `SerializableDataclass__validate_field_type` for each field
+validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
 
 
 ### Inherited Members                                
@@ -11117,9 +11189,10 @@ This could be used to create more or less stringent filters on the valid `_Token
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L519-L575)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L659-L715)
 
 
+returns the class as a dict, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def load` { #StepSizes.ForksAndStraightaways.load }
@@ -11128,9 +11201,10 @@ This could be used to create more or less stringent filters on the valid `_Token
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L582-L646)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L722-L786)
 
 
+takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def validate_fields_types` { #StepSizes.ForksAndStraightaways.validate_fields_types }
@@ -11142,10 +11216,10 @@ This could be used to create more or less stringent filters on the valid `_Token
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L210-L219)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L270-L279)
 
 
-validate the types of all the fields on a SerializableDataclass. calls `SerializableDataclass__validate_field_type` for each field
+validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
 
 
 ### Inherited Members                                
@@ -11233,9 +11307,10 @@ Tokenizes a single step in the solution.
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L519-L575)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L659-L715)
 
 
+returns the class as a dict, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def load` { #StepTokenizers.Coord.load }
@@ -11244,9 +11319,10 @@ Tokenizes a single step in the solution.
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L582-L646)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L722-L786)
 
 
+takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def validate_fields_types` { #StepTokenizers.Coord.validate_fields_types }
@@ -11258,10 +11334,10 @@ Tokenizes a single step in the solution.
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L210-L219)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L270-L279)
 
 
-validate the types of all the fields on a SerializableDataclass. calls `SerializableDataclass__validate_field_type` for each field
+validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
 
 
 ### Inherited Members                                
@@ -11328,9 +11404,10 @@ Tokenizes a single step in the solution.
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L519-L575)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L659-L715)
 
 
+returns the class as a dict, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def load` { #StepTokenizers.Cardinal.load }
@@ -11339,9 +11416,10 @@ Tokenizes a single step in the solution.
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L582-L646)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L722-L786)
 
 
+takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def validate_fields_types` { #StepTokenizers.Cardinal.validate_fields_types }
@@ -11353,10 +11431,10 @@ Tokenizes a single step in the solution.
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L210-L219)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L270-L279)
 
 
-validate the types of all the fields on a SerializableDataclass. calls `SerializableDataclass__validate_field_type` for each field
+validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
 
 
 ### Inherited Members                                
@@ -11424,9 +11502,10 @@ Tokenizes a single step in the solution.
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L519-L575)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L659-L715)
 
 
+returns the class as a dict, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def load` { #StepTokenizers.Relative.load }
@@ -11435,9 +11514,10 @@ Tokenizes a single step in the solution.
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L582-L646)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L722-L786)
 
 
+takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def validate_fields_types` { #StepTokenizers.Relative.validate_fields_types }
@@ -11449,10 +11529,10 @@ Tokenizes a single step in the solution.
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L210-L219)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L270-L279)
 
 
-validate the types of all the fields on a SerializableDataclass. calls `SerializableDataclass__validate_field_type` for each field
+validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
 
 
 ### Inherited Members                                
@@ -11521,9 +11601,10 @@ Tokenizes a single step in the solution.
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L519-L575)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L659-L715)
 
 
+returns the class as a dict, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def load` { #StepTokenizers.Distance.load }
@@ -11532,9 +11613,10 @@ Tokenizes a single step in the solution.
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L582-L646)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L722-L786)
 
 
+takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def validate_fields_types` { #StepTokenizers.Distance.validate_fields_types }
@@ -11546,10 +11628,10 @@ Tokenizes a single step in the solution.
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L210-L219)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L270-L279)
 
 
-validate the types of all the fields on a SerializableDataclass. calls `SerializableDataclass__validate_field_type` for each field
+validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
 
 
 ### Inherited Members                                
@@ -11699,9 +11781,10 @@ This could be used to create more or less stringent filters on the valid `_Token
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L519-L575)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L659-L715)
 
 
+returns the class as a dict, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def load` { #PathTokenizers.StepSequence.load }
@@ -11710,9 +11793,10 @@ This could be used to create more or less stringent filters on the valid `_Token
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L582-L646)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L722-L786)
 
 
+takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def validate_fields_types` { #PathTokenizers.StepSequence.validate_fields_types }
@@ -11724,10 +11808,10 @@ This could be used to create more or less stringent filters on the valid `_Token
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L210-L219)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L270-L279)
 
 
-validate the types of all the fields on a SerializableDataclass. calls `SerializableDataclass__validate_field_type` for each field
+validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
 
 
 ### Inherited Members                                
@@ -12005,9 +12089,10 @@ clears all cached properties
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L519-L575)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L659-L715)
 
 
+returns the class as a dict, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def load` { #MazeTokenizer.load }
@@ -12016,9 +12101,10 @@ clears all cached properties
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L582-L646)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L722-L786)
 
 
+takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def validate_fields_types` { #MazeTokenizer.validate_fields_types }
@@ -12030,10 +12116,10 @@ clears all cached properties
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L210-L219)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L270-L279)
 
 
-validate the types of all the fields on a SerializableDataclass. calls `SerializableDataclass__validate_field_type` for each field
+validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
 
 
 ### Inherited Members                                
@@ -12045,7 +12131,7 @@ validate the types of all the fields on a SerializableDataclass. calls `Serializ
 
 
 
-docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.1.0
+docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.0.0
 
 
 ## Contents
@@ -12199,7 +12285,7 @@ Computes, sorts, and saves the hashes of every member of `ALL_TOKENIZERS`.
 
 
 
-docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.1.0
+docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.0.0
 
 
 ## Contents
@@ -12578,9 +12664,10 @@ clears all cached properties
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L519-L575)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L659-L715)
 
 
+returns the class as a dict, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def load` { #MazeTokenizer.load }
@@ -12589,9 +12676,10 @@ clears all cached properties
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L582-L646)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L722-L786)
 
 
+takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def validate_fields_types` { #MazeTokenizer.validate_fields_types }
@@ -12603,10 +12691,10 @@ clears all cached properties
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L210-L219)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L270-L279)
 
 
-validate the types of all the fields on a SerializableDataclass. calls `SerializableDataclass__validate_field_type` for each field
+validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
 
 
 ### Inherited Members                                
@@ -12692,9 +12780,10 @@ Those subclasses which do produce tokens should override this method.
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L519-L575)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L659-L715)
 
 
+returns the class as a dict, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def load` { #CoordTokenizers.UT.load }
@@ -12703,9 +12792,10 @@ Those subclasses which do produce tokens should override this method.
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L582-L646)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L722-L786)
 
 
+takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def validate_fields_types` { #CoordTokenizers.UT.validate_fields_types }
@@ -12717,10 +12807,10 @@ Those subclasses which do produce tokens should override this method.
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L210-L219)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L270-L279)
 
 
-validate the types of all the fields on a SerializableDataclass. calls `SerializableDataclass__validate_field_type` for each field
+validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
 
 
 ### Inherited Members                                
@@ -12803,9 +12893,10 @@ Those subclasses which do produce tokens should override this method.
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L519-L575)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L659-L715)
 
 
+returns the class as a dict, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def load` { #CoordTokenizers.CTT.load }
@@ -12814,9 +12905,10 @@ Those subclasses which do produce tokens should override this method.
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L582-L646)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L722-L786)
 
 
+takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def validate_fields_types` { #CoordTokenizers.CTT.validate_fields_types }
@@ -12828,10 +12920,10 @@ Those subclasses which do produce tokens should override this method.
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L210-L219)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L270-L279)
 
 
-validate the types of all the fields on a SerializableDataclass. calls `SerializableDataclass__validate_field_type` for each field
+validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
 
 
 ### Inherited Members                                
@@ -12897,9 +12989,10 @@ Edge tokenizations contain 3 parts: a leading coord, a connector (or wall) token
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L519-L575)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L659-L715)
 
 
+returns the class as a dict, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def load` { #EdgeGroupings.Ungrouped.load }
@@ -12908,9 +13001,10 @@ Edge tokenizations contain 3 parts: a leading coord, a connector (or wall) token
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L582-L646)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L722-L786)
 
 
+takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def validate_fields_types` { #EdgeGroupings.Ungrouped.validate_fields_types }
@@ -12922,10 +13016,10 @@ Edge tokenizations contain 3 parts: a leading coord, a connector (or wall) token
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L210-L219)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L270-L279)
 
 
-validate the types of all the fields on a SerializableDataclass. calls `SerializableDataclass__validate_field_type` for each field
+validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
 
 
 ### Inherited Members                                
@@ -13033,9 +13127,10 @@ This could be used to create more or less stringent filters on the valid `_Token
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L519-L575)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L659-L715)
 
 
+returns the class as a dict, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def load` { #EdgeGroupings.ByLeadingCoord.load }
@@ -13044,9 +13139,10 @@ This could be used to create more or less stringent filters on the valid `_Token
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L582-L646)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L722-L786)
 
 
+takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def validate_fields_types` { #EdgeGroupings.ByLeadingCoord.validate_fields_types }
@@ -13058,10 +13154,10 @@ This could be used to create more or less stringent filters on the valid `_Token
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L210-L219)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L270-L279)
 
 
-validate the types of all the fields on a SerializableDataclass. calls `SerializableDataclass__validate_field_type` for each field
+validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
 
 
 ### Inherited Members                                
@@ -13117,9 +13213,10 @@ returns a sorted representation. useful for checking consistency
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L519-L575)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L659-L715)
 
 
+returns the class as a dict, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def load` { #EdgePermuters.SortedCoords.load }
@@ -13128,9 +13225,10 @@ returns a sorted representation. useful for checking consistency
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L582-L646)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L722-L786)
 
 
+takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def validate_fields_types` { #EdgePermuters.SortedCoords.validate_fields_types }
@@ -13142,10 +13240,10 @@ returns a sorted representation. useful for checking consistency
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L210-L219)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L270-L279)
 
 
-validate the types of all the fields on a SerializableDataclass. calls `SerializableDataclass__validate_field_type` for each field
+validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
 
 
 ### Inherited Members                                
@@ -13189,9 +13287,10 @@ Permutes each edge randomly.
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L519-L575)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L659-L715)
 
 
+returns the class as a dict, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def load` { #EdgePermuters.RandomCoords.load }
@@ -13200,9 +13299,10 @@ Permutes each edge randomly.
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L582-L646)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L722-L786)
 
 
+takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def validate_fields_types` { #EdgePermuters.RandomCoords.validate_fields_types }
@@ -13214,10 +13314,10 @@ Permutes each edge randomly.
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L210-L219)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L270-L279)
 
 
-validate the types of all the fields on a SerializableDataclass. calls `SerializableDataclass__validate_field_type` for each field
+validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
 
 
 ### Inherited Members                                
@@ -13263,9 +13363,10 @@ a call to `BothCoords._permute` will modify `lattice_edges` in-place, doubling `
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L519-L575)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L659-L715)
 
 
+returns the class as a dict, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def load` { #EdgePermuters.BothCoords.load }
@@ -13274,9 +13375,10 @@ a call to `BothCoords._permute` will modify `lattice_edges` in-place, doubling `
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L582-L646)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L722-L786)
 
 
+takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def validate_fields_types` { #EdgePermuters.BothCoords.validate_fields_types }
@@ -13288,10 +13390,10 @@ a call to `BothCoords._permute` will modify `lattice_edges` in-place, doubling `
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L210-L219)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L270-L279)
 
 
-validate the types of all the fields on a SerializableDataclass. calls `SerializableDataclass__validate_field_type` for each field
+validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
 
 
 ### Inherited Members                                
@@ -13349,9 +13451,10 @@ If a wall exists on that edge, the edge is tokenized in the same manner, using `
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L519-L575)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L659-L715)
 
 
+returns the class as a dict, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def load` { #EdgeSubsets.AllLatticeEdges.load }
@@ -13360,9 +13463,10 @@ If a wall exists on that edge, the edge is tokenized in the same manner, using `
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L582-L646)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L722-L786)
 
 
+takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def validate_fields_types` { #EdgeSubsets.AllLatticeEdges.validate_fields_types }
@@ -13374,10 +13478,10 @@ If a wall exists on that edge, the edge is tokenized in the same manner, using `
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L210-L219)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L270-L279)
 
 
-validate the types of all the fields on a SerializableDataclass. calls `SerializableDataclass__validate_field_type` for each field
+validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
 
 
 ### Inherited Members                                
@@ -13432,9 +13536,10 @@ If true, `VOCAB.ADJLIST_WALL` is used in place of `VOCAB.CONNECTOR`.
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L519-L575)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L659-L715)
 
 
+returns the class as a dict, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def load` { #EdgeSubsets.ConnectionEdges.load }
@@ -13443,9 +13548,10 @@ If true, `VOCAB.ADJLIST_WALL` is used in place of `VOCAB.CONNECTOR`.
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L582-L646)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L722-L786)
 
 
+takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def validate_fields_types` { #EdgeSubsets.ConnectionEdges.validate_fields_types }
@@ -13457,10 +13563,10 @@ If true, `VOCAB.ADJLIST_WALL` is used in place of `VOCAB.CONNECTOR`.
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L210-L219)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L270-L279)
 
 
-validate the types of all the fields on a SerializableDataclass. calls `SerializableDataclass__validate_field_type` for each field
+validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
 
 
 ### Inherited Members                                
@@ -13531,9 +13637,10 @@ Represents an edge group as tokens for the leading coord followed by coord token
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L519-L575)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L659-L715)
 
 
+returns the class as a dict, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def load` { #AdjListTokenizers.AdjListCoord.load }
@@ -13542,9 +13649,10 @@ Represents an edge group as tokens for the leading coord followed by coord token
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L582-L646)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L722-L786)
 
 
+takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def validate_fields_types` { #AdjListTokenizers.AdjListCoord.validate_fields_types }
@@ -13556,10 +13664,10 @@ Represents an edge group as tokens for the leading coord followed by coord token
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L210-L219)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L270-L279)
 
 
-validate the types of all the fields on a SerializableDataclass. calls `SerializableDataclass__validate_field_type` for each field
+validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
 
 
 ### Inherited Members                                
@@ -13622,9 +13730,10 @@ Represents an edge group as coord tokens for the leading coord and cardinal toke
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L519-L575)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L659-L715)
 
 
+returns the class as a dict, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def load` { #AdjListTokenizers.AdjListCardinal.load }
@@ -13633,9 +13742,10 @@ Represents an edge group as coord tokens for the leading coord and cardinal toke
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L582-L646)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L722-L786)
 
 
+takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def validate_fields_types` { #AdjListTokenizers.AdjListCardinal.validate_fields_types }
@@ -13647,10 +13757,10 @@ Represents an edge group as coord tokens for the leading coord and cardinal toke
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L210-L219)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L270-L279)
 
 
-validate the types of all the fields on a SerializableDataclass. calls `SerializableDataclass__validate_field_type` for each field
+validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
 
 
 ### Inherited Members                                
@@ -13775,9 +13885,10 @@ This could be used to create more or less stringent filters on the valid `_Token
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L519-L575)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L659-L715)
 
 
+returns the class as a dict, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def load` { #TargetTokenizers.Unlabeled.load }
@@ -13786,9 +13897,10 @@ This could be used to create more or less stringent filters on the valid `_Token
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L582-L646)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L722-L786)
 
 
+takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def validate_fields_types` { #TargetTokenizers.Unlabeled.validate_fields_types }
@@ -13800,10 +13912,10 @@ This could be used to create more or less stringent filters on the valid `_Token
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L210-L219)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L270-L279)
 
 
-validate the types of all the fields on a SerializableDataclass. calls `SerializableDataclass__validate_field_type` for each field
+validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
 
 
 ### Inherited Members                                
@@ -13862,9 +13974,10 @@ Legacy tokenizers all use this behavior.
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L519-L575)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L659-L715)
 
 
+returns the class as a dict, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def load` { #StepSizes.Singles.load }
@@ -13873,9 +13986,10 @@ Legacy tokenizers all use this behavior.
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L582-L646)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L722-L786)
 
 
+takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def validate_fields_types` { #StepSizes.Singles.validate_fields_types }
@@ -13887,10 +14001,10 @@ Legacy tokenizers all use this behavior.
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L210-L219)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L270-L279)
 
 
-validate the types of all the fields on a SerializableDataclass. calls `SerializableDataclass__validate_field_type` for each field
+validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
 
 
 ### Inherited Members                                
@@ -13974,9 +14088,10 @@ This could be used to create more or less stringent filters on the valid `_Token
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L519-L575)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L659-L715)
 
 
+returns the class as a dict, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def load` { #StepSizes.Straightaways.load }
@@ -13985,9 +14100,10 @@ This could be used to create more or less stringent filters on the valid `_Token
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L582-L646)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L722-L786)
 
 
+takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def validate_fields_types` { #StepSizes.Straightaways.validate_fields_types }
@@ -13999,10 +14115,10 @@ This could be used to create more or less stringent filters on the valid `_Token
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L210-L219)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L270-L279)
 
 
-validate the types of all the fields on a SerializableDataclass. calls `SerializableDataclass__validate_field_type` for each field
+validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
 
 
 ### Inherited Members                                
@@ -14048,9 +14164,10 @@ The starting and ending coords are always included.
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L519-L575)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L659-L715)
 
 
+returns the class as a dict, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def load` { #StepSizes.Forks.load }
@@ -14059,9 +14176,10 @@ The starting and ending coords are always included.
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L582-L646)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L722-L786)
 
 
+takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def validate_fields_types` { #StepSizes.Forks.validate_fields_types }
@@ -14073,10 +14191,10 @@ The starting and ending coords are always included.
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L210-L219)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L270-L279)
 
 
-validate the types of all the fields on a SerializableDataclass. calls `SerializableDataclass__validate_field_type` for each field
+validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
 
 
 ### Inherited Members                                
@@ -14159,9 +14277,10 @@ This could be used to create more or less stringent filters on the valid `_Token
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L519-L575)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L659-L715)
 
 
+returns the class as a dict, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def load` { #StepSizes.ForksAndStraightaways.load }
@@ -14170,9 +14289,10 @@ This could be used to create more or less stringent filters on the valid `_Token
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L582-L646)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L722-L786)
 
 
+takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def validate_fields_types` { #StepSizes.ForksAndStraightaways.validate_fields_types }
@@ -14184,10 +14304,10 @@ This could be used to create more or less stringent filters on the valid `_Token
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L210-L219)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L270-L279)
 
 
-validate the types of all the fields on a SerializableDataclass. calls `SerializableDataclass__validate_field_type` for each field
+validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
 
 
 ### Inherited Members                                
@@ -14275,9 +14395,10 @@ Tokenizes a single step in the solution.
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L519-L575)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L659-L715)
 
 
+returns the class as a dict, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def load` { #StepTokenizers.Coord.load }
@@ -14286,9 +14407,10 @@ Tokenizes a single step in the solution.
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L582-L646)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L722-L786)
 
 
+takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def validate_fields_types` { #StepTokenizers.Coord.validate_fields_types }
@@ -14300,10 +14422,10 @@ Tokenizes a single step in the solution.
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L210-L219)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L270-L279)
 
 
-validate the types of all the fields on a SerializableDataclass. calls `SerializableDataclass__validate_field_type` for each field
+validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
 
 
 ### Inherited Members                                
@@ -14370,9 +14492,10 @@ Tokenizes a single step in the solution.
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L519-L575)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L659-L715)
 
 
+returns the class as a dict, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def load` { #StepTokenizers.Cardinal.load }
@@ -14381,9 +14504,10 @@ Tokenizes a single step in the solution.
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L582-L646)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L722-L786)
 
 
+takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def validate_fields_types` { #StepTokenizers.Cardinal.validate_fields_types }
@@ -14395,10 +14519,10 @@ Tokenizes a single step in the solution.
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L210-L219)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L270-L279)
 
 
-validate the types of all the fields on a SerializableDataclass. calls `SerializableDataclass__validate_field_type` for each field
+validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
 
 
 ### Inherited Members                                
@@ -14466,9 +14590,10 @@ Tokenizes a single step in the solution.
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L519-L575)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L659-L715)
 
 
+returns the class as a dict, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def load` { #StepTokenizers.Relative.load }
@@ -14477,9 +14602,10 @@ Tokenizes a single step in the solution.
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L582-L646)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L722-L786)
 
 
+takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def validate_fields_types` { #StepTokenizers.Relative.validate_fields_types }
@@ -14491,10 +14617,10 @@ Tokenizes a single step in the solution.
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L210-L219)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L270-L279)
 
 
-validate the types of all the fields on a SerializableDataclass. calls `SerializableDataclass__validate_field_type` for each field
+validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
 
 
 ### Inherited Members                                
@@ -14563,9 +14689,10 @@ Tokenizes a single step in the solution.
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L519-L575)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L659-L715)
 
 
+returns the class as a dict, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def load` { #StepTokenizers.Distance.load }
@@ -14574,9 +14701,10 @@ Tokenizes a single step in the solution.
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L582-L646)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L722-L786)
 
 
+takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def validate_fields_types` { #StepTokenizers.Distance.validate_fields_types }
@@ -14588,10 +14716,10 @@ Tokenizes a single step in the solution.
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L210-L219)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L270-L279)
 
 
-validate the types of all the fields on a SerializableDataclass. calls `SerializableDataclass__validate_field_type` for each field
+validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
 
 
 ### Inherited Members                                
@@ -14741,9 +14869,10 @@ This could be used to create more or less stringent filters on the valid `_Token
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L519-L575)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L659-L715)
 
 
+returns the class as a dict, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def load` { #PathTokenizers.StepSequence.load }
@@ -14752,9 +14881,10 @@ This could be used to create more or less stringent filters on the valid `_Token
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L582-L646)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L722-L786)
 
 
+takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def validate_fields_types` { #PathTokenizers.StepSequence.validate_fields_types }
@@ -14766,10 +14896,10 @@ This could be used to create more or less stringent filters on the valid `_Token
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L210-L219)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L270-L279)
 
 
-validate the types of all the fields on a SerializableDataclass. calls `SerializableDataclass__validate_field_type` for each field
+validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
 
 
 ### Inherited Members                                
@@ -14847,9 +14977,10 @@ Uses `coord_tokenizer` to tokenize coords if that is part of the design of that 
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L519-L575)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L659-L715)
 
 
+returns the class as a dict, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def load` { #PromptSequencers.AOTP.load }
@@ -14858,9 +14989,10 @@ Uses `coord_tokenizer` to tokenize coords if that is part of the design of that 
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L582-L646)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L722-L786)
 
 
+takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def validate_fields_types` { #PromptSequencers.AOTP.validate_fields_types }
@@ -14872,10 +15004,10 @@ Uses `coord_tokenizer` to tokenize coords if that is part of the design of that 
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L210-L219)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L270-L279)
 
 
-validate the types of all the fields on a SerializableDataclass. calls `SerializableDataclass__validate_field_type` for each field
+validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
 
 
 ### Inherited Members                                
@@ -14934,9 +15066,10 @@ Uses `coord_tokenizer` to tokenize coords if that is part of the design of that 
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L519-L575)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L659-L715)
 
 
+returns the class as a dict, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def load` { #PromptSequencers.AOP.load }
@@ -14945,9 +15078,10 @@ Uses `coord_tokenizer` to tokenize coords if that is part of the design of that 
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L582-L646)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L722-L786)
 
 
+takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def validate_fields_types` { #PromptSequencers.AOP.validate_fields_types }
@@ -14959,10 +15093,10 @@ Uses `coord_tokenizer` to tokenize coords if that is part of the design of that 
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L210-L219)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L270-L279)
 
 
-validate the types of all the fields on a SerializableDataclass. calls `SerializableDataclass__validate_field_type` for each field
+validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
 
 
 ### Inherited Members                                
@@ -15299,9 +15433,10 @@ decode a list of tokens into a string or list of strings
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L519-L575)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L659-L715)
 
 
+returns the class as a dict, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def load` { #MazeTokenizerModular.load }
@@ -15310,9 +15445,10 @@ decode a list of tokens into a string or list of strings
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L582-L646)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L722-L786)
 
 
+takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def validate_fields_types` { #MazeTokenizerModular.validate_fields_types }
@@ -15324,10 +15460,10 @@ decode a list of tokens into a string or list of strings
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L210-L219)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L270-L279)
 
 
-validate the types of all the fields on a SerializableDataclass. calls `SerializableDataclass__validate_field_type` for each field
+validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
 
 
 ### Inherited Members                                
@@ -15350,7 +15486,7 @@ validate the types of all the fields on a SerializableDataclass. calls `Serializ
 
 
 
-docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.1.0
+docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.0.0
 
 
 ## Contents
@@ -15410,7 +15546,7 @@ python -m <a href="">maze_dataset.tokenization.save_hashes</a> --check
 
 
 
-docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.1.0
+docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.0.0
 
 
 ## Contents

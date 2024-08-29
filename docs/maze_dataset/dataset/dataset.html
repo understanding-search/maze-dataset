@@ -46,7 +46,7 @@
 </script></head>
 <body>
 <div class="package-version">
-    docs for <a href="https://github.com/understanding-search/maze-dataset">maze-dataset</a> v1.1.0<br>
+    docs for <a href="https://github.com/understanding-search/maze-dataset">maze-dataset</a> v1.0.0<br>
 </div>
     <nav class="pdoc">
         <label id="navtoggle" for="togglestate" class="pdoc-button">
@@ -1019,7 +1019,9 @@ they implement some basic functionality, saving/loading, the <code>from_config</
 </span></pre></div>
 
 
-    
+            <div class="docstring"><p>returns the class as a dict, implemented by using <code>@serializable_dataclass</code> decorator</p>
+</div>
+
 
                             </div>
                             <div id="GPTDatasetConfig.load" class="classattr">
@@ -1047,7 +1049,9 @@ they implement some basic functionality, saving/loading, the <code>from_config</
 </span></pre></div>
 
 
-    
+            <div class="docstring"><p>takes in an appropriately structured dict and returns an instance of the class, implemented by using <code>@serializable_dataclass</code> decorator</p>
+</div>
+
 
                             </div>
                             <div id="GPTDatasetConfig.validate_fields_types" class="classattr">
@@ -1060,7 +1064,7 @@ they implement some basic functionality, saving/loading, the <code>from_config</
                 <div class="source-button-container">
             <label class="pdoc-button view-source-button" for="GPTDatasetConfig.validate_fields_types-view-source"><span>View Source</span></label>
             <div class="github-button-wrapper">
-                <a class="pdoc-button github-link-button" href="https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/dataset.py#L210-L219" target="_blank">
+                <a class="pdoc-button github-link-button" href="https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/dataset.py#L270-L279" target="_blank">
                     <span>View on GitHub</span>
                 </a>
             </div>
@@ -1068,20 +1072,20 @@ they implement some basic functionality, saving/loading, the <code>from_config</
 
     </div>
     <a class="headerlink" href="#GPTDatasetConfig.validate_fields_types"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="GPTDatasetConfig.validate_fields_types-211"><a href="#GPTDatasetConfig.validate_fields_types-211"><span class="linenos">211</span></a><span class="k">def</span> <span class="nf">SerializableDataclass__validate_fields_types</span><span class="p">(</span>
-</span><span id="GPTDatasetConfig.validate_fields_types-212"><a href="#GPTDatasetConfig.validate_fields_types-212"><span class="linenos">212</span></a>    <span class="bp">self</span><span class="p">:</span> <span class="n">SerializableDataclass</span><span class="p">,</span>
-</span><span id="GPTDatasetConfig.validate_fields_types-213"><a href="#GPTDatasetConfig.validate_fields_types-213"><span class="linenos">213</span></a>    <span class="n">on_typecheck_error</span><span class="p">:</span> <span class="n">ErrorMode</span> <span class="o">=</span> <span class="n">_DEFAULT_ON_TYPECHECK_ERROR</span><span class="p">,</span>
-</span><span id="GPTDatasetConfig.validate_fields_types-214"><a href="#GPTDatasetConfig.validate_fields_types-214"><span class="linenos">214</span></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-</span><span id="GPTDatasetConfig.validate_fields_types-215"><a href="#GPTDatasetConfig.validate_fields_types-215"><span class="linenos">215</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;validate the types of all the fields on a SerializableDataclass. calls `SerializableDataclass__validate_field_type` for each field&quot;&quot;&quot;</span>
-</span><span id="GPTDatasetConfig.validate_fields_types-216"><a href="#GPTDatasetConfig.validate_fields_types-216"><span class="linenos">216</span></a>    <span class="k">return</span> <span class="nb">all</span><span class="p">(</span>
-</span><span id="GPTDatasetConfig.validate_fields_types-217"><a href="#GPTDatasetConfig.validate_fields_types-217"><span class="linenos">217</span></a>        <span class="n">SerializableDataclass__validate_fields_types__dict</span><span class="p">(</span>
-</span><span id="GPTDatasetConfig.validate_fields_types-218"><a href="#GPTDatasetConfig.validate_fields_types-218"><span class="linenos">218</span></a>            <span class="bp">self</span><span class="p">,</span> <span class="n">on_typecheck_error</span><span class="o">=</span><span class="n">on_typecheck_error</span>
-</span><span id="GPTDatasetConfig.validate_fields_types-219"><a href="#GPTDatasetConfig.validate_fields_types-219"><span class="linenos">219</span></a>        <span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
-</span><span id="GPTDatasetConfig.validate_fields_types-220"><a href="#GPTDatasetConfig.validate_fields_types-220"><span class="linenos">220</span></a>    <span class="p">)</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="GPTDatasetConfig.validate_fields_types-271"><a href="#GPTDatasetConfig.validate_fields_types-271"><span class="linenos">271</span></a><span class="k">def</span> <span class="nf">SerializableDataclass__validate_fields_types</span><span class="p">(</span>
+</span><span id="GPTDatasetConfig.validate_fields_types-272"><a href="#GPTDatasetConfig.validate_fields_types-272"><span class="linenos">272</span></a>    <span class="bp">self</span><span class="p">:</span> <span class="n">SerializableDataclass</span><span class="p">,</span>
+</span><span id="GPTDatasetConfig.validate_fields_types-273"><a href="#GPTDatasetConfig.validate_fields_types-273"><span class="linenos">273</span></a>    <span class="n">on_typecheck_error</span><span class="p">:</span> <span class="n">ErrorMode</span> <span class="o">=</span> <span class="n">_DEFAULT_ON_TYPECHECK_ERROR</span><span class="p">,</span>
+</span><span id="GPTDatasetConfig.validate_fields_types-274"><a href="#GPTDatasetConfig.validate_fields_types-274"><span class="linenos">274</span></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+</span><span id="GPTDatasetConfig.validate_fields_types-275"><a href="#GPTDatasetConfig.validate_fields_types-275"><span class="linenos">275</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field&quot;&quot;&quot;</span>
+</span><span id="GPTDatasetConfig.validate_fields_types-276"><a href="#GPTDatasetConfig.validate_fields_types-276"><span class="linenos">276</span></a>    <span class="k">return</span> <span class="nb">all</span><span class="p">(</span>
+</span><span id="GPTDatasetConfig.validate_fields_types-277"><a href="#GPTDatasetConfig.validate_fields_types-277"><span class="linenos">277</span></a>        <span class="n">SerializableDataclass__validate_fields_types__dict</span><span class="p">(</span>
+</span><span id="GPTDatasetConfig.validate_fields_types-278"><a href="#GPTDatasetConfig.validate_fields_types-278"><span class="linenos">278</span></a>            <span class="bp">self</span><span class="p">,</span> <span class="n">on_typecheck_error</span><span class="o">=</span><span class="n">on_typecheck_error</span>
+</span><span id="GPTDatasetConfig.validate_fields_types-279"><a href="#GPTDatasetConfig.validate_fields_types-279"><span class="linenos">279</span></a>        <span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+</span><span id="GPTDatasetConfig.validate_fields_types-280"><a href="#GPTDatasetConfig.validate_fields_types-280"><span class="linenos">280</span></a>    <span class="p">)</span>
 </span></pre></div>
 
 
-            <div class="docstring"><p>validate the types of all the fields on a SerializableDataclass. calls <code>SerializableDataclass__validate_field_type</code> for each field</p>
+            <div class="docstring"><p>validate the types of all the fields on a <code>SerializableDataclass</code>. calls <code>SerializableDataclass__validate_field_type</code> for each field</p>
 </div>
 
 
