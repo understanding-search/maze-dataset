@@ -8,7 +8,11 @@ authors = [
     "Lucia Quirke <luciaq@canva.com>", "Can Rager <can.rager@posteo.de>", "Alex Spies <alexfspies@gmail.com>", "Chris Mathwin <cwmathwin@gmail.com>", "Tilman Rauker <traeuker@googlemail.com>", "Guillaume Corlouer <guillaume.corlouer@gmail.com>"
 ]
 readme = "README.md"
+
+# source info
 packages = [{include = "maze_dataset"}]
+
+# informational metadata
 keywords = ["maze", "mazes", "labyrinth", "dataset", "procedural", "pathfinding", "tokenization"]
 repository = "https://github.com/understanding-search/maze-dataset"
 homepage = "https://github.com/understanding-search/maze-dataset"
@@ -16,28 +20,35 @@ documentation = "https://understanding-search.github.io/maze-dataset/"
 
 [tool.poetry.dependencies]
 python = "^3.10.6"
-torch = { version = ">=1.13.1", source = "torch_cpu" }
-matplotlib = "^3.7.0"
+# custom packages
 muutils = "^0.6.10"
 zanj = "^0.3.1"
+# torch and type hints
+torch = { version = ">=1.13.1", source = "torch_cpu" }
+jaxtyping = "^0.2.19"
+# standard numerical
+matplotlib = "^3.7.0"
+pandas = "^2.2.2"
+# notebooks
 jupyter = "^1.0.0"
 ipykernel = "^6.22.0"
-jaxtyping = "^0.2.19"
+# misc
 tqdm = "^4.65.0"
 frozendict = "^2.4.4"
-pandas = "^2.2.2"
 
 [tool.poetry.group.dev.dependencies]
+# testing
 pytest = "^7.3.1"
 pytest-xdist = "^3.6.1" # for parallel all tokenizers tests
+pytest-mock = "^3.10.0"
+pytest-cov = "^4.1.0"
+coverage-badge = "^1.1.0"
+# type checking
+mypy = "^1.0.1"
+# formatting
 pycln = "^2.1.3"
 isort = "^5.12.0"
 black = "^24.1.0"
-pytest-mock = "^3.10.0"
-mypy = "^1.0.1"
-pytest-cov = "^4.1.0"
-coverage-badge = "^1.1.0"
-pandas = "^2.2.2"
 typer = "^0.12.3" # for pycln -- takes forever to install?
 
 [tool.poetry.group.docs.dependencies]
