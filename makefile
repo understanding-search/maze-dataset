@@ -44,7 +44,9 @@ default: help
 
 .PHONY: version
 version: gen-commit-log
-	@echo "Current version is $(VERSION), last auto-uploaded version is $(LAST_VERSION)"
+	@echo "current and last-published version, commit log"
+	@echo "current-version: $(VERSION)"
+	@echo "last-published-version: $(LAST_VERSION)"
 	@echo "Commit log since last version:"
 	@cat $(COMMIT_LOG_FILE)
 	@if [ "$(VERSION)" = "$(LAST_VERSION)" ]; then \
@@ -262,14 +264,18 @@ clean:
 	python -Bc "import pathlib; [p.rmdir() for p in pathlib.Path('.').rglob('__pycache__')]"
 
 
-# listing targets, from stackoverflow
-# https://stackoverflow.com/questions/4219255/how-do-you-get-the-list-of-targets-in-a-makefile
-.PHONY: help
-help: gen-version-info
+help-prereq:
 	@echo -n "# list make targets"
 	@echo ":"
 	@cat Makefile | sed -n '/^\.PHONY: / h; /\(^\t@*echo\|^\t:\)/ {H; x; /PHONY/ s/.PHONY: \(.*\)\n.*"\(.*\)"/    make \1\t\2/p; d; x}'| sort -k2,2 |expand -t 30
-	@echo "# makefile variables:"
+
+
+# listing targets, from stackoverflow
+# https://stackoverflow.com/questions/4219255/how-do-you-get-the-list-of-targets-in-a-makefile
+.PHONY: help
+help: help-prereq gen-version-info
+	@echo -n ""
+	@echo "# makefile variables"
 	@echo "    PYTHON = $(PYTHON)"
 	@echo "    PYTHON_VERSION = $(PYTHON_VERSION)"
 	@echo "    PACKAGE_NAME = $(PACKAGE_NAME)"
