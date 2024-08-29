@@ -102,6 +102,12 @@ docs-combined: docs-md
 	$(PANDOC) -f markdown -t plain $(DOCS_DIR)/combined/$(PACKAGE_NAME).md -o $(DOCS_DIR)/combined/$(PACKAGE_NAME).txt
 	$(PANDOC) -f markdown -t html $(DOCS_DIR)/combined/$(PACKAGE_NAME).md -o $(DOCS_DIR)/combined/$(PACKAGE_NAME).html
 
+
+.PHONY: docs-notebooks
+docs-notebooks:
+	@echo "generate html docs for notebooks"
+	$(PYTHON) docs/make_docs.py --notebooks
+
 # $(PANDOC) -f markdown -t pdf $(DOCS_DIR)/combined/$(PACKAGE_NAME).md -o $(DOCS_DIR)/combined/$(PACKAGE_NAME).pdf
 
 
@@ -127,6 +133,7 @@ docs: docs-html docs-combined cov
 clean-docs:
 	@echo "clean up docs"
 	rm -rf $(DOCS_DIR)/combined/
+	rm -rf $(DOCS_DIR)/notebooks/
 	rm -rf $(DOCS_DIR)/maze_dataset/
 	rm -rf $(COVERAGE_REPORTS_DIR)/
 	rm $(DOCS_DIR)/maze_dataset.html

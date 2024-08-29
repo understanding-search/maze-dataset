@@ -2,15 +2,23 @@ import argparse
 import inspect
 import re
 import tomllib
+from typing import Any, Literal
 import warnings
 from pathlib import Path
 
+# pdoc
 import pdoc
 import pdoc.doc
 import pdoc.extract
 import pdoc.render
 import pdoc.render_helpers
 from markupsafe import Markup
+
+# notebooks
+import jinja2
+import nbconvert
+import nbformat
+
 
 OUTPUT_DIR: Path = Path("docs")
 
@@ -98,6 +106,72 @@ def ignore_warnings(config_path: str | Path = Path("pyproject.toml")):
         warnings.filterwarnings("ignore", message=message)
 
 
+NOTEBOOKS_INDEX_TEMPLATE: str = """<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notebooks</title>
+    <link rel="stylesheet" href="../resources/bootstrap-reboot.min.css">
+    <link rel="stylesheet" href="../resources/theme.css">
+    <link rel="stylesheet" href="../resources/content.css">
+</head>
+<body>    
+    <h1>Notebooks</h1>
+    <p>
+        You can find the source code for the notebooks at
+        <a href="https://github.com/understanding-search/maze-dataset/tree/main/notebooks">
+            github.com/understanding-search/maze-dataset/tree/main/notebooks
+        </a>.
+    <ul>
+        {% for notebook in notebooks %}
+        <li><a href="{{ notebook.html }}">{{ notebook.ipynb }}</a></li>
+        {% endfor %}
+    </ul>
+    <a href="../">Back to index</a>
+"""
+
+
+def convert_notebooks(
+    source_path: Path|str = Path("notebooks"),
+    output_path: Path|str = Path("docs/notebooks"),
+    index_template: str = NOTEBOOKS_INDEX_TEMPLATE,
+):
+    source_path = Path(source_path)
+    output_path = Path(output_path)
+
+    output_path.mkdir(parents=True, exist_ok=True)
+
+    notebook_names: list[Path] = list(source_path.glob("*.ipynb"))
+    notebooks: list[dict[str,str]] = [
+        dict(
+            ipynb=notebook.name,
+            html=notebook.with_suffix(".html").name,
+        )
+        for notebook in notebook_names
+    ]
+    
+    # Render the index template
+    template: jinja2.Template = jinja2.Template(index_template)
+    rendered_index: str = template.render(notebooks=notebooks)
+    
+    # Write the rendered index to a file
+    index_path = output_path / "index.html"
+    with open(index_path, "w") as f:
+        f.write(rendered_index)
+
+    # convert with nbconvert
+    for notebook in notebook_names:
+        output_notebook = output_path / notebook.with_suffix(".html").name
+        with open(notebook, "r") as f:
+            nb: nbformat.NotebookNode = nbformat.read(f, as_version=4)
+            html_exporter: nbconvert.HTMLExporter = nbconvert.HTMLExporter()
+            body: str
+            body, _ = html_exporter.from_notebook_node(nb)
+            with open(output_notebook, "w") as f:
+                f.write(body) 
+
+
 def pdoc_combined(*modules: Path | str, output_file: Path) -> None:
     """Render the documentation for a list of modules into a single HTML file.
     Args:
@@ -150,7 +224,19 @@ if __name__ == "__main__":
         action="store_true",
         help="Whether to combine the documentation for multiple modules into a single markdown file",
     )
+    argparser.add_argument(
+        "--notebooks",
+        "-n",
+        action="store_true",
+        help="convert notebooks to HTML",
+    )
     parsed_args = argparser.parse_args()
+
+
+    if parsed_args.notebooks:
+        convert_notebooks()
+        exit()
+
 
     if not parsed_args.warn_all:
         ignore_warnings()
