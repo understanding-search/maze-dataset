@@ -23,6 +23,7 @@ OUTPUT_DIR: Path = Path("docs")
 pdoc.render_helpers.markdown_extensions["alerts"] = True
 pdoc.render_helpers.markdown_extensions["admonitions"] = True
 
+
 def add_package_version_global(config_path: str | Path = Path("pyproject.toml")):
     # Read the pyproject.toml file
     config_path = Path(config_path)
@@ -30,6 +31,7 @@ def add_package_version_global(config_path: str | Path = Path("pyproject.toml"))
         pyproject_data = tomllib.load(f)
     package_version: str = pyproject_data["tool"]["poetry"]["version"]
     pdoc.render.env.globals["package_version"] = package_version
+
 
 def increment_markdown_headings(markdown_text: str, increment: int = 2) -> str:
     """
