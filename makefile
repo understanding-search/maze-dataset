@@ -1,3 +1,4 @@
+PACKAGE_NAME := maze_dataset
 PUBLISH_BRANCH := main
 PYPI_TOKEN_FILE := .pypi-token
 LAST_VERSION_FILE := .lastversion
@@ -119,7 +120,7 @@ benchmark:
 	$(PYTHON) docs/benchmarks/benchmark_generation.py
 
 .PHONY: docs
-docs: cov docs-html docs-combined
+docs: docs-html docs-combined cov
 	@echo "generate all documentation"
 
 .PHONY: clean-docs

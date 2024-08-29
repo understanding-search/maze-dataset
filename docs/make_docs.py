@@ -188,7 +188,7 @@ if __name__ == "__main__":
     else:
         use_markdown_format()
         pdoc_combined(
-            "maze_dataset", output_file=OUTPUT_DIR / "combined" / "maze-dataset.md"
+            "maze_dataset", output_file=OUTPUT_DIR / "combined" / "maze_dataset.md"
         )
 
     if parsed_args.serve:
