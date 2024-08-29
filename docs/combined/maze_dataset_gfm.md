@@ -1,13 +1,13 @@
 docs for
 [`maze-dataset`](https://github.com/understanding-search/maze-dataset)
-v1.0.0
+v1.0.1
 
 ## Contents
 
 [![PyPI](https://img.shields.io/pypi/v/maze-dataset)](https://pypi.org/project/maze-dataset/)
 ![PyPI - Downloads](https://img.shields.io/pypi/dm/maze-dataset)
 [![Checks](https://github.com/understanding-search/maze-dataset/actions/workflows/checks.yml/badge.svg)](https://github.com/understanding-search/maze-dataset/actions/workflows/checks.yml)
-[![Coverage](data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4NCjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iOTkiIGhlaWdodD0iMjAiPg0KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iYiIgeDI9IjAiIHkyPSIxMDAlIj4NCiAgICAgICAgPHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjYmJiIiBzdG9wLW9wYWNpdHk9Ii4xIi8+DQogICAgICAgIDxzdG9wIG9mZnNldD0iMSIgc3RvcC1vcGFjaXR5PSIuMSIvPg0KICAgIDwvbGluZWFyR3JhZGllbnQ+DQogICAgPG1hc2sgaWQ9ImEiPg0KICAgICAgICA8cmVjdCB3aWR0aD0iOTkiIGhlaWdodD0iMjAiIHJ4PSIzIiBmaWxsPSIjZmZmIi8+DQogICAgPC9tYXNrPg0KICAgIDxnIG1hc2s9InVybCgjYSkiPg0KICAgICAgICA8cGF0aCBmaWxsPSIjNTU1IiBkPSJNMCAwaDYzdjIwSDB6Ii8+DQogICAgICAgIDxwYXRoIGZpbGw9IiNkZmIzMTciIGQ9Ik02MyAwaDM2djIwSDYzeiIvPg0KICAgICAgICA8cGF0aCBmaWxsPSJ1cmwoI2IpIiBkPSJNMCAwaDk5djIwSDB6Ii8+DQogICAgPC9nPg0KICAgIDxnIGZpbGw9IiNmZmYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJEZWphVnUgU2FucyxWZXJkYW5hLEdlbmV2YSxzYW5zLXNlcmlmIiBmb250LXNpemU9IjExIj4NCiAgICAgICAgPHRleHQgeD0iMzEuNSIgeT0iMTUiIGZpbGw9IiMwMTAxMDEiIGZpbGwtb3BhY2l0eT0iLjMiPmNvdmVyYWdlPC90ZXh0Pg0KICAgICAgICA8dGV4dCB4PSIzMS41IiB5PSIxNCI+Y292ZXJhZ2U8L3RleHQ+DQogICAgICAgIDx0ZXh0IHg9IjgwIiB5PSIxNSIgZmlsbD0iIzAxMDEwMSIgZmlsbC1vcGFjaXR5PSIuMyI+NzIlPC90ZXh0Pg0KICAgICAgICA8dGV4dCB4PSI4MCIgeT0iMTQiPjcyJTwvdGV4dD4NCiAgICA8L2c+DQo8L3N2Zz4NCg==)](docs/coverage/coverage.txt)
+[![Coverage](docs/coverage/coverage.svg)](docs/coverage/coverage.txt)
 ![code size,
 bytes](https://img.shields.io/github/languages/code-size/understanding-search/maze-dataset)
 ![GitHub commit
@@ -215,7 +215,7 @@ GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_data
 [![PyPI](https://img.shields.io/pypi/v/maze-dataset)](https://pypi.org/project/maze-dataset/)
 ![PyPI - Downloads](https://img.shields.io/pypi/dm/maze-dataset)
 [![Checks](https://github.com/understanding-search/maze-dataset/actions/workflows/checks.yml/badge.svg)](https://github.com/understanding-search/maze-dataset/actions/workflows/checks.yml)
-[![Coverage](data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4NCjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iOTkiIGhlaWdodD0iMjAiPg0KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iYiIgeDI9IjAiIHkyPSIxMDAlIj4NCiAgICAgICAgPHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjYmJiIiBzdG9wLW9wYWNpdHk9Ii4xIi8+DQogICAgICAgIDxzdG9wIG9mZnNldD0iMSIgc3RvcC1vcGFjaXR5PSIuMSIvPg0KICAgIDwvbGluZWFyR3JhZGllbnQ+DQogICAgPG1hc2sgaWQ9ImEiPg0KICAgICAgICA8cmVjdCB3aWR0aD0iOTkiIGhlaWdodD0iMjAiIHJ4PSIzIiBmaWxsPSIjZmZmIi8+DQogICAgPC9tYXNrPg0KICAgIDxnIG1hc2s9InVybCgjYSkiPg0KICAgICAgICA8cGF0aCBmaWxsPSIjNTU1IiBkPSJNMCAwaDYzdjIwSDB6Ii8+DQogICAgICAgIDxwYXRoIGZpbGw9IiNkZmIzMTciIGQ9Ik02MyAwaDM2djIwSDYzeiIvPg0KICAgICAgICA8cGF0aCBmaWxsPSJ1cmwoI2IpIiBkPSJNMCAwaDk5djIwSDB6Ii8+DQogICAgPC9nPg0KICAgIDxnIGZpbGw9IiNmZmYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJEZWphVnUgU2FucyxWZXJkYW5hLEdlbmV2YSxzYW5zLXNlcmlmIiBmb250LXNpemU9IjExIj4NCiAgICAgICAgPHRleHQgeD0iMzEuNSIgeT0iMTUiIGZpbGw9IiMwMTAxMDEiIGZpbGwtb3BhY2l0eT0iLjMiPmNvdmVyYWdlPC90ZXh0Pg0KICAgICAgICA8dGV4dCB4PSIzMS41IiB5PSIxNCI+Y292ZXJhZ2U8L3RleHQ+DQogICAgICAgIDx0ZXh0IHg9IjgwIiB5PSIxNSIgZmlsbD0iIzAxMDEwMSIgZmlsbC1vcGFjaXR5PSIuMyI+NzIlPC90ZXh0Pg0KICAgICAgICA8dGV4dCB4PSI4MCIgeT0iMTQiPjcyJTwvdGV4dD4NCiAgICA8L2c+DQo8L3N2Zz4NCg==)](docs/coverage/coverage.txt)
+[![Coverage](docs/coverage/coverage.svg)](docs/coverage/coverage.txt)
 ![code size,
 bytes](https://img.shields.io/github/languages/code-size/understanding-search/maze-dataset)
 ![GitHub commit
@@ -1892,7 +1892,7 @@ dfs and then percolation (adds cycles)
 
 docs for
 [`maze-dataset`](https://github.com/understanding-search/maze-dataset)
-v1.0.0
+v1.0.1
 
 ## Contents
 
@@ -1993,7 +1993,7 @@ down, up, right, left as vectors
 
 docs for
 [`maze-dataset`](https://github.com/understanding-search/maze-dataset)
-v1.0.0
+v1.0.1
 
 ## Contents
 
@@ -2629,7 +2629,7 @@ validate the types of all the fields on a `SerializableDataclass`. calls
 
 docs for
 [`maze-dataset`](https://github.com/understanding-search/maze-dataset)
-v1.0.0
+v1.0.1
 
 ## Contents
 
@@ -2923,7 +2923,7 @@ for example, adjust number of mazes after filtering
 
 docs for
 [`maze-dataset`](https://github.com/understanding-search/maze-dataset)
-v1.0.0
+v1.0.1
 
 ## Contents
 
@@ -2947,7 +2947,7 @@ GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_data
 
 docs for
 [`maze-dataset`](https://github.com/understanding-search/maze-dataset)
-v1.0.0
+v1.0.1
 
 ## Contents
 
@@ -3404,7 +3404,7 @@ method should be a staticmethod of a namespace class registered with
 
 docs for
 [`maze-dataset`](https://github.com/understanding-search/maze-dataset)
-v1.0.0
+v1.0.1
 
 ## Contents
 
@@ -3943,7 +3943,7 @@ GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_data
 
 docs for
 [`maze-dataset`](https://github.com/understanding-search/maze-dataset)
-v1.0.0
+v1.0.1
 
 ## Contents
 
@@ -4258,7 +4258,7 @@ output is of structure:
 
 docs for
 [`maze-dataset`](https://github.com/understanding-search/maze-dataset)
-v1.0.0
+v1.0.1
 
 ## Contents
 
@@ -4448,11 +4448,11 @@ GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_data
 
 helper function to get a maze already with a solution
 
-- `numpy_rng = Generator(PCG64) at 0x25FEC55E5E0`
+- `numpy_rng = Generator(PCG64) at 0x1BCBFFCA5E0`
 
 docs for
 [`maze-dataset`](https://github.com/understanding-search/maze-dataset)
-v1.0.0
+v1.0.1
 
 ## Contents
 
@@ -4478,7 +4478,7 @@ GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_data
 
 docs for
 [`maze-dataset`](https://github.com/understanding-search/maze-dataset)
-v1.0.0
+v1.0.1
 
 ## Contents
 
@@ -4506,7 +4506,7 @@ generation functions have signature
 [View Source on
 GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/generation/generators.py#L0-L409)
 
-- `numpy_rng = Generator(PCG64) at 0x25FEC55E5E0`
+- `numpy_rng = Generator(PCG64) at 0x1BCBFFCA5E0`
 
 ### `def get_neighbors_in_bounds`
 
@@ -4679,7 +4679,7 @@ helper function to get a maze already with a solution
 
 docs for
 [`maze-dataset`](https://github.com/understanding-search/maze-dataset)
-v1.0.0
+v1.0.1
 
 ## Contents
 
@@ -5519,7 +5519,7 @@ standard colors for pixel grids
 
 docs for
 [`maze-dataset`](https://github.com/understanding-search/maze-dataset)
-v1.0.0
+v1.0.1
 
 ## API Documentation
 
@@ -6384,7 +6384,7 @@ and end pixels
 
 docs for
 [`maze-dataset`](https://github.com/understanding-search/maze-dataset)
-v1.0.0
+v1.0.1
 
 ## Contents
 
@@ -6739,7 +6739,7 @@ tokens will not be escaped if `fmt` is None
 
 docs for
 [`maze-dataset`](https://github.com/understanding-search/maze-dataset)
-v1.0.0
+v1.0.1
 
 ## Contents
 
@@ -6792,7 +6792,7 @@ GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_data
 
 docs for
 [`maze-dataset`](https://github.com/understanding-search/maze-dataset)
-v1.0.0
+v1.0.1
 
 ## Contents
 
@@ -7090,7 +7090,7 @@ GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_data
 
 docs for
 [`maze-dataset`](https://github.com/understanding-search/maze-dataset)
-v1.0.0
+v1.0.1
 
 ## Contents
 
@@ -7142,7 +7142,7 @@ backgrounds
 
 docs for
 [`maze-dataset`](https://github.com/understanding-search/maze-dataset)
-v1.0.0
+v1.0.1
 
 ## Contents
 
@@ -7307,7 +7307,7 @@ GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_data
 
 docs for
 [`maze-dataset`](https://github.com/understanding-search/maze-dataset)
-v1.0.0
+v1.0.1
 
 ## Contents
 
@@ -7696,7 +7696,7 @@ Alias for field number 2
 
 docs for
 [`maze-dataset`](https://github.com/understanding-search/maze-dataset)
-v1.0.0
+v1.0.1
 
 ## Contents
 
@@ -8059,7 +8059,7 @@ Returns if each edge in `edges` is a connection (`True`) or wall
 
 docs for
 [`maze-dataset`](https://github.com/understanding-search/maze-dataset)
-v1.0.0
+v1.0.1
 
 ## Contents
 
@@ -8115,7 +8115,7 @@ GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_data
 ### `class TokenizationMode(enum.Enum):`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L67-L88)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L68-L89)
 
 LEGACY: mode of tokenization
 
@@ -8152,7 +8152,7 @@ LEGACY: mode of tokenization
 ```
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L87-L88)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L88-L89)
 
 ### Inherited Members
 
@@ -8162,7 +8162,7 @@ GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_data
 ### `class _TokenizerElement(muutils.json_serialize.serializable_dataclass.SerializableDataclass, abc.ABC):`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L457-L672)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L458-L673)
 
 Superclass for tokenizer elements. Subclasses contain modular
 functionality for maze tokenization.
@@ -8178,7 +8178,7 @@ deemed necessary, `ALL_TOKENIZERS` must be updated.
 - `name: str`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L479-L488)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L480-L489)
 
 ### `def tokenizer_elements`
 
@@ -8190,7 +8190,7 @@ GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_data
 ```
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L523-L579)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L524-L580)
 
 Returns a list of all `_TokenizerElement` instances contained in the
 subtree. Currently only detects `_TokenizerElement` instances which are
@@ -8209,7 +8209,7 @@ either direct attributes of another instance or which sit inside a
 ```
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L581-L601)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L582-L602)
 
 Returns a string representation of the tree of tokenizer elements
 contained in `self`.
@@ -8228,7 +8228,7 @@ contained in `self`.
 ```
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L603-L628)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L604-L629)
 
 Returns a dictionary representation of the tree of tokenizer elements
 contained in `self`.
@@ -8240,7 +8240,7 @@ contained in `self`.
 ```
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L630-L634)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L631-L635)
 
 Returns the binding used in `MazeTokenizerModular` for that type of
 `_TokenizerElement`.
@@ -8252,7 +8252,7 @@ Returns the binding used in `MazeTokenizerModular` for that type of
 ```
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L636-L641)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L637-L642)
 
 Converts a maze element into a list of tokens. Not all
 `_TokenizerElement` subclasses produce tokens, so this is not an
@@ -8266,7 +8266,7 @@ override this method.
 ```
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L643-L672)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L644-L673)
 
 Returns if `self` contains data members capable of producing an overall
 valid `MazeTokenizerModular`. Some `_TokenizerElement` instances may be
@@ -8362,7 +8362,7 @@ validate the types of all the fields on a `SerializableDataclass`. calls
 ### `class MazeTokenizerModular(muutils.json_serialize.serializable_dataclass.SerializableDataclass):`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L1881-L2145)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L1882-L2174)
 
 Tokenizer for mazes
 
@@ -8392,10 +8392,30 @@ Tokenizer for mazes
 
 - `prompt_sequencer: maze_dataset.tokenization.maze_tokenizer.PromptSequencers._PromptSequencer = PromptSequencers.AOTP(coord_tokenizer=CoordTokenizers.UT(), adj_list_tokenizer=AdjListTokenizers.AdjListCoord(pre=False, post=True, shuffle_d0=True, edge_grouping=EdgeGroupings.Ungrouped(connection_token_ordinal=1), edge_subset=EdgeSubsets.ConnectionEdges(walls=False), edge_permuter=EdgePermuters.RandomCoords()), target_tokenizer=TargetTokenizers.Unlabeled(post=False), path_tokenizer=PathTokenizers.StepSequence(step_size=StepSizes.Singles(), step_tokenizers=(StepTokenizers.Coord(),), pre=False, intra=False, post=False))`
 
+### `def hash_int`
+
+``` python
+(self) -> int
+```
+
+[View Source on
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L1904-L1908)
+
+### `def hash_b64`
+
+``` python
+(self, n_bytes: int = 8) -> str
+```
+
+[View Source on
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L1914-L1924)
+
+filename-safe base64 encoding of the hash
+
 - `tokenizer_elements: list[maze_dataset.tokenization.maze_tokenizer._TokenizerElement]`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L1912-L1914)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L1928-L1930)
 
 ### `def tokenizer_element_tree`
 
@@ -8404,7 +8424,7 @@ GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_data
 ```
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L1916-L1931)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L1932-L1947)
 
 Returns a string representation of the tree of tokenizer elements
 contained in `self`.
@@ -8417,7 +8437,7 @@ contained in `self`.
 - `tokenizer_element_tree_concrete`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L1933-L1938)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L1949-L1954)
 
 Property wrapper for `tokenizer_element_tree` so that it can be used in
 `properties_to_serialize`.
@@ -8429,14 +8449,14 @@ Property wrapper for `tokenizer_element_tree` so that it can be used in
 ```
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L1940-L1944)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L1956-L1960)
 
 Nested dictionary of the internal `TokenizerElement`s.
 
 - `name: str`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L1946-L1949)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L1962-L1965)
 
 Serializes MazeTokenizer into a key for encoding in zanj
 
@@ -8447,7 +8467,7 @@ Serializes MazeTokenizer into a key for encoding in zanj
 ```
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L1951-L1958)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L1967-L1974)
 
 Single-level dictionary of the internal `TokenizerElement`s.
 
@@ -8461,7 +8481,7 @@ Single-level dictionary of the internal `TokenizerElement`s.
 ```
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L1977-L1993)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L1993-L2009)
 
 Returns True if the `MazeTokenizerModular` instance contains ALL of the
 items specified in `elements`.
@@ -8484,7 +8504,7 @@ currently supported. To do such a query, assemble multiple calls to
 ```
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L1995-L2000)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L2011-L2016)
 
 Returns `True` if `self` is a valid tokenizer. Evaluates the validity of
 all of `self.tokenizer_elements` according to each one’s method.
@@ -8496,7 +8516,7 @@ all of `self.tokenizer_elements` according to each one’s method.
 ```
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L2002-L2009)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L2018-L2025)
 
 Returns if `self` has identical stringification behavior as any legacy
 `MazeTokenizer`.
@@ -8504,17 +8524,22 @@ Returns if `self` has identical stringification behavior as any legacy
 ### `def is_tested_tokenizer`
 
 ``` python
-(self) -> bool
+(self, do_assert: bool = False) -> bool
 ```
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L2011-L2025)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L2027-L2054)
 
 Returns if the tokenizer is returned by
 `all_tokenizers._get_all_tokenizers`, the set of tested and reliable
-tokenizers. Since evaluating `all_tokenizers._get_all_tokenizers` is
-expensive, instead checks for membership of `self`’s hash in
+tokenizers.
+
+Since evaluating `all_tokenizers._get_all_tokenizers` is expensive,
+instead checks for membership of `self`’s hash in
 `get_all_tokenizer_hashes()`.
+
+if `do_assert` is `True`, raises an `AssertionError` if the tokenizer is
+not tested.
 
 ### `def is_AOTP`
 
@@ -8523,7 +8548,7 @@ expensive, instead checks for membership of `self`’s hash in
 ```
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L2027-L2028)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L2056-L2057)
 
 ### `def is_UT`
 
@@ -8532,7 +8557,7 @@ GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_data
 ```
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L2030-L2031)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L2059-L2060)
 
 ### `def from_legacy`
 
@@ -8544,7 +8569,7 @@ GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_data
 ```
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L2036-L2051)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L2065-L2080)
 
 Maps a legacy `MazeTokenizer` or `TokenizationMode` to its equivalent
 `MazeTokenizerModular` instance.
@@ -8559,7 +8584,7 @@ Maps a legacy `MazeTokenizer` or `TokenizationMode` to its equivalent
 ```
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L2055-L2065)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L2084-L2094)
 
 Infers most `MazeTokenizerModular` parameters from a full sequence of
 tokens.
@@ -8567,33 +8592,33 @@ tokens.
 - `token_arr: list[str] | None`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L2067-L2070)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L2096-L2099)
 
 map from index to token
 
 - `tokenizer_map: dict[str, int]`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L2072-L2075)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L2101-L2104)
 
 map from token to index
 
 - `vocab_size: int`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L2077-L2080)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L2106-L2109)
 
 Number of tokens in the static vocab
 
 - `n_tokens: int`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L2082-L2086)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L2111-L2115)
 
 - `padding_token_index: int`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L2088-L2090)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L2117-L2119)
 
 ### `def to_tokens`
 
@@ -8602,7 +8627,7 @@ GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_data
 ```
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L2095-L2100)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L2124-L2129)
 
 Converts maze into a list of tokens.
 
@@ -8616,7 +8641,7 @@ Converts maze into a list of tokens.
 ```
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L2102-L2107)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L2131-L2136)
 
 ### `def strings_to_coords`
 
@@ -8628,7 +8653,7 @@ GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_data
 ```
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L2109-L2118)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L2138-L2147)
 
 ### `def encode`
 
@@ -8637,7 +8662,7 @@ GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_data
 ```
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L2120-L2131)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L2149-L2160)
 
 encode a string or list of strings into a list of tokens
 
@@ -8648,7 +8673,7 @@ encode a string or list of strings into a list of tokens
 ```
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L2133-L2145)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L2162-L2174)
 
 decode a list of tokens into a string or list of strings
 
@@ -8700,7 +8725,7 @@ validate the types of all the fields on a `SerializableDataclass`. calls
 ### `class PromptSequencers(maze_dataset.tokenization.maze_tokenizer.__TokenizerElementNamespace):`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L1647-L1878)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L1648-L1879)
 
 ABC for namespaces
 
@@ -8714,7 +8739,7 @@ ABC for namespaces
 ### `class PromptSequencers.AOTP(maze_dataset.tokenization.maze_tokenizer.PromptSequencers._PromptSequencer):`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L1800-L1842)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L1801-L1843)
 
 Sequences a prompt as \[adjacency list, origin, target, path\].
 
@@ -8812,7 +8837,7 @@ validate the types of all the fields on a `SerializableDataclass`. calls
 ### `class PromptSequencers.AOP(maze_dataset.tokenization.maze_tokenizer.PromptSequencers._PromptSequencer):`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L1844-L1878)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L1845-L1879)
 
 Sequences a prompt as \[adjacency list, origin, path\]. Still includes
 “<TARGET_START>” and “<TARGET_END>” tokens, but no representation of the
@@ -8906,7 +8931,7 @@ validate the types of all the fields on a `SerializableDataclass`. calls
 ### `class CoordTokenizers(maze_dataset.tokenization.maze_tokenizer.__TokenizerElementNamespace):`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L721-L771)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L722-L772)
 
 ABC for namespaces
 
@@ -8920,7 +8945,7 @@ ABC for namespaces
 ### `class CoordTokenizers.UT(maze_dataset.tokenization.maze_tokenizer.CoordTokenizers._CoordTokenizer):`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L742-L747)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L743-L748)
 
 Unique token coordinate tokenizer.
 
@@ -8943,7 +8968,7 @@ Unique token coordinate tokenizer.
 ```
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L746-L747)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L747-L748)
 
 Converts a maze element into a list of tokens. Not all
 `_TokenizerElement` subclasses produce tokens, so this is not an
@@ -9012,7 +9037,7 @@ validate the types of all the fields on a `SerializableDataclass`. calls
 ### `class CoordTokenizers.CTT(maze_dataset.tokenization.maze_tokenizer.CoordTokenizers._CoordTokenizer):`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L749-L771)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L750-L772)
 
 Coordinate tuple tokenizer
 
@@ -9053,7 +9078,7 @@ Coordinate tuple tokenizer
 ```
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L764-L771)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L765-L772)
 
 Converts a maze element into a list of tokens. Not all
 `_TokenizerElement` subclasses produce tokens, so this is not an
@@ -9122,7 +9147,7 @@ validate the types of all the fields on a `SerializableDataclass`. calls
 ### `class AdjListTokenizers(maze_dataset.tokenization.maze_tokenizer.__TokenizerElementNamespace):`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L1016-L1254)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L1017-L1255)
 
 ABC for namespaces
 
@@ -9136,7 +9161,7 @@ ABC for namespaces
 ### `class AdjListTokenizers.AdjListCoord(maze_dataset.tokenization.maze_tokenizer.AdjListTokenizers._AdjListTokenizer):`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L1196-L1222)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L1197-L1223)
 
 Represents an edge group as tokens for the leading coord followed by
 coord tokens for the other group members.
@@ -9232,7 +9257,7 @@ validate the types of all the fields on a `SerializableDataclass`. calls
 ### `class AdjListTokenizers.AdjListCardinal(maze_dataset.tokenization.maze_tokenizer.AdjListTokenizers._AdjListTokenizer):`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L1224-L1254)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L1225-L1255)
 
 Represents an edge group as coord tokens for the leading coord and
 cardinal tokens relative to the leading coord for the other group
@@ -9334,7 +9359,7 @@ validate the types of all the fields on a `SerializableDataclass`. calls
 ### `class EdgeGroupings(maze_dataset.tokenization.maze_tokenizer.__TokenizerElementNamespace):`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L774-L879)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L775-L880)
 
 Namespace for `EdgeGrouping` subclass hierarchy used by
 `AdjListTokenizer`.
@@ -9344,7 +9369,7 @@ Namespace for `EdgeGrouping` subclass hierarchy used by
 ### `class EdgeGroupings.Ungrouped(maze_dataset.tokenization.maze_tokenizer.EdgeGroupings._EdgeGrouping):`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L816-L837)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L817-L838)
 
 No grouping occurs, each edge is tokenized individually.
 
@@ -9431,7 +9456,7 @@ validate the types of all the fields on a `SerializableDataclass`. calls
 ### `class EdgeGroupings.ByLeadingCoord(maze_dataset.tokenization.maze_tokenizer.EdgeGroupings._EdgeGrouping):`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L839-L879)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L840-L880)
 
 All edges with the same leading coord are grouped together.
 
@@ -9477,7 +9502,7 @@ All edges with the same leading coord are grouped together.
 ```
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L840-L879)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L841-L880)
 
 Returns if `self` contains data members capable of producing an overall
 valid `MazeTokenizerModular`. Some `_TokenizerElement` instances may be
@@ -9587,7 +9612,7 @@ validate the types of all the fields on a `SerializableDataclass`. calls
 ### `class EdgePermuters(maze_dataset.tokenization.maze_tokenizer.__TokenizerElementNamespace):`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L882-L952)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L883-L953)
 
 Namespace for `EdgePermuter` subclass hierarchy used by
 `AdjListTokenizer`.
@@ -9597,7 +9622,7 @@ Namespace for `EdgePermuter` subclass hierarchy used by
 ### `class EdgePermuters.SortedCoords(maze_dataset.tokenization.maze_tokenizer.EdgePermuters._EdgePermuter):`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L916-L932)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L917-L933)
 
 returns a sorted representation. useful for checking consistency
 
@@ -9674,7 +9699,7 @@ validate the types of all the fields on a `SerializableDataclass`. calls
 ### `class EdgePermuters.RandomCoords(maze_dataset.tokenization.maze_tokenizer.EdgePermuters._EdgePermuter):`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L934-L941)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L935-L942)
 
 Permutes each edge randomly.
 
@@ -9751,7 +9776,7 @@ validate the types of all the fields on a `SerializableDataclass`. calls
 ### `class EdgePermuters.BothCoords(maze_dataset.tokenization.maze_tokenizer.EdgePermuters._EdgePermuter):`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L943-L952)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L944-L953)
 
 Includes both possible permutations of every edge in the output. Since
 input ConnectionList has only 1 instance of each edge, a call to
@@ -9831,7 +9856,7 @@ validate the types of all the fields on a `SerializableDataclass`. calls
 ### `class EdgeSubsets(maze_dataset.tokenization.maze_tokenizer.__TokenizerElementNamespace):`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L955-L1013)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L956-L1014)
 
 Namespace for `EdgeSubset` subclass hierarchy used by
 `AdjListTokenizer`.
@@ -9841,7 +9866,7 @@ Namespace for `EdgeSubset` subclass hierarchy used by
 ### `class EdgeSubsets.AllLatticeEdges(maze_dataset.tokenization.maze_tokenizer.EdgeSubsets._EdgeSubset):`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L982-L990)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L983-L991)
 
 All 2n\*\*2-2n edges of the lattice are tokenized. If a wall exists on
 that edge, the edge is tokenized in the same manner, using
@@ -9920,7 +9945,7 @@ validate the types of all the fields on a `SerializableDataclass`. calls
 ### `class EdgeSubsets.ConnectionEdges(maze_dataset.tokenization.maze_tokenizer.EdgeSubsets._EdgeSubset):`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L992-L1013)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L993-L1014)
 
 Only edges which contain a connection are tokenized. Alternatively, only
 edges which contain a wall are tokenized.
@@ -10006,7 +10031,7 @@ validate the types of all the fields on a `SerializableDataclass`. calls
 ### `class TargetTokenizers(maze_dataset.tokenization.maze_tokenizer.__TokenizerElementNamespace):`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L1257-L1306)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L1258-L1307)
 
 ABC for namespaces
 
@@ -10020,7 +10045,7 @@ ABC for namespaces
 ### `class TargetTokenizers.Unlabeled(maze_dataset.tokenization.maze_tokenizer.TargetTokenizers._TargetTokenizer):`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L1277-L1306)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L1278-L1307)
 
 Targets are simply listed as coord tokens. - `post`: Whether all coords
 include an integral following delimiter token
@@ -10048,7 +10073,7 @@ include an integral following delimiter token
 ```
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L1285-L1302)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L1286-L1303)
 
 Returns tokens representing the target.
 
@@ -10059,7 +10084,7 @@ Returns tokens representing the target.
 ```
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L1304-L1306)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L1305-L1307)
 
 Returns if `self` contains data members capable of producing an overall
 valid `MazeTokenizerModular`. Some `_TokenizerElement` instances may be
@@ -10167,7 +10192,7 @@ validate the types of all the fields on a `SerializableDataclass`. calls
 ### `class StepSizes(maze_dataset.tokenization.maze_tokenizer.__TokenizerElementNamespace):`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L1309-L1400)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L1310-L1401)
 
 ABC for namespaces
 
@@ -10181,7 +10206,7 @@ ABC for namespaces
 ### `class StepSizes.Singles(maze_dataset.tokenization.maze_tokenizer.StepSizes._StepSize):`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L1338-L1347)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L1339-L1348)
 
 Every coord in `maze.solution` is represented. Legacy tokenizers all use
 this behavior.
@@ -10261,7 +10286,7 @@ validate the types of all the fields on a `SerializableDataclass`. calls
 ### `class StepSizes.Straightaways(maze_dataset.tokenization.maze_tokenizer.StepSizes._StepSize):`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L1349-L1367)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L1350-L1368)
 
 Only coords where the path turns are represented in the path. I.e., the
 path is represented as a sequence of straightaways, specified by the
@@ -10283,7 +10308,7 @@ coords at the turns.
 ```
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L1350-L1367)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L1351-L1368)
 
 Returns if `self` contains data members capable of producing an overall
 valid `MazeTokenizerModular`. Some `_TokenizerElement` instances may be
@@ -10395,7 +10420,7 @@ validate the types of all the fields on a `SerializableDataclass`. calls
 ### `class StepSizes.Forks(maze_dataset.tokenization.maze_tokenizer.StepSizes._StepSize):`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L1369-L1379)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L1370-L1380)
 
 Only coords at forks, where the path has \>=2 options for the next step
 are included. Excludes the option of backtracking. The starting and
@@ -10476,7 +10501,7 @@ validate the types of all the fields on a `SerializableDataclass`. calls
 ### `class StepSizes.ForksAndStraightaways(maze_dataset.tokenization.maze_tokenizer.StepSizes._StepSize):`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L1381-L1400)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L1382-L1401)
 
 Includes the union of the coords included by `Forks` and
 `Straightaways`. See documentation for those classes for details.
@@ -10497,7 +10522,7 @@ Includes the union of the coords included by `Forks` and
 ```
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L1382-L1400)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L1383-L1401)
 
 Returns if `self` contains data members capable of producing an overall
 valid `MazeTokenizerModular`. Some `_TokenizerElement` instances may be
@@ -10609,7 +10634,7 @@ validate the types of all the fields on a `SerializableDataclass`. calls
 ### `class StepTokenizers(maze_dataset.tokenization.maze_tokenizer.__TokenizerElementNamespace):`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L1403-L1521)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L1404-L1522)
 
 ABC for namespaces
 
@@ -10625,7 +10650,7 @@ ABC for namespaces
 ### `class StepTokenizers.Coord(maze_dataset.tokenization.maze_tokenizer.StepTokenizers._StepTokenizer):`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L1439-L1452)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L1440-L1453)
 
 A direct tokenization of the end position coord represents the step.
 
@@ -10651,7 +10676,7 @@ A direct tokenization of the end position coord represents the step.
 ```
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L1445-L1452)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L1446-L1453)
 
 Tokenizes a single step in the solution.
 
@@ -10725,7 +10750,7 @@ validate the types of all the fields on a `SerializableDataclass`. calls
 ### `class StepTokenizers.Cardinal(maze_dataset.tokenization.maze_tokenizer.StepTokenizers._StepTokenizer):`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L1454-L1466)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L1455-L1467)
 
 A step is tokenized with a cardinal direction token. It is the direction
 of the step from the starting position along the solution.
@@ -10752,7 +10777,7 @@ of the step from the starting position along the solution.
 ```
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L1461-L1466)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L1462-L1467)
 
 Tokenizes a single step in the solution.
 
@@ -10826,7 +10851,7 @@ validate the types of all the fields on a `SerializableDataclass`. calls
 ### `class StepTokenizers.Relative(maze_dataset.tokenization.maze_tokenizer.StepTokenizers._StepTokenizer):`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L1468-L1494)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L1469-L1495)
 
 Tokenizes a solution step using relative first-person directions (right,
 left, forward, etc.). To simplify the indeterminacy, at the start of a
@@ -10856,7 +10881,7 @@ starting position.
 ```
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L1475-L1494)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L1476-L1495)
 
 Tokenizes a single step in the solution.
 
@@ -10930,7 +10955,7 @@ validate the types of all the fields on a `SerializableDataclass`. calls
 ### `class StepTokenizers.Distance(maze_dataset.tokenization.maze_tokenizer.StepTokenizers._StepTokenizer):`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L1496-L1509)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L1497-L1510)
 
 A count of the number of individual steps from the starting point to the
 end point. Contains no information about directionality, only the
@@ -10960,7 +10985,7 @@ constraint is enforced in `_PathTokenizer.is_valid`.
 ```
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L1505-L1509)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L1506-L1510)
 
 Tokenizes a single step in the solution.
 
@@ -11034,7 +11059,7 @@ validate the types of all the fields on a `SerializableDataclass`. calls
 ### `class PathTokenizers(maze_dataset.tokenization.maze_tokenizer.__TokenizerElementNamespace):`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L1524-L1644)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L1525-L1645)
 
 ABC for namespaces
 
@@ -11048,7 +11073,7 @@ ABC for namespaces
 ### `class PathTokenizers.StepSequence(maze_dataset.tokenization.maze_tokenizer.PathTokenizers._PathTokenizer, abc.ABC):`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L1542-L1644)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L1543-L1645)
 
 Any `PathTokenizer` where the tokenization may be assembled from token
 subsequences, each of which represents a step along the path. Allows for
@@ -11100,7 +11125,7 @@ pattern.
 ```
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L1568-L1580)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L1569-L1581)
 
 Returns tokens representing the solution path.
 
@@ -11111,7 +11136,7 @@ Returns tokens representing the solution path.
 ```
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L1633-L1644)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L1634-L1645)
 
 Returns if `self` contains data members capable of producing an overall
 valid `MazeTokenizerModular`. Some `_TokenizerElement` instances may be
@@ -11229,12 +11254,12 @@ validate the types of all the fields on a `SerializableDataclass`. calls
 ```
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L106-L124)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L107-L125)
 
 ### `class MazeTokenizer(muutils.json_serialize.serializable_dataclass.SerializableDataclass):`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L137-L454)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L138-L455)
 
 LEGACY Tokenizer for mazes
 
@@ -11295,39 +11320,39 @@ is `None`
 - `name: str`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L196-L201)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L197-L202)
 
 - `node_strings_map: Optional[Mapping[tuple[int, int], list[str]]]`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L219-L228)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L220-L229)
 
 map a coordinate to a token
 
 - `token_arr: list[str] | None`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L273-L277)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L274-L278)
 
 - `tokenizer_map: dict[str, int] | None`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L284-L288)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L285-L289)
 
 - `vocab_size: int | None`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L294-L298)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L295-L299)
 
 - `n_tokens: int | None`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L305-L309)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L306-L310)
 
 - `padding_token_index: int | None`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L315-L319)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L316-L320)
 
 ### `def coords_to_strings`
 
@@ -11340,7 +11365,7 @@ GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_data
 ```
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L324-L348)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L325-L349)
 
 ### `def strings_to_coords`
 
@@ -11352,7 +11377,7 @@ GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_data
 ```
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L350-L355)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L351-L356)
 
 ### `def encode`
 
@@ -11361,7 +11386,7 @@ GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_data
 ```
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L357-L368)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L358-L369)
 
 encode a string or list of strings into a list of tokens
 
@@ -11376,19 +11401,19 @@ encode a string or list of strings into a list of tokens
 ```
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L370-L383)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L371-L384)
 
 decode a list of tokens into a string or list of strings
 
 - `coordinate_tokens_coords: dict[tuple[int, int], int]`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L388-L409)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L389-L410)
 
 - `coordinate_tokens_ids: dict[str, int]`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L411-L421)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L412-L422)
 
 ### `def summary`
 
@@ -11397,7 +11422,7 @@ GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_data
 ```
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L426-L432)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L427-L433)
 
 returns a summary of the tokenization mode
 
@@ -11408,7 +11433,7 @@ returns a summary of the tokenization mode
 ```
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L434-L440)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L435-L441)
 
 returns true if a tokenization mode is Adjacency list, Origin, Target,
 Path
@@ -11420,7 +11445,7 @@ Path
 ```
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L442-L443)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L443-L444)
 
 ### `def clear_cache`
 
@@ -11429,7 +11454,7 @@ GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_data
 ```
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L445-L454)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/__init__.py#L446-L455)
 
 clears all cached properties
 
@@ -11480,7 +11505,7 @@ validate the types of all the fields on a `SerializableDataclass`. calls
 
 docs for
 [`maze-dataset`](https://github.com/understanding-search/maze-dataset)
-v1.0.0
+v1.0.1
 
 ## Contents
 
@@ -11638,7 +11663,7 @@ Computes, sorts, and saves the hashes of every member of
 
 docs for
 [`maze-dataset`](https://github.com/understanding-search/maze-dataset)
-v1.0.0
+v1.0.1
 
 ## Contents
 
@@ -11664,6 +11689,7 @@ turning a maze into text: `MazeTokenizerModular` and the legacy
 - [`PathTokenizers`](#PathTokenizers)
 - [`PromptSequencers`](#PromptSequencers)
 - [`MazeTokenizerModular`](#MazeTokenizerModular)
+- [`set_tokenizer_hashes_path`](#set_tokenizer_hashes_path)
 - [`get_all_tokenizer_hashes`](#get_all_tokenizer_hashes)
 
 [View Source on
@@ -11675,12 +11701,12 @@ turning a maze into text: `MazeTokenizerModular` and the legacy
 `TokenizationMode` enum and `MazeTokenizer` class
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L0-L2174)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L0-L2235)
 
 ### `class TokenError(builtins.ValueError):`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L61-L64)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L62-L65)
 
 error for tokenization
 
@@ -11697,7 +11723,7 @@ error for tokenization
 ### `class TokenizationMode(enum.Enum):`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L67-L88)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L68-L89)
 
 LEGACY: mode of tokenization
 
@@ -11734,7 +11760,7 @@ LEGACY: mode of tokenization
 ```
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L87-L88)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L88-L89)
 
 ### Inherited Members
 
@@ -11750,7 +11776,7 @@ GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_data
 ```
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L99-L103)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L100-L104)
 
 ### `def get_tokens_up_to_path_start`
 
@@ -11763,12 +11789,12 @@ GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_data
 ```
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L106-L124)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L107-L125)
 
 ### `class MazeTokenizer(muutils.json_serialize.serializable_dataclass.SerializableDataclass):`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L137-L454)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L138-L455)
 
 LEGACY Tokenizer for mazes
 
@@ -11829,39 +11855,39 @@ is `None`
 - `name: str`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L196-L201)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L197-L202)
 
 - `node_strings_map: Optional[Mapping[tuple[int, int], list[str]]]`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L219-L228)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L220-L229)
 
 map a coordinate to a token
 
 - `token_arr: list[str] | None`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L273-L277)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L274-L278)
 
 - `tokenizer_map: dict[str, int] | None`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L284-L288)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L285-L289)
 
 - `vocab_size: int | None`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L294-L298)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L295-L299)
 
 - `n_tokens: int | None`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L305-L309)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L306-L310)
 
 - `padding_token_index: int | None`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L315-L319)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L316-L320)
 
 ### `def coords_to_strings`
 
@@ -11874,7 +11900,7 @@ GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_data
 ```
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L324-L348)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L325-L349)
 
 ### `def strings_to_coords`
 
@@ -11886,7 +11912,7 @@ GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_data
 ```
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L350-L355)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L351-L356)
 
 ### `def encode`
 
@@ -11895,7 +11921,7 @@ GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_data
 ```
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L357-L368)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L358-L369)
 
 encode a string or list of strings into a list of tokens
 
@@ -11910,19 +11936,19 @@ encode a string or list of strings into a list of tokens
 ```
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L370-L383)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L371-L384)
 
 decode a list of tokens into a string or list of strings
 
 - `coordinate_tokens_coords: dict[tuple[int, int], int]`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L388-L409)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L389-L410)
 
 - `coordinate_tokens_ids: dict[str, int]`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L411-L421)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L412-L422)
 
 ### `def summary`
 
@@ -11931,7 +11957,7 @@ GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_data
 ```
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L426-L432)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L427-L433)
 
 returns a summary of the tokenization mode
 
@@ -11942,7 +11968,7 @@ returns a summary of the tokenization mode
 ```
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L434-L440)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L435-L441)
 
 returns true if a tokenization mode is Adjacency list, Origin, Target,
 Path
@@ -11954,7 +11980,7 @@ Path
 ```
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L442-L443)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L443-L444)
 
 ### `def clear_cache`
 
@@ -11963,7 +11989,7 @@ GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_data
 ```
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L445-L454)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L446-L455)
 
 clears all cached properties
 
@@ -12019,7 +12045,7 @@ validate the types of all the fields on a `SerializableDataclass`. calls
 ```
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L678-L692)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L679-L693)
 
 mark a \_TokenizerElement as unsupported.
 
@@ -12035,7 +12061,7 @@ the space of possible tokenizers.
 ### `class CoordTokenizers(__TokenizerElementNamespace):`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L721-L771)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L722-L772)
 
 ABC for namespaces
 
@@ -12049,7 +12075,7 @@ ABC for namespaces
 ### `class CoordTokenizers.UT(CoordTokenizers._CoordTokenizer):`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L742-L747)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L743-L748)
 
 Unique token coordinate tokenizer.
 
@@ -12072,7 +12098,7 @@ Unique token coordinate tokenizer.
 ```
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L746-L747)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L747-L748)
 
 Converts a maze element into a list of tokens. Not all
 `_TokenizerElement` subclasses produce tokens, so this is not an
@@ -12141,7 +12167,7 @@ validate the types of all the fields on a `SerializableDataclass`. calls
 ### `class CoordTokenizers.CTT(CoordTokenizers._CoordTokenizer):`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L749-L771)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L750-L772)
 
 Coordinate tuple tokenizer
 
@@ -12182,7 +12208,7 @@ Coordinate tuple tokenizer
 ```
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L764-L771)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L765-L772)
 
 Converts a maze element into a list of tokens. Not all
 `_TokenizerElement` subclasses produce tokens, so this is not an
@@ -12251,7 +12277,7 @@ validate the types of all the fields on a `SerializableDataclass`. calls
 ### `class EdgeGroupings(__TokenizerElementNamespace):`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L774-L879)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L775-L880)
 
 Namespace for `EdgeGrouping` subclass hierarchy used by
 `AdjListTokenizer`.
@@ -12261,7 +12287,7 @@ Namespace for `EdgeGrouping` subclass hierarchy used by
 ### `class EdgeGroupings.Ungrouped(EdgeGroupings._EdgeGrouping):`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L816-L837)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L817-L838)
 
 No grouping occurs, each edge is tokenized individually.
 
@@ -12348,7 +12374,7 @@ validate the types of all the fields on a `SerializableDataclass`. calls
 ### `class EdgeGroupings.ByLeadingCoord(EdgeGroupings._EdgeGrouping):`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L839-L879)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L840-L880)
 
 All edges with the same leading coord are grouped together.
 
@@ -12394,7 +12420,7 @@ All edges with the same leading coord are grouped together.
 ```
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L840-L879)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L841-L880)
 
 Returns if `self` contains data members capable of producing an overall
 valid `MazeTokenizerModular`. Some `_TokenizerElement` instances may be
@@ -12504,7 +12530,7 @@ validate the types of all the fields on a `SerializableDataclass`. calls
 ### `class EdgePermuters(__TokenizerElementNamespace):`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L882-L952)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L883-L953)
 
 Namespace for `EdgePermuter` subclass hierarchy used by
 `AdjListTokenizer`.
@@ -12514,7 +12540,7 @@ Namespace for `EdgePermuter` subclass hierarchy used by
 ### `class EdgePermuters.SortedCoords(EdgePermuters._EdgePermuter):`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L916-L932)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L917-L933)
 
 returns a sorted representation. useful for checking consistency
 
@@ -12591,7 +12617,7 @@ validate the types of all the fields on a `SerializableDataclass`. calls
 ### `class EdgePermuters.RandomCoords(EdgePermuters._EdgePermuter):`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L934-L941)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L935-L942)
 
 Permutes each edge randomly.
 
@@ -12668,7 +12694,7 @@ validate the types of all the fields on a `SerializableDataclass`. calls
 ### `class EdgePermuters.BothCoords(EdgePermuters._EdgePermuter):`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L943-L952)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L944-L953)
 
 Includes both possible permutations of every edge in the output. Since
 input ConnectionList has only 1 instance of each edge, a call to
@@ -12748,7 +12774,7 @@ validate the types of all the fields on a `SerializableDataclass`. calls
 ### `class EdgeSubsets(__TokenizerElementNamespace):`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L955-L1013)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L956-L1014)
 
 Namespace for `EdgeSubset` subclass hierarchy used by
 `AdjListTokenizer`.
@@ -12758,7 +12784,7 @@ Namespace for `EdgeSubset` subclass hierarchy used by
 ### `class EdgeSubsets.AllLatticeEdges(EdgeSubsets._EdgeSubset):`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L982-L990)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L983-L991)
 
 All 2n\*\*2-2n edges of the lattice are tokenized. If a wall exists on
 that edge, the edge is tokenized in the same manner, using
@@ -12837,7 +12863,7 @@ validate the types of all the fields on a `SerializableDataclass`. calls
 ### `class EdgeSubsets.ConnectionEdges(EdgeSubsets._EdgeSubset):`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L992-L1013)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L993-L1014)
 
 Only edges which contain a connection are tokenized. Alternatively, only
 edges which contain a wall are tokenized.
@@ -12923,7 +12949,7 @@ validate the types of all the fields on a `SerializableDataclass`. calls
 ### `class AdjListTokenizers(__TokenizerElementNamespace):`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L1016-L1254)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L1017-L1255)
 
 ABC for namespaces
 
@@ -12937,7 +12963,7 @@ ABC for namespaces
 ### `class AdjListTokenizers.AdjListCoord(AdjListTokenizers._AdjListTokenizer):`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L1196-L1222)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L1197-L1223)
 
 Represents an edge group as tokens for the leading coord followed by
 coord tokens for the other group members.
@@ -13033,7 +13059,7 @@ validate the types of all the fields on a `SerializableDataclass`. calls
 ### `class AdjListTokenizers.AdjListCardinal(AdjListTokenizers._AdjListTokenizer):`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L1224-L1254)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L1225-L1255)
 
 Represents an edge group as coord tokens for the leading coord and
 cardinal tokens relative to the leading coord for the other group
@@ -13135,7 +13161,7 @@ validate the types of all the fields on a `SerializableDataclass`. calls
 ### `class TargetTokenizers(__TokenizerElementNamespace):`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L1257-L1306)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L1258-L1307)
 
 ABC for namespaces
 
@@ -13149,7 +13175,7 @@ ABC for namespaces
 ### `class TargetTokenizers.Unlabeled(TargetTokenizers._TargetTokenizer):`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L1277-L1306)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L1278-L1307)
 
 Targets are simply listed as coord tokens. - `post`: Whether all coords
 include an integral following delimiter token
@@ -13177,7 +13203,7 @@ include an integral following delimiter token
 ```
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L1285-L1302)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L1286-L1303)
 
 Returns tokens representing the target.
 
@@ -13188,7 +13214,7 @@ Returns tokens representing the target.
 ```
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L1304-L1306)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L1305-L1307)
 
 Returns if `self` contains data members capable of producing an overall
 valid `MazeTokenizerModular`. Some `_TokenizerElement` instances may be
@@ -13296,7 +13322,7 @@ validate the types of all the fields on a `SerializableDataclass`. calls
 ### `class StepSizes(__TokenizerElementNamespace):`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L1309-L1400)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L1310-L1401)
 
 ABC for namespaces
 
@@ -13310,7 +13336,7 @@ ABC for namespaces
 ### `class StepSizes.Singles(StepSizes._StepSize):`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L1338-L1347)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L1339-L1348)
 
 Every coord in `maze.solution` is represented. Legacy tokenizers all use
 this behavior.
@@ -13390,7 +13416,7 @@ validate the types of all the fields on a `SerializableDataclass`. calls
 ### `class StepSizes.Straightaways(StepSizes._StepSize):`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L1349-L1367)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L1350-L1368)
 
 Only coords where the path turns are represented in the path. I.e., the
 path is represented as a sequence of straightaways, specified by the
@@ -13412,7 +13438,7 @@ coords at the turns.
 ```
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L1350-L1367)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L1351-L1368)
 
 Returns if `self` contains data members capable of producing an overall
 valid `MazeTokenizerModular`. Some `_TokenizerElement` instances may be
@@ -13524,7 +13550,7 @@ validate the types of all the fields on a `SerializableDataclass`. calls
 ### `class StepSizes.Forks(StepSizes._StepSize):`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L1369-L1379)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L1370-L1380)
 
 Only coords at forks, where the path has \>=2 options for the next step
 are included. Excludes the option of backtracking. The starting and
@@ -13605,7 +13631,7 @@ validate the types of all the fields on a `SerializableDataclass`. calls
 ### `class StepSizes.ForksAndStraightaways(StepSizes._StepSize):`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L1381-L1400)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L1382-L1401)
 
 Includes the union of the coords included by `Forks` and
 `Straightaways`. See documentation for those classes for details.
@@ -13626,7 +13652,7 @@ Includes the union of the coords included by `Forks` and
 ```
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L1382-L1400)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L1383-L1401)
 
 Returns if `self` contains data members capable of producing an overall
 valid `MazeTokenizerModular`. Some `_TokenizerElement` instances may be
@@ -13738,7 +13764,7 @@ validate the types of all the fields on a `SerializableDataclass`. calls
 ### `class StepTokenizers(__TokenizerElementNamespace):`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L1403-L1521)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L1404-L1522)
 
 ABC for namespaces
 
@@ -13754,7 +13780,7 @@ ABC for namespaces
 ### `class StepTokenizers.Coord(StepTokenizers._StepTokenizer):`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L1439-L1452)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L1440-L1453)
 
 A direct tokenization of the end position coord represents the step.
 
@@ -13780,7 +13806,7 @@ A direct tokenization of the end position coord represents the step.
 ```
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L1445-L1452)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L1446-L1453)
 
 Tokenizes a single step in the solution.
 
@@ -13854,7 +13880,7 @@ validate the types of all the fields on a `SerializableDataclass`. calls
 ### `class StepTokenizers.Cardinal(StepTokenizers._StepTokenizer):`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L1454-L1466)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L1455-L1467)
 
 A step is tokenized with a cardinal direction token. It is the direction
 of the step from the starting position along the solution.
@@ -13881,7 +13907,7 @@ of the step from the starting position along the solution.
 ```
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L1461-L1466)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L1462-L1467)
 
 Tokenizes a single step in the solution.
 
@@ -13955,7 +13981,7 @@ validate the types of all the fields on a `SerializableDataclass`. calls
 ### `class StepTokenizers.Relative(StepTokenizers._StepTokenizer):`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L1468-L1494)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L1469-L1495)
 
 Tokenizes a solution step using relative first-person directions (right,
 left, forward, etc.). To simplify the indeterminacy, at the start of a
@@ -13985,7 +14011,7 @@ starting position.
 ```
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L1475-L1494)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L1476-L1495)
 
 Tokenizes a single step in the solution.
 
@@ -14059,7 +14085,7 @@ validate the types of all the fields on a `SerializableDataclass`. calls
 ### `class StepTokenizers.Distance(StepTokenizers._StepTokenizer):`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L1496-L1509)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L1497-L1510)
 
 A count of the number of individual steps from the starting point to the
 end point. Contains no information about directionality, only the
@@ -14089,7 +14115,7 @@ constraint is enforced in `_PathTokenizer.is_valid`.
 ```
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L1505-L1509)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L1506-L1510)
 
 Tokenizes a single step in the solution.
 
@@ -14163,7 +14189,7 @@ validate the types of all the fields on a `SerializableDataclass`. calls
 ### `class PathTokenizers(__TokenizerElementNamespace):`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L1524-L1644)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L1525-L1645)
 
 ABC for namespaces
 
@@ -14177,7 +14203,7 @@ ABC for namespaces
 ### `class PathTokenizers.StepSequence(PathTokenizers._PathTokenizer, abc.ABC):`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L1542-L1644)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L1543-L1645)
 
 Any `PathTokenizer` where the tokenization may be assembled from token
 subsequences, each of which represents a step along the path. Allows for
@@ -14229,7 +14255,7 @@ pattern.
 ```
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L1568-L1580)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L1569-L1581)
 
 Returns tokens representing the solution path.
 
@@ -14240,7 +14266,7 @@ Returns tokens representing the solution path.
 ```
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L1633-L1644)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L1634-L1645)
 
 Returns if `self` contains data members capable of producing an overall
 valid `MazeTokenizerModular`. Some `_TokenizerElement` instances may be
@@ -14348,7 +14374,7 @@ validate the types of all the fields on a `SerializableDataclass`. calls
 ### `class PromptSequencers(__TokenizerElementNamespace):`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L1647-L1878)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L1648-L1879)
 
 ABC for namespaces
 
@@ -14362,7 +14388,7 @@ ABC for namespaces
 ### `class PromptSequencers.AOTP(PromptSequencers._PromptSequencer):`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L1800-L1842)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L1801-L1843)
 
 Sequences a prompt as \[adjacency list, origin, target, path\].
 
@@ -14460,7 +14486,7 @@ validate the types of all the fields on a `SerializableDataclass`. calls
 ### `class PromptSequencers.AOP(PromptSequencers._PromptSequencer):`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L1844-L1878)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L1845-L1879)
 
 Sequences a prompt as \[adjacency list, origin, path\]. Still includes
 “<TARGET_START>” and “<TARGET_END>” tokens, but no representation of the
@@ -14554,7 +14580,7 @@ validate the types of all the fields on a `SerializableDataclass`. calls
 ### `class MazeTokenizerModular(muutils.json_serialize.serializable_dataclass.SerializableDataclass):`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L1881-L2145)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L1882-L2174)
 
 Tokenizer for mazes
 
@@ -14584,10 +14610,30 @@ Tokenizer for mazes
 
 - `prompt_sequencer: maze_dataset.tokenization.maze_tokenizer.PromptSequencers._PromptSequencer = PromptSequencers.AOTP(coord_tokenizer=CoordTokenizers.UT(), adj_list_tokenizer=AdjListTokenizers.AdjListCoord(pre=False, post=True, shuffle_d0=True, edge_grouping=EdgeGroupings.Ungrouped(connection_token_ordinal=1), edge_subset=EdgeSubsets.ConnectionEdges(walls=False), edge_permuter=EdgePermuters.RandomCoords()), target_tokenizer=TargetTokenizers.Unlabeled(post=False), path_tokenizer=PathTokenizers.StepSequence(step_size=StepSizes.Singles(), step_tokenizers=(StepTokenizers.Coord(),), pre=False, intra=False, post=False))`
 
+### `def hash_int`
+
+``` python
+(self) -> int
+```
+
+[View Source on
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L1904-L1908)
+
+### `def hash_b64`
+
+``` python
+(self, n_bytes: int = 8) -> str
+```
+
+[View Source on
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L1914-L1924)
+
+filename-safe base64 encoding of the hash
+
 - `tokenizer_elements: list[maze_dataset.tokenization.maze_tokenizer._TokenizerElement]`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L1912-L1914)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L1928-L1930)
 
 ### `def tokenizer_element_tree`
 
@@ -14596,7 +14642,7 @@ GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_data
 ```
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L1916-L1931)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L1932-L1947)
 
 Returns a string representation of the tree of tokenizer elements
 contained in `self`.
@@ -14609,7 +14655,7 @@ contained in `self`.
 - `tokenizer_element_tree_concrete`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L1933-L1938)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L1949-L1954)
 
 Property wrapper for `tokenizer_element_tree` so that it can be used in
 `properties_to_serialize`.
@@ -14621,14 +14667,14 @@ Property wrapper for `tokenizer_element_tree` so that it can be used in
 ```
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L1940-L1944)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L1956-L1960)
 
 Nested dictionary of the internal `TokenizerElement`s.
 
 - `name: str`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L1946-L1949)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L1962-L1965)
 
 Serializes MazeTokenizer into a key for encoding in zanj
 
@@ -14639,7 +14685,7 @@ Serializes MazeTokenizer into a key for encoding in zanj
 ```
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L1951-L1958)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L1967-L1974)
 
 Single-level dictionary of the internal `TokenizerElement`s.
 
@@ -14653,7 +14699,7 @@ Single-level dictionary of the internal `TokenizerElement`s.
 ```
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L1977-L1993)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L1993-L2009)
 
 Returns True if the `MazeTokenizerModular` instance contains ALL of the
 items specified in `elements`.
@@ -14676,7 +14722,7 @@ currently supported. To do such a query, assemble multiple calls to
 ```
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L1995-L2000)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L2011-L2016)
 
 Returns `True` if `self` is a valid tokenizer. Evaluates the validity of
 all of `self.tokenizer_elements` according to each one’s method.
@@ -14688,7 +14734,7 @@ all of `self.tokenizer_elements` according to each one’s method.
 ```
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L2002-L2009)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L2018-L2025)
 
 Returns if `self` has identical stringification behavior as any legacy
 `MazeTokenizer`.
@@ -14696,17 +14742,22 @@ Returns if `self` has identical stringification behavior as any legacy
 ### `def is_tested_tokenizer`
 
 ``` python
-(self) -> bool
+(self, do_assert: bool = False) -> bool
 ```
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L2011-L2025)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L2027-L2054)
 
 Returns if the tokenizer is returned by
 `all_tokenizers._get_all_tokenizers`, the set of tested and reliable
-tokenizers. Since evaluating `all_tokenizers._get_all_tokenizers` is
-expensive, instead checks for membership of `self`’s hash in
+tokenizers.
+
+Since evaluating `all_tokenizers._get_all_tokenizers` is expensive,
+instead checks for membership of `self`’s hash in
 `get_all_tokenizer_hashes()`.
+
+if `do_assert` is `True`, raises an `AssertionError` if the tokenizer is
+not tested.
 
 ### `def is_AOTP`
 
@@ -14715,7 +14766,7 @@ expensive, instead checks for membership of `self`’s hash in
 ```
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L2027-L2028)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L2056-L2057)
 
 ### `def is_UT`
 
@@ -14724,7 +14775,7 @@ GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_data
 ```
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L2030-L2031)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L2059-L2060)
 
 ### `def from_legacy`
 
@@ -14736,7 +14787,7 @@ GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_data
 ```
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L2036-L2051)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L2065-L2080)
 
 Maps a legacy `MazeTokenizer` or `TokenizationMode` to its equivalent
 `MazeTokenizerModular` instance.
@@ -14751,7 +14802,7 @@ Maps a legacy `MazeTokenizer` or `TokenizationMode` to its equivalent
 ```
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L2055-L2065)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L2084-L2094)
 
 Infers most `MazeTokenizerModular` parameters from a full sequence of
 tokens.
@@ -14759,33 +14810,33 @@ tokens.
 - `token_arr: list[str] | None`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L2067-L2070)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L2096-L2099)
 
 map from index to token
 
 - `tokenizer_map: dict[str, int]`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L2072-L2075)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L2101-L2104)
 
 map from token to index
 
 - `vocab_size: int`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L2077-L2080)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L2106-L2109)
 
 Number of tokens in the static vocab
 
 - `n_tokens: int`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L2082-L2086)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L2111-L2115)
 
 - `padding_token_index: int`
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L2088-L2090)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L2117-L2119)
 
 ### `def to_tokens`
 
@@ -14794,7 +14845,7 @@ GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_data
 ```
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L2095-L2100)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L2124-L2129)
 
 Converts maze into a list of tokens.
 
@@ -14808,7 +14859,7 @@ Converts maze into a list of tokens.
 ```
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L2102-L2107)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L2131-L2136)
 
 ### `def strings_to_coords`
 
@@ -14820,7 +14871,7 @@ GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_data
 ```
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L2109-L2118)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L2138-L2147)
 
 ### `def encode`
 
@@ -14829,7 +14880,7 @@ GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_data
 ```
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L2120-L2131)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L2149-L2160)
 
 encode a string or list of strings into a list of tokens
 
@@ -14840,7 +14891,7 @@ encode a string or list of strings into a list of tokens
 ```
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L2133-L2145)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L2162-L2174)
 
 decode a list of tokens into a string or list of strings
 
@@ -14889,6 +14940,24 @@ validate the types of all the fields on a `SerializableDataclass`. calls
 - [`diff`](#MazeTokenizerModular.diff)
 - [`update_from_nested_dict`](#MazeTokenizerModular.update_from_nested_dict)
 
+### `def set_tokenizer_hashes_path`
+
+``` python
+(path: pathlib.Path)
+```
+
+[View Source on
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L2183-L2207)
+
+set path to tokenizer hashes, and reload the hashes if needed
+
+the hashes are expected to be stored in and read from
+`_TOKENIZER_HASHES_PATH`, which by default is
+`Path(__file__).parent / "MazeTokenizerModular_hashes.npz"` or in this
+file’s directory.
+
+However, this might not always work, so we provide a way to change this.
+
 ### `def get_all_tokenizer_hashes`
 
 ``` python
@@ -14896,11 +14965,11 @@ validate the types of all the fields on a `SerializableDataclass`. calls
 ```
 
 [View Source on
-GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L2164-L2175)
+GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L2225-L2236)
 
 docs for
 [`maze-dataset`](https://github.com/understanding-search/maze-dataset)
-v1.0.0
+v1.0.1
 
 ## Contents
 
@@ -14965,7 +15034,7 @@ GitHub](https://github.com/understanding-search/maze-dataset/blob/main/maze_data
 
 docs for
 [`maze-dataset`](https://github.com/understanding-search/maze-dataset)
-v1.0.0
+v1.0.1
 
 ## Contents
 
