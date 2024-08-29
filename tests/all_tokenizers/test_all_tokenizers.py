@@ -172,7 +172,7 @@ def test_zanj_save_read(tokenizer: MazeTokenizerModular):
         os.path.join(
             os.path.curdir,
             "data",
-            "MazeTokenizerModular_" + hex(hash(tokenizer)) + ".zanj",
+            f"mmt.{tokenizer.hash_b64()}.zanj",
         )
     )
     zanj = ZANJ()
