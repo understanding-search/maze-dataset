@@ -128,7 +128,7 @@ clean-docs:
 	rm -rf $(DOCS_DIR)/combined/
 	rm -rf $(DOCS_DIR)/maze-dataset/
 	rm -rf $(COVERAGE_REPORTS_DIR)/
-	rm $(DOCS_DIR)/maze-dataset.html
+	rm $(DOCS_DIR)/maze_dataset.html
 	rm $(DOCS_DIR)/index.html
 	rm $(DOCS_DIR)/search.js
 

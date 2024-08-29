@@ -78,3 +78,9 @@ disable-all-dunder-policy = true # this doesn't seem to work... :/
 exclude = [".venv"]
 venvPath = "."
 venv = ".venv"
+
+[tool.pdoc]
+warnings_ignore = [
+    "Error parsing type annotation FilterBy for maze_dataset",
+    "Found 'coord_str_to_tuple' in maze_dataset.tokenization.__all__, but it does not resolve: Error importing maze_dataset.tokenization.coord_str_to_tuple",
+]
