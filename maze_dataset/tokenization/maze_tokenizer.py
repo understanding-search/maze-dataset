@@ -1911,12 +1911,17 @@ class MazeTokenizerModular(SerializableDataclass):
         "Stable hash to identify unique `MazeTokenizerModular` instances. uses name"
         return self.hash_int()
 
-    def hash_b64(self) -> str:
-        "filename-safe base64 encoding of the hash"
-        return base64.b64encode(
-            self.hash_int().to_bytes(16, byteorder="big"),
-            altchars=b"-_",
+    def hash_b64(self, n_bytes: int = 8) -> str:
+        """filename-safe base64 encoding of the hash"""
+        # Use modulus to ensure the integer fits within n_bytes * 8 bits
+        hash_mod: int = self.hash_int() % (1 << (n_bytes * 8))
+
+        encoded = base64.b64encode(
+            hash_mod.to_bytes(n_bytes, byteorder="big"), altchars=b"-_"
         ).decode()
+
+        # Remove any padding equals signs
+        return encoded.rstrip("=")
 
     # Information Querying Methods
 
