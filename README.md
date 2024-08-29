@@ -17,14 +17,30 @@ This package includes a variety of [maze generation algorithms](maze_dataset/gen
 |---|---|---|---|
 | ![Maze generated via percolation](docs/assets/maze_perc.png) |  ![Maze generated via constrained randomized depth first search](docs/assets/maze_dfs_constrained.png)  |  ![Maze with random heatmap](docs/assets/mazeplot_heatmap.png)  |  ![MazePlot with solution](docs/assets/mazeplot_path.png)  |
 
+# Installation
+This package is [available on PyPI](https://pypi.org/project/maze-dataset/), and can be installed via
+```
+pip install maze-dataset
+```
+
+# Docs
+
+The full hosted documentation is available at [https://understanding-search.github.io/maze-dataset/](https://understanding-search.github.io/maze-dataset/).
+
+Additionally:
+
+- our notebooks serve as a good starting point for understanding the package:
+    - the [notebooks](https://understanding-search.github.io/maze-dataset/notebooks) page in the docs has links to the rendered notebooks
+    - the [`notebooks`](https://github.com/understanding-search/maze-dataset/tree/main/notebooks) folder has the source notebooks
+- combined, single page docs are available as:
+    - [plain text](https://understanding-search.github.io/maze-dataset/combined/maze_dataset.txt)
+    - [html](https://understanding-search.github.io/maze-dataset/combined/maze_dataset.html)
+    - [github markdown](https://github.com/understanding-search/maze-dataset/tree/main/docs/combined/maze_dataset.md)
+    - [pandoc markdown](https://github.com/understanding-search/maze-dataset/tree/main/docs/combined/maze_dataset.md)
+- test coverage reports are available on the [coverage](https://understanding-search.github.io/maze-dataset/coverage) page or the [`coverage/`](https://github.com/understanding-search/maze-dataset/tree/main/docs/coverage) folder
+- generation benchmark results are available on the [benchmarks](https://understanding-search.github.io/maze-dataset/benchmarks) page or the [`benchmarks/`](https://github.com/understanding-search/maze-dataset/tree/main/docs/benchmarks) folder
 
 # Usage
-
-Most of the functionality is demonstrated in the ipython notebooks in the `notebooks/` folder.
-
-- [`demo_dataset.ipynb`](notebooks/demo_dataset.ipynb) how to easily create a dataset of mazes, utilities for filtering the generates mazes via properties, and basic visualization. View this one first.
-- [`demo_tokenization.ipynb`](notebooks/demo_tokenization.ipynb) converting mazes to and from textual representations, as well as utilities for working with them.
-- [`demo_latticemaze.ipynb`](notebooks/demo_latticemaze.ipynb) internals of the `LatticeMaze` and `SolvedMaze` objects, and advanced visualization.
 
 ## Creating a dataset
 
@@ -42,19 +58,10 @@ cfg: MazeDatasetConfig = MazeDatasetConfig(
 )
 ```
 
-and then pass this config to the `MazeDataset.from_config` factory method:
+and then pass this config to the `MazeDataset.from_config` method:
 
 ```python
-dataset: MazeDataset = MazeDataset.from_config(
-    # your config
-	cfg,
-    # and all this below is completely optional
-	# do_download=False,
-	# load_local=False,
-	# do_generate=True,
-    # save_local=True,
-	# gen_parallel=False,
-)
+dataset: MazeDataset = MazeDataset.from_config(cfg)
 ```
 
 This method can search for whether a dataset with matching config hash already exists on your filesystem in the expected location, and load it if so. It can also generate a dataset on the fly if needed.
@@ -85,14 +92,6 @@ MazePlot(maze).plot()
 ```
 
 ![textual and visual output formats](docs/output_formats.png)
-
-
-
-# Installation
-This package is [available on PyPI](https://pypi.org/project/maze-dataset/), and can be installed via
-```
-pip install maze-dataset
-```
 
 
 # Development

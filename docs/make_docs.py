@@ -125,11 +125,18 @@ NOTEBOOKS_INDEX_TEMPLATE: str = """<!DOCTYPE html>
         </a>.
     <ul>
         {% for notebook in notebooks %}
-        <li><a href="{{ notebook.html }}">{{ notebook.ipynb }}</a></li>
+        <li><a href="{{ notebook.html }}">{{ notebook.ipynb }}</a> {{ notebook.desc }}</li>
         {% endfor %}
     </ul>
     <a href="../">Back to index</a>
 """
+
+
+NOTEBOOK_DESCRIPTIONS: dict[str, str] = dict(
+    demo_dataset="how to easily create a dataset of mazes, utilities for filtering the generates mazes via properties, and basic visualization. View this one first.",
+    demo_tokenization="converting mazes to and from textual representations, as well as utilities for working with them.",
+    demo_latticemaze="internals of the `LatticeMaze` and `SolvedMaze` objects, and advanced visualization.",
+)
 
 
 def convert_notebooks(
@@ -147,6 +154,7 @@ def convert_notebooks(
         dict(
             ipynb=notebook.name,
             html=notebook.with_suffix(".html").name,
+            desc=NOTEBOOK_DESCRIPTIONS.get(notebook.stem, ""),
         )
         for notebook in notebook_names
     ]

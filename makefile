@@ -108,9 +108,6 @@ docs-notebooks:
 	@echo "generate html docs for notebooks"
 	$(PYTHON) docs/make_docs.py --notebooks
 
-# $(PANDOC) -f markdown -t pdf $(DOCS_DIR)/combined/$(PACKAGE_NAME).md -o $(DOCS_DIR)/combined/$(PACKAGE_NAME).pdf
-
-
 .PHONY: cov
 cov:
 	@echo "generate coverage reports (run tests manually)"
@@ -126,7 +123,7 @@ benchmark:
 	$(PYTHON) docs/benchmarks/benchmark_generation.py
 
 .PHONY: docs
-docs: docs-html docs-combined cov
+docs: docs-html docs-combined docs-notebooks cov
 	@echo "generate all documentation"
 
 .PHONY: clean-docs
