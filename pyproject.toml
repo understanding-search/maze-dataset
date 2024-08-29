@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "maze-dataset"
-version = "1.0.0"
+version = "1.0.1"
 description = "generating and working with datasets of mazes"
 authors = [
     "Michael Ivanitskiy <mivanits@umich.edu>", "Aaron Sandoval <aaron.sandoval10@gmail.com>",
