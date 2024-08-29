@@ -2,9 +2,13 @@ import argparse
 import inspect
 import re
 import tomllib
-from typing import Any, Literal
 import warnings
 from pathlib import Path
+
+# notebooks
+import jinja2
+import nbconvert
+import nbformat
 
 # pdoc
 import pdoc
@@ -13,12 +17,6 @@ import pdoc.extract
 import pdoc.render
 import pdoc.render_helpers
 from markupsafe import Markup
-
-# notebooks
-import jinja2
-import nbconvert
-import nbformat
-
 
 OUTPUT_DIR: Path = Path("docs")
 
@@ -140,8 +138,8 @@ NOTEBOOK_DESCRIPTIONS: dict[str, str] = dict(
 
 
 def convert_notebooks(
-    source_path: Path|str = Path("notebooks"),
-    output_path: Path|str = Path("docs/notebooks"),
+    source_path: Path | str = Path("notebooks"),
+    output_path: Path | str = Path("docs/notebooks"),
     index_template: str = NOTEBOOKS_INDEX_TEMPLATE,
 ):
     source_path = Path(source_path)
@@ -150,7 +148,7 @@ def convert_notebooks(
     output_path.mkdir(parents=True, exist_ok=True)
 
     notebook_names: list[Path] = list(source_path.glob("*.ipynb"))
-    notebooks: list[dict[str,str]] = [
+    notebooks: list[dict[str, str]] = [
         dict(
             ipynb=notebook.name,
             html=notebook.with_suffix(".html").name,
@@ -158,11 +156,11 @@ def convert_notebooks(
         )
         for notebook in notebook_names
     ]
-    
+
     # Render the index template
     template: jinja2.Template = jinja2.Template(index_template)
     rendered_index: str = template.render(notebooks=notebooks)
-    
+
     # Write the rendered index to a file
     index_path = output_path / "index.html"
     with open(index_path, "w") as f:
@@ -177,7 +175,7 @@ def convert_notebooks(
             body: str
             body, _ = html_exporter.from_notebook_node(nb)
             with open(output_notebook, "w") as f:
-                f.write(body) 
+                f.write(body)
 
 
 def pdoc_combined(*modules: Path | str, output_file: Path) -> None:
@@ -240,11 +238,9 @@ if __name__ == "__main__":
     )
     parsed_args = argparser.parse_args()
 
-
     if parsed_args.notebooks:
         convert_notebooks()
         exit()
-
 
     if not parsed_args.warn_all:
         ignore_warnings()
