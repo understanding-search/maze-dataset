@@ -1,0 +1,49 @@
+Name                                                                 Stmts   Miss  Cover   Missing
+--------------------------------------------------------------------------------------------------
+maze_dataset\__init__.py                                                 6      6     0%   5-30
+maze_dataset\constants.py                                               77     64    17%   3-64, 68, 72-76, 82-86, 93-99, 102, 105, 108, 111, 115-206
+maze_dataset\dataset\__init__.py                                         3      3     0%   3-9
+maze_dataset\dataset\collected_dataset.py                               85     56    34%   8-31, 41-46, 49-61, 64, 71-74, 89-90, 93-94, 97-98, 105, 108, 121-122, 131-141, 151-152, 162-186, 193
+maze_dataset\dataset\configs.py                                         21      1    95%   45
+maze_dataset\dataset\dataset.py                                        192    114    41%   8-44, 58-83, 87, 90, 96-213, 248, 262-263, 269, 281, 303-305, 316, 322-323, 328-358, 361, 371-372, 375, 385-399, 410, 423-462, 476-484
+maze_dataset\dataset\maze_dataset.py                                   291    158    46%   7-46, 51, 56-89, 135-136, 139-140, 143-147, 150, 155-176, 198, 213-226, 237, 240, 243, 246, 273, 276, 278, 282-283, 342-343, 346-347, 352, 357, 360-365, 373-374, 393-436, 445, 455, 493-539, 543, 564, 580, 609-615, 619-621, 625-627, 645-659, 677, 707-708, 721-723, 735-747, 754, 765, 772-775, 788-791, 799-810
+maze_dataset\dataset\rasterized.py                                      90     21    77%   165, 183-205, 236
+maze_dataset\generation\__init__.py                                      2      2     0%   7-14
+maze_dataset\generation\default_generators.py                            1      0   100%
+maze_dataset\generation\generators.py                                  129     29    78%   5-21, 35, 51-55, 96-100, 201-202, 223-224, 306-307, 348-349, 390-400
+maze_dataset\maze\__init__.py                                            2      2     0%   3-14
+maze_dataset\maze\lattice_maze.py                                      477    156    67%   1-49, 59, 63, 71-143, 147-150, 157-158, 162-165, 170, 177-196, 211, 233, 256, 326-332, 344, 361, 368, 418, 482, 487-488, 509, 528-549, 566, 579, 594-596, 606-607, 618-619, 705-706, 721, 726, 731-736, 762, 768, 818-819, 836-837, 866-867, 876-877, 882, 986, 998, 1021-1022, 1036-1044, 1055, 1062-1066, 1073-1080, 1087-1095, 1109-1115, 1133, 1160, 1163, 1170-1187, 1196-1197, 1214, 1239, 1250, 1263, 1296-1351
+maze_dataset\plotting\__init__.py                                        4      0   100%
+maze_dataset\plotting\plot_dataset.py                                   29     25    14%   17-51, 55-60
+maze_dataset\plotting\plot_maze.py                                     211     32    85%   45, 86, 96, 102, 106, 158, 162-166, 270, 300-305, 335, 348-363, 372, 379, 480-481, 489-490, 496-498, 546
+maze_dataset\plotting\plot_tokens.py                                    22     22     0%   3-87
+maze_dataset\plotting\print_tokens.py                                   77     32    58%   59, 79-80, 88-103, 126-158, 202, 209-210, 218-219, 225-226
+maze_dataset\testing_utils.py                                           21      0   100%
+maze_dataset\token_utils.py                                            178     56    69%   3-34, 71, 77, 80, 90-100, 110, 120, 125, 161-167, 193-203, 209, 218, 228, 233, 240, 253, 281, 287, 309, 315, 324, 344, 349-353, 355-359, 365-368, 376-380, 385, 441
+maze_dataset\tokenization\__init__.py                                    2      0   100%
+maze_dataset\tokenization\all_tokenizers.py                             57     57     0%   25-181
+maze_dataset\tokenization\maze_tokenizer.py                            688    138    80%   119-122, 214, 237, 266, 303, 307-309, 345, 361, 363-364, 376-377, 381, 390-405, 414-421, 486, 511, 519, 589-594, 607, 634, 641, 672, 709-718, 732, 736, 792, 802, 814, 861, 869-879, 893, 914, 970, 980, 1060, 1064, 1083, 1105-1109, 1169-1172, 1271, 1275, 1320, 1325, 1360-1367, 1391, 1414, 1431, 1536, 1540, 1672, 1702, 1794, 1866, 1905, 1924, 1938, 1944, 1955, 1967, 1975, 1992, 2000, 2017-2021, 2042, 2063, 2070, 2075, 2080, 2084, 2090, 2123-2128, 2138-2145, 2150-2154, 2166-2175
+maze_dataset\tokenization\save_hashes.py                                31     31     0%   24-109
+maze_dataset\utils.py                                                   89     35    61%   3-18, 58, 95, 109-114, 124, 170, 182-232, 251, 273-279, 295-300, 303-307, 393-397
+tests\unit\maze_dataset\dataset\test_collected_dataset.py               45      0   100%
+tests\unit\maze_dataset\dataset\test_configs.py                         13      0   100%
+tests\unit\maze_dataset\dataset\test_rasterized.py                      33      0   100%
+tests\unit\maze_dataset\generation\test_bool_array_from_string.py       15      0   100%
+tests\unit\maze_dataset\generation\test_coord_str_tuple.py              78     19    76%   24-30, 34-39, 54-59
+tests\unit\maze_dataset\generation\test_corner_first_ndindex.py          7      0   100%
+tests\unit\maze_dataset\generation\test_custom_endpoints.py             59      0   100%
+tests\unit\maze_dataset\generation\test_generators.py                   25      4    84%   34-40
+tests\unit\maze_dataset\generation\test_latticemaze.py                 104      0   100%
+tests\unit\maze_dataset\generation\test_maze_dataset.py                137      1    99%   64
+tests\unit\maze_dataset\generation\test_neighbors.py                    26      0   100%
+tests\unit\maze_dataset\generation\test_solved_maze.py                  14      0   100%
+tests\unit\maze_dataset\plotting\test_maze_plot.py                      39      0   100%
+tests\unit\maze_dataset\processing\test_collect_gen_metadata.py         17      0   100%
+tests\unit\maze_dataset\processing\test_get_forking_path_points.py      20      0   100%
+tests\unit\maze_dataset\tokenization\test_coords_string_split.py        36      0   100%
+tests\unit\maze_dataset\tokenization\test_maze_tokenization.py          15      0   100%
+tests\unit\maze_dataset\tokenization\test_token_utils.py               174      5    97%   250-251, 591-593
+tests\unit\maze_dataset\tokenization\test_tokenizer.py                 252     30    88%   255-256, 456-459, 468-480, 518-519, 609-627, 671-672, 694-700, 718
+tests\unit\maze_dataset\tokenization\test_vocab.py                      21      0   100%
+--------------------------------------------------------------------------------------------------
+TOTAL                                                                 3915   1099    72%
