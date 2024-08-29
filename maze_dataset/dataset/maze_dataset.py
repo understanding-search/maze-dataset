@@ -1,3 +1,9 @@
+"""`MazeDatasetConfig` is where you decide what your dataset should look like, then pass it to `MazeDataset.from_config` to generate or load the dataset.
+
+see [demo_dataset notebook](../../notebooks/demo_dataset)
+
+"""
+
 import copy
 import functools
 import json
@@ -43,6 +49,7 @@ def set_serialize_minimal_threshold(threshold: int | None) -> None:
 
 
 def _load_maze_ctor(maze_ctor_serialized: str | dict) -> Callable:
+    "get the maze constructor from `GENERATORS_MAP`"
     if isinstance(maze_ctor_serialized, dict):
         # this is both the new and old version of the serialization
         return GENERATORS_MAP[maze_ctor_serialized["__name__"]]
@@ -69,11 +76,12 @@ EndpointKwargsType = dict[
     ],
     bool | None | list[tuple[int, int]],
 ]
+"type hint for `MazeDatasetConfig.endpoint_kwargs`"
 
 
 @serializable_dataclass(kw_only=True, properties_to_serialize=["grid_shape"])
 class MazeDatasetConfig(GPTDatasetConfig):
-    """maze dataset configuration, including tokenizers"""
+    """config object which is passed to `MazeDataset.from_config` to generate or load a dataset"""
 
     grid_n: int
 
@@ -165,8 +173,13 @@ class MazeDatasetConfig(GPTDatasetConfig):
         )
 
 
-# TODO: don't use this unless generating in parallel!
 def _generate_maze_helper(index: int) -> SolvedMaze:
+    """helper function for generating mazes in parallel
+
+    > [!CAUTION]
+    > don't use this unless generating in parallel!
+    """
+    # TODO: don't use this unless generating in parallel!
     maze: LatticeMaze = _GLOBAL_WORKER_CONFIG.maze_ctor(
         grid_shape=_GLOBAL_WORKER_CONFIG.grid_shape_np,
         **_GLOBAL_WORKER_CONFIG.maze_ctor_kwargs,
@@ -183,18 +196,23 @@ def _generate_maze_helper(index: int) -> SolvedMaze:
 
 
 def _maze_gen_init_worker(config: MazeDatasetConfig):
+    """special worker helper
+
+    > [!CAUTION]
+    > this makes the generation depend both on whether parallelism is used, and on the number of processes. this is bad!
+
+    """
+    # TODO
     global _GLOBAL_WORKER_CONFIG
     _GLOBAL_WORKER_CONFIG = config
 
-    # TODO
-    # HACK: this makes the generation depend both on whether parallelism is used, and on the number of processes. this is bad!
-    # only set numpy seed, since we do not use other random gens
     process_id: tuple[int] = multiprocessing.current_process()._identity
     if len(process_id) == 0:
         # no multiprocessing, seed was already set
         pass
     elif len(process_id) == 1:
         # multiprocessing, adjust seed based on process id
+        # only set numpy seed, since we do not use other random gens
         np.random.seed(_GLOBAL_WORKER_CONFIG.seed + process_id[0])
     else:
         raise ValueError(
@@ -203,7 +221,7 @@ def _maze_gen_init_worker(config: MazeDatasetConfig):
 
 
 class MazeDataset(GPTDataset):
-    """maze dataset"""
+    """a maze dataset class. This is a collection of solved mazes, and should be initialized via `MazeDataset.from_config`"""
 
     def __init__(
         self,
@@ -231,15 +249,18 @@ class MazeDataset(GPTDataset):
         limit: int | None = None,
         join_tokens_individual_maze: bool = False,
     ) -> list[list[str]] | list[str]:
-        """return the dataset as tokens
+        """return the dataset as tokens according to the passed `maze_tokenizer`
 
-        if join_tokens_individual_maze is True, then the tokens of each maze are
+        the `maze_tokenizer` should be either a `MazeTokenizer` or a `ModularMazeTokenizer`
+
+        if `join_tokens_individual_maze` is True, then the tokens of each maze are
         joined with a space, and the result is a list of strings.
         i.e.:
-        >>> dataset.as_tokens(join_tokens_individual_maze=False)
-        [["a", "b", "c"], ["d", "e", "f"]]
-        >>> dataset.as_tokens(join_tokens_individual_maze=True)
-        ["a b c", "d e f"]
+
+            >>> dataset.as_tokens(join_tokens_individual_maze=False)
+            [["a", "b", "c"], ["d", "e", "f"]]
+            >>> dataset.as_tokens(join_tokens_individual_maze=True)
+            ["a b c", "d e f"]
         """
         output: list[list[str]] = [
             maze.as_tokens(maze_tokenizer) for maze in self.mazes[:limit]
@@ -266,7 +287,7 @@ class MazeDataset(GPTDataset):
         pool_kwargs: dict | None = None,
         verbose: bool = False,
     ) -> "MazeDataset":
-        """generate a maze dataset"""
+        """generate a maze dataset given a config and some generation parameters"""
 
         # avoid copying since we dont want to pickle the staticmethod, just load/serialize it to avoid modifying the original config
         cfg_cpy = MazeDatasetConfig.load(cfg.serialize())
@@ -432,6 +453,7 @@ class MazeDataset(GPTDataset):
         }
 
     def _serialize_minimal(self) -> JSONitem:
+        "alternate serialization where metadata is collected and mazes are stored in concatenated form"
         if self.generation_metadata_collected is None:
             filtered_meta = self.filter_by.collect_generation_meta()
         else:
@@ -469,6 +491,7 @@ class MazeDataset(GPTDataset):
         )
 
     def _serialize_minimal_soln_cat(self) -> JSONitem:
+        "alternate serialization where metadata is collected, and mazes and their solutions are stored in concatenated form"
         if self.generation_metadata_collected is None:
             filtered_meta = self.filter_by.collect_generation_meta()
         else:
@@ -514,7 +537,7 @@ class MazeDataset(GPTDataset):
         )
 
     def update_self_config(self):
-        """update the config to match the current state of the dataset"""
+        """update the config to match the current state of the dataset (number of mazes, such as after filtering)"""
         self.cfg.n_mazes = len(self.mazes)
 
     def custom_maze_filter(
@@ -537,6 +560,7 @@ class MazeDataset(GPTDataset):
         return output
 
 
+# register things with zanj
 MazeDatasetConfig._dataset_class = property(lambda self: MazeDataset)
 register_loader_handler(
     LoaderHandler(
@@ -584,6 +608,8 @@ def register_maze_filter(
 
 @register_filter_namespace_for_dataset(MazeDataset)
 class MazeDatasetFilters:
+    "namespace for filters for `MazeDataset`s"
+
     @register_maze_filter
     @staticmethod
     def path_length(maze: SolvedMaze, min_length: int) -> bool:

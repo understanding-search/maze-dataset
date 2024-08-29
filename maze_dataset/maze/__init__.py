@@ -1,3 +1,5 @@
+"`LatticeMaze` and the classes like `SolvedMaze` that inherit from it, along with a ton of helper funcs"
+
 from maze_dataset.maze.lattice_maze import (
     AsciiChars,
     ConnectionList,
@@ -10,12 +12,15 @@ from maze_dataset.maze.lattice_maze import (
 )
 
 __all__ = [
-    "AsciiChars",
-    "ConnectionList",
-    "Coord",
-    "CoordArray",
-    "LatticeMaze",
-    "PixelColors",
+    # submodules
+    "lattice_maze",
+    # imports
     "SolvedMaze",
     "TargetedLatticeMaze",
+    "LatticeMaze",
+    "ConnectionList",
+    "AsciiChars",
+    "Coord",
+    "CoordArray",
+    "PixelColors",
 ]

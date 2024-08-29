@@ -1,3 +1,5 @@
+"""constants and type hints used accross the package"""
+
 import warnings
 from dataclasses import dataclass, field, make_dataclass
 
@@ -6,13 +8,22 @@ from jaxtyping import Bool, Int8
 
 from maze_dataset.utils import corner_first_ndindex
 
+# various type hints for coordinates, connections, etc.
+
 Coord = Int8[np.ndarray, "row_col"]
+"single coordinate as array"
 CoordTup = tuple[int, int]
+"single coordinate as tuple"
 CoordArray = Int8[np.ndarray, "coord row_col"]
+"array of coordinates"
 CoordList = list[CoordTup]
+"list of tuple coordinates"
 Connection = Int8[np.ndarray, "coord=2 row_col=2"]
+"single connection (pair of coords) as array"
 ConnectionList = Bool[np.ndarray, "lattice_dim=2 row col"]
+"internal representation used in `LatticeMaze`"
 ConnectionArray = Int8[np.ndarray, "edges leading_trailing_coord=2 row_col=2"]
+"n_edges * 2 * 2 array of connections, like an adjacency list"
 
 
 class SpecialTokensError(Exception):
@@ -32,10 +43,12 @@ _SPECIAL_TOKENS_ABBREVIATIONS: dict[str, str] = {
     ";": ";",
     "<PADDING>": "<PAD>",
 }
+"abbreviations for special tokens"
 
 
 @dataclass(frozen=True)
 class _SPECIAL_TOKENS_BASE:
+    "special dataclass used for handling special tokens"
     ADJLIST_START: str = "<ADJLIST_START>"
     ADJLIST_END: str = "<ADJLIST_END>"
     TARGET_START: str = "<TARGET_START>"
@@ -100,6 +113,7 @@ class _SPECIAL_TOKENS_BASE:
 
 
 SPECIAL_TOKENS: _SPECIAL_TOKENS_BASE = _SPECIAL_TOKENS_BASE()
+"special tokens"
 
 
 DIRECTIONS_MAP: Int8[np.ndarray, "direction axes"] = np.array(
@@ -110,6 +124,7 @@ DIRECTIONS_MAP: Int8[np.ndarray, "direction axes"] = np.array(
         [1, -1],  # left
     ]
 )
+"down, up, right, left directions for when inside a `ConnectionList`"
 
 
 NEIGHBORS_MASK: Int8[np.ndarray, "coord point"] = np.array(
@@ -120,6 +135,7 @@ NEIGHBORS_MASK: Int8[np.ndarray, "coord point"] = np.array(
         [-1, 0],  # left
     ]
 )
+"down, up, right, left as vectors"
 
 
 _VOCAB_FIELDS: list = [
@@ -174,6 +190,7 @@ _VOCAB_FIELDS: list = [
         for x, y in corner_first_ndindex(50)
     ],
 ]
+"fields for the `ModularMazeTokenizer` style combined vocab"
 
 
 _VOCAB_BASE: type = make_dataclass(

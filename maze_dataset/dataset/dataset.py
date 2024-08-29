@@ -1,3 +1,10 @@
+"""`GPTDatasetConfig` and `GPTDataset` are base classes for datasets
+they implement some basic functionality, saving/loading, the `from_config` pipeline, and filtering
+
+> [!NOTE]
+> these should probably be moved into a different package, so don't rely on them being here
+"""
+
 import functools
 import json
 import typing
@@ -136,7 +143,8 @@ class GPTDataset(Dataset):
 
     (meaning the functionality should be inherited in downstream classes)
 
-    note: `GPTDatasetConfig` should implement a `to_fname` method that returns a unique filename for the config
+    > [!NOTE]
+    > `GPTDatasetConfig` should implement a `to_fname` method that returns a unique filename for the config
 
     # Requires:
     the following methods should be implemented in subclasses:

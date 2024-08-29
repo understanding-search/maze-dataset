@@ -2317,6 +2317,25 @@ files = [
 ]
 
 [[package]]
+name = "pdoc"
+version = "14.6.1"
+description = "API Documentation for Python Projects"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "pdoc-14.6.1-py3-none-any.whl", hash = "sha256:efbed433655264392c60551615a3d42b8f21e492373419756d20234c667b54bc"},
+    {file = "pdoc-14.6.1.tar.gz", hash = "sha256:ee598f30d5c55dd4702086dabc412a26022acc35aa88aa382cda8ac655fead98"},
+]
+
+[package.dependencies]
+Jinja2 = ">=2.11.0"
+MarkupSafe = "*"
+pygments = ">=2.12.0"
+
+[package.extras]
+dev = ["hypothesis", "mypy", "pdoc-pyo3-sample-library (==1.0.11)", "pygments (>=2.14.0)", "pytest", "pytest-cov", "pytest-timeout", "ruff", "tox", "types-pygments"]
+
+[[package]]
 name = "pexpect"
 version = "4.9.0"
 description = "Pexpect allows easy control of interactive console applications."
@@ -2933,13 +2952,13 @@ cffi = {version = "*", markers = "implementation_name == \"pypy\""}
 
 [[package]]
 name = "qtconsole"
-version = "5.5.2"
+version = "5.6.0"
 description = "Jupyter Qt console"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "qtconsole-5.5.2-py3-none-any.whl", hash = "sha256:42d745f3d05d36240244a04e1e1ec2a86d5d9b6edb16dbdef582ccb629e87e0b"},
-    {file = "qtconsole-5.5.2.tar.gz", hash = "sha256:6b5fb11274b297463706af84dcbbd5c92273b1f619e6d25d08874b0a88516989"},
+    {file = "qtconsole-5.6.0-py3-none-any.whl", hash = "sha256:c36e0d497a473b67898b96dd38666e645e4594019244263da7b409b84fa2ebb5"},
+    {file = "qtconsole-5.6.0.tar.gz", hash = "sha256:4c82120a3b53a3d36e3f76e6a1a26ffddf4e1ce2359d56a19889c55e1d73a436"},
 ]
 
 [package.dependencies]
@@ -2948,7 +2967,6 @@ jupyter-client = ">=4.1"
 jupyter-core = "*"
 packaging = "*"
 pygments = "*"
-pyzmq = ">=17.1"
 qtpy = ">=2.4.0"
 traitlets = "<5.2.1 || >5.2.1,<5.2.2 || >5.2.2"
 
@@ -3613,4 +3631,4 @@ pandas = ["pandas (>=1.5.3)"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10.6"
-content-hash = "5548a41d53b1b62bb411990811aa0b6b78a0f733c75b12c5c4bb0ad945a46dad"
+content-hash = "accd645b40203bc5f419dfa5af6583986453177c70ff9cdda8bb3d5ad54d6855"

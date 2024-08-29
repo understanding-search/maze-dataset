@@ -38,9 +38,12 @@ if typing.TYPE_CHECKING:
     )
 
 RGB = tuple[int, int, int]
+"rgb tuple of values 0-255"
 
 PixelGrid = Int[np.ndarray, "x y rgb"]
+"rgb grid of pixels"
 BinaryPixelGrid = Bool[np.ndarray, "x y"]
+"boolean grid of pixels"
 
 
 def _fill_edges_with_walls(connection_list: ConnectionList) -> ConnectionList:
@@ -67,6 +70,7 @@ def color_in_pixel_grid(pixel_grid: PixelGrid, color: RGB) -> bool:
 
 @dataclass(frozen=True)
 class PixelColors:
+    "standard colors for pixel grids"
     WALL: RGB = (0, 0, 0)
     OPEN: RGB = (255, 255, 255)
     START: RGB = (0, 255, 0)
@@ -76,6 +80,7 @@ class PixelColors:
 
 @dataclass(frozen=True)
 class AsciiChars:
+    "standard ascii characters for mazes"
     WALL: str = "#"
     OPEN: str = " "
     START: str = "S"
@@ -90,6 +95,7 @@ ASCII_PIXEL_PAIRINGS: dict[str, RGB] = {
     AsciiChars.END: PixelColors.END,
     AsciiChars.PATH: PixelColors.PATH,
 }
+"map ascii characters to pixel colors"
 
 
 @serializable_dataclass(
@@ -483,9 +489,13 @@ class LatticeMaze(SerializableDataclass):
         cls,
         adj_list: Int8[np.ndarray, "conn start_end coord"],
     ) -> "LatticeMaze":
-        """create a LatticeMaze from a list of connections"""
+        """create a LatticeMaze from a list of connections
 
-        # Note: This has only been tested for square mazes. Might need to change some things if rectangular mazes are needed.
+        > [!NOTE]
+        > This has only been tested for square mazes. Might need to change some things if rectangular mazes are needed.
+        """
+
+        # this is where it would probably break for rectangular mazes
         grid_n: int = adj_list.max() + 1
 
         connection_list: ConnectionList = np.zeros(
