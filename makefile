@@ -126,7 +126,7 @@ docs: cov docs-html docs-combined
 clean-docs:
 	@echo "clean up docs"
 	rm -rf $(DOCS_DIR)/combined/
-	rm -rf $(DOCS_DIR)/maze-dataset/
+	rm -rf $(DOCS_DIR)/maze_dataset/
 	rm -rf $(COVERAGE_REPORTS_DIR)/
 	rm $(DOCS_DIR)/maze_dataset.html
 	rm $(DOCS_DIR)/index.html
