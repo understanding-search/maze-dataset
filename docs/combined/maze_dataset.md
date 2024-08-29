@@ -1,9 +1,11 @@
+docs for [`muutils`](https://github.com/mivanit/muutils) v1.1.0
+
 
 ## Contents
 [![PyPI](https://img.shields.io/pypi/v/maze-dataset)](https://pypi.org/project/maze-dataset/)
 ![PyPI - Downloads](https://img.shields.io/pypi/dm/maze-dataset)
 [![Checks](https://github.com/understanding-search/maze-dataset/actions/workflows/checks.yml/badge.svg)](https://github.com/understanding-search/maze-dataset/actions/workflows/checks.yml)
-[![Coverage](docs/coverage/coverage.svg)](docs/coverage/coverage.txt)
+[![Coverage](data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4NCjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iOTkiIGhlaWdodD0iMjAiPg0KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iYiIgeDI9IjAiIHkyPSIxMDAlIj4NCiAgICAgICAgPHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjYmJiIiBzdG9wLW9wYWNpdHk9Ii4xIi8+DQogICAgICAgIDxzdG9wIG9mZnNldD0iMSIgc3RvcC1vcGFjaXR5PSIuMSIvPg0KICAgIDwvbGluZWFyR3JhZGllbnQ+DQogICAgPG1hc2sgaWQ9ImEiPg0KICAgICAgICA8cmVjdCB3aWR0aD0iOTkiIGhlaWdodD0iMjAiIHJ4PSIzIiBmaWxsPSIjZmZmIi8+DQogICAgPC9tYXNrPg0KICAgIDxnIG1hc2s9InVybCgjYSkiPg0KICAgICAgICA8cGF0aCBmaWxsPSIjNTU1IiBkPSJNMCAwaDYzdjIwSDB6Ii8+DQogICAgICAgIDxwYXRoIGZpbGw9IiNkZmIzMTciIGQ9Ik02MyAwaDM2djIwSDYzeiIvPg0KICAgICAgICA8cGF0aCBmaWxsPSJ1cmwoI2IpIiBkPSJNMCAwaDk5djIwSDB6Ii8+DQogICAgPC9nPg0KICAgIDxnIGZpbGw9IiNmZmYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJEZWphVnUgU2FucyxWZXJkYW5hLEdlbmV2YSxzYW5zLXNlcmlmIiBmb250LXNpemU9IjExIj4NCiAgICAgICAgPHRleHQgeD0iMzEuNSIgeT0iMTUiIGZpbGw9IiMwMTAxMDEiIGZpbGwtb3BhY2l0eT0iLjMiPmNvdmVyYWdlPC90ZXh0Pg0KICAgICAgICA8dGV4dCB4PSIzMS41IiB5PSIxNCI+Y292ZXJhZ2U8L3RleHQ+DQogICAgICAgIDx0ZXh0IHg9IjgwIiB5PSIxNSIgZmlsbD0iIzAxMDEwMSIgZmlsbC1vcGFjaXR5PSIuMyI+NzIlPC90ZXh0Pg0KICAgICAgICA8dGV4dCB4PSI4MCIgeT0iMTQiPjcyJTwvdGV4dD4NCiAgICA8L2c+DQo8L3N2Zz4NCg==)](docs/coverage/coverage.txt)
 ![code size, bytes](https://img.shields.io/github/languages/code-size/understanding-search/maze-dataset)
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/t/understanding-search/maze-dataset)
 ![GitHub closed pull requests](https://img.shields.io/github/issues-pr-closed/understanding-search/maze-dataset)
@@ -175,7 +177,7 @@ If you use this code in your research, please cite [our paper](http://arxiv.org/
 [![PyPI](https://img.shields.io/pypi/v/maze-dataset)](https://pypi.org/project/maze-dataset/)
 ![PyPI - Downloads](https://img.shields.io/pypi/dm/maze-dataset)
 [![Checks](https://github.com/understanding-search/maze-dataset/actions/workflows/checks.yml/badge.svg)](https://github.com/understanding-search/maze-dataset/actions/workflows/checks.yml)
-[![Coverage](docs/coverage/coverage.svg)](docs/coverage/coverage.txt)
+[![Coverage](data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4NCjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iOTkiIGhlaWdodD0iMjAiPg0KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iYiIgeDI9IjAiIHkyPSIxMDAlIj4NCiAgICAgICAgPHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjYmJiIiBzdG9wLW9wYWNpdHk9Ii4xIi8+DQogICAgICAgIDxzdG9wIG9mZnNldD0iMSIgc3RvcC1vcGFjaXR5PSIuMSIvPg0KICAgIDwvbGluZWFyR3JhZGllbnQ+DQogICAgPG1hc2sgaWQ9ImEiPg0KICAgICAgICA8cmVjdCB3aWR0aD0iOTkiIGhlaWdodD0iMjAiIHJ4PSIzIiBmaWxsPSIjZmZmIi8+DQogICAgPC9tYXNrPg0KICAgIDxnIG1hc2s9InVybCgjYSkiPg0KICAgICAgICA8cGF0aCBmaWxsPSIjNTU1IiBkPSJNMCAwaDYzdjIwSDB6Ii8+DQogICAgICAgIDxwYXRoIGZpbGw9IiNkZmIzMTciIGQ9Ik02MyAwaDM2djIwSDYzeiIvPg0KICAgICAgICA8cGF0aCBmaWxsPSJ1cmwoI2IpIiBkPSJNMCAwaDk5djIwSDB6Ii8+DQogICAgPC9nPg0KICAgIDxnIGZpbGw9IiNmZmYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJEZWphVnUgU2FucyxWZXJkYW5hLEdlbmV2YSxzYW5zLXNlcmlmIiBmb250LXNpemU9IjExIj4NCiAgICAgICAgPHRleHQgeD0iMzEuNSIgeT0iMTUiIGZpbGw9IiMwMTAxMDEiIGZpbGwtb3BhY2l0eT0iLjMiPmNvdmVyYWdlPC90ZXh0Pg0KICAgICAgICA8dGV4dCB4PSIzMS41IiB5PSIxNCI+Y292ZXJhZ2U8L3RleHQ+DQogICAgICAgIDx0ZXh0IHg9IjgwIiB5PSIxNSIgZmlsbD0iIzAxMDEwMSIgZmlsbC1vcGFjaXR5PSIuMyI+NzIlPC90ZXh0Pg0KICAgICAgICA8dGV4dCB4PSI4MCIgeT0iMTQiPjcyJTwvdGV4dD4NCiAgICA8L2c+DQo8L3N2Zz4NCg==)](docs/coverage/coverage.txt)
 ![code size, bytes](https://img.shields.io/github/languages/code-size/understanding-search/maze-dataset)
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/t/understanding-search/maze-dataset)
 ![GitHub closed pull requests](https://img.shields.io/github/issues-pr-closed/understanding-search/maze-dataset)
@@ -1940,6 +1942,8 @@ dfs and then percolation (adds cycles)
 
 
 
+docs for [`muutils`](https://github.com/mivanit/muutils) v1.1.0
+
 
 ## Contents
 constants and type hints used accross the package
@@ -2080,6 +2084,8 @@ down, up, right, left as vectors
 
 
 
+
+docs for [`muutils`](https://github.com/mivanit/muutils) v1.1.0
 
 
 ## Contents
@@ -2787,6 +2793,8 @@ validate the types of all the fields on a SerializableDataclass. calls `Serializ
 
 
 
+docs for [`muutils`](https://github.com/mivanit/muutils) v1.1.0
+
 
 ## Contents
 collecting different maze datasets into a single dataset, for greater variety in a training or validation set
@@ -3122,6 +3130,8 @@ for example, adjust number of mazes after filtering
 
 
 
+docs for [`muutils`](https://github.com/mivanit/muutils) v1.1.0
+
 
 ## Contents
 `MAZE_DATASET_CONFIGS` contains some default configs for tests and demos
@@ -3150,6 +3160,8 @@ for example, adjust number of mazes after filtering
 
 
 
+
+docs for [`muutils`](https://github.com/mivanit/muutils) v1.1.0
 
 
 ## Contents
@@ -3643,6 +3655,8 @@ method should be a staticmethod of a namespace class registered with `register_f
 
 
 
+
+docs for [`muutils`](https://github.com/mivanit/muutils) v1.1.0
 
 
 ## Contents
@@ -4223,6 +4237,8 @@ strip the generation meta from the dataset
 
 
 
+docs for [`muutils`](https://github.com/mivanit/muutils) v1.1.0
+
 
 ## Contents
 a special `RasterizedMazeDataset` that returns 2 images, one for input and one for target, for each maze
@@ -4527,6 +4543,8 @@ output is of structure:
 
 
 
+docs for [`muutils`](https://github.com/mivanit/muutils) v1.1.0
+
 
 ## Contents
 generation functions have signature `(grid_shape: Coord, **kwargs) -> LatticeMaze` and are methods in `LatticeMazeGenerators`
@@ -4712,12 +4730,14 @@ dfs and then percolation (adds cycles)
 helper function to get a maze already with a solution
 
 
-- `numpy_rng = Generator(PCG64) at 0x170DCDDE5E0`
+- `numpy_rng = Generator(PCG64) at 0x1F49EB7E5E0`
 
 
 
 
 
+
+docs for [`muutils`](https://github.com/mivanit/muutils) v1.1.0
 
 
 ## Contents
@@ -4748,6 +4768,8 @@ helper function to get a maze already with a solution
 
 
 
+docs for [`muutils`](https://github.com/mivanit/muutils) v1.1.0
+
 
 ## Contents
 generation functions have signature `(grid_shape: Coord, **kwargs) -> LatticeMaze` and are methods in `LatticeMazeGenerators`
@@ -4774,7 +4796,7 @@ generation functions have signature `(grid_shape: Coord, **kwargs) -> LatticeMaz
 
 
 
-- `numpy_rng = Generator(PCG64) at 0x170DCDDE5E0`
+- `numpy_rng = Generator(PCG64) at 0x1F49EB7E5E0`
 
 
 
@@ -4948,6 +4970,8 @@ helper function to get a maze already with a solution
 
 
 
+
+docs for [`muutils`](https://github.com/mivanit/muutils) v1.1.0
 
 
 ## Contents
@@ -5854,6 +5878,8 @@ standard colors for pixel grids
 
 
 
+
+docs for [`muutils`](https://github.com/mivanit/muutils) v1.1.0
 
 
 
@@ -6795,6 +6821,8 @@ Detects the type of pixels data by checking for the presence of start and end pi
 
 
 
+docs for [`muutils`](https://github.com/mivanit/muutils) v1.1.0
+
 
 ## Contents
 utilities for plotting mazes and printing tokens
@@ -7231,6 +7259,8 @@ tokens will not be escaped if `fmt` is None
 
 
 
+docs for [`muutils`](https://github.com/mivanit/muutils) v1.1.0
+
 
 ## Contents
 `plot_dataset_mazes` will plot several mazes using `as_pixels`
@@ -7289,6 +7319,8 @@ tokens will not be escaped if `fmt` is None
 
 
 
+
+docs for [`muutils`](https://github.com/mivanit/muutils) v1.1.0
 
 
 ## Contents
@@ -7677,6 +7709,8 @@ Plot the maze and paths.
 
 
 
+docs for [`muutils`](https://github.com/mivanit/muutils) v1.1.0
+
 
 ## Contents
 `plot_colored_text` function to plot tokens on a matplotlib axis with colored backgrounds
@@ -7728,6 +7762,8 @@ hacky function to plot tokens on a matplotlib axis with colored backgrounds
 
 
 
+
+docs for [`muutils`](https://github.com/mivanit/muutils) v1.1.0
 
 
 ## Contents
@@ -7905,6 +7941,8 @@ i.e: adjaceny list, origin, target, path
 
 
 
+
+docs for [`muutils`](https://github.com/mivanit/muutils) v1.1.0
 
 
 ## Contents
@@ -8345,6 +8383,8 @@ Alias for field number 2
 
 
 
+docs for [`muutils`](https://github.com/mivanit/muutils) v1.1.0
+
 
 ## Contents
 a whole bunch of utilities for tokenization
@@ -8720,6 +8760,8 @@ Returns if each edge in `edges` is a connection (`True`) or wall (`False`) in `c
 
 
 
+
+docs for [`muutils`](https://github.com/mivanit/muutils) v1.1.0
 
 
 ## Contents
@@ -12003,6 +12045,8 @@ validate the types of all the fields on a SerializableDataclass. calls `Serializ
 
 
 
+docs for [`muutils`](https://github.com/mivanit/muutils) v1.1.0
+
 
 ## Contents
 Contains `ALL_TOKENIZERS` and supporting limited-use functions.
@@ -12154,6 +12198,8 @@ Computes, sorts, and saves the hashes of every member of `ALL_TOKENIZERS`.
 
 
 
+
+docs for [`muutils`](https://github.com/mivanit/muutils) v1.1.0
 
 
 ## Contents
@@ -15304,6 +15350,8 @@ validate the types of all the fields on a SerializableDataclass. calls `Serializ
 
 
 
+docs for [`muutils`](https://github.com/mivanit/muutils) v1.1.0
+
 
 ## Contents
 generate and save the hashes of all supported tokenizers
@@ -15361,6 +15409,8 @@ python -m <a href="">maze_dataset.tokenization.save_hashes</a> --check
 
 
 
+
+docs for [`muutils`](https://github.com/mivanit/muutils) v1.1.0
 
 
 ## Contents
