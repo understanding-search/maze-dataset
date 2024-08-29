@@ -11,18 +11,30 @@ COVERAGE_REPORTS_DIR := $(DOCS_DIR)/coverage
 NOTEBOOKS_DIR := notebooks
 CONVERTED_NOTEBOOKS_TEMP_DIR := tests/_temp/notebooks
 
-VERSION := $(shell python -c "import tomllib; print(tomllib.load(open('$(PYPROJECT)', 'rb'))['tool']['poetry']['version'])")
-LAST_VERSION := $(shell cat $(LAST_VERSION_FILE))
-
-# note that the commands at the end:
-# 1) format the git log
-# 2) replace backticks with single quotes, to avoid funny business
-# 3) add a final newline, to make tac happy
-# 4) reverse the order of the lines, so that the oldest commit is first
-# 5) replace newlines with tabs, to prevent the newlines from being lost
 COMMIT_LOG_FILE := .commit_log
-COMMIT_LOG_SINCE_LAST_VERSION := $(shell (git log $(LAST_VERSION)..HEAD --pretty=format:"- %s (%h)" | tr '`' "'" ; echo) | tac | tr '\n' '\t')
-#                                                                                    1                2            3       4     5
+
+# reading version
+# --------------------------------------------------
+# assuming your pyproject.toml has a line that looks like `version = "0.0.1"`, will get the version
+VERSION := NULL
+# read last auto-uploaded version from file
+LAST_VERSION := NULL
+# get the python version, now that we have picked the python command
+PYTHON_VERSION := NULL
+.PHONY: gen-version-info
+gen-version-info:
+	$(eval VERSION := $(shell python -c "import re; print('v'+re.search(r'^version\s*=\s*\"(.+?)\"', open('$(PYPROJECT)').read(), re.MULTILINE).group(1))") )
+	$(eval LAST_VERSION := $(shell [ -f $(LAST_VERSION_FILE) ] && cat $(LAST_VERSION_FILE) || echo NULL) )
+	$(eval PYTHON_VERSION := $(shell $(PYTHON) -c "import sys; print(f'{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}')") )
+
+# getting commit log
+.PHONY: gen-commit-log
+gen-commit-log: gen-version-info
+	if [ "$(LAST_VERSION)" = "NULL" ]; then \
+		echo "LAST_VERSION is NULL, cant get commit log!"; \
+		exit 1; \
+	fi
+	$(shell python -c "import subprocess; open('$(COMMIT_LOG_FILE)', 'w').write('\n'.join(reversed(subprocess.check_output(['git', 'log', '$(LAST_VERSION)'.strip() + '..HEAD', '--pretty=format:- %s (%h)']).decode('utf-8').strip().split('\n'))))")
 
 # pandoc commands (for docs)
 PANDOC ?= pandoc
@@ -31,10 +43,9 @@ PANDOC ?= pandoc
 default: help
 
 .PHONY: version
-version:
+version: gen-commit-log
 	@echo "Current version is $(VERSION), last auto-uploaded version is $(LAST_VERSION)"
 	@echo "Commit log since last version:"
-	@echo "$(COMMIT_LOG_SINCE_LAST_VERSION)" | tr '\t' '\n' > $(COMMIT_LOG_FILE)
 	@cat $(COMMIT_LOG_FILE)
 	@if [ "$(VERSION)" = "$(LAST_VERSION)" ]; then \
 		echo "Python package $(VERSION) is the same as last published version $(LAST_VERSION), exiting!"; \
@@ -213,7 +224,7 @@ build:
 	poetry build
 
 .PHONY: publish
-publish: check build verify-git version
+publish: gen-commit-log check build verify-git version gen-version-info
 	@echo "run all checks, build, and then publish"
 
 	@echo "Enter the new version number if you want to upload to pypi and create a new tag"
@@ -254,7 +265,14 @@ clean:
 # listing targets, from stackoverflow
 # https://stackoverflow.com/questions/4219255/how-do-you-get-the-list-of-targets-in-a-makefile
 .PHONY: help
-help:
+help: gen-version-info
 	@echo -n "# list make targets"
 	@echo ":"
 	@cat Makefile | sed -n '/^\.PHONY: / h; /\(^\t@*echo\|^\t:\)/ {H; x; /PHONY/ s/.PHONY: \(.*\)\n.*"\(.*\)"/    make \1\t\2/p; d; x}'| sort -k2,2 |expand -t 30
+	@echo "# makefile variables:"
+	@echo "    PYTHON = $(PYTHON)"
+	@echo "    PYTHON_VERSION = $(PYTHON_VERSION)"
+	@echo "    PACKAGE_NAME = $(PACKAGE_NAME)"
+	@echo "    VERSION = $(VERSION)"
+	@echo "    LAST_VERSION = $(LAST_VERSION)"
+	@echo "    PYTEST_OPTIONS = $(PYTEST_OPTIONS)"
