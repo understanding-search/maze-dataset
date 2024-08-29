@@ -37,7 +37,12 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Install
+      - name: Install Poetry
+        run: |
+          curl -sSL https://install.python-poetry.org | python3 -
+          poetry --version
+
+      - name: Install package and deps
         run: poetry install
 
       - name: Unit tests, for coverage
