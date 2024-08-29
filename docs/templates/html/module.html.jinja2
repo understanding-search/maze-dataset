@@ -1,17 +1,18 @@
 {% extends "frame.html.jinja2" %}
+{% set path_to_root = "../" * (module.modulename.count(".")) %}
 {% block title %}{{ module.modulename }} API documentation{% endblock %}
 {% block nav %}
     {% block module_list_link %}
         {% set parentmodule = ".".join(module.modulename.split(".")[:-1]) %}
         {% if parentmodule and parentmodule in all_modules %}
             <a class="pdoc-button module-list-button" href="../{{ parentmodule.split(".")[-1] }}.html">
-                <img src="resources/box-arrow-in-left.svg" alt="Back to parent module"/>
+                <img src="{{ path_to_root }}resources/svg/box-arrow-in-left.svg" alt="Back to parent module"/>
                 &nbsp;
                 {{- parentmodule -}}
             </a>
         {% elif not root_module_name %}
             <a class="pdoc-button module-list-button" href="{{ "../" * module.modulename.count(".") }}index.html">
-                <img src="resources/box-arrow-in-left.svg" alt="Back to module index"/>
+                <img src="{{ path_to_root }}resources/svg/box-arrow-in-left.svg" alt="Back to module index"/>
                 &nbsp;
                 Module Index
             </a>
@@ -69,7 +70,7 @@
     {% block attribution %}
         <a class="attribution" title="pdoc: Python API documentation generator" href="https://pdoc.dev" target="_blank">
             built with <span class="visually-hidden">pdoc</span>
-            <img src="resources/pdoc-logo.svg" alt="pdoc logo"/>
+            <img src="{{ path_to_root }}resources/svg/pdoc-logo.svg" alt="pdoc logo"/>
         </a>
     {% endblock %}
 {% endblock nav %}

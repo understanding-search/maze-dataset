@@ -45,26 +45,50 @@ This makes sure that the pdoc styling doesn't leak to the rest of the page when 
 }
 
 /* Admonitions are currently not stylable via theme.css */
+/* NOTE|TIP|IMPORTANT|WARNING|CAUTION */
+/* admonition|attention|caution|danger|error|hint|important|note|tip|warning */
+
 .pdoc .alert.note  {
     color: #084298;
     background-color: #cfe2ff;
     border-color: #b6d4fe;
-    background-image: url("data:image/svg+xml,{% filter urlencode %}{% include 'resources/info-circle-fill.svg' %}{% endfilter %}");
+    background-image: url("../resources/svg/info.svg");
 }
 
+.pdoc .alert.hint,
+.pdoc .alert.tip {
+    color: #208434;
+    background-color: #c8f7cf;
+    border-color: #c4f1cd;
+    background-image: url("../resources/svg/tip.svg");
+}
+
+.pdoc .alert.important {
+    color: #752084;
+    background-color: #e5bef4;
+    border-color: #e3a9ee;
+    background-image: url("../resources/svg/important.svg");
+}
 .pdoc .alert.warning {
     color: #664d03;
     background-color: #fff3cd;
     border-color: #ffecb5;
-    background-image: url("data:image/svg+xml,{% filter urlencode %}{% include 'resources/exclamation-triangle-fill.svg' %}{% endfilter %}");
+    background-image: url("../resources/svg/warning.svg");
 }
 
-.pdoc .alert.danger {
+.pdoc .alert.admonition,
+.pdoc .alert.attention,
+.pdoc .alert.danger,
+.pdoc .alert.error,
+.pdoc .alert.caution {
     color: #842029;
     background-color: #f8d7da;
     border-color: #f5c2c7;
-    background-image: url("data:image/svg+xml,{% filter urlencode %}{% include 'resources/lightning-fill.svg' %}{% endfilter %}");
+    background-image: url("../resources/svg/caution.svg");
 }
+
+
+/* other stuff */
 
 .pdoc .visually-hidden {
     position: absolute !important;

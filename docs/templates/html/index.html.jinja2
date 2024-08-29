@@ -49,6 +49,7 @@ A custom template could override this by setting root_module_name to false befor
     </ul>
 {% endblock %}
 {% block content %}
+    {% set path_to_root = "../" * (module.modulename.count(".")) %}
     <header class="pdoc">
         {% block logo %}
             {% if logo %}
@@ -57,7 +58,7 @@ A custom template could override this by setting root_module_name to false befor
                 {% if logo_link %}</a>{% endif %}
             {% else %}
                 <a href="https://pdoc.dev">
-                    <img src="resources/pdoc-logo.svg" alt="pdoc"/>
+                    <img src="{{ path_to_root }}resources/svg/pdoc-logo.svg" alt="pdoc"/>
                 </a>
             {% endif %}
         {% endblock %}
