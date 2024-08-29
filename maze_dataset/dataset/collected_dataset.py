@@ -1,6 +1,8 @@
 """collecting different maze datasets into a single dataset, for greater variety in a training or validation set
+
 > [!CAUTION]
 > `MazeDatasetCollection` is not thoroughly tested and is not guaranteed to work.
+
 """
 
 import itertools
