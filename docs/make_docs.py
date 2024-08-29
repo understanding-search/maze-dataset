@@ -12,8 +12,11 @@ import pdoc.render
 import pdoc.render_helpers
 from markupsafe import Markup
 
+OUTPUT_DIR: Path = Path("docs")
+
 pdoc.render_helpers.markdown_extensions["alerts"] = True
 pdoc.render_helpers.markdown_extensions["admonitions"] = True
+
 
 def increment_markdown_headings(markdown_text: str, increment: int = 2) -> str:
     """
@@ -35,9 +38,6 @@ def increment_markdown_headings(markdown_text: str, increment: int = 2) -> str:
 
     # Replace all headings with incremented versions
     return heading_pattern.sub(replace_heading, markdown_text)
-
-
-OUTPUT_DIR: Path = Path("docs")
 
 
 def format_signature(sig: inspect.Signature, colon: bool) -> str:
@@ -71,16 +71,6 @@ def format_signature(sig: inspect.Signature, colon: bool) -> str:
     return rendered
 
 
-HTML_TO_MD_MAP: dict[str, str] = {
-    "&gt;": ">",
-    "&lt;": "<",
-    "&amp;": "&",
-    "&quot;": '"',
-    "&#39": "'",
-    "&apos;": "'",
-}
-
-
 def markup_safe(sig: inspect.Signature) -> str:
     output: str = str(sig)
     return Markup(output)
@@ -90,6 +80,22 @@ def use_markdown_format():
     pdoc.render_helpers.format_signature = format_signature
     pdoc.render.env.filters["markup_safe"] = markup_safe
     pdoc.render.env.filters["increment_markdown_headings"] = increment_markdown_headings
+
+
+def ignore_warnings(config_path: str | Path = Path("pyproject.toml")):
+    # Read the pyproject.toml file
+    config_path = Path(config_path)
+    with config_path.open("rb") as f:
+        pyproject_data = tomllib.load(f)
+
+    # Extract the warning messages from the tool.pdoc.ignore section
+    warning_messages: list[str] = (
+        pyproject_data.get("tool", {}).get("pdoc", {}).get("warnings_ignore", [])
+    )
+
+    # Process and apply the warning filters
+    for message in warning_messages:
+        warnings.filterwarnings("ignore", message=message)
 
 
 def pdoc_combined(*modules: Path | str, output_file: Path) -> None:
@@ -121,22 +127,6 @@ def pdoc_combined(*modules: Path | str, output_file: Path) -> None:
     # Write the combined content to the output file
     with output_file.open("w", encoding="utf-8") as f:
         f.write(combined_content)
-
-
-def ignore_warnings(config_path: str | Path = Path("pyproject.toml")):
-    # Read the pyproject.toml file
-    config_path = Path(config_path)
-    with config_path.open("rb") as f:
-        pyproject_data = tomllib.load(f)
-
-    # Extract the warning messages from the tool.pdoc.ignore section
-    warning_messages: list[str] = (
-        pyproject_data.get("tool", {}).get("pdoc", {}).get("warnings_ignore", [])
-    )
-
-    # Process and apply the warning filters
-    for message in warning_messages:
-        warnings.filterwarnings("ignore", message=message)
 
 
 if __name__ == "__main__":
