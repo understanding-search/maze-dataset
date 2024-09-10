@@ -1,4 +1,4 @@
-docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.0.1
+docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.1.0
 
 
 ## Contents
@@ -1956,7 +1956,7 @@ dfs and then percolation (adds cycles)
 
 
 
-docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.0.1
+docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.1.0
 
 
 ## Contents
@@ -2103,7 +2103,7 @@ map of cardinal directions to appropriate tokens
 
 
 
-docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.0.1
+docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.1.0
 
 
 ## Contents
@@ -2815,7 +2815,7 @@ validate the types of all the fields on a `SerializableDataclass`. calls `Serial
 
 
 
-docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.0.1
+docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.1.0
 
 
 ## Contents
@@ -3154,7 +3154,7 @@ for example, adjust number of mazes after filtering
 
 
 
-docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.0.1
+docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.1.0
 
 
 ## Contents
@@ -3185,7 +3185,7 @@ docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) 
 
 
 
-docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.0.1
+docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.1.0
 
 
 ## Contents
@@ -3682,7 +3682,7 @@ method should be a staticmethod of a namespace class registered with `register_f
 
 
 
-docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.0.1
+docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.1.0
 
 
 ## Contents
@@ -4265,7 +4265,7 @@ strip the generation meta from the dataset
 
 
 
-docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.0.1
+docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.1.0
 
 
 ## Contents
@@ -4573,7 +4573,7 @@ output is of structure:
 
 
 
-docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.0.1
+docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.1.0
 
 
 ## Contents
@@ -4760,14 +4760,14 @@ dfs and then percolation (adds cycles)
 helper function to get a maze already with a solution
 
 
-- `numpy_rng = Generator(PCG64) at 0x1674FA9E5E0`
+- `numpy_rng = Generator(PCG64) at 0x23633FCE5E0`
 
 
 
 
 
 
-docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.0.1
+docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.1.0
 
 
 ## Contents
@@ -4798,7 +4798,7 @@ docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) 
 
 
 
-docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.0.1
+docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.1.0
 
 
 ## Contents
@@ -4826,7 +4826,7 @@ generation functions have signature `(grid_shape: Coord, **kwargs) -> LatticeMaz
 
 
 
-- `numpy_rng = Generator(PCG64) at 0x1674FA9E5E0`
+- `numpy_rng = Generator(PCG64) at 0x23633FCE5E0`
 
 
 
@@ -5001,7 +5001,7 @@ helper function to get a maze already with a solution
 
 
 
-docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.0.1
+docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.1.0
 
 
 ## Contents
@@ -5919,7 +5919,7 @@ standard colors for pixel grids
 
 
 
-docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.0.1
+docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.1.0
 
 
 
@@ -6871,7 +6871,7 @@ Detects the type of pixels data by checking for the presence of start and end pi
 
 
 
-docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.0.1
+docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.1.0
 
 
 ## Contents
@@ -7309,7 +7309,7 @@ tokens will not be escaped if `fmt` is None
 
 
 
-docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.0.1
+docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.1.0
 
 
 ## Contents
@@ -7370,7 +7370,7 @@ docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) 
 
 
 
-docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.0.1
+docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.1.0
 
 
 ## Contents
@@ -7759,7 +7759,7 @@ Plot the maze and paths.
 
 
 
-docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.0.1
+docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.1.0
 
 
 ## Contents
@@ -7813,7 +7813,7 @@ hacky function to plot tokens on a matplotlib axis with colored backgrounds
 
 
 
-docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.0.1
+docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.1.0
 
 
 ## Contents
@@ -7992,7 +7992,7 @@ i.e: adjaceny list, origin, target, path
 
 
 
-docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.0.1
+docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.1.0
 
 
 ## Contents
@@ -8433,7 +8433,7 @@ Alias for field number 2
 
 
 
-docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.0.1
+docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.1.0
 
 
 ## Contents
@@ -8811,7 +8811,7 @@ Returns if each edge in `edges` is a connection (`True`) or wall (`False`) in `c
 
 
 
-docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.0.1
+docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.1.0
 
 
 ## Contents
@@ -12158,7 +12158,7 @@ validate the types of all the fields on a `SerializableDataclass`. calls `Serial
 
 
 
-docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.0.1
+docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.1.0
 
 
 ## Contents
@@ -12312,7 +12312,7 @@ Computes, sorts, and saves the hashes of every member of `get_all_tokenizers()`.
 
 
 
-docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.0.1
+docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.1.0
 
 
 ## Contents
@@ -15540,7 +15540,7 @@ However, this might not always work, so we provide a way to change this.
 
 
 
-docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.0.1
+docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.1.0
 
 
 ## Contents
@@ -15600,7 +15600,7 @@ python -m <a href="">maze_dataset.tokenization.save_hashes</a> --check
 
 
 
-docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.0.1
+docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.1.0
 
 
 ## Contents
