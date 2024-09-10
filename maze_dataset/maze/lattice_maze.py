@@ -372,6 +372,7 @@ class LatticeMaze(SerializableDataclass):
         allowed_end: CoordList | None = None,
         deadend_start: bool = False,
         deadend_end: bool = False,
+        endpoints_not_equal: bool = False,
     ) -> CoordArray:
         """return a path between randomly chosen start and end nodes within the connected component
 
@@ -392,7 +393,10 @@ class LatticeMaze(SerializableDataclass):
            (defaults to `False`)
          - `deadend_end : bool`
             whether to ***force*** the end position to be a deadend (defaults to `False`)
-           (defaults to `False`)
+            (defaults to `False`)
+         - `endpoints_not_equal : bool`
+            whether to ensure tha the start and end point are not the same
+            (defaults to `False`)
 
         # Returns:
          - `CoordArray`
@@ -470,6 +474,9 @@ class LatticeMaze(SerializableDataclass):
         start_pos: CoordTup = tuple(
             list(allowed_start_set)[np.random.randint(0, len(allowed_start_set))]
         )
+        if endpoints_not_equal:
+            # remove start position from end positions
+            allowed_end_set.discard(start_pos)
         end_pos: CoordTup = tuple(
             list(allowed_end_set)[np.random.randint(0, len(allowed_end_set))]
         )
