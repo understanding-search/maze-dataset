@@ -66,7 +66,11 @@ class TokenError(ValueError):
 
 
 class TokenizationMode(Enum):
-    """LEGACY: mode of tokenization
+    """legacy tokenization modes
+
+    > [!CAUTION]
+    > Legacy mode of tokenization. will still be around in future releases, but is no longer recommended for use.
+    > Use `MazeTokenizerModular` instead.
 
     # Abbreviations:
     - `AOTP`: Ajacency list, Origin, Target, Path
@@ -461,9 +465,12 @@ class _TokenizerElement(SerializableDataclass, abc.ABC):
     Subclasses contain modular functionality for maze tokenization.
 
     # Development
-    Due to the functionality of `ALL_TOKENIZERS`, `_TokenizerElement` subclasses may only contain fields of type `utils.FiniteValued`.
-    Implementing a subclass with an `int` or `float`-typed field, for example, is not supported.
-    In the event that adding such fields is deemed necessary, `ALL_TOKENIZERS` must be updated.
+    > [!TIP]
+    > Due to the functionality of `get_all_tokenizers()`, `_TokenizerElement` subclasses
+    > may only contain fields of type `utils.FiniteValued`.
+    > Implementing a subclass with an `int` or `float`-typed field, for example, is not supported.
+    > In the event that adding such fields is deemed necessary, `get_all_tokenizers()` must be updated.
+
     """
 
     @staticmethod
@@ -679,7 +686,7 @@ T = TypeVar("T", bound=_TokenizerElement)
 def mark_as_unsupported(is_valid: Callable[[T], bool], *args) -> T:
     """mark a _TokenizerElement as unsupported.
 
-    Classes marked with this decorator won't show up in ALL_TOKENIZERS and thus wont be tested.
+    Classes marked with this decorator won't show up in `get_all_tokenizers()` and thus wont be tested.
     The classes marked in release 1.0.0 did work reliably before being marked, but they can't be instantiated since the decorator adds an abstract method.
     The decorator exists to prune the space of tokenizers returned by `all_instances` both for testing and usage.
     Previously, the space was too large, resulting in impractical runtimes.
@@ -720,6 +727,8 @@ def _load_tokenizer_element(
 
 
 class CoordTokenizers(__TokenizerElementNamespace):
+    """Namespace for `_CoordTokenizer` subclass hierarchy used by `MazeTokenizerModular`."""
+
     key = "coord_tokenizer"
 
     @serializable_dataclass(frozen=True, kw_only=True)
@@ -773,7 +782,7 @@ class CoordTokenizers(__TokenizerElementNamespace):
 
 
 class EdgeGroupings(__TokenizerElementNamespace):
-    """Namespace for `EdgeGrouping` subclass hierarchy used by `AdjListTokenizer`."""
+    """Namespace for `_EdgeGrouping` subclass hierarchy used by `_AdjListTokenizer`."""
 
     key = "edge_grouping"
 
@@ -881,7 +890,7 @@ class EdgeGroupings(__TokenizerElementNamespace):
 
 
 class EdgePermuters(__TokenizerElementNamespace):
-    """Namespace for `EdgePermuter` subclass hierarchy used by `AdjListTokenizer`."""
+    """Namespace for `_EdgePermuter` subclass hierarchy used by `_AdjListTokenizer`."""
 
     key = "edge_permuter"
 
@@ -955,7 +964,7 @@ class EdgePermuters(__TokenizerElementNamespace):
 
 class EdgeSubsets(__TokenizerElementNamespace):
     """
-    Namespace for `EdgeSubset` subclass hierarchy used by `AdjListTokenizer`.
+    Namespace for `_EdgeSubset` subclass hierarchy used by `_AdjListTokenizer`.
     """
 
     key = "edge_subset"
@@ -1015,6 +1024,8 @@ class EdgeSubsets(__TokenizerElementNamespace):
 
 
 class AdjListTokenizers(__TokenizerElementNamespace):
+    """Namespace for `_AdjListTokenizer` subclass hierarchy used by `MazeTokenizerModular`."""
+
     key = "adj_list_tokenizer"
 
     @serializable_dataclass(frozen=True, kw_only=True)
@@ -1256,6 +1267,8 @@ class AdjListTokenizers(__TokenizerElementNamespace):
 
 
 class TargetTokenizers(__TokenizerElementNamespace):
+    """Namespace for `_TargetTokenizer` subclass hierarchy used by `MazeTokenizerModular`."""
+
     key = "target_tokenizer"
 
     @serializable_dataclass(frozen=True, kw_only=True)
@@ -1308,6 +1321,8 @@ class TargetTokenizers(__TokenizerElementNamespace):
 
 
 class StepSizes(__TokenizerElementNamespace):
+    """Namespace for `_StepSize` subclass hierarchy used by `MazeTokenizerModular`."""
+
     key = "step_size"
 
     @serializable_dataclass(frozen=True, kw_only=True)
@@ -1402,6 +1417,8 @@ class StepSizes(__TokenizerElementNamespace):
 
 
 class StepTokenizers(__TokenizerElementNamespace):
+    """Namespace for `_StepTokenizer` subclass hierarchy used by `MazeTokenizerModular`."""
+
     key = "step_tokenizers"
 
     @serializable_dataclass(frozen=True, kw_only=True)
@@ -1523,6 +1540,8 @@ class StepTokenizers(__TokenizerElementNamespace):
 
 
 class PathTokenizers(__TokenizerElementNamespace):
+    """Namespace for `_PathTokenizer` subclass hierarchy used by `MazeTokenizerModular`."""
+
     key = "path_tokenizer"
 
     @serializable_dataclass(frozen=True, kw_only=True)
@@ -1646,6 +1665,8 @@ class PathTokenizers(__TokenizerElementNamespace):
 
 
 class PromptSequencers(__TokenizerElementNamespace):
+    """Namespace for `_PromptSequencer` subclass hierarchy used by `MazeTokenizerModular`."""
+
     key = "prompt_sequencer"
 
     @serializable_dataclass(frozen=True, kw_only=True)
@@ -2025,9 +2046,9 @@ class MazeTokenizerModular(SerializableDataclass):
         )
 
     def is_tested_tokenizer(self, do_assert: bool = False) -> bool:
-        """Returns if the tokenizer is returned by `all_tokenizers._get_all_tokenizers`, the set of tested and reliable tokenizers.
+        """Returns if the tokenizer is returned by `all_tokenizers.get_all_tokenizers`, the set of tested and reliable tokenizers.
 
-        Since evaluating `all_tokenizers._get_all_tokenizers` is expensive,
+        Since evaluating `all_tokenizers.get_all_tokenizers` is expensive,
         instead checks for membership of `self`'s hash in `get_all_tokenizer_hashes()`.
 
         if `do_assert` is `True`, raises an `AssertionError` if the tokenizer is not tested.
@@ -2208,7 +2229,7 @@ def set_tokenizer_hashes_path(path: Path):
 
 
 def _load_tokenizer_hashes() -> Int64[np.ndarray, "n_tokenizers"]:
-    """Loads the sorted list of `all_tokenizers.ALL_TOKENIZERS` hashes from disk."""
+    """Loads the sorted list of `all_tokenizers.get_all_tokenizers()` hashes from disk."""
     global _TOKENIZER_HASHES_PATH
     try:
         path: Path = _TOKENIZER_HASHES_PATH

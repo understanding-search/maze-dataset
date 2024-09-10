@@ -31,7 +31,7 @@ from maze_dataset.tokenization.all_tokenizers import (
 )
 from maze_dataset.utils import all_instances
 
-# Size of the sample from `all_tokenizers.ALL_TOKENIZERS` to test
+# Size of the sample from `all_tokenizers.get_all_tokenizers()` to test
 # get from env, or set to default value of 100
 _os_env_num_tokenizers: str = os.getenv("NUM_TOKENIZERS_TO_TEST", "100")
 NUM_TOKENIZERS_TO_TEST: int | None = (
@@ -39,7 +39,6 @@ NUM_TOKENIZERS_TO_TEST: int | None = (
 )
 print(f"{NUM_TOKENIZERS_TO_TEST = }")
 
-# ALL_TOKENIZERS: list[MazeTokenizerModular] = get_all_tokenizers()
 SAMPLED_TOKENIZERS: list[MazeTokenizerModular] = sample_tokenizers_for_test(
     NUM_TOKENIZERS_TO_TEST
 )
@@ -50,10 +49,6 @@ SAMPLED_MAZES: list[SolvedMaze] = MIXED_MAZES[:6]
 @pytest.fixture(scope="session")
 def save_tokenizer_hashes():
     save_hashes()
-
-
-# def test_all_tokenizers():
-#     assert len(ALL_TOKENIZERS) > 400
 
 
 @mark.parametrize(

@@ -12,16 +12,22 @@ from maze_dataset.utils import corner_first_ndindex
 
 Coord = Int8[np.ndarray, "row_col"]
 "single coordinate as array"
+
 CoordTup = tuple[int, int]
 "single coordinate as tuple"
+
 CoordArray = Int8[np.ndarray, "coord row_col"]
 "array of coordinates"
+
 CoordList = list[CoordTup]
 "list of tuple coordinates"
+
 Connection = Int8[np.ndarray, "coord=2 row_col=2"]
 "single connection (pair of coords) as array"
+
 ConnectionList = Bool[np.ndarray, "lattice_dim=2 row col"]
 "internal representation used in `LatticeMaze`"
+
 ConnectionArray = Int8[np.ndarray, "edges leading_trailing_coord=2 row_col=2"]
 "n_edges * 2 * 2 array of connections, like an adjacency list"
 
@@ -43,7 +49,7 @@ _SPECIAL_TOKENS_ABBREVIATIONS: dict[str, str] = {
     ";": ";",
     "<PADDING>": "<PAD>",
 }
-"abbreviations for special tokens"
+"map abbreviations for (some) special tokens"
 
 
 @dataclass(frozen=True)
@@ -190,17 +196,21 @@ _VOCAB_FIELDS: list = [
         for x, y in corner_first_ndindex(50)
     ],
 ]
-"fields for the `ModularMazeTokenizer` style combined vocab"
+"fields for the `MazeTokenizerModular` style combined vocab"
 
 
 _VOCAB_BASE: type = make_dataclass(
     "_VOCAB_BASE", fields=_VOCAB_FIELDS, bases=(_SPECIAL_TOKENS_BASE,), frozen=True
 )
+"combined vocab class, private"
 # TODO: edit __getitem__ to add warning for accessing a RESERVE token
 
 VOCAB: _VOCAB_BASE = _VOCAB_BASE()
+"public access to universal vocabulary for `MazeTokenizerModular`"
 VOCAB_LIST: list[str] = list(VOCAB.values())
+"list of `VOCAB` tokens, in order"
 VOCAB_TOKEN_TO_INDEX: dict[str, int] = {token: i for i, token in enumerate(VOCAB_LIST)}
+"map of `VOCAB` tokens to their indices"
 
 # CARDINAL_MAP: Maps tuple(coord1 - coord0) : cardinal direction
 CARDINAL_MAP: dict[tuple[int, int], str] = {
@@ -209,3 +219,4 @@ CARDINAL_MAP: dict[tuple[int, int], str] = {
     (0, -1): VOCAB.PATH_WEST,
     (0, 1): VOCAB.PATH_EAST,
 }
+"map of cardinal directions to appropriate tokens"

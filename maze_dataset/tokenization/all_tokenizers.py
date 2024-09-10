@@ -1,18 +1,18 @@
-"""Contains `ALL_TOKENIZERS` and supporting limited-use functions.
+"""Contains `get_all_tokenizers()` and supporting limited-use functions.
 
-# `ALL_TOKENIZERS`
-A comprehensive collection of all valid `MazeTokenizerModular` objects.
+# `get_all_tokenizers()`
+returns a comprehensive collection of all valid `MazeTokenizerModular` objects.
 This is an overwhelming majority subset of the set of all possible `MazeTokenizerModular` objects.
-Other tokenizers not contained in `ALL_TOKENIZERS` may be possible to construct, but they are untested and not guaranteed to work.
+Other tokenizers not contained in `get_all_tokenizers()` may be possible to construct, but they are untested and not guaranteed to work.
 This collection is in a separate module since it is expensive to compute and will grow more expensive as features are added to `MazeTokenizerModular`.
 
 ## Use Cases
 In general, uses for this module are limited to development of the library and specific research studying many tokenization behaviors.
 - Unit testing:
-  - Tokenizers to use in unit tests are sampled from `ALL_TOKENIZERS`
+  - Tokenizers to use in unit tests are sampled from `get_all_tokenizers()`
 - Large-scale tokenizer research:
-  - Specific research training models on many tokenization behaviors can use `ALL_TOKENIZERS` as the maximally inclusive collection
-  - `ALL_TOKENIZERS` may be subsequently filtered using `MazeTokenizerModular.has_element`
+  - Specific research training models on many tokenization behaviors can use `get_all_tokenizers()` as the maximally inclusive collection
+  - `get_all_tokenizers()` may be subsequently filtered using `MazeTokenizerModular.has_element`
 For other uses, it's likely that the computational expense can be avoided by using
 - `maze_tokenizer.get_all_tokenizer_hashes()` for membership checks
 - `utils.all_instances` for generating smaller subsets of `MazeTokenizerModular` or `_TokenizerElement` objects 
@@ -83,7 +83,7 @@ EVERY_TEST_TOKENIZERS: list[MazeTokenizerModular] = [
 
 @cache
 def all_tokenizers_set() -> set[MazeTokenizerModular]:
-    """Casts ALL_TOKENIZERS to a set."""
+    """Casts `get_all_tokenizers()` to a set."""
     return set(get_all_tokenizers())
 
 
@@ -94,12 +94,12 @@ def _all_tokenizers_except_every_test_tokenizers() -> list[MazeTokenizerModular]
 
 
 def sample_all_tokenizers(n: int) -> list[MazeTokenizerModular]:
-    """Samples `n` tokenizers from `ALL_TOKENIZERS`."""
+    """Samples `n` tokenizers from `get_all_tokenizers()`."""
     return random.sample(get_all_tokenizers(), n)
 
 
 def sample_tokenizers_for_test(n: int | None) -> list[MazeTokenizerModular]:
-    """Returns a sample of size `n` of unique elements from `ALL_TOKENIZERS`,
+    """Returns a sample of size `n` of unique elements from `get_all_tokenizers()`,
     always including every element in `EVERY_TEST_TOKENIZERS`.
     """
     if n is None:
@@ -121,7 +121,7 @@ def save_hashes(
     verbose: bool = False,
     parallelize: bool | int = False,
 ) -> Int64[np.ndarray, "tokenizers"]:
-    """Computes, sorts, and saves the hashes of every member of `ALL_TOKENIZERS`."""
+    """Computes, sorts, and saves the hashes of every member of `get_all_tokenizers()`."""
     spinner = (
         functools.partial(SpinnerContext, spinner_chars="square_dot")
         if verbose

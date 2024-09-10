@@ -251,7 +251,7 @@ class MazeDataset(GPTDataset):
     ) -> list[list[str]] | list[str]:
         """return the dataset as tokens according to the passed `maze_tokenizer`
 
-        the `maze_tokenizer` should be either a `MazeTokenizer` or a `ModularMazeTokenizer`
+        the `maze_tokenizer` should be either a `MazeTokenizer` or a `MazeTokenizerModular`
 
         if `join_tokens_individual_maze` is True, then the tokens of each maze are
         joined with a space, and the result is a list of strings.
