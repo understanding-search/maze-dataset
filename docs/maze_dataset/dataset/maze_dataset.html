@@ -486,7 +486,7 @@
 </span><span id="L-251"><a href="#L-251"><span class="linenos">251</span></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 </span><span id="L-252"><a href="#L-252"><span class="linenos">252</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;return the dataset as tokens according to the passed `maze_tokenizer`</span>
 </span><span id="L-253"><a href="#L-253"><span class="linenos">253</span></a>
-</span><span id="L-254"><a href="#L-254"><span class="linenos">254</span></a><span class="sd">        the `maze_tokenizer` should be either a `MazeTokenizer` or a `ModularMazeTokenizer`</span>
+</span><span id="L-254"><a href="#L-254"><span class="linenos">254</span></a><span class="sd">        the `maze_tokenizer` should be either a `MazeTokenizer` or a `MazeTokenizerModular`</span>
 </span><span id="L-255"><a href="#L-255"><span class="linenos">255</span></a>
 </span><span id="L-256"><a href="#L-256"><span class="linenos">256</span></a><span class="sd">        if `join_tokens_individual_maze` is True, then the tokens of each maze are</span>
 </span><span id="L-257"><a href="#L-257"><span class="linenos">257</span></a><span class="sd">        joined with a space, and the result is a list of strings.</span>
@@ -1996,7 +1996,7 @@
 </span><span id="MazeDataset-252"><a href="#MazeDataset-252"><span class="linenos">252</span></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 </span><span id="MazeDataset-253"><a href="#MazeDataset-253"><span class="linenos">253</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;return the dataset as tokens according to the passed `maze_tokenizer`</span>
 </span><span id="MazeDataset-254"><a href="#MazeDataset-254"><span class="linenos">254</span></a>
-</span><span id="MazeDataset-255"><a href="#MazeDataset-255"><span class="linenos">255</span></a><span class="sd">        the `maze_tokenizer` should be either a `MazeTokenizer` or a `ModularMazeTokenizer`</span>
+</span><span id="MazeDataset-255"><a href="#MazeDataset-255"><span class="linenos">255</span></a><span class="sd">        the `maze_tokenizer` should be either a `MazeTokenizer` or a `MazeTokenizerModular`</span>
 </span><span id="MazeDataset-256"><a href="#MazeDataset-256"><span class="linenos">256</span></a>
 </span><span id="MazeDataset-257"><a href="#MazeDataset-257"><span class="linenos">257</span></a><span class="sd">        if `join_tokens_individual_maze` is True, then the tokens of each maze are</span>
 </span><span id="MazeDataset-258"><a href="#MazeDataset-258"><span class="linenos">258</span></a><span class="sd">        joined with a space, and the result is a list of strings.</span>
@@ -2428,7 +2428,7 @@
 </span><span id="MazeDataset.as_tokens-252"><a href="#MazeDataset.as_tokens-252"><span class="linenos">252</span></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 </span><span id="MazeDataset.as_tokens-253"><a href="#MazeDataset.as_tokens-253"><span class="linenos">253</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;return the dataset as tokens according to the passed `maze_tokenizer`</span>
 </span><span id="MazeDataset.as_tokens-254"><a href="#MazeDataset.as_tokens-254"><span class="linenos">254</span></a>
-</span><span id="MazeDataset.as_tokens-255"><a href="#MazeDataset.as_tokens-255"><span class="linenos">255</span></a><span class="sd">        the `maze_tokenizer` should be either a `MazeTokenizer` or a `ModularMazeTokenizer`</span>
+</span><span id="MazeDataset.as_tokens-255"><a href="#MazeDataset.as_tokens-255"><span class="linenos">255</span></a><span class="sd">        the `maze_tokenizer` should be either a `MazeTokenizer` or a `MazeTokenizerModular`</span>
 </span><span id="MazeDataset.as_tokens-256"><a href="#MazeDataset.as_tokens-256"><span class="linenos">256</span></a>
 </span><span id="MazeDataset.as_tokens-257"><a href="#MazeDataset.as_tokens-257"><span class="linenos">257</span></a><span class="sd">        if `join_tokens_individual_maze` is True, then the tokens of each maze are</span>
 </span><span id="MazeDataset.as_tokens-258"><a href="#MazeDataset.as_tokens-258"><span class="linenos">258</span></a><span class="sd">        joined with a space, and the result is a list of strings.</span>
@@ -2451,7 +2451,7 @@
 
             <div class="docstring"><p>return the dataset as tokens according to the passed <code>maze_tokenizer</code></p>
 
-<p>the <code>maze_tokenizer</code> should be either a <code>MazeTokenizer</code> or a <code>ModularMazeTokenizer</code></p>
+<p>the <code>maze_tokenizer</code> should be either a <code>MazeTokenizer</code> or a <code>MazeTokenizerModular</code></p>
 
 <p>if <code>join_tokens_individual_maze</code> is True, then the tokens of each maze are
 joined with a space, and the result is a list of strings.

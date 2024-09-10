@@ -63,7 +63,7 @@
 
             <h2>Contents</h2>
             <ul>
-  <li><a href="#all_tokenizers"><code>ALL_TOKENIZERS</code></a>
+  <li><a href="#get_all_tokenizers"><code>get_all_tokenizers()</code></a>
   <ul>
     <li><a href="#use-cases">Use Cases</a></li>
   </ul></li>
@@ -111,13 +111,13 @@
                     <h1 class="modulename">
 <a href="./../../maze_dataset.html">maze_dataset</a><wbr>.<a href="./../tokenization.html">tokenization</a><wbr>.all_tokenizers    </h1>
 
-                        <div class="docstring"><p>Contains <code>ALL_TOKENIZERS</code> and supporting limited-use functions.</p>
+                        <div class="docstring"><p>Contains <code><a href="#get_all_tokenizers">get_all_tokenizers()</a></code> and supporting limited-use functions.</p>
 
-<h1 id="all_tokenizers"><code>ALL_TOKENIZERS</code></h1>
+<h1 id="get_all_tokenizers"><code><a href="#get_all_tokenizers">get_all_tokenizers()</a></code></h1>
 
-<p>A comprehensive collection of all valid <code>MazeTokenizerModular</code> objects.
+<p>returns a comprehensive collection of all valid <code>MazeTokenizerModular</code> objects.
 This is an overwhelming majority subset of the set of all possible <code>MazeTokenizerModular</code> objects.
-Other tokenizers not contained in <code>ALL_TOKENIZERS</code> may be possible to construct, but they are untested and not guaranteed to work.
+Other tokenizers not contained in <code><a href="#get_all_tokenizers">get_all_tokenizers()</a></code> may be possible to construct, but they are untested and not guaranteed to work.
 This collection is in a separate module since it is expensive to compute and will grow more expensive as features are added to <code>MazeTokenizerModular</code>.</p>
 
 <h2 id="use-cases">Use Cases</h2>
@@ -127,12 +127,12 @@ This collection is in a separate module since it is expensive to compute and wil
 <ul>
 <li>Unit testing:
 <ul>
-<li>Tokenizers to use in unit tests are sampled from <code>ALL_TOKENIZERS</code></li>
+<li>Tokenizers to use in unit tests are sampled from <code><a href="#get_all_tokenizers">get_all_tokenizers()</a></code></li>
 </ul></li>
 <li>Large-scale tokenizer research:
 <ul>
-<li>Specific research training models on many tokenization behaviors can use <code>ALL_TOKENIZERS</code> as the maximally inclusive collection</li>
-<li><code>ALL_TOKENIZERS</code> may be subsequently filtered using <code>MazeTokenizerModular.has_element</code>
+<li>Specific research training models on many tokenization behaviors can use <code><a href="#get_all_tokenizers">get_all_tokenizers()</a></code> as the maximally inclusive collection</li>
+<li><code><a href="#get_all_tokenizers">get_all_tokenizers()</a></code> may be subsequently filtered using <code>MazeTokenizerModular.has_element</code>
 For other uses, it's likely that the computational expense can be avoided by using</li>
 </ul></li>
 <li><code>maze_tokenizer.get_all_tokenizer_hashes()</code> for membership checks</li>
@@ -157,21 +157,21 @@ This collection should be expanded as specific tokenizers become canonical or po
         </div>
 
                 <br/>
-                        <div class="pdoc-code codehilite"><pre><span></span><span id="L-1"><a href="#L-1"><span class="linenos">  1</span></a><span class="sd">&quot;&quot;&quot;Contains `ALL_TOKENIZERS` and supporting limited-use functions.</span>
+                        <div class="pdoc-code codehilite"><pre><span></span><span id="L-1"><a href="#L-1"><span class="linenos">  1</span></a><span class="sd">&quot;&quot;&quot;Contains `get_all_tokenizers()` and supporting limited-use functions.</span>
 </span><span id="L-2"><a href="#L-2"><span class="linenos">  2</span></a>
-</span><span id="L-3"><a href="#L-3"><span class="linenos">  3</span></a><span class="sd"># `ALL_TOKENIZERS`</span>
-</span><span id="L-4"><a href="#L-4"><span class="linenos">  4</span></a><span class="sd">A comprehensive collection of all valid `MazeTokenizerModular` objects.</span>
+</span><span id="L-3"><a href="#L-3"><span class="linenos">  3</span></a><span class="sd"># `get_all_tokenizers()`</span>
+</span><span id="L-4"><a href="#L-4"><span class="linenos">  4</span></a><span class="sd">returns a comprehensive collection of all valid `MazeTokenizerModular` objects.</span>
 </span><span id="L-5"><a href="#L-5"><span class="linenos">  5</span></a><span class="sd">This is an overwhelming majority subset of the set of all possible `MazeTokenizerModular` objects.</span>
-</span><span id="L-6"><a href="#L-6"><span class="linenos">  6</span></a><span class="sd">Other tokenizers not contained in `ALL_TOKENIZERS` may be possible to construct, but they are untested and not guaranteed to work.</span>
+</span><span id="L-6"><a href="#L-6"><span class="linenos">  6</span></a><span class="sd">Other tokenizers not contained in `get_all_tokenizers()` may be possible to construct, but they are untested and not guaranteed to work.</span>
 </span><span id="L-7"><a href="#L-7"><span class="linenos">  7</span></a><span class="sd">This collection is in a separate module since it is expensive to compute and will grow more expensive as features are added to `MazeTokenizerModular`.</span>
 </span><span id="L-8"><a href="#L-8"><span class="linenos">  8</span></a>
 </span><span id="L-9"><a href="#L-9"><span class="linenos">  9</span></a><span class="sd">## Use Cases</span>
 </span><span id="L-10"><a href="#L-10"><span class="linenos"> 10</span></a><span class="sd">In general, uses for this module are limited to development of the library and specific research studying many tokenization behaviors.</span>
 </span><span id="L-11"><a href="#L-11"><span class="linenos"> 11</span></a><span class="sd">- Unit testing:</span>
-</span><span id="L-12"><a href="#L-12"><span class="linenos"> 12</span></a><span class="sd">  - Tokenizers to use in unit tests are sampled from `ALL_TOKENIZERS`</span>
+</span><span id="L-12"><a href="#L-12"><span class="linenos"> 12</span></a><span class="sd">  - Tokenizers to use in unit tests are sampled from `get_all_tokenizers()`</span>
 </span><span id="L-13"><a href="#L-13"><span class="linenos"> 13</span></a><span class="sd">- Large-scale tokenizer research:</span>
-</span><span id="L-14"><a href="#L-14"><span class="linenos"> 14</span></a><span class="sd">  - Specific research training models on many tokenization behaviors can use `ALL_TOKENIZERS` as the maximally inclusive collection</span>
-</span><span id="L-15"><a href="#L-15"><span class="linenos"> 15</span></a><span class="sd">  - `ALL_TOKENIZERS` may be subsequently filtered using `MazeTokenizerModular.has_element`</span>
+</span><span id="L-14"><a href="#L-14"><span class="linenos"> 14</span></a><span class="sd">  - Specific research training models on many tokenization behaviors can use `get_all_tokenizers()` as the maximally inclusive collection</span>
+</span><span id="L-15"><a href="#L-15"><span class="linenos"> 15</span></a><span class="sd">  - `get_all_tokenizers()` may be subsequently filtered using `MazeTokenizerModular.has_element`</span>
 </span><span id="L-16"><a href="#L-16"><span class="linenos"> 16</span></a><span class="sd">For other uses, it&#39;s likely that the computational expense can be avoided by using</span>
 </span><span id="L-17"><a href="#L-17"><span class="linenos"> 17</span></a><span class="sd">- `maze_tokenizer.get_all_tokenizer_hashes()` for membership checks</span>
 </span><span id="L-18"><a href="#L-18"><span class="linenos"> 18</span></a><span class="sd">- `utils.all_instances` for generating smaller subsets of `MazeTokenizerModular` or `_TokenizerElement` objects </span>
@@ -242,7 +242,7 @@ This collection should be expanded as specific tokenizers become canonical or po
 </span><span id="L-83"><a href="#L-83"><span class="linenos"> 83</span></a>
 </span><span id="L-84"><a href="#L-84"><span class="linenos"> 84</span></a><span class="nd">@cache</span>
 </span><span id="L-85"><a href="#L-85"><span class="linenos"> 85</span></a><span class="k">def</span> <span class="nf">all_tokenizers_set</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">set</span><span class="p">[</span><span class="n">MazeTokenizerModular</span><span class="p">]:</span>
-</span><span id="L-86"><a href="#L-86"><span class="linenos"> 86</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Casts ALL_TOKENIZERS to a set.&quot;&quot;&quot;</span>
+</span><span id="L-86"><a href="#L-86"><span class="linenos"> 86</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Casts `get_all_tokenizers()` to a set.&quot;&quot;&quot;</span>
 </span><span id="L-87"><a href="#L-87"><span class="linenos"> 87</span></a>    <span class="k">return</span> <span class="nb">set</span><span class="p">(</span><span class="n">get_all_tokenizers</span><span class="p">())</span>
 </span><span id="L-88"><a href="#L-88"><span class="linenos"> 88</span></a>
 </span><span id="L-89"><a href="#L-89"><span class="linenos"> 89</span></a>
@@ -253,12 +253,12 @@ This collection should be expanded as specific tokenizers become canonical or po
 </span><span id="L-94"><a href="#L-94"><span class="linenos"> 94</span></a>
 </span><span id="L-95"><a href="#L-95"><span class="linenos"> 95</span></a>
 </span><span id="L-96"><a href="#L-96"><span class="linenos"> 96</span></a><span class="k">def</span> <span class="nf">sample_all_tokenizers</span><span class="p">(</span><span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">MazeTokenizerModular</span><span class="p">]:</span>
-</span><span id="L-97"><a href="#L-97"><span class="linenos"> 97</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Samples `n` tokenizers from `ALL_TOKENIZERS`.&quot;&quot;&quot;</span>
+</span><span id="L-97"><a href="#L-97"><span class="linenos"> 97</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Samples `n` tokenizers from `get_all_tokenizers()`.&quot;&quot;&quot;</span>
 </span><span id="L-98"><a href="#L-98"><span class="linenos"> 98</span></a>    <span class="k">return</span> <span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">get_all_tokenizers</span><span class="p">(),</span> <span class="n">n</span><span class="p">)</span>
 </span><span id="L-99"><a href="#L-99"><span class="linenos"> 99</span></a>
 </span><span id="L-100"><a href="#L-100"><span class="linenos">100</span></a>
 </span><span id="L-101"><a href="#L-101"><span class="linenos">101</span></a><span class="k">def</span> <span class="nf">sample_tokenizers_for_test</span><span class="p">(</span><span class="n">n</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">MazeTokenizerModular</span><span class="p">]:</span>
-</span><span id="L-102"><a href="#L-102"><span class="linenos">102</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns a sample of size `n` of unique elements from `ALL_TOKENIZERS`,</span>
+</span><span id="L-102"><a href="#L-102"><span class="linenos">102</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns a sample of size `n` of unique elements from `get_all_tokenizers()`,</span>
 </span><span id="L-103"><a href="#L-103"><span class="linenos">103</span></a><span class="sd">    always including every element in `EVERY_TEST_TOKENIZERS`.</span>
 </span><span id="L-104"><a href="#L-104"><span class="linenos">104</span></a><span class="sd">    &quot;&quot;&quot;</span>
 </span><span id="L-105"><a href="#L-105"><span class="linenos">105</span></a>    <span class="k">if</span> <span class="n">n</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -280,7 +280,7 @@ This collection should be expanded as specific tokenizers become canonical or po
 </span><span id="L-121"><a href="#L-121"><span class="linenos">121</span></a>    <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 </span><span id="L-122"><a href="#L-122"><span class="linenos">122</span></a>    <span class="n">parallelize</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 </span><span id="L-123"><a href="#L-123"><span class="linenos">123</span></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Int64</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="s2">&quot;tokenizers&quot;</span><span class="p">]:</span>
-</span><span id="L-124"><a href="#L-124"><span class="linenos">124</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Computes, sorts, and saves the hashes of every member of `ALL_TOKENIZERS`.&quot;&quot;&quot;</span>
+</span><span id="L-124"><a href="#L-124"><span class="linenos">124</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Computes, sorts, and saves the hashes of every member of `get_all_tokenizers()`.&quot;&quot;&quot;</span>
 </span><span id="L-125"><a href="#L-125"><span class="linenos">125</span></a>    <span class="n">spinner</span> <span class="o">=</span> <span class="p">(</span>
 </span><span id="L-126"><a href="#L-126"><span class="linenos">126</span></a>        <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">SpinnerContext</span><span class="p">,</span> <span class="n">spinner_chars</span><span class="o">=</span><span class="s2">&quot;square_dot&quot;</span><span class="p">)</span>
 </span><span id="L-127"><a href="#L-127"><span class="linenos">127</span></a>        <span class="k">if</span> <span class="n">verbose</span>
@@ -430,12 +430,12 @@ Warning: This is an expensive function.</p>
     <a class="headerlink" href="#all_tokenizers_set"></a>
             <div class="pdoc-code codehilite"><pre><span></span><span id="all_tokenizers_set-85"><a href="#all_tokenizers_set-85"><span class="linenos">85</span></a><span class="nd">@cache</span>
 </span><span id="all_tokenizers_set-86"><a href="#all_tokenizers_set-86"><span class="linenos">86</span></a><span class="k">def</span> <span class="nf">all_tokenizers_set</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">set</span><span class="p">[</span><span class="n">MazeTokenizerModular</span><span class="p">]:</span>
-</span><span id="all_tokenizers_set-87"><a href="#all_tokenizers_set-87"><span class="linenos">87</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Casts ALL_TOKENIZERS to a set.&quot;&quot;&quot;</span>
+</span><span id="all_tokenizers_set-87"><a href="#all_tokenizers_set-87"><span class="linenos">87</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Casts `get_all_tokenizers()` to a set.&quot;&quot;&quot;</span>
 </span><span id="all_tokenizers_set-88"><a href="#all_tokenizers_set-88"><span class="linenos">88</span></a>    <span class="k">return</span> <span class="nb">set</span><span class="p">(</span><span class="n">get_all_tokenizers</span><span class="p">())</span>
 </span></pre></div>
 
 
-            <div class="docstring"><p>Casts ALL_TOKENIZERS to a set.</p>
+            <div class="docstring"><p>Casts <code><a href="#get_all_tokenizers">get_all_tokenizers()</a></code> to a set.</p>
 </div>
 
 
@@ -459,12 +459,12 @@ Warning: This is an expensive function.</p>
     </div>
     <a class="headerlink" href="#sample_all_tokenizers"></a>
             <div class="pdoc-code codehilite"><pre><span></span><span id="sample_all_tokenizers-97"><a href="#sample_all_tokenizers-97"><span class="linenos">97</span></a><span class="k">def</span> <span class="nf">sample_all_tokenizers</span><span class="p">(</span><span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">MazeTokenizerModular</span><span class="p">]:</span>
-</span><span id="sample_all_tokenizers-98"><a href="#sample_all_tokenizers-98"><span class="linenos">98</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Samples `n` tokenizers from `ALL_TOKENIZERS`.&quot;&quot;&quot;</span>
+</span><span id="sample_all_tokenizers-98"><a href="#sample_all_tokenizers-98"><span class="linenos">98</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Samples `n` tokenizers from `get_all_tokenizers()`.&quot;&quot;&quot;</span>
 </span><span id="sample_all_tokenizers-99"><a href="#sample_all_tokenizers-99"><span class="linenos">99</span></a>    <span class="k">return</span> <span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">get_all_tokenizers</span><span class="p">(),</span> <span class="n">n</span><span class="p">)</span>
 </span></pre></div>
 
 
-            <div class="docstring"><p>Samples <code>n</code> tokenizers from <code>ALL_TOKENIZERS</code>.</p>
+            <div class="docstring"><p>Samples <code>n</code> tokenizers from <code><a href="#get_all_tokenizers">get_all_tokenizers()</a></code>.</p>
 </div>
 
 
@@ -488,7 +488,7 @@ Warning: This is an expensive function.</p>
     </div>
     <a class="headerlink" href="#sample_tokenizers_for_test"></a>
             <div class="pdoc-code codehilite"><pre><span></span><span id="sample_tokenizers_for_test-102"><a href="#sample_tokenizers_for_test-102"><span class="linenos">102</span></a><span class="k">def</span> <span class="nf">sample_tokenizers_for_test</span><span class="p">(</span><span class="n">n</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">MazeTokenizerModular</span><span class="p">]:</span>
-</span><span id="sample_tokenizers_for_test-103"><a href="#sample_tokenizers_for_test-103"><span class="linenos">103</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns a sample of size `n` of unique elements from `ALL_TOKENIZERS`,</span>
+</span><span id="sample_tokenizers_for_test-103"><a href="#sample_tokenizers_for_test-103"><span class="linenos">103</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns a sample of size `n` of unique elements from `get_all_tokenizers()`,</span>
 </span><span id="sample_tokenizers_for_test-104"><a href="#sample_tokenizers_for_test-104"><span class="linenos">104</span></a><span class="sd">    always including every element in `EVERY_TEST_TOKENIZERS`.</span>
 </span><span id="sample_tokenizers_for_test-105"><a href="#sample_tokenizers_for_test-105"><span class="linenos">105</span></a><span class="sd">    &quot;&quot;&quot;</span>
 </span><span id="sample_tokenizers_for_test-106"><a href="#sample_tokenizers_for_test-106"><span class="linenos">106</span></a>    <span class="k">if</span> <span class="n">n</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -506,7 +506,7 @@ Warning: This is an expensive function.</p>
 </span></pre></div>
 
 
-            <div class="docstring"><p>Returns a sample of size <code>n</code> of unique elements from <code>ALL_TOKENIZERS</code>,
+            <div class="docstring"><p>Returns a sample of size <code>n</code> of unique elements from <code><a href="#get_all_tokenizers">get_all_tokenizers()</a></code>,
 always including every element in <code><a href="#EVERY_TEST_TOKENIZERS">EVERY_TEST_TOKENIZERS</a></code>.</p>
 </div>
 
@@ -535,7 +535,7 @@ always including every element in <code><a href="#EVERY_TEST_TOKENIZERS">EVERY_T
 </span><span id="save_hashes-122"><a href="#save_hashes-122"><span class="linenos">122</span></a>    <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 </span><span id="save_hashes-123"><a href="#save_hashes-123"><span class="linenos">123</span></a>    <span class="n">parallelize</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 </span><span id="save_hashes-124"><a href="#save_hashes-124"><span class="linenos">124</span></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Int64</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="s2">&quot;tokenizers&quot;</span><span class="p">]:</span>
-</span><span id="save_hashes-125"><a href="#save_hashes-125"><span class="linenos">125</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Computes, sorts, and saves the hashes of every member of `ALL_TOKENIZERS`.&quot;&quot;&quot;</span>
+</span><span id="save_hashes-125"><a href="#save_hashes-125"><span class="linenos">125</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Computes, sorts, and saves the hashes of every member of `get_all_tokenizers()`.&quot;&quot;&quot;</span>
 </span><span id="save_hashes-126"><a href="#save_hashes-126"><span class="linenos">126</span></a>    <span class="n">spinner</span> <span class="o">=</span> <span class="p">(</span>
 </span><span id="save_hashes-127"><a href="#save_hashes-127"><span class="linenos">127</span></a>        <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">SpinnerContext</span><span class="p">,</span> <span class="n">spinner_chars</span><span class="o">=</span><span class="s2">&quot;square_dot&quot;</span><span class="p">)</span>
 </span><span id="save_hashes-128"><a href="#save_hashes-128"><span class="linenos">128</span></a>        <span class="k">if</span> <span class="n">verbose</span>
@@ -596,7 +596,7 @@ always including every element in <code><a href="#EVERY_TEST_TOKENIZERS">EVERY_T
 </span></pre></div>
 
 
-            <div class="docstring"><p>Computes, sorts, and saves the hashes of every member of <code>ALL_TOKENIZERS</code>.</p>
+            <div class="docstring"><p>Computes, sorts, and saves the hashes of every member of <code><a href="#get_all_tokenizers">get_all_tokenizers()</a></code>.</p>
 </div>
 
 
