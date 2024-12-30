@@ -36,6 +36,7 @@ from maze_dataset.dataset.dataset import (
 )
 from maze_dataset.generation.generators import GENERATORS_MAP
 from maze_dataset.maze import LatticeMaze, SolvedMaze
+from maze_dataset.maze.lattice_maze import NoValidEndpointException
 
 # If `n_mazes>=SERIALIZE_MINIMAL_THRESHOLD`, then the MazeDataset will use `serialize_minimal`.
 # Setting to None means that `serialize_minimal` will never be used.
@@ -73,6 +74,7 @@ EndpointKwargsType = dict[
         "allowed_end",
         "deadend_start",
         "deadend_end",
+        "except_on_no_valid_endpoint",
     ],
     bool | None | list[tuple[int, int]],
 ]
@@ -112,12 +114,11 @@ class MazeDatasetConfig(GPTDatasetConfig):
     )
 
     endpoint_kwargs: EndpointKwargsType = serializable_field(
-        default_factory=dict,
+        default_factory=lambda: {"except_on_no_valid_endpoint": True},  # Add default here
         serialization_fn=lambda kwargs: kwargs,
         loading_fn=lambda data: (
             dict()
-            if data.get("endpoint_kwargs", None)
-            is None  # this should handle the backwards compatibility
+            if data.get("endpoint_kwargs", None) is None  # Handle backward compatibility
             else {
                 k: (
                     # bools and Nones are fine
@@ -184,7 +185,17 @@ def _generate_maze_helper(index: int) -> SolvedMaze:
         grid_shape=_GLOBAL_WORKER_CONFIG.grid_shape_np,
         **_GLOBAL_WORKER_CONFIG.maze_ctor_kwargs,
     )
-    solution = maze.generate_random_path(**_GLOBAL_WORKER_CONFIG.endpoint_kwargs)
+
+    # Extract and remove `except_on_no_valid_endpoint` from endpoint_kwargs
+    endpoint_kwargs = _GLOBAL_WORKER_CONFIG.endpoint_kwargs.copy()
+    except_on_no_valid_endpoint = endpoint_kwargs.pop('except_on_no_valid_endpoint', True)
+
+    try:
+        solution = maze.generate_random_path(**endpoint_kwargs)
+    except NoValidEndpointException as e:
+        if except_on_no_valid_endpoint:
+            raise e
+        solution = None
     assert solution is not None, f"{solution = }"
     assert len(solution) > 0, f"{solution = }"
     assert isinstance(solution, np.ndarray), f"{solution = }"
