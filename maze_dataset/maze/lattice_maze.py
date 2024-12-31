@@ -471,7 +471,7 @@ class LatticeMaze(SerializableDataclass):
 
         # check we have valid positions
         if len(allowed_start_set) == 0 or len(allowed_end_set) == 0:
-            raise NoValidEndpointException('No valid start or end positions found')
+            raise NoValidEndpointException(f'No valid start or end positions found: {allowed_start_set = }, {allowed_end_set = }')
 
         # randomly select start and end positions
         start_pos: CoordTup = tuple(
