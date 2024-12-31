@@ -7,7 +7,6 @@ import numpy as np
 import pytest
 
 from maze_dataset import LatticeMaze, LatticeMazeGenerators
-
 from maze_dataset.maze.lattice_maze import NoValidEndpointException
 
 def _get_example_maze():
