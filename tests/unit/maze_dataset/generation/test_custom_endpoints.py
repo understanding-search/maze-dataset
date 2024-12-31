@@ -9,6 +9,7 @@ import pytest
 from maze_dataset import LatticeMaze, LatticeMazeGenerators
 from maze_dataset.maze.lattice_maze import NoValidEndpointException
 
+
 def _get_example_maze():
     connection_list = np.zeros((2, 2, 2), dtype=bool)
     connection_list[0, 0, 1] = True
