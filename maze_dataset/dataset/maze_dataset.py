@@ -114,11 +114,14 @@ class MazeDatasetConfig(GPTDatasetConfig):
     )
 
     endpoint_kwargs: EndpointKwargsType = serializable_field(
-        default_factory=lambda: {"except_on_no_valid_endpoint": True},  # Add default here
+        default_factory=lambda: {
+            "except_on_no_valid_endpoint": True
+        },  # Add default here
         serialization_fn=lambda kwargs: kwargs,
         loading_fn=lambda data: (
             dict()
-            if data.get("endpoint_kwargs", None) is None  # Handle backward compatibility
+            if data.get("endpoint_kwargs", None)
+            is None  # Handle backward compatibility
             else {
                 k: (
                     # bools and Nones are fine
@@ -188,7 +191,9 @@ def _generate_maze_helper(index: int) -> SolvedMaze:
 
     # Extract and remove `except_on_no_valid_endpoint` from endpoint_kwargs
     endpoint_kwargs = _GLOBAL_WORKER_CONFIG.endpoint_kwargs.copy()
-    except_on_no_valid_endpoint = endpoint_kwargs.pop('except_on_no_valid_endpoint', True)
+    except_on_no_valid_endpoint = endpoint_kwargs.pop(
+        "except_on_no_valid_endpoint", True
+    )
 
     try:
         solution = maze.generate_random_path(**endpoint_kwargs)

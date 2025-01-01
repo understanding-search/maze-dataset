@@ -18,6 +18,7 @@ def _get_example_maze():
     maze = LatticeMaze(connection_list=connection_list)
     return maze
 
+
 EXAMPLE_MAZE: LatticeMaze = _get_example_maze()
 RANDOM_MAZE: LatticeMaze = LatticeMazeGenerators.gen_dfs(grid_shape=(10, 10))
 PARAMETRIZE_KWARGS: dict = dict(
