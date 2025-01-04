@@ -176,6 +176,7 @@ class MazeDatasetConfig(GPTDatasetConfig):
             endpoint_kwargs=self_ser["endpoint_kwargs"],
         )
 
+
 def _handle_solved_maze(index, cfg_cpy, except_on_no_valid_endpoint):
     try:
         return _generate_maze_helper(index)
@@ -184,6 +185,7 @@ def _handle_solved_maze(index, cfg_cpy, except_on_no_valid_endpoint):
             raise e
         else:
             return None
+
 
 def _generate_maze_helper(index: int) -> Optional[SolvedMaze]:
     """Helper function for generating mazes in parallel.
@@ -211,14 +213,18 @@ def _generate_maze_helper(index: int) -> Optional[SolvedMaze]:
         return None  # Return None when no valid solution is found and the flag is False
 
     # Validate the solution
-    if solution is None or len(solution) == 0 or not isinstance(solution, np.ndarray) or len(solution.shape) != 2:
+    if (
+        solution is None
+        or len(solution) == 0
+        or not isinstance(solution, np.ndarray)
+        or len(solution.shape) != 2
+    ):
         return None  # Return None if the solution is invalid
 
     return SolvedMaze.from_lattice_maze(
         lattice_maze=maze,
         solution=solution,
     )
-
 
 
 def _maze_gen_init_worker(config: MazeDatasetConfig):
@@ -331,7 +337,9 @@ class MazeDataset(GPTDataset):
             disable=not verbose,
         )
 
-        except_on_no_valid_endpoint = cfg_cpy.endpoint_kwargs.get("except_on_no_valid_endpoint", True)
+        except_on_no_valid_endpoint = cfg_cpy.endpoint_kwargs.get(
+            "except_on_no_valid_endpoint", True
+        )
 
         if gen_parallel:
             with multiprocessing.Pool(
@@ -341,29 +349,36 @@ class MazeDataset(GPTDataset):
             ) as pool:
                 # Pass additional arguments to `handle_solved_maze` using `functools.partial`
                 from functools import partial
-                func = partial(_handle_solved_maze, cfg_cpy=cfg_cpy, except_on_no_valid_endpoint=except_on_no_valid_endpoint)
-                
-                results = list(
-                    tqdm.tqdm(
-                        pool.imap(func, maze_indexes),
-                        **tqdm_kwargs
-                    )
+
+                func = partial(
+                    _handle_solved_maze,
+                    cfg_cpy=cfg_cpy,
+                    except_on_no_valid_endpoint=except_on_no_valid_endpoint,
                 )
+
+                results = list(tqdm.tqdm(pool.imap(func, maze_indexes), **tqdm_kwargs))
                 # Filter out None values explicitly after ensuring all results are collected
                 solved_mazes = [maze for maze in results if maze is not None]
         else:
             _maze_gen_init_worker(cfg_cpy)
             results = list(
                 tqdm.tqdm(
-                    map(lambda index: _handle_solved_maze(index, cfg_cpy, except_on_no_valid_endpoint), maze_indexes),
-                    **tqdm_kwargs
+                    map(
+                        lambda index: _handle_solved_maze(
+                            index, cfg_cpy, except_on_no_valid_endpoint
+                        ),
+                        maze_indexes,
+                    ),
+                    **tqdm_kwargs,
                 )
             )
             # Filter out None values explicitly
             solved_mazes = [maze for maze in results if maze is not None]
 
         solved_mazes = [maze for maze in solved_mazes if maze is not None]
-        cfg_cpy.n_mazes = len(solved_mazes)  # Update the config with the actual number of mazes
+        cfg_cpy.n_mazes = len(
+            solved_mazes
+        )  # Update the config with the actual number of mazes
 
         dataset = cls(
             cfg=cfg_cpy,
