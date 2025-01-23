@@ -795,7 +795,7 @@ class LatticeMaze(SerializableDataclass):
             return pixel_grid
 
         # set solution
-        if show_solution:
+        if show_solution and show_endpoints:
             for coord in self.solution:
                 pixel_grid[coord[0] * 2 + 1, coord[1] * 2 + 1] = PixelColors.PATH
 
@@ -812,6 +812,15 @@ class LatticeMaze(SerializableDataclass):
                     coord[1] * 2 + 1 + next_coord[1] - coord[1],
                 ] = PixelColors.PATH
 
+            # set endpoints (again, since path would overwrite them)
+            pixel_grid[self.start_pos[0] * 2 + 1, self.start_pos[1] * 2 + 1] = (
+                PixelColors.START
+            )
+            pixel_grid[self.end_pos[0] * 2 + 1, self.end_pos[1] * 2 + 1] = (
+                PixelColors.END
+            )
+
+        elif show_endpoints and not show_solution:
             # set endpoints (again, since path would overwrite them)
             pixel_grid[self.start_pos[0] * 2 + 1, self.start_pos[1] * 2 + 1] = (
                 PixelColors.START
