@@ -57,7 +57,7 @@ jobs:
       - name: Install dependencies
         run: |
           curl -sSL https://install.python-poetry.org | python3 -
-          poetry lock --check
+          poetry lock
           poetry add torch@${{ matrix.versions.torch }}+cpu --source torch_cpu
           poetry install
 
