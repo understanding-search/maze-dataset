@@ -160,6 +160,10 @@ class LatticeMaze(SerializableDataclass):
     # ============================================================
     # basic methods
     # ============================================================
+
+    def __eq__(self, other: object) -> bool:
+        return super().__eq__(other)
+
     @staticmethod
     def heuristic(a: CoordTup, b: CoordTup) -> float:
         """return manhattan distance between two points"""
@@ -820,7 +824,7 @@ class LatticeMaze(SerializableDataclass):
                 )
             return pixel_grid
 
-        # set solution
+        # set solution -- we only reach this part if `self.__class__ == SolvedMaze`
         if show_solution:
             for coord in self.solution:
                 pixel_grid[coord[0] * 2 + 1, coord[1] * 2 + 1] = PixelColors.PATH
@@ -1099,6 +1103,9 @@ class TargetedLatticeMaze(LatticeMaze):
             raise ValueError(
                 f"end_pos {self.end_pos} is out of bounds for grid shape {self.grid_shape}"
             )
+        
+    def __eq__(self, other: object) -> bool:
+        return super().__eq__(other)
 
     def _get_start_pos_tokens(self) -> list[str | CoordTup]:
         return [
@@ -1195,6 +1202,9 @@ class SolvedMaze(TargetedLatticeMaze):
                     np.array(end_pos), self.end_pos
                 ), f"when trying to create a SolvedMaze, the given end_pos does not match the one in the solution: given={end_pos}, solution={self.end_pos}"
             # TODO: assert the path does not backtrack, walk through walls, etc?
+
+    def __eq__(self, other: object) -> bool:
+        return super().__eq__(other)
 
     def __hash__(self) -> int:
         return hash((self.connection_list.tobytes(), self.solution.tobytes()))
