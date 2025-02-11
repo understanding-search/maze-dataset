@@ -330,6 +330,7 @@ class MazeDataset(GPTDataset):
         mazes: list[SolvedMaze] = list()
         maze_indexes: Int[np.int8, "maze_index"] = np.arange(cfg_cpy.n_mazes)
 
+        solved_mazes: list[SolvedMaze]
         # Configure tqdm for progress bar
         tqdm_kwargs: dict = dict(
             total=cfg_cpy.n_mazes,
@@ -337,6 +338,7 @@ class MazeDataset(GPTDataset):
             desc="generating & solving mazes",
             disable=not verbose,
         )
+        # TODO: don't use the global unless generating in parallel!
 
         except_on_no_valid_endpoint = cfg_cpy.endpoint_kwargs.get(
             "except_on_no_valid_endpoint", True
