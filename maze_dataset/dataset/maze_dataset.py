@@ -36,7 +36,6 @@ from maze_dataset.dataset.dataset import (
 )
 from maze_dataset.generation.generators import GENERATORS_MAP
 from maze_dataset.maze import LatticeMaze, SolvedMaze
-from maze_dataset.maze.lattice_maze import NoValidEndpointException
 
 # If `n_mazes>=SERIALIZE_MINIMAL_THRESHOLD`, then the MazeDataset will use `serialize_minimal`.
 # Setting to None means that `serialize_minimal` will never be used.
@@ -327,7 +326,11 @@ class MazeDataset(GPTDataset):
                 initializer=_maze_gen_init_worker,
                 initargs=(cfg_cpy,),
             ) as pool:
-                results = list(tqdm.tqdm(pool.imap(_generate_maze_helper, maze_indexes), **tqdm_kwargs))
+                results = list(
+                    tqdm.tqdm(
+                        pool.imap(_generate_maze_helper, maze_indexes), **tqdm_kwargs
+                    )
+                )
                 # Filter out None values explicitly after ensuring all results are collected
                 solved_mazes = [maze for maze in results if maze is not None]
         else:

@@ -380,8 +380,7 @@ class LatticeMaze(SerializableDataclass):
         deadend_end: bool = False,
         endpoints_not_equal: bool = False,
         except_on_no_valid_endpoint: typing.Literal[True] = True,
-    ) -> CoordArray:
-        ...
+    ) -> CoordArray: ...
     @typing.overload
     def generate_random_path(
         self,
@@ -391,8 +390,7 @@ class LatticeMaze(SerializableDataclass):
         deadend_end: bool = False,
         endpoints_not_equal: bool = False,
         except_on_no_valid_endpoint: typing.Literal[False] = False,
-    ) -> typing.Optional[CoordArray]:
-        ...
+    ) -> typing.Optional[CoordArray]: ...
     def generate_random_path(
         self,
         allowed_start: CoordList | None = None,
