@@ -279,7 +279,7 @@ class GPTDataset(Dataset):
         # check and save
         if output is None:
             raise ValueError("failed to load dataset!")
-        
+
         cfg_diff: dict = cfg.diff(output.cfg, of_serialized=True)
         if cfg_diff:
             if except_on_config_mismatch:

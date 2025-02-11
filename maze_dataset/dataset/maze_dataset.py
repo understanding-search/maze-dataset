@@ -303,7 +303,9 @@ class MazeDataset(GPTDataset):
         """Generate a maze dataset given a config and some generation parameters"""
 
         # Copy the config to avoid modifying the original
-        cfg_cpy: MazeDatasetConfig = MazeDatasetConfig.load(json.loads(json.dumps(cfg.serialize())))
+        cfg_cpy: MazeDatasetConfig = MazeDatasetConfig.load(
+            json.loads(json.dumps(cfg.serialize()))
+        )
 
         if pool_kwargs is None:
             pool_kwargs = dict()
@@ -329,7 +331,7 @@ class MazeDataset(GPTDataset):
                         pool.imap(_generate_maze_helper, maze_indexes), **tqdm_kwargs
                     )
                 )
-                
+
         else:
             _maze_gen_init_worker(cfg_cpy)
             solved_mazes = list(
@@ -341,14 +343,12 @@ class MazeDataset(GPTDataset):
                     **tqdm_kwargs,
                 )
             )
-        
+
         # Filter out None values explicitly after ensuring all results are collected
         solved_mazes = [maze for maze in solved_mazes if maze is not None]
-        
+
         # Update the config with the actual number of mazes
-        cfg_cpy.n_mazes = len(
-            solved_mazes
-        )
+        cfg_cpy.n_mazes = len(solved_mazes)
 
         dataset: MazeDataset = cls(
             cfg=cfg_cpy,
