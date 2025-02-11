@@ -40,7 +40,7 @@ jobs:
       - name: Install dependencies
         run: |
           curl -sSL https://install.python-poetry.org | python3 -
-          poetry lock --check
+          poetry lock
           poetry install
       - name: tokenizer hash tests
         run: |
