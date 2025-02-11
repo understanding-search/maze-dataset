@@ -280,10 +280,6 @@ class GPTDataset(Dataset):
         if output is None:
             raise ValueError("failed to load dataset!")
         
-        print(cfg)
-        print(cfg.endpoint_kwargs)
-        print(output.cfg.endpoint_kwargs)
-
         cfg_diff: dict = cfg.diff(output.cfg, of_serialized=True)
         if cfg_diff:
             if except_on_config_mismatch:

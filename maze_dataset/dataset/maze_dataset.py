@@ -80,13 +80,10 @@ EndpointKwargsType = dict[
 
 
 def _load_endpoint_kwargs(data: dict) -> EndpointKwargsType:
-    if data.get("endpoint_kwargs", None) is None: # wow the missing `is None` caused a lot of pain
-        print(f"couldn't find endpoint_kwargs: {data.get('endpoint_kwargs', None) = }")
-        print(f"{data = }")
+    if data.get("endpoint_kwargs", None) is None:
         return dict()
 
     else:
-        print(f"found endpoint_kwargs in {data['endpoint_kwargs'] = }")
         return {
             k: (
                 # bools and Nones are fine
@@ -306,10 +303,7 @@ class MazeDataset(GPTDataset):
         """Generate a maze dataset given a config and some generation parameters"""
 
         # Copy the config to avoid modifying the original
-        print(cfg.endpoint_kwargs)
-        print(json.dumps(cfg.serialize(), indent=2))
         cfg_cpy: MazeDatasetConfig = MazeDatasetConfig.load(json.loads(json.dumps(cfg.serialize())))
-        print(cfg_cpy.endpoint_kwargs)
 
         if pool_kwargs is None:
             pool_kwargs = dict()
@@ -348,18 +342,9 @@ class MazeDataset(GPTDataset):
                 )
             )
         
-        print("post generate")
-        print(f"{cfg.endpoint_kwargs = }")
-        print(f"{cfg_cpy.endpoint_kwargs = }")
-
         # Filter out None values explicitly after ensuring all results are collected
         solved_mazes = [maze for maze in solved_mazes if maze is not None]
         
-        print("post filter")
-        print(f"{cfg.endpoint_kwargs = }")
-        print(f"{cfg_cpy.endpoint_kwargs = }")
-
-
         # Update the config with the actual number of mazes
         cfg_cpy.n_mazes = len(
             solved_mazes
@@ -373,11 +358,6 @@ class MazeDataset(GPTDataset):
         dataset.update_self_config()  # Call `update_self_config()` to ensure the dataset's config reflects changes
 
         np.random.seed(cfg_cpy.seed)  # Reset the seed to the value in the config copy
-
-        print("post dataset create")
-        print(f"{cfg.endpoint_kwargs = }")
-        print(f"{cfg_cpy.endpoint_kwargs = }")
-        print(f"{dataset.cfg.endpoint_kwargs = }")
 
         return dataset
 
