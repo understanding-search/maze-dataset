@@ -79,6 +79,26 @@ EndpointKwargsType = dict[
 "type hint for `MazeDatasetConfig.endpoint_kwargs`"
 
 
+def _load_endpoint_kwargs(data: dict) -> EndpointKwargsType:
+    if data.get("endpoint_kwargs", None) is None: # wow the missing `is None` caused a lot of pain
+        print(f"couldn't find endpoint_kwargs: {data.get('endpoint_kwargs', None) = }")
+        print(f"{data = }")
+        return dict()
+
+    else:
+        print(f"found endpoint_kwargs in {data['endpoint_kwargs'] = }")
+        return {
+            k: (
+                # bools and Nones are fine
+                v
+                if (isinstance(v, bool) or v is None)
+                # assume its a CoordList
+                else [tuple(x) for x in v]  # muutils/zanj saves tuples as lists
+            )
+            for k, v in data["endpoint_kwargs"].items()
+        }
+
+
 @serializable_dataclass(kw_only=True, properties_to_serialize=["grid_shape"])
 class MazeDatasetConfig(GPTDatasetConfig):
     """config object which is passed to `MazeDataset.from_config` to generate or load a dataset"""
@@ -114,20 +134,7 @@ class MazeDatasetConfig(GPTDatasetConfig):
     endpoint_kwargs: EndpointKwargsType = serializable_field(
         default_factory=dict,
         serialization_fn=lambda kwargs: kwargs,
-        loading_fn=lambda data: (
-            dict()
-            if data.get("endpoint_kwargs", None)
-            else {
-                k: (
-                    # bools and Nones are fine
-                    v
-                    if (isinstance(v, bool) or v is None)
-                    # assume its a CoordList
-                    else [tuple(x) for x in v]  # muutils/zanj saves tuples as lists
-                )
-                for k, v in data["endpoint_kwargs"].items()
-            }
-        ),
+        loading_fn=_load_endpoint_kwargs,
         assert_type=False,
     )
 
@@ -299,11 +306,13 @@ class MazeDataset(GPTDataset):
         """Generate a maze dataset given a config and some generation parameters"""
 
         # Copy the config to avoid modifying the original
-        cfg_cpy = MazeDatasetConfig.load(cfg.serialize())
+        print(cfg.endpoint_kwargs)
+        print(json.dumps(cfg.serialize(), indent=2))
+        cfg_cpy: MazeDatasetConfig = MazeDatasetConfig.load(json.loads(json.dumps(cfg.serialize())))
+        print(cfg_cpy.endpoint_kwargs)
 
         if pool_kwargs is None:
             pool_kwargs = dict()
-        mazes: list[SolvedMaze] = list()
         maze_indexes: Int[np.int8, "maze_index"] = np.arange(cfg_cpy.n_mazes)
 
         solved_mazes: list[SolvedMaze]
@@ -315,27 +324,21 @@ class MazeDataset(GPTDataset):
             disable=not verbose,
         )
         # TODO: don't use the global unless generating in parallel!
-
-        except_on_no_valid_endpoint = cfg_cpy.endpoint_kwargs.get(
-            "except_on_no_valid_endpoint", True
-        )
-
         if gen_parallel:
             with multiprocessing.Pool(
                 **pool_kwargs,
                 initializer=_maze_gen_init_worker,
                 initargs=(cfg_cpy,),
             ) as pool:
-                results = list(
+                solved_mazes = list(
                     tqdm.tqdm(
                         pool.imap(_generate_maze_helper, maze_indexes), **tqdm_kwargs
                     )
                 )
-                # Filter out None values explicitly after ensuring all results are collected
-                solved_mazes = [maze for maze in results if maze is not None]
+                
         else:
             _maze_gen_init_worker(cfg_cpy)
-            results = list(
+            solved_mazes = list(
                 tqdm.tqdm(
                     map(
                         _generate_maze_helper,
@@ -344,15 +347,25 @@ class MazeDataset(GPTDataset):
                     **tqdm_kwargs,
                 )
             )
-            # Filter out None values explicitly
-            solved_mazes = [maze for maze in results if maze is not None]
+        
+        print("post generate")
+        print(f"{cfg.endpoint_kwargs = }")
+        print(f"{cfg_cpy.endpoint_kwargs = }")
 
+        # Filter out None values explicitly after ensuring all results are collected
         solved_mazes = [maze for maze in solved_mazes if maze is not None]
+        
+        print("post filter")
+        print(f"{cfg.endpoint_kwargs = }")
+        print(f"{cfg_cpy.endpoint_kwargs = }")
+
+
+        # Update the config with the actual number of mazes
         cfg_cpy.n_mazes = len(
             solved_mazes
-        )  # Update the config with the actual number of mazes
+        )
 
-        dataset = cls(
+        dataset: MazeDataset = cls(
             cfg=cfg_cpy,
             mazes=solved_mazes,
         )
@@ -360,6 +373,11 @@ class MazeDataset(GPTDataset):
         dataset.update_self_config()  # Call `update_self_config()` to ensure the dataset's config reflects changes
 
         np.random.seed(cfg_cpy.seed)  # Reset the seed to the value in the config copy
+
+        print("post dataset create")
+        print(f"{cfg.endpoint_kwargs = }")
+        print(f"{cfg_cpy.endpoint_kwargs = }")
+        print(f"{dataset.cfg.endpoint_kwargs = }")
 
         return dataset
 
