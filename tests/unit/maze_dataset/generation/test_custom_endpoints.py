@@ -16,6 +16,7 @@ def _get_example_maze():
     connection_list[1, 0, 0] = True
     connection_list[1, 1, 0] = True
     maze = LatticeMaze(connection_list=connection_list)
+    print(maze.as_ascii())
     return maze
 
 
