@@ -11,7 +11,7 @@ import multiprocessing
 import typing
 import warnings
 from collections import Counter, defaultdict
-from typing import Callable
+from typing import Callable, Optional
 
 import numpy as np
 import tqdm
@@ -36,6 +36,7 @@ from maze_dataset.dataset.dataset import (
 )
 from maze_dataset.generation.generators import GENERATORS_MAP
 from maze_dataset.maze import LatticeMaze, SolvedMaze
+from maze_dataset.maze.lattice_maze import NoValidEndpointException
 
 # If `n_mazes>=SERIALIZE_MINIMAL_THRESHOLD`, then the MazeDataset will use `serialize_minimal`.
 # Setting to None means that `serialize_minimal` will never be used.
@@ -73,6 +74,7 @@ EndpointKwargsType = dict[
         "allowed_end",
         "deadend_start",
         "deadend_end",
+        "except_on_no_valid_endpoint",
     ],
     bool | None | list[tuple[int, int]],
 ]
@@ -112,12 +114,14 @@ class MazeDatasetConfig(GPTDatasetConfig):
     )
 
     endpoint_kwargs: EndpointKwargsType = serializable_field(
-        default_factory=dict,
+        default_factory=lambda: {
+            "except_on_no_valid_endpoint": True
+        },  # Add default here
         serialization_fn=lambda kwargs: kwargs,
         loading_fn=lambda data: (
             dict()
             if data.get("endpoint_kwargs", None)
-            is None  # this should handle the backwards compatibility
+            is None  # Handle backward compatibility
             else {
                 k: (
                     # bools and Nones are fine
@@ -173,22 +177,50 @@ class MazeDatasetConfig(GPTDatasetConfig):
         )
 
 
-def _generate_maze_helper(index: int) -> SolvedMaze:
-    """helper function for generating mazes in parallel
+def _handle_solved_maze(index, cfg_cpy, except_on_no_valid_endpoint):
+    try:
+        return _generate_maze_helper(index)
+    except NoValidEndpointException as e:
+        if except_on_no_valid_endpoint:
+            raise e
+        else:
+            return None
+
+
+def _generate_maze_helper(index: int) -> Optional[SolvedMaze]:
+    """Helper function for generating mazes in parallel.
 
     > [!CAUTION]
-    > don't use this unless generating in parallel!
+    > Don't use this unless generating in parallel!
     """
-    # TODO: don't use this unless generating in parallel!
     maze: LatticeMaze = _GLOBAL_WORKER_CONFIG.maze_ctor(
         grid_shape=_GLOBAL_WORKER_CONFIG.grid_shape_np,
         **_GLOBAL_WORKER_CONFIG.maze_ctor_kwargs,
     )
-    solution = maze.generate_random_path(**_GLOBAL_WORKER_CONFIG.endpoint_kwargs)
-    assert solution is not None, f"{solution = }"
-    assert len(solution) > 0, f"{solution = }"
-    assert isinstance(solution, np.ndarray), f"{solution = }"
-    assert len(solution.shape) == 2, f"{solution = }"
+
+    # Extract and remove `except_on_no_valid_endpoint` from endpoint_kwargs
+    endpoint_kwargs = _GLOBAL_WORKER_CONFIG.endpoint_kwargs.copy()
+    except_on_no_valid_endpoint = endpoint_kwargs.pop(
+        "except_on_no_valid_endpoint", True
+    )
+
+    # Generate the solution
+    try:
+        solution = maze.generate_random_path(**endpoint_kwargs)
+    except NoValidEndpointException as e:
+        if except_on_no_valid_endpoint:
+            raise e
+        return None  # Return None when no valid solution is found and the flag is False
+
+    # Validate the solution
+    if (
+        solution is None
+        or len(solution) == 0
+        or not isinstance(solution, np.ndarray)
+        or len(solution.shape) != 2
+    ):
+        return None  # Return None if the solution is invalid
+
     return SolvedMaze.from_lattice_maze(
         lattice_maze=maze,
         solution=solution,
@@ -287,9 +319,9 @@ class MazeDataset(GPTDataset):
         pool_kwargs: dict | None = None,
         verbose: bool = False,
     ) -> "MazeDataset":
-        """generate a maze dataset given a config and some generation parameters"""
+        """Generate a maze dataset given a config and some generation parameters"""
 
-        # avoid copying since we dont want to pickle the staticmethod, just load/serialize it to avoid modifying the original config
+        # Copy the config to avoid modifying the original
         cfg_cpy = MazeDatasetConfig.load(cfg.serialize())
 
         if pool_kwargs is None:
@@ -297,47 +329,67 @@ class MazeDataset(GPTDataset):
         mazes: list[SolvedMaze] = list()
         maze_indexes: Int[np.int8, "maze_index"] = np.arange(cfg_cpy.n_mazes)
 
-        solved_mazes: list[SolvedMaze]
+        # Configure tqdm for progress bar
         tqdm_kwargs: dict = dict(
             total=cfg_cpy.n_mazes,
             unit="maze",
             desc="generating & solving mazes",
             disable=not verbose,
         )
-        # TODO: don't use the global unless generating in parallel!
+
+        except_on_no_valid_endpoint = cfg_cpy.endpoint_kwargs.get(
+            "except_on_no_valid_endpoint", True
+        )
+
         if gen_parallel:
             with multiprocessing.Pool(
                 **pool_kwargs,
                 initializer=_maze_gen_init_worker,
                 initargs=(cfg_cpy,),
             ) as pool:
-                solved_mazes = list(
-                    tqdm.tqdm(
-                        pool.imap(
-                            _generate_maze_helper,
-                            maze_indexes,
-                        ),
-                        **tqdm_kwargs,
-                    )
+                # Pass additional arguments to `handle_solved_maze` using `functools.partial`
+                from functools import partial
+
+                func = partial(
+                    _handle_solved_maze,
+                    cfg_cpy=cfg_cpy,
+                    except_on_no_valid_endpoint=except_on_no_valid_endpoint,
                 )
+
+                results = list(tqdm.tqdm(pool.imap(func, maze_indexes), **tqdm_kwargs))
+                # Filter out None values explicitly after ensuring all results are collected
+                solved_mazes = [maze for maze in results if maze is not None]
         else:
             _maze_gen_init_worker(cfg_cpy)
-            solved_mazes = list(
+            results = list(
                 tqdm.tqdm(
                     map(
-                        _generate_maze_helper,
+                        lambda index: _handle_solved_maze(
+                            index, cfg_cpy, except_on_no_valid_endpoint
+                        ),
                         maze_indexes,
                     ),
                     **tqdm_kwargs,
                 )
             )
-        # reset seed to default value
-        np.random.seed(cfg_cpy.seed)
+            # Filter out None values explicitly
+            solved_mazes = [maze for maze in results if maze is not None]
 
-        return cls(
+        solved_mazes = [maze for maze in solved_mazes if maze is not None]
+        cfg_cpy.n_mazes = len(
+            solved_mazes
+        )  # Update the config with the actual number of mazes
+
+        dataset = cls(
             cfg=cfg_cpy,
             mazes=solved_mazes,
         )
+
+        dataset.update_self_config()  # Call `update_self_config()` to ensure the dataset's config reflects changes
+
+        np.random.seed(cfg_cpy.seed)  # Reset the seed to the value in the config copy
+
+        return dataset
 
     @classmethod
     def download(cls, cfg: MazeDatasetConfig, **kwargs) -> "MazeDataset":

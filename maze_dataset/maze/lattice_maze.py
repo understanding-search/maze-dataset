@@ -46,6 +46,12 @@ BinaryPixelGrid = Bool[np.ndarray, "x y"]
 "boolean grid of pixels"
 
 
+class NoValidEndpointException(Exception):
+    """Raised when no valid start or end positions are found in a maze."""
+
+    pass
+
+
 def _fill_edges_with_walls(connection_list: ConnectionList) -> ConnectionList:
     """fill the last elements of the connections lists as false for each dim"""
     for dim in range(connection_list.shape[0]):
@@ -468,7 +474,9 @@ class LatticeMaze(SerializableDataclass):
 
         # check we have valid positions
         if len(allowed_start_set) == 0 or len(allowed_end_set) == 0:
-            raise ValueError("no valid start or end positions found")
+            raise NoValidEndpointException(
+                f"No valid start or end positions found: {allowed_start_set = }, {allowed_end_set = }"
+            )
 
         # randomly select start and end positions
         start_pos: CoordTup = tuple(

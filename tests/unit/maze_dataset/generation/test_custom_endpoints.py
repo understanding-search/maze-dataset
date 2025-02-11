@@ -7,6 +7,7 @@ import numpy as np
 import pytest
 
 from maze_dataset import LatticeMaze, LatticeMazeGenerators
+from maze_dataset.maze.lattice_maze import NoValidEndpointException
 
 
 def _get_example_maze():
@@ -15,7 +16,6 @@ def _get_example_maze():
     connection_list[1, 0, 0] = True
     connection_list[1, 1, 0] = True
     maze = LatticeMaze(connection_list=connection_list)
-    print(maze.as_ascii())
     return maze
 
 
@@ -79,10 +79,10 @@ def test_generate_random_path_deadend_start_and_end(maze):
 
 @pytest.mark.parametrize("maze", [EXAMPLE_MAZE])
 def test_generate_random_path_invalid_conditions(maze):
-    with pytest.raises(ValueError):
+    with pytest.raises(NoValidEndpointException):
         maze.generate_random_path(allowed_start=[(2, 2)])
 
-    with pytest.raises(ValueError):
+    with pytest.raises(NoValidEndpointException):
         maze.generate_random_path(allowed_end=[(2, 2)])
 
 
