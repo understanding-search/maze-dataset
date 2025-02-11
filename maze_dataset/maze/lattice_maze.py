@@ -371,23 +371,42 @@ class LatticeMaze(SerializableDataclass):
                 visited_cells_np: Int[np.ndarray, "N 2"] = np.array(list(visited_cells))
                 return visited_cells_np
 
+    @typing.overload
     def generate_random_path(
         self,
-        except_when_invalid: bool = True,
         allowed_start: CoordList | None = None,
         allowed_end: CoordList | None = None,
         deadend_start: bool = False,
         deadend_end: bool = False,
         endpoints_not_equal: bool = False,
+        except_on_no_valid_endpoint: typing.Literal[True] = True,
     ) -> CoordArray:
+        ...
+    @typing.overload
+    def generate_random_path(
+        self,
+        allowed_start: CoordList | None = None,
+        allowed_end: CoordList | None = None,
+        deadend_start: bool = False,
+        deadend_end: bool = False,
+        endpoints_not_equal: bool = False,
+        except_on_no_valid_endpoint: typing.Literal[False] = False,
+    ) -> typing.Optional[CoordArray]:
+        ...
+    def generate_random_path(
+        self,
+        allowed_start: CoordList | None = None,
+        allowed_end: CoordList | None = None,
+        deadend_start: bool = False,
+        deadend_end: bool = False,
+        endpoints_not_equal: bool = False,
+        except_on_no_valid_endpoint: bool = True,
+    ) -> typing.Optional[CoordArray]:
         """return a path between randomly chosen start and end nodes within the connected component
 
         Note that setting special conditions on start and end positions might cause the same position to be selected as both start and end.
 
         # Parameters:
-         - `except_when_invalid : bool`
-            deprecated. setting this to `False` will cause an error.
-           (defaults to `True`)
          - `allowed_start : CoordList | None`
             a list of allowed start positions. If `None`, any position in the connected component is allowed
            (defaults to `None`)
@@ -403,13 +422,17 @@ class LatticeMaze(SerializableDataclass):
          - `endpoints_not_equal : bool`
             whether to ensure tha the start and end point are not the same
             (defaults to `False`)
+         - `except_on_no_valid_endpoint : bool`
+            whether to raise an error if no valid start or end positions are found
+            if this is `False`, the function might return `None` and this must be handled by the caller
+            (defaults to `True`)
 
         # Returns:
          - `CoordArray`
             a path between the selected start and end positions
 
         # Raises:
-         - `ValueError` : if the connected component has less than 2 nodes and `except_when_invalid` is `True`
+         - `NoValidEndpointException` : if no valid start or end positions are found, and `except_on_no_valid_endpoint` is `True`
         """
 
         # we can't create a "path" in a single-node maze
@@ -422,12 +445,6 @@ class LatticeMaze(SerializableDataclass):
 
         # initialize start and end positions
         positions: Int[np.int8, "2 2"]
-
-        # handle deprecated parameter
-        if not except_when_invalid:
-            raise DeprecationWarning(
-                "except_when_invalid is deprecated. Set it to the default `True` to avoid this warning."
-            )
 
         # if no special conditions on start and end positions
         if (allowed_start, allowed_end, deadend_start, deadend_end) == (
@@ -474,9 +491,12 @@ class LatticeMaze(SerializableDataclass):
 
         # check we have valid positions
         if len(allowed_start_set) == 0 or len(allowed_end_set) == 0:
-            raise NoValidEndpointException(
-                f"No valid start or end positions found: {allowed_start_set = }, {allowed_end_set = }"
-            )
+            if except_on_no_valid_endpoint:
+                raise NoValidEndpointException(
+                    f"No valid start or end positions found: {allowed_start_set = }, {allowed_end_set = }"
+                )
+            else:
+                return None
 
         # randomly select start and end positions
         start_pos: CoordTup = tuple(

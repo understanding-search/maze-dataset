@@ -26,7 +26,7 @@ from muutils.json_serialize.util import safe_getsource, string_as_lines
 from muutils.misc import sanitize_fname, shorten_numerical_to_str, stable_hash
 from zanj.loading import LoaderHandler, load_item_recursive, register_loader_handler
 
-from maze_dataset.constants import Coord, CoordTup
+from maze_dataset.constants import Coord, CoordArray, CoordTup
 from maze_dataset.dataset.dataset import (
     DatasetFilterProtocol,
     GPTDataset,
@@ -69,7 +69,6 @@ def _load_maze_ctor(maze_ctor_serialized: str | dict) -> Callable:
 
 EndpointKwargsType = dict[
     typing.Literal[
-        "except_when_invalid",
         "allowed_start",
         "allowed_end",
         "deadend_start",
@@ -114,14 +113,11 @@ class MazeDatasetConfig(GPTDatasetConfig):
     )
 
     endpoint_kwargs: EndpointKwargsType = serializable_field(
-        default_factory=lambda: {
-            "except_on_no_valid_endpoint": True
-        },  # Add default here
+        default_factory=dict,
         serialization_fn=lambda kwargs: kwargs,
         loading_fn=lambda data: (
             dict()
             if data.get("endpoint_kwargs", None)
-            is None  # Handle backward compatibility
             else {
                 k: (
                     # bools and Nones are fine
@@ -177,16 +173,6 @@ class MazeDatasetConfig(GPTDatasetConfig):
         )
 
 
-def _handle_solved_maze(index, cfg_cpy, except_on_no_valid_endpoint):
-    try:
-        return _generate_maze_helper(index)
-    except NoValidEndpointException as e:
-        if except_on_no_valid_endpoint:
-            raise e
-        else:
-            return None
-
-
 def _generate_maze_helper(index: int) -> Optional[SolvedMaze]:
     """Helper function for generating mazes in parallel.
 
@@ -199,19 +185,10 @@ def _generate_maze_helper(index: int) -> Optional[SolvedMaze]:
         **_GLOBAL_WORKER_CONFIG.maze_ctor_kwargs,
     )
 
-    # Extract and remove `except_on_no_valid_endpoint` from endpoint_kwargs
-    endpoint_kwargs = _GLOBAL_WORKER_CONFIG.endpoint_kwargs.copy()
-    except_on_no_valid_endpoint = endpoint_kwargs.pop(
-        "except_on_no_valid_endpoint", True
-    )
+    endpoint_kwargs: EndpointKwargsType = _GLOBAL_WORKER_CONFIG.endpoint_kwargs.copy()
 
     # Generate the solution
-    try:
-        solution = maze.generate_random_path(**endpoint_kwargs)
-    except NoValidEndpointException as e:
-        if except_on_no_valid_endpoint:
-            raise e
-        return None  # Return None when no valid solution is found and the flag is False
+    solution: Optional[CoordArray] = maze.generate_random_path(**endpoint_kwargs)
 
     # Validate the solution
     if (
@@ -350,16 +327,7 @@ class MazeDataset(GPTDataset):
                 initializer=_maze_gen_init_worker,
                 initargs=(cfg_cpy,),
             ) as pool:
-                # Pass additional arguments to `handle_solved_maze` using `functools.partial`
-                from functools import partial
-
-                func = partial(
-                    _handle_solved_maze,
-                    cfg_cpy=cfg_cpy,
-                    except_on_no_valid_endpoint=except_on_no_valid_endpoint,
-                )
-
-                results = list(tqdm.tqdm(pool.imap(func, maze_indexes), **tqdm_kwargs))
+                results = list(tqdm.tqdm(pool.imap(_generate_maze_helper, maze_indexes), **tqdm_kwargs))
                 # Filter out None values explicitly after ensuring all results are collected
                 solved_mazes = [maze for maze in results if maze is not None]
         else:
@@ -367,9 +335,7 @@ class MazeDataset(GPTDataset):
             results = list(
                 tqdm.tqdm(
                     map(
-                        lambda index: _handle_solved_maze(
-                            index, cfg_cpy, except_on_no_valid_endpoint
-                        ),
+                        _generate_maze_helper,
                         maze_indexes,
                     ),
                     **tqdm_kwargs,
