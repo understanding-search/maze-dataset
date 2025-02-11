@@ -191,8 +191,9 @@ def _generate_maze_helper(index: int) -> Optional[SolvedMaze]:
     """Helper function for generating mazes in parallel.
 
     > [!CAUTION]
-    > Don't use this unless generating in parallel!
+    > don't use this unless generating in parallel!
     """
+    # TODO: don't use this unless generating in parallel!
     maze: LatticeMaze = _GLOBAL_WORKER_CONFIG.maze_ctor(
         grid_shape=_GLOBAL_WORKER_CONFIG.grid_shape_np,
         **_GLOBAL_WORKER_CONFIG.maze_ctor_kwargs,
