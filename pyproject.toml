@@ -15,6 +15,7 @@
         { name = "Guillaume Corlouer", email = "guillaume.corlouer@gmail.com" },
     ]
     readme = "README.md"
+    requires-python = ">=3.10"
 
     # source info
     # packages = [{include = "maze_dataset"}]
