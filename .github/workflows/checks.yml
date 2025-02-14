@@ -11,60 +11,80 @@ on:
 
 jobs:
   lint:
-    name: Lint
+    name: Formatting
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with: 
+          fetch-depth: 0
 
-      - name: pycln
-        run: |
-          pip install pycln
-          pycln --check --all .
+      - name: Install linters
+        run: pip install -r .meta/requirements/requirements-lint.txt
 
-      - name: isort
-        run: |
-          pip install isort
-          isort --check-only .
-
-      - name: black
-        run: |
-          pip install black
-          python -m black --check .
+      - name: Run Format Checks
+        run: make format-check RUN_GLOBAL=1
 
   test:
     name: Test
-    env:
-      WANDB_API_KEY: ${{ secrets.WANDB_API_KEY }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        versions:
-          - python: "3.10"
-            torch: "1.13.1"
-          - python: "3.10"
-            torch: "2.3.1"
-          - python: "3.11"
-            torch: "2.3.1"
+        python: ["3.10", "3.11", "3.12", "3.13"]
+        pkg:
+          - torch: "1.13.1"
+            numpy: "1.24.4"
+            group: "legacy"
+          - torch: ""
+            numpy: ""
+            group: "latest"
+        exclude:
           - python: "3.12"
-            torch: "2.3.1"
+            pkg:
+              group: "legacy"
+          - python: "3.13"
+            pkg:
+              group: "legacy"
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: ${{ matrix.versions.python }}
-          
-      - name: Install dependencies
-        run: |
-          curl -sSL https://install.python-poetry.org | python3 -
-          poetry lock
-          poetry add torch@${{ matrix.versions.torch }}+cpu --source torch_cpu
-          poetry install
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with: 
+          fetch-depth: 1
 
-      - name: Check versions
+      - name: Set up python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+
+
+      - name: set up uv
+        run: curl -LsSf https://astral.sh/uv/install.sh | sh
+  
+      - name: check dependencies
+        run: make dep-check
+
+      - name: install dependencies and package
+        run: make dep
+
+      - name: Install different pytorch version
+        if: ${{ matrix.pkg.torch != '' }}
         run: |
-          poetry run python --version
-          poetry run python -m pip show torch
+          uv pip install torch==${{ matrix.pkg.torch }}+cpu --extra-index-url https://download.pytorch.org/whl/cpu
+      
+      - name: Install different numpy version
+        if: ${{ matrix.pkg.numpy != '' }}
+        run: uv pip install numpy==${{ matrix.pkg.numpy }}
+      
+      - name: info
+        run: |
+          make info-long
+          make dep-check-torch
+
+      - name: format check
+        run: make format-check
+
+      - name: check typing
+        run: make typing
 
       - name: Unit tests
         run: make unit
