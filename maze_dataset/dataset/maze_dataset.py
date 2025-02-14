@@ -159,6 +159,7 @@ class MazeDatasetConfig(GPTDatasetConfig):
         """return a summary of the config"""
         # do we run this to make sure it doesn't error?
         super_summary: dict = super().summary()
+        assert super_summary
         self_ser: dict = self.serialize()
         return dict(
             name=self.name,
@@ -309,7 +310,7 @@ class MazeDataset(GPTDataset):
 
         if pool_kwargs is None:
             pool_kwargs = dict()
-        maze_indexes: Int[np.int8, "maze_index"] = np.arange(cfg_cpy.n_mazes)
+        maze_indexes: Int[np.int8, " maze_index"] = np.arange(cfg_cpy.n_mazes)
 
         solved_mazes: list[SolvedMaze]
         # Configure tqdm for progress bar

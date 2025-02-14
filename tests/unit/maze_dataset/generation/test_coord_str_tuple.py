@@ -21,13 +21,13 @@ def test_coord_to_strings():
 
 
 def test_str_is_coord():
-    assert str_is_coord("(1,2)") == True
-    assert str_is_coord("(-1,0)") == True
-    assert str_is_coord("(1,2,3)") == True
-    assert str_is_coord("1,2") == False
-    assert str_is_coord("(1, 2)") == True
-    assert str_is_coord("( 1 , 2 )") == True
-    assert str_is_coord("(1, 2)", allow_whitespace=False) == False
+    assert str_is_coord("(1,2)")
+    assert str_is_coord("(-1,0)")
+    assert str_is_coord("(1,2,3)")
+    assert not str_is_coord("1,2")
+    assert str_is_coord("(1, 2)")
+    assert str_is_coord("( 1 , 2 )")
+    assert not str_is_coord("(1, 2)", allow_whitespace=False)
 
 
 def test_coord_str_to_tuple():
@@ -56,7 +56,7 @@ def test_coord_str_to_tuple_noneable():
     assert coord_str_to_tuple_noneable("(1,2,3)") == (1, 2, 3)
     assert coord_str_to_tuple_noneable("(1, 2)") == (1, 2)
     assert coord_str_to_tuple_noneable("( 1 , 2 )") == (1, 2)
-    assert coord_str_to_tuple_noneable("1,2") == None
+    assert coord_str_to_tuple_noneable("1,2") is None
 
 
 def test_coords_to_strings():
@@ -94,7 +94,7 @@ def test_coords_to_strings():
     ) == ["(", "1", ",", "2", ")", "<ADJLIST_START>", "(", "5", ",", "6", ")"]
 
 
-def test_str_is_coord():
+def test_str_is_coord_2():
     assert str_is_coord("(1,2)")
     assert str_is_coord("( 1 , 2 )")
     assert not str_is_coord("1,2")
@@ -104,7 +104,7 @@ def test_str_is_coord():
     assert not str_is_coord("()")
 
 
-def test_coord_str_to_tuple():
+def test_coord_str_to_tuple_excepts():
     assert coord_str_to_tuple("(1,2)") == (1, 2)
     with pytest.raises(ValueError):
         coord_str_to_tuple("(1, a)")
@@ -112,7 +112,7 @@ def test_coord_str_to_tuple():
         coord_str_to_tuple("()")
 
 
-def test_coord_str_to_tuple_noneable():
+def test_coord_str_to_tuple_noneable_2():
     assert coord_str_to_tuple_noneable("(1,2)") == (1, 2)
     assert coord_str_to_tuple_noneable("1,2") is None
     assert coord_str_to_tuple_noneable("(1,2") is None

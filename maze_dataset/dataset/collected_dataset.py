@@ -91,7 +91,7 @@ class MazeDatasetCollection(GPTDataset):
         return [len(dataset) for dataset in self.maze_datasets]
 
     @property
-    def dataset_cum_lengths(self) -> Int[np.ndarray, "indices"]:
+    def dataset_cum_lengths(self) -> Int[np.ndarray, " indices"]:
         return np.array(list(itertools.accumulate(self.dataset_lengths)))
 
     @cached_property

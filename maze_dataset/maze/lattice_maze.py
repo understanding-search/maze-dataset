@@ -812,7 +812,7 @@ class LatticeMaze(SerializableDataclass):
         pixel_grid: PixelGrid = np.full(
             (*pixel_grid_bw.shape, 3), PixelColors.WALL, dtype=np.uint8
         )
-        pixel_grid[pixel_grid_bw == True] = PixelColors.OPEN
+        pixel_grid[pixel_grid_bw == True] = PixelColors.OPEN  # noqa: E712
 
         if self.__class__ == LatticeMaze:
             return pixel_grid
@@ -1038,7 +1038,7 @@ class LatticeMaze(SerializableDataclass):
         ascii_grid: Shaped[np.ndarray, "x y"] = np.full(
             pixel_grid.shape, AsciiChars.WALL, dtype=str
         )
-        ascii_grid[pixel_grid == True] = AsciiChars.OPEN
+        ascii_grid[pixel_grid == True] = AsciiChars.OPEN  # noqa: E712
 
         return ascii_grid
 

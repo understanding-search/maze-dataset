@@ -13,8 +13,6 @@ from jaxtyping import Bool, Float
 
 from maze_dataset.constants import Coord, CoordArray, CoordList
 from maze_dataset.maze import (
-    Coord,
-    CoordArray,
     LatticeMaze,
     SolvedMaze,
     TargetedLatticeMaze,

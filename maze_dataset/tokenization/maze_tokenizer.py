@@ -537,7 +537,7 @@ class _TokenizerElement(SerializableDataclass, abc.ABC):
         # Parameters
         - `deep: bool`: Whether to return elements nested arbitrarily deeply or just a single layer.
         """
-        if not any(type(el) == tuple for el in self.__dict__.values()):
+        if not any(type(el) == tuple for el in self.__dict__.values()):  # noqa: E721
             return list(
                 flatten(
                     [
@@ -1079,7 +1079,7 @@ class AdjListTokenizers(__TokenizerElementNamespace):
         def _tokenization_callables(
             self,
             edges: ConnectionArray,
-            is_conn: Bool[np.ndarray, "edges"],
+            is_conn: Bool[np.ndarray, " edges"],
             coord_tokenizer: CoordTokenizers._CoordTokenizer,
             *args,
             **kwargs,
@@ -1217,7 +1217,7 @@ class AdjListTokenizers(__TokenizerElementNamespace):
         def _tokenization_callables(
             self,
             edges: ConnectionArray,
-            is_conn: Bool[np.ndarray, "edges"],
+            is_conn: Bool[np.ndarray, " edges"],
             coord_tokenizer: CoordTokenizers._CoordTokenizer,
             *args,
             **kwargs,
@@ -1249,7 +1249,7 @@ class AdjListTokenizers(__TokenizerElementNamespace):
         def _tokenization_callables(
             self,
             edges: ConnectionArray,
-            is_conn: Bool[np.ndarray, "edges"],
+            is_conn: Bool[np.ndarray, " edges"],
             coord_tokenizer: CoordTokenizers._CoordTokenizer,
             *args,
             **kwargs,
@@ -2053,7 +2053,7 @@ class MazeTokenizerModular(SerializableDataclass):
 
         if `do_assert` is `True`, raises an `AssertionError` if the tokenizer is not tested.
         """
-        all_tokenizer_hashes: Int64[np.ndarray, "n_tokenizers"] = (
+        all_tokenizer_hashes: Int64[np.ndarray, " n_tokenizers"] = (
             get_all_tokenizer_hashes()
         )
         hash_index: int = np.searchsorted(all_tokenizer_hashes, hash(self))
@@ -2195,7 +2195,7 @@ class MazeTokenizerModular(SerializableDataclass):
             return output
 
 
-_ALL_TOKENIZER_HASHES: Int64[np.ndarray, "n_tokenizers"]
+_ALL_TOKENIZER_HASHES: Int64[np.ndarray, " n_tokenizers"]
 "private array of all tokenizer hashes"
 _TOKENIZER_HASHES_PATH: Path = Path(__file__).parent / "MazeTokenizerModular_hashes.npz"
 "path to where we expect the hashes file -- in the same dir as this file, by default. change with `set_tokenizer_hashes_path`"
@@ -2228,7 +2228,7 @@ def set_tokenizer_hashes_path(path: Path):
         _TOKENIZER_HASHES_PATH = path
 
 
-def _load_tokenizer_hashes() -> Int64[np.ndarray, "n_tokenizers"]:
+def _load_tokenizer_hashes() -> Int64[np.ndarray, " n_tokenizers"]:
     """Loads the sorted list of `all_tokenizers.get_all_tokenizers()` hashes from disk."""
     global _TOKENIZER_HASHES_PATH
     try:
@@ -2243,7 +2243,7 @@ def _load_tokenizer_hashes() -> Int64[np.ndarray, "n_tokenizers"]:
         ) from e
 
 
-def get_all_tokenizer_hashes() -> Int64[np.ndarray, "n_tokenizers"]:
+def get_all_tokenizer_hashes() -> Int64[np.ndarray, " n_tokenizers"]:
     global _ALL_TOKENIZER_HASHES
     try:
         got_tokenizers: bool = len(_ALL_TOKENIZER_HASHES) > 0

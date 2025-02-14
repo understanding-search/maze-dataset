@@ -120,7 +120,7 @@ def save_hashes(
     path: Path | None = None,
     verbose: bool = False,
     parallelize: bool | int = False,
-) -> Int64[np.ndarray, "tokenizers"]:
+) -> Int64[np.ndarray, " tokenizers"]:
     """Computes, sorts, and saves the hashes of every member of `get_all_tokenizers()`."""
     spinner = (
         functools.partial(SpinnerContext, spinner_chars="square_dot")
@@ -145,14 +145,14 @@ def save_hashes(
                 hashes_list: list[int] = list(pool.map(hash, all_tokenizers))
 
         with spinner(initial_value="converting hashes to numpy array..."):
-            hashes_array: "Int64[np.ndarray, 'tokenizers+dupes']" = np.array(
+            hashes_array: "Int64[np.ndarray, ' tokenizers+dupes']" = np.array(
                 hashes_list, dtype=np.int64
             )
     else:
         with spinner(
             initial_value=f"computing {len(all_tokenizers)} tokenizer hashes..."
         ):
-            hashes_array: "Int64[np.ndarray, 'tokenizers+dupes']" = np.array(
+            hashes_array: "Int64[np.ndarray, ' tokenizers+dupes']" = np.array(
                 [
                     hash(obj)  # uses stable hash
                     for obj in tqdm(all_tokenizers, disable=not verbose)

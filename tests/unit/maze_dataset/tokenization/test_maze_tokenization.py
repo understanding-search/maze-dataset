@@ -29,9 +29,9 @@ def test_tokenization_roundtrip(tokenizer: MazeTokenizer | MazeTokenizerModular)
     )
 
     dataset_tokenized: list[list[str]] = dataset.as_tokens(tokenizer)
-    dataset_tokenized_joined: list[str] = dataset.as_tokens(
-        tokenizer, join_tokens_individual_maze=True
-    )
+    # dataset_tokenized_joined: list[str] = dataset.as_tokens(
+    #     tokenizer, join_tokens_individual_maze=True
+    # )
 
     # TODO: can't test that these match because order in adjacency list is random
 

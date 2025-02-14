@@ -60,9 +60,10 @@ def test_generate_parallel():
         assert maze.grid_shape == (3, 3)
 
 
-def test_data_hash():
+def test_data_hash_wip():
     dataset = MazeDataset.generate(TEST_CONFIGS[0])
     # TODO: dataset.data_hash doesn't work right now
+    assert dataset
 
 
 def test_download():
@@ -241,7 +242,7 @@ class TestMazeDatasetFilters:
         path_length_filtered = dataset.filter_by.path_length(3)
         start_end_filtered = dataset.filter_by.start_end_distance(2)
 
-        assert type(path_length_filtered) == type(dataset)
+        assert type(path_length_filtered) == type(dataset)  # noqa: E721
         assert path_length_filtered.mazes == [long_maze]
         assert start_end_filtered.mazes == [long_maze]
         assert dataset.mazes == [long_maze, short_maze]

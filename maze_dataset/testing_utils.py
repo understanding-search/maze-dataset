@@ -18,7 +18,6 @@ from maze_dataset import (
     SolvedMaze,
     TargetedLatticeMaze,
 )
-from maze_dataset.generation import LatticeMazeGenerators
 from maze_dataset.tokenization import (
     MazeTokenizer,
     MazeTokenizerModular,

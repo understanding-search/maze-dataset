@@ -411,7 +411,7 @@ def connection_list_to_adj_list(
     )
 
     if shuffle_d1:
-        flip_d1: Float[np.ndarray, "conn"] = np.random.rand(n_connections)
+        flip_d1: Float[np.ndarray, " conn"] = np.random.rand(n_connections)
 
     # loop over all nonzero elements of the connection list
     i: int = 0

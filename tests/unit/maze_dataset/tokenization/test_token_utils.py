@@ -9,7 +9,6 @@ from pytest import mark, param
 
 from maze_dataset import LatticeMaze
 from maze_dataset.constants import VOCAB, Connection, ConnectionArray
-from maze_dataset.dataset.maze_dataset import MazeDatasetConfig
 from maze_dataset.generation import numpy_rng
 from maze_dataset.testing_utils import GRID_N, MAZE_DATASET
 from maze_dataset.token_utils import (
@@ -343,7 +342,7 @@ def test_strings_to_coords(toks: list[str], tokenizer_name: str):
 )
 def test_coords_to_strings(toks: list[str], tokenizer_name: str):
     adj_list = get_adj_list_tokens(toks)
-    config = MazeDatasetConfig(name="test", grid_n=2, n_mazes=1)
+    # config = MazeDatasetConfig(name="test", grid_n=2, n_mazes=1)
     coords = strings_to_coords(adj_list, when_noncoord="include")
 
     skipped = coords_to_strings(
@@ -585,7 +584,7 @@ def test_get_relative_direction(
 )
 def test_manhattan_distance(
     edges: ConnectionArray | Connection,
-    result: Int[np.ndarray, "edges"] | Int[np.ndarray, ""] | type[Exception],
+    result: Int[np.ndarray, " edges"] | Int[np.ndarray, ""] | type[Exception],
 ):
     if isinstance(result, type) and issubclass(result, Exception):
         with pytest.raises(result):

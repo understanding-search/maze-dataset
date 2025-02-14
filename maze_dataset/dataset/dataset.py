@@ -97,6 +97,7 @@ class GPTDatasetConfig(SerializableDataclass):
         """return a summary of the config"""
         # do we run this to make sure it doesn't error?
         self_ser: dict = self.serialize()
+        assert self_ser
         return dict(
             name=self.name,
             seq_len_min=self.seq_len_min,

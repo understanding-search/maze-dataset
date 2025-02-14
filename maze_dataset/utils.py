@@ -97,7 +97,7 @@ def manhattan_distance(
         Int[np.ndarray, "edges coord=2 row_col=2"]
         | Int[np.ndarray, "coord=2 row_col=2"]
     ),
-) -> Int[np.ndarray, "edges"] | Int[np.ndarray, ""]:
+) -> Int[np.ndarray, " edges"] | Int[np.ndarray, ""]:
     """Returns the Manhattan distance between two coords."""
     if len(edges.shape) == 3:
         return np.linalg.norm(edges[:, 0, :] - edges[:, 1, :], axis=1, ord=1).astype(
@@ -344,7 +344,7 @@ def all_instances(
     - If a superclass of `type_` is found while searching in mro order, that validation function is applied and the list is returned.
     - If no superclass of `type_` is found, then no filter is applied.
     """
-    if type_ == bool:
+    if type_ == bool:  # noqa: F721
         yield from [True, False]
     elif hasattr(type_, "__dataclass_fields__"):
         if is_abstract(type_):
@@ -372,7 +372,7 @@ def all_instances(
             )
     else:
         type_origin = get_origin(type_)
-        if type_origin == tuple:
+        if type_origin == tuple:  # noqa: E721
             # Only matches Generic type tuple since regular tuple is not finite-valued
             # Generic tuple: Similar to concrete dataclass. Construct all possible combinations of tuple fields.
             yield from (

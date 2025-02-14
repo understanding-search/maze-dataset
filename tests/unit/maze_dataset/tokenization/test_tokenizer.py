@@ -390,7 +390,7 @@ def _helper_test_path_tokenizers(
     ct: CoordTokenizers._CoordTokenizer = CoordTokenizers.UT()
     path_toks: list[str] = pt.to_tokens(maze, ct)
     path_toks_set: set[str] = set(path_toks)
-    footprint_inds: Int[np.ndarray, "footprint_index"] = np.array(footprint_inds)
+    footprint_inds: Int[np.ndarray, " footprint_index"] = np.array(footprint_inds)
     footprints: Int[np.ndarray, "footprint_index row_col=2"] = maze.solution[
         footprint_inds
     ]
@@ -469,7 +469,7 @@ def test_path_tokenizers(pt: PathTokenizers._PathTokenizer, manual_maze: MANUAL_
             swy_step_inds: list[int] = StepSizes.Straightaways()._step_single_indices(
                 solved_maze
             )
-            footprint_inds: Int[np.ndarray, "footprint_index"] = np.concatenate(
+            footprint_inds: Int[np.ndarray, " footprint_index"] = np.concatenate(
                 (
                     solved_maze.get_solution_forking_points(
                         always_include_endpoints=True
@@ -596,7 +596,7 @@ def test_edge_groupings(
     maze: LatticeMaze,
 ):
     edges: ConnectionArray = es._get_edges(maze)
-    n: int = maze.grid_n
+    # n: int = maze.grid_n
     groups: Sequence[ConnectionArray] = tok_elem._group_edges(edges)
 
     assert all(
@@ -609,7 +609,7 @@ def test_edge_groupings(
         case EdgeGroupings.ByLeadingCoord:
             assert len(groups) == np.unique(edges[:, 0, :], axis=0).shape[0]
             assert sum(g.shape[0] for g in groups) == edges.shape[0]
-            trailing_coords: list[CoordArray] = [g[:, 1, :] for g in groups]
+            # trailing_coords: list[CoordArray] = [g[:, 1, :] for g in groups]
             # vector_diffs is the position vector difference between the trailing coords of each group
             # These are stacked into a single array since we don't care about maintaining group separation
             vector_diffs: CoordArray = np.stack(

@@ -58,6 +58,8 @@ def test_rasterized_from_mazedataset(
         ),
     )
 
+    assert dataset_r
+
 
 @pytest.mark.parametrize(*_PARAMTETRIZATION)
 def test_make_numpy_collection(remove_isolated_cells, extend_pixels, endpoints_as_open):
