@@ -103,6 +103,26 @@ ignore = [
     "F722"
 ]
 
+[tool.lmcat]
+	output = "docs/other/lmcat.txt" # changing this might mean it wont be accessible from the docs
+	ignore_patterns = [
+		"docs/**",
+		".venv/**",
+		".git/**",
+		".meta/**",
+		"uv.lock",
+        ".ruff_cache/**",
+        ".github/ISSUE_TEMPLATE/**",
+        "_wip/**",
+        "sweep.yaml",
+        # there are... a lot of tests. we usually dont need to put these in lmcat
+        "tests/**",
+        "*.npz",
+	]
+    [tool.lmcat.glob_process]
+        "[mM]akefile" = "makefile_recipes"
+        "*.ipynb" = "ipynb_to_md"
+
 # [tool.pycln]
 #     disable-all-dunder-policy = true # this doesn't seem to work... :/
 
