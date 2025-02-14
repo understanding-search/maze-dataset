@@ -171,7 +171,7 @@ def str_is_coord(coord_str: str, allow_whitespace: bool = True) -> bool:
         "`util.str_is_coord` only supports legacy UT strings. Function will be replaced with a generalized version in a future release.",
         TokenizerPendingDeprecationWarning,
     )
-    strip_func: Callable[[str], str] = lambda x: x.strip() if allow_whitespace else x
+    strip_func: Callable[[str], str] = lambda x: x.strip() if allow_whitespace else x  # noqa: E731
 
     coord_str = strip_func(coord_str)
 
@@ -219,7 +219,7 @@ def coord_str_to_tuple(
     coord_str: str, allow_whitespace: bool = True
 ) -> tuple[int, ...]:
     """convert a coordinate string to a tuple"""
-    strip_func: Callable[[str], str] = lambda x: x.strip() if allow_whitespace else x
+    strip_func: Callable[[str], str] = lambda x: x.strip() if allow_whitespace else x  # noqa: E731
     coord_str = strip_func(coord_str)
     stripped: str = strip_func(coord_str.lstrip("(").rstrip(")"))
     return tuple(int(strip_func(x)) for x in stripped.split(","))

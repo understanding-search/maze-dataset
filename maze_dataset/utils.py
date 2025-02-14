@@ -344,7 +344,7 @@ def all_instances(
     - If a superclass of `type_` is found while searching in mro order, that validation function is applied and the list is returned.
     - If no superclass of `type_` is found, then no filter is applied.
     """
-    if type_ == bool:  # noqa: F721
+    if type_ == bool:  # noqa: E721
         yield from [True, False]
     elif hasattr(type_, "__dataclass_fields__"):
         if is_abstract(type_):
