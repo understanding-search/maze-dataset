@@ -1221,15 +1221,23 @@ test_notebooks: convert_notebooks
 	@echo "run tests on converted notebooks in $(CONVERTED_NOTEBOOKS_TEMP_DIR) using muutils.nbutils.run_notebook_tests.py"
 	$(PYTHON) -m muutils.nbutils.run_notebook_tests --notebooks-dir=$(NOTEBOOKS_DIR) --converted-notebooks-temp-dir=$(CONVERTED_NOTEBOOKS_TEMP_DIR)
 
-
 .PHONY: test
 test: clean unit test_notebooks
-	@echo "running all tests"
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	@echo "ran all tests: unit, integration, and notebooks"
+
+.PHONY: test-all
+test-all: clean test test_tok_hashes test_all_tok
+	@echo "run all tests, including tokenizers"
 
 .PHONY: check
-check: clean format-check test typing
-	@echo "run format checks, tests, and typing checks"
+check: clean check-format typing clean test
+	@echo "run format check and test"
+
+.PHONY: check-all
+check-all: clean check-format typing clean test-all
+	@echo "run format check and test-all (includes tokenizers)"
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
 ########   #######   ######   ######
