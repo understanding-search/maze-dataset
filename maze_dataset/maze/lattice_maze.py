@@ -77,6 +77,7 @@ def color_in_pixel_grid(pixel_grid: PixelGrid, color: RGB) -> bool:
 @dataclass(frozen=True)
 class PixelColors:
     "standard colors for pixel grids"
+
     WALL: RGB = (0, 0, 0)
     OPEN: RGB = (255, 255, 255)
     START: RGB = (0, 255, 0)
@@ -87,6 +88,7 @@ class PixelColors:
 @dataclass(frozen=True)
 class AsciiChars:
     "standard ascii characters for mazes"
+
     WALL: str = "#"
     OPEN: str = " "
     START: str = "S"
@@ -237,7 +239,9 @@ class LatticeMaze(SerializableDataclass):
             assert output.shape == (
                 len(neighbors),
                 2,
-            ), f"invalid shape: {output.shape}, expected ({len(neighbors)}, 2))\n{c = }\n{neighbors = }\n{self.as_ascii()}"
+            ), (
+                f"invalid shape: {output.shape}, expected ({len(neighbors)}, 2))\n{c = }\n{neighbors = }\n{self.as_ascii()}"
+            )
         return output
 
     def gen_connected_component_from(self, c: Coord) -> CoordArray:
@@ -438,9 +442,9 @@ class LatticeMaze(SerializableDataclass):
         """
 
         # we can't create a "path" in a single-node maze
-        assert (
-            self.grid_shape[0] > 1 and self.grid_shape[1] > 1
-        ), f"can't create path in single-node maze: {self.as_ascii()}"
+        assert self.grid_shape[0] > 1 and self.grid_shape[1] > 1, (
+            f"can't create path in single-node maze: {self.as_ascii()}"
+        )
 
         # get connected component
         connected_component: CoordArray = self.get_connected_component()
@@ -673,14 +677,14 @@ class LatticeMaze(SerializableDataclass):
                     e, when_noncoord="include"
                 )
                 assert len(e_coords) == 3, f"invalid edge: {e = } {e_coords = }"
-                assert (
-                    e_coords[1] == SPECIAL_TOKENS.CONNECTOR
-                ), f"invalid edge: {e = } {e_coords = }"
+                assert e_coords[1] == SPECIAL_TOKENS.CONNECTOR, (
+                    f"invalid edge: {e = } {e_coords = }"
+                )
                 coordinates.append((e_coords[0], e_coords[-1]))
 
-        assert all(
-            len(c) == 2 for c in coordinates
-        ), f"invalid coordinates: {coordinates = }"
+        assert all(len(c) == 2 for c in coordinates), (
+            f"invalid coordinates: {coordinates = }"
+        )
         adj_list: Int8[np.ndarray, "conn start_end coord"] = np.array(coordinates)
         assert tuple(adj_list.shape) == (
             len(coordinates),
@@ -708,9 +712,9 @@ class LatticeMaze(SerializableDataclass):
             end_pos_list: list[CoordTup] = maze_tokenizer.strings_to_coords(
                 get_target_tokens(tokens), when_noncoord="error"
             )
-            assert (
-                len(start_pos_list) == 1
-            ), f"invalid start_pos_list: {start_pos_list = }"
+            assert len(start_pos_list) == 1, (
+                f"invalid start_pos_list: {start_pos_list = }"
+            )
             assert len(end_pos_list) == 1, f"invalid end_pos_list: {end_pos_list = }"
 
             start_pos: CoordTup = start_pos_list[0]
@@ -833,9 +837,9 @@ class LatticeMaze(SerializableDataclass):
             for index, coord in enumerate(self.solution[:-1]):
                 next_coord = self.solution[index + 1]
                 # check they are adjacent using norm
-                assert (
-                    np.linalg.norm(np.array(coord) - np.array(next_coord)) == 1
-                ), f"Coords {coord} and {next_coord} are not adjacent"
+                assert np.linalg.norm(np.array(coord) - np.array(next_coord)) == 1, (
+                    f"Coords {coord} and {next_coord} are not adjacent"
+                )
                 # set pixel between them
                 pixel_grid[
                     coord[0] * 2 + 1 + next_coord[0] - coord[0],
@@ -915,7 +919,7 @@ class LatticeMaze(SerializableDataclass):
 
         # otherwise, detect and check it's valid
         cls_detected: typing.Type[LatticeMaze] = detect_pixels_type(pixel_grid)
-        if not cls in cls_detected.__mro__:
+        if cls not in cls_detected.__mro__:
             raise ValueError(
                 f"Pixel grid cannot be cast to {cls.__name__}, detected type {cls_detected.__name__}"
             )
@@ -942,11 +946,15 @@ class LatticeMaze(SerializableDataclass):
         assert start_pos_arr.shape == (
             1,
             2,
-        ), f"start_pos_arr {start_pos_arr} has shape {start_pos_arr.shape}, expected shape (1, 2) -- a single coordinate"
+        ), (
+            f"start_pos_arr {start_pos_arr} has shape {start_pos_arr.shape}, expected shape (1, 2) -- a single coordinate"
+        )
         assert end_pos_arr.shape == (
             1,
             2,
-        ), f"end_pos_arr {end_pos_arr} has shape {end_pos_arr.shape}, expected shape (1, 2) -- a single coordinate"
+        ), (
+            f"end_pos_arr {end_pos_arr} has shape {end_pos_arr.shape}, expected shape (1, 2) -- a single coordinate"
+        )
 
         start_pos: Coord = start_pos_arr[0]
         end_pos: Coord = end_pos_arr[0]
@@ -962,14 +970,14 @@ class LatticeMaze(SerializableDataclass):
         # raw solution, only contains path elements and not start or end
         solution_raw: CoordArray = marked_pos["solution"]
         if len(solution_raw.shape) == 2:
-            assert (
-                solution_raw.shape[1] == 2
-            ), f"solution {solution_raw} has shape {solution_raw.shape}, expected shape (n, 2)"
+            assert solution_raw.shape[1] == 2, (
+                f"solution {solution_raw} has shape {solution_raw.shape}, expected shape (n, 2)"
+            )
         elif solution_raw.shape == (0,):
             # the solution and end should be immediately adjacent
-            assert (
-                np.sum(np.abs(start_pos - end_pos)) == 1
-            ), f"start_pos {start_pos} and end_pos {end_pos} are not adjacent, but no solution was given"
+            assert np.sum(np.abs(start_pos - end_pos)) == 1, (
+                f"start_pos {start_pos} and end_pos {end_pos} are not adjacent, but no solution was given"
+            )
 
         # order the solution, by creating a list from the start to the end
         # add end pos, since we will iterate over all these starting from the start pos
@@ -982,9 +990,9 @@ class LatticeMaze(SerializableDataclass):
             # use `get_coord_neighbors` to find connected neighbors
             neighbors: CoordArray = temp_maze.get_coord_neighbors(solution[-1])
             # TODO: make this less ugly
-            assert (len(neighbors.shape) == 2) and (
-                neighbors.shape[1] == 2
-            ), f"neighbors {neighbors} has shape {neighbors.shape}, expected shape (n, 2)\n{neighbors = }\n{solution = }\n{solution_raw = }\n{temp_maze.as_ascii()}"
+            assert (len(neighbors.shape) == 2) and (neighbors.shape[1] == 2), (
+                f"neighbors {neighbors} has shape {neighbors.shape}, expected shape (n, 2)\n{neighbors = }\n{solution = }\n{solution_raw = }\n{temp_maze.as_ascii()}"
+            )
             # neighbors = neighbors[:, [1, 0]]
             # filter out neighbors that are not in the raw solution
             neighbors_filtered: CoordArray = np.array(
@@ -993,7 +1001,7 @@ class LatticeMaze(SerializableDataclass):
                     for coord in neighbors
                     if (
                         tuple(coord) in solution_raw_list
-                        and not tuple(coord) in solution
+                        and tuple(coord) not in solution
                     )
                 ]
             )
@@ -1001,16 +1009,18 @@ class LatticeMaze(SerializableDataclass):
             assert neighbors_filtered.shape == (
                 1,
                 2,
-            ), f"neighbors_filtered has shape {neighbors_filtered.shape}, expected shape (1, 2)\n{neighbors = }\n{neighbors_filtered = }\n{solution = }\n{solution_raw_list = }\n{temp_maze.as_ascii()}"
+            ), (
+                f"neighbors_filtered has shape {neighbors_filtered.shape}, expected shape (1, 2)\n{neighbors = }\n{neighbors_filtered = }\n{solution = }\n{solution_raw_list = }\n{temp_maze.as_ascii()}"
+            )
             solution.append(tuple(neighbors_filtered[0]))
 
         # assert the solution is complete
-        assert solution[0] == tuple(
-            start_pos
-        ), f"solution {solution} does not start at start_pos {start_pos}"
-        assert solution[-1] == tuple(
-            end_pos
-        ), f"solution {solution} does not end at end_pos {end_pos}"
+        assert solution[0] == tuple(start_pos), (
+            f"solution {solution} does not start at start_pos {start_pos}"
+        )
+        assert solution[-1] == tuple(end_pos), (
+            f"solution {solution} does not end at end_pos {end_pos}"
+        )
 
         return cls(
             connection_list=np.array(connection_list),
@@ -1103,7 +1113,7 @@ class TargetedLatticeMaze(LatticeMaze):
             raise ValueError(
                 f"end_pos {self.end_pos} is out of bounds for grid shape {self.grid_shape}"
             )
-        
+
     def __eq__(self, other: object) -> bool:
         return super().__eq__(other)
 
@@ -1194,13 +1204,13 @@ class SolvedMaze(TargetedLatticeMaze):
         # adjust the endpoints
         if not allow_invalid:
             if start_pos is not None:
-                assert np.array_equal(
-                    np.array(start_pos), self.start_pos
-                ), f"when trying to create a SolvedMaze, the given start_pos does not match the one in the solution: given={start_pos}, solution={self.start_pos}"
+                assert np.array_equal(np.array(start_pos), self.start_pos), (
+                    f"when trying to create a SolvedMaze, the given start_pos does not match the one in the solution: given={start_pos}, solution={self.start_pos}"
+                )
             if end_pos is not None:
-                assert np.array_equal(
-                    np.array(end_pos), self.end_pos
-                ), f"when trying to create a SolvedMaze, the given end_pos does not match the one in the solution: given={end_pos}, solution={self.end_pos}"
+                assert np.array_equal(np.array(end_pos), self.end_pos), (
+                    f"when trying to create a SolvedMaze, the given end_pos does not match the one in the solution: given={end_pos}, solution={self.end_pos}"
+                )
             # TODO: assert the path does not backtrack, walk through walls, etc?
 
     def __eq__(self, other: object) -> bool:
@@ -1310,7 +1320,7 @@ def detect_pixels_type(data: PixelGrid) -> typing.Type[LatticeMaze]:
 
 
 def _remove_isolated_cells(
-    image: Int[np.ndarray, "RGB x y"]
+    image: Int[np.ndarray, "RGB x y"],
 ) -> Int[np.ndarray, "RGB x y"]:
     """
     Removes isolated cells from an image. An isolated cell is a cell that is surrounded by walls on all sides.
@@ -1359,7 +1369,7 @@ _RIC_SLICES: dict = {
 
 
 def _remove_isolated_cells_old(
-    image: Int[np.ndarray, "RGB x y"]
+    image: Int[np.ndarray, "RGB x y"],
 ) -> Int[np.ndarray, "RGB x y"]:
     """
     Removes isolated cells from an image. An isolated cell is a cell that is surrounded by walls on all sides.

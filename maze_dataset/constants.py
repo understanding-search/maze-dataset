@@ -55,6 +55,7 @@ _SPECIAL_TOKENS_ABBREVIATIONS: dict[str, str] = {
 @dataclass(frozen=True)
 class _SPECIAL_TOKENS_BASE:
     "special dataclass used for handling special tokens"
+
     ADJLIST_START: str = "<ADJLIST_START>"
     ADJLIST_END: str = "<ADJLIST_END>"
     TARGET_START: str = "<TARGET_START>"
@@ -82,7 +83,7 @@ class _SPECIAL_TOKENS_BASE:
             key = key_upper
 
         # `ADJLIST` used to be `adj_list`, changed to match actual token content
-        if not key_upper in self.keys():
+        if key_upper not in self.keys():
             key_upper_modified: str = key_upper.replace("ADJ_LIST", "ADJLIST")
             if key_upper_modified in self.keys():
                 warnings.warn(

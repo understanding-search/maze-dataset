@@ -455,7 +455,7 @@ class MazeTokenizer(SerializableDataclass):
                 # if the property exists, delete it
                 try:
                     delattr(self, name)
-                except AttributeError as e:
+                except AttributeError:
                     pass
 
 
@@ -480,7 +480,7 @@ class _TokenizerElement(SerializableDataclass, abc.ABC):
         if isinstance(v, _TokenizerElement):
             return v.name
         if isinstance(v, tuple):
-            return f"{k}={''.join(['(', *[str(x)+', ' for x in v], ')'])}"
+            return f"{k}={''.join(['(', *[str(x) + ', ' for x in v], ')'])}"
         else:
             return f"{k}={v}"
 
@@ -2063,13 +2063,13 @@ class MazeTokenizerModular(SerializableDataclass):
         is_valid: bool = self.is_valid()
 
         if do_assert:
-            assert (
-                in_range
-            ), f"{hash_index = } is invalid, must be at most {len(all_tokenizer_hashes) - 1}"
-            assert (
-                hashes_match
-            ), f"{all_tokenizer_hashes[hash_index] = } != {hash(self) = }"
-            assert is_valid, f"self.is_valid returns False"
+            assert in_range, (
+                f"{hash_index = } is invalid, must be at most {len(all_tokenizer_hashes) - 1}"
+            )
+            assert hashes_match, (
+                f"{all_tokenizer_hashes[hash_index] = } != {hash(self) = }"
+            )
+            assert is_valid, "self.is_valid returns False"
             return True
         else:
             return in_range and hashes_match and is_valid
@@ -2177,7 +2177,7 @@ class MazeTokenizerModular(SerializableDataclass):
         except KeyError as e:
             raise TokenError(
                 f"Token {e} not found",
-                f"in `VOCAB`.",
+                "in `VOCAB`.",
             ) from e
 
     @staticmethod

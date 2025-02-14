@@ -23,10 +23,10 @@ def plot_colored_text(
     fig_width_scale: float = 0.25,
     char_min: int = 4,
 ):
-    "hacky function to plot tokens on a matplotlib axis with colored backgrounds" ""
-    assert len(tokens) == len(
-        weights
-    ), f"The number of tokens and weights must be the same: {len(tokens)} != {len(weights)}"
+    "hacky function to plot tokens on a matplotlib axis with colored backgrounds"
+    assert len(tokens) == len(weights), (
+        f"The number of tokens and weights must be the same: {len(tokens)} != {len(weights)}"
+    )
     total_len_estimate: float = sum([max(len(tok), char_min) for tok in tokens])
     # set up figure if needed
     if ax is None:

@@ -1,6 +1,4 @@
-"""generation functions have signature `(grid_shape: Coord, **kwargs) -> LatticeMaze` and are methods in `LatticeMazeGenerators`
-
-"""
+"""generation functions have signature `(grid_shape: Coord, **kwargs) -> LatticeMaze` and are methods in `LatticeMazeGenerators`"""
 
 import random
 import warnings
@@ -93,9 +91,9 @@ class LatticeMazeGenerators:
         if accessible_cells is None:
             n_accessible_cells = n_total_cells
         elif isinstance(accessible_cells, float):
-            assert (
-                accessible_cells <= 1
-            ), f"accessible_cells must be an int (count) or a float in the range [0, 1] (proportion), got {accessible_cells}"
+            assert accessible_cells <= 1, (
+                f"accessible_cells must be an int (count) or a float in the range [0, 1] (proportion), got {accessible_cells}"
+            )
 
             n_accessible_cells = int(accessible_cells * n_total_cells)
         else:
@@ -107,9 +105,9 @@ class LatticeMazeGenerators:
                 2 * n_total_cells
             )  # We define max tree depth counting from the start coord in two directions. Therefore we divide by two in the if clause for neighboring sites later and multiply by two here.
         elif isinstance(max_tree_depth, float):
-            assert (
-                max_tree_depth <= 1
-            ), f"max_tree_depth must be an int (count) or a float in the range [0, 1] (proportion), got {max_tree_depth}"
+            assert max_tree_depth <= 1, (
+                f"max_tree_depth must be an int (count) or a float in the range [0, 1] (proportion), got {max_tree_depth}"
+            )
 
             max_tree_depth = int(max_tree_depth * np.sum(grid_shape))
 

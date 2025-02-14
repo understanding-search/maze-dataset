@@ -313,8 +313,9 @@ def coords_to_strings(
 
 
 def get_token_regions(toks: list[str]) -> tuple[list[str], list[str]]:
-    adj_list_start, adj_list_end = toks.index("<ADJLIST_START>") + 1, toks.index(
-        "<ADJLIST_END>"
+    adj_list_start, adj_list_end = (
+        toks.index("<ADJLIST_START>") + 1,
+        toks.index("<ADJLIST_END>"),
     )
     adj_list = toks[adj_list_start:adj_list_end]
     non_adj_list = toks[:adj_list_start] + toks[adj_list_end:]

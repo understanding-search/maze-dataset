@@ -16,7 +16,7 @@ def plot_dataset_mazes(
 ) -> tuple:
     count = count or len(ds)
     if count == 0:
-        print(f"No mazes to plot for dataset")
+        print("No mazes to plot for dataset")
         return
     fig, axes = plt.subplots(
         1, count, figsize=(count * figsize_mult[0], figsize_mult[1])
@@ -54,7 +54,7 @@ def plot_dataset_mazes(
 def print_dataset_mazes(ds: MazeDataset, count: int | None = None):
     count = count or len(ds)
     if count == 0:
-        print(f"No mazes to print for dataset")
+        print("No mazes to print for dataset")
         return
     for i in range(count):
         print(ds[i].as_ascii(), "\n\n-----\n")

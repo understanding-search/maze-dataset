@@ -197,12 +197,12 @@ def test_pixels_ascii_roundtrip(gfunc_name, kwargs):
     assert maze == LatticeMaze.from_ascii(maze_ascii)
 
     expected_shape: tuple = (n * 2 + 1, n * 2 + 1, 3)
-    assert (
-        maze_pixels.shape == expected_shape
-    ), f"{maze_pixels.shape} != {expected_shape}"
-    assert all(
-        n * 2 + 1 == len(line) for line in maze_ascii.splitlines()
-    ), f"{maze_ascii}"
+    assert maze_pixels.shape == expected_shape, (
+        f"{maze_pixels.shape} != {expected_shape}"
+    )
+    assert all(n * 2 + 1 == len(line) for line in maze_ascii.splitlines()), (
+        f"{maze_ascii}"
+    )
 
 
 @pytest.mark.parametrize("gfunc_name, kwargs", DEFAULT_GENERATORS)
@@ -224,12 +224,12 @@ def test_targeted_solved_maze(gfunc_name, kwargs):
     assert tgt_maze == TargetedLatticeMaze.from_ascii(tgt_maze_ascii)
 
     expected_shape: tuple = (n * 2 + 1, n * 2 + 1, 3)
-    assert (
-        tgt_maze_pixels.shape == expected_shape
-    ), f"{tgt_maze_pixels.shape} != {expected_shape}"
-    assert all(
-        n * 2 + 1 == len(line) for line in tgt_maze_ascii.splitlines()
-    ), f"{tgt_maze_ascii}"
+    assert tgt_maze_pixels.shape == expected_shape, (
+        f"{tgt_maze_pixels.shape} != {expected_shape}"
+    )
+    assert all(n * 2 + 1 == len(line) for line in tgt_maze_ascii.splitlines()), (
+        f"{tgt_maze_ascii}"
+    )
 
     solved_maze: SolvedMaze = SolvedMaze.from_targeted_lattice_maze(tgt_maze)
 
@@ -240,12 +240,12 @@ def test_targeted_solved_maze(gfunc_name, kwargs):
     assert solved_maze == SolvedMaze.from_ascii(solved_maze_ascii)
 
     expected_shape: tuple = (n * 2 + 1, n * 2 + 1, 3)
-    assert (
-        tgt_maze_pixels.shape == expected_shape
-    ), f"{tgt_maze_pixels.shape} != {expected_shape}"
-    assert all(
-        n * 2 + 1 == len(line) for line in solved_maze_ascii.splitlines()
-    ), f"{solved_maze_ascii}"
+    assert tgt_maze_pixels.shape == expected_shape, (
+        f"{tgt_maze_pixels.shape} != {expected_shape}"
+    )
+    assert all(n * 2 + 1 == len(line) for line in solved_maze_ascii.splitlines()), (
+        f"{solved_maze_ascii}"
+    )
 
 
 def test_as_adj_list():

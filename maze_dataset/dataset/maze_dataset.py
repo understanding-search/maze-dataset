@@ -56,7 +56,7 @@ def _load_maze_ctor(maze_ctor_serialized: str | dict) -> Callable:
     elif isinstance(maze_ctor_serialized, str):
         # this is a version I switched to for a while but now we are switching back
         warnings.warn(
-            f"you are loading an old model/config in `_load_maze_ctor()`!!! this should not be happening, please report: "
+            "you are loading an old model/config in `_load_maze_ctor()`!!! this should not be happening, please report: "
             + "https://github.com/understanding-search/maze-dataset/issues/new"
         )
         return GENERATORS_MAP[maze_ctor_serialized]
@@ -152,7 +152,7 @@ class MazeDatasetConfig(GPTDatasetConfig):
 
     def to_fname(self) -> str:
         return sanitize_fname(
-            f"{self.name}-g{self.grid_n}-n{shorten_numerical_to_str(self.n_mazes)}-a_{self.maze_ctor.__name__.removeprefix('gen_')}-h{self.stable_hash_cfg()%10**5}"
+            f"{self.name}-g{self.grid_n}-n{shorten_numerical_to_str(self.n_mazes)}-a_{self.maze_ctor.__name__.removeprefix('gen_')}-h{self.stable_hash_cfg() % 10**5}"
         )
 
     def summary(self) -> dict:
@@ -600,7 +600,7 @@ register_loader_handler(
 
 
 def register_maze_filter(
-    method: typing.Callable[[SolvedMaze, typing.Any], bool]
+    method: typing.Callable[[SolvedMaze, typing.Any], bool],
 ) -> DatasetFilterProtocol:
     """register a maze filter, casting it to operate over the whole list of mazes
 
@@ -775,9 +775,9 @@ class MazeDatasetFilters:
         if dataset.generation_metadata_collected is not None:
             return dataset
         else:
-            assert (
-                dataset[0].generation_meta is not None
-            ), "generation meta is not collected and original is not present"
+            assert dataset[0].generation_meta is not None, (
+                "generation meta is not collected and original is not present"
+            )
         # if the generation meta is already collected, don't collect it again, do nothing
 
         new_dataset: MazeDataset

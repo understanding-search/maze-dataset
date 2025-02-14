@@ -7,7 +7,7 @@ see their paper:
 
 ```bibtex
 @misc{schwarzschild2021learn,
-      title={Can You Learn an Algorithm? Generalizing from Easy to Hard Problems with Recurrent Networks}, 
+      title={Can You Learn an Algorithm? Generalizing from Easy to Hard Problems with Recurrent Networks},
       author={Avi Schwarzschild and Eitan Borgnia and Arjun Gupta and Furong Huang and Uzi Vishkin and Micah Goldblum and Tom Goldstein},
       year={2021},
       eprint={2106.04537},
@@ -34,9 +34,9 @@ def _extend_pixels(
     image: Int[np.ndarray, "x y rgb"], n_mult: int = 2, n_bdry: int = 1
 ) -> Int[np.ndarray, "n_mult*x+2*n_bdry n_mult*y+2*n_bdry rgb"]:
     wall_fill: int = PixelColors.WALL[0]
-    assert all(
-        x == wall_fill for x in PixelColors.WALL
-    ), "PixelColors.WALL must be a single value"
+    assert all(x == wall_fill for x in PixelColors.WALL), (
+        "PixelColors.WALL must be a single value"
+    )
 
     output: np.ndarray = np.repeat(
         np.repeat(
@@ -185,7 +185,7 @@ class RasterizedMazeDataset(MazeDataset):
         print(f"{self[0][0].shape = }, {self[0][1].shape = }")
         count = count or len(self)
         if count == 0:
-            print(f"No mazes to plot for dataset")
+            print("No mazes to plot for dataset")
             return
         fig, axes = plt.subplots(2, count, figsize=(15, 5))
         if count == 1:

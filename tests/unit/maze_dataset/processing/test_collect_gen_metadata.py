@@ -5,7 +5,6 @@ from maze_dataset.dataset.maze_dataset import SERIALIZE_MINIMAL_THRESHOLD
 
 
 def test_remove_duplicates():
-
     cfg: MazeDatasetConfig = MazeDatasetConfig(
         name="test_collect",
         grid_n=5,
@@ -29,7 +28,6 @@ def test_remove_duplicates():
 
 
 def test_remove_duplicates_large():
-
     cfg: MazeDatasetConfig = MazeDatasetConfig(
         name="test_collect",
         grid_n=5,

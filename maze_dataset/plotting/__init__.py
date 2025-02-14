@@ -1,6 +1,6 @@
 """utilities for plotting mazes and printing tokens
 
-- any `LatticeMaze` or `SolvedMaze` comes with a `as_pixels()` method that returns 
+- any `LatticeMaze` or `SolvedMaze` comes with a `as_pixels()` method that returns
   a 2D numpy array of pixel values, but this is somewhat limited
 - `MazePlot` is a class that can be used to plot mazes and paths in a more customizable way
 - `print_tokens` contains utilities for printing tokens, colored by their type, position, or some custom weights (i.e. attention weights)

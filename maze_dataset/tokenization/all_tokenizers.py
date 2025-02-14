@@ -15,7 +15,7 @@ In general, uses for this module are limited to development of the library and s
   - `get_all_tokenizers()` may be subsequently filtered using `MazeTokenizerModular.has_element`
 For other uses, it's likely that the computational expense can be avoided by using
 - `maze_tokenizer.get_all_tokenizer_hashes()` for membership checks
-- `utils.all_instances` for generating smaller subsets of `MazeTokenizerModular` or `_TokenizerElement` objects 
+- `utils.all_instances` for generating smaller subsets of `MazeTokenizerModular` or `_TokenizerElement` objects
 
 # `EVERY_TEST_TOKENIZERS`
 A collection of the tokenizers which should always be included in unit tests when test fuzzing is used.

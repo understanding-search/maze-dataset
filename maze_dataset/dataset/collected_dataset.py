@@ -64,7 +64,7 @@ class MazeDatasetCollectionConfig(GPTDatasetConfig):
     def to_fname(self) -> str:
         """convert config to a filename"""
         return sanitize_fname(
-            f"collected-{self.name}-n{shorten_numerical_to_str(self.n_mazes)}-h{self.stable_hash_cfg()%10**5}"
+            f"collected-{self.name}-n{shorten_numerical_to_str(self.n_mazes)}-h{self.stable_hash_cfg() % 10**5}"
         )
 
 

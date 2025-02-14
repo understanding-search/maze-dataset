@@ -422,36 +422,36 @@ def _check_filter_equality(
             # basic checks
             assert isinstance(filterinfo_new, dict), "filterinfo_new is not a dict"
             assert isinstance(filterinfo_old, dict), "filterinfo_old is not a dict"
-            assert all(
-                key in filterinfo_new for key in ["name", "args", "kwargs"]
-            ), "missing keys in filterinfo_new"
-            assert all(
-                key in filterinfo_old for key in ["name", "args", "kwargs"]
-            ), "missing keys in filterinfo_old"
+            assert all(key in filterinfo_new for key in ["name", "args", "kwargs"]), (
+                "missing keys in filterinfo_new"
+            )
+            assert all(key in filterinfo_old for key in ["name", "args", "kwargs"]), (
+                "missing keys in filterinfo_old"
+            )
 
             # name
-            assert (
-                filterinfo_new["name"] == filterinfo_old["name"]
-            ), "filter names don't match"
+            assert filterinfo_new["name"] == filterinfo_old["name"], (
+                "filter names don't match"
+            )
 
             # args
-            assert len(filterinfo_new["args"]) == len(
-                filterinfo_old["args"]
-            ), "filter args of different lengths"
+            assert len(filterinfo_new["args"]) == len(filterinfo_old["args"]), (
+                "filter args of different lengths"
+            )
             for arg_new, arg_old in zip(filterinfo_new["args"], filterinfo_old["args"]):
                 assert arg_new == arg_old, "filter args don't match"
 
             # kwargs
-            assert len(filterinfo_new["kwargs"]) == len(
-                filterinfo_old["kwargs"]
-            ), "filter kwargs of different lengths"
+            assert len(filterinfo_new["kwargs"]) == len(filterinfo_old["kwargs"]), (
+                "filter kwargs of different lengths"
+            )
             for key in filterinfo_old["kwargs"]:
-                assert (
-                    key in filterinfo_new["kwargs"]
-                ), f"filter kwargs don't match: missing key '{key}'"
-                assert (
-                    filterinfo_new["kwargs"][key] == filterinfo_old["kwargs"][key]
-                ), f"filter kwargs don't match: values for key '{key}' don't match"
+                assert key in filterinfo_new["kwargs"], (
+                    f"filter kwargs don't match: missing key '{key}'"
+                )
+                assert filterinfo_new["kwargs"][key] == filterinfo_old["kwargs"][key], (
+                    f"filter kwargs don't match: values for key '{key}' don't match"
+                )
 
     except AssertionError as e:
         raise FilterInfoMismatchError(

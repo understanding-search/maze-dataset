@@ -232,9 +232,9 @@ class MazePlot:
         colormap_max: float | None = None,
         hide_colorbar: bool = False,
     ) -> MazePlot:
-        assert (
-            node_values.shape == self.maze.grid_shape
-        ), "Please pass node values of the same sape as LatticeMaze.grid_shape"
+        assert node_values.shape == self.maze.grid_shape, (
+            "Please pass node values of the same sape as LatticeMaze.grid_shape"
+        )
         # assert np.min(node_values) >= 0, "Please pass non-negative node values only."
 
         self.node_values = node_values
@@ -324,9 +324,9 @@ class MazePlot:
 
         else:
             assert self.node_values is not None, "Please pass node values."
-            assert not np.isnan(
-                self.node_values
-            ).any(), "Please pass node values, they cannot be nan."
+            assert not np.isnan(self.node_values).any(), (
+                "Please pass node values, they cannot be nan."
+            )
 
             vals_min: float = np.nanmin(self.node_values)
             vals_max: float = np.nanmax(self.node_values)
@@ -451,11 +451,9 @@ class MazePlot:
             for col in range(self.maze.grid_shape[1]):
                 # Draw node
                 img[
-                    row * self.unit_length
-                    + 1 : (row + 1) * self.unit_length
+                    row * self.unit_length + 1 : (row + 1) * self.unit_length
                     + node_bdry_hack,
-                    col * self.unit_length
-                    + 1 : (col + 1) * self.unit_length
+                    col * self.unit_length + 1 : (col + 1) * self.unit_length
                     + node_bdry_hack,
                 ] = scaled_node_values[row, col]
 
