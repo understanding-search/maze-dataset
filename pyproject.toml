@@ -98,8 +98,13 @@
     module = "fire"
     ignore_missing_imports = true
 
-[tool.pycln]
-    disable-all-dunder-policy = true # this doesn't seem to work... :/
+[tool.ruff.lint]
+ignore = [
+    "F722"
+]
+
+# [tool.pycln]
+#     disable-all-dunder-policy = true # this doesn't seem to work... :/
 
 # ============================================================
 [tool.makefile]
