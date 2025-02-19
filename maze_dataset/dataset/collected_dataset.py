@@ -146,7 +146,7 @@ class MazeDatasetCollection(GPTDataset):
             "maze_datasets": [dataset.serialize() for dataset in self.maze_datasets],
             "generation_metadata_collected": json_serialize(
                 self.generation_metadata_collected
-            )
+            ),
         }
 
     @classmethod
