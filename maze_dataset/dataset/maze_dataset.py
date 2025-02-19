@@ -73,6 +73,7 @@ EndpointKwargsType = dict[
         "allowed_end",
         "deadend_start",
         "deadend_end",
+        "endpoints_not_equal",
         "except_on_no_valid_endpoint",
     ],
     bool | None | list[tuple[int, int]],
@@ -348,6 +349,7 @@ class MazeDataset(GPTDataset):
 
         # Filter out None values explicitly after ensuring all results are collected
         solved_mazes = [maze for maze in solved_mazes if maze is not None]
+        # solved_mazes = list(filter(lambda x: x is not None, solved_mazes))
 
         # Update the config with the actual number of mazes
         cfg_cpy.n_mazes = len(solved_mazes)
