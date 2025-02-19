@@ -83,9 +83,6 @@ jobs:
       - name: format check
         run: make format-check
 
-      - name: check typing
-        run: make typing
-
       - name: Unit tests
         run: make unit
       
@@ -94,3 +91,6 @@ jobs:
       
       - name: Test Tokenizer Hashes
         run: make test_tok_hashes
+        
+      - name: check typing
+        run: make typing
