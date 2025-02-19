@@ -513,15 +513,23 @@ class LatticeMaze(SerializableDataclass):
                 return None
 
         # randomly select start and end positions
-        start_pos: CoordTup = tuple(
-            list(allowed_start_set)[np.random.randint(0, len(allowed_start_set))]
-        )
-        if endpoints_not_equal:
-            # remove start position from end positions
-            allowed_end_set.discard(start_pos)
-        end_pos: CoordTup = tuple(
-            list(allowed_end_set)[np.random.randint(0, len(allowed_end_set))]
-        )
+        try:
+            start_pos: CoordTup = tuple(
+                list(allowed_start_set)[np.random.randint(0, len(allowed_start_set))]
+            )
+            if endpoints_not_equal:
+                # remove start position from end positions
+                allowed_end_set.discard(start_pos)
+            end_pos: CoordTup = tuple(
+                list(allowed_end_set)[np.random.randint(0, len(allowed_end_set))]
+            )
+        except ValueError as e:
+            if except_on_no_valid_endpoint:
+                raise NoValidEndpointException(
+                    f"No valid start or end positions found, maybe can't find an endpoint after we removed the start point: {allowed_start_set = }, {allowed_end_set = }"
+                ) from e
+            else:
+                return None
 
         return self.find_shortest_path(start_pos, end_pos)
 
