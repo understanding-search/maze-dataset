@@ -96,13 +96,6 @@ MazePlot(maze).plot()
 
 # Development
 
-This project uses [Poetry](https://python-poetry.org/docs/#installation) for development. To install with dev requirements, run
-```
-poetry install --with dev
-```
-
-A makefile is included to simplify common development tasks:
-
 - `make help` will print all available commands
 - all tests via `make test`
     - unit tests via `make unit`
