@@ -1,64 +1,64 @@
 # Stats
 - 42 files
-- 11792 (12K) lines
-- 417446 (417K) chars
-- 39923 (40K) `whitespace-split` tokens
+- 11752 (12K) lines
+- 416540 (417K) chars
+- 39566 (40K) `whitespace-split` tokens
 
 # File Tree
 
 ```
-maze-dataset                             
-├── .github                              
-│   └── workflows                        
-│    ├── all-tok-checks.yml              [   51L   1,581C   140T]
-│    ├── checks.yml                      [   96L   2,172C   221T]
-│    └── make-docs.yml                   [   47L   1,262C   141T]
-├── maze_dataset                         
-│   ├── dataset                          
-│   │   ├── __init__.py                  [   21L     541C    39T]
-│   │   ├── collected_dataset.py         [  206L   7,343C   633T]
-│   │   ├── configs.py                   [   59L   1,589C   111T]
-│   │   ├── dataset.py                   [  505L  19,165C 1,872T]
-│   │   ├── maze_dataset.py              [  893L  33,665C 2,781T]
-│   │   └── rasterized.py                [  263L   8,437C   762T]
-│   ├── generation                       
-│   │   ├── __init__.py                  [   23L     562C    53T]
-│   │   ├── default_generators.py        [   21L     811C    68T]
-│   │   └── generators.py                [  408L  16,701C 1,684T]
-│   ├── maze                             
-│   │   ├── __init__.py                  [   26L     511C    47T]
-│   │   └── lattice_maze.py              [1,410L  51,117C 4,806T]
-│   ├── plotting                         
-│   │   ├── __init__.py                  [   32L   1,040C   109T]
-│   │   ├── plot_dataset.py              [   60L   1,679C   172T]
-│   │   ├── plot_maze.py                 [  546L  19,055C 1,771T]
-│   │   ├── plot_tokens.py               [   87L   2,452C   267T]
-│   │   └── print_tokens.py              [  226L   6,479C   700T]
-│   ├── tokenization                     
-│   │   ├── __init__.py                  [   51L   1,171C    94T]
-│   │   ├── all_tokenizers.py            [  181L   7,117C   684T]
-│   │   ├── maze_tokenizer.py            [2,257L  88,314C 7,631T]
-│   │   └── save_hashes.py               [  109L   3,540C   264T]
-│   ├── __init__.py                      [   68L   1,421C    99T]
-│   ├── constants.py                     [  223L   7,386C   714T]
-│   ├── py.typed                         [    0L       0C     0T]
-│   ├── testing_utils.py                 [  176L   9,421C 1,354T]
-│   ├── token_utils.py                   [  456L  16,680C 1,686T]
-│   └── utils.py                         [  399L  15,774C 1,867T]
-├── notebooks                            
-│   ├── demo_dataset.ipynb               [1,027L 434,412C 3,050T]
-│   ├── demo_generator.ipynb             [  197L  56,549C   376T]
-│   ├── demo_latticemaze.ipynb           [  820L 305,633C 2,505T]
-│   ├── demo_mazetokenizermodular.ipynb  [1,753L  89,537C 6,956T]
-│   ├── demo_tokenization.ipynb          [  429L 133,465C 9,298T]
-│   ├── forking_points.ipynb             [  211L  28,305C   614T]
-│   ├── iterated_backfilling.ipynb       [  208L  30,755C   613T]
-│   └── profile_dataset_save_read.ipynb  [  540L  17,521C 1,420T]
-├── .lastversion                         [    1L       7C     1T]
-├── README.md                            [  128L   6,406C   600T]
-├── makefile                             [1,504L  45,666C 5,438T]
-├── makefile_old                         [  296L   9,164C 1,017T]
-├── pyproject.toml                       [  253L   8,133C   927T]
+maze-dataset                              
+├── .github                               
+│   └── workflows                         
+│    ├── all-tok-checks.yml               [   51L   1,581C   140T]
+│    ├── checks.yml                       [   96L   2,179C   221T]
+│    └── make-docs.yml                    [   47L   1,262C   141T]
+├── maze_dataset                          
+│   ├── dataset                           
+│   │   ├── __init__.py                   [   21L     541C    39T]
+│   │   ├── collected_dataset.py          [  207L   7,399C   641T]
+│   │   ├── configs.py                    [   59L   1,589C   111T]
+│   │   ├── dataset.py                    [  505L  19,165C 1,872T]
+│   │   ├── maze_dataset.py               [  896L  33,869C 2,815T]
+│   │   └── rasterized.py                 [  263L   8,437C   762T]
+│   ├── generation                        
+│   │   ├── __init__.py                   [   23L     562C    53T]
+│   │   ├── default_generators.py         [   21L     811C    68T]
+│   │   └── generators.py                 [  408L  16,701C 1,684T]
+│   ├── maze                              
+│   │   ├── __init__.py                   [   26L     511C    47T]
+│   │   └── lattice_maze.py               [1,426L  51,921C 4,876T]
+│   ├── plotting                          
+│   │   ├── __init__.py                   [   32L   1,040C   109T]
+│   │   ├── plot_dataset.py               [   60L   1,679C   172T]
+│   │   ├── plot_maze.py                  [  546L  19,055C 1,771T]
+│   │   ├── plot_tokens.py                [   87L   2,452C   267T]
+│   │   └── print_tokens.py               [  226L   6,479C   700T]
+│   ├── tokenization                      
+│   │   ├── __init__.py                   [   51L   1,171C    94T]
+│   │   ├── all_tokenizers.py             [  181L   7,117C   684T]
+│   │   ├── maze_tokenizer.py             [2,258L  88,363C 7,635T]
+│   │   └── save_hashes.py                [  109L   3,540C   264T]
+│   ├── __init__.py                       [   68L   1,421C    99T]
+│   ├── constants.py                      [  223L   7,386C   714T]
+│   ├── py.typed                          [    0L       0C     0T]
+│   ├── testing_utils.py                  [  176L   9,421C 1,354T]
+│   ├── token_utils.py                    [  456L  16,680C 1,686T]
+│   └── utils.py                          [  399L  15,774C 1,867T]
+├── notebooks                             
+│   ├── demo_dataset.ipynb                [1,027L 434,412C 3,050T]
+│   ├── demo_generator.ipynb              [  197L  56,549C   376T]
+│   ├── demo_latticemaze.ipynb            [  820L 305,633C 2,505T]
+│   ├── demo_mazetokenizermodular.ipynb   [1,753L  89,537C 6,956T]
+│   ├── demo_tokenization.ipynb           [  429L 133,465C 9,298T]
+│   ├── estimate_dataset_fractions.ipynb  [  463L 648,474C 1,330T]
+│   ├── forking_points.ipynb              [  211L  28,305C   614T]
+│   ├── iterated_backfilling.ipynb        [  208L  30,755C   613T]
+│   └── profile_dataset_save_read.ipynb   [  540L  17,521C 1,420T]
+├── .lastversion                          [    1L       7C     1T]
+├── README.md                             [  121L   6,181C   573T]
+├── makefile                              [1,510L  45,867C 5,450T]
+├── pyproject.toml                        [  253L   8,133C   927T]
 ```
 
 # File Contents
@@ -203,9 +203,6 @@ jobs:
       - name: format check
         run: make format-check
 
-      - name: check typing
-        run: make typing
-
       - name: Unit tests
         run: make unit
       
@@ -214,7 +211,9 @@ jobs:
       
       - name: Test Tokenizer Hashes
         run: make test_tok_hashes
-
+        
+      - name: check typing
+        run: make typing
 ``````{ end_of_file=".github/workflows/checks.yml" }
 
 ``````{ path=".github/workflows/make-docs.yml"  }
@@ -313,6 +312,7 @@ from muutils.json_serialize import (
     serializable_dataclass,
     serializable_field,
 )
+from muutils.json_serialize.util import _FORMAT_KEY
 from muutils.misc import sanitize_fname, shorten_numerical_to_str, stable_hash
 from zanj.loading import LoaderHandler, load_item_recursive, register_loader_handler
 
@@ -434,18 +434,18 @@ class MazeDatasetCollection(GPTDataset):
         return cls(cfg, datasets)
 
     def serialize(self) -> JSONitem:
-        return dict(
-            __format__="MazeDatasetCollection",
-            cfg=self.cfg.serialize(),
-            maze_datasets=[dataset.serialize() for dataset in self.maze_datasets],
-            generation_metadata_collected=json_serialize(
+        return {
+            _FORMAT_KEY: "MazeDatasetCollection",
+            "cfg": self.cfg.serialize(),
+            "maze_datasets": [dataset.serialize() for dataset in self.maze_datasets],
+            "generation_metadata_collected": json_serialize(
                 self.generation_metadata_collected
             ),
-        )
+        }
 
     @classmethod
     def load(cls, data: JSONitem) -> "MazeDatasetCollection":
-        assert data["__format__"] == "MazeDatasetCollection"
+        assert data[_FORMAT_KEY] == "MazeDatasetCollection"
         return cls(
             **{
                 key: load_item_recursive(data[key], tuple())
@@ -490,8 +490,8 @@ register_loader_handler(
     LoaderHandler(
         check=lambda json_item, path=None, z=None: (
             isinstance(json_item, typing.Mapping)
-            and "__format__" in json_item
-            and json_item["__format__"].startswith("MazeDatasetCollection")
+            and _FORMAT_KEY in json_item
+            and json_item[_FORMAT_KEY].startswith("MazeDatasetCollection")
         ),
         load=lambda json_item, path=None, z=None: MazeDatasetCollection.load(json_item),
         uid="MazeDatasetCollection",
@@ -1099,6 +1099,7 @@ from muutils.json_serialize import (
     serializable_dataclass,
     serializable_field,
 )
+from muutils.json_serialize.util import _FORMAT_KEY
 from muutils.json_serialize.util import safe_getsource, string_as_lines
 from muutils.misc import sanitize_fname, shorten_numerical_to_str, stable_hash
 from zanj.loading import LoaderHandler, load_item_recursive, register_loader_handler
@@ -1149,6 +1150,7 @@ EndpointKwargsType = dict[
         "allowed_end",
         "deadend_start",
         "deadend_end",
+        "endpoints_not_equal",
         "except_on_no_valid_endpoint",
     ],
     bool | None | list[tuple[int, int]],
@@ -1424,6 +1426,7 @@ class MazeDataset(GPTDataset):
 
         # Filter out None values explicitly after ensuring all results are collected
         solved_mazes = [maze for maze in solved_mazes if maze is not None]
+        # solved_mazes = list(filter(lambda x: x is not None, solved_mazes))
 
         # Update the config with the actual number of mazes
         cfg_cpy.n_mazes = len(solved_mazes)
@@ -1446,11 +1449,11 @@ class MazeDataset(GPTDataset):
     @classmethod
     def load(cls, data: JSONitem) -> "MazeDataset":
         """load from zanj/json"""
-        if data["__format__"] == "MazeDataset:minimal":
+        if data[_FORMAT_KEY] == "MazeDataset:minimal":
             return cls._load_minimal(data)
-        elif data["__format__"] == "MazeDataset:minimal_soln_cat":
+        elif data[_FORMAT_KEY] == "MazeDataset:minimal_soln_cat":
             return cls._load_minimal_soln_cat(data)
-        elif data["__format__"] == "MazeDataset":
+        elif data[_FORMAT_KEY] == "MazeDataset":
             if (
                 SERIALIZE_MINIMAL_THRESHOLD == -1
             ):  # Allow access to `_load_legacy` for profiling
@@ -1458,12 +1461,12 @@ class MazeDataset(GPTDataset):
             return cls._load_full(data)
         else:
             raise KeyError(
-                f"`__format__` string {data['__format__']} is not a recognized `MazeDataset` format."
+                f"`_FORMAT_KEY` string {data[_FORMAT_KEY] = } is not a recognized `MazeDataset` format. ({_FORMAT_KEY = })"
             )
 
     @classmethod
     def _load_full(cls, data: JSONitem) -> "MazeDataset":
-        assert data["__format__"] == "MazeDataset"
+        assert data[_FORMAT_KEY] == "MazeDataset"
         return cls(
             cfg=MazeDatasetConfig.load(data["cfg"]),
             mazes=load_item_recursive(data["mazes"], tuple()),
@@ -1472,7 +1475,7 @@ class MazeDataset(GPTDataset):
 
     @classmethod
     def _load_minimal(cls, data: JSONitem) -> "MazeDataset":
-        assert data["__format__"] == "MazeDataset:minimal"
+        assert data[_FORMAT_KEY] == "MazeDataset:minimal"
         return cls(
             cfg=MazeDatasetConfig.load(data["cfg"]),
             generation_metadata_collected=data["generation_metadata_collected"],
@@ -1492,7 +1495,7 @@ class MazeDataset(GPTDataset):
 
     @classmethod
     def _load_minimal_soln_cat(cls, data: JSONitem) -> "MazeDataset":
-        assert data["__format__"] == "MazeDataset:minimal_soln_cat"
+        assert data[_FORMAT_KEY] == "MazeDataset:minimal_soln_cat"
 
         maze_solution_lengths = load_item_recursive(
             data["maze_solution_lengths"], tuple()
@@ -1525,7 +1528,7 @@ class MazeDataset(GPTDataset):
     @classmethod
     def _load_legacy(cls, data: JSONitem) -> "MazeDataset":
         """Legacy `load` method from <0.5.2. Used exclusively for profiling comparison."""
-        assert data["__format__"] == "MazeDataset"
+        assert data[_FORMAT_KEY] == "MazeDataset"
         return cls(
             **{
                 key: load_item_recursive(data[key], tuple())
@@ -1544,7 +1547,7 @@ class MazeDataset(GPTDataset):
 
     def _serialize_full(self) -> JSONitem:
         return {
-            "__format__": "MazeDataset",
+            _FORMAT_KEY: "MazeDataset",
             "cfg": json_serialize(self.cfg),
             "mazes": json_serialize(self.mazes),
             "generation_metadata_collected": json_serialize(
@@ -1578,17 +1581,17 @@ class MazeDataset(GPTDataset):
             maze_solution_lengths[idx] = maze.solution.shape[0]
             maze_solutions[idx, : maze.solution.shape[0]] = maze.solution
 
-        return dict(
-            __format__="MazeDataset:minimal",
-            cfg=json_serialize(filtered_meta.cfg),
-            generation_metadata_collected=json_serialize(
+        return {
+            _FORMAT_KEY: "MazeDataset:minimal",
+            "cfg": json_serialize(filtered_meta.cfg),
+            "generation_metadata_collected": json_serialize(
                 filtered_meta.generation_metadata_collected
             ),
-            maze_connection_lists=maze_connection_lists,
-            # maze_endpoints=maze_endpoints,
-            maze_solution_lengths=maze_solution_lengths,
-            maze_solutions=maze_solutions,
-        )
+            "maze_connection_lists": maze_connection_lists,
+            # "maze_endpoints": maze_endpoints,
+            "maze_solution_lengths": maze_solution_lengths,
+            "maze_solutions": maze_solutions,
+        }
 
     def _serialize_minimal_soln_cat(self) -> JSONitem:
         "alternate serialization where metadata is collected, and mazes and their solutions are stored in concatenated form"
@@ -1624,17 +1627,17 @@ class MazeDataset(GPTDataset):
             ] = maze.solution
             solutions_running_idx += soln_len
 
-        return dict(
-            __format__="MazeDataset:minimal_soln_cat",
-            cfg=json_serialize(filtered_meta.cfg),
-            generation_metadata_collected=json_serialize(
+        return {
+            _FORMAT_KEY: "MazeDataset:minimal_soln_cat",
+            "cfg": json_serialize(filtered_meta.cfg),
+            "generation_metadata_collected": json_serialize(
                 filtered_meta.generation_metadata_collected
             ),
-            maze_connection_lists=maze_connection_lists,
-            maze_endpoints=maze_endpoints,
-            maze_solution_lengths=maze_solution_lengths,
-            maze_solutions_concat=maze_solutions_concat,
-        )
+            "maze_connection_lists": maze_connection_lists,
+            "maze_endpoints": maze_endpoints,
+            "maze_solution_lengths": maze_solution_lengths,
+            "maze_solutions_concat": maze_solutions_concat,
+        }
 
     def update_self_config(self):
         """update the config to match the current state of the dataset (number of mazes, such as after filtering)"""
@@ -1666,8 +1669,8 @@ register_loader_handler(
     LoaderHandler(
         check=lambda json_item, path=None, z=None: (
             isinstance(json_item, typing.Mapping)
-            and "__format__" in json_item
-            and json_item["__format__"].startswith("MazeDataset")
+            and _FORMAT_KEY in json_item
+            and json_item[_FORMAT_KEY].startswith("MazeDataset")
         ),
         load=lambda json_item, path=None, z=None: MazeDataset.load(json_item),
         uid="MazeDataset",
@@ -3194,13 +3197,21 @@ class LatticeMaze(SerializableDataclass):
             False,
             False,
         ):
-            positions = connected_component[
-                np.random.choice(
-                    len(connected_component),
-                    size=2,
-                    replace=False,
-                )
-            ]
+            try:
+                positions = connected_component[
+                    np.random.choice(
+                        len(connected_component),
+                        size=2,
+                        replace=False,
+                    )
+                ]
+            except ValueError as e:
+                if except_on_no_valid_endpoint:
+                    raise NoValidEndpointException(
+                        f"No valid start or end positions found because we could not sample from {connected_component = }"
+                    ) from e
+                else:
+                    return None
 
             return self.find_shortest_path(positions[0], positions[1])
 
@@ -3234,21 +3245,29 @@ class LatticeMaze(SerializableDataclass):
         if len(allowed_start_set) == 0 or len(allowed_end_set) == 0:
             if except_on_no_valid_endpoint:
                 raise NoValidEndpointException(
-                    f"No valid start or end positions found: {allowed_start_set = }, {allowed_end_set = }"
+                    f"No valid start (or end?) positions found: {allowed_start_set = }, {allowed_end_set = }"
                 )
             else:
                 return None
 
         # randomly select start and end positions
-        start_pos: CoordTup = tuple(
-            list(allowed_start_set)[np.random.randint(0, len(allowed_start_set))]
-        )
-        if endpoints_not_equal:
-            # remove start position from end positions
-            allowed_end_set.discard(start_pos)
-        end_pos: CoordTup = tuple(
-            list(allowed_end_set)[np.random.randint(0, len(allowed_end_set))]
-        )
+        try:
+            start_pos: CoordTup = tuple(
+                list(allowed_start_set)[np.random.randint(0, len(allowed_start_set))]
+            )
+            if endpoints_not_equal:
+                # remove start position from end positions
+                allowed_end_set.discard(start_pos)
+            end_pos: CoordTup = tuple(
+                list(allowed_end_set)[np.random.randint(0, len(allowed_end_set))]
+            )
+        except ValueError as e:
+            if except_on_no_valid_endpoint:
+                raise NoValidEndpointException(
+                    f"No valid start or end positions found, maybe can't find an endpoint after we removed the start point: {allowed_start_set = }, {allowed_end_set = }"
+                ) from e
+            else:
+                return None
 
         return self.find_shortest_path(start_pos, end_pos)
 
@@ -5386,6 +5405,7 @@ from muutils.json_serialize import (
     serializable_dataclass,
     serializable_field,
 )
+from muutils.json_serialize.util import _FORMAT_KEY
 from muutils.kappa import Kappa
 from muutils.misc import empty_sequence_if_attr_false, flatten
 from muutils.misc.sequence import WhenMissing
@@ -6075,14 +6095,14 @@ def _load_tokenizer_element(
 ) -> _TokenizerElement:
     """Loads a `TokenizerElement` stored via zanj."""
     key: str = namespace.key
-    format: str = data[key]["__format__"]
+    format: str = data[key][_FORMAT_KEY]
     cls_name: str = format.split("(")[0]
     cls: type[_TokenizerElement] = getattr(namespace, cls_name)
     kwargs: dict[str, Any] = {
         k: load_item_recursive(data[key][k], tuple()) for k, v in data[key].items()
     }
-    if "__format__" in kwargs:
-        kwargs.pop("__format__")
+    if _FORMAT_KEY in kwargs:
+        kwargs.pop(_FORMAT_KEY)
     return cls(**kwargs)
 
 
@@ -10240,6 +10260,252 @@ plot_corner_first_ndindex(5)
 
 ``````{ end_of_file="notebooks/demo_tokenization.ipynb" }
 
+``````{ path="notebooks/estimate_dataset_fractions.ipynb" processed_with="ipynb_to_md" }
+```python
+from typing import Any, Callable, Sequence
+from pathlib import Path
+
+import numpy as np
+import matplotlib.pyplot as plt
+from tqdm import tqdm
+
+from maze_dataset import MazeDataset, MazeDatasetConfig
+from maze_dataset.generation import LatticeMazeGenerators
+```
+
+```python
+def analyze_percolation_success(
+    configs: list[MazeDatasetConfig],
+    p_values: np.ndarray,
+) -> dict[str, Any]:
+    """Analyze success rate of maze generation for different percolation values
+
+    # Parameters:
+     - `configs : list[MazeDatasetConfig]`
+       configs to try
+     - `p_values : np.ndarray`
+       numpy array of percolation probability values to test
+
+    # Returns:
+    `dict[str, Any]` with the following:
+    - `"configs": list[MazeDatasetConfig]`
+       List of MazeDatasetConfig objects used for testing
+    - `"p_values": np.ndarray`
+    - `"results": dict[str, np.ndarray]`
+       Dictionary mapping config names to arrays of success rates
+    """
+
+    success_rates: dict[str, np.ndarray] = {}
+
+    for idx_cfg, cfg in enumerate(configs):
+        rates: list[float] = []
+        for p in tqdm(
+            p_values,
+            desc=f"Testing percolation vals for config {idx_cfg + 1}/{len(configs)} '{cfg.name}'",
+            total=len(p_values),
+        ):
+            cfg_dict: dict = cfg.serialize()
+            cfg_dict["maze_ctor_kwargs"]["p"] = float(p)
+            cfg_test: MazeDatasetConfig = MazeDatasetConfig.load(cfg_dict)
+
+            dataset: MazeDataset = MazeDataset.from_config(
+                cfg_test,
+                do_download=False,
+                load_local=False,
+                save_local=False,
+                verbose=False,
+            )
+
+            rates.append(len(dataset) / cfg_test.n_mazes)
+
+        rates_array = np.array(rates)
+        success_rates[cfg_test.name] = rates_array
+
+    return dict(configs=configs, p_values=p_values, success_rates=success_rates)
+
+
+def plot_percolation_results(
+    results: dict[str, Any],
+    save_path: str = None,
+    cfg_keys: list[str] | None = None,
+    cmap_name: str | None = "viridis",
+    plot_only: bool = False,
+    show: bool = True,
+    ax: plt.Axes | None = None,
+) -> plt.Axes:
+    """Plot the results of percolation analysis.
+
+    # Parameters:
+     - `results : dict[str, Any]`
+       results dict from `analyze_percolation_success`
+     - `save_path : str`
+       Path to save the plot to, will display if `None`
+       (defaults to `None`)
+    """
+    # set up figure
+    if not ax:
+        fig: plt.Figure
+        ax: plt.Axes
+        fig, ax = plt.subplots(1, 1, figsize=(22, 10))
+
+    # plot
+    cmap = plt.get_cmap(cmap_name)
+    n_cfgs: int = len(results["success_rates"])
+    for i, (ep_cfg_name, success_rates) in enumerate(results["success_rates"].items()):
+        ax.plot(
+            results["p_values"],
+            success_rates,
+            ".-",
+            label=ep_cfg_name,
+            color=cmap((i + 0.5) / (n_cfgs - 0.5)),
+        )
+
+    # add title and stuff
+    if not plot_only:
+        ax.set_xlabel("Percolation Probability $p$")
+        ax.set_ylabel("SolvedMaze Generation Success Rate")
+        cfg: MazeDatasetConfig = results["configs"][0]
+        ax.set_title(
+            "Maze Generation Success Rate vs Percolation Probability\n"
+            + (
+                repr(cfg)
+                if cfg_keys is None
+                else (
+                    "MazeDatasetConfig("
+                    + ", ".join(
+                        [
+                            f"{k}={getattr(cfg, k).__name__}"
+                            if isinstance(getattr(cfg, k), Callable)
+                            else f"{k}={getattr(cfg, k)}"
+                            for k in cfg_keys
+                        ]
+                    )
+                    + ")"
+                )
+            )
+        )
+        ax.grid(True)
+        ax.legend(loc="lower center")
+
+    # save and show
+    if save_path:
+        plt.savefig(save_path)
+
+    if show:
+        plt.show()
+
+    return ax
+
+
+# Run the analysis
+results: dict[str, Any] = analyze_percolation_success(
+    configs=[
+        MazeDatasetConfig(
+            name=f"g{grid_n}",
+            grid_n=grid_n,
+            n_mazes=32,
+            maze_ctor=LatticeMazeGenerators.gen_percolation,
+            maze_ctor_kwargs=dict(),
+            endpoint_kwargs=dict(
+                deadend_start=False,
+                deadend_end=False,
+                endpoints_not_equal=False,
+                except_on_no_valid_endpoint=False,
+            ),
+        )
+        for grid_n in [2, 4]
+    ],
+    p_values=np.linspace(0.0, 1.0, 16),
+)
+
+# Plot results
+plot_percolation_results(
+    results, save_path=None, cfg_keys=["n_mazes", "endpoint_kwargs"]
+)
+```
+
+```python
+DEFAULT_ENDPOINT_KWARGS: list[tuple[str, dict]] = [
+    (
+        "any",
+        dict(deadend_start=False, deadend_end=False, except_on_no_valid_endpoint=False),
+    ),
+    (
+        "deadends",
+        dict(deadend_start=True, deadend_end=True, except_on_no_valid_endpoint=False),
+    ),
+    (
+        "deadends_unique",
+        dict(
+            deadend_start=True,
+            deadend_end=True,
+            endpoints_not_equal=False,
+            except_on_no_valid_endpoint=False,
+        ),
+    ),
+]
+
+
+def full_analysis(
+    n_mazes: int,
+    p_val_count: int,
+    grid_sizes: list[int],
+    ep_kwargs: list[tuple[str, dict]] | None = None,
+    generators: Sequence[Callable] = (
+        LatticeMazeGenerators.gen_percolation,
+        LatticeMazeGenerators.gen_dfs_percolation,
+    ),
+    save_dir: Path = Path("../docs/benchmarks/percolation_fractions"),
+) -> None:
+    if ep_kwargs is None:
+        ep_kwargs = DEFAULT_ENDPOINT_KWARGS
+
+    total_cfgs: int = len(generators) * len(ep_kwargs)
+    cfg_idx: int = 0
+
+    # for i, ((ep_kw_name, ep_kw), gen_func) in enumerate(cfg_augment_product):
+    for ep_kw_name, ep_kw in ep_kwargs:
+        fig, ax = plt.subplots(1, 1, figsize=(22, 10))
+        for gf_idx, gen_func in enumerate(generators):
+            cfg_idx += 1
+            print(
+                f"\n\n# Analyzing {cfg_idx}/{total_cfgs}: endpoint_kwargs '{ep_kw_name}', gen_func={gen_func.__name__}\n\n"
+            )
+            ax = plot_percolation_results(
+                analyze_percolation_success(
+                    configs=[
+                        MazeDatasetConfig(
+                            name=f"g{grid_n}-{gen_func.__name__.removeprefix('gen_').removesuffix('olation')}",
+                            grid_n=grid_n,
+                            n_mazes=n_mazes,
+                            maze_ctor=gen_func,
+                            maze_ctor_kwargs=dict(),
+                            endpoint_kwargs=ep_kw,
+                        )
+                        for grid_n in grid_sizes
+                    ],
+                    p_values=np.linspace(0.0, 1.0, p_val_count),
+                ),
+                cfg_keys=["n_mazes", "maze_ctor", "endpoint_kwargs"],
+                ax=ax,
+                show=False,
+                cmap_name="Reds" if gf_idx == 0 else "Blues",
+            )
+        # save the figure
+        plt.savefig(save_dir / f"ep_{ep_kw_name}.svg")
+        plt.show()
+
+
+full_analysis(
+    n_mazes=32,
+    p_val_count=16,
+    grid_sizes=[2, 4],
+)
+```
+
+
+``````{ end_of_file="notebooks/estimate_dataset_fractions.ipynb" }
+
 ``````{ path="notebooks/forking_points.ipynb" processed_with="ipynb_to_md" }
 ```python
 # other package imports
@@ -10954,13 +11220,6 @@ MazePlot(maze).plot()
 
 # Development
 
-This project uses [Poetry](https://python-poetry.org/docs/#installation) for development. To install with dev requirements, run
-```
-poetry install --with dev
-```
-
-A makefile is included to simplify common development tasks:
-
 - `make help` will print all available commands
 - all tests via `make test`
     - unit tests via `make unit`
@@ -11112,12 +11371,12 @@ test-all: clean test test_tok_hashes test_all_tok
 	...
 
 .PHONY: check
-check: clean check-format typing clean test
+check: clean check-format test typing
 	@echo "run format check and test"
 	...
 
 .PHONY: check-all
-check-all: clean check-format typing clean test-all
+check-all: clean check-format test-all typing
 	@echo "run format check and test-all (includes tokenizers)"
 	...
 
@@ -11240,305 +11499,6 @@ help: help-targets info
 	...
 
 ``````{ end_of_file="makefile" }
-
-``````{ path="makefile_old"  }
-PACKAGE_NAME := maze_dataset
-PUBLISH_BRANCH := main
-PYPI_TOKEN_FILE := .pypi-token
-LAST_VERSION_FILE := .lastversion
-PYPROJECT := pyproject.toml
-PYTHON := poetry run python
-# where to put docs
-DOCS_DIR := docs
-COVERAGE_REPORTS_DIR := $(DOCS_DIR)/coverage
-
-NOTEBOOKS_DIR := notebooks
-CONVERTED_NOTEBOOKS_TEMP_DIR := tests/_temp/notebooks
-
-COMMIT_LOG_FILE := .commit_log
-
-# reading version
-# --------------------------------------------------
-# assuming your pyproject.toml has a line that looks like `version = "0.0.1"`, will get the version
-VERSION := NULL
-# read last auto-uploaded version from file
-LAST_VERSION := NULL
-# get the python version, now that we have picked the python command
-PYTHON_VERSION := NULL
-.PHONY: gen-version-info
-gen-version-info:
-	$(eval VERSION := $(shell python -c "import re; print('v'+re.search(r'^version\s*=\s*\"(.+?)\"', open('$(PYPROJECT)').read(), re.MULTILINE).group(1))"))
-	$(eval LAST_VERSION := $(shell [ -f $(LAST_VERSION_FILE) ] && cat $(LAST_VERSION_FILE) || echo NULL) )
-	$(eval PYTHON_VERSION := $(shell $(PYTHON) -c "import sys; print(f'{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}')") )
-
-# getting commit log
-.PHONY: gen-commit-log
-gen-commit-log: gen-version-info
-	if [ "$(LAST_VERSION)" = "NULL" ]; then \
-		echo "LAST_VERSION is NULL, cant get commit log!"; \
-		exit 1; \
-	fi
-	$(shell python -c "import subprocess; open('$(COMMIT_LOG_FILE)', 'w').write('\n'.join(reversed(subprocess.check_output(['git', 'log', '$(LAST_VERSION)'.strip() + '..HEAD', '--pretty=format:- %s (%h)']).decode('utf-8').strip().split('\n'))))")
-
-# pandoc commands (for docs)
-PANDOC ?= pandoc
-
-.PHONY: default
-default: help
-
-.PHONY: version
-version: gen-commit-log
-	@echo "current and last-published version, commit log"
-	@echo "current-version: '$(VERSION)'"
-	@echo "last-published-version: '$(LAST_VERSION)'"
-	@echo "Commit log since last version:"
-	@cat $(COMMIT_LOG_FILE)
-	@if [ "$(VERSION)" = "$(LAST_VERSION)" ]; then \
-		echo "Python package $(VERSION) is the same as last published version $(LAST_VERSION), exiting!"; \
-		exit 1; \
-	fi
-
-# format and lint
-# --------------------------------------------------
-
-.PHONY: lint
-lint: clean
-	@echo "run linting: mypy"
-	$(PYTHON) -m mypy --config-file $(PYPROJECT) maze_dataset/
-	$(PYTHON) -m mypy --config-file $(PYPROJECT) tests/
-
-
-.PHONY: format
-format: clean
-	@echo "run formatting: pycln, isort, and black"
-	$(PYTHON) -m pycln --config $(PYPROJECT) --all .
-	$(PYTHON) -m isort format .
-	$(PYTHON) -m black .
-
-
-.PHONY: check-format
-check-format: clean
-	@echo "check formatting"
-	$(PYTHON) -m pycln --config $(PYPROJECT) --check --all .
-	$(PYTHON) -m isort --check-only .
-	$(PYTHON) -m black --check .
-
-PYTEST_OPTIONS ?=
-PYTEST_PARALLEL ?= 0
-
-ifeq ($(PYTEST_PARALLEL),1)
-	PYTEST_OPTIONS+=-n auto
-endif
-
-# docs, coverage reports, and benchmarks
-# --------------------------------------------------
-# whether to run pytest with coverage report generation
-COV ?= 1
-
-ifeq ($(COV),1)
-    PYTEST_OPTIONS+=--cov=.
-endif
-
-.PHONY: docs-html
-docs-html:
-	@echo "generate html docs"
-	$(PYTHON) docs/make_docs.py
-
-.PHONY: docs-md
-docs-md:
-	@echo "generate combined docs in markdown"
-	mkdir $(DOCS_DIR)/combined -p
-	$(PYTHON) docs/make_docs.py --combined
-
-
-.PHONY: docs-combined
-docs-combined: docs-md
-	@echo "generate combined docs in markdown and other formats"
-	@echo "requires pandoc in path"
-	$(PANDOC) -f markdown -t gfm $(DOCS_DIR)/combined/$(PACKAGE_NAME).md -o $(DOCS_DIR)/combined/$(PACKAGE_NAME)_gfm.md
-	$(PANDOC) -f markdown -t plain $(DOCS_DIR)/combined/$(PACKAGE_NAME).md -o $(DOCS_DIR)/combined/$(PACKAGE_NAME).txt
-	$(PANDOC) -f markdown -t html $(DOCS_DIR)/combined/$(PACKAGE_NAME).md -o $(DOCS_DIR)/combined/$(PACKAGE_NAME).html
-
-
-.PHONY: docs-notebooks
-docs-notebooks:
-	@echo "generate html docs for notebooks"
-	$(PYTHON) docs/make_docs.py --notebooks
-
-.PHONY: cov
-cov:
-	@echo "generate coverage reports (run tests manually)"
-	mkdir $(COVERAGE_REPORTS_DIR) -p
-	$(PYTHON) -m coverage report -m > $(COVERAGE_REPORTS_DIR)/coverage.txt
-	$(PYTHON) -m coverage_badge -f -o $(COVERAGE_REPORTS_DIR)/coverage.svg
-	$(PYTHON) -m coverage html --directory=$(COVERAGE_REPORTS_DIR)/html/
-	rm -rf $(COVERAGE_REPORTS_DIR)/html/.gitignore
-
-.PHONY: benchmark
-benchmark:
-	@echo "run benchmarks"
-	$(PYTHON) docs/benchmarks/benchmark_generation.py
-
-.PHONY: docs
-docs: docs-html docs-combined docs-notebooks cov
-	@echo "generate all documentation"
-
-.PHONY: clean-docs
-clean-docs:
-	@echo "clean up docs"
-	rm -rf $(DOCS_DIR)/combined/
-	rm -rf $(DOCS_DIR)/notebooks/
-	rm -rf $(DOCS_DIR)/maze_dataset/
-	rm -rf $(COVERAGE_REPORTS_DIR)/
-	rm $(DOCS_DIR)/maze_dataset.html
-	rm $(DOCS_DIR)/index.html
-	rm $(DOCS_DIR)/search.js
-
-
-# testing
-# --------------------------------------------------
-
-
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-.PHONY: unit
-unit:
-	@echo "run unit tests"
-	$(PYTHON) -m pytest $(PYTEST_OPTIONS) tests/unit
-
-.PHONY: save_tok_hashes
-save_tok_hashes:
-	@echo "generate and save tokenizer hashes"
-	$(PYTHON) -m maze_dataset.tokenization.save_hashes -p
-
-.PHONY: test_tok_hashes
-test_tok_hashes:
-	@echo "re-run tokenizer hashes and compare"
-	$(PYTHON) -m maze_dataset.tokenization.save_hashes -p --check
-
-
-.PHONY: test_all_tok
-test_all_tok:
-	@echo "run tests on all tokenizers. can pass NUM_TOKENIZERS_TO_TEST arg or SKIP_HASH_TEST"
-	@echo "NUM_TOKENIZERS_TO_TEST=$(NUM_TOKENIZERS_TO_TEST)"
-	@if [ "$(SKIP_HASH_TEST)" != "1" ]; then \
-		echo "Running tokenizer hash tests"; \
-		$(MAKE) test_tok_hashes; \
-	else \
-		echo "Skipping tokenizer hash tests"; \
-	fi
-	$(PYTHON) -m pytest $(PYTEST_OPTIONS) --verbosity=-1 --durations=50 tests/all_tokenizers
-
-
-
-.PHONY: convert_notebooks
-convert_notebooks:
-	@echo "convert notebooks in $(NOTEBOOKS_DIR) using muutils.nbutils.convert_ipynb_to_script.py"
-	$(PYTHON) -m muutils.nbutils.convert_ipynb_to_script $(NOTEBOOKS_DIR) --output_dir $(CONVERTED_NOTEBOOKS_TEMP_DIR) --disable_plots
-
-
-.PHONY: test_notebooks
-test_notebooks: convert_notebooks
-	@echo "run tests on converted notebooks in $(CONVERTED_NOTEBOOKS_TEMP_DIR) using muutils.nbutils.run_notebook_tests.py"
-	$(PYTHON) -m muutils.nbutils.run_notebook_tests --notebooks-dir=$(NOTEBOOKS_DIR) --converted-notebooks-temp-dir=$(CONVERTED_NOTEBOOKS_TEMP_DIR)
-
-
-.PHONY: test
-test: clean unit test_notebooks
-	@echo "ran all tests: unit, integration, and notebooks"
-
-.PHONY: test-all
-test-all: clean test test_tok_hashes test_all_tok
-	@echo "run all tests, including tokenizers"
-
-.PHONY: check
-check: clean check-format clean test
-	@echo "run format check and test"
-
-.PHONY: check-all
-check-all: clean check-format clean test-all
-	@echo "run format check and test-all (includes tokenizers)"
-
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-# build and publish
-# --------------------------------------------------
-
-.PHONY: verify-git
-verify-git: 
-	@echo "checking git status"
-	if [ "$(shell git branch --show-current)" != $(PUBLISH_BRANCH) ]; then \
-		echo "Git is not on the $(PUBLISH_BRANCH) branch, exiting!"; \
-		exit 1; \
-	fi; \
-	if [ -n "$(shell git status --porcelain)" ]; then \
-		echo "Git is not clean, exiting!"; \
-		exit 1; \
-	fi; \
-
-.PHONY: build
-build: 
-	@echo "build via poetry, assumes checks have been run"
-	poetry build
-
-.PHONY: publish
-publish: gen-commit-log check build verify-git version gen-version-info
-	@echo "run all checks, build, and then publish"
-
-	@echo "Enter the new version number if you want to upload to pypi and create a new tag"
-	@read -p "Confirm: " NEW_VERSION; \
-	if [ "$$NEW_VERSION" != "$(VERSION)" ]; then \
-		echo "'$$NEW_VERSION' is not the same as '$(VERSION)', exiting!"; \
-		echo "Confirmation failed, exiting!"; \
-		exit 1; \
-	fi; \
-
-	@echo "pypi username: __token__"
-	@echo "pypi token from '$(PYPI_TOKEN_FILE)' :"
-	echo $$(cat $(PYPI_TOKEN_FILE))
-
-	echo "Uploading!"; \
-	echo $(VERSION) > $(LAST_VERSION_FILE); \
-	git add $(LAST_VERSION_FILE); \
-	git commit -m "Auto update to $(VERSION)"; \
-	git tag -a $(VERSION) -F $(COMMIT_LOG_FILE); \
-	git push origin $(VERSION); \
-	twine upload dist/* --verbose
-
-# general util
-# --------------------------------------------------
-
-.PHONY: clean
-clean:
-	@echo "cleaning up caches and temp files"
-	rm -rf .mypy_cache
-	rm -rf .pytest_cache
-	rm -rf .coverage
-	rm -rf dist
-	rm -rf build
-	rm -rf tests/_temp
-	python -Bc "import pathlib; [p.unlink() for p in pathlib.Path('.').rglob('*.py[co]')]"
-	python -Bc "import pathlib; [p.rmdir() for p in pathlib.Path('.').rglob('__pycache__')]"
-
-
-help-prereq:
-	@echo -n "# list make targets"
-	@echo ":"
-	@cat Makefile | sed -n '/^\.PHONY: / h; /\(^\t@*echo\|^\t:\)/ {H; x; /PHONY/ s/.PHONY: \(.*\)\n.*"\(.*\)"/    make \1\t\2/p; d; x}'| sort -k2,2 |expand -t 30
-
-
-# listing targets, from stackoverflow
-# https://stackoverflow.com/questions/4219255/how-do-you-get-the-list-of-targets-in-a-makefile
-.PHONY: help
-help: help-prereq gen-version-info
-	@echo -n ""
-	@echo "# makefile variables"
-	@echo "    PYTHON = $(PYTHON)"
-	@echo "    PYTHON_VERSION = $(PYTHON_VERSION)"
-	@echo "    PACKAGE_NAME = $(PACKAGE_NAME)"
-	@echo "    VERSION = $(VERSION)"
-	@echo "    LAST_VERSION = $(LAST_VERSION)"
-	@echo "    PYTEST_OPTIONS = $(PYTEST_OPTIONS)"
-``````{ end_of_file="makefile_old" }
 
 ``````{ path="pyproject.toml"  }
 [project]
