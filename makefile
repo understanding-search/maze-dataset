@@ -38,6 +38,12 @@ TESTS_DIR := tests
 # tests temp directory to clean up. will remove this in `make clean`
 TESTS_TEMP_DIR := $(TESTS_DIR)/_temp/
 
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+NOTEBOOKS_DIR := notebooks
+CONVERTED_NOTEBOOKS_TEMP_DIR := $(TESTS_TEMP_DIR)/notebooks
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 # probably don't change these:
 # --------------------------------------------------
 
