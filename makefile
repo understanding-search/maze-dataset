@@ -1219,13 +1219,13 @@ test_all_tok:
 .PHONY: convert_notebooks
 convert_notebooks:
 	@echo "convert notebooks in $(NOTEBOOKS_DIR) using muutils.nbutils.convert_ipynb_to_script.py"
-	$(PYTHON) -m muutils.nbutils.convert_ipynb_to_script $(NOTEBOOKS_DIR) --output_dir $(CONVERTED_NOTEBOOKS_TEMP_DIR) --disable_plots
+	$(PYTHON) -m muutils.nbutils.convert_ipynb_to_script $(NOTEBOOKS_DIR) --output_dir $(CONVERTED_NOTEBOOKS_TEMP_DIR) --disable_plots --python_tool uv 
 
 
 .PHONY: test_notebooks
 test_notebooks: convert_notebooks
 	@echo "run tests on converted notebooks in $(CONVERTED_NOTEBOOKS_TEMP_DIR) using muutils.nbutils.run_notebook_tests.py"
-	$(PYTHON) -m muutils.nbutils.run_notebook_tests --notebooks-dir=$(NOTEBOOKS_DIR) --converted-notebooks-temp-dir=$(CONVERTED_NOTEBOOKS_TEMP_DIR)
+	$(PYTHON) -m muutils.nbutils.run_notebook_tests --notebooks-dir $(NOTEBOOKS_DIR) --converted-notebooks-temp-dir $(CONVERTED_NOTEBOOKS_TEMP_DIR) --python_tool uv 
 
 .PHONY: test
 test: clean unit test_notebooks
