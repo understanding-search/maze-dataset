@@ -22,6 +22,7 @@ from muutils.json_serialize import (
     serializable_dataclass,
     serializable_field,
 )
+from muutils.json_serialize.util import _FORMAT_KEY
 from muutils.json_serialize.util import safe_getsource, string_as_lines
 from muutils.misc import sanitize_fname, shorten_numerical_to_str, stable_hash
 from zanj.loading import LoaderHandler, load_item_recursive, register_loader_handler
@@ -369,11 +370,11 @@ class MazeDataset(GPTDataset):
     @classmethod
     def load(cls, data: JSONitem) -> "MazeDataset":
         """load from zanj/json"""
-        if data["__format__"] == "MazeDataset:minimal":
+        if data[_FORMAT_KEY] == "MazeDataset:minimal":
             return cls._load_minimal(data)
-        elif data["__format__"] == "MazeDataset:minimal_soln_cat":
+        elif data[_FORMAT_KEY] == "MazeDataset:minimal_soln_cat":
             return cls._load_minimal_soln_cat(data)
-        elif data["__format__"] == "MazeDataset":
+        elif data[_FORMAT_KEY] == "MazeDataset":
             if (
                 SERIALIZE_MINIMAL_THRESHOLD == -1
             ):  # Allow access to `_load_legacy` for profiling
@@ -381,12 +382,12 @@ class MazeDataset(GPTDataset):
             return cls._load_full(data)
         else:
             raise KeyError(
-                f"`__format__` string {data['__format__']} is not a recognized `MazeDataset` format."
+                f"`_FORMAT_KEY` string {data[_FORMAT_KEY] = } is not a recognized `MazeDataset` format. ({_FORMAT_KEY = })"
             )
 
     @classmethod
     def _load_full(cls, data: JSONitem) -> "MazeDataset":
-        assert data["__format__"] == "MazeDataset"
+        assert data[_FORMAT_KEY] == "MazeDataset"
         return cls(
             cfg=MazeDatasetConfig.load(data["cfg"]),
             mazes=load_item_recursive(data["mazes"], tuple()),
@@ -395,7 +396,7 @@ class MazeDataset(GPTDataset):
 
     @classmethod
     def _load_minimal(cls, data: JSONitem) -> "MazeDataset":
-        assert data["__format__"] == "MazeDataset:minimal"
+        assert data[_FORMAT_KEY] == "MazeDataset:minimal"
         return cls(
             cfg=MazeDatasetConfig.load(data["cfg"]),
             generation_metadata_collected=data["generation_metadata_collected"],
@@ -415,7 +416,7 @@ class MazeDataset(GPTDataset):
 
     @classmethod
     def _load_minimal_soln_cat(cls, data: JSONitem) -> "MazeDataset":
-        assert data["__format__"] == "MazeDataset:minimal_soln_cat"
+        assert data[_FORMAT_KEY] == "MazeDataset:minimal_soln_cat"
 
         maze_solution_lengths = load_item_recursive(
             data["maze_solution_lengths"], tuple()
@@ -448,7 +449,7 @@ class MazeDataset(GPTDataset):
     @classmethod
     def _load_legacy(cls, data: JSONitem) -> "MazeDataset":
         """Legacy `load` method from <0.5.2. Used exclusively for profiling comparison."""
-        assert data["__format__"] == "MazeDataset"
+        assert data[_FORMAT_KEY] == "MazeDataset"
         return cls(
             **{
                 key: load_item_recursive(data[key], tuple())
@@ -467,7 +468,7 @@ class MazeDataset(GPTDataset):
 
     def _serialize_full(self) -> JSONitem:
         return {
-            "__format__": "MazeDataset",
+            _FORMAT_KEY: "MazeDataset",
             "cfg": json_serialize(self.cfg),
             "mazes": json_serialize(self.mazes),
             "generation_metadata_collected": json_serialize(
@@ -501,17 +502,17 @@ class MazeDataset(GPTDataset):
             maze_solution_lengths[idx] = maze.solution.shape[0]
             maze_solutions[idx, : maze.solution.shape[0]] = maze.solution
 
-        return dict(
-            __format__="MazeDataset:minimal",
-            cfg=json_serialize(filtered_meta.cfg),
-            generation_metadata_collected=json_serialize(
+        return {
+            _FORMAT_KEY: "MazeDataset:minimal",
+            "cfg": json_serialize(filtered_meta.cfg),
+            "generation_metadata_collected": json_serialize(
                 filtered_meta.generation_metadata_collected
             ),
-            maze_connection_lists=maze_connection_lists,
-            # maze_endpoints=maze_endpoints,
-            maze_solution_lengths=maze_solution_lengths,
-            maze_solutions=maze_solutions,
-        )
+            "maze_connection_lists": maze_connection_lists,
+            # "maze_endpoints": maze_endpoints,
+            "maze_solution_lengths": maze_solution_lengths,
+            "maze_solutions": maze_solutions,
+        }
 
     def _serialize_minimal_soln_cat(self) -> JSONitem:
         "alternate serialization where metadata is collected, and mazes and their solutions are stored in concatenated form"
@@ -547,17 +548,17 @@ class MazeDataset(GPTDataset):
             ] = maze.solution
             solutions_running_idx += soln_len
 
-        return dict(
-            __format__="MazeDataset:minimal_soln_cat",
-            cfg=json_serialize(filtered_meta.cfg),
-            generation_metadata_collected=json_serialize(
+        return {
+            _FORMAT_KEY: "MazeDataset:minimal_soln_cat",
+            "cfg": json_serialize(filtered_meta.cfg),
+            "generation_metadata_collected": json_serialize(
                 filtered_meta.generation_metadata_collected
             ),
-            maze_connection_lists=maze_connection_lists,
-            maze_endpoints=maze_endpoints,
-            maze_solution_lengths=maze_solution_lengths,
-            maze_solutions_concat=maze_solutions_concat,
-        )
+            "maze_connection_lists": maze_connection_lists,
+            "maze_endpoints": maze_endpoints,
+            "maze_solution_lengths": maze_solution_lengths,
+            "maze_solutions_concat": maze_solutions_concat,
+        }
 
     def update_self_config(self):
         """update the config to match the current state of the dataset (number of mazes, such as after filtering)"""
@@ -589,8 +590,8 @@ register_loader_handler(
     LoaderHandler(
         check=lambda json_item, path=None, z=None: (
             isinstance(json_item, typing.Mapping)
-            and "__format__" in json_item
-            and json_item["__format__"].startswith("MazeDataset")
+            and _FORMAT_KEY in json_item
+            and json_item[_FORMAT_KEY].startswith("MazeDataset")
         ),
         load=lambda json_item, path=None, z=None: MazeDataset.load(json_item),
         uid="MazeDataset",

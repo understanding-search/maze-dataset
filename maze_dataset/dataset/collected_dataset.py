@@ -18,6 +18,7 @@ from muutils.json_serialize import (
     serializable_dataclass,
     serializable_field,
 )
+from muutils.json_serialize.util import _FORMAT_KEY
 from muutils.misc import sanitize_fname, shorten_numerical_to_str, stable_hash
 from zanj.loading import LoaderHandler, load_item_recursive, register_loader_handler
 
@@ -139,18 +140,18 @@ class MazeDatasetCollection(GPTDataset):
         return cls(cfg, datasets)
 
     def serialize(self) -> JSONitem:
-        return dict(
-            __format__="MazeDatasetCollection",
-            cfg=self.cfg.serialize(),
-            maze_datasets=[dataset.serialize() for dataset in self.maze_datasets],
-            generation_metadata_collected=json_serialize(
+        return {
+            _FORMAT_KEY: "MazeDatasetCollection",
+            "cfg": self.cfg.serialize(),
+            "maze_datasets": [dataset.serialize() for dataset in self.maze_datasets],
+            "generation_metadata_collected": json_serialize(
                 self.generation_metadata_collected
-            ),
-        )
+            )
+        }
 
     @classmethod
     def load(cls, data: JSONitem) -> "MazeDatasetCollection":
-        assert data["__format__"] == "MazeDatasetCollection"
+        assert data[_FORMAT_KEY] == "MazeDatasetCollection"
         return cls(
             **{
                 key: load_item_recursive(data[key], tuple())
@@ -195,8 +196,8 @@ register_loader_handler(
     LoaderHandler(
         check=lambda json_item, path=None, z=None: (
             isinstance(json_item, typing.Mapping)
-            and "__format__" in json_item
-            and json_item["__format__"].startswith("MazeDatasetCollection")
+            and _FORMAT_KEY in json_item
+            and json_item[_FORMAT_KEY].startswith("MazeDatasetCollection")
         ),
         load=lambda json_item, path=None, z=None: MazeDatasetCollection.load(json_item),
         uid="MazeDatasetCollection",

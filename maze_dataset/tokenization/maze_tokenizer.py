@@ -26,6 +26,7 @@ from muutils.json_serialize import (
     serializable_dataclass,
     serializable_field,
 )
+from muutils.json_serialize.util import _FORMAT_KEY
 from muutils.kappa import Kappa
 from muutils.misc import empty_sequence_if_attr_false, flatten
 from muutils.misc.sequence import WhenMissing
@@ -715,14 +716,14 @@ def _load_tokenizer_element(
 ) -> _TokenizerElement:
     """Loads a `TokenizerElement` stored via zanj."""
     key: str = namespace.key
-    format: str = data[key]["__format__"]
+    format: str = data[key][_FORMAT_KEY]
     cls_name: str = format.split("(")[0]
     cls: type[_TokenizerElement] = getattr(namespace, cls_name)
     kwargs: dict[str, Any] = {
         k: load_item_recursive(data[key][k], tuple()) for k, v in data[key].items()
     }
-    if "__format__" in kwargs:
-        kwargs.pop("__format__")
+    if _FORMAT_KEY in kwargs:
+        kwargs.pop(_FORMAT_KEY)
     return cls(**kwargs)
 
 
