@@ -459,13 +459,21 @@ class LatticeMaze(SerializableDataclass):
             False,
             False,
         ):
-            positions = connected_component[
-                np.random.choice(
-                    len(connected_component),
-                    size=2,
-                    replace=False,
-                )
-            ]
+            try:
+                positions = connected_component[
+                    np.random.choice(
+                        len(connected_component),
+                        size=2,
+                        replace=False,
+                    )
+                ]
+            except ValueError as e:
+                if except_on_no_valid_endpoint:
+                    raise NoValidEndpointException(
+                        f"No valid start or end positions found because we could not sample from {connected_component = }"
+                    ) from e
+                else:
+                    return None
 
             return self.find_shortest_path(positions[0], positions[1])
 
@@ -499,7 +507,7 @@ class LatticeMaze(SerializableDataclass):
         if len(allowed_start_set) == 0 or len(allowed_end_set) == 0:
             if except_on_no_valid_endpoint:
                 raise NoValidEndpointException(
-                    f"No valid start or end positions found: {allowed_start_set = }, {allowed_end_set = }"
+                    f"No valid start (or end?) positions found: {allowed_start_set = }, {allowed_end_set = }"
                 )
             else:
                 return None
