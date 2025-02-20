@@ -1,5 +1,11 @@
+"""Benchmarking of how successful maze generation is for various values of percolation
+
+"""
+
+
+import functools
 import json
-from typing import Any, Callable, Sequence
+from typing import Any, Callable, Sequence, TypeVar
 from pathlib import Path
 
 import numpy as np
@@ -7,23 +13,72 @@ from jaxtyping import Float
 import matplotlib.pyplot as plt
 from tqdm import tqdm
 from muutils.json_serialize import serializable_dataclass, SerializableDataclass, serializable_field
+from muutils.dictmagic import dotlist_to_nested_dict, update_with_nested_dict
+from muutils.parallel import run_maybe_parallel
 
 from maze_dataset import MazeDataset, MazeDatasetConfig
 from maze_dataset.generation import LatticeMazeGenerators
 
-@serializable_dataclass
-class Result(SerializableDataclass):
-    configs: list[MazeDatasetConfig]
-    p_values: np.ndarray
-    success_rates: dict[str, np.ndarray]
+SweepReturnType = TypeVar("SweepReturnType")
+ParamType = TypeVar("ParamType")
+AnalysisFunc = Callable[[MazeDatasetConfig], SweepReturnType]
 
+def dataset_success_fraction(cfg: MazeDatasetConfig) -> float:
+    dataset: MazeDataset = MazeDataset.from_config(
+        cfg,
+        do_download=False,
+        load_local=False,
+        save_local=False,
+        verbose=False,
+    )
+
+    return len(dataset) / cfg.n_mazes
+
+ANALYSIS_FUNCS: dict[str, AnalysisFunc] = dict(
+    dataset_success_fraction=dataset_success_fraction,
+)
+
+def sweep(
+    cfg_base: MazeDatasetConfig,
+    param_values: list[ParamType],
+    param_key: str,
+    analyze_func: Callable[[MazeDatasetConfig], SweepReturnType],
+) -> list[SweepReturnType]:
+    
+    outputs: list[SweepReturnType] = []
+
+    for p in param_values:
+        # update the config
+        cfg_dict: dict = cfg_base.serialize()
+        update_with_nested_dict(
+            cfg_dict,
+            dotlist_to_nested_dict({param_key: p}),
+        )
+        cfg_test: MazeDatasetConfig = MazeDatasetConfig.load(cfg_dict)
+
+        outputs.append(analyze_func(cfg_test))
+
+    return outputs
+
+
+
+@serializable_dataclass
+class SweepResult(SerializableDataclass):
+    configs: list[MazeDatasetConfig]
+    param_values: list[ParamType]
+    result_values: dict[str, list[SweepReturnType]]
+    param_key: str
+    analyze_func: Callable[[MazeDatasetConfig], SweepReturnType] = serializable_field(
+        serialization_fn=lambda f: f.__name__,
+        deserialize_fn=ANALYSIS_FUNCS.get,
+    )
 
     def configs_by_name(self) -> dict[str, MazeDatasetConfig]:
         "return configs by name"
         return {cfg.name: cfg for cfg in self.configs}
 
     def configs_by_key(self) -> dict[str, MazeDatasetConfig]:
-        "return configs by the key used in `success_rates`, which is the filename of the config"
+        "return configs by the key used in `result_values`, which is the filename of the config"
         return {cfg.to_fname(): cfg for cfg in self.configs}
 
     def configs_shared(self) -> dict[str, Any]:
@@ -57,20 +112,22 @@ class Result(SerializableDataclass):
 
         return differing_keys
 
-    def get_where(self, key: str, val_check: Callable[[Any], bool]) -> "Result":
+    def get_where(self, key: str, val_check: Callable[[Any], bool]) -> "SweepResult":
         "get a subset of this `Result` where the configs has `key` satisfying `val_check`"
         configs_list: list[MazeDatasetConfig] = [
             cfg for cfg in self.configs if val_check(getattr(cfg, key))
         ]
         configs_keys: set[str] = {cfg.to_fname() for cfg in configs_list}
-        success_rates: dict[str, np.ndarray] = {
-            k: self.success_rates[k] for k in configs_keys
+        result_values: dict[str, np.ndarray] = {
+            k: self.result_values[k] for k in configs_keys
         }
 
-        return Result(
+        return SweepResult(
             configs=configs_list,
-            p_values=self.p_values,
-            success_rates=success_rates,
+            param_values=self.param_values,
+            result_values=result_values,
+            param_key=self.param_key,
+            analyze_func=self.analyze_func,
         )
 
 
@@ -78,50 +135,46 @@ class Result(SerializableDataclass):
     def analyze(
         cls,
         configs: list[MazeDatasetConfig],
-        p_values: Float[np.ndarray, " n_pvals"],
+        param_values: list[ParamType],
+        param_key: str,
+        analyze_func: Callable[[MazeDatasetConfig], SweepReturnType],
+        parallel: bool|int = False,
     ) -> "Result":
         """Analyze success rate of maze generation for different percolation values
 
         # Parameters:
         - `configs : list[MazeDatasetConfig]`
         configs to try
-        - `p_values : np.ndarray`
-        numpy array of percolation probability values to test
+        - `param_values : np.ndarray`
+        numpy array of values to try
 
         # Returns:
         - `Result`
         """
-        n_pvals: int = len(p_values)
-        success_rates: dict[str, Float[np.ndarray, "n_pvals"]] = {}
+        n_pvals: int = len(param_values)
 
-        for idx_cfg, cfg in enumerate(configs):
-            rates: list[float] = []
-            for p in tqdm(
-                p_values,
-                desc=f"Testing percolation vals for config {idx_cfg + 1}/{len(configs)} '{cfg.name}'",
-                total=n_pvals,
-            ):
-                cfg_dict: dict = cfg.serialize()
-                cfg_dict["maze_ctor_kwargs"]["p"] = float(p)
-                cfg_test: MazeDatasetConfig = MazeDatasetConfig.load(cfg_dict)
-
-                dataset: MazeDataset = MazeDataset.from_config(
-                    cfg_test,
-                    do_download=False,
-                    load_local=False,
-                    save_local=False,
-                    verbose=False,
-                )
-
-                rates.append(len(dataset) / cfg_test.n_mazes)
-
-            rates_array: Float[np.ndarray, "n_pvals"] = np.array(rates)
-            success_rates[cfg_test.to_fname()] = rates_array
-
+        result_values_list: list[float] = run_maybe_parallel(
+            func = functools.partial(
+                sweep,
+                param_values=param_values,
+                param_key=param_key, #"maze_ctor_kwargs.p",
+                analyze_func=analyze_func, #dataset_success_fraction,
+            ),
+            iterable=configs,
+            keep_ordered=True,
+            parallel=parallel,
+            pbar_kwargs=dict(total=len(configs)),
+        )
+        result_values: dict[str, Float[np.ndarray, "n_pvals"]] = {
+            cfg.to_fname(): np.array(res)
+            for cfg, res in zip(configs, result_values_list)
+        }
         return cls(
             configs=configs,
-            p_values=p_values,
-            success_rates=success_rates,
+            param_values=param_values,
+            result_values=result_values,
+            param_key=param_key,
+            analyze_func=analyze_func,
         )
 
     def plot(
@@ -142,40 +195,40 @@ class Result(SerializableDataclass):
 
         # plot
         cmap = plt.get_cmap(cmap_name)
-        n_cfgs: int = len(self.success_rates)
-        for i, (ep_cfg_name, success_rates) in enumerate(self.success_rates.items()):
+        n_cfgs: int = len(self.result_values)
+        for i, (ep_cfg_name, result_values) in enumerate(self.result_values.items()):
             ax.plot(
-                self.p_values,
-                success_rates,
+                self.param_values,
+                result_values,
                 ".-",
                 label=self.configs_by_key()[ep_cfg_name].name,
                 color=cmap((i + 0.5) / (n_cfgs - 0.5)),
             )
 
+        # repr of config
+        cfg_shared: dict = self.configs_shared()
+        cfg_repr: str = (
+            str(cfg_shared)
+            if cfg_keys is None
+            else (
+                "MazeDatasetConfig("
+                + ", ".join(
+                    [
+                        f"{k}={cfg_shared[k].__name__}"
+                        if isinstance(cfg_shared[k], Callable)
+                        else f"{k}={cfg_shared[k]}"
+                        for k in cfg_keys
+                    ]
+                )
+                + ")"
+            )
+        )
+
         # add title and stuff
         if not plot_only:
-            ax.set_xlabel("Percolation Probability $p$")
-            ax.set_ylabel("SolvedMaze Generation Success Rate")
-            cfg: MazeDatasetConfig = self.configs[0]
-            ax.set_title(
-                "Maze Generation Success Rate vs Percolation Probability\n"
-                + (
-                    repr(cfg)
-                    if cfg_keys is None
-                    else (
-                        "MazeDatasetConfig("
-                        + ", ".join(
-                            [
-                                f"{k}={getattr(cfg, k).__name__}"
-                                if isinstance(getattr(cfg, k), Callable)
-                                else f"{k}={getattr(cfg, k)}"
-                                for k in cfg_keys
-                            ]
-                        )
-                        + ")"
-                    )
-                )
-            )
+            ax.set_xlabel(self.param_key)
+            ax.set_ylabel(self.analyze_func.__name__)
+            ax.set_title(f"{self.param_key} vs {self.analyze_func.__name__}\ncfg_repr")
             ax.grid(True)
             ax.legend(loc="lower center")
 
@@ -211,14 +264,6 @@ DEFAULT_ENDPOINT_KWARGS: list[tuple[str, dict]] = [
     ),
 ]
 
-
-@serializable_dataclass
-class ResultGroup(SerializableDataclass):
-    result_groups: dict[str, Result]
-    group_meta: dict[str, Any]
-
-
-
 def full_analysis(
     n_mazes: int,
     p_val_count: int,
@@ -244,7 +289,7 @@ def full_analysis(
             print(
                 f"\n\n# Analyzing {cfg_idx}/{total_cfgs}: endpoint_kwargs '{ep_kw_name}', gen_func={gen_func.__name__}\n\n"
             )
-            result: Result = Result.analyze(
+            result: SweepResult = SweepResult.analyze(
                 configs=[
                     MazeDatasetConfig(
                         name=f"g{grid_n}-{gen_func.__name__.removeprefix('gen_').removesuffix('olation')}",
@@ -256,7 +301,7 @@ def full_analysis(
                     )
                     for grid_n in grid_sizes
                 ],
-                p_values=np.linspace(0.0, 1.0, p_val_count),
+                param_values=np.linspace(0.0, 1.0, p_val_count),
             )
             ax = result.plot(
                 cfg_keys=["n_mazes", "maze_ctor", "endpoint_kwargs"],
