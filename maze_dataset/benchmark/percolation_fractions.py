@@ -2,15 +2,23 @@ from typing import Any, Callable, Sequence
 from pathlib import Path
 
 import numpy as np
+from jaxtyping import Float
 import matplotlib.pyplot as plt
 from tqdm import tqdm
+from muutils.json_serialize import serializable_dataclass, SerializableDataclass, serializable_field
 
 from maze_dataset import MazeDataset, MazeDatasetConfig
 from maze_dataset.generation import LatticeMazeGenerators
 
+@serializable_dataclass
+class PercolationSuccessResult(SerializableDataclass):
+    configs: list[MazeDatasetConfig]
+    p_values: np.ndarray
+    success_rates: dict[str, np.ndarray]
+
 def analyze_percolation_success(
     configs: list[MazeDatasetConfig],
-    p_values: np.ndarray,
+    p_values: Float[np.ndarray, "n_pvals"],
 ) -> dict[str, Any]:
     """Analyze success rate of maze generation for different percolation values
 
@@ -21,22 +29,17 @@ def analyze_percolation_success(
        numpy array of percolation probability values to test
 
     # Returns:
-    `dict[str, Any]` with the following:
-    - `"configs": list[MazeDatasetConfig]`
-       List of MazeDatasetConfig objects used for testing
-    - `"p_values": np.ndarray`
-    - `"results": dict[str, np.ndarray]`
-       Dictionary mapping config names to arrays of success rates
+     - `PercolationSuccessResult`
     """
-
-    success_rates: dict[str, np.ndarray] = {}
+    n_pvals: int = len(p_values)
+    success_rates: dict[str, Float[np.ndarray, "n_pvals"]] = {}
 
     for idx_cfg, cfg in enumerate(configs):
         rates: list[float] = []
         for p in tqdm(
             p_values,
             desc=f"Testing percolation vals for config {idx_cfg + 1}/{len(configs)} '{cfg.name}'",
-            total=len(p_values),
+            total=n_pvals,
         ):
             cfg_dict: dict = cfg.serialize()
             cfg_dict["maze_ctor_kwargs"]["p"] = float(p)
@@ -52,14 +55,18 @@ def analyze_percolation_success(
 
             rates.append(len(dataset) / cfg_test.n_mazes)
 
-        rates_array = np.array(rates)
-        success_rates[cfg_test.name] = rates_array
+        rates_array: Float[np.ndarray, "n_pvals"] = np.array(rates)
+        success_rates[cfg_test.to_fname()] = rates_array
 
-    return dict(configs=configs, p_values=p_values, success_rates=success_rates)
+    return PercolationSuccessResult(
+        configs=configs,
+        p_values=p_values,
+        success_rates=success_rates,
+    )
 
 
 def plot_percolation_results(
-    results: dict[str, Any],
+    results: PercolationSuccessResult,
     save_path: str = None,
     cfg_keys: list[str] | None = None,
     cmap_name: str | None = "viridis",
@@ -70,8 +77,8 @@ def plot_percolation_results(
     """Plot the results of percolation analysis.
 
     # Parameters:
-     - `results : dict[str, Any]`
-       results dict from `analyze_percolation_success`
+     - `results : PercolationSuccessResult`
+       results from `analyze_percolation_success`
      - `save_path : str`
        Path to save the plot to, will display if `None`
        (defaults to `None`)
@@ -84,10 +91,10 @@ def plot_percolation_results(
 
     # plot
     cmap = plt.get_cmap(cmap_name)
-    n_cfgs: int = len(results["success_rates"])
-    for i, (ep_cfg_name, success_rates) in enumerate(results["success_rates"].items()):
+    n_cfgs: int = len(results.success_rates)
+    for i, (ep_cfg_name, success_rates) in enumerate(results.success_rates.items()):
         ax.plot(
-            results["p_values"],
+            results.p_values,
             success_rates,
             ".-",
             label=ep_cfg_name,
@@ -98,7 +105,7 @@ def plot_percolation_results(
     if not plot_only:
         ax.set_xlabel("Percolation Probability $p$")
         ax.set_ylabel("SolvedMaze Generation Success Rate")
-        cfg: MazeDatasetConfig = results["configs"][0]
+        cfg: MazeDatasetConfig = results.configs[0]
         ax.set_title(
             "Maze Generation Success Rate vs Percolation Probability\n"
             + (
