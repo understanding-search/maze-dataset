@@ -1,5 +1,6 @@
 import random
 import timeit
+from typing import Sequence
 
 from tqdm import tqdm
 
@@ -96,10 +97,10 @@ def time_generation(
 
 
 def run_benchmark(
-    save_path: str = "tests/_temp/benchmark_generation.jsonl",
+    save_path: str,
     base_configs: list[tuple[str, dict]] | None = None,
-    grid_n_vals: list[int] = [2, 3, 4, 5, 8, 10, 16, 25, 32],
-    n_mazes_vals: list[int] = list(range(1, 12, 2)),
+    grid_n_vals: Sequence[int] = tuple([2, 3, 4, 5, 8, 10, 16, 25, 32]),
+    n_mazes_vals: Sequence[int] = tuple(list(range(1, 12, 2))),
     trials: int = 10,
     verbose: bool = True,
 ):
