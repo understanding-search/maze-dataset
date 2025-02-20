@@ -1,3 +1,4 @@
+import json
 from typing import Any, Callable, Sequence
 from pathlib import Path
 
@@ -11,17 +12,74 @@ from maze_dataset import MazeDataset, MazeDatasetConfig
 from maze_dataset.generation import LatticeMazeGenerators
 
 @serializable_dataclass
-class PercolationSuccessResult(SerializableDataclass):
+class Result(SerializableDataclass):
     configs: list[MazeDatasetConfig]
     p_values: np.ndarray
     success_rates: dict[str, np.ndarray]
+
+
+    def configs_by_name(self) -> dict[str, MazeDatasetConfig]:
+        "return configs by name"
+        return {cfg.name: cfg for cfg in self.configs}
+
+    def configs_by_key(self) -> dict[str, MazeDatasetConfig]:
+        "return configs by the key used in `success_rates`, which is the filename of the config"
+        return {cfg.to_fname(): cfg for cfg in self.configs}
+
+    def configs_shared(self) -> dict[str, Any]:
+        "return key: value pairs that are shared across all configs"
+        # we know that the configs all have the same keys, 
+        # so this way of doing it is fine
+        config_vals: dict[str, set[Any]] = dict()
+        for cfg in self.configs:
+            for k, v in cfg.serialize().items():
+                if k not in config_vals:
+                    config_vals[k] = set()
+                config_vals[k].add(json.dumps(v))
+
+        shared_vals: dict[str, Any] = dict()
+
+        cfg_ser: dict = self.configs[0].serialize()
+        for k, v in config_vals.items():
+            if len(v) == 1:
+                shared_vals[k] = cfg_ser[k]
+
+        return shared_vals
+    
+    def configs_differing_keys(self) -> set[str]:
+        "return keys that differ across configs"
+        shared_vals: dict[str, Any] = self.configs_shared()
+        differing_keys: set[str] = set()
+
+        for k in MazeDatasetConfig.__dataclass_fields__.keys():
+            if k not in shared_vals:
+                differing_keys.add(k)
+
+        return differing_keys
+
+    def get_where(self, key: str, val_check: Callable[[Any], bool]) -> "Result":
+        "get a subset of this `Result` where the configs has `key` satisfying `val_check`"
+        configs_list: list[MazeDatasetConfig] = [
+            cfg for cfg in self.configs if val_check(getattr(cfg, key))
+        ]
+        configs_keys: set[str] = {cfg.to_fname() for cfg in configs_list}
+        success_rates: dict[str, np.ndarray] = {
+            k: self.success_rates[k] for k in configs_keys
+        }
+
+        return Result(
+            configs=configs_list,
+            p_values=self.p_values,
+            success_rates=success_rates,
+        )
+
 
     @classmethod
     def analyze(
         cls,
         configs: list[MazeDatasetConfig],
         p_values: Float[np.ndarray, " n_pvals"],
-    ) -> "PercolationSuccessResult":
+    ) -> "Result":
         """Analyze success rate of maze generation for different percolation values
 
         # Parameters:
@@ -31,7 +89,7 @@ class PercolationSuccessResult(SerializableDataclass):
         numpy array of percolation probability values to test
 
         # Returns:
-        - `PercolationSuccessResult`
+        - `Result`
         """
         n_pvals: int = len(p_values)
         success_rates: dict[str, Float[np.ndarray, "n_pvals"]] = {}
@@ -90,7 +148,7 @@ class PercolationSuccessResult(SerializableDataclass):
                 self.p_values,
                 success_rates,
                 ".-",
-                label=ep_cfg_name,
+                label=self.configs_by_key()[ep_cfg_name].name,
                 color=cmap((i + 0.5) / (n_cfgs - 0.5)),
             )
 
@@ -154,6 +212,13 @@ DEFAULT_ENDPOINT_KWARGS: list[tuple[str, dict]] = [
 ]
 
 
+@serializable_dataclass
+class ResultGroup(SerializableDataclass):
+    result_groups: dict[str, Result]
+    group_meta: dict[str, Any]
+
+
+
 def full_analysis(
     n_mazes: int,
     p_val_count: int,
@@ -179,7 +244,7 @@ def full_analysis(
             print(
                 f"\n\n# Analyzing {cfg_idx}/{total_cfgs}: endpoint_kwargs '{ep_kw_name}', gen_func={gen_func.__name__}\n\n"
             )
-            result: PercolationSuccessResult = PercolationSuccessResult.analyze(
+            result: Result = Result.analyze(
                 configs=[
                     MazeDatasetConfig(
                         name=f"g{grid_n}-{gen_func.__name__.removeprefix('gen_').removesuffix('olation')}",
