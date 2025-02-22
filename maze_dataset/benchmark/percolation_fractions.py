@@ -328,7 +328,7 @@ def full_analysis(
     # get results
     result: SweepResult = SweepResult.analyze(
         configs=configs,
-        param_values=np.linspace(0.0, 1.0, p_val_count),
+        param_values=np.linspace(0.0, 1.0, p_val_count).tolist(),
         param_key="maze_ctor_kwargs.p",
         analyze_func=dataset_success_fraction,
         parallel=False,
@@ -341,7 +341,7 @@ def full_analysis(
         fig, ax = plt.subplots(1, 1, figsize=(22, 10))
         for gf_idx, gen_func in enumerate(generators):
             ax = result.plot(
-                cfg_keys=["n_mazes", "maze_ctor", "endpoint_kwargs"],
+                # cfg_keys=["n_mazes", "endpoint_kwargs"],
                 ax=ax,
                 show=False,
                 cmap_name="Reds" if gf_idx == 0 else "Blues",
