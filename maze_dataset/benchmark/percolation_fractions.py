@@ -12,9 +12,10 @@ import numpy as np
 from jaxtyping import Float
 import matplotlib.pyplot as plt
 from tqdm import tqdm
-from muutils.json_serialize import serializable_dataclass, SerializableDataclass, serializable_field
+from muutils.json_serialize import serializable_dataclass, SerializableDataclass, serializable_field, json_serialize
 from muutils.dictmagic import dotlist_to_nested_dict, update_with_nested_dict
 from muutils.parallel import run_maybe_parallel
+from zanj import ZANJ
 
 from maze_dataset import MazeDataset, MazeDatasetConfig
 from maze_dataset.generation import LatticeMazeGenerators
@@ -62,16 +63,41 @@ def sweep(
 
 
 
-@serializable_dataclass
+@serializable_dataclass()
 class SweepResult(SerializableDataclass):
-    configs: list[MazeDatasetConfig]
-    param_values: list[ParamType]
-    result_values: dict[str, list[SweepReturnType]]
+    configs: list[MazeDatasetConfig] = serializable_field(
+        serialization_fn=lambda cfgs: [cfg.serialize() for cfg in cfgs],
+        deserialize_fn=lambda cfgs: [MazeDatasetConfig.load(cfg) for cfg in cfgs],
+    )
+    param_values: list[ParamType] = serializable_field(
+        serialization_fn=lambda x: json_serialize(x),
+        deserialize_fn=lambda x: x,
+        assert_type=False,
+    )
+    result_values: dict[str, list[SweepReturnType]] = serializable_field(
+        serialization_fn=lambda x: json_serialize(x),
+        deserialize_fn=lambda x: x,
+        assert_type=False,
+    )
     param_key: str
     analyze_func: Callable[[MazeDatasetConfig], SweepReturnType] = serializable_field(
         serialization_fn=lambda f: f.__name__,
         deserialize_fn=ANALYSIS_FUNCS.get,
+        assert_type=False,
     )
+
+    def save(self, path: str|Path, z: ZANJ|None = None) -> None:
+        if z is None:
+            z = ZANJ()
+
+        z.save(self, path)
+
+    @classmethod
+    def read(cls, path: str|Path, z: ZANJ|None = None) -> "SweepResult":
+        if z is None:
+            z = ZANJ()
+
+        return z.read(path)
 
     def configs_by_name(self) -> dict[str, MazeDatasetConfig]:
         "return configs by name"
@@ -139,7 +165,7 @@ class SweepResult(SerializableDataclass):
         param_key: str,
         analyze_func: Callable[[MazeDatasetConfig], SweepReturnType],
         parallel: bool|int = False,
-    ) -> "Result":
+    ) -> "SweepResult":
         """Analyze success rate of maze generation for different percolation values
 
         # Parameters:
@@ -149,7 +175,7 @@ class SweepResult(SerializableDataclass):
         numpy array of values to try
 
         # Returns:
-        - `Result`
+        - `SweepResult`
         """
         n_pvals: int = len(param_values)
 
@@ -157,8 +183,8 @@ class SweepResult(SerializableDataclass):
             func = functools.partial(
                 sweep,
                 param_values=param_values,
-                param_key=param_key, #"maze_ctor_kwargs.p",
-                analyze_func=analyze_func, #dataset_success_fraction,
+                param_key=param_key,
+                analyze_func=analyze_func,
             ),
             iterable=configs,
             keep_ordered=True,
@@ -228,7 +254,7 @@ class SweepResult(SerializableDataclass):
         if not plot_only:
             ax.set_xlabel(self.param_key)
             ax.set_ylabel(self.analyze_func.__name__)
-            ax.set_title(f"{self.param_key} vs {self.analyze_func.__name__}\ncfg_repr")
+            ax.set_title(f"{self.param_key} vs {self.analyze_func.__name__}\n{cfg_repr}")
             ax.grid(True)
             ax.legend(loc="lower center")
 
@@ -278,31 +304,38 @@ def full_analysis(
     if ep_kwargs is None:
         ep_kwargs = DEFAULT_ENDPOINT_KWARGS
 
-    total_cfgs: int = len(generators) * len(ep_kwargs)
-    cfg_idx: int = 0
+    # configs
+    configs: list[MazeDatasetConfig] = list()
+    
+    for ep_kw_name, ep_kw in ep_kwargs:
+        for gf_idx, gen_func in enumerate(generators):
+            configs.extend([
+                MazeDatasetConfig(
+                    name=f"g{grid_n}-{gen_func.__name__.removeprefix('gen_').removesuffix('olation')}",
+                    grid_n=grid_n,
+                    n_mazes=n_mazes,
+                    maze_ctor=gen_func,
+                    maze_ctor_kwargs=dict(),
+                    endpoint_kwargs=ep_kw,
+                )
+                for grid_n in grid_sizes
+            ])
 
-    # for i, ((ep_kw_name, ep_kw), gen_func) in enumerate(cfg_augment_product):
+    # get results
+    result: SweepResult = SweepResult.analyze(
+        configs=configs,
+        param_values=np.linspace(0.0, 1.0, p_val_count),
+        param_key="maze_ctor_kwargs.p",
+        analyze_func=dataset_success_fraction,
+        parallel=False,
+    )
+
+    # save the result
+
+    # plots
     for ep_kw_name, ep_kw in ep_kwargs:
         fig, ax = plt.subplots(1, 1, figsize=(22, 10))
-        for gf_idx, gen_func in enumerate(generators):
-            cfg_idx += 1
-            print(
-                f"\n\n# Analyzing {cfg_idx}/{total_cfgs}: endpoint_kwargs '{ep_kw_name}', gen_func={gen_func.__name__}\n\n"
-            )
-            result: SweepResult = SweepResult.analyze(
-                configs=[
-                    MazeDatasetConfig(
-                        name=f"g{grid_n}-{gen_func.__name__.removeprefix('gen_').removesuffix('olation')}",
-                        grid_n=grid_n,
-                        n_mazes=n_mazes,
-                        maze_ctor=gen_func,
-                        maze_ctor_kwargs=dict(),
-                        endpoint_kwargs=ep_kw,
-                    )
-                    for grid_n in grid_sizes
-                ],
-                param_values=np.linspace(0.0, 1.0, p_val_count),
-            )
+        for gf_idx, gen_func in enumerate(generators):            
             ax = result.plot(
                 cfg_keys=["n_mazes", "maze_ctor", "endpoint_kwargs"],
                 ax=ax,
