@@ -695,15 +695,16 @@ class LatticeMaze(SerializableDataclass):
                 # convert to coords, split start and end
                 e_coords: list[CoordTup] = maze_tokenizer.strings_to_coords(
                     e,
-                    # TODO: i changed this to a skip since we then pipe the coords into a numpy array
-                    # but I'm not entirely sure
-                    when_noncoord="skip",
+                    when_noncoord="include",
                 )
-                assert len(e_coords) == 3, f"invalid edge: {e = } {e_coords = }"
-                assert e_coords[1] == SPECIAL_TOKENS.CONNECTOR, (
-                    f"invalid edge: {e = } {e_coords = }"
-                )
-                coordinates.append((e_coords[0], e_coords[-1]))
+                # this assertion depends on the tokenizer having exactly one token for the connector
+                # which is also why we "include" above
+                # the connector token is discarded here ------------------------------\
+                assert len(e_coords) == 3, f"invalid edge: {e = } {e_coords = }"  #   |
+                assert e_coords[1] == SPECIAL_TOKENS.CONNECTOR, (  #                  |
+                    f"invalid edge: {e = } {e_coords = }"  #                          |
+                )  #                                                                  |
+                coordinates.append((e_coords[0], e_coords[-1]))  # <------------------/
 
         assert all(len(c) == 2 for c in coordinates), (
             f"invalid coordinates: {coordinates = }"
