@@ -335,17 +335,31 @@ def full_analysis(
     )
 
     # save the result
+    result.save(save_dir / f"result-n{n_mazes}-c{len(configs)}.zanj")
 
-    # plots
-    for ep_kw_name, ep_kw in ep_kwargs:
-        fig, ax = plt.subplots(1, 1, figsize=(22, 10))
-        for gf_idx, gen_func in enumerate(generators):
-            ax = result.plot(
-                # cfg_keys=["n_mazes", "endpoint_kwargs"],
-                ax=ax,
-                show=False,
-                cmap_name="Reds" if gf_idx == 0 else "Blues",
-            )
-        # save the figure
-        plt.savefig(save_dir / f"n_{n_mazes}-pvc_{p_val_count}-ep_{ep_kw_name}.svg")
-        plt.show()
+    return result
+
+
+def plot_grouped(
+    results: SweepResult,
+) -> None:
+    # separate plot for each set of endpoint kwargs
+
+        # on each plot, separate colormaps for each generator function
+        
+            # save the figure
+            # plt.savefig(save_dir / f"n_{n_mazes}-pvc_{p_val_count}-ep_{ep_kw_name}.svg")
+
+
+
+
+# plots
+for ep_kw_name, ep_kw in ep_kwargs:
+    fig, ax = plt.subplots(1, 1, figsize=(22, 10))
+    for gf_idx, gen_func in enumerate(generators):
+        ax = result.plot(
+            # cfg_keys=["n_mazes", "endpoint_kwargs"],
+            ax=ax,
+            show=False,
+            cmap_name="Reds" if gf_idx == 0 else "Blues",
+        )
