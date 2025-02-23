@@ -92,5 +92,6 @@ jobs:
       - name: Test Tokenizer Hashes
         run: make test_tok_hashes
         
-      - name: check typing
+      - name: check typing (3.11+)
         run: make typing
+        if: ${{ matrix.python != '3.10' }}
