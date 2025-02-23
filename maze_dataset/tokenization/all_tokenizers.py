@@ -45,13 +45,22 @@ from maze_dataset.tokenization import (
 from maze_dataset.utils import FiniteValued, all_instances
 
 # Always include this as the first item in the dict `validation_funcs` whenever using `all_instances` with `MazeTokenizerModular`
+# TYPING: error: Type variable "maze_dataset.utils.FiniteValued" is unbound  [valid-type]
+#   note: (Hint: Use "Generic[FiniteValued]" or "Protocol[FiniteValued]" base class to bind "FiniteValued" inside a class)
+#   note: (Hint: Use "FiniteValued" in function signature to bind "FiniteValued" inside a function)
 MAZE_TOKENIZER_MODULAR_DEFAULT_VALIDATION_FUNCS: frozendict.frozendict[
     type[FiniteValued], Callable[[FiniteValued], bool]
 ] = frozendict.frozendict(
     {
+        # TYPING: Item "bool" of the upper bound "bool | IsDataclass | Enum" of type variable "FiniteValued" has no attribute "is_valid"  [union-attr]
         _TokenizerElement: lambda x: x.is_valid(),
         # Currently no need for `MazeTokenizerModular.is_valid` since that method contains no special cases not already covered by `_TokenizerElement.is_valid`
         # MazeTokenizerModular: lambda x: x.is_valid(),
+        # TYPING: error: No overload variant of "set" matches argument type "FiniteValued"  [call-overload]
+        #   note: Possible overload variants:
+        #   note:     def [_T] set(self) -> set[_T]
+        #   note:     def [_T] set(self, Iterable[_T], /) -> set[_T]
+        # TYPING: error: Argument 1 to "len" has incompatible type "FiniteValued"; expected "Sized"  [arg-type]
         StepTokenizers.StepTokenizerPermutation: lambda x: len(set(x)) == len(x)
         and x != (StepTokenizers.Distance(),),
     }
@@ -133,6 +142,7 @@ def save_hashes(
         all_tokenizers = get_all_tokenizers()
 
     # compute hashes
+    hashes_array: "Int64[np.ndarray, ' tokenizers+dupes']"
     if parallelize:
         n_cpus: int = (
             parallelize if int(parallelize) > 1 else multiprocessing.cpu_count()
@@ -145,14 +155,14 @@ def save_hashes(
                 hashes_list: list[int] = list(pool.map(hash, all_tokenizers))
 
         with spinner(initial_value="converting hashes to numpy array..."):
-            hashes_array: "Int64[np.ndarray, ' tokenizers+dupes']" = np.array(
+            hashes_array = np.array(
                 hashes_list, dtype=np.int64
             )
     else:
         with spinner(
             initial_value=f"computing {len(all_tokenizers)} tokenizer hashes..."
         ):
-            hashes_array: "Int64[np.ndarray, ' tokenizers+dupes']" = np.array(
+            hashes_array = np.array(
                 [
                     hash(obj)  # uses stable hash
                     for obj in tqdm(all_tokenizers, disable=not verbose)

@@ -101,8 +101,9 @@ def process_maze_rasterized_input_target(
     return torch.tensor(np.array([problem_maze, solution_maze]))
 
 
+# TYPING: error: Attributes without a default cannot follow attributes with one  [misc]
 @serializable_dataclass
-class RasterizedMazeDatasetConfig(MazeDatasetConfig):
+class RasterizedMazeDatasetConfig(MazeDatasetConfig): # type: ignore[misc]
     """
     - `remove_isolated_cells: bool` whether to set isolated cells to walls
     - `extend_pixels: bool` whether to extend pixels to match easy_2_hard dataset (2x2 cells, extra 1 pixel row of wall around maze)
@@ -117,7 +118,8 @@ class RasterizedMazeDatasetConfig(MazeDatasetConfig):
 class RasterizedMazeDataset(MazeDataset):
     cfg: RasterizedMazeDatasetConfig
 
-    def __getitem__(self, idx: int) -> Float[torch.Tensor, "item in/tgt=2 x y rgb=3"]:
+    # this override here is intentional
+    def __getitem__(self, idx: int) -> Float[torch.Tensor, "item in/tgt=2 x y rgb=3"]: # type: ignore[override]
         # get the solved maze
         solved_maze: SolvedMaze = self.mazes[idx]
 
@@ -136,14 +138,16 @@ class RasterizedMazeDataset(MazeDataset):
 
         inputs: list[Float[torch.Tensor, "x y rgb=3"]]
         targets: list[Float[torch.Tensor, "x y rgb=3"]]
-        inputs, targets = zip(*[self[i] for i in idxs])
+        inputs, targets = zip(*[self[i] for i in idxs]) # type: ignore[assignment]
 
         return torch.stack([torch.stack(inputs), torch.stack(targets)])
 
+
+    # override here is intentional
     @classmethod
     def from_config(
         cls,
-        cfg: RasterizedMazeDatasetConfig,
+        cfg: RasterizedMazeDatasetConfig|MazeDatasetConfig, # type: ignore[override]
         do_generate: bool = True,
         load_local: bool = True,
         save_local: bool = True,
@@ -209,27 +213,26 @@ class RasterizedMazeDataset(MazeDataset):
                 remove_isolated_cells=True,
                 extend_pixels=True,
             )
-        output: MazeDataset = cls(
-            cfg=base_dataset.cfg,
-            mazes=base_dataset.mazes,
-        )
         cfg: RasterizedMazeDatasetConfig = RasterizedMazeDatasetConfig.load(
             {
                 **base_dataset.cfg.serialize(),
                 **added_params,
             }
         )
-        output.cfg = cfg
+        output: RasterizedMazeDataset = cls(
+            cfg=cfg,
+            mazes=base_dataset.mazes,
+        )
         return output
 
-    def plot(self, count: int | None = None, show: bool = True) -> tuple:
+    def plot(self, count: int | None = None, show: bool = True) -> tuple|None:
         import matplotlib.pyplot as plt
 
         print(f"{self[0][0].shape = }, {self[0][1].shape = }")
         count = count or len(self)
         if count == 0:
             print("No mazes to plot for dataset")
-            return
+            return None
         fig, axes = plt.subplots(2, count, figsize=(15, 5))
         if count == 1:
             axes = [axes]

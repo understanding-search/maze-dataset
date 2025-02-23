@@ -17,7 +17,7 @@ from typing import Literal, Sequence
 import matplotlib
 import numpy as np
 from IPython.display import HTML, display
-from jaxtyping import UInt8
+from jaxtyping import UInt8, Float
 from muutils.misc import flatten
 
 from maze_dataset.constants import SPECIAL_TOKENS
@@ -61,7 +61,7 @@ def _escape_tok(
 
 def color_tokens_rgb(
     tokens: list,
-    colors: Sequence[Sequence[int]],
+    colors: Sequence[Sequence[int]]|Float[np.ndarray, "n 3"],
     fmt: FormatType = "html",
     template: str | None = None,
     clr_join: str | None = None,
@@ -123,10 +123,11 @@ def color_tokens_cmap(
     labels: bool = False,
 ):
     "color tokens given a list of weights and a colormap"
-    assert len(tokens) == len(weights), f"{len(tokens)} != {len(weights)}"
-    weights = np.array(weights)
+    n_tok: int = len(tokens)
+    assert n_tok == len(weights), f"'{len(tokens) = }' != '{len(weights) = }'"
+    weights_np: Float[np.ndarray, " n_tok"] = np.array(weights)
     # normalize weights to [0, 1]
-    weights_norm = matplotlib.colors.Normalize()(weights)
+    weights_norm = matplotlib.colors.Normalize()(weights_np)
 
     if isinstance(cmap, str):
         cmap = matplotlib.colormaps.get_cmap(cmap)
@@ -145,7 +146,7 @@ def color_tokens_cmap(
             raise NotImplementedError("labels only supported for terminal")
         # align labels with the tokens
         output += "\n"
-        for tok, weight in zip(tokens, weights):
+        for tok, weight in zip(tokens, weights_np):
             # 2 decimal points, left-aligned and trailing spaces to match token length
             weight_str: str = f"{weight:.1f}"
             # omit if longer than token
@@ -194,7 +195,11 @@ def color_maze_tokens_AOTP(
     )
 
     return color_tokens_rgb(
-        tokens=output, colors=colors, fmt=fmt, template=template, **kwargs
+        tokens=output,
+        colors=colors,
+        fmt=fmt,
+        template=template,
+        **kwargs,
     )
 
 
