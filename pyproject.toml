@@ -100,12 +100,12 @@
     # generate this exclude with `make typing-report`
     exclude = [
         # high priority
-        "maze_dataset/token_utils.py", # 13
         "maze_dataset/constants.py", # 41
         "maze_dataset/dataset/dataset.py", # 20
         "maze_dataset/dataset/maze_dataset.py", # 41
         "maze_dataset/dataset/collected_dataset.py", # 10
         # high priority, difficult
+        "maze_dataset/token_utils.py", # 13, primarily issues with _VOCAB_BASE being a dynamically created dataclass
         "maze_dataset/utils.py", # 18
         "maze_dataset/tokenization/all_tokenizers.py", # 7
         # low priority

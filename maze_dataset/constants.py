@@ -1,5 +1,6 @@
 """constants and type hints used accross the package"""
 
+from typing import Iterator
 import warnings
 from dataclasses import dataclass, field, make_dataclass, Field
 
@@ -100,22 +101,22 @@ class _SPECIAL_TOKENS_BASE:
     def get_abbrev(self, key: str) -> str:
         return _SPECIAL_TOKENS_ABBREVIATIONS[self[key]]
 
-    def __iter__(self):
+    def __iter__(self) -> Iterator[str]:
         return iter(self.__dict__.keys())
 
-    def __len__(self):
+    def __len__(self) -> int:
         return len(self.__dict__.keys())
 
     def __contains__(self, key: str) -> bool:
         return key in self.__dict__.keys()
 
-    def values(self):
+    def values(self) -> Iterator[str]:
         return self.__dict__.values()
 
-    def items(self):
+    def items(self) -> Iterator[tuple[str, str]]:
         return self.__dict__.items()
 
-    def keys(self):
+    def keys(self) -> Iterator[str]:
         return self.__dict__.keys()
 
 
@@ -145,7 +146,8 @@ NEIGHBORS_MASK: Int8[np.ndarray, "coord point"] = np.array(
 "down, up, right, left as vectors"
 
 
-_VOCAB_FIELDS: list[tuple[str, type, Field]] = [
+# last element of the tuple is actually a Field[str], but mypy complains
+_VOCAB_FIELDS: list[tuple[str, type[str], str]] = [
     # *[(k, str, field(default=v)) for k, v in SPECIAL_TOKENS.items()],
     ("COORD_PRE", str, field(default="(")),
     ("COORD_INTRA", str, field(default=",")),

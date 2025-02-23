@@ -210,6 +210,8 @@ class GPTDataset(Dataset):
 
     _FILTER_NAMESPACE: type = "this isn't a filter namespace! you have to initialize this by registering with `register_filter_namespace_for_dataset`"  # type: ignore
 
+    cfg: GPTDatasetConfig
+
     @classmethod
     def from_config(
         cls,
