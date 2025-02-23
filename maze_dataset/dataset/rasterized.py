@@ -116,6 +116,8 @@ class RasterizedMazeDatasetConfig(MazeDatasetConfig):
 
 
 class RasterizedMazeDataset(MazeDataset):
+    cfg: RasterizedMazeDatasetConfig
+
     def __getitem__(self, idx: int) -> Float[torch.Tensor, "item in/tgt=2 x y rgb=3"]:
         # get the solved maze
         solved_maze: SolvedMaze = self.mazes[idx]

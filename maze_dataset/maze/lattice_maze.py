@@ -1101,10 +1101,12 @@ class TargetedLatticeMaze(LatticeMaze):
     """A LatticeMaze with a start and end position"""
 
     # this jank is so that SolvedMaze can inherit from this class without needing arguments for start_pos and end_pos
-    start_pos: Coord = serializable_field(
+    # type ignore here because even though its a kw-only dataclass,
+    # mypy doesn't like that non-default arguments are after default arguments
+    start_pos: Coord = serializable_field(  # type: ignore[misc]
         assert_type=False,
     )
-    end_pos: Coord = serializable_field(
+    end_pos: Coord = serializable_field(  # type: ignore[misc]
         assert_type=False,
     )
 
@@ -1180,7 +1182,7 @@ class TargetedLatticeMaze(LatticeMaze):
 class SolvedMaze(TargetedLatticeMaze):
     """Stores a maze and a solution"""
 
-    solution: CoordArray = serializable_field(
+    solution: CoordArray = serializable_field(  # type: ignore[misc]
         assert_type=False,
     )
 

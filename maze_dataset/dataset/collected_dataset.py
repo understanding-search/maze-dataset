@@ -13,7 +13,7 @@ from functools import cached_property
 import numpy as np
 from jaxtyping import Int
 from muutils.json_serialize import (
-    JSONitem,
+    JSONdict,
     json_serialize,
     serializable_dataclass,
     serializable_field,
@@ -139,7 +139,7 @@ class MazeDatasetCollection(GPTDataset):
         ]
         return cls(cfg, datasets)
 
-    def serialize(self) -> JSONitem:
+    def serialize(self) -> JSONdict:
         return {
             _FORMAT_KEY: "MazeDatasetCollection",
             "cfg": self.cfg.serialize(),
@@ -150,7 +150,7 @@ class MazeDatasetCollection(GPTDataset):
         }
 
     @classmethod
-    def load(cls, data: JSONitem) -> "MazeDatasetCollection":
+    def load(cls, data: JSONdict) -> "MazeDatasetCollection":
         assert data[_FORMAT_KEY] == "MazeDatasetCollection"
         return cls(
             **{
