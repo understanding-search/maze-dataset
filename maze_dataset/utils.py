@@ -7,7 +7,7 @@ import typing
 from dataclasses import Field
 from functools import cache, wraps
 from types import UnionType
-from typing import Callable, Generator, Iterable, Literal, TypeVar, get_args, get_origin
+from typing import Callable, Generator, Iterable, Literal, TypeVar, get_args, get_origin, overload
 
 import frozendict
 import numpy as np
@@ -92,19 +92,27 @@ def corner_first_ndindex(n: int, ndim: int = 2) -> list[tuple]:
     """
 
 
+@overload
+def manhattan_distance(
+    edges: Int[np.ndarray, "edges coord=2 row_col=2"],
+) -> Int8[np.ndarray, " edges"]: ...
+@overload
+def manhattan_distance(
+    edges: Int[np.ndarray, "coord=2 row_col=2"],
+) -> int: ...
 def manhattan_distance(
     edges: (
         Int[np.ndarray, "edges coord=2 row_col=2"]
         | Int[np.ndarray, "coord=2 row_col=2"]
     ),
-) -> Int[np.ndarray, " edges"] | Int[np.ndarray, ""]:
+) -> Int8[np.ndarray, " edges"] | int:
     """Returns the Manhattan distance between two coords."""
     if len(edges.shape) == 3:
         return np.linalg.norm(edges[:, 0, :] - edges[:, 1, :], axis=1, ord=1).astype(
             np.int8
         )
     elif len(edges.shape) == 2:
-        return np.linalg.norm(edges[0, :] - edges[1, :], ord=1).astype(np.int8)
+        return int(np.linalg.norm(edges[0, :] - edges[1, :], ord=1).astype(np.int8))
     else:
         raise ValueError(
             f"{edges} has shape {edges.shape}, but must be match the shape in the type hints."
@@ -250,6 +258,7 @@ def _apply_validation_func(
     if validation_funcs is None:
         return vals
     if type_ in validation_funcs:  # Only possible catch of UnionTypes
+        # TYPING: Incompatible return value type (got "filter[FiniteValued]", expected "Generator[FiniteValued, None, None]")  [return-value]
         return filter(validation_funcs[type_], vals)
     elif hasattr(
         type_, "__mro__"
@@ -257,6 +266,7 @@ def _apply_validation_func(
         for superclass in type_.__mro__:
             if superclass not in validation_funcs:
                 continue
+            # TYPING: error: Incompatible types in assignment (expression has type "filter[FiniteValued]", variable has type "Generator[FiniteValued, None, None]")  [assignment]
             vals = filter(validation_funcs[superclass], vals)
             break  # Only the first validation function hit in the mro is applied
     elif get_origin(type_) == Literal:
@@ -290,10 +300,11 @@ def _all_instances_wrapper(f):
                 type_, all_instances_func(type_, validation_funcs), validation_funcs
             )
 
+        validation_funcs: frozendict.frozendict
         if len(args) >= 2 and args[1] is not None:
-            validation_funcs: frozendict.frozendict = frozendict.frozendict(args[1])
+            validation_funcs= frozendict.frozendict(args[1])
         elif "validation_funcs" in kwargs and kwargs["validation_funcs"] is not None:
-            validation_funcs: frozendict.frozendict = frozendict.frozendict(
+            validation_funcs= frozendict.frozendict(
                 kwargs["validation_funcs"]
             )
         else:

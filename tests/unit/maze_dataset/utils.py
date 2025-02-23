@@ -49,7 +49,7 @@ class DC7(abc.ABC):
     x: bool
 
     @abc.abstractmethod
-    def foo():
+    def foo(self):
         pass
 
 
@@ -57,7 +57,7 @@ class DC7(abc.ABC):
 class DC8(DC7):
     x: bool = False
 
-    def foo():
+    def foo(self):
         pass
 
 
@@ -65,7 +65,7 @@ class DC8(DC7):
 class DC9(DC7):
     y: bool = True
 
-    def foo():
+    def foo(self):
         pass
 
 

@@ -16,18 +16,19 @@ numpy_rng = np.random.default_rng(GLOBAL_SEED)
 random.seed(GLOBAL_SEED)
 
 
-def _random_start_coord(grid_shape: Coord, start_coord: Coord | None) -> Coord:
+def _random_start_coord(grid_shape: Coord, start_coord: Coord | CoordTup | None) -> Coord:
     "picking a random start coord within the bounds of `grid_shape` if none is provided"
+    start_coord_: Coord
     if start_coord is None:
-        start_coord: Coord = np.random.randint(
+        start_coord_ = np.random.randint(
             0,  # lower bound
             np.maximum(grid_shape - 1, 1),  # upper bound (at least 1)
             size=len(grid_shape),  # dimensionality
         )
     else:
-        start_coord = np.array(start_coord)
+        start_coord_ = np.array(start_coord)
 
-    return start_coord
+    return start_coord_
 
 
 def get_neighbors_in_bounds(
@@ -161,7 +162,7 @@ class LatticeMazeGenerators:
                 chosen_neighbor, delta = random.choice(unvisited_neighbors_deltas)
 
                 # add connection
-                dim: int = np.argmax(np.abs(delta))
+                dim: int = int(np.argmax(np.abs(delta)))
                 # if positive, down/right from current coord
                 # if negative, up/left from current coord (down/right from neighbor)
                 clist_node: Coord = (
@@ -221,6 +222,7 @@ class LatticeMazeGenerators:
     @staticmethod
     def gen_wilson(
         grid_shape: Coord | CoordTup,
+        **kwargs: Any,
     ) -> LatticeMaze:
         """Generate a lattice maze using Wilson's algorithm.
 
@@ -230,6 +232,7 @@ class LatticeMazeGenerators:
         acyclic and all cells are part of a unique connected space.
         https://en.wikipedia.org/wiki/Maze_generation_algorithm#Wilson's_algorithm
         """
+        assert not kwargs, f"gen_wilson does not take any additional arguments, got {kwargs = }"
 
         grid_shape_: Coord = np.array(grid_shape)
 
@@ -285,7 +288,7 @@ class LatticeMazeGenerators:
 
                 # find the dimension of the connection
                 delta: Coord = c_2 - c_1
-                dim: int = np.argmax(np.abs(delta))
+                dim: int = int(np.argmax(np.abs(delta)))
 
                 # if positive, down/right from current coord
                 # if negative, up/left from current coord (down/right from neighbor)
@@ -338,8 +341,9 @@ class LatticeMazeGenerators:
                 start_coord=start_coord,
             ),
         )
-
-        output.generation_meta["visited_cells"] = output.gen_connected_component_from(
+        
+        # generation_meta is sometimes None, but not here since we just made it a dict above
+        output.generation_meta["visited_cells"] = output.gen_connected_component_from( # type: ignore[index]
             start_coord
         )
 
@@ -347,7 +351,7 @@ class LatticeMazeGenerators:
 
     @staticmethod
     def gen_dfs_percolation(
-        grid_shape: Coord,
+        grid_shape: Coord|CoordTup,
         p: float = 0.4,
         lattice_dim: int = 2,
         accessible_cells: int | None = None,
@@ -355,12 +359,12 @@ class LatticeMazeGenerators:
         start_coord: Coord | None = None,
     ) -> LatticeMaze:
         """dfs and then percolation (adds cycles)"""
-        grid_shape: Coord = np.array(grid_shape)
-        start_coord = _random_start_coord(grid_shape, start_coord)
+        grid_shape_: Coord = np.array(grid_shape)
+        start_coord = _random_start_coord(grid_shape_, start_coord)
 
         # generate initial maze via dfs
         maze: LatticeMaze = LatticeMazeGenerators.gen_dfs(
-            grid_shape=grid_shape,
+            grid_shape=grid_shape_,
             lattice_dim=lattice_dim,
             accessible_cells=accessible_cells,
             max_tree_depth=max_tree_depth,
@@ -377,9 +381,10 @@ class LatticeMazeGenerators:
             maze.connection_list, connection_list_perc
         )
 
-        maze.generation_meta["func_name"] = "gen_dfs_percolation"
-        maze.generation_meta["percolation_p"] = p
-        maze.generation_meta["visited_cells"] = maze.gen_connected_component_from(
+        # generation_meta is sometimes None, but not here since we just made it a dict above
+        maze.generation_meta["func_name"] = "gen_dfs_percolation" # type: ignore[index]
+        maze.generation_meta["percolation_p"] = p # type: ignore[index]
+        maze.generation_meta["visited_cells"] = maze.gen_connected_component_from( # type: ignore[index]
             start_coord
         )
 
@@ -387,9 +392,14 @@ class LatticeMazeGenerators:
 
 
 # cant automatically populate this because it messes with pickling :(
-GENERATORS_MAP: dict[str, Callable[[Coord, Any], "LatticeMaze"]] = {
+GENERATORS_MAP: dict[str, Callable[[Coord|CoordTup, Any], "LatticeMaze"]] = {
     "gen_dfs": LatticeMazeGenerators.gen_dfs,
-    "gen_wilson": LatticeMazeGenerators.gen_wilson,
+    # TYPING: error: Dict entry 1 has incompatible type 
+    # "str": "Callable[[ndarray[Any, Any] | tuple[int, int], KwArg(Any)], LatticeMaze]";
+    # expected "str": "Callable[[ndarray[Any, Any] | tuple[int, int], Any], LatticeMaze]"  [dict-item]
+    # gen_wilson takes no kwargs and we check that the kwargs are empty
+    # but mypy doesnt like this, `Any` != `KwArg(Any)`
+    "gen_wilson": LatticeMazeGenerators.gen_wilson, # type: ignore[dict-item]
     "gen_percolation": LatticeMazeGenerators.gen_percolation,
     "gen_dfs_percolation": LatticeMazeGenerators.gen_dfs_percolation,
     "gen_prim": LatticeMazeGenerators.gen_prim,
@@ -405,6 +415,8 @@ def get_maze_with_solution(
     "helper function to get a maze already with a solution"
     if maze_ctor_kwargs is None:
         maze_ctor_kwargs = dict()
-    maze: LatticeMaze = GENERATORS_MAP[gen_name](grid_shape, **maze_ctor_kwargs)
+    # TYPING: error: Too few arguments  [call-arg]
+    # not sure why this is happening -- doesnt recognize the kwargs?
+    maze: LatticeMaze = GENERATORS_MAP[gen_name](grid_shape, **maze_ctor_kwargs) # type: ignore[call-arg]
     solution: CoordArray = np.array(maze.generate_random_path())
     return SolvedMaze.from_lattice_maze(lattice_maze=maze, solution=solution)
