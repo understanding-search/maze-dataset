@@ -233,7 +233,7 @@ class SweepResult(SerializableDataclass):
         # plot
         cmap = plt.get_cmap(cmap_name)
         n_cfgs: int = len(self.result_values)
-        for i, (ep_cfg_name, result_values) in enumerate(self.result_values.items()):
+        for i, (ep_cfg_name, result_values) in enumerate(sorted(self.result_values.items(), key=lambda x: x[0])):
             ax.plot(
                 self.param_values,
                 result_values,
@@ -404,105 +404,3 @@ def plot_grouped(
         
         if show:
             plt.show()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# # Group configs by endpoint_kwargs
-# # We'll convert the endpoint_kwargs dict into a sorted tuple of (k,v) so it's hashable as a key
-# grouped_by_ep: dict[tuple[tuple[str, Any], ...], list[MazeDatasetConfig]] = {}
-# for cfg in results.configs:
-#     ep_key: tuple[tuple[str, Any], ...] = tuple(sorted(cfg.endpoint_kwargs.items()))
-#     if ep_key not in grouped_by_ep:
-#         grouped_by_ep[ep_key] = []
-#     grouped_by_ep[ep_key].append(cfg)
-
-# # For each endpoint_kwargs group, we plot lines grouped by generator function
-# for ep_key, cfg_list in grouped_by_ep.items():
-#     # Build second-level grouping by generator function
-#     group_by_gen: dict[str, list[MazeDatasetConfig]] = {}
-#     for c in cfg_list:
-#         gen_name: str = c.maze_ctor.__name__
-#         if gen_name not in group_by_gen:
-#             group_by_gen[gen_name] = []
-#         group_by_gen[gen_name].append(c)
-
-#     fig: plt.Figure
-#     ax: plt.Axes
-#     fig, ax = plt.subplots(figsize=(10, 6))
-
-#     # Prepare color mapping
-#     cmap = plt.get_cmap("viridis")
-#     n_generators: int = len(group_by_gen)
-#     param_values: list[float] = results.param_values
-#     n_mazes: int = cfg_list[0].n_mazes if cfg_list else 0  # for saving filename
-#     p_val_count: int = len(param_values)
-
-#     for i, (gen_name, sub_configs) in enumerate(sorted(group_by_gen.items())):
-#         color = cmap(i / max(n_generators - 1, 1)) if n_generators > 1 else "blue"
-#         # Plot each config with the same generator but different grid_n
-#         for c in sorted(sub_configs, key=lambda cc: cc.grid_n):
-#             result_array: Float[np.ndarray, "n_pvals"] = results.result_values[c.to_fname()]
-#             line_label: str = f"{gen_name.removeprefix('gen_')}-{c.grid_n}"
-#             ax.plot(
-#                 param_values,
-#                 result_array,
-#                 ".-",
-#                 color=color,
-#                 label=line_label,
-#             )
-
-#     # Build a nice label or string for ep_key
-#     # ep_key is a tuple of (key, value). We'll do a short text representation
-#     ep_str: str = ", ".join(f"{k}={v}" for k, v in ep_key)
-
-#     ax.set_title(f"Endpoint kwargs: {ep_str}")
-#     ax.set_xlabel(results.param_key)
-#     ax.set_ylabel(results.analyze_func.__name__)
-#     ax.grid(True)
-#     ax.legend(loc="best")
-
-#     # Save if requested
-#     if save_dir is not None:
-#         ep_kw_name: str = "_".join(
-#             f"{k}-{v}".replace(" ", "") for k, v in ep_key
-#         )
-#         save_path: Path = save_dir / f"n_{n_mazes}-pvc_{p_val_count}-ep_{ep_kw_name}.svg"
-#         save_path.parent.mkdir(exist_ok=True, parents=True)
-#         plt.savefig(save_path)
-
-#     if show:
-#         plt.show()
-#     else:
-#         plt.close(fig)
-
-
-
-# # plots
-# for ep_kw_name, ep_kw in ep_kwargs:
-#     fig, ax = plt.subplots(1, 1, figsize=(22, 10))
-#     for gf_idx, gen_func in enumerate(generators):
-#         ax = result.plot(
-#             # cfg_keys=["n_mazes", "endpoint_kwargs"],
-#             ax=ax,
-#             show=False,
-#             cmap_name="Reds" if gf_idx == 0 else "Blues",
-#         )
