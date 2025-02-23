@@ -199,6 +199,11 @@ _VOCAB_FIELDS: list[tuple[str, type, Field]] = [
 ]
 "fields for the `MazeTokenizerModular` style combined vocab"
 
+_VOCAB_FIELDS_JOINED: list[tuple[str, type, Field]] = [
+    *[(k, str, field(default=v)) for k, v in SPECIAL_TOKENS.items()],
+    *_VOCAB_FIELDS,
+]
+"vocab fields with special tokens"
 
 _VOCAB_BASE: type = make_dataclass(
     "_VOCAB_BASE", fields=_VOCAB_FIELDS, bases=(_SPECIAL_TOKENS_BASE,), frozen=True
@@ -209,7 +214,7 @@ _VOCAB_BASE: type = make_dataclass(
 # HACK: mypy doesn't recognize the fields in this dataclass
 VOCAB: _VOCAB_BASE = _VOCAB_BASE()  # type: ignore
 "public access to universal vocabulary for `MazeTokenizerModular`"
-VOCAB_LIST: list[str] = list(x[0] for x in _VOCAB_FIELDS)
+VOCAB_LIST: list[str] = list(x[0] for x in _VOCAB_FIELDS_JOINED)
 "list of `VOCAB` tokens, in order"
 VOCAB_TOKEN_TO_INDEX: dict[str, int] = {token: i for i, token in enumerate(VOCAB_LIST)}
 "map of `VOCAB` tokens to their indices"
