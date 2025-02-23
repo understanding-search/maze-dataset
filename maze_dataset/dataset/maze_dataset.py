@@ -354,9 +354,9 @@ class MazeDataset(GPTDataset):
 
         if pool_kwargs is None:
             pool_kwargs = dict()
-        maze_indexes: Int[np.ndarray, " maze_index"] = np.arange(cfg_cpy.n_mazes) # type: ignore[assignment]
+        maze_indexes: Int[np.ndarray, " maze_index"] = np.arange(cfg_cpy.n_mazes)  # type: ignore[assignment]
 
-        solved_mazes: list[SolvedMaze|None]
+        solved_mazes: list[SolvedMaze | None]
         # Configure tqdm for progress bar
         tqdm_kwargs: dict = dict(
             total=cfg_cpy.n_mazes,
@@ -390,7 +390,9 @@ class MazeDataset(GPTDataset):
             )
 
         # Filter out None values explicitly after ensuring all results are collected
-        solved_mazes_: list[SolvedMaze] = [maze for maze in solved_mazes if maze is not None]
+        solved_mazes_: list[SolvedMaze] = [
+            maze for maze in solved_mazes if maze is not None
+        ]
         # solved_mazes_ = list(filter(lambda x: x is not None, solved_mazes))
 
         # Update the config with the actual number of mazes
