@@ -291,10 +291,6 @@ DEFAULT_ENDPOINT_KWARGS: list[tuple[str, dict]] = [
     ),
     (
         "deadends",
-        dict(deadend_start=True, deadend_end=True, except_on_no_valid_endpoint=False),
-    ),
-    (
-        "deadends_unique",
         dict(
             deadend_start=True,
             deadend_end=True,
@@ -302,7 +298,26 @@ DEFAULT_ENDPOINT_KWARGS: list[tuple[str, dict]] = [
             except_on_no_valid_endpoint=False,
         ),
     ),
+    (
+        "deadends_unique",
+        dict(
+            deadend_start=True,
+            deadend_end=True,
+            endpoints_not_equal=True,
+            except_on_no_valid_endpoint=False,
+        ),
+    ),
 ]
+
+
+def endpoint_kwargs_to_name(ep_kwargs: dict) -> str:
+    if ep_kwargs.get("deadend_start", False) or ep_kwargs.get("deadend_end", False):
+        if ep_kwargs.get("endpoints_not_equal", False):
+            return "deadends_unique"
+        else:
+            return "deadends"
+    else:
+        return "any"
 
 
 def full_percolation_analysis(
@@ -349,7 +364,11 @@ def full_percolation_analysis(
     )
 
     # save the result
-    result.save(save_dir / f"result-n{n_mazes}-c{len(configs)}-p{p_val_count}.zanj")
+    results_path: Path = (
+        save_dir / f"result-n{n_mazes}-c{len(configs)}-p{p_val_count}.zanj"
+    )
+    print(f"Saving results to {results_path.as_posix()}")
+    result.save(results_path)
 
     return result
 
@@ -403,7 +422,8 @@ def plot_grouped(
 
         # save and show
         if save_dir:
-            save_path: Path = save_dir / f"ep_{ep_kw}.svg"
+            save_path: Path = save_dir / f"ep_{endpoint_kwargs_to_name(ep_kw)}.svg"
+            print(f"Saving plot to {save_path.as_posix()}")
             save_path.parent.mkdir(exist_ok=True, parents=True)
             plt.savefig(save_path)
 

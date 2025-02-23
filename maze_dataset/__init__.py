@@ -29,6 +29,7 @@ from maze_dataset.maze.lattice_maze import LatticeMaze, SolvedMaze, TargetedLatt
 
 __all__ = [
     # submodules (with sub-submodules)
+    "benchmark",
     "dataset",
     "generation",
     "maze",
