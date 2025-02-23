@@ -208,7 +208,7 @@ _VOCAB_BASE: type = make_dataclass(
 # HACK: mypy doesn't recognize the fields in this dataclass
 VOCAB: _VOCAB_BASE = _VOCAB_BASE()  # type: ignore
 "public access to universal vocabulary for `MazeTokenizerModular`"
-VOCAB_LIST: list[str] = list(_VOCAB_BASE.values())
+VOCAB_LIST: list[str] = list(VOCAB.values())
 "list of `VOCAB` tokens, in order"
 VOCAB_TOKEN_TO_INDEX: dict[str, int] = {token: i for i, token in enumerate(VOCAB_LIST)}
 "map of `VOCAB` tokens to their indices"
