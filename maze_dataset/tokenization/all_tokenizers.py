@@ -155,9 +155,7 @@ def save_hashes(
                 hashes_list: list[int] = list(pool.map(hash, all_tokenizers))
 
         with spinner(initial_value="converting hashes to numpy array..."):
-            hashes_array = np.array(
-                hashes_list, dtype=np.int64
-            )
+            hashes_array = np.array(hashes_list, dtype=np.int64)
     else:
         with spinner(
             initial_value=f"computing {len(all_tokenizers)} tokenizer hashes..."

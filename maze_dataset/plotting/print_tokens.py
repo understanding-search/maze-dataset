@@ -61,7 +61,7 @@ def _escape_tok(
 
 def color_tokens_rgb(
     tokens: list,
-    colors: Sequence[Sequence[int]]|Float[np.ndarray, "n 3"],
+    colors: Sequence[Sequence[int]] | Float[np.ndarray, "n 3"],
     fmt: FormatType = "html",
     template: str | None = None,
     clr_join: str | None = None,

@@ -103,7 +103,7 @@ def process_maze_rasterized_input_target(
 
 # TYPING: error: Attributes without a default cannot follow attributes with one  [misc]
 @serializable_dataclass
-class RasterizedMazeDatasetConfig(MazeDatasetConfig): # type: ignore[misc]
+class RasterizedMazeDatasetConfig(MazeDatasetConfig):  # type: ignore[misc]
     """
     - `remove_isolated_cells: bool` whether to set isolated cells to walls
     - `extend_pixels: bool` whether to extend pixels to match easy_2_hard dataset (2x2 cells, extra 1 pixel row of wall around maze)
@@ -119,7 +119,7 @@ class RasterizedMazeDataset(MazeDataset):
     cfg: RasterizedMazeDatasetConfig
 
     # this override here is intentional
-    def __getitem__(self, idx: int) -> Float[torch.Tensor, "item in/tgt=2 x y rgb=3"]: # type: ignore[override]
+    def __getitem__(self, idx: int) -> Float[torch.Tensor, "item in/tgt=2 x y rgb=3"]:  # type: ignore[override]
         # get the solved maze
         solved_maze: SolvedMaze = self.mazes[idx]
 
@@ -138,16 +138,15 @@ class RasterizedMazeDataset(MazeDataset):
 
         inputs: list[Float[torch.Tensor, "x y rgb=3"]]
         targets: list[Float[torch.Tensor, "x y rgb=3"]]
-        inputs, targets = zip(*[self[i] for i in idxs]) # type: ignore[assignment]
+        inputs, targets = zip(*[self[i] for i in idxs])  # type: ignore[assignment]
 
         return torch.stack([torch.stack(inputs), torch.stack(targets)])
-
 
     # override here is intentional
     @classmethod
     def from_config(
         cls,
-        cfg: RasterizedMazeDatasetConfig|MazeDatasetConfig, # type: ignore[override]
+        cfg: RasterizedMazeDatasetConfig | MazeDatasetConfig,  # type: ignore[override]
         do_generate: bool = True,
         load_local: bool = True,
         save_local: bool = True,
@@ -225,7 +224,7 @@ class RasterizedMazeDataset(MazeDataset):
         )
         return output
 
-    def plot(self, count: int | None = None, show: bool = True) -> tuple|None:
+    def plot(self, count: int | None = None, show: bool = True) -> tuple | None:
         import matplotlib.pyplot as plt
 
         print(f"{self[0][0].shape = }, {self[0][1].shape = }")
