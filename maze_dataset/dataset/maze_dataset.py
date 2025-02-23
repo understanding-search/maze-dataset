@@ -433,17 +433,17 @@ class MazeDataset(GPTDataset):
     def _load_full(cls, data: JSONdict) -> "MazeDataset":
         assert data[_FORMAT_KEY] == "MazeDataset"
         return cls(
-            cfg=MazeDatasetConfig.load(data["cfg"]), # type: ignore[arg-type]
+            cfg=MazeDatasetConfig.load(data["cfg"]),  # type: ignore[arg-type]
             mazes=load_item_recursive(data["mazes"], tuple()),
-            generation_metadata_collected=data["generation_metadata_collected"], # type: ignore[arg-type]
+            generation_metadata_collected=data["generation_metadata_collected"],  # type: ignore[arg-type]
         )
 
     @classmethod
     def _load_minimal(cls, data: JSONdict) -> "MazeDataset":
         assert data[_FORMAT_KEY] == "MazeDataset:minimal"
         return cls(
-            cfg=MazeDatasetConfig.load(data["cfg"]), # type: ignore[arg-type]
-            generation_metadata_collected=data["generation_metadata_collected"], # type: ignore[arg-type]
+            cfg=MazeDatasetConfig.load(data["cfg"]),  # type: ignore[arg-type]
+            generation_metadata_collected=data["generation_metadata_collected"],  # type: ignore[arg-type]
             mazes=[
                 SolvedMaze(
                     clist,
@@ -553,10 +553,10 @@ class MazeDataset(GPTDataset):
             "generation_metadata_collected": json_serialize(
                 filtered_meta.generation_metadata_collected
             ),
-            "maze_connection_lists": maze_connection_lists, # type: ignore[arg-type]
+            "maze_connection_lists": maze_connection_lists,  # type: ignore[arg-type]
             # "maze_endpoints": maze_endpoints,
-            "maze_solution_lengths": maze_solution_lengths, # type: ignore[arg-type]
-            "maze_solutions": maze_solutions, # type: ignore[arg-type]
+            "maze_solution_lengths": maze_solution_lengths,  # type: ignore[arg-type]
+            "maze_solutions": maze_solutions,  # type: ignore[arg-type]
         }
 
     def _serialize_minimal_soln_cat(self) -> JSONdict:
@@ -599,10 +599,10 @@ class MazeDataset(GPTDataset):
             "generation_metadata_collected": json_serialize(
                 filtered_meta.generation_metadata_collected
             ),
-            "maze_connection_lists": maze_connection_lists, # type: ignore[arg-type]
-            "maze_endpoints": maze_endpoints, # type: ignore[arg-type]
-            "maze_solution_lengths": maze_solution_lengths, # type: ignore[arg-type]
-            "maze_solutions_concat": maze_solutions_concat, # type: ignore[arg-type]
+            "maze_connection_lists": maze_connection_lists,  # type: ignore[arg-type]
+            "maze_endpoints": maze_endpoints,  # type: ignore[arg-type]
+            "maze_solution_lengths": maze_solution_lengths,  # type: ignore[arg-type]
+            "maze_solutions_concat": maze_solutions_concat,  # type: ignore[arg-type]
         }
 
     def update_self_config(self):
@@ -630,7 +630,7 @@ class MazeDataset(GPTDataset):
 
 
 # register things with zanj
-MazeDatasetConfig._dataset_class = property(lambda self: MazeDataset) # type: ignore[method-assign]
+MazeDatasetConfig._dataset_class = property(lambda self: MazeDataset)  # type: ignore[method-assign]
 register_loader_handler(
     LoaderHandler(
         check=lambda json_item, path=None, z=None: (
