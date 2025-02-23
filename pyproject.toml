@@ -96,14 +96,39 @@
     testpaths = "tests"
     norecursedirs="maze_dataset/utils/test_helpers"
 
-[[tool.mypy.overrides]]
-    module = "fire"
-    ignore_missing_imports = true
+[tool.mypy]
+    exclude = [
+        "maze_dataset/plotting/plot_dataset.py",           # 1
+        "maze_dataset/plotting/plot_tokens.py",            # 1
+        "maze_dataset/maze/lattice_maze.py",               # 1
+        "maze_dataset/testing_utils.py",                   # 4
+        "maze_dataset/constants.py",                       # 5
+        "maze_dataset/plotting/print_tokens.py",           # 6
+        "maze_dataset/tokenization/all_tokenizers.py",     # 7
+        "maze_dataset/benchmark/speed.py",                 # 8
+        "maze_dataset/dataset/rasterized.py",              # 8
+        "maze_dataset/dataset/collected_dataset.py",       # 10
+        "maze_dataset/benchmark/percolation_fractions.py", # 10
+        "maze_dataset/plotting/plot_maze.py",              # 12
+        "maze_dataset/token_utils.py",                     # 13
+        "maze_dataset/generation/generators.py",           # 14
+        "maze_dataset/utils.py",                           # 16
+        "maze_dataset/dataset/dataset.py",                 # 20
+        "maze_dataset/dataset/maze_dataset.py",            # 41
+        "maze_dataset/tokenization/maze_tokenizer.py",     # 134
+        # we don't do the tests for now
+        "tests/.*",
+    ]
+    check_untyped_defs = true
+
+    [[tool.mypy.overrides]]
+        module = "fire"
+        ignore_missing_imports = true
 
 [tool.ruff.lint]
-ignore = [
-    "F722"
-]
+    ignore = [
+        "F722"
+    ]
 
 [tool.lmcat]
 	output = "docs/other/lmcat.txt" # changing this might mean it wont be accessible from the docs
