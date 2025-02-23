@@ -2,7 +2,7 @@
 #| python project makefile template                                 |
 #| originally by Michael Ivanitskiy (mivanits@umich.edu)            |
 #| https://github.com/mivanit/python-project-makefile-template      |
-#| version: v0.2.0                                                  |
+#| version: v0.2.2                                                  |
 #| license: https://creativecommons.org/licenses/by-sa/4.0/         |
 #| modifications from the original should be denoted with `~~~~~`   |
 #| as this makes it easier to find edits when updating makefile     |
@@ -172,11 +172,11 @@ import sys
 import warnings
 
 try:
-	import tomllib  # Python 3.11+
+	import tomllib  # type: ignore[import-not-found]
 except ImportError:
-	import tomli as tomllib
+	import tomli as tomllib  # type: ignore
 from pathlib import Path
-from typing import Any, Union, List
+from typing import Any, Dict, Union, List
 from functools import reduce
 
 TOOL_PATH: str = "tool.makefile.uv-exports"
@@ -202,7 +202,6 @@ def export_configuration(
 	if not name or not name.isalnum():
 		warnings.warn(
 			f"Export configuration missing valid 'name' field {export}",
-			file=sys.stderr,
 		)
 		return
 
@@ -267,7 +266,7 @@ def main(
 	export_opts: dict = deep_get(pyproject_data, TOOL_PATH, {})
 
 	# what are we exporting?
-	exports: List[str] = export_opts.get("exports", [])
+	exports: List[Dict[str, Any]] = export_opts.get("exports", [])
 	if not exports:
 		exports = [{"name": "all", "groups": [], "extras": [], "options": []}]
 
@@ -299,9 +298,9 @@ import sys
 
 try:
 	try:
-		import tomllib  # Python 3.11+
+		import tomllib  # type: ignore[import-not-found]
 	except ImportError:
-		import tomli as tomllib
+		import tomli as tomllib  # type: ignore
 
 	pyproject_path: str = sys.argv[1].strip()
 
@@ -440,9 +439,9 @@ def get_nvcc_info() -> Dict[str, str]:
 	return info
 
 
-def get_torch_info() -> Tuple[List[Exception], Dict[str, str]]:
+def get_torch_info() -> Tuple[List[Exception], Dict[str, Any]]:
 	exceptions: List[Exception] = []
-	info: Dict[str, str] = {}
+	info: Dict[str, Any] = {}
 
 	try:
 		import torch
@@ -460,7 +459,7 @@ def get_torch_info() -> Tuple[List[Exception], Dict[str, str]]:
 				info["n_devices"] = n_devices
 				for current_device in range(n_devices):
 					try:
-						current_device_info: Dict[str, str] = {}
+						current_device_info: Dict[str, Union[str, int]] = {}
 
 						dev_prop = torch.cuda.get_device_properties(
 							torch.device(f"cuda:{current_device}")
@@ -513,7 +512,7 @@ if __name__ == "__main__":
 		}
 	)
 
-	nvcc_info: Dict[str, str] = get_nvcc_info()
+	nvcc_info: Dict[str, Any] = get_nvcc_info()
 	print("nvcc:")
 	print_info_dict(nvcc_info)
 
@@ -547,9 +546,9 @@ import warnings
 from jinja2 import Template
 
 try:
-	import tomllib  # Python 3.11+
+	import tomllib  # type: ignore[import-not-found]
 except ImportError:
-	import tomli as tomllib
+	import tomli as tomllib  # type: ignore
 
 TOOL_PATH: str = "tool.makefile.inline-todo"
 
@@ -898,7 +897,7 @@ import argparse
 from pathlib import Path
 from typing import Optional
 
-from pdoc.markdown2 import Markdown, _safe_mode
+from pdoc.markdown2 import Markdown, _safe_mode  # type: ignore
 
 
 def convert_file(
@@ -962,11 +961,12 @@ from pathlib import Path
 from typing import Any, List, Set
 
 try:
-	import tomllib  # Python 3.11+
+	import tomllib  # type: ignore[import-not-found]
 except ImportError:
-	import tomli as tomllib
+	import tomli as tomllib  # type: ignore
 
 TOOL_PATH: str = "tool.makefile.docs"
+DEFAULT_DOCS_DIR: str = "docs"
 
 
 def deep_get(d: dict, path: str, default: Any = None, sep: str = ".") -> Any:
@@ -980,13 +980,13 @@ def deep_get(d: dict, path: str, default: Any = None, sep: str = ".") -> Any:
 
 def read_config(pyproject_path: Path) -> tuple[Path, Set[Path]]:
 	if not pyproject_path.is_file():
-		return set()
+		return Path(DEFAULT_DOCS_DIR), set()
 
 	with pyproject_path.open("rb") as f:
 		config = tomllib.load(f)
 
 	preserved: List[str] = deep_get(config, f"{TOOL_PATH}.no_clean", [])
-	docs_dir: Path = Path(deep_get(config, f"{TOOL_PATH}.output_dir", "docs"))
+	docs_dir: Path = Path(deep_get(config, f"{TOOL_PATH}.output_dir", DEFAULT_DOCS_DIR))
 
 	# Convert to absolute paths and validate
 	preserve_set: Set[Path] = set()
@@ -1032,6 +1032,59 @@ if __name__ == "__main__":
 endef
 
 export SCRIPT_DOCS_CLEAN
+
+# generate a report of the mypy output
+define SCRIPT_MYPY_REPORT
+"usage: mypy ... | mypy_report.py [--mode jsonl|exclude]"
+
+from __future__ import annotations
+import sys
+import argparse
+import re
+import json
+from typing import List, Dict, Tuple
+
+
+def parse_mypy_output(lines: List[str]) -> Dict[str, int]:
+	"given mypy output, turn it into a dict of `filename: error_count`"
+	pattern: re.Pattern[str] = re.compile(r"^(?P<file>[^:]+):\d+:\s+error:")
+	counts: Dict[str, int] = {}
+	for line in lines:
+		m = pattern.match(line)
+		if m:
+			f: str = m.group("file")
+			counts[f] = counts.get(f, 0) + 1
+	return counts
+
+
+def main() -> None:
+	parser = argparse.ArgumentParser()
+	parser.add_argument("--mode", choices=["jsonl", "toml"], default="jsonl")
+	args = parser.parse_args()
+	lines: List[str] = sys.stdin.read().splitlines()
+	error_dict: Dict[str, int] = parse_mypy_output(lines)
+	sorted_errors: List[Tuple[str, int]] = sorted(
+		error_dict.items(), key=lambda x: x[1]
+	)
+	if len(sorted_errors) == 0:
+		print("# no errors found!")
+		return
+	if args.mode == "jsonl":
+		for fname, count in sorted_errors:
+			print(json.dumps({"filename": fname, "errors": count}))
+	elif args.mode == "toml":
+		for fname, count in sorted_errors:
+			print(f'"{fname}", # {count}')
+	else:
+		raise ValueError(f"unknown mode {args.mode}")
+
+
+if __name__ == "__main__":
+	main()
+
+endef
+
+export SCRIPT_MYPY_REPORT
 
 
 ##     ## ######## ########   ######  ####  #######  ##    ##
@@ -1174,18 +1227,17 @@ format-check:
 	$(PYTHON) -m ruff check --config $(PYPROJECT) .
 	$(PYTHON) -m pycln --check --config $(PYPROJECT) .
 
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# modification: check whole dir, configured in pyproject.toml
 # runs type checks with mypy
-# at some point, need to add back --check-untyped-defs to mypy call
-# but it complains when we specify arguments by keyword where positional is fine
-# not sure how to fix this
 .PHONY: typing
 typing: clean
 	@echo "running type checks"
 	$(PYTHON) -m mypy --config-file $(PYPROJECT) $(TYPECHECK_ARGS) .
-# $(PYTHON) -m mypy --config-file $(PYPROJECT) $(TYPECHECK_ARGS) $(TESTS_DIR)
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+# generates a report of the mypy output
+.PHONY: typing-report
+typing-report:
+	@echo "generate a report of the type check output -- errors per file"
+	$(PYTHON) -m mypy --config-file $(PYPROJECT) $(TYPECHECK_ARGS) . | $(PYTHON) -c "$$SCRIPT_MYPY_REPORT" --mode toml
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # separate unit and notebook tests
