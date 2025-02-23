@@ -355,7 +355,7 @@ class MazeTokenizer(SerializableDataclass):
 
     @staticmethod
     def strings_to_coords(
-        text: str,
+        text: str | list[str],
         when_noncoord: WhenMissing = "skip",
     ) -> list[str | CoordTup]:
         return strings_to_coords(text=text, when_noncoord=when_noncoord)

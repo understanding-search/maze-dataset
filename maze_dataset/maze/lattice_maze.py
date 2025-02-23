@@ -220,10 +220,11 @@ class LatticeMaze(SerializableDataclass):
         degrees[1:, :] += int_conn[0, :-1, :]  # Connections to north
         return degrees
 
-    def get_coord_neighbors(self, c: Coord) -> CoordArray:
+    def get_coord_neighbors(self, c: Coord | CoordTup) -> CoordArray:
         """
         Returns an array of the neighboring, connected coords of `c`.
         """
+        c = np.array(c)  # type: ignore[assignment]
         neighbors: list[Coord] = [
             neighbor
             for neighbor in (c + NEIGHBORS_MASK)
@@ -269,12 +270,12 @@ class LatticeMaze(SerializableDataclass):
 
     def find_shortest_path(
         self,
-        c_start: CoordTup,
-        c_end: CoordTup,
+        c_start: CoordTup | Coord,
+        c_end: CoordTup | Coord,
     ) -> CoordArray:
         """find the shortest path between two coordinates, using A*"""
-        c_start = tuple(c_start)
-        c_end = tuple(c_end)
+        c_start = tuple(c_start)  # type: ignore[assignment]
+        c_end = tuple(c_end)  # type: ignore[assignment]
 
         g_score: dict[CoordTup, float] = (
             dict()

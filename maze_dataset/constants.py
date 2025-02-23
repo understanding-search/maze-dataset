@@ -10,13 +10,13 @@ from maze_dataset.utils import corner_first_ndindex
 
 # various type hints for coordinates, connections, etc.
 
-Coord = Int8[np.ndarray, "row_col"]
+Coord = Int8[np.ndarray, "row_col=2"]
 "single coordinate as array"
 
 CoordTup = tuple[int, int]
 "single coordinate as tuple"
 
-CoordArray = Int8[np.ndarray, "coord row_col"]
+CoordArray = Int8[np.ndarray, "coord row_col=2"]
 "array of coordinates"
 
 CoordList = list[CoordTup]
