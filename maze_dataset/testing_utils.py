@@ -4,7 +4,7 @@ Do not import into any module outside of the tests directory
 """
 
 import itertools
-from typing import Final, NamedTuple
+from typing import Final, NamedTuple, Sequence
 
 import frozendict
 import numpy as np
@@ -60,7 +60,7 @@ MIXED_MAZES: Final[tuple[LatticeMaze | TargetedLatticeMaze | SolvedMaze]] = tupl
 
 class MANUAL_MAZE(NamedTuple):
     tokens: str
-    ascii: tuple[str]
+    ascii: Sequence[str]
     straightaway_footprints: CoordArray
 
 
