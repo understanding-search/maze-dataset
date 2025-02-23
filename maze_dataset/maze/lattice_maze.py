@@ -1288,7 +1288,7 @@ class SolvedMaze(TargetedLatticeMaze):  # type: ignore[misc]
     # type ignore here since we're overriding a method with a different signature
     @classmethod
     def from_lattice_maze(  # type: ignore[override]
-        cls, lattice_maze: LatticeMaze, solution: list[CoordTup]|CoordArray
+        cls, lattice_maze: LatticeMaze, solution: list[CoordTup] | CoordArray
     ) -> "SolvedMaze":
         return cls(
             connection_list=lattice_maze.connection_list,

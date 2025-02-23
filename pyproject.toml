@@ -100,7 +100,6 @@
     # generate this exclude with `make typing-report`
     exclude = [
         # high priority
-        # "maze_dataset/generation/generators.py", # 14
         "maze_dataset/token_utils.py", # 13
         "maze_dataset/constants.py", # 41
         "maze_dataset/dataset/dataset.py", # 20

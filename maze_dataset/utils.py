@@ -7,7 +7,16 @@ import typing
 from dataclasses import Field
 from functools import cache, wraps
 from types import UnionType
-from typing import Callable, Generator, Iterable, Literal, TypeVar, get_args, get_origin, overload
+from typing import (
+    Callable,
+    Generator,
+    Iterable,
+    Literal,
+    TypeVar,
+    get_args,
+    get_origin,
+    overload,
+)
 
 import frozendict
 import numpy as np
@@ -302,11 +311,9 @@ def _all_instances_wrapper(f):
 
         validation_funcs: frozendict.frozendict
         if len(args) >= 2 and args[1] is not None:
-            validation_funcs= frozendict.frozendict(args[1])
+            validation_funcs = frozendict.frozendict(args[1])
         elif "validation_funcs" in kwargs and kwargs["validation_funcs"] is not None:
-            validation_funcs= frozendict.frozendict(
-                kwargs["validation_funcs"]
-            )
+            validation_funcs = frozendict.frozendict(kwargs["validation_funcs"])
         else:
             validation_funcs = None
         return cached_wrapper(args[0], f, validation_funcs)
