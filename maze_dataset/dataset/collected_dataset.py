@@ -13,11 +13,11 @@ from functools import cached_property
 import numpy as np
 from jaxtyping import Int
 from muutils.json_serialize import (
-    JSONdict,
     json_serialize,
     serializable_dataclass,
     serializable_field,
 )
+from muutils.json_serialize.util import JSONdict
 from muutils.json_serialize.util import _FORMAT_KEY
 from muutils.misc import sanitize_fname, shorten_numerical_to_str, stable_hash
 from zanj.loading import LoaderHandler, load_item_recursive, register_loader_handler

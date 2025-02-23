@@ -70,7 +70,7 @@ def time_generation(
 
         t: float = (
             timeit.timeit(
-                stmt=lambda: MazeDataset.generate(cfg, **_GENERATE_KWARGS),
+                stmt=lambda: MazeDataset.generate(cfg, **_GENERATE_KWARGS),  # type: ignore[arg-type]
                 number=trials,
             )
             / trials

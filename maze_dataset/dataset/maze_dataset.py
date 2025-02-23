@@ -18,11 +18,11 @@ import numpy as np
 import tqdm
 from jaxtyping import Int
 from muutils.json_serialize import (
-    JSONdict,
     json_serialize,
     serializable_dataclass,
     serializable_field,
 )
+from muutils.json_serialize.util import JSONdict
 from muutils.json_serialize.util import _FORMAT_KEY
 from muutils.json_serialize.util import safe_getsource, string_as_lines
 from muutils.misc import sanitize_fname, shorten_numerical_to_str, stable_hash

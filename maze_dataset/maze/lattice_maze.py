@@ -623,7 +623,7 @@ class LatticeMaze(SerializableDataclass):
     def _as_coords_and_special_AOTP(self) -> list[CoordTup | str]:
         """turn the maze into adjacency list, origin, target, and solution -- keep coords as tuples"""
 
-        output: list[str] = self._as_adj_list_tokens()
+        output: list[CoordTup | str] = self._as_adj_list_tokens()
         # if getattr(self, "start_pos", None) is not None:
         if isinstance(self, TargetedLatticeMaze):
             output += self._get_start_pos_tokens()
@@ -636,14 +636,15 @@ class LatticeMaze(SerializableDataclass):
     def _as_tokens(
         self, maze_tokenizer: "MazeTokenizer | TokenizationMode"
     ) -> list[str]:
+        # type ignores here fine since we check the instance
         if isinstance_by_type_name(maze_tokenizer, "TokenizationMode"):
-            maze_tokenizer = maze_tokenizer.to_legacy_tokenizer()
+            maze_tokenizer = maze_tokenizer.to_legacy_tokenizer()  # type: ignore[union-attr]
         if (
             isinstance_by_type_name(maze_tokenizer, "MazeTokenizer")
-            and maze_tokenizer.is_AOTP()
+            and maze_tokenizer.is_AOTP()  # type: ignore[union-attr]
         ):
             coords_raw: list[CoordTup | str] = self._as_coords_and_special_AOTP()
-            coords_processed: list[str] = maze_tokenizer.coords_to_strings(
+            coords_processed: list[str] = maze_tokenizer.coords_to_strings(  # type: ignore[union-attr]
                 coords=coords_raw, when_noncoord="include"
             )
             return coords_processed
@@ -769,11 +770,12 @@ class LatticeMaze(SerializableDataclass):
         Constructs a maze from a tokenization.
         Only legacy tokenizers and their `MazeTokenizerModular` analogs are supported.
         """
+        # HACK: type ignores here fine since we check the instance
         if isinstance_by_type_name(maze_tokenizer, "TokenizationMode"):
-            maze_tokenizer = maze_tokenizer.to_legacy_tokenizer()
+            maze_tokenizer = maze_tokenizer.to_legacy_tokenizer()  # type: ignore[union-attr]
         if (
             isinstance_by_type_name(maze_tokenizer, "MazeTokenizerModular")
-            and not maze_tokenizer.is_legacy_equivalent()
+            and not maze_tokenizer.is_legacy_equivalent()  # type: ignore[union-attr]
         ):
             raise NotImplementedError(
                 f"Only legacy tokenizers and their exact `MazeTokenizerModular` analogs supported, not {maze_tokenizer}."
@@ -782,8 +784,8 @@ class LatticeMaze(SerializableDataclass):
         if isinstance(tokens, str):
             tokens = tokens.split()
 
-        if maze_tokenizer.is_AOTP():
-            return cls._from_tokens_AOTP(tokens, maze_tokenizer)
+        if maze_tokenizer.is_AOTP():  # type: ignore[union-attr]
+            return cls._from_tokens_AOTP(tokens, maze_tokenizer)  # type: ignore[arg-type]
         else:
             raise NotImplementedError("only AOTP tokenization is supported")
 
@@ -821,6 +823,9 @@ class LatticeMaze(SerializableDataclass):
         show_endpoints: bool = True,
         show_solution: bool = True,
     ) -> PixelGrid:
+        # HACK: lots of `# type: ignore[attr-defined]` here since its defined for any `LatticeMaze`
+        # but solution, start_pos, end_pos not always defined
+        # but its fine since we explicitly check the type
         if show_solution and not show_endpoints:
             raise ValueError("show_solution=True requires show_endpoints=True")
         # convert original bool pixel grid to RGB
@@ -836,22 +841,22 @@ class LatticeMaze(SerializableDataclass):
         # set endpoints for TargetedLatticeMaze
         if self.__class__ == TargetedLatticeMaze:
             if show_endpoints:
-                pixel_grid[self.start_pos[0] * 2 + 1, self.start_pos[1] * 2 + 1] = (
+                pixel_grid[self.start_pos[0] * 2 + 1, self.start_pos[1] * 2 + 1] = (  # type: ignore[attr-defined]
                     PixelColors.START
                 )
-                pixel_grid[self.end_pos[0] * 2 + 1, self.end_pos[1] * 2 + 1] = (
+                pixel_grid[self.end_pos[0] * 2 + 1, self.end_pos[1] * 2 + 1] = (  # type: ignore[attr-defined]
                     PixelColors.END
                 )
             return pixel_grid
 
         # set solution -- we only reach this part if `self.__class__ == SolvedMaze`
         if show_solution:
-            for coord in self.solution:
+            for coord in self.solution:  # type: ignore[attr-defined]
                 pixel_grid[coord[0] * 2 + 1, coord[1] * 2 + 1] = PixelColors.PATH
 
             # set pixels between coords
-            for index, coord in enumerate(self.solution[:-1]):
-                next_coord = self.solution[index + 1]
+            for index, coord in enumerate(self.solution[:-1]):  # type: ignore[attr-defined]
+                next_coord = self.solution[index + 1]  # type: ignore[attr-defined]
                 # check they are adjacent using norm
                 assert np.linalg.norm(np.array(coord) - np.array(next_coord)) == 1, (
                     f"Coords {coord} and {next_coord} are not adjacent"
@@ -863,10 +868,10 @@ class LatticeMaze(SerializableDataclass):
                 ] = PixelColors.PATH
 
             # set endpoints (again, since path would overwrite them)
-            pixel_grid[self.start_pos[0] * 2 + 1, self.start_pos[1] * 2 + 1] = (
+            pixel_grid[self.start_pos[0] * 2 + 1, self.start_pos[1] * 2 + 1] = (  # type: ignore[attr-defined]
                 PixelColors.START
             )
-            pixel_grid[self.end_pos[0] * 2 + 1, self.end_pos[1] * 2 + 1] = (
+            pixel_grid[self.end_pos[0] * 2 + 1, self.end_pos[1] * 2 + 1] = (  # type: ignore[attr-defined]
                 PixelColors.END
             )
 
@@ -1040,7 +1045,7 @@ class LatticeMaze(SerializableDataclass):
 
         return cls(
             connection_list=np.array(connection_list),
-            solution=np.array(solution),
+            solution=np.array(solution),  # type: ignore[arg-type]
         )
 
     # ============================================================
@@ -1260,8 +1265,9 @@ class SolvedMaze(TargetedLatticeMaze):
         )
         return LatticeMaze(connection_list=self.connection_list)
 
+    # type ignore here since we're overriding a method with a different signature
     @classmethod
-    def from_lattice_maze(
+    def from_lattice_maze(  # type: ignore[override]
         cls, lattice_maze: LatticeMaze, solution: list[CoordTup]
     ) -> "SolvedMaze":
         return cls(
