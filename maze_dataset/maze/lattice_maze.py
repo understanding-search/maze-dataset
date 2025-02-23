@@ -693,7 +693,7 @@ class LatticeMaze(SerializableDataclass):
             # skip last endline
             if len(e) != 0:
                 # convert to coords, split start and end
-                e_coords: list[CoordTup] = maze_tokenizer.strings_to_coords(
+                e_coords: list[str|CoordTup] = maze_tokenizer.strings_to_coords(
                     e,
                     when_noncoord="include",
                 )
@@ -703,7 +703,7 @@ class LatticeMaze(SerializableDataclass):
                 assert len(e_coords) == 3, f"invalid edge: {e = } {e_coords = }"  #   |
                 assert e_coords[1] == SPECIAL_TOKENS.CONNECTOR, (  #                  |
                     f"invalid edge: {e = } {e_coords = }"  #                          |
-                )  #                                                                  |
+                )  #                                                                  V
                 coordinates.append((e_coords[0], e_coords[-1]))  # <------------------/
 
         assert all(len(c) == 2 for c in coordinates), (

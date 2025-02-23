@@ -1,7 +1,7 @@
 """constants and type hints used accross the package"""
 
 import warnings
-from dataclasses import dataclass, field, make_dataclass
+from dataclasses import dataclass, field, make_dataclass, Field
 
 import numpy as np
 from jaxtyping import Bool, Int8
@@ -145,7 +145,7 @@ NEIGHBORS_MASK: Int8[np.ndarray, "coord point"] = np.array(
 "down, up, right, left as vectors"
 
 
-_VOCAB_FIELDS: list = [
+_VOCAB_FIELDS: list[tuple[str, type, Field]] = [
     # *[(k, str, field(default=v)) for k, v in SPECIAL_TOKENS.items()],
     ("COORD_PRE", str, field(default="(")),
     ("COORD_INTRA", str, field(default=",")),
@@ -209,7 +209,7 @@ _VOCAB_BASE: type = make_dataclass(
 # HACK: mypy doesn't recognize the fields in this dataclass
 VOCAB: _VOCAB_BASE = _VOCAB_BASE()  # type: ignore
 "public access to universal vocabulary for `MazeTokenizerModular`"
-VOCAB_LIST: list[str] = list(VOCAB.values())
+VOCAB_LIST: list[str] = list(x[0] for x in _VOCAB_FIELDS)
 "list of `VOCAB` tokens, in order"
 VOCAB_TOKEN_TO_INDEX: dict[str, int] = {token: i for i, token in enumerate(VOCAB_LIST)}
 "map of `VOCAB` tokens to their indices"
