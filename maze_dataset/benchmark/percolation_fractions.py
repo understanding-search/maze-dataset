@@ -139,7 +139,6 @@ class SweepResult(SerializableDataclass):
                 differing_keys.add(k)
 
         return differing_keys
-    
 
     def configs_value_set(self, key: str) -> list[Any]:
         "return a list of the unique values for a given key"
@@ -233,7 +232,9 @@ class SweepResult(SerializableDataclass):
         # plot
         cmap = plt.get_cmap(cmap_name)
         n_cfgs: int = len(self.result_values)
-        for i, (ep_cfg_name, result_values) in enumerate(sorted(self.result_values.items(), key=lambda x: x[0])):
+        for i, (ep_cfg_name, result_values) in enumerate(
+            sorted(self.result_values.items(), key=lambda x: x[0])
+        ):
             ax.plot(
                 self.param_values,
                 result_values,
@@ -372,23 +373,24 @@ def plot_grouped(
     ```
     """
 
-
     # groups
     endpoint_kwargs_set: set[tuple[dict]] = results.configs_value_set("endpoint_kwargs")
-    generator_funcs_names: list[str] = list({
-        cfg.maze_ctor.__name__ for cfg in results.configs
-    })
+    generator_funcs_names: list[str] = list(
+        {cfg.maze_ctor.__name__ for cfg in results.configs}
+    )
 
     # separate plot for each set of endpoint kwargs
     for ep_kw in endpoint_kwargs_set:
-        results_epkw: SweepResult = results.get_where("endpoint_kwargs", lambda x: x == ep_kw)
-        shared_keys: set[str] = set(results_epkw.configs_shared().keys())
-        cfg_keys: set[str] = shared_keys.intersection(
-            {"n_mazes", "endpoint_kwargs"}
+        results_epkw: SweepResult = results.get_where(
+            "endpoint_kwargs", lambda x: x == ep_kw
         )
+        shared_keys: set[str] = set(results_epkw.configs_shared().keys())
+        cfg_keys: set[str] = shared_keys.intersection({"n_mazes", "endpoint_kwargs"})
         fig, ax = plt.subplots(1, 1, figsize=(22, 10))
         for gf_idx, gen_func in enumerate(generator_funcs_names):
-            results_filtered: SweepResult = results_epkw.get_where("maze_ctor", lambda x: x.__name__ == gen_func)
+            results_filtered: SweepResult = results_epkw.get_where(
+                "maze_ctor", lambda x: x.__name__ == gen_func
+            )
             ax = results_filtered.plot(
                 cfg_keys=cfg_keys,
                 ax=ax,
@@ -401,6 +403,6 @@ def plot_grouped(
             save_path: Path = save_dir / f"ep_{ep_kw}.svg"
             save_path.parent.mkdir(exist_ok=True, parents=True)
             plt.savefig(save_path)
-        
+
         if show:
             plt.show()
