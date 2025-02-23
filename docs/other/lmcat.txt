@@ -1,8 +1,8 @@
 # Stats
 - 44 files
-- 12128 (12K) lines
-- 427608 (428K) chars
-- 40509 (41K) `whitespace-split` tokens
+- 12331 (12K) lines
+- 436693 (437K) chars
+- 41448 (41K) `whitespace-split` tokens
 
 # File Tree
 
@@ -15,38 +15,38 @@ maze-dataset
 │    └── make-docs.yml                    [   47L   1,262C   141T]
 ├── maze_dataset                          
 │   ├── benchmark                         
-│   │   ├── percolation_fractions.py      [  409L  13,041C 1,088T]
-│   │   └── speed.py                      [  128L   3,257C   286T]
+│   │   ├── percolation_fractions.py      [  411L  13,126C 1,097T]
+│   │   └── speed.py                      [  128L   3,295C   289T]
 │   ├── dataset                           
 │   │   ├── __init__.py                   [   21L     541C    39T]
-│   │   ├── collected_dataset.py          [  207L   7,399C   641T]
+│   │   ├── collected_dataset.py          [  207L   7,434C   644T]
 │   │   ├── configs.py                    [   59L   1,589C   111T]
-│   │   ├── dataset.py                    [  505L  19,165C 1,872T]
-│   │   ├── maze_dataset.py               [  896L  33,869C 2,815T]
-│   │   └── rasterized.py                 [  263L   8,437C   762T]
+│   │   ├── dataset.py                    [  505L  19,181C 1,874T]
+│   │   ├── maze_dataset.py               [  941L  35,687C 2,959T]
+│   │   └── rasterized.py                 [  307L   9,817C   857T]
 │   ├── generation                        
 │   │   ├── __init__.py                   [   23L     562C    53T]
 │   │   ├── default_generators.py         [   21L     811C    68T]
 │   │   └── generators.py                 [  408L  16,701C 1,684T]
 │   ├── maze                              
 │   │   ├── __init__.py                   [   26L     511C    47T]
-│   │   └── lattice_maze.py               [1,426L  51,921C 4,876T]
+│   │   └── lattice_maze.py               [1,453L  55,280C 5,326T]
 │   ├── plotting                          
 │   │   ├── __init__.py                   [   32L   1,040C   109T]
 │   │   ├── plot_dataset.py               [   60L   1,679C   172T]
-│   │   ├── plot_maze.py                  [  546L  19,055C 1,771T]
+│   │   ├── plot_maze.py                  [  550L  19,051C 1,768T]
 │   │   ├── plot_tokens.py                [   87L   2,452C   267T]
 │   │   └── print_tokens.py               [  226L   6,479C   700T]
 │   ├── tokenization                      
 │   │   ├── __init__.py                   [   51L   1,171C    94T]
 │   │   ├── all_tokenizers.py             [  181L   7,117C   684T]
-│   │   ├── maze_tokenizer.py             [2,258L  88,363C 7,635T]
+│   │   ├── maze_tokenizer.py             [2,309L  89,770C 7,773T]
 │   │   └── save_hashes.py                [  109L   3,540C   264T]
 │   ├── __init__.py                       [   68L   1,421C    99T]
-│   ├── constants.py                      [  223L   7,386C   714T]
+│   ├── constants.py                      [  224L   7,466C   727T]
 │   ├── py.typed                          [    0L       0C     0T]
-│   ├── testing_utils.py                  [  176L   9,421C 1,354T]
-│   ├── token_utils.py                    [  456L  16,680C 1,686T]
+│   ├── testing_utils.py                  [  176L   9,434C 1,355T]
+│   ├── token_utils.py                    [  483L  17,494C 1,770T]
 │   └── utils.py                          [  399L  15,774C 1,867T]
 ├── notebooks                             
 │   ├── demo_dataset.ipynb                [1,027L 434,412C 3,050T]
@@ -54,14 +54,14 @@ maze-dataset
 │   ├── demo_latticemaze.ipynb            [  820L 305,633C 2,505T]
 │   ├── demo_mazetokenizermodular.ipynb   [1,753L  89,537C 6,956T]
 │   ├── demo_tokenization.ipynb           [  429L 133,465C 9,298T]
-│   ├── estimate_dataset_fractions.ipynb  [  125L   3,102C   248T]
+│   ├── estimate_dataset_fractions.ipynb  [  229L 950,564C   533T]
 │   ├── forking_points.ipynb              [  211L  28,305C   614T]
 │   ├── iterated_backfilling.ipynb        [  208L  30,755C   613T]
 │   └── profile_dataset_save_read.ipynb   [  540L  17,521C 1,420T]
 ├── .lastversion                          [    1L       7C     1T]
 ├── README.md                             [  121L   6,181C   573T]
-├── makefile                              [1,510L  45,867C 5,450T]
-├── pyproject.toml                        [  253L   8,133C   927T]
+├── makefile                              [1,510L  45,866C 5,450T]
+├── pyproject.toml                        [  255L   8,179C   929T]
 ```
 
 # File Contents
@@ -487,7 +487,7 @@ class SweepResult(SerializableDataclass):
 
     def plot(
         self,
-        save_path: str = None,
+        save_path: str | None = None,
         cfg_keys: list[str] | None = None,
         cmap_name: str | None = "viridis",
         plot_only: bool = False,
@@ -498,8 +498,10 @@ class SweepResult(SerializableDataclass):
         # set up figure
         if not ax:
             fig: plt.Figure
-            ax: plt.Axes
-            fig, ax = plt.subplots(1, 1, figsize=(22, 10))
+            ax_: plt.Axes
+            fig, ax_ = plt.subplots(1, 1, figsize=(22, 10))
+        else:
+            ax_ = ax
 
         # plot
         cmap = plt.get_cmap(cmap_name)
@@ -507,7 +509,7 @@ class SweepResult(SerializableDataclass):
         for i, (ep_cfg_name, result_values) in enumerate(
             sorted(self.result_values.items(), key=lambda x: x[0])
         ):
-            ax.plot(
+            ax_.plot(
                 self.param_values,
                 result_values,
                 ".-",
@@ -536,13 +538,13 @@ class SweepResult(SerializableDataclass):
 
         # add title and stuff
         if not plot_only:
-            ax.set_xlabel(self.param_key)
-            ax.set_ylabel(self.analyze_func.__name__)
-            ax.set_title(
+            ax_.set_xlabel(self.param_key)
+            ax_.set_ylabel(self.analyze_func.__name__)
+            ax_.set_title(
                 f"{self.param_key} vs {self.analyze_func.__name__}\n{cfg_repr}"
             )
-            ax.grid(True)
-            ax.legend(loc="lower center")
+            ax_.grid(True)
+            ax_.legend(loc="lower center")
 
         # save and show
         if save_path:
@@ -551,7 +553,7 @@ class SweepResult(SerializableDataclass):
         if show:
             plt.show()
 
-        return ax
+        return ax_
 
 
 DEFAULT_ENDPOINT_KWARGS: list[tuple[str, dict]] = [
@@ -647,7 +649,7 @@ def plot_grouped(
     """
 
     # groups
-    endpoint_kwargs_set: set[tuple[dict]] = results.configs_value_set("endpoint_kwargs")
+    endpoint_kwargs_set: set[tuple[dict]] = results.configs_value_set("endpoint_kwargs")  # type: ignore[assignment]
     generator_funcs_names: list[str] = list(
         {cfg.maze_ctor.__name__ for cfg in results.configs}
     )
@@ -665,7 +667,7 @@ def plot_grouped(
                 "maze_ctor", lambda x: x.__name__ == gen_func
             )
             ax = results_filtered.plot(
-                cfg_keys=cfg_keys,
+                cfg_keys=list(cfg_keys),
                 ax=ax,
                 show=False,
                 cmap_name="Reds" if gf_idx == 0 else "Blues",
@@ -755,7 +757,7 @@ def time_generation(
 
         t: float = (
             timeit.timeit(
-                stmt=lambda: MazeDataset.generate(cfg, **_GENERATE_KWARGS),
+                stmt=lambda: MazeDataset.generate(cfg, **_GENERATE_KWARGS),  # type: ignore[arg-type]
                 number=trials,
             )
             / trials
@@ -796,8 +798,8 @@ def run_benchmark(
 
     times: list[dict] = time_generation(
         base_configs=base_configs,
-        grid_n_vals=grid_n_vals,
-        n_mazes_vals=n_mazes_vals,
+        grid_n_vals=list(grid_n_vals),
+        n_mazes_vals=list(n_mazes_vals),
         trials=trials,
         verbose=verbose,
     )
@@ -855,11 +857,11 @@ from functools import cached_property
 import numpy as np
 from jaxtyping import Int
 from muutils.json_serialize import (
-    JSONitem,
     json_serialize,
     serializable_dataclass,
     serializable_field,
 )
+from muutils.json_serialize.util import JSONdict
 from muutils.json_serialize.util import _FORMAT_KEY
 from muutils.misc import sanitize_fname, shorten_numerical_to_str, stable_hash
 from zanj.loading import LoaderHandler, load_item_recursive, register_loader_handler
@@ -981,7 +983,7 @@ class MazeDatasetCollection(GPTDataset):
         ]
         return cls(cfg, datasets)
 
-    def serialize(self) -> JSONitem:
+    def serialize(self) -> JSONdict:
         return {
             _FORMAT_KEY: "MazeDatasetCollection",
             "cfg": self.cfg.serialize(),
@@ -992,7 +994,7 @@ class MazeDatasetCollection(GPTDataset):
         }
 
     @classmethod
-    def load(cls, data: JSONitem) -> "MazeDatasetCollection":
+    def load(cls, data: JSONdict) -> "MazeDatasetCollection":
         assert data[_FORMAT_KEY] == "MazeDatasetCollection"
         return cls(
             **{
@@ -1489,7 +1491,7 @@ class GPTDataset(Dataset):
     def filter_by(self) -> "FilterBy":
         return self.FilterBy(self)
 
-    def _apply_filters_from_config(self):
+    def _apply_filters_from_config(self) -> "GPTDataset":
         """apply filters to the dataset, as specified in the config. used in `from_config()`"""
         output: GPTDataset = self
         # copy the list, and then clear it in the config. we do this because each time we apply a filter it will update config.applied_filters
@@ -1633,23 +1635,25 @@ import copy
 import functools
 import json
 import multiprocessing
+from pathlib import Path
 import typing
 import warnings
 from collections import Counter, defaultdict
-from typing import Callable, Optional
+from typing import Callable, Optional, cast
 
 import numpy as np
 import tqdm
 from jaxtyping import Int
 from muutils.json_serialize import (
-    JSONitem,
     json_serialize,
     serializable_dataclass,
     serializable_field,
 )
+from muutils.json_serialize.util import JSONdict
 from muutils.json_serialize.util import _FORMAT_KEY
 from muutils.json_serialize.util import safe_getsource, string_as_lines
 from muutils.misc import sanitize_fname, shorten_numerical_to_str, stable_hash
+from zanj import ZANJ
 from zanj.loading import LoaderHandler, load_item_recursive, register_loader_handler
 
 from maze_dataset.constants import Coord, CoordArray, CoordTup
@@ -1727,7 +1731,7 @@ def _load_endpoint_kwargs(data: dict) -> EndpointKwargsType:
 class MazeDatasetConfig(GPTDatasetConfig):
     """config object which is passed to `MazeDataset.from_config` to generate or load a dataset"""
 
-    grid_n: int
+    grid_n: int = serializable_field()
 
     # not comparing n_mazes is done primarily to avoid conflicts which happen during `from_config` when we have applied filters
     n_mazes: int = serializable_field(compare=False)
@@ -1875,6 +1879,46 @@ class MazeDataset(GPTDataset):
         self.mazes: list[SolvedMaze] = list(mazes)
         self.generation_metadata_collected: dict | None = generation_metadata_collected
 
+    @classmethod
+    def from_config(
+        cls,
+        cfg: MazeDatasetConfig,
+        do_generate: bool = True,
+        load_local: bool = True,
+        save_local: bool = True,
+        zanj: ZANJ | None = None,
+        do_download: bool = True,
+        local_base_path: Path = Path("data/maze_dataset"),
+        except_on_config_mismatch: bool = True,
+        allow_generation_metadata_filter_mismatch: bool = True,
+        verbose: bool = False,
+        **kwargs,
+    ) -> "MazeDataset":
+        """create a maze dataset from a config
+
+                priority of loading:
+        1. load from local
+        2. download
+        3. generate
+
+        """
+        return cast(
+            MazeDataset,
+            super().from_config(
+                cfg=cfg,
+                do_generate=do_generate,
+                load_local=load_local,
+                save_local=save_local,
+                zanj=zanj,
+                do_download=do_download,
+                local_base_path=local_base_path,
+                except_on_config_mismatch=except_on_config_mismatch,
+                allow_generation_metadata_filter_mismatch=allow_generation_metadata_filter_mismatch,
+                verbose=verbose,
+                **kwargs,
+            ),
+        )
+
     def data_hash(self) -> int:
         return stable_hash(str(tuple([x.serialize() for x in self.mazes])))
 
@@ -1937,9 +1981,9 @@ class MazeDataset(GPTDataset):
 
         if pool_kwargs is None:
             pool_kwargs = dict()
-        maze_indexes: Int[np.int8, " maze_index"] = np.arange(cfg_cpy.n_mazes)
+        maze_indexes: Int[np.ndarray, " maze_index"] = np.arange(cfg_cpy.n_mazes)  # type: ignore[assignment]
 
-        solved_mazes: list[SolvedMaze]
+        solved_mazes: list[SolvedMaze | None]
         # Configure tqdm for progress bar
         tqdm_kwargs: dict = dict(
             total=cfg_cpy.n_mazes,
@@ -1966,22 +2010,24 @@ class MazeDataset(GPTDataset):
                 tqdm.tqdm(
                     map(
                         _generate_maze_helper,
-                        maze_indexes,
+                        maze_indexes.tolist(),
                     ),
                     **tqdm_kwargs,
                 )
             )
 
         # Filter out None values explicitly after ensuring all results are collected
-        solved_mazes = [maze for maze in solved_mazes if maze is not None]
-        # solved_mazes = list(filter(lambda x: x is not None, solved_mazes))
+        solved_mazes_: list[SolvedMaze] = [
+            maze for maze in solved_mazes if maze is not None
+        ]
+        # solved_mazes_ = list(filter(lambda x: x is not None, solved_mazes))
 
         # Update the config with the actual number of mazes
-        cfg_cpy.n_mazes = len(solved_mazes)
+        cfg_cpy.n_mazes = len(solved_mazes_)
 
         dataset: MazeDataset = cls(
             cfg=cfg_cpy,
-            mazes=solved_mazes,
+            mazes=solved_mazes_,
         )
 
         dataset.update_self_config()  # Call `update_self_config()` to ensure the dataset's config reflects changes
@@ -1995,7 +2041,7 @@ class MazeDataset(GPTDataset):
         raise NotImplementedError("not implemented yet")
 
     @classmethod
-    def load(cls, data: JSONitem) -> "MazeDataset":
+    def load(cls, data: JSONdict) -> "MazeDataset":
         """load from zanj/json"""
         if data[_FORMAT_KEY] == "MazeDataset:minimal":
             return cls._load_minimal(data)
@@ -2013,20 +2059,20 @@ class MazeDataset(GPTDataset):
             )
 
     @classmethod
-    def _load_full(cls, data: JSONitem) -> "MazeDataset":
+    def _load_full(cls, data: JSONdict) -> "MazeDataset":
         assert data[_FORMAT_KEY] == "MazeDataset"
         return cls(
-            cfg=MazeDatasetConfig.load(data["cfg"]),
+            cfg=MazeDatasetConfig.load(data["cfg"]),  # type: ignore[arg-type]
             mazes=load_item_recursive(data["mazes"], tuple()),
-            generation_metadata_collected=data["generation_metadata_collected"],
+            generation_metadata_collected=data["generation_metadata_collected"],  # type: ignore[arg-type]
         )
 
     @classmethod
-    def _load_minimal(cls, data: JSONitem) -> "MazeDataset":
+    def _load_minimal(cls, data: JSONdict) -> "MazeDataset":
         assert data[_FORMAT_KEY] == "MazeDataset:minimal"
         return cls(
-            cfg=MazeDatasetConfig.load(data["cfg"]),
-            generation_metadata_collected=data["generation_metadata_collected"],
+            cfg=MazeDatasetConfig.load(data["cfg"]),  # type: ignore[arg-type]
+            generation_metadata_collected=data["generation_metadata_collected"],  # type: ignore[arg-type]
             mazes=[
                 SolvedMaze(
                     clist,
@@ -2042,7 +2088,7 @@ class MazeDataset(GPTDataset):
         )
 
     @classmethod
-    def _load_minimal_soln_cat(cls, data: JSONitem) -> "MazeDataset":
+    def _load_minimal_soln_cat(cls, data: JSONdict) -> "MazeDataset":
         assert data[_FORMAT_KEY] == "MazeDataset:minimal_soln_cat"
 
         maze_solution_lengths = load_item_recursive(
@@ -2074,7 +2120,7 @@ class MazeDataset(GPTDataset):
         )
 
     @classmethod
-    def _load_legacy(cls, data: JSONitem) -> "MazeDataset":
+    def _load_legacy(cls, data: JSONdict) -> "MazeDataset":
         """Legacy `load` method from <0.5.2. Used exclusively for profiling comparison."""
         assert data[_FORMAT_KEY] == "MazeDataset"
         return cls(
@@ -2084,7 +2130,7 @@ class MazeDataset(GPTDataset):
             }
         )
 
-    def serialize(self) -> JSONitem:
+    def serialize(self) -> JSONdict:
         """serialize to zanj/json"""
         if (
             SERIALIZE_MINIMAL_THRESHOLD is not None
@@ -2093,7 +2139,7 @@ class MazeDataset(GPTDataset):
             return self._serialize_minimal()
         return self._serialize_full()
 
-    def _serialize_full(self) -> JSONitem:
+    def _serialize_full(self) -> JSONdict:
         return {
             _FORMAT_KEY: "MazeDataset",
             "cfg": json_serialize(self.cfg),
@@ -2103,8 +2149,9 @@ class MazeDataset(GPTDataset):
             ),
         }
 
-    def _serialize_minimal(self) -> JSONitem:
+    def _serialize_minimal(self) -> JSONdict:
         "alternate serialization where metadata is collected and mazes are stored in concatenated form"
+        filtered_meta: "MazeDataset"
         if self.generation_metadata_collected is None:
             filtered_meta = self.filter_by.collect_generation_meta()
         else:
@@ -2135,13 +2182,13 @@ class MazeDataset(GPTDataset):
             "generation_metadata_collected": json_serialize(
                 filtered_meta.generation_metadata_collected
             ),
-            "maze_connection_lists": maze_connection_lists,
+            "maze_connection_lists": maze_connection_lists,  # type: ignore[dict-item]
             # "maze_endpoints": maze_endpoints,
-            "maze_solution_lengths": maze_solution_lengths,
-            "maze_solutions": maze_solutions,
+            "maze_solution_lengths": maze_solution_lengths,  # type: ignore[dict-item]
+            "maze_solutions": maze_solutions,  # type: ignore[dict-item]
         }
 
-    def _serialize_minimal_soln_cat(self) -> JSONitem:
+    def _serialize_minimal_soln_cat(self) -> JSONdict:
         "alternate serialization where metadata is collected, and mazes and their solutions are stored in concatenated form"
         if self.generation_metadata_collected is None:
             filtered_meta = self.filter_by.collect_generation_meta()
@@ -2181,10 +2228,10 @@ class MazeDataset(GPTDataset):
             "generation_metadata_collected": json_serialize(
                 filtered_meta.generation_metadata_collected
             ),
-            "maze_connection_lists": maze_connection_lists,
-            "maze_endpoints": maze_endpoints,
-            "maze_solution_lengths": maze_solution_lengths,
-            "maze_solutions_concat": maze_solutions_concat,
+            "maze_connection_lists": maze_connection_lists,  # type: ignore[dict-item]
+            "maze_endpoints": maze_endpoints,  # type: ignore[dict-item]
+            "maze_solution_lengths": maze_solution_lengths,  # type: ignore[dict-item]
+            "maze_solutions_concat": maze_solutions_concat,  # type: ignore[dict-item]
         }
 
     def update_self_config(self):
@@ -2212,7 +2259,7 @@ class MazeDataset(GPTDataset):
 
 
 # register things with zanj
-MazeDatasetConfig._dataset_class = property(lambda self: MazeDataset)
+MazeDatasetConfig._dataset_class = property(lambda self: MazeDataset)  # type: ignore[method-assign]
 register_loader_handler(
     LoaderHandler(
         check=lambda json_item, path=None, z=None: (
@@ -2542,6 +2589,7 @@ see their paper:
 ```
 """
 
+from pathlib import Path
 import typing
 
 import numpy as np
@@ -2549,6 +2597,7 @@ import torch
 from jaxtyping import Float, Int
 from muutils.json_serialize import serializable_dataclass, serializable_field
 from torch.utils.data import Dataset
+from zanj import ZANJ
 
 from maze_dataset import MazeDataset, MazeDatasetConfig
 from maze_dataset.maze import PixelColors, SolvedMaze
@@ -2639,6 +2688,8 @@ class RasterizedMazeDatasetConfig(MazeDatasetConfig):
 
 
 class RasterizedMazeDataset(MazeDataset):
+    cfg: RasterizedMazeDatasetConfig
+
     def __getitem__(self, idx: int) -> Float[torch.Tensor, "item in/tgt=2 x y rgb=3"]:
         # get the solved maze
         solved_maze: SolvedMaze = self.mazes[idx]
@@ -2661,6 +2712,46 @@ class RasterizedMazeDataset(MazeDataset):
         inputs, targets = zip(*[self[i] for i in idxs])
 
         return torch.stack([torch.stack(inputs), torch.stack(targets)])
+
+    @classmethod
+    def from_config(
+        cls,
+        cfg: RasterizedMazeDatasetConfig,
+        do_generate: bool = True,
+        load_local: bool = True,
+        save_local: bool = True,
+        zanj: ZANJ | None = None,
+        do_download: bool = True,
+        local_base_path: Path = Path("data/maze_dataset"),
+        except_on_config_mismatch: bool = True,
+        allow_generation_metadata_filter_mismatch: bool = True,
+        verbose: bool = False,
+        **kwargs,
+    ) -> "RasterizedMazeDataset":
+        """create a rasterized maze dataset from a config
+
+        priority of loading:
+        1. load from local
+        2. download
+        3. generate
+
+        """
+        return typing.cast(
+            RasterizedMazeDataset,
+            super().from_config(
+                cfg=cfg,
+                do_generate=do_generate,
+                load_local=load_local,
+                save_local=save_local,
+                zanj=zanj,
+                do_download=do_download,
+                local_base_path=local_base_path,
+                except_on_config_mismatch=except_on_config_mismatch,
+                allow_generation_metadata_filter_mismatch=allow_generation_metadata_filter_mismatch,
+                verbose=verbose,
+                **kwargs,
+            ),
+        )
 
     @classmethod
     def from_config_augmented(
@@ -3506,10 +3597,11 @@ class LatticeMaze(SerializableDataclass):
         degrees[1:, :] += int_conn[0, :-1, :]  # Connections to north
         return degrees
 
-    def get_coord_neighbors(self, c: Coord) -> CoordArray:
+    def get_coord_neighbors(self, c: Coord | CoordTup) -> CoordArray:
         """
         Returns an array of the neighboring, connected coords of `c`.
         """
+        c = np.array(c)  # type: ignore[assignment]
         neighbors: list[Coord] = [
             neighbor
             for neighbor in (c + NEIGHBORS_MASK)
@@ -3555,12 +3647,12 @@ class LatticeMaze(SerializableDataclass):
 
     def find_shortest_path(
         self,
-        c_start: CoordTup,
-        c_end: CoordTup,
+        c_start: CoordTup | Coord,
+        c_end: CoordTup | Coord,
     ) -> CoordArray:
         """find the shortest path between two coordinates, using A*"""
-        c_start = tuple(c_start)
-        c_end = tuple(c_end)
+        c_start = tuple(c_start)  # type: ignore[assignment]
+        c_end = tuple(c_end)  # type: ignore[assignment]
 
         g_score: dict[CoordTup, float] = (
             dict()
@@ -3746,7 +3838,7 @@ class LatticeMaze(SerializableDataclass):
             False,
         ):
             try:
-                positions = connected_component[
+                positions = connected_component[  # type: ignore[assignment]
                     np.random.choice(
                         len(connected_component),
                         size=2,
@@ -3761,7 +3853,7 @@ class LatticeMaze(SerializableDataclass):
                 else:
                     return None
 
-            return self.find_shortest_path(positions[0], positions[1])
+            return self.find_shortest_path(positions[0], positions[1])  # type: ignore[index]
 
         # handle special conditions
         connected_component_set: set[CoordTup] = set(map(tuple, connected_component))
@@ -3770,11 +3862,12 @@ class LatticeMaze(SerializableDataclass):
         allowed_end_set: set[CoordTup] = connected_component_set.copy()
 
         # filter by explicitly allowed start and end positions
+        # '# type: ignore[assignment]' here because the returned tuple can be of any length
         if allowed_start is not None:
-            allowed_start_set = set(map(tuple, allowed_start)) & connected_component_set
+            allowed_start_set = set(map(tuple, allowed_start)) & connected_component_set  # type: ignore[assignment]
 
         if allowed_end is not None:
-            allowed_end_set = set(map(tuple, allowed_end)) & connected_component_set
+            allowed_end_set = set(map(tuple, allowed_end)) & connected_component_set  # type: ignore[assignment]
 
         # filter by forcing deadends
         if deadend_start:
@@ -3800,13 +3893,14 @@ class LatticeMaze(SerializableDataclass):
 
         # randomly select start and end positions
         try:
-            start_pos: CoordTup = tuple(
+            # ignore assignment here since `tuple()` returns a tuple of any length, but we know it will be ok
+            start_pos: CoordTup = tuple(  # type: ignore[assignment]
                 list(allowed_start_set)[np.random.randint(0, len(allowed_start_set))]
             )
             if endpoints_not_equal:
                 # remove start position from end positions
                 allowed_end_set.discard(start_pos)
-            end_pos: CoordTup = tuple(
+            end_pos: CoordTup = tuple(  # type: ignore[assignment]
                 list(allowed_end_set)[np.random.randint(0, len(allowed_end_set))]
             )
         except ValueError as e:
@@ -3875,7 +3969,7 @@ class LatticeMaze(SerializableDataclass):
         )
         return [
             SPECIAL_TOKENS.ADJLIST_START,
-            *chain.from_iterable(
+            *chain.from_iterable(  # type: ignore[list-item]
                 [
                     [
                         tuple(c_s),
@@ -3892,7 +3986,7 @@ class LatticeMaze(SerializableDataclass):
     def _as_adj_list_tokens(self) -> list[str | CoordTup]:
         return [
             SPECIAL_TOKENS.ADJLIST_START,
-            *chain.from_iterable(
+            *chain.from_iterable(  # type: ignore[list-item]
                 [
                     [
                         tuple(c_s),
@@ -3909,7 +4003,7 @@ class LatticeMaze(SerializableDataclass):
     def _as_coords_and_special_AOTP(self) -> list[CoordTup | str]:
         """turn the maze into adjacency list, origin, target, and solution -- keep coords as tuples"""
 
-        output: list[str] = self._as_adj_list_tokens()
+        output: list[CoordTup | str] = self._as_adj_list_tokens()
         # if getattr(self, "start_pos", None) is not None:
         if isinstance(self, TargetedLatticeMaze):
             output += self._get_start_pos_tokens()
@@ -3922,14 +4016,15 @@ class LatticeMaze(SerializableDataclass):
     def _as_tokens(
         self, maze_tokenizer: "MazeTokenizer | TokenizationMode"
     ) -> list[str]:
+        # type ignores here fine since we check the instance
         if isinstance_by_type_name(maze_tokenizer, "TokenizationMode"):
-            maze_tokenizer = maze_tokenizer.to_legacy_tokenizer()
+            maze_tokenizer = maze_tokenizer.to_legacy_tokenizer()  # type: ignore[union-attr]
         if (
             isinstance_by_type_name(maze_tokenizer, "MazeTokenizer")
-            and maze_tokenizer.is_AOTP()
+            and maze_tokenizer.is_AOTP()  # type: ignore[union-attr]
         ):
             coords_raw: list[CoordTup | str] = self._as_coords_and_special_AOTP()
-            coords_processed: list[str] = maze_tokenizer.coords_to_strings(
+            coords_processed: list[str] = maze_tokenizer.coords_to_strings(  # type: ignore[union-attr]
                 coords=coords_raw, when_noncoord="include"
             )
             return coords_processed
@@ -3942,9 +4037,9 @@ class LatticeMaze(SerializableDataclass):
     ) -> list[str]:
         """serialize maze and solution to tokens"""
         if isinstance_by_type_name(maze_tokenizer, "MazeTokenizerModular"):
-            return maze_tokenizer.to_tokens(self)
+            return maze_tokenizer.to_tokens(self)  # type: ignore[union-attr]
         else:
-            return self._as_tokens(maze_tokenizer)
+            return self._as_tokens(maze_tokenizer)  # type: ignore[union-attr,arg-type]
 
     @classmethod
     def _from_tokens_AOTP(
@@ -3975,14 +4070,18 @@ class LatticeMaze(SerializableDataclass):
             # skip last endline
             if len(e) != 0:
                 # convert to coords, split start and end
-                e_coords: list[str | CoordTup] = maze_tokenizer.strings_to_coords(
-                    e, when_noncoord="include"
+                e_coords: list[CoordTup] = maze_tokenizer.strings_to_coords(
+                    e,
+                    when_noncoord="include",
                 )
-                assert len(e_coords) == 3, f"invalid edge: {e = } {e_coords = }"
-                assert e_coords[1] == SPECIAL_TOKENS.CONNECTOR, (
-                    f"invalid edge: {e = } {e_coords = }"
-                )
-                coordinates.append((e_coords[0], e_coords[-1]))
+                # this assertion depends on the tokenizer having exactly one token for the connector
+                # which is also why we "include" above
+                # the connector token is discarded here ------------------------------\
+                assert len(e_coords) == 3, f"invalid edge: {e = } {e_coords = }"  #   |
+                assert e_coords[1] == SPECIAL_TOKENS.CONNECTOR, (  #                  |
+                    f"invalid edge: {e = } {e_coords = }"  #                          |
+                )  #                                                                  |
+                coordinates.append((e_coords[0], e_coords[-1]))  # <------------------/
 
         assert all(len(c) == 2 for c in coordinates), (
             f"invalid coordinates: {coordinates = }"
@@ -4039,7 +4138,8 @@ class LatticeMaze(SerializableDataclass):
                 when_noncoord="error",
             )
             output_maze = SolvedMaze.from_targeted_lattice_maze(
-                targeted_lattice_maze=output_maze,
+                # HACK: I think this is fine, but im not sure
+                targeted_lattice_maze=output_maze,  # type: ignore[arg-type]
                 solution=solution,
             )
 
@@ -4055,11 +4155,12 @@ class LatticeMaze(SerializableDataclass):
         Constructs a maze from a tokenization.
         Only legacy tokenizers and their `MazeTokenizerModular` analogs are supported.
         """
+        # HACK: type ignores here fine since we check the instance
         if isinstance_by_type_name(maze_tokenizer, "TokenizationMode"):
-            maze_tokenizer = maze_tokenizer.to_legacy_tokenizer()
+            maze_tokenizer = maze_tokenizer.to_legacy_tokenizer()  # type: ignore[union-attr]
         if (
             isinstance_by_type_name(maze_tokenizer, "MazeTokenizerModular")
-            and not maze_tokenizer.is_legacy_equivalent()
+            and not maze_tokenizer.is_legacy_equivalent()  # type: ignore[union-attr]
         ):
             raise NotImplementedError(
                 f"Only legacy tokenizers and their exact `MazeTokenizerModular` analogs supported, not {maze_tokenizer}."
@@ -4068,8 +4169,8 @@ class LatticeMaze(SerializableDataclass):
         if isinstance(tokens, str):
             tokens = tokens.split()
 
-        if maze_tokenizer.is_AOTP():
-            return cls._from_tokens_AOTP(tokens, maze_tokenizer)
+        if maze_tokenizer.is_AOTP():  # type: ignore[union-attr]
+            return cls._from_tokens_AOTP(tokens, maze_tokenizer)  # type: ignore[arg-type]
         else:
             raise NotImplementedError("only AOTP tokenization is supported")
 
@@ -4107,6 +4208,9 @@ class LatticeMaze(SerializableDataclass):
         show_endpoints: bool = True,
         show_solution: bool = True,
     ) -> PixelGrid:
+        # HACK: lots of `# type: ignore[attr-defined]` here since its defined for any `LatticeMaze`
+        # but solution, start_pos, end_pos not always defined
+        # but its fine since we explicitly check the type
         if show_solution and not show_endpoints:
             raise ValueError("show_solution=True requires show_endpoints=True")
         # convert original bool pixel grid to RGB
@@ -4122,22 +4226,22 @@ class LatticeMaze(SerializableDataclass):
         # set endpoints for TargetedLatticeMaze
         if self.__class__ == TargetedLatticeMaze:
             if show_endpoints:
-                pixel_grid[self.start_pos[0] * 2 + 1, self.start_pos[1] * 2 + 1] = (
+                pixel_grid[self.start_pos[0] * 2 + 1, self.start_pos[1] * 2 + 1] = (  # type: ignore[attr-defined]
                     PixelColors.START
                 )
-                pixel_grid[self.end_pos[0] * 2 + 1, self.end_pos[1] * 2 + 1] = (
+                pixel_grid[self.end_pos[0] * 2 + 1, self.end_pos[1] * 2 + 1] = (  # type: ignore[attr-defined]
                     PixelColors.END
                 )
             return pixel_grid
 
         # set solution -- we only reach this part if `self.__class__ == SolvedMaze`
         if show_solution:
-            for coord in self.solution:
+            for coord in self.solution:  # type: ignore[attr-defined]
                 pixel_grid[coord[0] * 2 + 1, coord[1] * 2 + 1] = PixelColors.PATH
 
             # set pixels between coords
-            for index, coord in enumerate(self.solution[:-1]):
-                next_coord = self.solution[index + 1]
+            for index, coord in enumerate(self.solution[:-1]):  # type: ignore[attr-defined]
+                next_coord = self.solution[index + 1]  # type: ignore[attr-defined]
                 # check they are adjacent using norm
                 assert np.linalg.norm(np.array(coord) - np.array(next_coord)) == 1, (
                     f"Coords {coord} and {next_coord} are not adjacent"
@@ -4149,10 +4253,10 @@ class LatticeMaze(SerializableDataclass):
                 ] = PixelColors.PATH
 
             # set endpoints (again, since path would overwrite them)
-            pixel_grid[self.start_pos[0] * 2 + 1, self.start_pos[1] * 2 + 1] = (
+            pixel_grid[self.start_pos[0] * 2 + 1, self.start_pos[1] * 2 + 1] = (  # type: ignore[attr-defined]
                 PixelColors.START
             )
-            pixel_grid[self.end_pos[0] * 2 + 1, self.end_pos[1] * 2 + 1] = (
+            pixel_grid[self.end_pos[0] * 2 + 1, self.end_pos[1] * 2 + 1] = (  # type: ignore[attr-defined]
                 PixelColors.END
             )
 
@@ -4183,7 +4287,10 @@ class LatticeMaze(SerializableDataclass):
         marked_positions: dict[str, RGB],
     ) -> tuple[ConnectionList, tuple[int, int], dict[str, CoordArray]]:
         # Convert RGB pixel grid to Bool pixel grid
-        pixel_grid_bw: BinaryPixelGrid = ~np.all(
+        # error: Incompatible types in assignment (expression has type
+        # "numpy.bool[builtins.bool] | ndarray[tuple[int, ...], dtype[numpy.bool[builtins.bool]]]",
+        # variable has type "ndarray[Any, Any]")  [assignment]
+        pixel_grid_bw: BinaryPixelGrid = ~np.all(  # type: ignore[assignment]
             pixel_grid == PixelColors.WALL, axis=-1
         )
         connection_list: ConnectionList
@@ -4326,7 +4433,7 @@ class LatticeMaze(SerializableDataclass):
 
         return cls(
             connection_list=np.array(connection_list),
-            solution=np.array(solution),
+            solution=np.array(solution),  # type: ignore[call-arg]
         )
 
     # ============================================================
@@ -4382,15 +4489,20 @@ class LatticeMaze(SerializableDataclass):
         return cls.from_pixels(pixel_grid)
 
 
+# type ignore here even though theyre all frozen
+# maybe `SerializeableDataclass` itself is not frozen, but thats an ABC
+# error: Cannot inherit frozen dataclass from a non-frozen one  [misc]
 @serializable_dataclass(frozen=True, kw_only=True)
-class TargetedLatticeMaze(LatticeMaze):
+class TargetedLatticeMaze(LatticeMaze):  # type: ignore[misc]
     """A LatticeMaze with a start and end position"""
 
     # this jank is so that SolvedMaze can inherit from this class without needing arguments for start_pos and end_pos
-    start_pos: Coord = serializable_field(
+    # type ignore here because even though its a kw-only dataclass,
+    # mypy doesn't like that non-default arguments are after default arguments
+    start_pos: Coord = serializable_field(  # type: ignore[misc]
         assert_type=False,
     )
-    end_pos: Coord = serializable_field(
+    end_pos: Coord = serializable_field(  # type: ignore[misc]
         assert_type=False,
     )
 
@@ -4451,22 +4563,22 @@ class TargetedLatticeMaze(LatticeMaze):
     def from_lattice_maze(
         cls,
         lattice_maze: LatticeMaze,
-        start_pos: Coord,
-        end_pos: Coord,
+        start_pos: Coord | CoordTup,
+        end_pos: Coord | CoordTup,
     ) -> "TargetedLatticeMaze":
         return cls(
             connection_list=lattice_maze.connection_list,
-            start_pos=start_pos,
-            end_pos=end_pos,
+            start_pos=np.array(start_pos),
+            end_pos=np.array(end_pos),
             generation_meta=lattice_maze.generation_meta,
         )
 
 
 @serializable_dataclass(frozen=True, kw_only=True)
-class SolvedMaze(TargetedLatticeMaze):
+class SolvedMaze(TargetedLatticeMaze):  # type: ignore[misc]
     """Stores a maze and a solution"""
 
-    solution: CoordArray = serializable_field(
+    solution: CoordArray = serializable_field(  # type: ignore[misc]
         assert_type=False,
     )
 
@@ -4497,8 +4609,11 @@ class SolvedMaze(TargetedLatticeMaze):
         super().__init__(
             connection_list=connection_list,
             generation_meta=generation_meta,
-            start_pos=np.array(solution[0]) if solution_valid else None,
-            end_pos=np.array(solution[-1]) if solution_valid else None,
+            # TODO: the argument type is stricter than the expected type but it still fails?
+            # error: Argument "start_pos" to "__init__" of "TargetedLatticeMaze" has incompatible type
+            # "ndarray[tuple[int, ...], dtype[Any]] | None"; expected "ndarray[Any, Any]"  [arg-type]
+            start_pos=np.array(solution[0]) if solution_valid else None,  # type: ignore[arg-type]
+            end_pos=np.array(solution[-1]) if solution_valid else None,  # type: ignore[arg-type]
         )
 
         self.__dict__["solution"] = solution
@@ -4544,13 +4659,14 @@ class SolvedMaze(TargetedLatticeMaze):
         )
         return LatticeMaze(connection_list=self.connection_list)
 
+    # type ignore here since we're overriding a method with a different signature
     @classmethod
-    def from_lattice_maze(
+    def from_lattice_maze(  # type: ignore[override]
         cls, lattice_maze: LatticeMaze, solution: list[CoordTup]
     ) -> "SolvedMaze":
         return cls(
             connection_list=lattice_maze.connection_list,
-            solution=solution,
+            solution=np.array(solution),
             generation_meta=lattice_maze.generation_meta,
         )
 
@@ -4558,7 +4674,7 @@ class SolvedMaze(TargetedLatticeMaze):
     def from_targeted_lattice_maze(
         cls,
         targeted_lattice_maze: TargetedLatticeMaze,
-        solution: list[CoordTup] | None = None,
+        solution: list[CoordTup] | CoordArray | None = None,
     ) -> "SolvedMaze":
         """solves the given targeted lattice maze and returns a SolvedMaze"""
         if solution is None:
@@ -4602,7 +4718,8 @@ class SolvedMaze(TargetedLatticeMaze):
 
         returns the complement of `get_solution_forking_points` from the path"""
         forks_idxs, _ = self.get_solution_forking_points()
-        return (
+        # HACK: idk why type ignore here
+        return (  # type: ignore[return-value]
             np.delete(np.arange(self.solution.shape[0]), forks_idxs, axis=0),
             np.delete(self.solution, forks_idxs, axis=0),
         )
@@ -4670,46 +4787,47 @@ _RIC_SLICES: dict = {
 }
 
 
-def _remove_isolated_cells_old(
-    image: Int[np.ndarray, "RGB x y"],
-) -> Int[np.ndarray, "RGB x y"]:
-    """
-    Removes isolated cells from an image. An isolated cell is a cell that is surrounded by walls on all sides.
-    """
-    warnings.warn("this functin doesn't work and I have no idea why!!!")
-    masks: dict[str, np.ndarray] = {
-        d: np.all(
-            np.pad(
-                image[_RIC_SLICES[d][0], _RIC_SLICES[d][1], :] == PixelColors.WALL,
-                np.array((*_RIC_PADS[d], (0, 0)), dtype=np.int8),
-                mode="constant",
-                constant_values=True,
-            ),
-            axis=2,
-        )
-        for d in _RIC_SLICES.keys()
-    }
+# TODO: figure out why this function doesnt work, or maybe just get rid of it
+# def _remove_isolated_cells_old(
+#     image: Int[np.ndarray, "RGB x y"],
+# ) -> Int[np.ndarray, "RGB x y"]:
+#     """
+#     Removes isolated cells from an image. An isolated cell is a cell that is surrounded by walls on all sides.
+#     """
+#     warnings.warn("this functin doesn't work and I have no idea why!!!")
+#     masks: dict[str, np.ndarray] = {
+#         d: np.all(
+#             np.pad(
+#                 image[_RIC_SLICES[d][0], _RIC_SLICES[d][1], :] == PixelColors.WALL,
+#                 np.array((*_RIC_PADS[d], (0, 0)), dtype=np.int8),
+#                 mode="constant",
+#                 constant_values=True,
+#             ),
+#             axis=2,
+#         )
+#         for d in _RIC_SLICES.keys()
+#     }
 
-    # Create a mask for non-wall cells
-    mask_non_wall = np.all(image != PixelColors.WALL, axis=2)
+#     # Create a mask for non-wall cells
+#     mask_non_wall = np.all(image != PixelColors.WALL, axis=2)
 
-    # print(f"{mask_non_wall.shape = }")
-    # print(f"{ {k: masks[k].shape for k in masks.keys()} = }")
+#     # print(f"{mask_non_wall.shape = }")
+#     # print(f"{ {k: masks[k].shape for k in masks.keys()} = }")
 
-    # print(f"{mask_non_wall = }")
-    # print(f"{masks['down'] = }")
+#     # print(f"{mask_non_wall = }")
+#     # print(f"{masks['down'] = }")
 
-    # Combine the masks
-    mask = mask_non_wall & masks["left"] & masks["right"] & masks["up"] & masks["down"]
+#     # Combine the masks
+#     mask = mask_non_wall & masks["left"] & masks["right"] & masks["up"] & masks["down"]
 
-    # Apply the mask
-    output_image = np.where(
-        np.stack([mask] * 3, axis=-1),
-        PixelColors.WALL,
-        image,
-    )
+#     # Apply the mask
+#     output_image = np.where(
+#         np.stack([mask] * 3, axis=-1),
+#         PixelColors.WALL,
+#         image,
+#     )
 
-    return output_image
+#     return output_image
 
 ``````{ end_of_file="maze_dataset/maze/lattice_maze.py" }
 
@@ -5105,6 +5223,8 @@ class MazePlot:
         for coord, kwargs in self.marked_coords:
             self._place_marked_coords([coord], **kwargs)
 
+        return self
+
     def _rowcol_to_coord(self, point: Coord) -> np.ndarray:
         """Transform Point from MazeTransformer (row, column) notation to matplotlib default (x, y) notation where x is the horizontal axis."""
         point = np.array([point[1], point[0]])
@@ -5118,11 +5238,15 @@ class MazePlot:
         for coord in coords:
             self.marked_coords.append((coord, kwargs))
 
+        return self
+
     def _place_marked_coords(
         self, coords: CoordArray | list[Coord], **kwargs
     ) -> MazePlot:
         coords_tp = np.array([self._rowcol_to_coord(coord) for coord in coords])
         self.ax.plot(coords_tp[:, 0], coords_tp[:, 1], **kwargs)
+
+        return self
 
     def _plot_maze(self) -> None:
         """
@@ -5151,7 +5275,7 @@ class MazePlot:
                 vals_min = 0.0
 
             # adjust vals_max, in case you need consistent colorbar across multiple plots
-            vals_max: float = self.colormap_max or vals_max
+            vals_max = self.colormap_max or vals_max
 
             # create colormap
             cmap = mpl.colormaps[self.node_color_map]
@@ -5323,11 +5447,9 @@ class MazePlot:
                 **path_format.quiver_kwargs,
             )
         else:
-            x: np.ndarray = p_transformed[:, 0]
-            y: np.ndarray = p_transformed[:, 1]
             self.ax.plot(
-                x,
-                y,
+                p_transformed[:, 0],
+                p_transformed[:, 1],
                 path_format.fmt,
                 lw=path_format.line_width,
                 color=path_format.color,
@@ -5944,6 +6066,7 @@ from typing import (
     Sequence,
     TypedDict,
     TypeVar,
+    overload,
 )
 
 import numpy as np
@@ -6254,6 +6377,18 @@ class MazeTokenizer(SerializableDataclass):
     # conversion functions
     # ============================================================
 
+    @overload
+    def coords_to_strings(
+        self,
+        coords: list[str | CoordTup],
+        when_noncoord: Literal["include", "skip"] = "skip",
+    ) -> list[str]: ...
+    @overload
+    def coords_to_strings(
+        self,
+        coords: list[CoordTup],
+        when_noncoord: Literal["error"] = "error",
+    ) -> list[str]: ...
     def coords_to_strings(
         self,
         coords: list[CoordTup],
@@ -6280,9 +6415,28 @@ class MazeTokenizer(SerializableDataclass):
                 f"expected one of {TokenizationMode.__members__}",
             )
 
-    @staticmethod
+    @overload
     def strings_to_coords(
-        text: str,
+        cls,
+        text: str | list[str],
+        when_noncoord: Literal["skip"] = "skip",
+    ) -> list[CoordTup]: ...
+    @overload
+    def strings_to_coords(
+        cls,
+        text: str | list[str],
+        when_noncoord: Literal["error"] = "error",
+    ) -> list[CoordTup]: ...
+    @overload
+    def strings_to_coords(
+        cls,
+        text: str | list[str],
+        when_noncoord: Literal["include"] = "include",
+    ) -> list[str | CoordTup]: ...
+    @classmethod
+    def strings_to_coords(
+        cls,
+        text: str | list[str],
         when_noncoord: WhenMissing = "skip",
     ) -> list[str | CoordTup]:
         return strings_to_coords(text=text, when_noncoord=when_noncoord)
@@ -8084,9 +8238,28 @@ class MazeTokenizerModular(SerializableDataclass):
             )
         )
 
-    @staticmethod
+    @overload
     def strings_to_coords(
-        text: str,
+        cls,
+        text: str | list[str],
+        when_noncoord: Literal["skip"] = "skip",
+    ) -> list[CoordTup]: ...
+    @overload
+    def strings_to_coords(
+        cls,
+        text: str | list[str],
+        when_noncoord: Literal["error"] = "error",
+    ) -> list[CoordTup]: ...
+    @overload
+    def strings_to_coords(
+        cls,
+        text: str | list[str],
+        when_noncoord: Literal["include"] = "include",
+    ) -> list[str | CoordTup]: ...
+    @classmethod
+    def strings_to_coords(
+        cls,
+        text: str | list[str],
         when_noncoord: WhenMissing = "skip",
     ) -> list[str | CoordTup]:
         warnings.warn(
@@ -8384,13 +8557,13 @@ from maze_dataset.utils import corner_first_ndindex
 
 # various type hints for coordinates, connections, etc.
 
-Coord = Int8[np.ndarray, "row_col"]
+Coord = Int8[np.ndarray, "row_col=2"]
 "single coordinate as array"
 
 CoordTup = tuple[int, int]
 "single coordinate as tuple"
 
-CoordArray = Int8[np.ndarray, "coord row_col"]
+CoordArray = Int8[np.ndarray, "coord row_col=2"]
 "array of coordinates"
 
 CoordList = list[CoordTup]
@@ -8580,7 +8753,8 @@ _VOCAB_BASE: type = make_dataclass(
 "combined vocab class, private"
 # TODO: edit __getitem__ to add warning for accessing a RESERVE token
 
-VOCAB: _VOCAB_BASE = _VOCAB_BASE()
+# HACK: mypy doesn't recognize the fields in this dataclass
+VOCAB: _VOCAB_BASE = _VOCAB_BASE()  # type: ignore
 "public access to universal vocabulary for `MazeTokenizerModular`"
 VOCAB_LIST: list[str] = list(VOCAB.values())
 "list of `VOCAB` tokens, in order"
@@ -8609,7 +8783,7 @@ Do not import into any module outside of the tests directory
 """
 
 import itertools
-from typing import Final, NamedTuple
+from typing import Final, NamedTuple, Sequence
 
 import frozendict
 import numpy as np
@@ -8665,7 +8839,7 @@ MIXED_MAZES: Final[tuple[LatticeMaze | TargetedLatticeMaze | SolvedMaze]] = tupl
 
 class MANUAL_MAZE(NamedTuple):
     tokens: str
-    ascii: tuple[str]
+    ascii: Sequence[str]
     straightaway_footprints: CoordArray
 
 
@@ -8789,7 +8963,7 @@ import re
 import typing
 import warnings
 from collections import Counter
-from typing import Callable
+from typing import Callable, Literal, overload
 
 import numpy as np
 from jaxtyping import Bool, Float, Int, Int8
@@ -9035,6 +9209,21 @@ def coords_string_split_UT(coords: str) -> list[str]:
 
 # back and forth in wrapped form
 # ==================================================
+@overload
+def strings_to_coords(
+    text: str | list[str],
+    when_noncoord: Literal["skip"] = "skip",
+) -> list[CoordTup]: ...
+@overload
+def strings_to_coords(
+    text: str | list[str],
+    when_noncoord: Literal["error"] = "error",
+) -> list[CoordTup]: ...
+@overload
+def strings_to_coords(
+    text: str | list[str],
+    when_noncoord: Literal["include"] = "include",
+) -> list[str | CoordTup]: ...
 def strings_to_coords(
     text: str | list[str],
     when_noncoord: WhenMissing = "skip",
@@ -9069,6 +9258,18 @@ def strings_to_coords(
     return result
 
 
+@overload
+def coords_to_strings(
+    coords: list[str | CoordTup],
+    coord_to_strings_func: Callable[[CoordTup], list[str]],
+    when_noncoord: Literal["include", "skip"] = "skip",
+) -> list[str]: ...
+@overload
+def coords_to_strings(
+    coords: list[CoordTup],
+    coord_to_strings_func: Callable[[CoordTup], list[str]],
+    when_noncoord: Literal["error"] = "error",
+) -> list[str]: ...
 def coords_to_strings(
     coords: list[str | CoordTup],
     coord_to_strings_func: Callable[[CoordTup], list[str]],
@@ -10868,10 +11069,10 @@ ZANJ().read(path).plot(cfg_keys=["n_mazes", "endpoint_kwargs"])
 
 ```python
 results_full: SweepResult = full_percolation_analysis(
-    n_mazes=128,
-    p_val_count=50,
-    grid_sizes=[2, 4, 6, 8, 10],
-	parallel=4,
+    n_mazes=64,
+    p_val_count=16,
+    grid_sizes=[2, 4, 6],
+    parallel=True,
 )
 ```
 
@@ -11906,7 +12107,7 @@ help: help-targets info
 
     dependencies = [
         # custom packages
-        "muutils>=0.8.1",
+        "muutils>=0.8.3",
         "zanj>=0.4.0",
         # torch and type hints
         "torch>=1.13.1",
@@ -11933,6 +12134,8 @@ help: help-targets info
 		"coverage-badge>=1.1.0",
 		# type checking
 		"mypy>=1.0.1",
+        "types-tqdm",
+        "pandas-stubs",
 		# docs
 		'pdoc>=14.6.0',
 		"nbconvert>=7.16.4", # for notebooks
