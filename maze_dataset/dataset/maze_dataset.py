@@ -8,16 +8,18 @@ import copy
 import functools
 import json
 import multiprocessing
+from pathlib import Path
 import typing
 import warnings
 from collections import Counter, defaultdict
-from typing import Callable, Optional
+from typing import Callable, Optional, cast
 
 import numpy as np
 import tqdm
 from jaxtyping import Int
 from muutils.json_serialize import (
     JSONitem,
+    JSONdict,
     json_serialize,
     serializable_dataclass,
     serializable_field,
@@ -25,6 +27,7 @@ from muutils.json_serialize import (
 from muutils.json_serialize.util import _FORMAT_KEY
 from muutils.json_serialize.util import safe_getsource, string_as_lines
 from muutils.misc import sanitize_fname, shorten_numerical_to_str, stable_hash
+from zanj import ZANJ
 from zanj.loading import LoaderHandler, load_item_recursive, register_loader_handler
 
 from maze_dataset.constants import Coord, CoordArray, CoordTup
@@ -102,7 +105,7 @@ def _load_endpoint_kwargs(data: dict) -> EndpointKwargsType:
 class MazeDatasetConfig(GPTDatasetConfig):
     """config object which is passed to `MazeDataset.from_config` to generate or load a dataset"""
 
-    grid_n: int
+    grid_n: int = serializable_field()
 
     # not comparing n_mazes is done primarily to avoid conflicts which happen during `from_config` when we have applied filters
     n_mazes: int = serializable_field(compare=False)
@@ -250,6 +253,47 @@ class MazeDataset(GPTDataset):
         self.mazes: list[SolvedMaze] = list(mazes)
         self.generation_metadata_collected: dict | None = generation_metadata_collected
 
+    @classmethod
+    def from_config(
+        cls,
+        cfg: MazeDatasetConfig,
+        do_generate: bool = True,
+        load_local: bool = True,
+        save_local: bool = True,
+        zanj: ZANJ | None = None,
+        do_download: bool = True,
+        local_base_path: Path = Path("data/maze_dataset"),
+        except_on_config_mismatch: bool = True,
+        allow_generation_metadata_filter_mismatch: bool = True,
+        verbose: bool = False,
+        **kwargs,
+    ) -> "MazeDataset":
+        """create a maze dataset from a config
+
+                priority of loading:
+        1. load from local
+        2. download
+        3. generate
+
+        """
+        return cast(
+            MazeDataset,
+            super().from_config(
+                cfg=cfg,
+                do_generate=do_generate,
+                load_local=load_local,
+                save_local=save_local,
+                zanj=zanj,
+                do_download=do_download,
+                local_base_path=local_base_path,
+                except_on_config_mismatch=except_on_config_mismatch,
+                allow_generation_metadata_filter_mismatch=allow_generation_metadata_filter_mismatch,
+                verbose=verbose,
+                **kwargs,
+            )
+        )
+            
+
     def data_hash(self) -> int:
         return stable_hash(str(tuple([x.serialize() for x in self.mazes])))
 
@@ -370,7 +414,7 @@ class MazeDataset(GPTDataset):
         raise NotImplementedError("not implemented yet")
 
     @classmethod
-    def load(cls, data: JSONitem) -> "MazeDataset":
+    def load(cls, data: JSONdict) -> "MazeDataset":
         """load from zanj/json"""
         if data[_FORMAT_KEY] == "MazeDataset:minimal":
             return cls._load_minimal(data)
@@ -388,7 +432,7 @@ class MazeDataset(GPTDataset):
             )
 
     @classmethod
-    def _load_full(cls, data: JSONitem) -> "MazeDataset":
+    def _load_full(cls, data: JSONdict) -> "MazeDataset":
         assert data[_FORMAT_KEY] == "MazeDataset"
         return cls(
             cfg=MazeDatasetConfig.load(data["cfg"]),
@@ -397,7 +441,7 @@ class MazeDataset(GPTDataset):
         )
 
     @classmethod
-    def _load_minimal(cls, data: JSONitem) -> "MazeDataset":
+    def _load_minimal(cls, data: JSONdict) -> "MazeDataset":
         assert data[_FORMAT_KEY] == "MazeDataset:minimal"
         return cls(
             cfg=MazeDatasetConfig.load(data["cfg"]),
@@ -417,7 +461,7 @@ class MazeDataset(GPTDataset):
         )
 
     @classmethod
-    def _load_minimal_soln_cat(cls, data: JSONitem) -> "MazeDataset":
+    def _load_minimal_soln_cat(cls, data: JSONdict) -> "MazeDataset":
         assert data[_FORMAT_KEY] == "MazeDataset:minimal_soln_cat"
 
         maze_solution_lengths = load_item_recursive(
@@ -449,7 +493,7 @@ class MazeDataset(GPTDataset):
         )
 
     @classmethod
-    def _load_legacy(cls, data: JSONitem) -> "MazeDataset":
+    def _load_legacy(cls, data: JSONdict) -> "MazeDataset":
         """Legacy `load` method from <0.5.2. Used exclusively for profiling comparison."""
         assert data[_FORMAT_KEY] == "MazeDataset"
         return cls(
@@ -459,7 +503,7 @@ class MazeDataset(GPTDataset):
             }
         )
 
-    def serialize(self) -> JSONitem:
+    def serialize(self) -> JSONdict:
         """serialize to zanj/json"""
         if (
             SERIALIZE_MINIMAL_THRESHOLD is not None
@@ -468,7 +512,7 @@ class MazeDataset(GPTDataset):
             return self._serialize_minimal()
         return self._serialize_full()
 
-    def _serialize_full(self) -> JSONitem:
+    def _serialize_full(self) -> JSONdict:
         return {
             _FORMAT_KEY: "MazeDataset",
             "cfg": json_serialize(self.cfg),
@@ -478,7 +522,7 @@ class MazeDataset(GPTDataset):
             ),
         }
 
-    def _serialize_minimal(self) -> JSONitem:
+    def _serialize_minimal(self) -> JSONdict:
         "alternate serialization where metadata is collected and mazes are stored in concatenated form"
         if self.generation_metadata_collected is None:
             filtered_meta = self.filter_by.collect_generation_meta()
@@ -516,7 +560,7 @@ class MazeDataset(GPTDataset):
             "maze_solutions": maze_solutions,
         }
 
-    def _serialize_minimal_soln_cat(self) -> JSONitem:
+    def _serialize_minimal_soln_cat(self) -> JSONdict:
         "alternate serialization where metadata is collected, and mazes and their solutions are stored in concatenated form"
         if self.generation_metadata_collected is None:
             filtered_meta = self.filter_by.collect_generation_meta()

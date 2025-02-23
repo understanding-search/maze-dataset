@@ -215,7 +215,7 @@ class SweepResult(SerializableDataclass):
 
     def plot(
         self,
-        save_path: str = None,
+        save_path: str | None = None,
         cfg_keys: list[str] | None = None,
         cmap_name: str | None = "viridis",
         plot_only: bool = False,
