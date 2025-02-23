@@ -100,17 +100,17 @@
     # generate this exclude with `make typing-report`
     exclude = [
         # high priority:
-        "maze_dataset/utils.py", # 18
-        "maze_dataset/constants.py", # 41
         "tests/unit/maze_dataset/utils.py", # 5
-        "maze_dataset/generation/generators.py", # 14
-        "maze_dataset/dataset/dataset.py", # 20
-        "maze_dataset/dataset/maze_dataset.py", # 41
-        "maze_dataset/dataset/collected_dataset.py", # 10
         "maze_dataset/dataset/rasterized.py", # 8
-        "maze_dataset/token_utils.py", # 13
         "maze_dataset/plotting/print_tokens.py", # 6
         "maze_dataset/tokenization/all_tokenizers.py", # 7
+        "maze_dataset/dataset/collected_dataset.py", # 10
+        "maze_dataset/token_utils.py", # 13
+        "maze_dataset/generation/generators.py", # 14
+        "maze_dataset/utils.py", # 18
+        "maze_dataset/dataset/dataset.py", # 20
+        "maze_dataset/constants.py", # 41
+        "maze_dataset/dataset/maze_dataset.py", # 41
         # low priority:
         "tests/unit/maze_dataset/dataset/test_collected_dataset.py", # 5
         "tests/unit/maze_dataset/processing/test_collect_gen_metadata.py", # 5
