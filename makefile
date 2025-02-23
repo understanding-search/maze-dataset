@@ -1043,6 +1043,7 @@ import argparse
 import re
 import json
 from typing import List, Dict, Tuple
+from pathlib import Path
 
 
 def parse_mypy_output(lines: List[str]) -> Dict[str, int]:
@@ -1052,8 +1053,9 @@ def parse_mypy_output(lines: List[str]) -> Dict[str, int]:
 	for line in lines:
 		m = pattern.match(line)
 		if m:
-			f: str = m.group("file")
-			counts[f] = counts.get(f, 0) + 1
+			f_raw: str = m.group("file")
+			f_norm: str = Path(f_raw).as_posix()
+			counts[f_norm] = counts.get(f_norm, 0) + 1
 	return counts
 
 
