@@ -226,8 +226,10 @@ class SweepResult(SerializableDataclass):
         # set up figure
         if not ax:
             fig: plt.Figure
-            ax: plt.Axes
-            fig, ax = plt.subplots(1, 1, figsize=(22, 10))
+            ax_: plt.Axes
+            fig, ax_ = plt.subplots(1, 1, figsize=(22, 10))
+        else:
+            ax_ = ax
 
         # plot
         cmap = plt.get_cmap(cmap_name)
@@ -235,7 +237,7 @@ class SweepResult(SerializableDataclass):
         for i, (ep_cfg_name, result_values) in enumerate(
             sorted(self.result_values.items(), key=lambda x: x[0])
         ):
-            ax.plot(
+            ax_.plot(
                 self.param_values,
                 result_values,
                 ".-",
@@ -264,13 +266,13 @@ class SweepResult(SerializableDataclass):
 
         # add title and stuff
         if not plot_only:
-            ax.set_xlabel(self.param_key)
-            ax.set_ylabel(self.analyze_func.__name__)
-            ax.set_title(
+            ax_.set_xlabel(self.param_key)
+            ax_.set_ylabel(self.analyze_func.__name__)
+            ax_.set_title(
                 f"{self.param_key} vs {self.analyze_func.__name__}\n{cfg_repr}"
             )
-            ax.grid(True)
-            ax.legend(loc="lower center")
+            ax_.grid(True)
+            ax_.legend(loc="lower center")
 
         # save and show
         if save_path:
@@ -279,7 +281,7 @@ class SweepResult(SerializableDataclass):
         if show:
             plt.show()
 
-        return ax
+        return ax_
 
 
 DEFAULT_ENDPOINT_KWARGS: list[tuple[str, dict]] = [
@@ -303,7 +305,7 @@ DEFAULT_ENDPOINT_KWARGS: list[tuple[str, dict]] = [
 ]
 
 
-def full_analysis(
+def full_percolation_analysis(
     n_mazes: int,
     p_val_count: int,
     grid_sizes: list[int],
@@ -313,7 +315,8 @@ def full_analysis(
         LatticeMazeGenerators.gen_dfs_percolation,
     ),
     save_dir: Path = Path("../docs/benchmarks/percolation_fractions"),
-) -> None:
+    parallel: bool | int = False,
+) -> SweepResult:
     if ep_kwargs is None:
         ep_kwargs = DEFAULT_ENDPOINT_KWARGS
 
@@ -342,11 +345,11 @@ def full_analysis(
         param_values=np.linspace(0.0, 1.0, p_val_count).tolist(),
         param_key="maze_ctor_kwargs.p",
         analyze_func=dataset_success_fraction,
-        parallel=False,
+        parallel=parallel,
     )
 
     # save the result
-    result.save(save_dir / f"result-n{n_mazes}-c{len(configs)}.zanj")
+    result.save(save_dir / f"result-n{n_mazes}-c{len(configs)}-p{p_val_count}.zanj")
 
     return result
 
@@ -393,7 +396,7 @@ def plot_grouped(
             )
             ax = results_filtered.plot(
                 cfg_keys=cfg_keys,
-                ax=ax,
+                ax_=ax,
                 show=False,
                 cmap_name="Reds" if gf_idx == 0 else "Blues",
             )

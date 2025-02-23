@@ -111,8 +111,8 @@ def run_benchmark(
 
     times: list[dict] = time_generation(
         base_configs=base_configs,
-        grid_n_vals=grid_n_vals,
-        n_mazes_vals=n_mazes_vals,
+        grid_n_vals=list(grid_n_vals),
+        n_mazes_vals=list(n_mazes_vals),
         trials=trials,
         verbose=verbose,
     )
