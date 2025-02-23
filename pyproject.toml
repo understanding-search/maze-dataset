@@ -27,7 +27,7 @@
 
     dependencies = [
         # custom packages
-        "muutils>=0.8.2",
+        "muutils>=0.8.3",
         "zanj>=0.4.0",
         # torch and type hints
         "torch>=1.13.1",

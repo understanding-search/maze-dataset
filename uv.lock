@@ -1410,7 +1410,7 @@ requires-dist = [
     { name = "jaxtyping", specifier = ">=0.2.19" },
     { name = "jupyter", specifier = ">=1.0.0" },
     { name = "matplotlib", specifier = ">=3.7.0" },
-    { name = "muutils", specifier = ">=0.8.2" },
+    { name = "muutils", specifier = ">=0.8.3" },
     { name = "pandas", specifier = ">=2.2.2" },
     { name = "torch", specifier = ">=1.13.1" },
     { name = "tqdm", specifier = ">=4.65.0" },
@@ -1469,11 +1469,11 @@ wheels = [
 
 [[package]]
 name = "muutils"
-version = "0.8.2"
+version = "0.8.3"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/8c/73/2e5b8f72f32b373155e94f119cc5ee270c9a9d2bbfddf3cd35b5e84da844/muutils-0.8.2.tar.gz", hash = "sha256:f6817cd067ec0ab4e9ae3e89af37692435e8ad79048c4b4ab2976a294d83bf08", size = 2485053 }
+sdist = { url = "https://files.pythonhosted.org/packages/21/47/45fd223b4352e02336ea88ee65146fc4a317f90d5513370c405fd7349d0c/muutils-0.8.3.tar.gz", hash = "sha256:4e32cf6dc0df6e6df3387555eaf6229b76b0a8972fcf8424b3afcfa207d3d6e1", size = 2485047 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/7f/0a/ed29b0379b251858215a0c4e7d99fd855a00db7362a2b0f45cbf691f651c/muutils-0.8.2-py3-none-any.whl", hash = "sha256:04acf319769a86ebc922be1034df490636b08771d393910fb8974d7283a2a13b", size = 110990 },
+    { url = "https://files.pythonhosted.org/packages/00/77/9e33fc2d024d1892460bb91c6354f24288fdc5e340d96cd302931a305651/muutils-0.8.3-py3-none-any.whl", hash = "sha256:abc37da649b18e534e0fc7b0a47bac4aec395f6b057756bf30271d31e710e8e3", size = 110987 },
 ]
 
 [package.optional-dependencies]
