@@ -186,7 +186,7 @@ class RasterizedMazeDataset(MazeDataset):
         cls,
         cfg: RasterizedMazeDatasetConfig,
         **kwargs,
-    ) -> Dataset:
+    ) -> "RasterizedMazeDataset":
         """loads either a maze transformer dataset or an easy_2_hard dataset"""
         _cfg_temp: MazeDatasetConfig = MazeDatasetConfig.load(cfg.serialize())
         return cls.from_base_MazeDataset(
@@ -203,7 +203,7 @@ class RasterizedMazeDataset(MazeDataset):
         cls,
         base_dataset: MazeDataset,
         added_params: dict | None = None,
-    ) -> Dataset:
+    ) -> "RasterizedMazeDataset":
         """loads either a maze transformer dataset or an easy_2_hard dataset"""
         if added_params is None:
             added_params = dict(

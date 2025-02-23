@@ -13,11 +13,11 @@ def plot_dataset_mazes(
     count: int | None = None,
     figsize_mult: tuple[float, float] = (1.0, 2.0),
     title: bool | str = True,
-) -> tuple:
+) -> tuple | None:
     count = count or len(ds)
     if count == 0:
         print("No mazes to plot for dataset")
-        return
+        return None
     fig, axes = plt.subplots(
         1, count, figsize=(count * figsize_mult[0], figsize_mult[1])
     )

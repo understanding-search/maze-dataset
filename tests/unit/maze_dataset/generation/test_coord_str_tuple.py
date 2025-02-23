@@ -76,7 +76,8 @@ def test_coords_to_strings():
         when_noncoord="include",
     ) == ["(1,2)", "<ADJLIST_START>", "(5,6)"]
     with pytest.raises(ValueError):
-        coords_to_strings(
+        # this is meant to raise an error, so type ignore
+        coords_to_strings(  # type: ignore[call-overload]
             [(1, 2), "<ADJLIST_START>", (5, 6)],
             _coord_to_strings_UT,
             when_noncoord="error",
@@ -129,10 +130,11 @@ def test_coord_to_str():
     assert _coord_to_strings_UT((10, 20)) == ["(10,20)"]
     assert _coord_to_strings_UT((0, 0)) == ["(0,0)"]
     with pytest.raises(TypeError):
-        _coord_to_strings_UT(1)
+        # this is meant to raise an error, so type ignore
+        _coord_to_strings_UT(1)  # type: ignore[arg-type]
 
     assert _coord_to_strings_indexed((1, 2)) == ["(", "1", ",", "2", ")"]
     assert _coord_to_strings_indexed((10, 20)) == ["(", "10", ",", "20", ")"]
     assert _coord_to_strings_indexed((0, 0)) == ["(", "0", ",", "0", ")"]
     with pytest.raises(TypeError):
-        _coord_to_strings_indexed(1)
+        _coord_to_strings_indexed(1)  # type: ignore[arg-type]

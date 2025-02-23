@@ -41,16 +41,16 @@ MAZE_DATASET: Final[MazeDataset] = MazeDataset.from_config(
     verbose=True,
     gen_parallel=False,
 )
-LATTICE_MAZES: Final[tuple[LatticeMaze]] = tuple(
+LATTICE_MAZES: Final[tuple[LatticeMaze, ...]] = tuple(
     LatticeMazeGenerators.gen_dfs(np.array([GRID_N, GRID_N])) for _ in range(N_MAZES)
 )
 _PATHS = tuple(maze.generate_random_path() for maze in LATTICE_MAZES)
-TARGETED_MAZES: Final[tuple[TargetedLatticeMaze]] = tuple(
+TARGETED_MAZES: Final[tuple[TargetedLatticeMaze, ...]] = tuple(
     TargetedLatticeMaze.from_lattice_maze(maze, path[0], path[-1])
     for maze, path in zip(LATTICE_MAZES, _PATHS)
 )
 # MIXED_MAZES alternates the maze types, so you can slice a contiguous subset and still get all types
-MIXED_MAZES: Final[tuple[LatticeMaze | TargetedLatticeMaze | SolvedMaze]] = tuple(
+MIXED_MAZES: Final[tuple[LatticeMaze | TargetedLatticeMaze | SolvedMaze, ...]] = tuple(
     x
     for x in itertools.chain.from_iterable(
         itertools.zip_longest(MAZE_DATASET.mazes, TARGETED_MAZES, LATTICE_MAZES)
@@ -167,7 +167,7 @@ ASCII_MAZES: Final[frozendict.frozendict[str, MANUAL_MAZE]] = frozendict.frozend
 
 # A list of legacy `MazeTokenizer`s and their `MazeTokenizerModular` equivalents.
 # Used for unit tests where both versions are supported
-LEGACY_AND_EQUIVALENT_TOKENIZERS: list[MazeTokenizer, MazeTokenizerModular] = [
+LEGACY_AND_EQUIVALENT_TOKENIZERS: list[MazeTokenizer | MazeTokenizerModular] = [
     *[
         MazeTokenizer(tokenization_mode=tok_mode, max_grid_size=20)
         for tok_mode in TokenizationMode

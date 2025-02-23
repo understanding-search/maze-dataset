@@ -2,6 +2,7 @@
 
 from __future__ import annotations  # for type hinting self as return value
 
+from typing import Sequence
 import warnings
 from copy import deepcopy
 from dataclasses import dataclass
@@ -211,7 +212,7 @@ class MazePlot:
         self.predicted_paths.append(styled_path)
         return self
 
-    def add_multiple_paths(self, path_list: list[CoordList | CoordArray | StyledPath]):
+    def add_multiple_paths(self, path_list: Sequence[CoordList | CoordArray | StyledPath]):
         """
         Function for adding multiple paths to MazePlot at once. This can be done in two ways:
         1. Passing a list of

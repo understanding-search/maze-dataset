@@ -12,7 +12,7 @@ from pathlib import Path
 import typing
 import warnings
 from collections import Counter, defaultdict
-from typing import Callable, Optional, cast
+from typing import Callable, Literal, Optional, cast, overload
 
 import numpy as np
 import tqdm
@@ -301,6 +301,20 @@ class MazeDataset(GPTDataset):
     def __deepcopy__(self, memo) -> "MazeDataset":
         return MazeDataset.load(self._serialize_full())
 
+    @overload
+    def as_tokens(
+        self,
+        maze_tokenizer,
+        limit: int | None = None,
+        join_tokens_individual_maze: Literal[False] = False,
+    ) -> list[list[str]]: ... 
+    @overload
+    def as_tokens(
+        self,
+        maze_tokenizer,
+        limit: int | None = None,
+        join_tokens_individual_maze: Literal[True] = True,
+    ) -> list[str]: ...
     def as_tokens(
         self,
         maze_tokenizer,  # TODO: MazeTokenizer

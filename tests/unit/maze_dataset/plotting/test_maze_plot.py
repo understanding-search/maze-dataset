@@ -42,8 +42,8 @@ def test_maze_plot():
     MazePlot(solved_maze).plot()
     plt.savefig(FIG_SAVE + "mazeplot-solvedmaze.png")
 
-    pred_path1 = [(0, 0), (1, 0), (2, 0), (3, 0), (3, 1), (3, 2), (3, 3)]
-    pred_path2 = [
+    pred_path1: list[tuple[int, int]] = [(0, 0), (1, 0), (2, 0), (3, 0), (3, 1), (3, 2), (3, 3)]
+    pred_path2: list[tuple[int, int]] = [
         (0, 0),
         (0, 1),
         (0, 2),
@@ -76,7 +76,7 @@ def test_maze_plot():
     ).plot()
     plt.savefig(FIG_SAVE + "mazeplot-nodevalues_target.png")
 
-    pred_paths = [pred_path1, pred_path2]
+    pred_paths: list[list[tuple[int, int]]] = [pred_path1, pred_path2]
     MazePlot(maze).add_multiple_paths(pred_paths).plot()
     plt.savefig(FIG_SAVE + "mazeplot-multipath.png")
 

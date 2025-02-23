@@ -10,7 +10,7 @@ def plot_colored_text(
     tokens: Sequence[str],
     weights: Sequence[float],
     cmap: str | Any,  # assume its a colormap if not a string
-    ax: plt.Axes = None,
+    ax: plt.Axes | None = None,
     width_scale: float = 0.023,
     width_offset: float = 0.005,
     height_offset: float = 0.1,

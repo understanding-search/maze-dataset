@@ -667,7 +667,7 @@ class LatticeMaze(SerializableDataclass):
     @classmethod
     def _from_tokens_AOTP(
         cls, tokens: list[str], maze_tokenizer: "MazeTokenizer | MazeTokenizerModular"
-    ) -> "LatticeMaze":
+    ) -> "LatticeMaze | TargetedLatticeMaze | SolvedMaze":
         """create a LatticeMaze from a list of tokens"""
 
         # figure out what input format
@@ -693,18 +693,20 @@ class LatticeMaze(SerializableDataclass):
             # skip last endline
             if len(e) != 0:
                 # convert to coords, split start and end
-                e_coords: list[str|CoordTup] = maze_tokenizer.strings_to_coords(
+                e_coords: list[str | CoordTup] = maze_tokenizer.strings_to_coords(
                     e,
                     when_noncoord="include",
                 )
                 # this assertion depends on the tokenizer having exactly one token for the connector
                 # which is also why we "include" above
-                # the connector token is discarded here ------------------------------\
-                assert len(e_coords) == 3, f"invalid edge: {e = } {e_coords = }"  #   |
-                assert e_coords[1] == SPECIAL_TOKENS.CONNECTOR, (  #                  |
-                    f"invalid edge: {e = } {e_coords = }"  #                          |
-                )  #                                                                  V
-                coordinates.append((e_coords[0], e_coords[-1]))  # <------------------/
+                # the connector token is discarded below
+                assert len(e_coords) == 3, f"invalid edge: {e = } {e_coords = }"
+                assert e_coords[1] == SPECIAL_TOKENS.CONNECTOR, (
+                    f"invalid edge: {e = } {e_coords = }"
+                )
+                e_coords_first: CoordTup = e_coords[0]  # type: ignore[assignment]
+                e_coords_last: CoordTup = e_coords[-1]  # type: ignore[assignment]
+                coordinates.append((e_coords_first, e_coords_last))
 
         assert all(len(c) == 2 for c in coordinates), (
             f"invalid coordinates: {coordinates = }"
@@ -768,12 +770,13 @@ class LatticeMaze(SerializableDataclass):
 
         return output_maze
 
+    # TODO: any way to get return type hinting working for this?
     @classmethod
     def from_tokens(
         cls,
         tokens: list[str],
         maze_tokenizer: "MazeTokenizer | TokenizationMode | MazeTokenizerModular",
-    ) -> "LatticeMaze":
+    ) -> "LatticeMaze | TargetedLatticeMaze | SolvedMaze":
         """
         Constructs a maze from a tokenization.
         Only legacy tokenizers and their `MazeTokenizerModular` analogs are supported.

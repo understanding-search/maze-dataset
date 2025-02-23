@@ -39,8 +39,9 @@ def test_tokenization_roundtrip(tokenizer: MazeTokenizer | MazeTokenizerModular)
         maze.as_tokens(tokenizer) for maze in dataset.mazes
     ]
 
-    mazes_roundtrip: list[SolvedMaze] = [
-        SolvedMaze.from_tokens(
+    # we can't type hint easily that from_tokens usually returns a SolvedMaze
+    mazes_roundtrip: list[SolvedMaze] = [ 
+        SolvedMaze.from_tokens( # type: ignore[misc]
             tokens=maze_tokens,
             maze_tokenizer=tokenizer,
         )
@@ -48,7 +49,7 @@ def test_tokenization_roundtrip(tokenizer: MazeTokenizer | MazeTokenizerModular)
     ]
 
     mazes_roundtrip_individual: list[SolvedMaze] = [
-        SolvedMaze.from_tokens(
+        SolvedMaze.from_tokens( # type: ignore[misc]
             tokens=maze_tokens,
             maze_tokenizer=tokenizer,
         )

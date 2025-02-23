@@ -8,7 +8,7 @@ import numpy as np
 from jaxtyping import Bool
 from muutils.mlutils import GLOBAL_SEED
 
-from maze_dataset.constants import CoordArray
+from maze_dataset.constants import CoordArray, CoordTup
 from maze_dataset.maze import ConnectionList, Coord, LatticeMaze, SolvedMaze
 from maze_dataset.maze.lattice_maze import NEIGHBORS_MASK, _fill_edges_with_walls
 
@@ -51,7 +51,7 @@ class LatticeMazeGenerators:
 
     @staticmethod
     def gen_dfs(
-        grid_shape: Coord,
+        grid_shape: Coord|CoordTup,
         lattice_dim: int = 2,
         accessible_cells: int | float | None = None,
         max_tree_depth: int | float | None = None,
@@ -84,8 +84,8 @@ class LatticeMazeGenerators:
         """
 
         # Default values if no constraints have been passed
-        grid_shape: Coord = np.array(grid_shape)
-        n_total_cells: int = int(np.prod(grid_shape))
+        grid_shape_: Coord = np.array(grid_shape)
+        n_total_cells: int = int(np.prod(grid_shape_))
 
         n_accessible_cells: int
         if accessible_cells is None:
@@ -109,14 +109,14 @@ class LatticeMazeGenerators:
                 f"max_tree_depth must be an int (count) or a float in the range [0, 1] (proportion), got {max_tree_depth}"
             )
 
-            max_tree_depth = int(max_tree_depth * np.sum(grid_shape))
+            max_tree_depth = int(max_tree_depth * np.sum(grid_shape_))
 
         # choose a random start coord
-        start_coord = _random_start_coord(grid_shape, start_coord)
+        start_coord = _random_start_coord(grid_shape_, start_coord)
 
         # initialize the maze with no connections
         connection_list: ConnectionList = np.zeros(
-            (lattice_dim, grid_shape[0], grid_shape[1]), dtype=np.bool_
+            (lattice_dim, grid_shape_[0], grid_shape_[1]), dtype=np.bool_
         )
 
         # initialize the stack with the target coord
@@ -144,8 +144,8 @@ class LatticeMazeGenerators:
                 )
                 if (
                     (tuple(neighbor) not in visited_cells)
-                    and (0 <= neighbor[0] < grid_shape[0])
-                    and (0 <= neighbor[1] < grid_shape[1])
+                    and (0 <= neighbor[0] < grid_shape_[0])
+                    and (0 <= neighbor[1] < grid_shape_[1])
                 )
             ]
 
@@ -182,7 +182,7 @@ class LatticeMazeGenerators:
             connection_list=connection_list,
             generation_meta=dict(
                 func_name="gen_dfs",
-                grid_shape=grid_shape,
+                grid_shape=grid_shape_,
                 start_coord=start_coord,
                 n_accessible_cells=int(n_accessible_cells),
                 max_tree_depth=int(max_tree_depth),
@@ -198,7 +198,7 @@ class LatticeMazeGenerators:
 
     @staticmethod
     def gen_prim(
-        grid_shape: Coord,
+        grid_shape: Coord|CoordTup,
         lattice_dim: int = 2,
         accessible_cells: int | float | None = None,
         max_tree_depth: int | float | None = None,
@@ -220,7 +220,7 @@ class LatticeMazeGenerators:
 
     @staticmethod
     def gen_wilson(
-        grid_shape: Coord,
+        grid_shape: Coord|CoordTup,
     ) -> LatticeMaze:
         """Generate a lattice maze using Wilson's algorithm.
 
@@ -231,12 +231,14 @@ class LatticeMazeGenerators:
         https://en.wikipedia.org/wiki/Maze_generation_algorithm#Wilson's_algorithm
         """
 
+        grid_shape_: Coord = np.array(grid_shape)
+
         # Initialize grid and visited cells
-        connection_list: ConnectionList = np.zeros((2, *grid_shape), dtype=np.bool_)
-        visited: Bool[np.ndarray, "x y"] = np.zeros(grid_shape, dtype=np.bool_)
+        connection_list: ConnectionList = np.zeros((2, *grid_shape_), dtype=np.bool_)
+        visited: Bool[np.ndarray, "x y"] = np.zeros(grid_shape_, dtype=np.bool_)
 
         # Choose a random cell and mark it as visited
-        start_coord: Coord = _random_start_coord(grid_shape, None)
+        start_coord: Coord = _random_start_coord(grid_shape_, None)
         visited[start_coord[0], start_coord[1]] = True
         del start_coord
 
@@ -256,7 +258,7 @@ class LatticeMazeGenerators:
             # exit the loop once the current path hits a visited cell
             while not visited[current[0], current[1]]:
                 # find a valid neighbor (one always exists on a lattice)
-                neighbors: CoordArray = get_neighbors_in_bounds(current, grid_shape)
+                neighbors: CoordArray = get_neighbors_in_bounds(current, grid_shape_)
                 next_cell: Coord = neighbors[np.random.choice(neighbors.shape[0])]
 
                 # Check for loop
@@ -296,14 +298,14 @@ class LatticeMazeGenerators:
             connection_list=connection_list,
             generation_meta=dict(
                 func_name="gen_wilson",
-                grid_shape=grid_shape,
+                grid_shape=grid_shape_,
                 fully_connected=True,
             ),
         )
 
     @staticmethod
     def gen_percolation(
-        grid_shape: Coord,
+        grid_shape: Coord|CoordTup,
         p: float = 0.4,
         lattice_dim: int = 2,
         start_coord: Coord | None = None,
@@ -319,11 +321,11 @@ class LatticeMazeGenerators:
         - `start_coord: Coord | None`: the starting coordinate for the connected component (default: `None` will give a random start)
         """
         assert p >= 0 and p <= 1, f"p must be between 0 and 1, got {p}"
-        grid_shape: Coord = np.array(grid_shape)
+        grid_shape_: Coord = np.array(grid_shape)
 
-        start_coord = _random_start_coord(grid_shape, start_coord)
+        start_coord = _random_start_coord(grid_shape_, start_coord)
 
-        connection_list: ConnectionList = np.random.rand(lattice_dim, *grid_shape) < p
+        connection_list: ConnectionList = np.random.rand(lattice_dim, *grid_shape_) < p
 
         connection_list = _fill_edges_with_walls(connection_list)
 
@@ -331,7 +333,7 @@ class LatticeMazeGenerators:
             connection_list=connection_list,
             generation_meta=dict(
                 func_name="gen_percolation",
-                grid_shape=grid_shape,
+                grid_shape=grid_shape_,
                 percolation_p=p,
                 start_coord=start_coord,
             ),
@@ -397,7 +399,7 @@ GENERATORS_MAP: dict[str, Callable[[Coord, Any], "LatticeMaze"]] = {
 
 def get_maze_with_solution(
     gen_name: str,
-    grid_shape: Coord,
+    grid_shape: Coord|CoordTup,
     maze_ctor_kwargs: dict | None = None,
 ) -> SolvedMaze:
     "helper function to get a maze already with a solution"

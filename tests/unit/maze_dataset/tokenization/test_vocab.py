@@ -34,7 +34,8 @@ def test_special_tokens_base():
 
 def test_vocab():
     assert len(VOCAB) == 4096
-    assert VOCAB.CTT_10 == "10"
+    # due to typing issue with VOCAB being instance of a dynamic dataclass
+    assert VOCAB.CTT_10 == "10"  # type: ignore[attr-defined]
     assert VOCAB_LIST[0] == "<ADJLIST_START>"
     assert VOCAB_LIST[706] == "&"
     assert VOCAB_TOKEN_TO_INDEX["<UNK>"] == 19
