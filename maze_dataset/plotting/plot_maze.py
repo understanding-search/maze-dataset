@@ -289,6 +289,8 @@ class MazePlot:
         for coord, kwargs in self.marked_coords:
             self._place_marked_coords([coord], **kwargs)
 
+        return self
+
     def _rowcol_to_coord(self, point: Coord) -> np.ndarray:
         """Transform Point from MazeTransformer (row, column) notation to matplotlib default (x, y) notation where x is the horizontal axis."""
         point = np.array([point[1], point[0]])
@@ -302,11 +304,15 @@ class MazePlot:
         for coord in coords:
             self.marked_coords.append((coord, kwargs))
 
+        return self
+
     def _place_marked_coords(
         self, coords: CoordArray | list[Coord], **kwargs
     ) -> MazePlot:
         coords_tp = np.array([self._rowcol_to_coord(coord) for coord in coords])
         self.ax.plot(coords_tp[:, 0], coords_tp[:, 1], **kwargs)
+
+        return self
 
     def _plot_maze(self) -> None:
         """
@@ -335,7 +341,7 @@ class MazePlot:
                 vals_min = 0.0
 
             # adjust vals_max, in case you need consistent colorbar across multiple plots
-            vals_max: float = self.colormap_max or vals_max
+            vals_max = self.colormap_max or vals_max
 
             # create colormap
             cmap = mpl.colormaps[self.node_color_map]
@@ -507,11 +513,9 @@ class MazePlot:
                 **path_format.quiver_kwargs,
             )
         else:
-            x: np.ndarray = p_transformed[:, 0]
-            y: np.ndarray = p_transformed[:, 1]
             self.ax.plot(
-                x,
-                y,
+                p_transformed[:, 0],
+                p_transformed[:, 1],
                 path_format.fmt,
                 lw=path_format.line_width,
                 color=path_format.color,

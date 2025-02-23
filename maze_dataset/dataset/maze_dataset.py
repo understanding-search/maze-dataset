@@ -18,7 +18,6 @@ import numpy as np
 import tqdm
 from jaxtyping import Int
 from muutils.json_serialize import (
-    JSONitem,
     JSONdict,
     json_serialize,
     serializable_dataclass,
@@ -290,9 +289,8 @@ class MazeDataset(GPTDataset):
                 allow_generation_metadata_filter_mismatch=allow_generation_metadata_filter_mismatch,
                 verbose=verbose,
                 **kwargs,
-            )
+            ),
         )
-            
 
     def data_hash(self) -> int:
         return stable_hash(str(tuple([x.serialize() for x in self.mazes])))
@@ -524,6 +522,7 @@ class MazeDataset(GPTDataset):
 
     def _serialize_minimal(self) -> JSONdict:
         "alternate serialization where metadata is collected and mazes are stored in concatenated form"
+        filtered_meta: "MazeDataset"
         if self.generation_metadata_collected is None:
             filtered_meta = self.filter_by.collect_generation_meta()
         else:

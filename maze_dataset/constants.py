@@ -206,7 +206,8 @@ _VOCAB_BASE: type = make_dataclass(
 "combined vocab class, private"
 # TODO: edit __getitem__ to add warning for accessing a RESERVE token
 
-VOCAB: _VOCAB_BASE = _VOCAB_BASE()
+# HACK: mypy doesn't recognize the fields in this dataclass
+VOCAB: _VOCAB_BASE = _VOCAB_BASE()  # type: ignore
 "public access to universal vocabulary for `MazeTokenizerModular`"
 VOCAB_LIST: list[str] = list(VOCAB.values())
 "list of `VOCAB` tokens, in order"

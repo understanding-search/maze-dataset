@@ -17,6 +17,7 @@ see their paper:
 ```
 """
 
+from pathlib import Path
 import typing
 
 import numpy as np
@@ -24,6 +25,7 @@ import torch
 from jaxtyping import Float, Int
 from muutils.json_serialize import serializable_dataclass, serializable_field
 from torch.utils.data import Dataset
+from zanj import ZANJ
 
 from maze_dataset import MazeDataset, MazeDatasetConfig
 from maze_dataset.maze import PixelColors, SolvedMaze
@@ -136,6 +138,46 @@ class RasterizedMazeDataset(MazeDataset):
         inputs, targets = zip(*[self[i] for i in idxs])
 
         return torch.stack([torch.stack(inputs), torch.stack(targets)])
+
+    @classmethod
+    def from_config(
+        cls,
+        cfg: RasterizedMazeDatasetConfig,
+        do_generate: bool = True,
+        load_local: bool = True,
+        save_local: bool = True,
+        zanj: ZANJ | None = None,
+        do_download: bool = True,
+        local_base_path: Path = Path("data/maze_dataset"),
+        except_on_config_mismatch: bool = True,
+        allow_generation_metadata_filter_mismatch: bool = True,
+        verbose: bool = False,
+        **kwargs,
+    ) -> "RasterizedMazeDataset":
+        """create a rasterized maze dataset from a config
+
+        priority of loading:
+        1. load from local
+        2. download
+        3. generate
+
+        """
+        return typing.cast(
+            RasterizedMazeDataset,
+            super().from_config(
+                cfg=cfg,
+                do_generate=do_generate,
+                load_local=load_local,
+                save_local=save_local,
+                zanj=zanj,
+                do_download=do_download,
+                local_base_path=local_base_path,
+                except_on_config_mismatch=except_on_config_mismatch,
+                allow_generation_metadata_filter_mismatch=allow_generation_metadata_filter_mismatch,
+                verbose=verbose,
+                **kwargs,
+            ),
+        )
 
     @classmethod
     def from_config_augmented(
