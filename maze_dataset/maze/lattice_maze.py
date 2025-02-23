@@ -461,7 +461,7 @@ class LatticeMaze(SerializableDataclass):
             False,
         ):
             try:
-                positions = connected_component[
+                positions = connected_component[  # type: ignore[assignment]
                     np.random.choice(
                         len(connected_component),
                         size=2,
@@ -476,7 +476,7 @@ class LatticeMaze(SerializableDataclass):
                 else:
                     return None
 
-            return self.find_shortest_path(positions[0], positions[1])
+            return self.find_shortest_path(positions[0], positions[1])  # type: ignore[index]
 
         # handle special conditions
         connected_component_set: set[CoordTup] = set(map(tuple, connected_component))
@@ -485,11 +485,12 @@ class LatticeMaze(SerializableDataclass):
         allowed_end_set: set[CoordTup] = connected_component_set.copy()
 
         # filter by explicitly allowed start and end positions
+        # '# type: ignore[assignment]' here because the returned tuple can be of any length
         if allowed_start is not None:
-            allowed_start_set = set(map(tuple, allowed_start)) & connected_component_set
+            allowed_start_set = set(map(tuple, allowed_start)) & connected_component_set  # type: ignore[assignment]
 
         if allowed_end is not None:
-            allowed_end_set = set(map(tuple, allowed_end)) & connected_component_set
+            allowed_end_set = set(map(tuple, allowed_end)) & connected_component_set  # type: ignore[assignment]
 
         # filter by forcing deadends
         if deadend_start:
@@ -692,7 +693,8 @@ class LatticeMaze(SerializableDataclass):
             if len(e) != 0:
                 # convert to coords, split start and end
                 e_coords: list[str | CoordTup] = maze_tokenizer.strings_to_coords(
-                    e, when_noncoord="include"
+                    e,
+                    when_noncoord="include",
                 )
                 assert len(e_coords) == 3, f"invalid edge: {e = } {e_coords = }"
                 assert e_coords[1] == SPECIAL_TOKENS.CONNECTOR, (
@@ -1046,7 +1048,7 @@ class LatticeMaze(SerializableDataclass):
 
         return cls(
             connection_list=np.array(connection_list),
-            solution=np.array(solution),  # type: ignore[arg-type]
+            solution=np.array(solution),  # type: ignore[call-arg]
         )
 
     # ============================================================
@@ -1102,8 +1104,11 @@ class LatticeMaze(SerializableDataclass):
         return cls.from_pixels(pixel_grid)
 
 
+# type ignore here even though theyre all frozen
+# maybe `SerializeableDataclass` itself is not frozen, but thats an ABC
+# error: Cannot inherit frozen dataclass from a non-frozen one  [misc]
 @serializable_dataclass(frozen=True, kw_only=True)
-class TargetedLatticeMaze(LatticeMaze):
+class TargetedLatticeMaze(LatticeMaze):  # type: ignore[misc]
     """A LatticeMaze with a start and end position"""
 
     # this jank is so that SolvedMaze can inherit from this class without needing arguments for start_pos and end_pos
@@ -1173,19 +1178,19 @@ class TargetedLatticeMaze(LatticeMaze):
     def from_lattice_maze(
         cls,
         lattice_maze: LatticeMaze,
-        start_pos: Coord,
-        end_pos: Coord,
+        start_pos: Coord | CoordTup,
+        end_pos: Coord | CoordTup,
     ) -> "TargetedLatticeMaze":
         return cls(
             connection_list=lattice_maze.connection_list,
-            start_pos=start_pos,
-            end_pos=end_pos,
+            start_pos=np.array(start_pos),
+            end_pos=np.array(end_pos),
             generation_meta=lattice_maze.generation_meta,
         )
 
 
 @serializable_dataclass(frozen=True, kw_only=True)
-class SolvedMaze(TargetedLatticeMaze):
+class SolvedMaze(TargetedLatticeMaze):  # type: ignore[misc]
     """Stores a maze and a solution"""
 
     solution: CoordArray = serializable_field(  # type: ignore[misc]
@@ -1219,8 +1224,11 @@ class SolvedMaze(TargetedLatticeMaze):
         super().__init__(
             connection_list=connection_list,
             generation_meta=generation_meta,
-            start_pos=np.array(solution[0]) if solution_valid else None,
-            end_pos=np.array(solution[-1]) if solution_valid else None,
+            # TODO: the argument type is stricter than the expected type but it still fails?
+            # error: Argument "start_pos" to "__init__" of "TargetedLatticeMaze" has incompatible type
+            # "ndarray[tuple[int, ...], dtype[Any]] | None"; expected "ndarray[Any, Any]"  [arg-type]
+            start_pos=np.array(solution[0]) if solution_valid else None,  # type: ignore[arg-type]
+            end_pos=np.array(solution[-1]) if solution_valid else None,  # type: ignore[arg-type]
         )
 
         self.__dict__["solution"] = solution
@@ -1273,7 +1281,7 @@ class SolvedMaze(TargetedLatticeMaze):
     ) -> "SolvedMaze":
         return cls(
             connection_list=lattice_maze.connection_list,
-            solution=solution,
+            solution=np.array(solution),
             generation_meta=lattice_maze.generation_meta,
         )
 
@@ -1281,7 +1289,7 @@ class SolvedMaze(TargetedLatticeMaze):
     def from_targeted_lattice_maze(
         cls,
         targeted_lattice_maze: TargetedLatticeMaze,
-        solution: list[CoordTup] | None = None,
+        solution: list[CoordTup] | CoordArray | None = None,
     ) -> "SolvedMaze":
         """solves the given targeted lattice maze and returns a SolvedMaze"""
         if solution is None:
@@ -1325,7 +1333,8 @@ class SolvedMaze(TargetedLatticeMaze):
 
         returns the complement of `get_solution_forking_points` from the path"""
         forks_idxs, _ = self.get_solution_forking_points()
-        return (
+        # HACK: idk why type ignore here
+        return (  # type: ignore[return-value]
             np.delete(np.arange(self.solution.shape[0]), forks_idxs, axis=0),
             np.delete(self.solution, forks_idxs, axis=0),
         )
@@ -1393,43 +1402,44 @@ _RIC_SLICES: dict = {
 }
 
 
-def _remove_isolated_cells_old(
-    image: Int[np.ndarray, "RGB x y"],
-) -> Int[np.ndarray, "RGB x y"]:
-    """
-    Removes isolated cells from an image. An isolated cell is a cell that is surrounded by walls on all sides.
-    """
-    warnings.warn("this functin doesn't work and I have no idea why!!!")
-    masks: dict[str, np.ndarray] = {
-        d: np.all(
-            np.pad(
-                image[_RIC_SLICES[d][0], _RIC_SLICES[d][1], :] == PixelColors.WALL,
-                np.array((*_RIC_PADS[d], (0, 0)), dtype=np.int8),
-                mode="constant",
-                constant_values=True,
-            ),
-            axis=2,
-        )
-        for d in _RIC_SLICES.keys()
-    }
+# TODO: figure out why this function doesnt work, or maybe just get rid of it
+# def _remove_isolated_cells_old(
+#     image: Int[np.ndarray, "RGB x y"],
+# ) -> Int[np.ndarray, "RGB x y"]:
+#     """
+#     Removes isolated cells from an image. An isolated cell is a cell that is surrounded by walls on all sides.
+#     """
+#     warnings.warn("this functin doesn't work and I have no idea why!!!")
+#     masks: dict[str, np.ndarray] = {
+#         d: np.all(
+#             np.pad(
+#                 image[_RIC_SLICES[d][0], _RIC_SLICES[d][1], :] == PixelColors.WALL,
+#                 np.array((*_RIC_PADS[d], (0, 0)), dtype=np.int8),
+#                 mode="constant",
+#                 constant_values=True,
+#             ),
+#             axis=2,
+#         )
+#         for d in _RIC_SLICES.keys()
+#     }
 
-    # Create a mask for non-wall cells
-    mask_non_wall = np.all(image != PixelColors.WALL, axis=2)
+#     # Create a mask for non-wall cells
+#     mask_non_wall = np.all(image != PixelColors.WALL, axis=2)
 
-    # print(f"{mask_non_wall.shape = }")
-    # print(f"{ {k: masks[k].shape for k in masks.keys()} = }")
+#     # print(f"{mask_non_wall.shape = }")
+#     # print(f"{ {k: masks[k].shape for k in masks.keys()} = }")
 
-    # print(f"{mask_non_wall = }")
-    # print(f"{masks['down'] = }")
+#     # print(f"{mask_non_wall = }")
+#     # print(f"{masks['down'] = }")
 
-    # Combine the masks
-    mask = mask_non_wall & masks["left"] & masks["right"] & masks["up"] & masks["down"]
+#     # Combine the masks
+#     mask = mask_non_wall & masks["left"] & masks["right"] & masks["up"] & masks["down"]
 
-    # Apply the mask
-    output_image = np.where(
-        np.stack([mask] * 3, axis=-1),
-        PixelColors.WALL,
-        image,
-    )
+#     # Apply the mask
+#     output_image = np.where(
+#         np.stack([mask] * 3, axis=-1),
+#         PixelColors.WALL,
+#         image,
+#     )
 
-    return output_image
+#     return output_image

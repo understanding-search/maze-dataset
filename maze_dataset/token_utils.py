@@ -4,7 +4,7 @@ import re
 import typing
 import warnings
 from collections import Counter
-from typing import Callable
+from typing import Callable, Literal, overload
 
 import numpy as np
 from jaxtyping import Bool, Float, Int, Int8
@@ -250,6 +250,21 @@ def coords_string_split_UT(coords: str) -> list[str]:
 
 # back and forth in wrapped form
 # ==================================================
+@overload
+def strings_to_coords(
+    text: str | list[str],
+    when_noncoord: Literal["skip"] = "skip",
+) -> list[CoordTup]: ...
+@overload
+def strings_to_coords(
+    text: str | list[str],
+    when_noncoord: Literal["error"] = "error",
+) -> list[CoordTup]: ...
+@overload
+def strings_to_coords(
+    text: str | list[str],
+    when_noncoord: Literal["include"] = "include",
+) -> list[str | CoordTup]: ...
 def strings_to_coords(
     text: str | list[str],
     when_noncoord: WhenMissing = "skip",

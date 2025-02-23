@@ -17,6 +17,7 @@ from typing import (
     Sequence,
     TypedDict,
     TypeVar,
+    overload,
 )
 
 import numpy as np
@@ -353,8 +354,27 @@ class MazeTokenizer(SerializableDataclass):
                 f"expected one of {TokenizationMode.__members__}",
             )
 
-    @staticmethod
+    @overload
     def strings_to_coords(
+        cls,
+        text: str | list[str],
+        when_noncoord: Literal["skip"] = "skip",
+    ) -> list[CoordTup]: ...
+    @overload
+    def strings_to_coords(
+        cls,
+        text: str | list[str],
+        when_noncoord: Literal["error"] = "error",
+    ) -> list[CoordTup]: ...
+    @overload
+    def strings_to_coords(
+        cls,
+        text: str | list[str],
+        when_noncoord: Literal["include"] = "include",
+    ) -> list[str | CoordTup]: ...
+    @classmethod
+    def strings_to_coords(
+        cls,
         text: str | list[str],
         when_noncoord: WhenMissing = "skip",
     ) -> list[str | CoordTup]:
@@ -2157,9 +2177,28 @@ class MazeTokenizerModular(SerializableDataclass):
             )
         )
 
-    @staticmethod
+    @overload
     def strings_to_coords(
-        text: str,
+        cls,
+        text: str | list[str],
+        when_noncoord: Literal["skip"] = "skip",
+    ) -> list[CoordTup]: ...
+    @overload
+    def strings_to_coords(
+        cls,
+        text: str | list[str],
+        when_noncoord: Literal["error"] = "error",
+    ) -> list[CoordTup]: ...
+    @overload
+    def strings_to_coords(
+        cls,
+        text: str | list[str],
+        when_noncoord: Literal["include"] = "include",
+    ) -> list[str | CoordTup]: ...
+    @classmethod
+    def strings_to_coords(
+        cls,
+        text: str | list[str],
         when_noncoord: WhenMissing = "skip",
     ) -> list[str | CoordTup]:
         warnings.warn(
