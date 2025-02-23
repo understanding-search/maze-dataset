@@ -61,6 +61,20 @@
         {% endif %}
     {% endblock %}
 
+    <hr/>
+    
+    <div>
+        <a href="{{ path_to_root }}coverage/html/index.html" class="pdoc-button" title="View test coverage report">
+            Coverage
+        </a>
+        <a href="{{ path_to_root }}other/todo-inline.html" class="pdoc-button" title="Table of TODOs scraped from source code, with links to create issues from them">
+            TODOs
+        </a>
+        <a href="{{ path_to_root }}other/lmcat.txt" class="pdoc-button" title="a view of the repo contents made for LLMs, using https://miv.name/lmcat">
+            lmcat
+        </a>
+    </div>
+
     {% block nav_footer %}
         {% if footer_text %}
             <footer>{{ footer_text }}</footer>

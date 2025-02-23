@@ -23,6 +23,7 @@ This makes sure that the pdoc styling doesn't leak to the rest of the page when 
     font-size: .75rem;
     padding: calc(0.5em - 1px) 1em;
     transition: 100ms all;
+    position: relative;
 }
 
 

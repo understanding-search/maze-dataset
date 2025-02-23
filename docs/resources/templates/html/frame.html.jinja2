@@ -14,12 +14,12 @@
     {% block head %}{% endblock %}
     {% filter minify_css | indent %}
         {% block style %}
-            <link rel="stylesheet" href="{{ path_to_root }}resources/bootstrap-reboot.min.css">
-            <link rel="stylesheet" href="{{ path_to_root }}resources/syntax-highlighting.css">
-            <link rel="stylesheet" href="{{ path_to_root }}resources/theme.css">
-            <link rel="stylesheet" href="{{ path_to_root }}resources/layout.css">
-            <link rel="stylesheet" href="{{ path_to_root }}resources/content.css">
-            <link rel="stylesheet" href="{{ path_to_root }}resources/custom.css">
+            <link rel="stylesheet" href="{{ path_to_root }}resources/css/bootstrap-reboot.min.css">
+            <link rel="stylesheet" href="{{ path_to_root }}resources/css/syntax-highlighting.css">
+            <link rel="stylesheet" href="{{ path_to_root }}resources/css/theme.css">
+            <link rel="stylesheet" href="{{ path_to_root }}resources/css/layout.css">
+            <link rel="stylesheet" href="{{ path_to_root }}resources/css/content.css">
+            <link rel="stylesheet" href="{{ path_to_root }}resources/css/custom.css">
         {% endblock %}
     {% endfilter %}
     {% if math %}{% include "math.html.jinja2" %}{% endif %}
@@ -27,7 +27,7 @@
 </head>
 <body>
 <div class="package-version">
-    docs for <a href="https://github.com/understanding-search/maze-dataset">maze-dataset</a> v{{- package_version }}<br>
+    docs for <a href="{{- package_repo_url -}}">{{- package_name -}}</a> v{{- package_version }}<br>
 </div>
 {% block body %}
     <nav class="pdoc">
