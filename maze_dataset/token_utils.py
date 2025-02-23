@@ -299,6 +299,18 @@ def strings_to_coords(
     return result
 
 
+@overload
+def coords_to_strings(
+    coords: list[str | CoordTup],
+    coord_to_strings_func: Callable[[CoordTup], list[str]],
+    when_noncoord: Literal["include", "skip"] = "skip",
+) -> list[str]: ...
+@overload
+def coords_to_strings(
+    coords: list[CoordTup],
+    coord_to_strings_func: Callable[[CoordTup], list[str]],
+    when_noncoord: Literal["error"] = "error",
+) -> list[str]: ...
 def coords_to_strings(
     coords: list[str | CoordTup],
     coord_to_strings_func: Callable[[CoordTup], list[str]],

@@ -328,6 +328,18 @@ class MazeTokenizer(SerializableDataclass):
     # conversion functions
     # ============================================================
 
+    @overload
+    def coords_to_strings(
+        self,
+        coords: list[str | CoordTup],
+        when_noncoord: Literal["include", "skip"] = "skip",
+    ) -> list[str]: ...
+    @overload
+    def coords_to_strings(
+        self,
+        coords: list[CoordTup],
+        when_noncoord: Literal["error"] = "error",
+    ) -> list[str]: ...
     def coords_to_strings(
         self,
         coords: list[CoordTup],

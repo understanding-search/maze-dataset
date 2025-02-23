@@ -516,13 +516,14 @@ class LatticeMaze(SerializableDataclass):
 
         # randomly select start and end positions
         try:
-            start_pos: CoordTup = tuple(
+            # ignore assignment here since `tuple()` returns a tuple of any length, but we know it will be ok
+            start_pos: CoordTup = tuple(  # type: ignore[assignment]
                 list(allowed_start_set)[np.random.randint(0, len(allowed_start_set))]
             )
             if endpoints_not_equal:
                 # remove start position from end positions
                 allowed_end_set.discard(start_pos)
-            end_pos: CoordTup = tuple(
+            end_pos: CoordTup = tuple(  # type: ignore[assignment]
                 list(allowed_end_set)[np.random.randint(0, len(allowed_end_set))]
             )
         except ValueError as e:
@@ -591,7 +592,7 @@ class LatticeMaze(SerializableDataclass):
         )
         return [
             SPECIAL_TOKENS.ADJLIST_START,
-            *chain.from_iterable(
+            *chain.from_iterable(  # type: ignore[list-item]
                 [
                     [
                         tuple(c_s),
@@ -608,7 +609,7 @@ class LatticeMaze(SerializableDataclass):
     def _as_adj_list_tokens(self) -> list[str | CoordTup]:
         return [
             SPECIAL_TOKENS.ADJLIST_START,
-            *chain.from_iterable(
+            *chain.from_iterable(  # type: ignore[list-item]
                 [
                     [
                         tuple(c_s),
@@ -659,9 +660,9 @@ class LatticeMaze(SerializableDataclass):
     ) -> list[str]:
         """serialize maze and solution to tokens"""
         if isinstance_by_type_name(maze_tokenizer, "MazeTokenizerModular"):
-            return maze_tokenizer.to_tokens(self)
+            return maze_tokenizer.to_tokens(self)  # type: ignore[union-attr]
         else:
-            return self._as_tokens(maze_tokenizer)
+            return self._as_tokens(maze_tokenizer)  # type: ignore[union-attr,arg-type]
 
     @classmethod
     def _from_tokens_AOTP(
@@ -692,9 +693,11 @@ class LatticeMaze(SerializableDataclass):
             # skip last endline
             if len(e) != 0:
                 # convert to coords, split start and end
-                e_coords: list[str | CoordTup] = maze_tokenizer.strings_to_coords(
+                e_coords: list[CoordTup] = maze_tokenizer.strings_to_coords(
                     e,
-                    when_noncoord="include",
+                    # TODO: i changed this to a skip since we then pipe the coords into a numpy array
+                    # but I'm not entirely sure
+                    when_noncoord="skip",
                 )
                 assert len(e_coords) == 3, f"invalid edge: {e = } {e_coords = }"
                 assert e_coords[1] == SPECIAL_TOKENS.CONNECTOR, (
@@ -757,7 +760,8 @@ class LatticeMaze(SerializableDataclass):
                 when_noncoord="error",
             )
             output_maze = SolvedMaze.from_targeted_lattice_maze(
-                targeted_lattice_maze=output_maze,
+                # HACK: I think this is fine, but im not sure
+                targeted_lattice_maze=output_maze,  # type: ignore[arg-type]
                 solution=solution,
             )
 
@@ -905,7 +909,10 @@ class LatticeMaze(SerializableDataclass):
         marked_positions: dict[str, RGB],
     ) -> tuple[ConnectionList, tuple[int, int], dict[str, CoordArray]]:
         # Convert RGB pixel grid to Bool pixel grid
-        pixel_grid_bw: BinaryPixelGrid = ~np.all(
+        # error: Incompatible types in assignment (expression has type
+        # "numpy.bool[builtins.bool] | ndarray[tuple[int, ...], dtype[numpy.bool[builtins.bool]]]",
+        # variable has type "ndarray[Any, Any]")  [assignment]
+        pixel_grid_bw: BinaryPixelGrid = ~np.all(  # type: ignore[assignment]
             pixel_grid == PixelColors.WALL, axis=-1
         )
         connection_list: ConnectionList
