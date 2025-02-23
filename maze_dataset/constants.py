@@ -2,7 +2,7 @@
 
 from typing import Iterator
 import warnings
-from dataclasses import dataclass, field, make_dataclass, Field
+from dataclasses import dataclass, field, make_dataclass
 
 import numpy as np
 from jaxtyping import Bool, Int8
