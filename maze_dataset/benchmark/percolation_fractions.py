@@ -377,7 +377,7 @@ def plot_grouped(
     """
 
     # groups
-    endpoint_kwargs_set: set[tuple[dict]] = results.configs_value_set("endpoint_kwargs")
+    endpoint_kwargs_set: set[tuple[dict]] = results.configs_value_set("endpoint_kwargs") # type: ignore[assignment]
     generator_funcs_names: list[str] = list(
         {cfg.maze_ctor.__name__ for cfg in results.configs}
     )
@@ -395,8 +395,8 @@ def plot_grouped(
                 "maze_ctor", lambda x: x.__name__ == gen_func
             )
             ax = results_filtered.plot(
-                cfg_keys=cfg_keys,
-                ax_=ax,
+                cfg_keys=list(cfg_keys),
+                ax=ax,
                 show=False,
                 cmap_name="Reds" if gf_idx == 0 else "Blues",
             )

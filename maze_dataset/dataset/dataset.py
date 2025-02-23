@@ -373,7 +373,7 @@ class GPTDataset(Dataset):
     def filter_by(self) -> "FilterBy":
         return self.FilterBy(self)
 
-    def _apply_filters_from_config(self):
+    def _apply_filters_from_config(self) -> "GPTDataset":
         """apply filters to the dataset, as specified in the config. used in `from_config()`"""
         output: GPTDataset = self
         # copy the list, and then clear it in the config. we do this because each time we apply a filter it will update config.applied_filters

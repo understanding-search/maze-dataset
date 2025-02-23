@@ -354,9 +354,9 @@ class MazeDataset(GPTDataset):
 
         if pool_kwargs is None:
             pool_kwargs = dict()
-        maze_indexes: Int[np.int8, " maze_index"] = np.arange(cfg_cpy.n_mazes)
+        maze_indexes: Int[np.ndarray, " maze_index"] = np.arange(cfg_cpy.n_mazes) # type: ignore[assignment]
 
-        solved_mazes: list[SolvedMaze]
+        solved_mazes: list[SolvedMaze|None]
         # Configure tqdm for progress bar
         tqdm_kwargs: dict = dict(
             total=cfg_cpy.n_mazes,
@@ -383,22 +383,22 @@ class MazeDataset(GPTDataset):
                 tqdm.tqdm(
                     map(
                         _generate_maze_helper,
-                        maze_indexes,
+                        maze_indexes.tolist(),
                     ),
                     **tqdm_kwargs,
                 )
             )
 
         # Filter out None values explicitly after ensuring all results are collected
-        solved_mazes = [maze for maze in solved_mazes if maze is not None]
-        # solved_mazes = list(filter(lambda x: x is not None, solved_mazes))
+        solved_mazes_: list[SolvedMaze] = [maze for maze in solved_mazes if maze is not None]
+        # solved_mazes_ = list(filter(lambda x: x is not None, solved_mazes))
 
         # Update the config with the actual number of mazes
-        cfg_cpy.n_mazes = len(solved_mazes)
+        cfg_cpy.n_mazes = len(solved_mazes_)
 
         dataset: MazeDataset = cls(
             cfg=cfg_cpy,
-            mazes=solved_mazes,
+            mazes=solved_mazes_,
         )
 
         dataset.update_self_config()  # Call `update_self_config()` to ensure the dataset's config reflects changes
@@ -553,10 +553,10 @@ class MazeDataset(GPTDataset):
             "generation_metadata_collected": json_serialize(
                 filtered_meta.generation_metadata_collected
             ),
-            "maze_connection_lists": maze_connection_lists,  # type: ignore[arg-type]
+            "maze_connection_lists": maze_connection_lists,  # type: ignore[dict-item]
             # "maze_endpoints": maze_endpoints,
-            "maze_solution_lengths": maze_solution_lengths,  # type: ignore[arg-type]
-            "maze_solutions": maze_solutions,  # type: ignore[arg-type]
+            "maze_solution_lengths": maze_solution_lengths,  # type: ignore[dict-item]
+            "maze_solutions": maze_solutions,  # type: ignore[dict-item]
         }
 
     def _serialize_minimal_soln_cat(self) -> JSONdict:
@@ -599,10 +599,10 @@ class MazeDataset(GPTDataset):
             "generation_metadata_collected": json_serialize(
                 filtered_meta.generation_metadata_collected
             ),
-            "maze_connection_lists": maze_connection_lists,  # type: ignore[arg-type]
-            "maze_endpoints": maze_endpoints,  # type: ignore[arg-type]
-            "maze_solution_lengths": maze_solution_lengths,  # type: ignore[arg-type]
-            "maze_solutions_concat": maze_solutions_concat,  # type: ignore[arg-type]
+            "maze_connection_lists": maze_connection_lists,  # type: ignore[dict-item]
+            "maze_endpoints": maze_endpoints,  # type: ignore[dict-item]
+            "maze_solution_lengths": maze_solution_lengths,  # type: ignore[dict-item]
+            "maze_solutions_concat": maze_solutions_concat,  # type: ignore[dict-item]
         }
 
     def update_self_config(self):
