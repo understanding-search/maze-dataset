@@ -307,7 +307,7 @@ class MazeDataset(GPTDataset):
         maze_tokenizer,
         limit: int | None = None,
         join_tokens_individual_maze: Literal[False] = False,
-    ) -> list[list[str]]: ... 
+    ) -> list[list[str]]: ...
     @overload
     def as_tokens(
         self,

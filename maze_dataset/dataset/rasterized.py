@@ -24,7 +24,6 @@ import numpy as np
 import torch
 from jaxtyping import Float, Int
 from muutils.json_serialize import serializable_dataclass, serializable_field
-from torch.utils.data import Dataset
 from zanj import ZANJ
 
 from maze_dataset import MazeDataset, MazeDatasetConfig

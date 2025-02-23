@@ -42,7 +42,15 @@ def test_maze_plot():
     MazePlot(solved_maze).plot()
     plt.savefig(FIG_SAVE + "mazeplot-solvedmaze.png")
 
-    pred_path1: list[tuple[int, int]] = [(0, 0), (1, 0), (2, 0), (3, 0), (3, 1), (3, 2), (3, 3)]
+    pred_path1: list[tuple[int, int]] = [
+        (0, 0),
+        (1, 0),
+        (2, 0),
+        (3, 0),
+        (3, 1),
+        (3, 2),
+        (3, 3),
+    ]
     pred_path2: list[tuple[int, int]] = [
         (0, 0),
         (0, 1),

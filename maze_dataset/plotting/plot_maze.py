@@ -212,7 +212,9 @@ class MazePlot:
         self.predicted_paths.append(styled_path)
         return self
 
-    def add_multiple_paths(self, path_list: Sequence[CoordList | CoordArray | StyledPath]):
+    def add_multiple_paths(
+        self, path_list: Sequence[CoordList | CoordArray | StyledPath]
+    ):
         """
         Function for adding multiple paths to MazePlot at once. This can be done in two ways:
         1. Passing a list of

@@ -51,7 +51,7 @@ class LatticeMazeGenerators:
 
     @staticmethod
     def gen_dfs(
-        grid_shape: Coord|CoordTup,
+        grid_shape: Coord | CoordTup,
         lattice_dim: int = 2,
         accessible_cells: int | float | None = None,
         max_tree_depth: int | float | None = None,
@@ -198,7 +198,7 @@ class LatticeMazeGenerators:
 
     @staticmethod
     def gen_prim(
-        grid_shape: Coord|CoordTup,
+        grid_shape: Coord | CoordTup,
         lattice_dim: int = 2,
         accessible_cells: int | float | None = None,
         max_tree_depth: int | float | None = None,
@@ -220,7 +220,7 @@ class LatticeMazeGenerators:
 
     @staticmethod
     def gen_wilson(
-        grid_shape: Coord|CoordTup,
+        grid_shape: Coord | CoordTup,
     ) -> LatticeMaze:
         """Generate a lattice maze using Wilson's algorithm.
 
@@ -305,7 +305,7 @@ class LatticeMazeGenerators:
 
     @staticmethod
     def gen_percolation(
-        grid_shape: Coord|CoordTup,
+        grid_shape: Coord | CoordTup,
         p: float = 0.4,
         lattice_dim: int = 2,
         start_coord: Coord | None = None,
@@ -399,7 +399,7 @@ GENERATORS_MAP: dict[str, Callable[[Coord, Any], "LatticeMaze"]] = {
 
 def get_maze_with_solution(
     gen_name: str,
-    grid_shape: Coord|CoordTup,
+    grid_shape: Coord | CoordTup,
     maze_ctor_kwargs: dict | None = None,
 ) -> SolvedMaze:
     "helper function to get a maze already with a solution"

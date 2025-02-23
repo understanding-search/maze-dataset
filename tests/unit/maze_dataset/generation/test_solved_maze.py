@@ -19,7 +19,7 @@ def test_from_tokens(tokenizer: MazeTokenizer | MazeTokenizerModular):
 
     tokenized_maze: list[str] = solved_maze.as_tokens(tokenizer)
 
-    solved_maze_rt: SolvedMaze = SolvedMaze.from_tokens(tokenized_maze, tokenizer) # type: ignore[assignment]
+    solved_maze_rt: SolvedMaze = SolvedMaze.from_tokens(tokenized_maze, tokenizer)  # type: ignore[assignment]
     assert solved_maze == solved_maze_rt, (
         f"solved_maze: {solved_maze}, solved_maze_rt: {solved_maze_rt}"
     )
