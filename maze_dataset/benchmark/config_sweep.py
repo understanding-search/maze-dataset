@@ -401,6 +401,7 @@ def plot_grouped(
     prediction_density: int = 50,
     save_dir: Path | None = None,
     show: bool = True,
+    logy: bool = False,
 ) -> None:
     """Plot grouped sweep percolation value results for each distinct `endpoint_kwargs` in the configs,
     with separate colormaps for each maze generator function.
@@ -456,6 +457,8 @@ def plot_grouped(
                 show=False,
                 cmap_name=cmap_name,
             )
+            if logy:
+                ax.set_yscale("log")
 
             # Plot predictions if function provided
             if predict_fn is not None:

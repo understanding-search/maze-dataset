@@ -51,6 +51,17 @@ _PercolationSuccessArray = Float[
 ]
 
 
+class NoPercolationInConfigError(ValueError):
+    pass
+
+
+class SuccessChanceTooSmallError(ValueError):
+    pass
+
+def sigmoid(x: float) -> float:
+    return 1/(1 + np.exp(-x))
+
+
 def set_serialize_minimal_threshold(threshold: int | None) -> None:
     global SERIALIZE_MINIMAL_THRESHOLD
     SERIALIZE_MINIMAL_THRESHOLD = threshold
@@ -168,6 +179,7 @@ class MazeDatasetConfig(GPTDatasetConfig):
             )
         )
 
+    # TODO: include fname in serialized form, but exclude it when hashing so we dont infinitely loop?
     def to_fname(self) -> str:
         n_mazes_str: str = shorten_numerical_to_str(self.n_mazes)
         maze_ctor_name: str = self.maze_ctor.__name__.removeprefix("gen_")
@@ -213,7 +225,7 @@ class MazeDatasetConfig(GPTDatasetConfig):
                 f"except_on_no_valid_endpoint must be False, or else if any maze fails to generate, the whole dataset will fail: {self.endpoint_kwargs = }"
             )
         except AssertionError as e:
-            raise ValueError(
+            raise NoPercolationInConfigError(
                 f"invalid config for percolation success prediction: {self.summary()}"
             ) from e
 
@@ -262,6 +274,91 @@ class MazeDatasetConfig(GPTDatasetConfig):
             ),
             **kwargs,
         )
+    
+    @classmethod
+    def _success_frac(cls, x: _PercolationSuccessArray) -> float:
+        """
+        (((4.445029^{(x_4 - (x_0 \cdot (((x_4 + (x_0^{(x_1^{(0.5798768^{x_3})})}))\cdot e^{x_2}) - 2.3397248)))})^3)^2
+        """
+        # return (np.exp((((x[0]**0.598702) - ((x[0] + ((x[2] * sigmoid(x[3])) * (x[0] + (0.89769214**x[1]))))**(x[0]**3 + x[4])))**3)))**3
+        return 0.14936**((((x[0] - ((((x[0] * 0.94458)**x[4])**2) - (x[2] * (x[0]**(2.4176 - x[3])))))**2) + 0.066666)**(np.log(x[1] + 0.53705) + (-0.079823**x[2])))
+
+    def success_fraction_estimate(
+        self, except_if_all_success_expected: bool = False
+    ) -> float:
+        """Estimate the success fraction of this config.
+
+        only valid when the generator is a percolation generator,
+        and endpoints are enforced to be dead ends
+
+        this estimate comes from `estimate_dataset_fractions.ipynb` and `maze_dataset.benchmarks.sweep_fit`
+
+        # Parameters:
+         - `safety_margin : float`
+           safety margin to apply to the success fraction estimate
+           (defaults to `1.2`, or 20% more mazes than estimated)
+         - `except_if_all_success_expected : bool`
+           if `True`, don't raise an error if the success fraction is below the threshold.
+           will always return `1.0` if the config is not expected to fail
+
+        # Returns:
+            - `float`
+            estimated success fraction. if
+        """
+        try:
+            arr: _PercolationSuccessArray = self._to_ps_array()
+            return self._success_frac(arr)
+            
+        except NoPercolationInConfigError:
+            return 1.0
+
+    def success_fraction_compensate(
+        self,
+        safety_margin: float = 1.2,
+        except_if_all_success_expected: bool = False,
+        epsilon: float = 1e-2,
+    ) -> "MazeDatasetConfig":
+        """return a new `MazeDatasetConfig` like this one with `n_mazes` adjusted to compensate for the success fraction
+
+        # Parameters:
+         - `safety_margin : float`
+           safety margin to apply to the success fraction estimate
+           (defaults to `1.2`, or 20% more mazes than estimated)
+         - `except_if_all_success_expected : bool`
+           if `True`, don't raise an error if the success fraction is below the threshold.
+           this is passed to `MazeDatasetConfig.success_fraction_estimate`.
+           if your config isn't expected to fail, passing this might mean you generate more mazes than needed
+           since `safety_margin` is still applied.
+           (defaults to `False`)
+         - `epsilon : float`
+           raise `SuccessChanceTooSmallError` if the success fraction is below this threshold
+           (defaults to `1e-2`)
+
+        # Returns:
+         - `MazeDatasetConfig`
+           new config with adjusted `n_mazes`
+
+        # Raises:
+         - `SuccessChanceTooSmallError` : if the computed success fraction is below `epsilon`
+        """
+
+        # compute and check the success fraction
+        success_fraction: float = self.success_fraction_estimate(
+            except_if_all_success_expected=except_if_all_success_expected
+        )
+        if success_fraction < epsilon:
+            raise SuccessChanceTooSmallError(
+                f"{success_fraction = } is below the threshold of {epsilon = }"
+            )
+
+        # compute the new number of mazes
+        n_mazes: int = self.n_mazes
+        new_n_mazes: int = int((n_mazes * safety_margin) / success_fraction) + 1
+
+        # put it in a new config and return
+        cfg_dict: dict = self.serialize()
+        cfg_dict["n_mazes"] = new_n_mazes
+        return MazeDatasetConfig.load(cfg_dict)
 
 
 def _generate_maze_helper(index: int) -> Optional[SolvedMaze]:
