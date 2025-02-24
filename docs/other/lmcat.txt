@@ -1,8 +1,8 @@
 # Stats
-- 44 files
-- 12331 (12K) lines
-- 436693 (437K) chars
-- 41448 (41K) `whitespace-split` tokens
+- 45 files
+- 12697 (13K) lines
+- 451160 (451K) chars
+- 42828 (43K) `whitespace-split` tokens
 
 # File Tree
 
@@ -11,57 +11,58 @@ maze-dataset
 ├── .github                               
 │   └── workflows                         
 │    ├── all-tok-checks.yml               [   51L   1,581C   140T]
-│    ├── checks.yml                       [   96L   2,179C   221T]
+│    ├── checks.yml                       [   97L   2,230C   228T]
 │    └── make-docs.yml                    [   47L   1,262C   141T]
 ├── maze_dataset                          
 │   ├── benchmark                         
-│   │   ├── percolation_fractions.py      [  411L  13,126C 1,097T]
+│   │   ├── __init__.py                   [    4L      47C     6T]
+│   │   ├── config_sweep.py               [  470L  15,500C 1,303T]
 │   │   └── speed.py                      [  128L   3,295C   289T]
 │   ├── dataset                           
 │   │   ├── __init__.py                   [   21L     541C    39T]
 │   │   ├── collected_dataset.py          [  207L   7,434C   644T]
 │   │   ├── configs.py                    [   59L   1,589C   111T]
-│   │   ├── dataset.py                    [  505L  19,181C 1,874T]
-│   │   ├── maze_dataset.py               [  941L  35,687C 2,959T]
-│   │   └── rasterized.py                 [  307L   9,817C   857T]
+│   │   ├── dataset.py                    [  507L  19,208C 1,876T]
+│   │   ├── maze_dataset.py               [1,026L  38,786C 3,186T]
+│   │   └── rasterized.py                 [  308L  10,081C   891T]
 │   ├── generation                        
 │   │   ├── __init__.py                   [   23L     562C    53T]
 │   │   ├── default_generators.py         [   21L     811C    68T]
-│   │   └── generators.py                 [  408L  16,701C 1,684T]
+│   │   └── generators.py                 [  435L  18,245C 1,890T]
 │   ├── maze                              
 │   │   ├── __init__.py                   [   26L     511C    47T]
-│   │   └── lattice_maze.py               [1,453L  55,280C 5,326T]
+│   │   └── lattice_maze.py               [1,456L  55,420C 5,353T]
 │   ├── plotting                          
 │   │   ├── __init__.py                   [   32L   1,040C   109T]
-│   │   ├── plot_dataset.py               [   60L   1,679C   172T]
-│   │   ├── plot_maze.py                  [  550L  19,051C 1,768T]
-│   │   ├── plot_tokens.py                [   87L   2,452C   267T]
-│   │   └── print_tokens.py               [  226L   6,479C   700T]
+│   │   ├── plot_dataset.py               [   60L   1,691C   175T]
+│   │   ├── plot_maze.py                  [  553L  19,097C 1,774T]
+│   │   ├── plot_tokens.py                [   87L   2,459C   269T]
+│   │   └── print_tokens.py               [  231L   6,617C   716T]
 │   ├── tokenization                      
 │   │   ├── __init__.py                   [   51L   1,171C    94T]
-│   │   ├── all_tokenizers.py             [  181L   7,117C   684T]
+│   │   ├── all_tokenizers.py             [  189L   7,913C   788T]
 │   │   ├── maze_tokenizer.py             [2,309L  89,770C 7,773T]
 │   │   └── save_hashes.py                [  109L   3,540C   264T]
-│   ├── __init__.py                       [   68L   1,421C    99T]
-│   ├── constants.py                      [  224L   7,466C   727T]
+│   ├── __init__.py                       [   69L   1,438C   100T]
+│   ├── constants.py                      [  225L   7,681C   757T]
 │   ├── py.typed                          [    0L       0C     0T]
-│   ├── testing_utils.py                  [  176L   9,434C 1,355T]
+│   ├── testing_utils.py                  [  176L   9,450C 1,359T]
 │   ├── token_utils.py                    [  483L  17,494C 1,770T]
-│   └── utils.py                          [  399L  15,774C 1,867T]
+│   └── utils.py                          [  417L  16,326C 1,923T]
 ├── notebooks                             
 │   ├── demo_dataset.ipynb                [1,027L 434,412C 3,050T]
 │   ├── demo_generator.ipynb              [  197L  56,549C   376T]
 │   ├── demo_latticemaze.ipynb            [  820L 305,633C 2,505T]
 │   ├── demo_mazetokenizermodular.ipynb   [1,753L  89,537C 6,956T]
 │   ├── demo_tokenization.ipynb           [  429L 133,465C 9,298T]
-│   ├── estimate_dataset_fractions.ipynb  [  229L 950,564C   533T]
+│   ├── estimate_dataset_fractions.ipynb  [  492L 925,729C 1,821T]
 │   ├── forking_points.ipynb              [  211L  28,305C   614T]
 │   ├── iterated_backfilling.ipynb        [  208L  30,755C   613T]
 │   └── profile_dataset_save_read.ipynb   [  540L  17,521C 1,420T]
 ├── .lastversion                          [    1L       7C     1T]
 ├── README.md                             [  121L   6,181C   573T]
-├── makefile                              [1,510L  45,866C 5,450T]
-├── pyproject.toml                        [  255L   8,179C   929T]
+├── makefile                              [1,568L  47,606C 5,643T]
+├── pyproject.toml                        [  288L   9,769C 1,035T]
 ```
 
 # File Contents
@@ -215,8 +216,9 @@ jobs:
       - name: Test Tokenizer Hashes
         run: make test_tok_hashes
         
-      - name: check typing
+      - name: check typing (3.11+)
         run: make typing
+        if: ${{ matrix.python != '3.10' }}
 ``````{ end_of_file=".github/workflows/checks.yml" }
 
 ``````{ path=".github/workflows/make-docs.yml"  }
@@ -269,7 +271,15 @@ jobs:
         run: make docs
 ``````{ end_of_file=".github/workflows/make-docs.yml" }
 
-``````{ path="maze_dataset/benchmark/percolation_fractions.py"  }
+``````{ path="maze_dataset/benchmark/__init__.py"  }
+__all__ = [
+    "config_sweep",
+    "speed",
+]
+
+``````{ end_of_file="maze_dataset/benchmark/__init__.py" }
+
+``````{ path="maze_dataset/benchmark/config_sweep.py"  }
 """Benchmarking of how successful maze generation is for various values of percolation"""
 
 import functools
@@ -507,7 +517,15 @@ class SweepResult(SerializableDataclass):
         cmap = plt.get_cmap(cmap_name)
         n_cfgs: int = len(self.result_values)
         for i, (ep_cfg_name, result_values) in enumerate(
-            sorted(self.result_values.items(), key=lambda x: x[0])
+            sorted(
+                self.result_values.items(),
+                # HACK: sort by grid size
+                #                 |--< name of config
+                #                 |    |-----------< gets 'g{n}'
+                #                 |    |            |--< gets '{n}'
+                #                 |    |            |
+                key=lambda x: int(x[0].split("-")[0][1:]),
+            )
         ):
             ax_.plot(
                 self.param_values,
@@ -544,7 +562,7 @@ class SweepResult(SerializableDataclass):
                 f"{self.param_key} vs {self.analyze_func.__name__}\n{cfg_repr}"
             )
             ax_.grid(True)
-            ax_.legend(loc="lower center")
+            ax_.legend(loc="center left")
 
         # save and show
         if save_path:
@@ -563,10 +581,6 @@ DEFAULT_ENDPOINT_KWARGS: list[tuple[str, dict]] = [
     ),
     (
         "deadends",
-        dict(deadend_start=True, deadend_end=True, except_on_no_valid_endpoint=False),
-    ),
-    (
-        "deadends_unique",
         dict(
             deadend_start=True,
             deadend_end=True,
@@ -574,7 +588,26 @@ DEFAULT_ENDPOINT_KWARGS: list[tuple[str, dict]] = [
             except_on_no_valid_endpoint=False,
         ),
     ),
+    (
+        "deadends_unique",
+        dict(
+            deadend_start=True,
+            deadend_end=True,
+            endpoints_not_equal=True,
+            except_on_no_valid_endpoint=False,
+        ),
+    ),
 ]
+
+
+def endpoint_kwargs_to_name(ep_kwargs: dict) -> str:
+    if ep_kwargs.get("deadend_start", False) or ep_kwargs.get("deadend_end", False):
+        if ep_kwargs.get("endpoints_not_equal", False):
+            return "deadends_unique"
+        else:
+            return "deadends"
+    else:
+        return "any"
 
 
 def full_percolation_analysis(
@@ -604,7 +637,7 @@ def full_percolation_analysis(
                         grid_n=grid_n,
                         n_mazes=n_mazes,
                         maze_ctor=gen_func,
-                        maze_ctor_kwargs=dict(),
+                        maze_ctor_kwargs=dict(p=float("nan")),
                         endpoint_kwargs=ep_kw,
                     )
                     for grid_n in grid_sizes
@@ -621,21 +654,32 @@ def full_percolation_analysis(
     )
 
     # save the result
-    result.save(save_dir / f"result-n{n_mazes}-c{len(configs)}-p{p_val_count}.zanj")
+    results_path: Path = (
+        save_dir / f"result-n{n_mazes}-c{len(configs)}-p{p_val_count}.zanj"
+    )
+    print(f"Saving results to {results_path.as_posix()}")
+    result.save(results_path)
 
     return result
 
 
 def plot_grouped(
     results: SweepResult,
+    predict_fn: Callable[[MazeDatasetConfig], float] | None = None,
+    prediction_density: int = 50,
     save_dir: Path | None = None,
     show: bool = True,
 ) -> None:
-    """Plot grouped sweep results -- plot for each distinct `endpoint_kwargs` in the configs, with separate colormaps for each maze generator function
+    """Plot grouped sweep percolation value results for each distinct `endpoint_kwargs` in the configs,
+    with separate colormaps for each maze generator function.
 
     # Parameters:
      - `results : SweepResult`
         The sweep results to plot
+     - `predict_fn : Callable[[MazeDatasetConfig], float] | None`
+        Optional function that predicts success rate from a config. If provided, will plot predictions as dashed lines.
+     - `prediction_density : int`
+        Number of points to use for prediction curves (default: 50)
      - `save_dir : Path | None`
         Directory to save plots (defaults to `None`, meaning no saving)
      - `show : bool`
@@ -654,6 +698,10 @@ def plot_grouped(
         {cfg.maze_ctor.__name__ for cfg in results.configs}
     )
 
+    # if predicting, create denser p values
+    if predict_fn is not None:
+        p_dense = np.linspace(0.0, 1.0, prediction_density)
+
     # separate plot for each set of endpoint kwargs
     for ep_kw in endpoint_kwargs_set:
         results_epkw: SweepResult = results.get_where(
@@ -666,23 +714,44 @@ def plot_grouped(
             results_filtered: SweepResult = results_epkw.get_where(
                 "maze_ctor", lambda x: x.__name__ == gen_func
             )
+            cmap_name = "Reds" if gf_idx == 0 else "Blues"
+            cmap = plt.get_cmap(cmap_name)
+
+            # Plot actual results
             ax = results_filtered.plot(
                 cfg_keys=list(cfg_keys),
                 ax=ax,
                 show=False,
-                cmap_name="Reds" if gf_idx == 0 else "Blues",
+                cmap_name=cmap_name,
             )
+
+            # Plot predictions if function provided
+            if predict_fn is not None:
+                for cfg_idx, cfg in enumerate(results_filtered.configs):
+                    predictions = []
+                    for p in p_dense:
+                        cfg_temp = MazeDatasetConfig.load(cfg.serialize())
+                        cfg_temp.maze_ctor_kwargs["p"] = p
+                        predictions.append(predict_fn(cfg_temp))
+
+                    # Get the same color as the actual data
+                    n_cfgs: int = len(results_filtered.configs)
+                    color = cmap((cfg_idx + 0.5) / (n_cfgs - 0.5))
+
+                    # Plot prediction as dashed line
+                    ax.plot(p_dense, predictions, "--", color=color, alpha=0.8)
 
         # save and show
         if save_dir:
-            save_path: Path = save_dir / f"ep_{ep_kw}.svg"
+            save_path: Path = save_dir / f"ep_{endpoint_kwargs_to_name(ep_kw)}.svg"
+            print(f"Saving plot to {save_path.as_posix()}")
             save_path.parent.mkdir(exist_ok=True, parents=True)
             plt.savefig(save_path)
 
         if show:
             plt.show()
 
-``````{ end_of_file="maze_dataset/benchmark/percolation_fractions.py" }
+``````{ end_of_file="maze_dataset/benchmark/config_sweep.py" }
 
 ``````{ path="maze_dataset/benchmark/speed.py"  }
 import random
@@ -1328,6 +1397,8 @@ class GPTDataset(Dataset):
 
     _FILTER_NAMESPACE: type = "this isn't a filter namespace! you have to initialize this by registering with `register_filter_namespace_for_dataset`"  # type: ignore
 
+    cfg: GPTDatasetConfig
+
     @classmethod
     def from_config(
         cls,
@@ -1639,11 +1710,11 @@ from pathlib import Path
 import typing
 import warnings
 from collections import Counter, defaultdict
-from typing import Callable, Optional, cast
+from typing import Callable, Literal, Optional, cast, overload
 
 import numpy as np
 import tqdm
-from jaxtyping import Int
+from jaxtyping import Int, Float
 from muutils.json_serialize import (
     json_serialize,
     serializable_dataclass,
@@ -1664,13 +1735,18 @@ from maze_dataset.dataset.dataset import (
     register_dataset_filter,
     register_filter_namespace_for_dataset,
 )
-from maze_dataset.generation.generators import GENERATORS_MAP
+from maze_dataset.generation.generators import _GENERATORS_PERCOLATED, GENERATORS_MAP
 from maze_dataset.maze import LatticeMaze, SolvedMaze
 
 # If `n_mazes>=SERIALIZE_MINIMAL_THRESHOLD`, then the MazeDataset will use `serialize_minimal`.
 # Setting to None means that `serialize_minimal` will never be used.
 # Set to -1 to make calls to `read` use `MazeDataset._load_legacy`. Used for profiling only.
 SERIALIZE_MINIMAL_THRESHOLD: int | None = 100
+
+
+_PercolationSuccessArray = Float[
+    np.ndarray, "p/grid_n/deadends/endpoints_not_equal/generator_func=5"
+]
 
 
 def set_serialize_minimal_threshold(threshold: int | None) -> None:
@@ -1807,6 +1883,72 @@ class MazeDatasetConfig(GPTDatasetConfig):
             endpoint_kwargs=self_ser["endpoint_kwargs"],
         )
 
+    def _to_ps_array(self) -> _PercolationSuccessArray:
+        """Convert this config to a [p, grid_n, deadends, endpoints_not_equal, generator_func] vector.
+
+        used in predicting the success rate
+        """
+        try:
+            assert self.maze_ctor.__name__ in _GENERATORS_PERCOLATED, (
+                f"generator not supported, must be a percolation generator\n{self.maze_ctor.__name__ = }, {_GENERATORS_PERCOLATED = }"
+            )
+            assert "p" in self.maze_ctor_kwargs, (
+                f"maze_ctor_kwargs must have a 'p' (percolation value) key: {self.maze_ctor_kwargs = }"
+            )
+            assert not self.endpoint_kwargs.get("except_on_no_valid_endpoint", True), (
+                f"except_on_no_valid_endpoint must be False, or else if any maze fails to generate, the whole dataset will fail: {self.endpoint_kwargs = }"
+            )
+        except AssertionError as e:
+            raise ValueError(
+                f"invalid config for percolation success prediction: {self.summary()}"
+            ) from e
+
+        return np.array(
+            [
+                float(self.maze_ctor_kwargs["p"]),
+                float(self.grid_n),
+                float(
+                    int(
+                        self.endpoint_kwargs.get("deadend_start", False)
+                        or self.endpoint_kwargs.get("deadend_end", False)
+                    )
+                ),
+                float(int(self.endpoint_kwargs.get("endpoints_not_equal", True))),
+                float(_GENERATORS_PERCOLATED.index(self.maze_ctor.__name__)),
+            ],
+            dtype=np.float64,
+        )
+
+    @classmethod
+    def _from_ps_array(
+        cls,
+        arr: _PercolationSuccessArray,
+        name: str = "predict",
+        n_mazes: int = 100,
+        **kwargs,
+    ) -> "MazeDatasetConfig":
+        """Reconstruct a config from an array [p, grid_n, deadends, endpoints_not_equal, generator_func] and other config parameters.
+
+        # Returns:
+         - `MazeDatasetConfig`
+            Config corresponding to `arr`
+        """
+
+        return cls(
+            name=name,
+            grid_n=int(arr[1]),
+            n_mazes=n_mazes,
+            maze_ctor=_GENERATORS_PERCOLATED[int(arr[4])],
+            maze_ctor_kwargs={"p": float(arr[0])},
+            endpoint_kwargs=dict(
+                deadend_start=bool(arr[2]),
+                deadend_end=bool(arr[2]),
+                endpoints_not_equal=bool(arr[3]),
+                except_on_no_valid_endpoint=False,
+            ),
+            **kwargs,
+        )
+
 
 def _generate_maze_helper(index: int) -> Optional[SolvedMaze]:
     """Helper function for generating mazes in parallel.
@@ -1928,6 +2070,20 @@ class MazeDataset(GPTDataset):
     def __deepcopy__(self, memo) -> "MazeDataset":
         return MazeDataset.load(self._serialize_full())
 
+    @overload
+    def as_tokens(
+        self,
+        maze_tokenizer,
+        limit: int | None = None,
+        join_tokens_individual_maze: Literal[False] = False,
+    ) -> list[list[str]]: ...
+    @overload
+    def as_tokens(
+        self,
+        maze_tokenizer,
+        limit: int | None = None,
+        join_tokens_individual_maze: Literal[True] = True,
+    ) -> list[str]: ...
     def as_tokens(
         self,
         maze_tokenizer,  # TODO: MazeTokenizer
@@ -2596,7 +2752,6 @@ import numpy as np
 import torch
 from jaxtyping import Float, Int
 from muutils.json_serialize import serializable_dataclass, serializable_field
-from torch.utils.data import Dataset
 from zanj import ZANJ
 
 from maze_dataset import MazeDataset, MazeDatasetConfig
@@ -2674,8 +2829,9 @@ def process_maze_rasterized_input_target(
     return torch.tensor(np.array([problem_maze, solution_maze]))
 
 
+# TYPING: error: Attributes without a default cannot follow attributes with one  [misc]
 @serializable_dataclass
-class RasterizedMazeDatasetConfig(MazeDatasetConfig):
+class RasterizedMazeDatasetConfig(MazeDatasetConfig):  # type: ignore[misc]
     """
     - `remove_isolated_cells: bool` whether to set isolated cells to walls
     - `extend_pixels: bool` whether to extend pixels to match easy_2_hard dataset (2x2 cells, extra 1 pixel row of wall around maze)
@@ -2690,7 +2846,8 @@ class RasterizedMazeDatasetConfig(MazeDatasetConfig):
 class RasterizedMazeDataset(MazeDataset):
     cfg: RasterizedMazeDatasetConfig
 
-    def __getitem__(self, idx: int) -> Float[torch.Tensor, "item in/tgt=2 x y rgb=3"]:
+    # this override here is intentional
+    def __getitem__(self, idx: int) -> Float[torch.Tensor, "item in/tgt=2 x y rgb=3"]:  # type: ignore[override]
         # get the solved maze
         solved_maze: SolvedMaze = self.mazes[idx]
 
@@ -2709,14 +2866,15 @@ class RasterizedMazeDataset(MazeDataset):
 
         inputs: list[Float[torch.Tensor, "x y rgb=3"]]
         targets: list[Float[torch.Tensor, "x y rgb=3"]]
-        inputs, targets = zip(*[self[i] for i in idxs])
+        inputs, targets = zip(*[self[i] for i in idxs])  # type: ignore[assignment]
 
         return torch.stack([torch.stack(inputs), torch.stack(targets)])
 
+    # override here is intentional
     @classmethod
     def from_config(
         cls,
-        cfg: RasterizedMazeDatasetConfig,
+        cfg: RasterizedMazeDatasetConfig | MazeDatasetConfig,  # type: ignore[override]
         do_generate: bool = True,
         load_local: bool = True,
         save_local: bool = True,
@@ -2758,7 +2916,7 @@ class RasterizedMazeDataset(MazeDataset):
         cls,
         cfg: RasterizedMazeDatasetConfig,
         **kwargs,
-    ) -> Dataset:
+    ) -> "RasterizedMazeDataset":
         """loads either a maze transformer dataset or an easy_2_hard dataset"""
         _cfg_temp: MazeDatasetConfig = MazeDatasetConfig.load(cfg.serialize())
         return cls.from_base_MazeDataset(
@@ -2775,34 +2933,33 @@ class RasterizedMazeDataset(MazeDataset):
         cls,
         base_dataset: MazeDataset,
         added_params: dict | None = None,
-    ) -> Dataset:
+    ) -> "RasterizedMazeDataset":
         """loads either a maze transformer dataset or an easy_2_hard dataset"""
         if added_params is None:
             added_params = dict(
                 remove_isolated_cells=True,
                 extend_pixels=True,
             )
-        output: MazeDataset = cls(
-            cfg=base_dataset.cfg,
-            mazes=base_dataset.mazes,
-        )
         cfg: RasterizedMazeDatasetConfig = RasterizedMazeDatasetConfig.load(
             {
                 **base_dataset.cfg.serialize(),
                 **added_params,
             }
         )
-        output.cfg = cfg
+        output: RasterizedMazeDataset = cls(
+            cfg=cfg,
+            mazes=base_dataset.mazes,
+        )
         return output
 
-    def plot(self, count: int | None = None, show: bool = True) -> tuple:
+    def plot(self, count: int | None = None, show: bool = True) -> tuple | None:
         import matplotlib.pyplot as plt
 
         print(f"{self[0][0].shape = }, {self[0][1].shape = }")
         count = count or len(self)
         if count == 0:
             print("No mazes to plot for dataset")
-            return
+            return None
         fig, axes = plt.subplots(2, count, figsize=(15, 5))
         if count == 1:
             axes = [axes]
@@ -2943,7 +3100,7 @@ import numpy as np
 from jaxtyping import Bool
 from muutils.mlutils import GLOBAL_SEED
 
-from maze_dataset.constants import CoordArray
+from maze_dataset.constants import CoordArray, CoordTup
 from maze_dataset.maze import ConnectionList, Coord, LatticeMaze, SolvedMaze
 from maze_dataset.maze.lattice_maze import NEIGHBORS_MASK, _fill_edges_with_walls
 
@@ -2951,18 +3108,21 @@ numpy_rng = np.random.default_rng(GLOBAL_SEED)
 random.seed(GLOBAL_SEED)
 
 
-def _random_start_coord(grid_shape: Coord, start_coord: Coord | None) -> Coord:
+def _random_start_coord(
+    grid_shape: Coord, start_coord: Coord | CoordTup | None
+) -> Coord:
     "picking a random start coord within the bounds of `grid_shape` if none is provided"
+    start_coord_: Coord
     if start_coord is None:
-        start_coord: Coord = np.random.randint(
+        start_coord_ = np.random.randint(
             0,  # lower bound
             np.maximum(grid_shape - 1, 1),  # upper bound (at least 1)
             size=len(grid_shape),  # dimensionality
         )
     else:
-        start_coord = np.array(start_coord)
+        start_coord_ = np.array(start_coord)
 
-    return start_coord
+    return start_coord_
 
 
 def get_neighbors_in_bounds(
@@ -2986,7 +3146,7 @@ class LatticeMazeGenerators:
 
     @staticmethod
     def gen_dfs(
-        grid_shape: Coord,
+        grid_shape: Coord | CoordTup,
         lattice_dim: int = 2,
         accessible_cells: int | float | None = None,
         max_tree_depth: int | float | None = None,
@@ -3019,8 +3179,8 @@ class LatticeMazeGenerators:
         """
 
         # Default values if no constraints have been passed
-        grid_shape: Coord = np.array(grid_shape)
-        n_total_cells: int = int(np.prod(grid_shape))
+        grid_shape_: Coord = np.array(grid_shape)
+        n_total_cells: int = int(np.prod(grid_shape_))
 
         n_accessible_cells: int
         if accessible_cells is None:
@@ -3044,14 +3204,14 @@ class LatticeMazeGenerators:
                 f"max_tree_depth must be an int (count) or a float in the range [0, 1] (proportion), got {max_tree_depth}"
             )
 
-            max_tree_depth = int(max_tree_depth * np.sum(grid_shape))
+            max_tree_depth = int(max_tree_depth * np.sum(grid_shape_))
 
         # choose a random start coord
-        start_coord = _random_start_coord(grid_shape, start_coord)
+        start_coord = _random_start_coord(grid_shape_, start_coord)
 
         # initialize the maze with no connections
         connection_list: ConnectionList = np.zeros(
-            (lattice_dim, grid_shape[0], grid_shape[1]), dtype=np.bool_
+            (lattice_dim, grid_shape_[0], grid_shape_[1]), dtype=np.bool_
         )
 
         # initialize the stack with the target coord
@@ -3079,8 +3239,8 @@ class LatticeMazeGenerators:
                 )
                 if (
                     (tuple(neighbor) not in visited_cells)
-                    and (0 <= neighbor[0] < grid_shape[0])
-                    and (0 <= neighbor[1] < grid_shape[1])
+                    and (0 <= neighbor[0] < grid_shape_[0])
+                    and (0 <= neighbor[1] < grid_shape_[1])
                 )
             ]
 
@@ -3096,7 +3256,7 @@ class LatticeMazeGenerators:
                 chosen_neighbor, delta = random.choice(unvisited_neighbors_deltas)
 
                 # add connection
-                dim: int = np.argmax(np.abs(delta))
+                dim: int = int(np.argmax(np.abs(delta)))
                 # if positive, down/right from current coord
                 # if negative, up/left from current coord (down/right from neighbor)
                 clist_node: Coord = (
@@ -3117,7 +3277,7 @@ class LatticeMazeGenerators:
             connection_list=connection_list,
             generation_meta=dict(
                 func_name="gen_dfs",
-                grid_shape=grid_shape,
+                grid_shape=grid_shape_,
                 start_coord=start_coord,
                 n_accessible_cells=int(n_accessible_cells),
                 max_tree_depth=int(max_tree_depth),
@@ -3133,7 +3293,7 @@ class LatticeMazeGenerators:
 
     @staticmethod
     def gen_prim(
-        grid_shape: Coord,
+        grid_shape: Coord | CoordTup,
         lattice_dim: int = 2,
         accessible_cells: int | float | None = None,
         max_tree_depth: int | float | None = None,
@@ -3155,7 +3315,8 @@ class LatticeMazeGenerators:
 
     @staticmethod
     def gen_wilson(
-        grid_shape: Coord,
+        grid_shape: Coord | CoordTup,
+        **kwargs: Any,
     ) -> LatticeMaze:
         """Generate a lattice maze using Wilson's algorithm.
 
@@ -3165,13 +3326,18 @@ class LatticeMazeGenerators:
         acyclic and all cells are part of a unique connected space.
         https://en.wikipedia.org/wiki/Maze_generation_algorithm#Wilson's_algorithm
         """
+        assert not kwargs, (
+            f"gen_wilson does not take any additional arguments, got {kwargs = }"
+        )
+
+        grid_shape_: Coord = np.array(grid_shape)
 
         # Initialize grid and visited cells
-        connection_list: ConnectionList = np.zeros((2, *grid_shape), dtype=np.bool_)
-        visited: Bool[np.ndarray, "x y"] = np.zeros(grid_shape, dtype=np.bool_)
+        connection_list: ConnectionList = np.zeros((2, *grid_shape_), dtype=np.bool_)
+        visited: Bool[np.ndarray, "x y"] = np.zeros(grid_shape_, dtype=np.bool_)
 
         # Choose a random cell and mark it as visited
-        start_coord: Coord = _random_start_coord(grid_shape, None)
+        start_coord: Coord = _random_start_coord(grid_shape_, None)
         visited[start_coord[0], start_coord[1]] = True
         del start_coord
 
@@ -3191,7 +3357,7 @@ class LatticeMazeGenerators:
             # exit the loop once the current path hits a visited cell
             while not visited[current[0], current[1]]:
                 # find a valid neighbor (one always exists on a lattice)
-                neighbors: CoordArray = get_neighbors_in_bounds(current, grid_shape)
+                neighbors: CoordArray = get_neighbors_in_bounds(current, grid_shape_)
                 next_cell: Coord = neighbors[np.random.choice(neighbors.shape[0])]
 
                 # Check for loop
@@ -3218,7 +3384,7 @@ class LatticeMazeGenerators:
 
                 # find the dimension of the connection
                 delta: Coord = c_2 - c_1
-                dim: int = np.argmax(np.abs(delta))
+                dim: int = int(np.argmax(np.abs(delta)))
 
                 # if positive, down/right from current coord
                 # if negative, up/left from current coord (down/right from neighbor)
@@ -3231,14 +3397,14 @@ class LatticeMazeGenerators:
             connection_list=connection_list,
             generation_meta=dict(
                 func_name="gen_wilson",
-                grid_shape=grid_shape,
+                grid_shape=grid_shape_,
                 fully_connected=True,
             ),
         )
 
     @staticmethod
     def gen_percolation(
-        grid_shape: Coord,
+        grid_shape: Coord | CoordTup,
         p: float = 0.4,
         lattice_dim: int = 2,
         start_coord: Coord | None = None,
@@ -3254,11 +3420,11 @@ class LatticeMazeGenerators:
         - `start_coord: Coord | None`: the starting coordinate for the connected component (default: `None` will give a random start)
         """
         assert p >= 0 and p <= 1, f"p must be between 0 and 1, got {p}"
-        grid_shape: Coord = np.array(grid_shape)
+        grid_shape_: Coord = np.array(grid_shape)
 
-        start_coord = _random_start_coord(grid_shape, start_coord)
+        start_coord = _random_start_coord(grid_shape_, start_coord)
 
-        connection_list: ConnectionList = np.random.rand(lattice_dim, *grid_shape) < p
+        connection_list: ConnectionList = np.random.rand(lattice_dim, *grid_shape_) < p
 
         connection_list = _fill_edges_with_walls(connection_list)
 
@@ -3266,13 +3432,14 @@ class LatticeMazeGenerators:
             connection_list=connection_list,
             generation_meta=dict(
                 func_name="gen_percolation",
-                grid_shape=grid_shape,
+                grid_shape=grid_shape_,
                 percolation_p=p,
                 start_coord=start_coord,
             ),
         )
 
-        output.generation_meta["visited_cells"] = output.gen_connected_component_from(
+        # generation_meta is sometimes None, but not here since we just made it a dict above
+        output.generation_meta["visited_cells"] = output.gen_connected_component_from(  # type: ignore[index]
             start_coord
         )
 
@@ -3280,7 +3447,7 @@ class LatticeMazeGenerators:
 
     @staticmethod
     def gen_dfs_percolation(
-        grid_shape: Coord,
+        grid_shape: Coord | CoordTup,
         p: float = 0.4,
         lattice_dim: int = 2,
         accessible_cells: int | None = None,
@@ -3288,12 +3455,12 @@ class LatticeMazeGenerators:
         start_coord: Coord | None = None,
     ) -> LatticeMaze:
         """dfs and then percolation (adds cycles)"""
-        grid_shape: Coord = np.array(grid_shape)
-        start_coord = _random_start_coord(grid_shape, start_coord)
+        grid_shape_: Coord = np.array(grid_shape)
+        start_coord = _random_start_coord(grid_shape_, start_coord)
 
         # generate initial maze via dfs
         maze: LatticeMaze = LatticeMazeGenerators.gen_dfs(
-            grid_shape=grid_shape,
+            grid_shape=grid_shape_,
             lattice_dim=lattice_dim,
             accessible_cells=accessible_cells,
             max_tree_depth=max_tree_depth,
@@ -3310,9 +3477,10 @@ class LatticeMazeGenerators:
             maze.connection_list, connection_list_perc
         )
 
-        maze.generation_meta["func_name"] = "gen_dfs_percolation"
-        maze.generation_meta["percolation_p"] = p
-        maze.generation_meta["visited_cells"] = maze.gen_connected_component_from(
+        # generation_meta is sometimes None, but not here since we just made it a dict above
+        maze.generation_meta["func_name"] = "gen_dfs_percolation"  # type: ignore[index]
+        maze.generation_meta["percolation_p"] = p  # type: ignore[index]
+        maze.generation_meta["visited_cells"] = maze.gen_connected_component_from(  # type: ignore[index]
             start_coord
         )
 
@@ -3320,25 +3488,41 @@ class LatticeMazeGenerators:
 
 
 # cant automatically populate this because it messes with pickling :(
-GENERATORS_MAP: dict[str, Callable[[Coord, Any], "LatticeMaze"]] = {
+GENERATORS_MAP: dict[str, Callable[[Coord | CoordTup, Any], "LatticeMaze"]] = {
     "gen_dfs": LatticeMazeGenerators.gen_dfs,
-    "gen_wilson": LatticeMazeGenerators.gen_wilson,
+    # TYPING: error: Dict entry 1 has incompatible type
+    # "str": "Callable[[ndarray[Any, Any] | tuple[int, int], KwArg(Any)], LatticeMaze]";
+    # expected "str": "Callable[[ndarray[Any, Any] | tuple[int, int], Any], LatticeMaze]"  [dict-item]
+    # gen_wilson takes no kwargs and we check that the kwargs are empty
+    # but mypy doesnt like this, `Any` != `KwArg(Any)`
+    "gen_wilson": LatticeMazeGenerators.gen_wilson,  # type: ignore[dict-item]
     "gen_percolation": LatticeMazeGenerators.gen_percolation,
     "gen_dfs_percolation": LatticeMazeGenerators.gen_dfs_percolation,
     "gen_prim": LatticeMazeGenerators.gen_prim,
 }
 "mapping of generator names to generator functions, useful for loading `MazeDatasetConfig`"
 
+_GENERATORS_PERCOLATED: list[str] = [
+    "gen_percolation",
+    "gen_dfs_percolation",
+]
+"""list of generator names that generate percolated mazes
+we use this to figure out the expected success rate, since depending on the endpoint kwargs this might fail
+this variable is primarily used in `MazeDatasetConfig._to_ps_array` and `MazeDatasetConfig._from_ps_array`
+"""
+
 
 def get_maze_with_solution(
     gen_name: str,
-    grid_shape: Coord,
+    grid_shape: Coord | CoordTup,
     maze_ctor_kwargs: dict | None = None,
 ) -> SolvedMaze:
     "helper function to get a maze already with a solution"
     if maze_ctor_kwargs is None:
         maze_ctor_kwargs = dict()
-    maze: LatticeMaze = GENERATORS_MAP[gen_name](grid_shape, **maze_ctor_kwargs)
+    # TYPING: error: Too few arguments  [call-arg]
+    # not sure why this is happening -- doesnt recognize the kwargs?
+    maze: LatticeMaze = GENERATORS_MAP[gen_name](grid_shape, **maze_ctor_kwargs)  # type: ignore[call-arg]
     solution: CoordArray = np.array(maze.generate_random_path())
     return SolvedMaze.from_lattice_maze(lattice_maze=maze, solution=solution)
 
@@ -4044,7 +4228,7 @@ class LatticeMaze(SerializableDataclass):
     @classmethod
     def _from_tokens_AOTP(
         cls, tokens: list[str], maze_tokenizer: "MazeTokenizer | MazeTokenizerModular"
-    ) -> "LatticeMaze":
+    ) -> "LatticeMaze | TargetedLatticeMaze | SolvedMaze":
         """create a LatticeMaze from a list of tokens"""
 
         # figure out what input format
@@ -4070,18 +4254,20 @@ class LatticeMaze(SerializableDataclass):
             # skip last endline
             if len(e) != 0:
                 # convert to coords, split start and end
-                e_coords: list[CoordTup] = maze_tokenizer.strings_to_coords(
+                e_coords: list[str | CoordTup] = maze_tokenizer.strings_to_coords(
                     e,
                     when_noncoord="include",
                 )
                 # this assertion depends on the tokenizer having exactly one token for the connector
                 # which is also why we "include" above
-                # the connector token is discarded here ------------------------------\
-                assert len(e_coords) == 3, f"invalid edge: {e = } {e_coords = }"  #   |
-                assert e_coords[1] == SPECIAL_TOKENS.CONNECTOR, (  #                  |
-                    f"invalid edge: {e = } {e_coords = }"  #                          |
-                )  #                                                                  |
-                coordinates.append((e_coords[0], e_coords[-1]))  # <------------------/
+                # the connector token is discarded below
+                assert len(e_coords) == 3, f"invalid edge: {e = } {e_coords = }"
+                assert e_coords[1] == SPECIAL_TOKENS.CONNECTOR, (
+                    f"invalid edge: {e = } {e_coords = }"
+                )
+                e_coords_first: CoordTup = e_coords[0]  # type: ignore[assignment]
+                e_coords_last: CoordTup = e_coords[-1]  # type: ignore[assignment]
+                coordinates.append((e_coords_first, e_coords_last))
 
         assert all(len(c) == 2 for c in coordinates), (
             f"invalid coordinates: {coordinates = }"
@@ -4145,12 +4331,13 @@ class LatticeMaze(SerializableDataclass):
 
         return output_maze
 
+    # TODO: any way to get return type hinting working for this?
     @classmethod
     def from_tokens(
         cls,
         tokens: list[str],
         maze_tokenizer: "MazeTokenizer | TokenizationMode | MazeTokenizerModular",
-    ) -> "LatticeMaze":
+    ) -> "LatticeMaze | TargetedLatticeMaze | SolvedMaze":
         """
         Constructs a maze from a tokenization.
         Only legacy tokenizers and their `MazeTokenizerModular` analogs are supported.
@@ -4662,7 +4849,7 @@ class SolvedMaze(TargetedLatticeMaze):  # type: ignore[misc]
     # type ignore here since we're overriding a method with a different signature
     @classmethod
     def from_lattice_maze(  # type: ignore[override]
-        cls, lattice_maze: LatticeMaze, solution: list[CoordTup]
+        cls, lattice_maze: LatticeMaze, solution: list[CoordTup] | CoordArray
     ) -> "SolvedMaze":
         return cls(
             connection_list=lattice_maze.connection_list,
@@ -4883,11 +5070,11 @@ def plot_dataset_mazes(
     count: int | None = None,
     figsize_mult: tuple[float, float] = (1.0, 2.0),
     title: bool | str = True,
-) -> tuple:
+) -> tuple | None:
     count = count or len(ds)
     if count == 0:
         print("No mazes to plot for dataset")
-        return
+        return None
     fig, axes = plt.subplots(
         1, count, figsize=(count * figsize_mult[0], figsize_mult[1])
     )
@@ -4936,6 +5123,7 @@ def print_dataset_mazes(ds: MazeDataset, count: int | None = None):
 
 from __future__ import annotations  # for type hinting self as return value
 
+from typing import Sequence
 import warnings
 from copy import deepcopy
 from dataclasses import dataclass
@@ -5145,7 +5333,9 @@ class MazePlot:
         self.predicted_paths.append(styled_path)
         return self
 
-    def add_multiple_paths(self, path_list: list[CoordList | CoordArray | StyledPath]):
+    def add_multiple_paths(
+        self, path_list: Sequence[CoordList | CoordArray | StyledPath]
+    ):
         """
         Function for adding multiple paths to MazePlot at once. This can be done in two ways:
         1. Passing a list of
@@ -5498,7 +5688,7 @@ def plot_colored_text(
     tokens: Sequence[str],
     weights: Sequence[float],
     cmap: str | Any,  # assume its a colormap if not a string
-    ax: plt.Axes = None,
+    ax: plt.Axes | None = None,
     width_scale: float = 0.023,
     width_offset: float = 0.005,
     height_offset: float = 0.1,
@@ -5596,7 +5786,7 @@ from typing import Literal, Sequence
 import matplotlib
 import numpy as np
 from IPython.display import HTML, display
-from jaxtyping import UInt8
+from jaxtyping import UInt8, Float
 from muutils.misc import flatten
 
 from maze_dataset.constants import SPECIAL_TOKENS
@@ -5640,7 +5830,7 @@ def _escape_tok(
 
 def color_tokens_rgb(
     tokens: list,
-    colors: Sequence[Sequence[int]],
+    colors: Sequence[Sequence[int]] | Float[np.ndarray, "n 3"],
     fmt: FormatType = "html",
     template: str | None = None,
     clr_join: str | None = None,
@@ -5702,10 +5892,11 @@ def color_tokens_cmap(
     labels: bool = False,
 ):
     "color tokens given a list of weights and a colormap"
-    assert len(tokens) == len(weights), f"{len(tokens)} != {len(weights)}"
-    weights = np.array(weights)
+    n_tok: int = len(tokens)
+    assert n_tok == len(weights), f"'{len(tokens) = }' != '{len(weights) = }'"
+    weights_np: Float[np.ndarray, " n_tok"] = np.array(weights)
     # normalize weights to [0, 1]
-    weights_norm = matplotlib.colors.Normalize()(weights)
+    weights_norm = matplotlib.colors.Normalize()(weights_np)
 
     if isinstance(cmap, str):
         cmap = matplotlib.colormaps.get_cmap(cmap)
@@ -5724,7 +5915,7 @@ def color_tokens_cmap(
             raise NotImplementedError("labels only supported for terminal")
         # align labels with the tokens
         output += "\n"
-        for tok, weight in zip(tokens, weights):
+        for tok, weight in zip(tokens, weights_np):
             # 2 decimal points, left-aligned and trailing spaces to match token length
             weight_str: str = f"{weight:.1f}"
             # omit if longer than token
@@ -5773,7 +5964,11 @@ def color_maze_tokens_AOTP(
     )
 
     return color_tokens_rgb(
-        tokens=output, colors=colors, fmt=fmt, template=template, **kwargs
+        tokens=output,
+        colors=colors,
+        fmt=fmt,
+        template=template,
+        **kwargs,
     )
 
 
@@ -5909,13 +6104,22 @@ from maze_dataset.tokenization import (
 from maze_dataset.utils import FiniteValued, all_instances
 
 # Always include this as the first item in the dict `validation_funcs` whenever using `all_instances` with `MazeTokenizerModular`
+# TYPING: error: Type variable "maze_dataset.utils.FiniteValued" is unbound  [valid-type]
+#   note: (Hint: Use "Generic[FiniteValued]" or "Protocol[FiniteValued]" base class to bind "FiniteValued" inside a class)
+#   note: (Hint: Use "FiniteValued" in function signature to bind "FiniteValued" inside a function)
 MAZE_TOKENIZER_MODULAR_DEFAULT_VALIDATION_FUNCS: frozendict.frozendict[
     type[FiniteValued], Callable[[FiniteValued], bool]
 ] = frozendict.frozendict(
     {
+        # TYPING: Item "bool" of the upper bound "bool | IsDataclass | Enum" of type variable "FiniteValued" has no attribute "is_valid"  [union-attr]
         _TokenizerElement: lambda x: x.is_valid(),
         # Currently no need for `MazeTokenizerModular.is_valid` since that method contains no special cases not already covered by `_TokenizerElement.is_valid`
         # MazeTokenizerModular: lambda x: x.is_valid(),
+        # TYPING: error: No overload variant of "set" matches argument type "FiniteValued"  [call-overload]
+        #   note: Possible overload variants:
+        #   note:     def [_T] set(self) -> set[_T]
+        #   note:     def [_T] set(self, Iterable[_T], /) -> set[_T]
+        # TYPING: error: Argument 1 to "len" has incompatible type "FiniteValued"; expected "Sized"  [arg-type]
         StepTokenizers.StepTokenizerPermutation: lambda x: len(set(x)) == len(x)
         and x != (StepTokenizers.Distance(),),
     }
@@ -5997,6 +6201,7 @@ def save_hashes(
         all_tokenizers = get_all_tokenizers()
 
     # compute hashes
+    hashes_array: "Int64[np.ndarray, ' tokenizers+dupes']"
     if parallelize:
         n_cpus: int = (
             parallelize if int(parallelize) > 1 else multiprocessing.cpu_count()
@@ -6009,14 +6214,12 @@ def save_hashes(
                 hashes_list: list[int] = list(pool.map(hash, all_tokenizers))
 
         with spinner(initial_value="converting hashes to numpy array..."):
-            hashes_array: "Int64[np.ndarray, ' tokenizers+dupes']" = np.array(
-                hashes_list, dtype=np.int64
-            )
+            hashes_array = np.array(hashes_list, dtype=np.int64)
     else:
         with spinner(
             initial_value=f"computing {len(all_tokenizers)} tokenizer hashes..."
         ):
-            hashes_array: "Int64[np.ndarray, ' tokenizers+dupes']" = np.array(
+            hashes_array = np.array(
                 [
                     hash(obj)  # uses stable hash
                     for obj in tqdm(all_tokenizers, disable=not verbose)
@@ -8504,6 +8707,7 @@ from maze_dataset.maze.lattice_maze import LatticeMaze, SolvedMaze, TargetedLatt
 
 __all__ = [
     # submodules (with sub-submodules)
+    "benchmark",
     "dataset",
     "generation",
     "maze",
@@ -8547,6 +8751,7 @@ __all__ = [
 ``````{ path="maze_dataset/constants.py"  }
 """constants and type hints used accross the package"""
 
+from typing import Iterator
 import warnings
 from dataclasses import dataclass, field, make_dataclass
 
@@ -8647,22 +8852,22 @@ class _SPECIAL_TOKENS_BASE:
     def get_abbrev(self, key: str) -> str:
         return _SPECIAL_TOKENS_ABBREVIATIONS[self[key]]
 
-    def __iter__(self):
+    def __iter__(self) -> Iterator[str]:
         return iter(self.__dict__.keys())
 
-    def __len__(self):
+    def __len__(self) -> int:
         return len(self.__dict__.keys())
 
     def __contains__(self, key: str) -> bool:
         return key in self.__dict__.keys()
 
-    def values(self):
+    def values(self) -> Iterator[str]:
         return self.__dict__.values()
 
-    def items(self):
+    def items(self) -> Iterator[tuple[str, str]]:
         return self.__dict__.items()
 
-    def keys(self):
+    def keys(self) -> Iterator[str]:
         return self.__dict__.keys()
 
 
@@ -8692,7 +8897,8 @@ NEIGHBORS_MASK: Int8[np.ndarray, "coord point"] = np.array(
 "down, up, right, left as vectors"
 
 
-_VOCAB_FIELDS: list = [
+# last element of the tuple is actually a Field[str], but mypy complains
+_VOCAB_FIELDS: list[tuple[str, type[str], str]] = [
     # *[(k, str, field(default=v)) for k, v in SPECIAL_TOKENS.items()],
     ("COORD_PRE", str, field(default="(")),
     ("COORD_INTRA", str, field(default=",")),
@@ -8745,7 +8951,6 @@ _VOCAB_FIELDS: list = [
     ],
 ]
 "fields for the `MazeTokenizerModular` style combined vocab"
-
 
 _VOCAB_BASE: type = make_dataclass(
     "_VOCAB_BASE", fields=_VOCAB_FIELDS, bases=(_SPECIAL_TOKENS_BASE,), frozen=True
@@ -8820,16 +9025,16 @@ MAZE_DATASET: Final[MazeDataset] = MazeDataset.from_config(
     verbose=True,
     gen_parallel=False,
 )
-LATTICE_MAZES: Final[tuple[LatticeMaze]] = tuple(
+LATTICE_MAZES: Final[tuple[LatticeMaze, ...]] = tuple(
     LatticeMazeGenerators.gen_dfs(np.array([GRID_N, GRID_N])) for _ in range(N_MAZES)
 )
 _PATHS = tuple(maze.generate_random_path() for maze in LATTICE_MAZES)
-TARGETED_MAZES: Final[tuple[TargetedLatticeMaze]] = tuple(
+TARGETED_MAZES: Final[tuple[TargetedLatticeMaze, ...]] = tuple(
     TargetedLatticeMaze.from_lattice_maze(maze, path[0], path[-1])
     for maze, path in zip(LATTICE_MAZES, _PATHS)
 )
 # MIXED_MAZES alternates the maze types, so you can slice a contiguous subset and still get all types
-MIXED_MAZES: Final[tuple[LatticeMaze | TargetedLatticeMaze | SolvedMaze]] = tuple(
+MIXED_MAZES: Final[tuple[LatticeMaze | TargetedLatticeMaze | SolvedMaze, ...]] = tuple(
     x
     for x in itertools.chain.from_iterable(
         itertools.zip_longest(MAZE_DATASET.mazes, TARGETED_MAZES, LATTICE_MAZES)
@@ -8946,7 +9151,7 @@ ASCII_MAZES: Final[frozendict.frozendict[str, MANUAL_MAZE]] = frozendict.frozend
 
 # A list of legacy `MazeTokenizer`s and their `MazeTokenizerModular` equivalents.
 # Used for unit tests where both versions are supported
-LEGACY_AND_EQUIVALENT_TOKENIZERS: list[MazeTokenizer, MazeTokenizerModular] = [
+LEGACY_AND_EQUIVALENT_TOKENIZERS: list[MazeTokenizer | MazeTokenizerModular] = [
     *[
         MazeTokenizer(tokenization_mode=tok_mode, max_grid_size=20)
         for tok_mode in TokenizationMode
@@ -9453,7 +9658,16 @@ import typing
 from dataclasses import Field
 from functools import cache, wraps
 from types import UnionType
-from typing import Callable, Generator, Iterable, Literal, TypeVar, get_args, get_origin
+from typing import (
+    Callable,
+    Generator,
+    Iterable,
+    Literal,
+    TypeVar,
+    get_args,
+    get_origin,
+    overload,
+)
 
 import frozendict
 import numpy as np
@@ -9538,19 +9752,27 @@ def corner_first_ndindex(n: int, ndim: int = 2) -> list[tuple]:
     """
 
 
+@overload
+def manhattan_distance(
+    edges: Int[np.ndarray, "edges coord=2 row_col=2"],
+) -> Int8[np.ndarray, " edges"]: ...
+@overload
+def manhattan_distance(
+    edges: Int[np.ndarray, "coord=2 row_col=2"],
+) -> int: ...
 def manhattan_distance(
     edges: (
         Int[np.ndarray, "edges coord=2 row_col=2"]
         | Int[np.ndarray, "coord=2 row_col=2"]
     ),
-) -> Int[np.ndarray, " edges"] | Int[np.ndarray, ""]:
+) -> Int8[np.ndarray, " edges"] | int:
     """Returns the Manhattan distance between two coords."""
     if len(edges.shape) == 3:
         return np.linalg.norm(edges[:, 0, :] - edges[:, 1, :], axis=1, ord=1).astype(
             np.int8
         )
     elif len(edges.shape) == 2:
-        return np.linalg.norm(edges[0, :] - edges[1, :], ord=1).astype(np.int8)
+        return int(np.linalg.norm(edges[0, :] - edges[1, :], ord=1).astype(np.int8))
     else:
         raise ValueError(
             f"{edges} has shape {edges.shape}, but must be match the shape in the type hints."
@@ -9696,6 +9918,7 @@ def _apply_validation_func(
     if validation_funcs is None:
         return vals
     if type_ in validation_funcs:  # Only possible catch of UnionTypes
+        # TYPING: Incompatible return value type (got "filter[FiniteValued]", expected "Generator[FiniteValued, None, None]")  [return-value]
         return filter(validation_funcs[type_], vals)
     elif hasattr(
         type_, "__mro__"
@@ -9703,6 +9926,7 @@ def _apply_validation_func(
         for superclass in type_.__mro__:
             if superclass not in validation_funcs:
                 continue
+            # TYPING: error: Incompatible types in assignment (expression has type "filter[FiniteValued]", variable has type "Generator[FiniteValued, None, None]")  [assignment]
             vals = filter(validation_funcs[superclass], vals)
             break  # Only the first validation function hit in the mro is applied
     elif get_origin(type_) == Literal:
@@ -9736,12 +9960,11 @@ def _all_instances_wrapper(f):
                 type_, all_instances_func(type_, validation_funcs), validation_funcs
             )
 
+        validation_funcs: frozendict.frozendict
         if len(args) >= 2 and args[1] is not None:
-            validation_funcs: frozendict.frozendict = frozendict.frozendict(args[1])
+            validation_funcs = frozendict.frozendict(args[1])
         elif "validation_funcs" in kwargs and kwargs["validation_funcs"] is not None:
-            validation_funcs: frozendict.frozendict = frozendict.frozendict(
-                kwargs["validation_funcs"]
-            )
+            validation_funcs = frozendict.frozendict(kwargs["validation_funcs"])
         else:
             validation_funcs = None
         return cached_wrapper(args[0], f, validation_funcs)
@@ -11013,12 +11236,17 @@ plot_corner_first_ndindex(5)
 ```python
 from pathlib import Path
 
+from pysr import PySRRegressor
+
+# other imports after pysr since it has to be before torch?
+from jaxtyping import Float
 import numpy as np
 from zanj import ZANJ
+import sympy as sp
 
 from maze_dataset import MazeDatasetConfig
 from maze_dataset.generation import LatticeMazeGenerators
-from maze_dataset.benchmark.percolation_fractions import (
+from maze_dataset.benchmark.config_sweep import (
     SweepResult,
     full_percolation_analysis,
     dataset_success_fraction,
@@ -11069,15 +11297,117 @@ ZANJ().read(path).plot(cfg_keys=["n_mazes", "endpoint_kwargs"])
 
 ```python
 results_full: SweepResult = full_percolation_analysis(
-    n_mazes=64,
+    n_mazes=16,
     p_val_count=16,
     grid_sizes=[2, 4, 6],
-    parallel=True,
+    parallel=False,
 )
 ```
 
 ```python
 plot_grouped(results_full)
+```
+
+```python
+def extract_training_data(
+    sweep_result: SweepResult,
+) -> tuple[Float[np.ndarray, "num_rows 5"], Float[np.ndarray, " num_rows"]]:
+    """Extract data (X, y) from a SweepResult.
+
+    # Parameters:
+     - `sweep_result : SweepResult`
+        The sweep result holding configs and success arrays.
+
+    # Returns:
+     - `X : Float[np.ndarray, "num_rows 5"]`
+        Stacked [p, grid_n, deadends, endpoints_not_equal, generator_func] for each config & param-value
+     - `y : Float[np.ndarray, "num_rows"]`
+        The corresponding success rate
+    """
+    X_list: list[list[float]] = []
+    y_list: list[float] = []
+    for cfg in sweep_result.configs:
+        # success_arr is an array of success rates for param_values
+        success_arr = sweep_result.result_values[cfg.to_fname()]
+        for i, p in enumerate(sweep_result.param_values):
+            # Temporarily override p in the config's array representation:
+            arr = cfg._to_ps_array().copy()
+            arr[0] = p  # index 0 is 'p'
+            X_list.append(arr)
+            y_list.append(success_arr[i])
+
+    return np.array(X_list, dtype=np.float64), np.array(y_list, dtype=np.float64)
+```
+
+```python
+DATA_PATH: str = "../docs/benchmarks/percolation_fractions/medium/result-n128-c42-p50.zanj"
+# DATA_PATH: str = "../docs/benchmarks/percolation_fractions/small/result-n64-c30-p25.zanj"
+# DATA_PATH: str = "../docs/benchmarks/percolation_fractions/test/result-n16-c12-p16.zanj"
+RESULTS_LOADED: SweepResult = SweepResult.read(DATA_PATH)
+
+# Convert to arrays
+X, y = extract_training_data(RESULTS_LOADED)
+
+print(f"training data extracted: {X.shape = }, {y.shape = }")
+
+# Fit the PySR model
+model = PySRRegressor(
+    niterations=1000,
+    # Adjust operators as needed
+    unary_operators=[
+        "exp",
+        "log",
+        "square(x) = x^2",
+        "cube(x) = x^3",
+        "sigmoid(x) = 1/(1 + exp(-x))",
+    ],
+    extra_sympy_mappings={
+        "square": lambda x: x**2,
+        "cube": lambda x: x**3,
+        "sigmoid": lambda x: 1 / (1 + sp.exp(-x)),
+    },
+    binary_operators=["+", "-", "*", "/"],
+    # If you want advanced features, specify them here:
+    # e.g. select_k_features=4, population_size=1000, etc.
+    progress=True,
+    model_selection="best",
+)
+model.fit(X, y)
+```
+
+```python
+# Create a callable that predicts from MazeDatasetConfig
+predict_fn = model.get_best()["lambda_format"]
+print(f"Best PySR Equation: {model.get_best()['equation'] = }")
+print(f"{predict_fn =}")
+
+
+def predict_config(cfg: MazeDatasetConfig) -> float:
+    arr = cfg._to_ps_array()
+    result = predict_fn(arr)[0]
+    return float(result)  # pass the array as separate args
+
+
+# Example new config
+test_config = MazeDatasetConfig(
+    name="some_test",
+    grid_n=16,
+    n_mazes=100,
+    maze_ctor=LatticeMazeGenerators.gen_percolation,
+    maze_ctor_kwargs={"p": 0.3},
+    endpoint_kwargs={
+        "deadend_start": True,
+        "deadend_end": True,
+        "endpoints_not_equal": True,
+        "except_on_no_valid_endpoint": False,
+    },
+)
+predicted_rate = predict_config(test_config)
+print("Best PySR Equation:", model.get_best()["equation"])
+print("Predicted success rate for test_config:", predicted_rate)
+
+
+plot_grouped(RESULTS_LOADED, predict_fn=predict_config)
 ```
 
 
@@ -11897,12 +12227,15 @@ format-check:
 	...
 
 # runs type checks with mypy
-# at some point, need to add back --check-untyped-defs to mypy call
-# but it complains when we specify arguments by keyword where positional is fine
-# not sure how to fix this
 .PHONY: typing
 typing: clean
 	@echo "running type checks"
+	...
+
+# generates a report of the mypy output
+.PHONY: typing-report
+typing-report:
+	@echo "generate a report of the type check output -- errors per file"
 	...
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -12149,6 +12482,10 @@ help: help-targets info
 		"pycln>=2.1.3",
 		"ruff>=0.4.8",
 	]
+    benchmark = [
+        # only used in `estimate_dataset_fractions.ipynb`
+        "pysr>=1.4.0",
+    ]
 
 [project.urls]
     Homepage = "https://github.com/understanding-search/maze-dataset"
@@ -12176,14 +12513,43 @@ help: help-targets info
     testpaths = "tests"
     norecursedirs="maze_dataset/utils/test_helpers"
 
-[[tool.mypy.overrides]]
-    module = "fire"
-    ignore_missing_imports = true
+[tool.mypy]
+    # generate this exclude with `make typing-report`
+    exclude = [
+        # high priority
+        "maze_dataset/constants.py", # 41
+        "maze_dataset/dataset/dataset.py", # 20
+        "maze_dataset/dataset/maze_dataset.py", # 41
+        "maze_dataset/dataset/collected_dataset.py", # 10
+        # high priority, difficult
+        "maze_dataset/token_utils.py", # 13, primarily issues with _VOCAB_BASE being a dynamically created dataclass
+        "maze_dataset/utils.py", # 18
+        "maze_dataset/tokenization/all_tokenizers.py", # 7
+        # low priority
+        "maze_dataset/benchmark/speed.py", # 8
+        "maze_dataset/benchmark/percolation_fractions.py", # 10
+        "maze_dataset/plotting/plot_maze.py", # 12
+        "maze_dataset/tokenization/maze_tokenizer.py", # 135
+        # low priority (tests)
+        "tests/unit/maze_dataset/dataset/test_collected_dataset.py", # 5
+        "tests/unit/maze_dataset/processing/test_collect_gen_metadata.py", # 5
+        "tests/unit/maze_dataset/generation/test_latticemaze.py", # 7
+        "tests/all_tokenizers/test_all_tokenizers.py", # 12
+        "tests/unit/maze_dataset/tokenization/test_token_utils.py", # 16
+        "tests/unit/maze_dataset/generation/test_maze_dataset.py", # 29
+        "tests/unit/maze_dataset/tokenization/test_tokenizer.py", # 47
+        "tests/unit/maze_dataset/processing/test_get_forking_path_points.py", # 58
+    ]
+    check_untyped_defs = true
+
+    [[tool.mypy.overrides]]
+        module = "fire"
+        ignore_missing_imports = true
 
 [tool.ruff.lint]
-ignore = [
-    "F722"
-]
+    ignore = [
+        "F722"
+    ]
 
 [tool.lmcat]
 	output = "docs/other/lmcat.txt" # changing this might mean it wont be accessible from the docs
@@ -12294,7 +12660,7 @@ ignore = [
 	extensions = ["py", "md"]
 
 	# Tags to look for
-	tags = ["CRIT", "TODO", "FIXME", "HACK", "BUG", "DOC"]
+	tags = ["CRIT", "TODO", "FIXME", "HACK", "BUG", "DOC", "TYPING"]
 
 	# Patterns to exclude from search
 	exclude = [

@@ -78,6 +78,7 @@ if __name__ == "__main__":
         **kwargs,
         parallel=args.parallel,
         save_dir=save_dir,
+        chunksize=1,
     )
 
     # plot results
