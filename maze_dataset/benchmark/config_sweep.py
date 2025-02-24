@@ -280,7 +280,7 @@ class SweepResult(SerializableDataclass):
                 f"{self.param_key} vs {self.analyze_func.__name__}\n{cfg_repr}"
             )
             ax_.grid(True)
-            ax_.legend(loc="lower center")
+            ax_.legend(loc="center left")
 
         # save and show
         if save_path:
