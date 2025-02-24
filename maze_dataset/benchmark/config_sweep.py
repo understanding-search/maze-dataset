@@ -383,14 +383,21 @@ def full_percolation_analysis(
 
 def plot_grouped(
     results: SweepResult,
+    predict_fn: Callable[[MazeDatasetConfig], float] | None = None,
+    prediction_density: int = 50,
     save_dir: Path | None = None,
     show: bool = True,
 ) -> None:
-    """Plot grouped sweep results -- plot for each distinct `endpoint_kwargs` in the configs, with separate colormaps for each maze generator function
+    """Plot grouped sweep percolation value results for each distinct `endpoint_kwargs` in the configs, 
+    with separate colormaps for each maze generator function.
 
     # Parameters:
      - `results : SweepResult`
         The sweep results to plot
+     - `predict_fn : Callable[[MazeDatasetConfig], float] | None`
+        Optional function that predicts success rate from a config. If provided, will plot predictions as dashed lines.
+     - `prediction_density : int`
+        Number of points to use for prediction curves (default: 50)
      - `save_dir : Path | None`
         Directory to save plots (defaults to `None`, meaning no saving)
      - `show : bool`
@@ -409,6 +416,10 @@ def plot_grouped(
         {cfg.maze_ctor.__name__ for cfg in results.configs}
     )
 
+    # if predicting, create denser p values
+    if predict_fn is not None:
+        p_dense = np.linspace(0.0, 1.0, prediction_density)
+
     # separate plot for each set of endpoint kwargs
     for ep_kw in endpoint_kwargs_set:
         results_epkw: SweepResult = results.get_where(
@@ -421,12 +432,32 @@ def plot_grouped(
             results_filtered: SweepResult = results_epkw.get_where(
                 "maze_ctor", lambda x: x.__name__ == gen_func
             )
+            cmap_name = "Reds" if gf_idx == 0 else "Blues"
+            cmap = plt.get_cmap(cmap_name)
+            
+            # Plot actual results
             ax = results_filtered.plot(
                 cfg_keys=list(cfg_keys),
                 ax=ax,
                 show=False,
-                cmap_name="Reds" if gf_idx == 0 else "Blues",
+                cmap_name=cmap_name,
             )
+            
+            # Plot predictions if function provided
+            if predict_fn is not None:
+                for cfg_idx, cfg in enumerate(results_filtered.configs):
+                    predictions = []
+                    for p in p_dense:
+                        cfg_temp = MazeDatasetConfig.load(cfg.serialize())
+                        cfg_temp.maze_ctor_kwargs["p"] = p
+                        predictions.append(predict_fn(cfg_temp))
+                    
+                    # Get the same color as the actual data
+                    n_cfgs: int = len(results_filtered.configs)
+                    color = cmap((cfg_idx + 0.5) / (n_cfgs - 0.5))
+                    
+                    # Plot prediction as dashed line
+                    ax.plot(p_dense, predictions, '--', color=color, alpha=0.8)
 
         # save and show
         if save_dir:
