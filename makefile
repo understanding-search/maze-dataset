@@ -1294,11 +1294,11 @@ test-all: clean test test_tok_hashes test_all_tok
 	@echo "run all tests, including tokenizers"
 
 .PHONY: check
-check: clean check-format test typing
+check: clean format-check test typing
 	@echo "run format check and test"
 
 .PHONY: check-all
-check-all: clean check-format test-all typing
+check-all: clean format-check test-all typing
 	@echo "run format check and test-all (includes tokenizers)"
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
