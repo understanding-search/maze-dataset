@@ -16,7 +16,7 @@ from typing import Callable, Literal, Optional, cast, overload
 
 import numpy as np
 import tqdm
-from jaxtyping import Int
+from jaxtyping import Int, Float
 from muutils.json_serialize import (
     json_serialize,
     serializable_dataclass,
@@ -37,13 +37,16 @@ from maze_dataset.dataset.dataset import (
     register_dataset_filter,
     register_filter_namespace_for_dataset,
 )
-from maze_dataset.generation.generators import GENERATORS_MAP
+from maze_dataset.generation.generators import _GENERATORS_PERCOLATED, GENERATORS_MAP
 from maze_dataset.maze import LatticeMaze, SolvedMaze
 
 # If `n_mazes>=SERIALIZE_MINIMAL_THRESHOLD`, then the MazeDataset will use `serialize_minimal`.
 # Setting to None means that `serialize_minimal` will never be used.
 # Set to -1 to make calls to `read` use `MazeDataset._load_legacy`. Used for profiling only.
 SERIALIZE_MINIMAL_THRESHOLD: int | None = 100
+
+
+_PercolationSuccessArray = Float[np.ndarray, "p/grid_n/deadends/endpoints_not_equal/generator_func=5"]
 
 
 def set_serialize_minimal_threshold(threshold: int | None) -> None:
@@ -180,6 +183,55 @@ class MazeDatasetConfig(GPTDatasetConfig):
             endpoint_kwargs=self_ser["endpoint_kwargs"],
         )
 
+    def _to_ps_array(self) -> _PercolationSuccessArray:
+        """Convert this config to a [p, grid_n, deadends, endpoints_not_equal, generator_func] vector.
+
+        used in predicting the success rate
+        """
+        assert self.maze_ctor.__name__ in _GENERATORS_PERCOLATED, "generator not supported, must be a percolation generator"
+        assert "p" in self.maze_ctor_kwargs, "maze_ctor_kwargs must have a 'p' (percolation value) key"
+        assert not self.endpoint_kwargs.get("except_on_no_valid_endpoint", True), "except_on_no_valid_endpoint must be False, or else if any maze fails to generate, the whole dataset will fail"
+
+        return np.array(
+            [
+                float(self.maze_ctor_kwargs["p"]),
+                float(self.grid_n),
+                float(int(self.endpoint_kwargs.get("deadend_start", False) or self.endpoint_kwargs.get("deadend_end", False))),
+                float(int(self.endpoint_kwargs.get("endpoints_not_equal", True))),
+                float(_GENERATORS_PERCOLATED.index(self.maze_ctor.__name__)),
+            ],
+            dtype=np.float64,
+        )
+
+    @classmethod
+    def _from_ps_array(
+        cls,
+        arr: _PercolationSuccessArray,
+        name: str = "predict",
+        n_mazes: int = 100,
+        **kwargs,
+    ) -> "MazeDatasetConfig":
+        """Reconstruct a config from an array [p, grid_n, deadends, endpoints_not_equal, generator_func] and other config parameters.
+
+        # Returns:
+         - `MazeDatasetConfig`
+            Config corresponding to `arr`
+        """
+
+        return cls(
+            name=name,
+            grid_n=int(arr[1]),
+            n_mazes=n_mazes,
+            maze_ctor=_GENERATORS_PERCOLATED[int(arr[4])],
+            maze_ctor_kwargs={"p": float(arr[0])},
+            endpoint_kwargs=dict(
+                deadend_start=bool(arr[2]),
+                deadend_end=bool(arr[2]),
+                endpoints_not_equal=bool(arr[3]),
+                except_on_no_valid_endpoint=False,
+            ),
+            **kwargs,
+        )
 
 def _generate_maze_helper(index: int) -> Optional[SolvedMaze]:
     """Helper function for generating mazes in parallel.

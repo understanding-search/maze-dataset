@@ -15,6 +15,11 @@ ANALYSIS_KWARGS: dict[str, dict[str, Any]] = dict(
         p_val_count=25,
         grid_sizes=[2, 3, 4, 5, 6],
     ),
+    medium=dict(
+        n_mazes=128,
+        p_val_count=50,
+        grid_sizes=[2, 3, 4, 5, 6, 8, 10],
+    ),
     large=dict(
         n_mazes=2048,
         p_val_count=200,
@@ -43,12 +48,18 @@ if __name__ == "__main__":
         "-s",
         "--save_dir",
         type=str,
-        default=SAVE_DIR.as_posix(),
-        help="The directory to save the results",
+        default=None,
+        help=f"The directory to save the results. if `None`, will be saved tp {SAVE_DIR.as_posix()}/<analysis>",
     )
     args: argparse.Namespace = parser.parse_args()
     kwargs: dict[str, Any] = ANALYSIS_KWARGS[args.analysis]
-    save_dir: Path = Path(args.save_dir)
+    save_dir: Path
+    if args.save_dir is None:
+        save_dir = SAVE_DIR / args.analysis
+    else:
+        save_dir = Path(args.save_dir)
+    
+    print(f"Running analysis: {args.analysis}, saving to: {save_dir.as_posix()}")
 
     # import here for speed
     from maze_dataset.benchmark.config_sweep import (
