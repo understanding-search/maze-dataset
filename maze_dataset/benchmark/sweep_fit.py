@@ -59,7 +59,7 @@ DEFAULT_PYSR_KWARGS: dict = dict(
         "cube": lambda x: x**3,
         "sigmoid": lambda x: 1 / (1 + sp.exp(-x)),
     },
-    binary_operators=["+", "-", "*", "/"],
+    binary_operators=["+", "-", "*", "/", "^"],
     # populations=50,
     progress=True,
     model_selection="best",

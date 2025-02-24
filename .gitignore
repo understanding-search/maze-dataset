@@ -6,9 +6,12 @@ tests/_temp/**
 htmlcov/
 .vscode/**
 notebooks/data/**
-notebooks/outputs/**
 *.bak
+# pysr outputs
+notebooks/outputs/**
+outputs/**
 
+.meta/local/**
 .pypi-token
 .commit_log
 
