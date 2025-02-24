@@ -13,6 +13,7 @@ from muutils.json_serialize import (
     SerializableDataclass,
     serializable_field,
     json_serialize,
+    JSONitem,
 )
 from muutils.dictmagic import dotlist_to_nested_dict, update_with_nested_dict
 from muutils.parallel import run_maybe_parallel
@@ -87,6 +88,15 @@ class SweepResult(SerializableDataclass):
         deserialize_fn=ANALYSIS_FUNCS.get,
         assert_type=False,
     )
+
+    def summary(self) -> JSONitem:
+        return {
+            "len(configs)": len(self.configs),
+            "len(param_values)": len(self.param_values),
+            "len(result_values)": len(self.result_values),
+            "param_key": self.param_key,
+            "analyze_func": self.analyze_func.__name__,
+        }
 
     def save(self, path: str | Path, z: ZANJ | None = None) -> None:
         if z is None:
