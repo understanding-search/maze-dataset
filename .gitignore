@@ -6,6 +6,7 @@ tests/_temp/**
 htmlcov/
 .vscode/**
 notebooks/data/**
+notebooks/outputs/**
 *.bak
 
 .pypi-token
