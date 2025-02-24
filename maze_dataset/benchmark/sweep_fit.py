@@ -156,4 +156,20 @@ if __name__ == "__main__":
         args.save_dir,
         niterations=args.niterations,
         # add any additional kwargs here if running in CLI
+        populations=50,
+        # ^ Assuming we have 4 cores, this means 2 populations per core, so one is always running.
+        population_size=50,
+        # ^ Generations between migrations.
+        timeout_in_seconds=60 * 60 * 7,
+        # ^ stop after 7 hours have passed.
+        maxsize=50,
+        # ^ Allow greater complexity.
+        weight_randomize=0.01,
+        # ^ Randomize the tree much more frequently
+        turbo=True,
+        # ^ Faster evaluation (experimental)
+    )
+
+    PySRRegressor(
+
     )
