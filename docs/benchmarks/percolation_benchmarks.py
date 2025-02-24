@@ -21,6 +21,11 @@ ANALYSIS_KWARGS: dict[str, dict[str, Any]] = dict(
         grid_sizes=[2, 3, 4, 5, 6, 8, 10],
     ),
     large=dict(
+        n_mazes=256,
+        p_val_count=100,
+        grid_sizes=[2, 3, 4, 5, 6, 8, 10, 16, 32],
+    ),
+    xlarge=dict(
         n_mazes=2048,
         p_val_count=200,
         grid_sizes=[2, 3, 4, 5, 6, 8, 10, 16, 25, 32, 50, 64],

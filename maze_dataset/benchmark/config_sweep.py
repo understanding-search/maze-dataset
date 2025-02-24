@@ -355,7 +355,7 @@ def full_percolation_analysis(
                         grid_n=grid_n,
                         n_mazes=n_mazes,
                         maze_ctor=gen_func,
-                        maze_ctor_kwargs=dict(),
+                        maze_ctor_kwargs=dict(p=float('nan')),
                         endpoint_kwargs=ep_kw,
                     )
                     for grid_n in grid_sizes
