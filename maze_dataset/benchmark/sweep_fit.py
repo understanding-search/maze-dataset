@@ -170,6 +170,4 @@ if __name__ == "__main__":
         # ^ Faster evaluation (experimental)
     )
 
-    PySRRegressor(
-
-    )
+    PySRRegressor()
