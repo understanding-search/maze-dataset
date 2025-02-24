@@ -235,7 +235,14 @@ class SweepResult(SerializableDataclass):
         cmap = plt.get_cmap(cmap_name)
         n_cfgs: int = len(self.result_values)
         for i, (ep_cfg_name, result_values) in enumerate(
-            sorted(self.result_values.items(), key=lambda x: x[0])
+            sorted(
+                self.result_values.items(),
+                # HACK: sort by grid size
+                #                 |--< name of config
+                #                 |    |-----------< gets 'g{n}'
+                #                 |    |            |--< gets '{n}' 
+                #                 |    |            |  
+                key=lambda x: int(x[0].split("-")[0][1:]))
         ):
             ax_.plot(
                 self.param_values,
