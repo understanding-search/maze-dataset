@@ -175,6 +175,7 @@ class SweepResult(SerializableDataclass):
         param_key: str,
         analyze_func: Callable[[MazeDatasetConfig], SweepReturnType],
         parallel: bool | int = False,
+        **kwargs,
     ) -> "SweepResult":
         """Analyze success rate of maze generation for different percolation values
 
@@ -200,6 +201,7 @@ class SweepResult(SerializableDataclass):
             keep_ordered=True,
             parallel=parallel,
             pbar_kwargs=dict(total=len(configs)),
+            **kwargs,
         )
         result_values: dict[str, Float[np.ndarray, "n_pvals"]] = {
             cfg.to_fname(): np.array(res)
@@ -339,6 +341,7 @@ def full_percolation_analysis(
     ),
     save_dir: Path = Path("../docs/benchmarks/percolation_fractions"),
     parallel: bool | int = False,
+    **analyze_kwargs,
 ) -> SweepResult:
     if ep_kwargs is None:
         ep_kwargs = DEFAULT_ENDPOINT_KWARGS
@@ -369,6 +372,7 @@ def full_percolation_analysis(
         param_key="maze_ctor_kwargs.p",
         analyze_func=dataset_success_fraction,
         parallel=parallel,
+        **analyze_kwargs,
     )
 
     # save the result
