@@ -191,13 +191,13 @@ class MazeDatasetConfig(GPTDatasetConfig):
         used in predicting the success rate
         """
         assert self.maze_ctor.__name__ in _GENERATORS_PERCOLATED, (
-            "generator not supported, must be a percolation generator"
+            f"generator not supported, must be a percolation generator\n{self.maze_ctor.__name__ = }, {_GENERATORS_PERCOLATED = }"
         )
         assert "p" in self.maze_ctor_kwargs, (
-            "maze_ctor_kwargs must have a 'p' (percolation value) key"
+            f"maze_ctor_kwargs must have a 'p' (percolation value) key: {self.maze_ctor_kwargs = }"
         )
         assert not self.endpoint_kwargs.get("except_on_no_valid_endpoint", True), (
-            "except_on_no_valid_endpoint must be False, or else if any maze fails to generate, the whole dataset will fail"
+            f"except_on_no_valid_endpoint must be False, or else if any maze fails to generate, the whole dataset will fail: {self.endpoint_kwargs = }"
         )
 
         return np.array(
