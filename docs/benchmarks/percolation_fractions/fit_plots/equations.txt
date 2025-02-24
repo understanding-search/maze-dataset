@@ -1,0 +1,45 @@
+PySRRegressor.equations_ = [
+	    pick     score                                           equation  \
+	0         0.000000                                           0.650753   
+	1         0.081507                                     0.5428597 ^ x2   
+	2         0.034672                            0.4417774 / sigmoid(x2)   
+	3         0.039981                             0.57370794 ^ (x2 ^ x4)   
+	4         0.000472                       0.58087546 ^ square(x2 ^ x4)   
+	5         0.072436               sigmoid(exp(x0 * (-2.2015862 ^ x2)))   
+	6         0.017355       sigmoid(square(exp(x0 * (-1.3560255 ^ x2))))   
+	7         0.020929  sigmoid(square(exp((-2.2015862 ^ x2) * square(...   
+	8         0.095120              sigmoid(x4) ^ (((x2 * x0) * x1) ^ x4)   
+	9         0.207327         sigmoid(x0) ^ ((exp(x2) * (x2 * x0)) ^ x4)   
+	10        0.018895  sigmoid(square(sigmoid(x0))) ^ ((exp(x2) * (x2...   
+	11        0.030910  sigmoid(log(x1 ^ x0) - cube(x0)) ^ (((x2 * x0)...   
+	12        0.031423  sigmoid(log(x1 ^ x0) - cube(cube(x0))) ^ ((x0 ...   
+	13        0.050796  sigmoid(log(x1 ^ x0) - cube(x0)) ^ ((x2 * (x0 ...   
+	14        0.028740  sigmoid(log(x1 ^ x0) - cube(square(x2 * x0) ^ ...   
+	15        0.031336  sigmoid(x0 - cube((cube(x2 * square(x0)) * (x2...   
+	16  >>>>  0.169050  sigmoid(log(x1 ^ x0) - cube(((x2 + x0) * cube(...   
+	17        0.044163  sigmoid(log(x1 ^ x0) - square((cube(square(x0)...   
+	18        0.107714  sigmoid(log(x1 ^ x0) - square((cube(x0 * x2) *...   
+	19        0.035604  (((1.3076022 ^ x0) - square(sigmoid(cube((x2 +...   
+	
+	        loss  complexity  
+	0   0.115136           1  
+	1   0.097817           3  
+	2   0.094484           4  
+	3   0.090781           5  
+	4   0.090738           6  
+	5   0.084398           7  
+	6   0.082945           8  
+	7   0.081228           9  
+	8   0.073857          10  
+	9   0.060028          11  
+	10  0.057802          13  
+	11  0.052683          16  
+	12  0.051053          17  
+	13  0.048524          18  
+	14  0.044516          21  
+	15  0.041812          23  
+	16  0.035309          24  
+	17  0.033783          25  
+	18  0.030333          26  
+	19  0.027260          29  
+]
