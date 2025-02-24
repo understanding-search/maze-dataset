@@ -29,6 +29,7 @@ from muutils.misc import sanitize_fname, shorten_numerical_to_str, stable_hash
 from zanj import ZANJ
 from zanj.loading import LoaderHandler, load_item_recursive, register_loader_handler
 
+from maze_dataset.math import cfg_success_predict_fn
 from maze_dataset.constants import Coord, CoordArray, CoordTup
 from maze_dataset.dataset.dataset import (
     DatasetFilterProtocol,
@@ -57,10 +58,6 @@ class NoPercolationInConfigError(ValueError):
 
 class SuccessChanceTooSmallError(ValueError):
     pass
-
-
-def sigmoid(x: float) -> float:
-    return 1 / (1 + np.exp(-x))
 
 
 def set_serialize_minimal_threshold(threshold: int | None) -> None:
@@ -276,29 +273,6 @@ class MazeDatasetConfig(GPTDatasetConfig):
             **kwargs,
         )
 
-    @classmethod
-    def _success_frac(cls, x: _PercolationSuccessArray) -> float:
-        r"""
-        (((4.445029^{(x_4 - (x_0 \cdot (((x_4 + (x_0^{(x_1^{(0.5798768^{x_3})})}))\cdot e^{x_2}) - 2.3397248)))})^3)^2
-        """
-        # return (np.exp((((x[0]**0.598702) - ((x[0] + ((x[2] * sigmoid(x[3])) * (x[0] + (0.89769214**x[1]))))**(x[0]**3 + x[4])))**3)))**3
-        return 0.14936 ** (
-            (
-                (
-                    (
-                        x[0]
-                        - (
-                            (((x[0] * 0.94458) ** x[4]) ** 2)
-                            - (x[2] * (x[0] ** (2.4176 - x[3])))
-                        )
-                    )
-                    ** 2
-                )
-                + 0.066666
-            )
-            ** (np.log(x[1] + 0.53705) + (-(0.079823 ** x[2])))
-        )
-
     def success_fraction_estimate(
         self, except_if_all_success_expected: bool = False
     ) -> float:
@@ -323,7 +297,7 @@ class MazeDatasetConfig(GPTDatasetConfig):
         """
         try:
             arr: _PercolationSuccessArray = self._to_ps_array()
-            return self._success_frac(arr)
+            return cfg_success_predict_fn(arr)
 
         except NoPercolationInConfigError:
             return 1.0
