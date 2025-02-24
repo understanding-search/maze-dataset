@@ -355,7 +355,7 @@ def full_percolation_analysis(
                         grid_n=grid_n,
                         n_mazes=n_mazes,
                         maze_ctor=gen_func,
-                        maze_ctor_kwargs=dict(p=float('nan')),
+                        maze_ctor_kwargs=dict(p=float("nan")),
                         endpoint_kwargs=ep_kw,
                     )
                     for grid_n in grid_sizes
@@ -388,7 +388,7 @@ def plot_grouped(
     save_dir: Path | None = None,
     show: bool = True,
 ) -> None:
-    """Plot grouped sweep percolation value results for each distinct `endpoint_kwargs` in the configs, 
+    """Plot grouped sweep percolation value results for each distinct `endpoint_kwargs` in the configs,
     with separate colormaps for each maze generator function.
 
     # Parameters:
@@ -434,7 +434,7 @@ def plot_grouped(
             )
             cmap_name = "Reds" if gf_idx == 0 else "Blues"
             cmap = plt.get_cmap(cmap_name)
-            
+
             # Plot actual results
             ax = results_filtered.plot(
                 cfg_keys=list(cfg_keys),
@@ -442,7 +442,7 @@ def plot_grouped(
                 show=False,
                 cmap_name=cmap_name,
             )
-            
+
             # Plot predictions if function provided
             if predict_fn is not None:
                 for cfg_idx, cfg in enumerate(results_filtered.configs):
@@ -451,13 +451,13 @@ def plot_grouped(
                         cfg_temp = MazeDatasetConfig.load(cfg.serialize())
                         cfg_temp.maze_ctor_kwargs["p"] = p
                         predictions.append(predict_fn(cfg_temp))
-                    
+
                     # Get the same color as the actual data
                     n_cfgs: int = len(results_filtered.configs)
                     color = cmap((cfg_idx + 0.5) / (n_cfgs - 0.5))
-                    
+
                     # Plot prediction as dashed line
-                    ax.plot(p_dense, predictions, '--', color=color, alpha=0.8)
+                    ax.plot(p_dense, predictions, "--", color=color, alpha=0.8)
 
         # save and show
         if save_dir:
