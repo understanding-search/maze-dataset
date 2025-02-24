@@ -58,7 +58,7 @@ if __name__ == "__main__":
         save_dir = SAVE_DIR / args.analysis
     else:
         save_dir = Path(args.save_dir)
-    
+
     print(f"Running analysis: {args.analysis}, saving to: {save_dir.as_posix()}")
 
     # import here for speed

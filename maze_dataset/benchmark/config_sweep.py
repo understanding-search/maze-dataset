@@ -240,9 +240,10 @@ class SweepResult(SerializableDataclass):
                 # HACK: sort by grid size
                 #                 |--< name of config
                 #                 |    |-----------< gets 'g{n}'
-                #                 |    |            |--< gets '{n}' 
-                #                 |    |            |  
-                key=lambda x: int(x[0].split("-")[0][1:]))
+                #                 |    |            |--< gets '{n}'
+                #                 |    |            |
+                key=lambda x: int(x[0].split("-")[0][1:]),
+            )
         ):
             ax_.plot(
                 self.param_values,

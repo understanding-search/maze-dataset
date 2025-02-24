@@ -46,7 +46,9 @@ from maze_dataset.maze import LatticeMaze, SolvedMaze
 SERIALIZE_MINIMAL_THRESHOLD: int | None = 100
 
 
-_PercolationSuccessArray = Float[np.ndarray, "p/grid_n/deadends/endpoints_not_equal/generator_func=5"]
+_PercolationSuccessArray = Float[
+    np.ndarray, "p/grid_n/deadends/endpoints_not_equal/generator_func=5"
+]
 
 
 def set_serialize_minimal_threshold(threshold: int | None) -> None:
@@ -188,15 +190,26 @@ class MazeDatasetConfig(GPTDatasetConfig):
 
         used in predicting the success rate
         """
-        assert self.maze_ctor.__name__ in _GENERATORS_PERCOLATED, "generator not supported, must be a percolation generator"
-        assert "p" in self.maze_ctor_kwargs, "maze_ctor_kwargs must have a 'p' (percolation value) key"
-        assert not self.endpoint_kwargs.get("except_on_no_valid_endpoint", True), "except_on_no_valid_endpoint must be False, or else if any maze fails to generate, the whole dataset will fail"
+        assert self.maze_ctor.__name__ in _GENERATORS_PERCOLATED, (
+            "generator not supported, must be a percolation generator"
+        )
+        assert "p" in self.maze_ctor_kwargs, (
+            "maze_ctor_kwargs must have a 'p' (percolation value) key"
+        )
+        assert not self.endpoint_kwargs.get("except_on_no_valid_endpoint", True), (
+            "except_on_no_valid_endpoint must be False, or else if any maze fails to generate, the whole dataset will fail"
+        )
 
         return np.array(
             [
                 float(self.maze_ctor_kwargs["p"]),
                 float(self.grid_n),
-                float(int(self.endpoint_kwargs.get("deadend_start", False) or self.endpoint_kwargs.get("deadend_end", False))),
+                float(
+                    int(
+                        self.endpoint_kwargs.get("deadend_start", False)
+                        or self.endpoint_kwargs.get("deadend_end", False)
+                    )
+                ),
                 float(int(self.endpoint_kwargs.get("endpoints_not_equal", True))),
                 float(_GENERATORS_PERCOLATED.index(self.maze_ctor.__name__)),
             ],
@@ -232,6 +245,7 @@ class MazeDatasetConfig(GPTDatasetConfig):
             ),
             **kwargs,
         )
+
 
 def _generate_maze_helper(index: int) -> Optional[SolvedMaze]:
     """Helper function for generating mazes in parallel.
