@@ -104,7 +104,9 @@ def _load_endpoint_kwargs(data: dict) -> EndpointKwargsType:
             for k, v in data["endpoint_kwargs"].items()
         }
 
+
 MAZEDATASETCONFIG_FNAME_HASH_LENGTH: int = 5
+
 
 @serializable_dataclass(kw_only=True, properties_to_serialize=["grid_shape"])
 class MazeDatasetConfig(GPTDatasetConfig):
@@ -158,15 +160,17 @@ class MazeDatasetConfig(GPTDatasetConfig):
         return max(self.grid_shape)
 
     def stable_hash_cfg(self) -> int:
-        return stable_hash(json.dumps(
-            self.serialize(),
-            sort_keys=True,
-            indent=None,
-        ))
+        return stable_hash(
+            json.dumps(
+                self.serialize(),
+                sort_keys=True,
+                indent=None,
+            )
+        )
 
     def to_fname(self) -> str:
         n_mazes_str: str = shorten_numerical_to_str(self.n_mazes)
-        maze_ctor_name: str = self.maze_ctor.__name__.removeprefix('gen_')
+        maze_ctor_name: str = self.maze_ctor.__name__.removeprefix("gen_")
         hash_id: int = self.stable_hash_cfg() % 10**MAZEDATASETCONFIG_FNAME_HASH_LENGTH
         return sanitize_fname(
             f"{self.name}-g{self.grid_n}-n{n_mazes_str}-a_{maze_ctor_name}-h{hash_id}"
