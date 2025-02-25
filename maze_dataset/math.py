@@ -34,11 +34,9 @@ def f_poly(q: float, a: float) -> float:
     return q * g_poly(q, a)
 
 def h_func(q: float, a: float) -> float:
-      
     return f_poly(q, a) * (1 - sigmoid_shifted(q)) + (1 - f_poly(1 - q, a)) * sigmoid_shifted(q)
 
 def A_scaling(q: float, a: float, w: float) -> float:
-
     return w * g_poly(q, a)
 
 

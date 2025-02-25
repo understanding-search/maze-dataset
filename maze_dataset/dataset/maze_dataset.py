@@ -284,9 +284,6 @@ class MazeDatasetConfig(GPTDatasetConfig):
         this estimate comes from `estimate_dataset_fractions.ipynb` and `maze_dataset.benchmarks.sweep_fit`
 
         # Parameters:
-         - `safety_margin : float`
-           safety margin to apply to the success fraction estimate
-           (defaults to `1.2`, or 20% more mazes than estimated)
          - `except_if_all_success_expected : bool`
            if `True`, don't raise an error if the success fraction is below the threshold.
            will always return `1.0` if the config is not expected to fail
