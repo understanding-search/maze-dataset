@@ -226,6 +226,18 @@ class MazeDatasetConfig(GPTDatasetConfig):
             raise NoPercolationInConfigError(
                 f"invalid config for percolation success prediction: {self.summary()}"
             ) from e
+        
+        endpoints_unique_flag: int = int(self.endpoint_kwargs.get("endpoints_not_equal", True))
+
+        # adjustment for bknutson0
+        if not (
+            self.endpoint_kwargs.get("deadend_start", False) 
+            and self.endpoint_kwargs.get("deadend_end", False)
+        ):
+            # we didnt train on this, but if either endpoint is not required to be in a dead end
+            # then  requiring the endpoints to be unique does not really affect the success rate
+            # (except for very small percolation values, pure percolation generation)
+            endpoints_unique_flag: int = 0
 
         return np.array(
             [
@@ -237,7 +249,7 @@ class MazeDatasetConfig(GPTDatasetConfig):
                         or self.endpoint_kwargs.get("deadend_end", False)
                     )
                 ),
-                float(int(self.endpoint_kwargs.get("endpoints_not_equal", True))),
+                float(endpoints_unique_flag),
                 float(_GENERATORS_PERCOLATED.index(self.maze_ctor.__name__)),
             ],
             dtype=np.float64,
