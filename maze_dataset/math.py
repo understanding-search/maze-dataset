@@ -5,6 +5,7 @@ Desmos link: https://www.desmos.com/calculator/qllvhwftvy
 
 import numpy as np
 
+
 def sigmoid(x: float) -> float:
     return 1 / (1 + np.exp(-x))
 
@@ -24,21 +25,27 @@ def sigmoid(x: float) -> float:
 # A_scaling = lambda q, a, w: w * g_poly(q, a)
 # r"A(q) = b * g(q, a)"
 
+
 def sigmoid_shifted(x: float) -> float:
     return 1 / (1 + np.exp(-1000 * (x - 0.5)))
+
 
 def g_poly(q: float, a: float) -> float:
     return 1 - np.abs(2 * q - 1) ** a
 
+
 def f_poly(q: float, a: float) -> float:
     return q * g_poly(q, a)
 
+
 def h_func(q: float, a: float) -> float:
-    return f_poly(q, a) * (1 - sigmoid_shifted(q)) + (1 - f_poly(1 - q, a)) * sigmoid_shifted(q)
+    return f_poly(q, a) * (1 - sigmoid_shifted(q)) + (
+        1 - f_poly(1 - q, a)
+    ) * sigmoid_shifted(q)
+
 
 def A_scaling(q: float, a: float, w: float) -> float:
     return w * g_poly(q, a)
-
 
 
 def soft_step(
@@ -48,13 +55,14 @@ def soft_step(
     w: float = 50,
 ) -> float:
     """when p is close to 0.5 acts like the identity wrt x, but when p is close to 0 or 1, pushes x to 0 or 1 (whichever is closest)
-    
+
     https://www.desmos.com/calculator/qllvhwftvy
     """
     return h_func(
         x,
         A_scaling(p, alpha, w),
     )
+
 
 def cfg_success_predict_fn(cfg):
     "learned by pysr, see `estimate_dataset_fractions.ipynb` and `maze_dataset.benchmark.config_fit`"
@@ -84,6 +92,6 @@ def cfg_success_predict_fn(cfg):
     return soft_step(
         x=raw_val,
         p=x[0],
-        alpha=5, # manually tuned
-        w=10, # manually tuned
+        alpha=5,  # manually tuned
+        w=10,  # manually tuned
     )
