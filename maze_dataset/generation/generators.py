@@ -411,8 +411,8 @@ GENERATORS_MAP: dict[str, Callable[[Coord | CoordTup, Any], "LatticeMaze"]] = {
 "mapping of generator names to generator functions, useful for loading `MazeDatasetConfig`"
 
 _GENERATORS_PERCOLATED: list[str] = [
-    "gen_dfs_percolation",
     "gen_percolation",
+    "gen_dfs_percolation",
 ]
 """list of generator names that generate percolated mazes
 we use this to figure out the expected success rate, since depending on the endpoint kwargs this might fail
