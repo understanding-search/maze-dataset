@@ -12,6 +12,7 @@ import warnings
 from pathlib import Path
 from typing import Callable, Type
 
+import muutils
 import numpy as np
 import torch
 from muutils.json_serialize import (
@@ -21,7 +22,7 @@ from muutils.json_serialize import (
     serializable_field,
 )
 from muutils.misc import sanitize_fname, shorten_numerical_to_str, stable_hash
-from muutils.mlutils import DEFAULT_SEED, GLOBAL_SEED, set_reproducibility
+from muutils.mlutils import set_reproducibility
 from muutils.tensor_utils import DTYPE_MAP
 from torch.utils.data import Dataset
 from zanj import ZANJ
@@ -71,7 +72,7 @@ class GPTDatasetConfig(SerializableDataclass):
     seq_len_max: int = serializable_field(default=512)
     # --------------------------------------------------
 
-    seed: int | None = serializable_field(default=DEFAULT_SEED)
+    seed: int | None = serializable_field(default=muutils.mlutils.DEFAULT_SEED)
     applied_filters: list[
         dict[typing.Literal["name", "args", "kwargs"], str | list | dict]
     ] = serializable_field(
@@ -86,9 +87,11 @@ class GPTDatasetConfig(SerializableDataclass):
         if self.seed is None:
             self.seed = torch.random.seed() % 2**31
 
-        if (DEFAULT_SEED != self.seed) and (GLOBAL_SEED != self.seed):
+        if (muutils.mlutils.DEFAULT_SEED != self.seed) and (
+            muutils.mlutils.GLOBAL_SEED != self.seed
+        ):
             warnings.warn(
-                f"in GPTDatasetConfig {self.name=}, {self.seed=} is trying to override {GLOBAL_SEED=} which has already been changed elsewhere from {DEFAULT_SEED=}"
+                f"in GPTDatasetConfig {self.name=}, {self.seed=} is trying to override {muutils.mlutils.GLOBAL_SEED=} which has already been changed elsewhere from {muutils.mlutils.DEFAULT_SEED=}"
             )
 
         set_reproducibility(self.seed)
