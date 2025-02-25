@@ -293,8 +293,7 @@ class MazeDatasetConfig(GPTDatasetConfig):
             estimated success fraction. if
         """
         try:
-            arr: _PercolationSuccessArray = self._to_ps_array()
-            return cfg_success_predict_fn(arr)
+            return cfg_success_predict_fn(self)
 
         except NoPercolationInConfigError:
             return 1.0
