@@ -3,9 +3,9 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="generator" content="pdoc 14.6.1"/>
+    <meta name="generator" content="pdoc 15.0.1"/>
     <title>maze_dataset.generation.default_generators API documentation</title>
-<link rel="stylesheet" href="../../resources/bootstrap-reboot.min.css"><link rel="stylesheet" href="../../resources/syntax-highlighting.css"><link rel="stylesheet" href="../../resources/theme.css"><link rel="stylesheet" href="../../resources/layout.css"><link rel="stylesheet" href="../../resources/content.css"><link rel="stylesheet" href="../../resources/custom.css"><script>
+<link rel="stylesheet" href="../../resources/css/bootstrap-reboot.min.css"><link rel="stylesheet" href="../../resources/css/syntax-highlighting.css"><link rel="stylesheet" href="../../resources/css/theme.css"><link rel="stylesheet" href="../../resources/css/layout.css"><link rel="stylesheet" href="../../resources/css/content.css"><link rel="stylesheet" href="../../resources/css/custom.css"><script>
     window.MathJax = {
         tex: {
             inlineMath: [['$', '$'], ['\\(', '\\)']]
@@ -34,7 +34,7 @@
     }
 </style>
 <script type="module" defer>
-    import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs";
+    import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
 
     /* Re-invoke Mermaid when DOM content changes, for example during search. */
     document.addEventListener("DOMContentLoaded", () => {
@@ -46,7 +46,7 @@
 </script></head>
 <body>
 <div class="package-version">
-    docs for <a href="https://github.com/understanding-search/maze-dataset">maze-dataset</a> v1.1.0<br>
+    docs for <a href="https://github.com/understanding-search/maze-dataset">maze-dataset</a> v1.2.0-beta<br>
 </div>
     <nav class="pdoc">
         <label id="navtoggle" for="togglestate" class="pdoc-button">
@@ -71,6 +71,20 @@
     </ul>
 
 
+    <hr/>
+    
+    <div>
+        <a href="../../coverage/html/index.html" class="pdoc-button" title="View test coverage report">
+            Coverage
+        </a>
+        <a href="../../other/todo-inline.html" class="pdoc-button" title="Table of TODOs scraped from source code, with links to create issues from them">
+            TODOs
+        </a>
+        <a href="../../other/lmcat.txt" class="pdoc-button" title="a view of the repo contents made for LLMs, using https://miv.name/lmcat">
+            lmcat
+        </a>
+    </div>
+
 
         <a class="attribution" title="pdoc: Python API documentation generator" href="https://pdoc.dev" target="_blank">
             built with <span class="visually-hidden">pdoc</span>
@@ -80,7 +94,7 @@
     </nav>
     <main class="pdoc">
             <section class="module-info">
-                        <a class="pdoc-button git-button" href="https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/generation/default_generators.py">View Source on GitHub</a>
+                        <a class="pdoc-button git-button" href="https://github.com/understanding-search/maze-dataset/blob/1.2.0-betamaze_dataset/generation/default_generators.py">View Source on GitHub</a>
                     <h1 class="modulename">
 <a href="./../../maze_dataset.html">maze_dataset</a><wbr>.<a href="./../generation.html">generation</a><wbr>.default_generators    </h1>
 
@@ -92,7 +106,7 @@
                         <div class="source-button-container">
             <label class="pdoc-button view-source-button" for="mod-default_generators-view-source"><span>View Source</span></label>
             <div class="github-button-wrapper">
-                <a class="pdoc-button github-link-button" href="https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/generation/default_generators.py#L0-L20" target="_blank">
+                <a class="pdoc-button github-link-button" href="https://github.com/understanding-search/maze-dataset/blob/1.2.0-betamaze_dataset/generation/default_generators.py#L0-L20" target="_blank">
                     <span>View on GitHub</span>
                 </a>
             </div>
@@ -102,23 +116,23 @@
                         <div class="pdoc-code codehilite"><pre><span></span><span id="L-1"><a href="#L-1"><span class="linenos"> 1</span></a><span class="sd">&quot;&quot;&quot;`DEFAULT_GENERATORS` is a list of generator name, generator kwargs pairs used in tests and demos&quot;&quot;&quot;</span>
 </span><span id="L-2"><a href="#L-2"><span class="linenos"> 2</span></a>
 </span><span id="L-3"><a href="#L-3"><span class="linenos"> 3</span></a><span class="n">DEFAULT_GENERATORS</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[</span>
-</span><span id="L-4"><a href="#L-4"><span class="linenos"> 4</span></a>    <span class="p">(</span><span class="s2">&quot;gen_dfs&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">()),</span>
-</span><span id="L-5"><a href="#L-5"><span class="linenos"> 5</span></a>    <span class="p">(</span><span class="s2">&quot;gen_dfs&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">do_forks</span><span class="o">=</span><span class="kc">False</span><span class="p">)),</span>
-</span><span id="L-6"><a href="#L-6"><span class="linenos"> 6</span></a>    <span class="p">(</span><span class="s2">&quot;gen_dfs&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">accessible_cells</span><span class="o">=</span><span class="mi">20</span><span class="p">)),</span>
-</span><span id="L-7"><a href="#L-7"><span class="linenos"> 7</span></a>    <span class="p">(</span><span class="s2">&quot;gen_dfs&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">max_tree_depth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)),</span>
-</span><span id="L-8"><a href="#L-8"><span class="linenos"> 8</span></a>    <span class="p">(</span><span class="s2">&quot;gen_wilson&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">()),</span>
-</span><span id="L-9"><a href="#L-9"><span class="linenos"> 9</span></a>    <span class="c1"># (&quot;gen_percolation&quot;, dict(p=0.1)),</span>
-</span><span id="L-10"><a href="#L-10"><span class="linenos">10</span></a>    <span class="p">(</span>
-</span><span id="L-11"><a href="#L-11"><span class="linenos">11</span></a>        <span class="s2">&quot;gen_percolation&quot;</span><span class="p">,</span>
-</span><span id="L-12"><a href="#L-12"><span class="linenos">12</span></a>        <span class="nb">dict</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="mf">1.0</span><span class="p">),</span>
-</span><span id="L-13"><a href="#L-13"><span class="linenos">13</span></a>    <span class="p">),</span>  <span class="c1"># anything less than this and tests will stochastically fail</span>
-</span><span id="L-14"><a href="#L-14"><span class="linenos">14</span></a>    <span class="p">(</span><span class="s2">&quot;gen_dfs_percolation&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)),</span>
-</span><span id="L-15"><a href="#L-15"><span class="linenos">15</span></a>    <span class="p">(</span><span class="s2">&quot;gen_dfs_percolation&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)),</span>
-</span><span id="L-16"><a href="#L-16"><span class="linenos">16</span></a>    <span class="c1"># (&quot;gen_prim&quot;, dict()),</span>
-</span><span id="L-17"><a href="#L-17"><span class="linenos">17</span></a>    <span class="c1"># (&quot;gen_prim&quot;, dict(do_forks=False)),</span>
-</span><span id="L-18"><a href="#L-18"><span class="linenos">18</span></a>    <span class="c1"># (&quot;gen_prim&quot;, dict(accessible_cells=0.5)),</span>
-</span><span id="L-19"><a href="#L-19"><span class="linenos">19</span></a>    <span class="c1"># (&quot;gen_prim&quot;, dict(max_tree_depth=0.5)),</span>
-</span><span id="L-20"><a href="#L-20"><span class="linenos">20</span></a>    <span class="c1"># (&quot;gen_prim&quot;, dict(accessible_cells=0.5, max_tree_depth=0.5)),</span>
+</span><span id="L-4"><a href="#L-4"><span class="linenos"> 4</span></a>	<span class="p">(</span><span class="s2">&quot;gen_dfs&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">()),</span>
+</span><span id="L-5"><a href="#L-5"><span class="linenos"> 5</span></a>	<span class="p">(</span><span class="s2">&quot;gen_dfs&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">do_forks</span><span class="o">=</span><span class="kc">False</span><span class="p">)),</span>
+</span><span id="L-6"><a href="#L-6"><span class="linenos"> 6</span></a>	<span class="p">(</span><span class="s2">&quot;gen_dfs&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">accessible_cells</span><span class="o">=</span><span class="mi">20</span><span class="p">)),</span>
+</span><span id="L-7"><a href="#L-7"><span class="linenos"> 7</span></a>	<span class="p">(</span><span class="s2">&quot;gen_dfs&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">max_tree_depth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)),</span>
+</span><span id="L-8"><a href="#L-8"><span class="linenos"> 8</span></a>	<span class="p">(</span><span class="s2">&quot;gen_wilson&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">()),</span>
+</span><span id="L-9"><a href="#L-9"><span class="linenos"> 9</span></a>	<span class="c1"># (&quot;gen_percolation&quot;, dict(p=0.1)),</span>
+</span><span id="L-10"><a href="#L-10"><span class="linenos">10</span></a>	<span class="p">(</span>
+</span><span id="L-11"><a href="#L-11"><span class="linenos">11</span></a>		<span class="s2">&quot;gen_percolation&quot;</span><span class="p">,</span>
+</span><span id="L-12"><a href="#L-12"><span class="linenos">12</span></a>		<span class="nb">dict</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="mf">1.0</span><span class="p">),</span>
+</span><span id="L-13"><a href="#L-13"><span class="linenos">13</span></a>	<span class="p">),</span>  <span class="c1"># anything less than this and tests will stochastically fail</span>
+</span><span id="L-14"><a href="#L-14"><span class="linenos">14</span></a>	<span class="p">(</span><span class="s2">&quot;gen_dfs_percolation&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)),</span>
+</span><span id="L-15"><a href="#L-15"><span class="linenos">15</span></a>	<span class="p">(</span><span class="s2">&quot;gen_dfs_percolation&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)),</span>
+</span><span id="L-16"><a href="#L-16"><span class="linenos">16</span></a>	<span class="c1"># (&quot;gen_prim&quot;, dict()),</span>
+</span><span id="L-17"><a href="#L-17"><span class="linenos">17</span></a>	<span class="c1"># (&quot;gen_prim&quot;, dict(do_forks=False)),</span>
+</span><span id="L-18"><a href="#L-18"><span class="linenos">18</span></a>	<span class="c1"># (&quot;gen_prim&quot;, dict(accessible_cells=0.5)),</span>
+</span><span id="L-19"><a href="#L-19"><span class="linenos">19</span></a>	<span class="c1"># (&quot;gen_prim&quot;, dict(max_tree_depth=0.5)),</span>
+</span><span id="L-20"><a href="#L-20"><span class="linenos">20</span></a>	<span class="c1"># (&quot;gen_prim&quot;, dict(accessible_cells=0.5, max_tree_depth=0.5)),</span>
 </span><span id="L-21"><a href="#L-21"><span class="linenos">21</span></a><span class="p">]</span>
 </span></pre></div>
 

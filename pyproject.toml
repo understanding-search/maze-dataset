@@ -342,7 +342,7 @@
 	
 	# Output file location (relative to project root)
     # If changed, update docs references
-	out_file = "docs/other/todo-inline.md"
+	out_file_base = "docs/other/todo-inline"
 
 	# Number of context lines to include around each TODO
 	context_lines = 2

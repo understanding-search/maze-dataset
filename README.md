@@ -9,13 +9,30 @@
 
 # `maze-dataset`
 
-This package provides utilities for generation, filtering, solving, visualizing, and processing of mazes for training ML systems. Primarily built for the [maze-transformer interpretability](https://github.com/understanding-search/maze-transformer) project. You can find our paper on it here: http://arxiv.org/abs/2309.10498
+This package provides utilities for generation, filtering, solving, visualizing, and processing of mazes for training or evaluating ML systems. Primarily built for the [maze-transformer interpretability](https://github.com/understanding-search/maze-transformer) project. You can find our paper on it here: http://arxiv.org/abs/2309.10498
 
-This package includes a variety of [maze generation algorithms](maze_dataset/generation/generators.py), including randomized depth first search, Wilson's algorithm for uniform spanning trees, and percolation. Datasets can be filtered to select mazes of a certain length or complexity, remove duplicates, and satisfy custom properties. A variety of output formats for visualization and training ML models are provided.
+This package includes a variety of maze generation algorithms, including randomized depth first search, Wilson's algorithm for uniform spanning trees, and percolation. Datasets can be filtered to select mazes of a certain length or complexity, remove duplicates, and satisfy custom properties. A variety of output formats for visualization and training ML models are provided.
 
 |   |   |   |   |
 |---|---|---|---|
 | ![Maze generated via percolation](docs/assets/maze_perc.png) |  ![Maze generated via constrained randomized depth first search](docs/assets/maze_dfs_constrained.png)  |  ![Maze with random heatmap](docs/assets/mazeplot_heatmap.png)  |  ![MazePlot with solution](docs/assets/mazeplot_path.png)  |
+
+# Citing
+
+If you use this code in your research, please cite [our paper](http://arxiv.org/abs/2309.10498):
+
+```
+@misc{maze-dataset,
+    title={A Configurable Library for Generating and Manipulating Maze Datasets}, 
+    author={Michael Igorevich Ivanitskiy and Rusheb Shah and Alex F. Spies and Tilman Räuker and Dan Valentine and Can Rager and Lucia Quirke and Chris Mathwin and Guillaume Corlouer and Cecilia Diniz Behn and Samy Wu Fung},
+    year={2023},
+    eprint={2309.10498},
+    archivePrefix={arXiv},
+    primaryClass={cs.LG},
+    url={http://arxiv.org/abs/2309.10498}
+}
+```
+
 
 # Installation
 This package is [available on PyPI](https://pypi.org/project/maze-dataset/), and can be installed via
@@ -104,18 +121,3 @@ MazePlot(maze).plot()
     - formatter in check-only mode via `make check-format`
 
 
-# Citing
-
-If you use this code in your research, please cite [our paper](http://arxiv.org/abs/2309.10498):
-
-```
-@misc{maze-dataset,
-    title={A Configurable Library for Generating and Manipulating Maze Datasets}, 
-    author={Michael Igorevich Ivanitskiy and Rusheb Shah and Alex F. Spies and Tilman Räuker and Dan Valentine and Can Rager and Lucia Quirke and Chris Mathwin and Guillaume Corlouer and Cecilia Diniz Behn and Samy Wu Fung},
-    year={2023},
-    eprint={2309.10498},
-    archivePrefix={arXiv},
-    primaryClass={cs.LG},
-    url={http://arxiv.org/abs/2309.10498}
-}
-```
