@@ -195,6 +195,10 @@
 		# select = ["ICN001"]
 
 		[tool.ruff.lint.per-file-ignores]
+			"maze_dataset/tokenization/maze_tokenizer.py" = [
+				# TODO: lots of unused args in the tokenizer code
+				"ARG002"
+			]
 			"tests/*" = [
 				# dont need docstrings in test functions or modules
 				"D100",

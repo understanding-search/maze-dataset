@@ -81,9 +81,9 @@ class TokenizationMode(Enum):
 
 	# Modes:
 	- `AOTP_UT_rasterized`: the "classic" mode: assigning tokens to each coordinate is done via rasterization
-	    example: for a 3x3 maze, token order is `(0,0), (0,1), (0,2), (1,0), (1,1), (1,2), (2,0), (2,1), (2,2)`
+		example: for a 3x3 maze, token order is `(0,0), (0,1), (0,2), (1,0), (1,1), (1,2), (2,0), (2,1), (2,2)`
 	- `AOTP_UT_uniform`: new mode, where a 3x3 tokenization scheme and 5x5 tokenizations scheme are compatible
-	    uses `corner_first_ndindex` function to order the tokens
+		uses `corner_first_ndindex` function to order the tokens
 	- `AOTP_CTT_indexed`: each coordinate is a tuple of integers
 	"""
 
@@ -104,7 +104,8 @@ _NDINDEX_FUNC_MAP: dict[
 }
 
 
-def is_UT(tokenization_mode: TokenizationMode) -> bool:
+def is_UT(tokenization_mode: TokenizationMode) -> bool:  # noqa: N802
+	"returns true if a tokenization mode is a UT mode: UT = Unique Token (for each coordinate)"
 	return tokenization_mode in (
 		TokenizationMode.AOTP_UT_rasterized,
 		TokenizationMode.AOTP_UT_uniform,
@@ -154,37 +155,37 @@ class MazeTokenizer(SerializableDataclass):
 	> for use, but will remain for compatibility with existing code.
 
 	# Parameters:
-	 - `tokenization_mode: TokenizationMode`
-	    mode of tokenization. required.
+	- `tokenization_mode: TokenizationMode`
+		mode of tokenization. required.
 	- `max_grid_size: int | None`
-	    maximum grid size. required for actually turning text tokens to numerical tokens, but not for moving between coordinates/mazes and text
+		maximum grid size. required for actually turning text tokens to numerical tokens, but not for moving between coordinates/mazes and text
 
 	# Properties
 	- `name: str`
-	    auto-generated name of the tokenizer from mode and size
+		auto-generated name of the tokenizer from mode and size
 
 	## Conditional Properties
 
 	- `node_strings_map: Mapping[CoordTup, str]`
-	    map from node to string. This returns a `muutils.kappa.Kappa` object which you can use like a dictionary. returns `None` if not a `UT` mode
+		map from node to string. This returns a `muutils.kappa.Kappa` object which you can use like a dictionary. returns `None` if not a `UT` mode
 
 	these all return `None` if `max_grid_size` is `None`.
 	Prepend `_` to the name to get a guaranteed type, and cause an exception if `max_grid_size` is `None`
 
 	- `token_arr: list[str]`
-	    list of tokens, in order of their indices in the vocabulary
+		list of tokens, in order of their indices in the vocabulary
 	- `tokenizer_map: Mapping[str, int]`
-	    map from token to index
+		map from token to index
 	- `vocab_size: int`
-	    size of the vocabulary
+		size of the vocabulary
 	- `padding_token_index: int`
-	    index of the padding token
+		index of the padding token
 
 	# Methods
 	- `coords_to_strings(coords: list[CoordTup]) -> list[str]`
-	    convert a list of coordinates to a list of tokens. Optionally except, skip, or ignore non-coordinates
+		convert a list of coordinates to a list of tokens. Optionally except, skip, or ignore non-coordinates
 	- `strings_to_coords(strings: list[str]) -> list[CoordTup]`
-	    convert a list of tokens to a list of coordinates. Optionally except, skip, or ignore non-coordinates
+		convert a list of tokens to a list of coordinates. Optionally except, skip, or ignore non-coordinates
 
 	"""
 
@@ -204,6 +205,7 @@ class MazeTokenizer(SerializableDataclass):
 
 	@property
 	def name(self) -> str:
+		"""auto-generated name of the tokenizer from mode and size"""
 		max_grid_size_str: str = (
 			f"-g{self.max_grid_size}" if self.max_grid_size is not None else ""
 		)
@@ -220,10 +222,8 @@ class MazeTokenizer(SerializableDataclass):
 		elif self.tokenization_mode == TokenizationMode.AOTP_CTT_indexed:
 			return Kappa(_coord_to_strings_indexed)
 		else:
-			raise ValueError(
-				f"Invalid tokenization mode {self.tokenization_mode}",
-				f"expected one of {TokenizationMode.__members__}",
-			)
+			err_msg: str = f"Invalid tokenization mode {self.tokenization_mode}, expected one of {TokenizationMode.__members__}"
+			raise ValueError(err_msg)
 
 	@cached_property
 	def node_strings_map(self) -> Mapping[CoordTup, list[str]] | None:
@@ -243,9 +243,8 @@ class MazeTokenizer(SerializableDataclass):
 	def _token_arr(self) -> list[str]:
 		"""map from index to token"""
 		if self.max_grid_size is None:
-			raise ValueError(
-				f"max_grid_size must be specified to use token_arr property: {self.max_grid_size = }",
-			)
+			err_msg: str = f"max_grid_size must be specified to use token_arr property: {self.max_grid_size = }"
+			raise ValueError(err_msg)
 
 		output: list[str] = list(SPECIAL_TOKENS.values())
 
@@ -272,15 +271,16 @@ class MazeTokenizer(SerializableDataclass):
 				],
 			)
 		else:
-			raise ValueError(
-				f"Invalid tokenization mode {self.tokenization_mode}",
-				f"expected one of {TokenizationMode.__members__}",
+			err_msg: str = (
+				f"Invalid tokenization mode {self.tokenization_mode}, expected one of {TokenizationMode.__members__}",
 			)
+			raise ValueError(err_msg)
 
 		return output
 
 	@cached_property
 	def token_arr(self) -> list[str] | None:
+		"get the token array if the max_grid_size is specified"
 		if self.max_grid_size is None:
 			return None
 		return self._token_arr
@@ -292,6 +292,7 @@ class MazeTokenizer(SerializableDataclass):
 
 	@cached_property
 	def tokenizer_map(self) -> dict[str, int] | None:
+		"get the tokenizer map if the max_grid_size is specified"
 		if self.max_grid_size is None:
 			return None
 		return self._tokenizer_map
@@ -302,6 +303,7 @@ class MazeTokenizer(SerializableDataclass):
 
 	@property
 	def vocab_size(self) -> int | None:
+		"get the size of the vocabulary if the max_grid_size is specified"
 		if self.max_grid_size is None:
 			return None
 		return self._vocab_size
@@ -313,6 +315,7 @@ class MazeTokenizer(SerializableDataclass):
 
 	@property
 	def n_tokens(self) -> int | None:
+		"get the number of tokens if the max_grid_size is specified"
 		if self.max_grid_size is None:
 			return None
 		return self._n_tokens
@@ -323,6 +326,7 @@ class MazeTokenizer(SerializableDataclass):
 
 	@cached_property
 	def padding_token_index(self) -> int | None:
+		"get the index of the padding token if it exists"
 		if self.max_grid_size is None:
 			return None
 		return self._padding_token_index
@@ -347,6 +351,11 @@ class MazeTokenizer(SerializableDataclass):
 		coords: list[CoordTup],
 		when_noncoord: WhenMissing = "skip",
 	) -> list[str]:
+		"""map a list of coordinate tuples (and maybe other tokens) to strings
+
+		wraps `maze_dataset.token_utils.coords_to_strings` with either
+		`_coord_to_strings_UT` or `_coord_to_strings_indexed` depending on the tokenization mode
+		"""
 		if self.tokenization_mode in (
 			TokenizationMode.AOTP_UT_rasterized,
 			TokenizationMode.AOTP_UT_uniform,
@@ -363,26 +372,24 @@ class MazeTokenizer(SerializableDataclass):
 				when_noncoord=when_noncoord,
 			)
 		else:
-			raise ValueError(
-				f"Invalid tokenization mode {self.tokenization_mode}",
-				f"expected one of {TokenizationMode.__members__}",
-			)
+			err_msg: str = f"Invalid tokenization mode {self.tokenization_mode}, expected one of {TokenizationMode.__members__}"
+			raise ValueError(err_msg)
 
 	@overload
 	def strings_to_coords(
-		cls,
+		cls,  # noqa: N805
 		text: str | list[str],
 		when_noncoord: Literal["skip"] = "skip",
 	) -> list[CoordTup]: ...
 	@overload
 	def strings_to_coords(
-		cls,
+		cls,  # noqa: N805
 		text: str | list[str],
 		when_noncoord: Literal["error"] = "error",
 	) -> list[CoordTup]: ...
 	@overload
 	def strings_to_coords(
-		cls,
+		cls,  # noqa: N805
 		text: str | list[str],
 		when_noncoord: Literal["include"] = "include",
 	) -> list[str | CoordTup]: ...
@@ -392,6 +399,7 @@ class MazeTokenizer(SerializableDataclass):
 		text: str | list[str],
 		when_noncoord: WhenMissing = "skip",
 	) -> list[str | CoordTup]:
+		"wrapper for `maze_dataset.token_utils.strings_to_coords`"
 		return strings_to_coords(text=text, when_noncoord=when_noncoord)
 
 	def encode(self, text: str | list[str]) -> list[int]:
@@ -401,11 +409,10 @@ class MazeTokenizer(SerializableDataclass):
 				text = text.split()
 			return [self.tokenizer_map[token] for token in text]
 		except KeyError as e:
-			raise TokenError(
-				f"Token {e} not found",
-				f"in vocabulary of {self}:",
-				f"{self.token_arr}",
-			) from e
+			err_msg: str = (
+				f"Token {e} not found in vocabulary of {self}:\n{self.token_arr}"
+			)
+			raise TokenError(err_msg) from e
 
 	def decode(
 		self,
@@ -416,9 +423,10 @@ class MazeTokenizer(SerializableDataclass):
 		try:
 			output: list[str] = [self.token_arr[token] for token in tokens]
 		except IndexError as e:
-			raise TokenError(
-				f"Token index '{e}' not found in vocabulary of length {self.vocab_size}",
-			) from e
+			err_msg: str = (
+				f"Token index '{e}' not found in vocabulary of length {self.vocab_size}"
+			)
+			raise TokenError(err_msg) from e
 		if joined_tokens:
 			return " ".join(output)
 		else:
@@ -429,15 +437,15 @@ class MazeTokenizer(SerializableDataclass):
 
 	@cached_property
 	def coordinate_tokens_coords(self) -> dict[CoordTup, int]:
-		print(f"{self.tokenization_mode = }")
+		"map of coordiante tuples to their token ids, only valid for UT"
+		# print(f"{self.tokenization_mode = }")
 		if not self.is_UT():
-			raise ValueError(
-				f"coordinate_tokens_coords is only valid for UT tokenization modes, got {self.tokenization_mode = }",
-			)
+			err_msg: str = f"coordinate_tokens_coords is only valid for UT tokenization modes, got {self.tokenization_mode = }"
+			raise ValueError(err_msg)
+
 		if self.max_grid_size is None:
-			raise ValueError(
-				f"max_grid_size must be specified to use coordinate_tokens: {self.max_grid_size = }",
-			)
+			err_msg: str = f"max_grid_size must be specified to use coordinate_tokens: {self.max_grid_size = }"
+			raise ValueError(err_msg)
 
 		raw_converted: list[CoordTup | str] = self.strings_to_coords(
 			self.token_arr,
@@ -453,6 +461,7 @@ class MazeTokenizer(SerializableDataclass):
 
 	@cached_property
 	def coordinate_tokens_ids(self) -> dict[str, int]:
+		"map of coordinate tokens to their token ids, only valid for UT"
 		# checks performed in call
 		output: dict[str, int] = dict()
 
@@ -474,7 +483,7 @@ class MazeTokenizer(SerializableDataclass):
 			"vocab_size": self.vocab_size,
 		}
 
-	def is_AOTP(self) -> bool:
+	def is_AOTP(self) -> bool:  # noqa: N802
 		"""returns true if a tokenization mode is Adjacency list, Origin, Target, Path"""
 		return self.tokenization_mode in (
 			TokenizationMode.AOTP_UT_rasterized,
@@ -482,16 +491,17 @@ class MazeTokenizer(SerializableDataclass):
 			TokenizationMode.AOTP_CTT_indexed,
 		)
 
-	def is_UT(self) -> bool:
+	def is_UT(self) -> bool:  # noqa: N802
+		"returns true if a tokenization mode is a UT mode: UT = Unique Token (for each coordinate)"
 		return is_UT(self.tokenization_mode)
 
-	def clear_cache(self):
+	def clear_cache(self) -> None:
 		"""clears all cached properties"""
 		# delete the properties only if they exist
 		for name, prop in self.__class__.__dict__.items():
 			if isinstance(prop, cached_property):
 				# if the property exists, delete it
-				try:
+				try:  # noqa: SIM105
 					delattr(self, name)
 				except AttributeError:
 					pass
@@ -500,6 +510,7 @@ class MazeTokenizer(SerializableDataclass):
 @serializable_dataclass(frozen=True, kw_only=True)
 class _TokenizerElement(SerializableDataclass, abc.ABC):
 	"""Superclass for tokenizer elements.
+
 	Subclasses contain modular functionality for maze tokenization.
 
 	# Development
@@ -511,8 +522,9 @@ class _TokenizerElement(SerializableDataclass, abc.ABC):
 
 	"""
 
+	# TYPING: type hint `v` more specifically
 	@staticmethod
-	def _stringify(k: str, v: Any):
+	def _stringify(k: str, v: Any) -> str:  # noqa: ANN401
 		if isinstance(v, bool):
 			return f"{k}={str(v)[0]}"
 		if isinstance(v, _TokenizerElement):
@@ -533,11 +545,13 @@ class _TokenizerElement(SerializableDataclass, abc.ABC):
 		else:
 			return output
 
-	def __str__(self):
+	def __str__(self) -> str:
 		return self.name
 
-	def __init_subclass__(cls, **kwargs):
+	# TYPING: type hints for `__init_subclass__`?
+	def __init_subclass__(cls, **kwargs):  # noqa: ANN204
 		"""Hack: dataclass hashes don't include the class itself in the hash function inputs.
+
 		This causes dataclasses with identical fields but different types to hash identically.
 		This hack circumvents this by adding a slightly hidden field to every subclass with a value of `repr(cls)`.
 		To maintain compatibility with `all_instances`, the static type of the new field can only have 1 possible value.
@@ -552,9 +566,9 @@ class _TokenizerElement(SerializableDataclass, abc.ABC):
 			default=repr(cls),
 			assert_type=False,
 		)
-		cls.__annotations__["_type_"] = Literal[repr(cls)]  # type: ignore
+		cls.__annotations__["_type_"] = Literal[repr(cls)]
 
-	def __hash__(self):
+	def __hash__(self) -> int:
 		"Stable hash to identify unique `MazeTokenizerModular` instances. uses name"
 		return int.from_bytes(
 			hashlib.blake2b(self.name.encode("utf-8")).digest(),
@@ -570,6 +584,7 @@ class _TokenizerElement(SerializableDataclass, abc.ABC):
 
 	def tokenizer_elements(self, deep: bool = True) -> list["_TokenizerElement"]:
 		"""Returns a list of all `_TokenizerElement` instances contained in the subtree.
+
 		Currently only detects `_TokenizerElement` instances which are either direct attributes of another instance or
 		which sit inside a `tuple` without further nesting.
 
@@ -580,7 +595,7 @@ class _TokenizerElement(SerializableDataclass, abc.ABC):
 			return list(
 				flatten(
 					[
-						[el] + el.tokenizer_elements()
+						[el, *el.tokenizer_elements()]
 						for el in self.__dict__.values()
 						if isinstance(el, _TokenizerElement)
 					],
@@ -595,7 +610,7 @@ class _TokenizerElement(SerializableDataclass, abc.ABC):
 			non_tuple_elems: list[_TokenizerElement] = list(
 				flatten(
 					[
-						[el] + el.tokenizer_elements()
+						[el, *el.tokenizer_elements()]
 						for el in self.__dict__.values()
 						if isinstance(el, _TokenizerElement)
 					]
@@ -611,7 +626,7 @@ class _TokenizerElement(SerializableDataclass, abc.ABC):
 					[
 						(
 							[
-								[tup_el] + tup_el.tokenizer_elements()
+								[tup_el, *tup_el.tokenizer_elements()]
 								for tup_el in el
 								if isinstance(tup_el, _TokenizerElement)
 							]
@@ -680,6 +695,7 @@ class _TokenizerElement(SerializableDataclass, abc.ABC):
 
 	def to_tokens(self, *args, **kwargs) -> list[str]:
 		"""Converts a maze element into a list of tokens.
+
 		Not all `_TokenizerElement` subclasses produce tokens, so this is not an abstract method.
 		Those subclasses which do produce tokens should override this method.
 		"""
@@ -688,6 +704,7 @@ class _TokenizerElement(SerializableDataclass, abc.ABC):
 	@abc.abstractmethod
 	def is_valid(self) -> bool:
 		"""Returns if `self` contains data members capable of producing an overall valid `MazeTokenizerModular`.
+
 		Some `_TokenizerElement` instances may be created which are not useful despite obeying data member type hints.
 		`is_valid` allows for more precise detection of invalid `_TokenizerElement`s beyond type hinting alone.
 		If type hints are sufficient to constrain the possible instances of some subclass, then this method may simply `return True` for that subclass.
@@ -720,7 +737,8 @@ class _TokenizerElement(SerializableDataclass, abc.ABC):
 T = TypeVar("T", bound=_TokenizerElement)
 
 
-def mark_as_unsupported(is_valid: Callable[[T], bool], *args) -> T:
+# TYPING: better type hints for this function
+def mark_as_unsupported(is_valid: Callable[[T], bool], *args) -> T:  # noqa: ARG001
 	"""mark a _TokenizerElement as unsupported.
 
 	Classes marked with this decorator won't show up in `get_all_tokenizers()` and thus wont be tested.
@@ -730,14 +748,15 @@ def mark_as_unsupported(is_valid: Callable[[T], bool], *args) -> T:
 	These decorators could be removed in future releases to expand the space of possible tokenizers.
 	"""
 
-	def wrapper(cls):
+	def wrapper(cls):  # noqa: ANN001, ANN202
 		cls.is_valid = is_valid
 		return cls
 
 	return wrapper
 
 
-class __TokenizerElementNamespace(abc.ABC):
+# TODO: why noqa here? `B024 `__TokenizerElementNamespace` is an abstract base class, but it has no abstract methods or properties`
+class __TokenizerElementNamespace(abc.ABC):  # noqa: B024
 	"""ABC for namespaces
 
 	# Properties
@@ -753,8 +772,8 @@ def _load_tokenizer_element(
 ) -> _TokenizerElement:
 	"""Loads a `TokenizerElement` stored via zanj."""
 	key: str = namespace.key
-	format: str = data[key][_FORMAT_KEY]
-	cls_name: str = format.split("(")[0]
+	format_: str = data[key][_FORMAT_KEY]
+	cls_name: str = format_.split("(")[0]
 	cls: type[_TokenizerElement] = getattr(namespace, cls_name)
 	kwargs: dict[str, Any] = {
 		k: load_item_recursive(data[key][k], tuple()) for k, v in data[key].items()
@@ -789,7 +808,8 @@ class CoordTokenizers(__TokenizerElementNamespace):
 	class UT(_CoordTokenizer):
 		"""Unique token coordinate tokenizer."""
 
-		def to_tokens(self, coord: Coord | CoordTup) -> list[str]:
+		# inherit docstring
+		def to_tokens(self, coord: Coord | CoordTup) -> list[str]:  # noqa: D102
 			return ["".join(["(", str(coord[0]), ",", str(coord[1]), ")"])]
 
 	@serializable_dataclass(frozen=True, kw_only=True)
@@ -807,7 +827,8 @@ class CoordTokenizers(__TokenizerElementNamespace):
 		post: bool = serializable_field(default=True)
 		# Implement methods
 
-		def to_tokens(self, coord: Coord | CoordTup) -> list[str]:
+		# inherit docstring
+		def to_tokens(self, coord: Coord | CoordTup) -> list[str]:  # noqa: D102
 			return [
 				*empty_sequence_if_attr_false([VOCAB.COORD_PRE], self, "pre"),
 				str(coord[0]),
@@ -843,6 +864,7 @@ class EdgeGroupings(__TokenizerElementNamespace):
 		@abc.abstractmethod
 		def _group_edges(self, edges: ConnectionArray) -> Sequence[ConnectionArray]:
 			"""Divides a ConnectionArray into groups of edges.
+
 			Shuffles/sequences within each group if applicable.
 			"""
 			pass
@@ -884,7 +906,7 @@ class EdgeGroupings(__TokenizerElementNamespace):
 			return np.expand_dims(edges, 1)
 
 	@serializable_dataclass(frozen=True, kw_only=True)
-	@mark_as_unsupported(lambda self_: False)
+	@mark_as_unsupported(lambda self_: False)  # noqa: ARG005
 	class ByLeadingCoord(_EdgeGrouping):
 		"""All edges with the same leading coord are grouped together.
 
@@ -948,6 +970,7 @@ class EdgePermuters(__TokenizerElementNamespace):
 		@abc.abstractmethod
 		def _permute(lattice_edges: ConnectionArray) -> ConnectionArray:
 			"""Executes a permutation.
+
 			Warning: Caller should be aware that `lattice_edges` may be modified in-place depending on the subclass's implementation.
 
 			# Parameters
@@ -990,6 +1013,7 @@ class EdgePermuters(__TokenizerElementNamespace):
 	@serializable_dataclass(frozen=True, kw_only=True)
 	class BothCoords(_EdgePermuter):
 		"""Includes both possible permutations of every edge in the output.
+
 		Since input ConnectionList has only 1 instance of each edge,
 		a call to `BothCoords._permute` will modify `lattice_edges` in-place, doubling `shape[0]`.
 		"""
@@ -1023,6 +1047,7 @@ class EdgeSubsets(__TokenizerElementNamespace):
 	@serializable_dataclass(frozen=True, kw_only=True)
 	class AllLatticeEdges(_EdgeSubset):
 		"""All 2n**2-2n edges of the lattice are tokenized.
+
 		If a wall exists on that edge, the edge is tokenized in the same manner, using `VOCAB.ADJLIST_WALL` in place of `VOCAB.CONNECTOR`.
 		"""
 
@@ -1032,6 +1057,7 @@ class EdgeSubsets(__TokenizerElementNamespace):
 	@serializable_dataclass(frozen=True, kw_only=True)
 	class ConnectionEdges(_EdgeSubset):
 		"""Only edges which contain a connection are tokenized.
+
 		Alternatively, only edges which contain a wall are tokenized.
 
 		# Parameters
@@ -1063,6 +1089,7 @@ class AdjListTokenizers(__TokenizerElementNamespace):
 	@mark_as_unsupported(lambda self_: self_.pre is False)
 	class _AdjListTokenizer(_TokenizerElement, abc.ABC):
 		"""Specifies how the adjacency list is tokenized.
+
 		Tokenization behavior is decomposed into specification of edge subsets, groupings, and permutations.
 		See documentation of `EdgeSubset` and `EdgeGrouping` classes for more details.
 
@@ -1070,15 +1097,15 @@ class AdjListTokenizers(__TokenizerElementNamespace):
 		- `pre`: Whether all edge groupings include a preceding delimiter token
 		- `post`: Whether all edge groupings include a following delimiter token
 		- `shuffle_d0`: Specifies how to sequence the edge groupings.
-		If true, groupings are shuffled randomly. If false, groupings are sorted by the leading coord of each group.
+			If true, groupings are shuffled randomly. If false, groupings are sorted by the leading coord of each group.
 		- `edge_grouping`: Specifies if/how multiple coord-coord connections are grouped together in a token subsequence called an edge grouping.
 		- `edge_subset`: Specifies the subset of lattice edges to be tokenized.
 		- `edge_permuter`: Specifies, in each edge tokenization, which coord either:
-		  1. Appears first in the tokenization, for `AdjListCoord`.
-		  2. Is tokenized directly as a coord, for `AdjListCardinal`.
-		  - `shuffle`: For each edge, the leading coord is selected randomly.
-		  - `all`: Each edge appears twice in the tokenization, appearing with both leading coords.
-		  - `evens`, `odds`: The leading coord is the one belonging to that coord subset. See `EdgeSubsets.ChessboardSublattice` for details.
+			1. Appears first in the tokenization, for `AdjListCoord`.
+			2. Is tokenized directly as a coord, for `AdjListCardinal`.
+			- `shuffle`: For each edge, the leading coord is selected randomly.
+			- `all`: Each edge appears twice in the tokenization, appearing with both leading coords.
+			- `evens`, `odds`: The leading coord is the one belonging to that coord subset. See `EdgeSubsets.ChessboardSublattice` for details.
 		"""
 
 		pre: bool = serializable_field(default=False, assert_type=False)
@@ -1113,7 +1140,7 @@ class AdjListTokenizers(__TokenizerElementNamespace):
 			coord_tokenizer: CoordTokenizers._CoordTokenizer,
 			*args,
 			**kwargs,
-		):
+		) -> list[Callable]:
 			"""Returns a sequence of callables which take an index in `edges` and return parts of that edge tokenization.
 
 			# Returns
@@ -1215,9 +1242,8 @@ class AdjListTokenizers(__TokenizerElementNamespace):
 				elif isinstance(groups, list):
 					random.shuffle(groups)
 				else:
-					raise TypeError(
-						f"`groups` is an unexpected type {type(groups)}. Only types `list` and `np.ndarray` are currently supported.",
-					)
+					err_msg: str = f"`groups` is an unexpected type {type(groups)}. Only types `list` and `np.ndarray` are currently supported."
+					raise TypeError(err_msg)
 			# Tokenize each group with optional delimiters
 			tokens: list[str] = list(
 				flatten(
@@ -1262,7 +1288,7 @@ class AdjListTokenizers(__TokenizerElementNamespace):
 			coord_tokenizer: CoordTokenizers._CoordTokenizer,
 			*args,
 			**kwargs,
-		):
+		) -> list[Callable]:
 			# Map from `is_conn` to the tokens which represent connections and walls
 			conn_token_map: dict[bool, str] = {
 				True: VOCAB.CONNECTOR,
@@ -1294,7 +1320,7 @@ class AdjListTokenizers(__TokenizerElementNamespace):
 			coord_tokenizer: CoordTokenizers._CoordTokenizer,
 			*args,
 			**kwargs,
-		):
+		) -> list[Callable]:
 			# Map from `is_conn` to the tokens which represent connections and walls
 			conn_token_map: dict[bool, str] = {
 				True: VOCAB.CONNECTOR,
@@ -1332,12 +1358,14 @@ class TargetTokenizers(__TokenizerElementNamespace):
 	@serializable_dataclass(frozen=True, kw_only=True)
 	class Unlabeled(_TargetTokenizer):
 		"""Targets are simply listed as coord tokens.
+
 		- `post`: Whether all coords include an integral following delimiter token
 		"""
 
 		post: bool = serializable_field(default=False)
 
-		def to_tokens(
+		# inherit docstring
+		def to_tokens(  # noqa: D102
 			self,
 			targets: Sequence[Coord],
 			coord_tokenizer: CoordTokenizers._CoordTokenizer,
@@ -1358,7 +1386,8 @@ class TargetTokenizers(__TokenizerElementNamespace):
 				),
 			)
 
-		def is_valid(self) -> bool:
+		# inherit docstring
+		def is_valid(self) -> bool:  # noqa: D102
 			# No invalid instances possible within data member type hint bounds
 			return True
 
@@ -1383,12 +1412,13 @@ class StepSizes(__TokenizerElementNamespace):
 				"Subclasses must implement `StepSize.step_indices.",
 			)
 
-		def step_start_end_indices(self, maze) -> list[tuple[int, int]]:
+		def step_start_end_indices(self, maze: SolvedMaze) -> list[tuple[int, int]]:
 			"""Returns steps as tuples of starting and ending positions for each step."""
 			indices: list[int] = self._step_single_indices(maze)
+			# TODO: RUF007 Prefer `itertools.pairwise()` over `zip()` when iterating over successive pairs
 			return [
 				(start, end)
-				for start, end in zip(indices[:-1], indices[1:], strict=False)
+				for start, end in zip(indices[:-1], indices[1:], strict=False)  # noqa: RUF007
 			]
 
 		def is_valid(self) -> bool:
@@ -1398,6 +1428,7 @@ class StepSizes(__TokenizerElementNamespace):
 	@serializable_dataclass(frozen=True, kw_only=True)
 	class Singles(_StepSize):
 		"""Every coord in `maze.solution` is represented.
+
 		Legacy tokenizers all use this behavior.
 		"""
 
@@ -1406,9 +1437,10 @@ class StepSizes(__TokenizerElementNamespace):
 			return list(range(maze.solution.shape[0]))
 
 	@serializable_dataclass(frozen=True, kw_only=True)
-	@mark_as_unsupported(lambda self_: False)
+	@mark_as_unsupported(lambda self_: False)  # noqa: ARG005
 	class Straightaways(_StepSize):
 		"""Only coords where the path turns are represented in the path.
+
 		I.e., the path is represented as a sequence of straightaways,
 		specified by the coords at the turns.
 		"""
@@ -1427,6 +1459,7 @@ class StepSizes(__TokenizerElementNamespace):
 	@serializable_dataclass(frozen=True, kw_only=True)
 	class Forks(_StepSize):
 		"""Only coords at forks, where the path has >=2 options for the next step are included.
+
 		Excludes the option of backtracking.
 		The starting and ending coords are always included.
 		"""
@@ -1436,9 +1469,10 @@ class StepSizes(__TokenizerElementNamespace):
 			return maze.get_solution_forking_points(always_include_endpoints=True)[0]
 
 	@serializable_dataclass(frozen=True, kw_only=True)
-	@mark_as_unsupported(lambda self_: False)
+	@mark_as_unsupported(lambda self_: False)  # noqa: ARG005
 	class ForksAndStraightaways(_StepSize):
 		"""Includes the union of the coords included by `Forks` and `Straightaways`.
+
 		See documentation for those classes for details.
 		"""
 
@@ -1496,7 +1530,8 @@ class StepTokenizers(__TokenizerElementNamespace):
 	class Coord(_StepTokenizer):
 		"""A direct tokenization of the end position coord represents the step."""
 
-		def to_tokens(
+		# inherit docstring
+		def to_tokens(  # noqa: D102
 			self,
 			maze: SolvedMaze,
 			start_index: int,
@@ -1508,10 +1543,12 @@ class StepTokenizers(__TokenizerElementNamespace):
 	@serializable_dataclass(frozen=True, kw_only=True)
 	class Cardinal(_StepTokenizer):
 		"""A step is tokenized with a cardinal direction token.
+
 		It is the direction of the step from the starting position along the solution.
 		"""
 
-		def to_tokens(
+		# inherit docstring
+		def to_tokens(  # noqa: D102
 			self,
 			maze: SolvedMaze,
 			start_index: int,
@@ -1525,11 +1562,13 @@ class StepTokenizers(__TokenizerElementNamespace):
 	@serializable_dataclass(frozen=True, kw_only=True)
 	class Relative(_StepTokenizer):
 		"""Tokenizes a solution step using relative first-person directions (right, left, forward, etc.).
+
 		To simplify the indeterminacy, at the start of a solution the "agent" solving the maze is assumed to be facing NORTH.
 		Similarly to `Cardinal`, the direction is that of the step from the starting position.
 		"""
 
-		def to_tokens(
+		# inherit docstring
+		def to_tokens(  # noqa: D102
 			self,
 			maze: SolvedMaze,
 			start_index: int,
@@ -1559,12 +1598,14 @@ class StepTokenizers(__TokenizerElementNamespace):
 	@serializable_dataclass(frozen=True, kw_only=True)
 	class Distance(_StepTokenizer):
 		"""A count of the number of individual steps from the starting point to the end point.
+
 		Contains no information about directionality, only the distance traveled in the step.
 		`Distance` must be combined with at least one other `_StepTokenizer` in a `StepTokenizerPermutation`.
 		This constraint is enforced in `_PathTokenizer.is_valid`.
 		"""
 
-		def to_tokens(
+		# inherit docstring
+		def to_tokens(  # noqa: D102
 			self,
 			maze: SolvedMaze,
 			start_index: int,
@@ -1575,10 +1616,10 @@ class StepTokenizers(__TokenizerElementNamespace):
 			return [getattr(VOCAB, f"I_{d:03}")]
 
 	"""
-    `StepTokenizerPermutation`
-    A sequence of unique `_StepTokenizer`s.
-    This type exists mostly just for the clarity and convenience of `_PathTokenizer` code.
-    """
+	`StepTokenizerPermutation`
+	A sequence of unique `_StepTokenizer`s.
+	This type exists mostly just for the clarity and convenience of `_PathTokenizer` code.
+	"""
 	StepTokenizerPermutation: type = (
 		tuple[_StepTokenizer]
 		| tuple[_StepTokenizer, _StepTokenizer]
@@ -1612,6 +1653,7 @@ class PathTokenizers(__TokenizerElementNamespace):
 	@serializable_dataclass(frozen=True, kw_only=True)
 	class StepSequence(_PathTokenizer, abc.ABC):
 		"""Any `PathTokenizer` where the tokenization may be assembled from token subsequences, each of which represents a step along the path.
+
 		Allows for a sequence of leading and trailing tokens which don't fit the step pattern.
 
 		# Parameters
@@ -1635,7 +1677,8 @@ class PathTokenizers(__TokenizerElementNamespace):
 		intra: bool = serializable_field(default=False)
 		post: bool = serializable_field(default=False)
 
-		def to_tokens(
+		# inherit docstring
+		def to_tokens(  # noqa: D102
 			self,
 			maze: SolvedMaze,
 			coord_tokenizer: CoordTokenizers._CoordTokenizer,
@@ -1685,6 +1728,7 @@ class PathTokenizers(__TokenizerElementNamespace):
 			coord_tokenizer: CoordTokenizers._CoordTokenizer,
 		) -> list[str]:
 			"""Returns tokens preceding those from the sequence from `_single_step_tokens`.
+
 			Since the for loop in `to_tokens` iterates `len(path)-1` times, a fencepost problem exists with `StepTokenizers.Coord`.
 			<PATH_START> should NOT be included.
 			"""
@@ -1713,7 +1757,8 @@ class PathTokenizers(__TokenizerElementNamespace):
 				# Uninteresting: repeated elements are not useful
 				return False
 
-			if len(self.step_tokenizers) == 1 and isinstance(
+			# we do noqa for the comment if false
+			if len(self.step_tokenizers) == 1 and isinstance(  # noqa: SIM103
 				self.step_tokenizers[0],
 				StepTokenizers.Distance,
 			):
@@ -1950,7 +1995,7 @@ class PromptSequencers(__TokenizerElementNamespace):
 			adj_list: list[str],
 			origin: list[str],
 			# explicitly no target in this tokenizer
-			target: list[str],  # noqa: ARG002
+			target: list[str],
 			path: list[str],
 		) -> list[str]:
 			return [
