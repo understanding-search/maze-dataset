@@ -10,7 +10,7 @@ import json
 import typing
 import warnings
 from pathlib import Path
-from typing import Callable, Type
+from typing import Callable, Type, TypeVar
 
 import muutils
 import numpy as np
@@ -83,14 +83,14 @@ class GPTDatasetConfig(SerializableDataclass):
 	)
 
 	def __post_init__(self):
+		"post init, where we set a random seed if none is set"
 		assert self.seq_len_min <= self.seq_len_max
 		# if seed set to None, then generate a new random seed
 		if self.seed is None:
 			self.seed = torch.random.seed() % 2**31
 
-		if (self.seed != muutils.mlutils.DEFAULT_SEED) and (
-			self.seed != muutils.mlutils.GLOBAL_SEED
-		):
+		# TODO: something here is broken
+		if self.seed not in (muutils.mlutils.DEFAULT_SEED, muutils.mlutils.GLOBAL_SEED):
 			warnings.warn(
 				f"in GPTDatasetConfig {self.name=}, {self.seed=} is trying to override {muutils.mlutils.GLOBAL_SEED=} which has already been changed elsewhere from {muutils.mlutils.DEFAULT_SEED=}",
 			)
@@ -155,62 +155,62 @@ class GPTDataset(Dataset):
 
 	# Requires:
 	the following methods should be implemented in subclasses:
-	 - `__init__(self, cfg: GPTDatasetConfig, **kwargs)`
-	    initialize the dataset from a given config. kwargs are not passed through, the kwargs should take the actual generated or loaded data (a list of objects or sequences probably)
-	    - `generate(cls, cfg: GPTDatasetConfig, **kwargs) -> GPTDataset`
-	    generate the dataset from a given config. kwargs are passed through from `from_config`, and should only contain things that dont belong in the config (i.e. how many threads to use for generation)
-	    - `serialize(self) -> JSONitem`
-	    serialize the dataset to a ZANJ-serializable object, including:
-	        - config
-	        - data in formats specified by `self.save_formats`
-	    - `load(cls, data: JSONitem) -> GPTDataset`
-	    load the dataset from a ZANJ-serializable object
-	    - `download(cls, cfg: GPTDatasetConfig, **kwargs) -> GPTDataset`
-	    given a config, try to download a dataset from some source. kwargs are passed through from `from_config`, and should only contain things that dont belong in the config (i.e. some kind of auth token or source url)
-	    - `__len__(self) -> int`
-	    return the length of the dataset, required for `torch.utils.data.Dataset`
-	    - `__getitem__(self, i: int) -> list[str]`
-	    return the ith item in the dataset, required for `torch.utils.data.Dataset`
-	    return the ith item in the dataset, required for `torch.utils.data.Dataset`
-	    -  `update_self_config(self) -> None`
-	    update the config of the dataset to match the current state of the dataset, used primarily in filtering and validation
-	    -  decorating the appropriate filter namespace with `register_filter_namespace_for_dataset(your_dataset_class)` if you want to use filters
+	- `__init__(self, cfg: GPTDatasetConfig, **kwargs)`
+		initialize the dataset from a given config. kwargs are not passed through, the kwargs should take the actual generated or loaded data (a list of objects or sequences probably)
+	- `generate(cls, cfg: GPTDatasetConfig, **kwargs) -> GPTDataset`
+		generate the dataset from a given config. kwargs are passed through from `from_config`, and should only contain things that dont belong in the config (i.e. how many threads to use for generation)
+	- `serialize(self) -> JSONitem`
+		serialize the dataset to a ZANJ-serializable object, including:
+		- config
+		- data in formats specified by `self.save_formats`
+	- `load(cls, data: JSONitem) -> GPTDataset`
+		load the dataset from a ZANJ-serializable object
+	- `download(cls, cfg: GPTDatasetConfig, **kwargs) -> GPTDataset`
+		given a config, try to download a dataset from some source. kwargs are passed through from `from_config`, and should only contain things that dont belong in the config (i.e. some kind of auth token or source url)
+	- `__len__(self) -> int`
+		return the length of the dataset, required for `torch.utils.data.Dataset`
+	- `__getitem__(self, i: int) -> list[str]`
+		return the ith item in the dataset, required for `torch.utils.data.Dataset`
+		return the ith item in the dataset, required for `torch.utils.data.Dataset`
+	-  `update_self_config(self) -> None`
+		update the config of the dataset to match the current state of the dataset, used primarily in filtering and validation
+	-  decorating the appropriate filter namespace with `register_filter_namespace_for_dataset(your_dataset_class)` if you want to use filters
 
 	# Parameters:
-	    - `cfg : GPTDatasetConfig`
-	    config for the dataset, used to generate the dataset
-	    - `do_generate : bool`
-	    whether to generate the dataset if it isn't found
-	    (defaults to `True`)
-	    - `load_local : bool`
-	    whether to try finding the dataset locally
-	    (defaults to `True`)
-	    - `save_local : bool`
-	    whether to save the dataset locally if it is generated or downloaded
-	    (defaults to `True`)
-	    - `do_download : bool`
-	    whether to try downloading the dataset
-	    (defaults to `True`)
-	    - `local_base_path : Path`
-	    where to save the dataset
-	    (defaults to `Path("data/maze_dataset")`)
+	- `cfg : GPTDatasetConfig`
+		config for the dataset, used to generate the dataset
+	- `do_generate : bool`
+		whether to generate the dataset if it isn't found
+		(defaults to `True`)
+	- `load_local : bool`
+		whether to try finding the dataset locally
+		(defaults to `True`)
+	- `save_local : bool`
+		whether to save the dataset locally if it is generated or downloaded
+		(defaults to `True`)
+	- `do_download : bool`
+		whether to try downloading the dataset
+		(defaults to `True`)
+	- `local_base_path : Path`
+		where to save the dataset
+		(defaults to `Path("data/maze_dataset")`)
 
 	# Returns:
-	    - `GPTDataset`
-	    the dataset, as you wanted it
+	- `GPTDataset`
+		the dataset, as you wanted it
 
 	# Implements:
-	    - `save(self, file_path: str) -> None`
-	    save the dataset to a file, using ZANJ
-	    - `read(cls, file_path: str) -> GPTDataset`
-	    read the dataset from a file, using ZANJ
-	    get all items in the dataset, in the specified format
-	    - `filter_by(self)`
-	    returns a namespace class
-	    -  `_filter_namespace(self) -> Class`
-	    returns a namespace class for filtering the dataset, checking that method
-	    - `_apply_filters_from_config(self) -> None`
-	    apply filters to the dataset, as specified in the config. used in `from_config()` but only when generating
+	- `save(self, file_path: str) -> None`
+		save the dataset to a file, using ZANJ
+	- `read(cls, file_path: str) -> GPTDataset`
+		read the dataset from a file, using ZANJ
+		get all items in the dataset, in the specified format
+	- `filter_by(self)`
+		returns a namespace class
+	-  `_filter_namespace(self) -> Class`
+		returns a namespace class for filtering the dataset, checking that method
+	- `_apply_filters_from_config(self) -> None`
+		apply filters to the dataset, as specified in the config. used in `from_config()` but only when generating
 
 	"""
 
@@ -219,7 +219,7 @@ class GPTDataset(Dataset):
 	cfg: GPTDatasetConfig
 
 	@classmethod
-	def from_config(
+	def from_config(  # noqa: C901, PLR0912
 		cls,
 		cfg: GPTDatasetConfig,
 		do_generate: bool = True,
@@ -260,14 +260,14 @@ class GPTDataset(Dataset):
 		dataset_path: Path = local_base_path / fname
 
 		# try loading
-		if load_local:
+		if load_local:  # noqa: SIM102
 			if dataset_path.exists():
 				print_log(f"loading dataset from {dataset_path.as_posix()}")
 				try:
 					output = cls.read(dataset_path, zanj=zanj)
 					did_load_local = True
 					print_log("load successful!")
-				except Exception as e:
+				except Exception as e:  # noqa: BLE001
 					print_log(f"failed to load dataset: {e}")
 
 		if do_download and output is None:
@@ -322,7 +322,8 @@ class GPTDataset(Dataset):
 		)
 		return output
 
-	def save(self, file_path: Path | str, zanj: ZANJ | None = None):
+	def save(self, file_path: Path | str, zanj: ZANJ | None = None) -> None:
+		"save dataset to a file with zanj"
 		if zanj is None:
 			zanj = ZANJ()
 		zanj.save(self.serialize(), file_path)
@@ -330,32 +331,38 @@ class GPTDataset(Dataset):
 	# serialization & loading
 	@classmethod
 	def read(cls, file_path: str, zanj: ZANJ | None = None) -> "GPTDataset":
+		"read dataset from a file with zanj"
 		if zanj is None:
 			zanj = ZANJ()
 		return zanj.read(file_path)
 
 	def serialize(self) -> JSONitem:
+		"(implement in subclass!) serialize to something we can save with zanj"
 		raise NotImplementedError
 
 	def data_hash(self) -> int:
+		"(implement in subclass!) return a hash of the data"
 		raise NotImplementedError
 
 	@classmethod
 	def load(cls, data: JSONitem) -> "GPTDataset":
+		"(implement in subclass!) load a dataset from what we made with `.serialize()`"
 		raise NotImplementedError
 
 	# generating & downloading
 	@classmethod
 	def generate(cls, cfg: GPTDatasetConfig, **kwargs) -> "GPTDataset":
+		"(implement in subclass!) generative given the config"
 		raise NotImplementedError
 
 	@classmethod
 	def download(cls, cfg: GPTDatasetConfig, **kwargs) -> "GPTDataset":
+		"(implement in subclass!) download the dataset given the config"
 		raise NotImplementedError
 
 	# filtering
-	def update_self_config(self):
-		"""update the config of the dataset to match the actual data, if needed
+	def update_self_config(self) -> None:
+		"""(implement in subclass!) update the config of the dataset to match the actual data, if needed
 
 		for example, adjust number of mazes after filtering
 		"""
@@ -364,22 +371,25 @@ class GPTDataset(Dataset):
 	class FilterBy:
 		"""thanks GPT-4"""
 
-		def __init__(self, dataset: "GPTDataset"):
+		def __init__(self, dataset: "GPTDataset") -> None:
+			"mock class so we can call `my_dataset.filter_by.some_registered_filter()`"
 			self.dataset: GPTDataset = dataset
 
 		def __getattr__(self, name: str) -> typing.Callable[..., "GPTDataset"]:
+			"override getattr so we can call `my_dataset.filter_by.some_registered_filter()`"
 			filter_func: DatasetFilterProtocol = getattr(
 				self.dataset._FILTER_NAMESPACE,
 				name,
 			)
 
-			def wrapped_filter_func(*args, **kwargs):
+			def wrapped_filter_func(*args, **kwargs):  # noqa: ANN202
 				return filter_func(self.dataset, *args, **kwargs)
 
 			return wrapped_filter_func
 
 	@property
 	def filter_by(self) -> "FilterBy":
+		"can call `my_dataset.filter_by.some_registered_filter()` to filter the dataset"
 		return self.FilterBy(self)
 
 	def _apply_filters_from_config(self) -> "GPTDataset":
@@ -403,10 +413,8 @@ class GPTDataset(Dataset):
 				raise ValueError(
 					err_msg,
 				)
-			filter_args: list = filter_info["args"] if "args" in filter_info else list()
-			filter_kwargs: dict = (
-				filter_info["kwargs"] if "kwargs" in filter_info else dict()
-			)
+			filter_args: list = filter_info.get("args", list())
+			filter_kwargs: dict = filter_info.get("kwargs", dict())
 			output = getattr(output.filter_by, filter_name)(
 				*filter_args,
 				**filter_kwargs,
@@ -497,11 +505,16 @@ def register_filter_namespace_for_dataset(
 
 
 class DatasetFilterProtocol(typing.Protocol):
-	def __call__(
+	"protocol for typing hinting what a dataset filter should look like"
+
+	def __call__(  # noqa: D102
 		self,
 		dataset: GPTDataset,
 		**kwargs,
 	) -> GPTDataset: ...
+
+
+DatasetType = TypeVar("DatasetType", bound=GPTDataset)
 
 
 def register_dataset_filter(
@@ -515,7 +528,7 @@ def register_dataset_filter(
 	"""
 
 	@functools.wraps(method)
-	def wrapper(dataset: GPTDataset, *args, **kwargs):
+	def wrapper(dataset: DatasetType, *args, **kwargs) -> DatasetType:
 		new_dataset = method(dataset, *args, **kwargs)
 		# update the config
 		new_dataset.cfg.applied_filters.append(

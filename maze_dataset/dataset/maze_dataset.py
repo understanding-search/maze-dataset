@@ -69,7 +69,8 @@ class SuccessChanceTooSmallError(ValueError):
 
 
 def set_serialize_minimal_threshold(threshold: int | None) -> None:
-	global SERIALIZE_MINIMAL_THRESHOLD
+	"get the global SERIALIZE_MINIMAL_THRESHOLD"
+	global SERIALIZE_MINIMAL_THRESHOLD  # noqa: PLW0603
 	SERIALIZE_MINIMAL_THRESHOLD = threshold
 
 
@@ -382,7 +383,7 @@ class MazeDatasetConfig(GPTDatasetConfig):
 		return MazeDatasetConfig.load(cfg_dict)
 
 
-def _generate_maze_helper(index: int) -> Optional[SolvedMaze]:
+def _generate_maze_helper(index: int) -> Optional[SolvedMaze]:  # noqa: ARG001
 	"""Helper function for generating mazes in parallel.
 
 	> [!CAUTION]
@@ -421,8 +422,8 @@ def _maze_gen_init_worker(config: MazeDatasetConfig) -> None:
 	> this makes the generation depend both on whether parallelism is used, and on the number of processes. this is bad!
 
 	"""
-	# TODO
-	global _GLOBAL_WORKER_CONFIG
+	# TODO: dont use globals here!
+	global _GLOBAL_WORKER_CONFIG  # noqa: PLW0603
 	_GLOBAL_WORKER_CONFIG = config
 
 	process_id: tuple[int] = multiprocessing.current_process()._identity
@@ -505,7 +506,7 @@ class MazeDataset(GPTDataset):
 		"""get a maze by index"""
 		return self.mazes[i]
 
-	def __deepcopy__(self, memo) -> "MazeDataset":
+	def __deepcopy__(self, memo) -> "MazeDataset":  # noqa: ANN001
 		"""deepcopy the dataset
 
 		FIX: this isnt actually a deepcopy I think?
@@ -1061,7 +1062,7 @@ class MazeDatasetFilters:
 
 	@register_dataset_filter
 	@staticmethod
-	def collect_generation_meta(
+	def collect_generation_meta(  # noqa: C901
 		dataset: MazeDataset,
 		clear_in_mazes: bool = True,
 		inplace: bool = True,
@@ -1189,7 +1190,7 @@ for key, key_type in metadata_types.items():
 			# its all coords, do a statcounter on those coords
 			metadata_actions[key] = lambda vals: Counter(tuple(x) for x in vals)
 		elif all(
-			(len(kt) == 2) and (kt[1] == 2) 
+			(len(kt) == 2) and (kt[1] == 2)
 			for kt in key_type
 		):
 			# its a list of coords, do a statcounter on those coords
