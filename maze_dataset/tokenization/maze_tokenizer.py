@@ -128,7 +128,8 @@ def get_tokens_up_to_path_start(
 		elif tokenization_mode == TokenizationMode.AOTP_CTT_indexed:
 			return tokens[: path_start_idx + 5]
 		else:
-			raise ValueError(f"Invalid tokenization mode: {tokenization_mode}")
+			err_msg: str = f"Invalid tokenization mode: {tokenization_mode}"
+			raise ValueError(err_msg)
 	else:
 		return tokens[:path_start_idx]
 

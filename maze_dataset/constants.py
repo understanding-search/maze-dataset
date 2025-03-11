@@ -73,7 +73,8 @@ class _SPECIAL_TOKENS_BASE:
 		key_upper: str = key.upper()
 
 		if not isinstance(key, str):
-			raise TypeError(f"key must be str, not {type(key)}")
+			err_msg: str = f"key must be str, not {type(key)}"
+			raise TypeError(err_msg)
 
 		# error checking for old lowercase format
 		if not key == key_upper:
@@ -93,7 +94,8 @@ class _SPECIAL_TOKENS_BASE:
 				)
 				return getattr(self, key_upper_modified)
 			else:
-				raise KeyError(f"invalid special token '{key}'")
+				err_msg: str = f"invalid special token '{key}'"
+				raise KeyError(err_msg)
 
 		# normal return
 		return getattr(self, key.upper())

@@ -41,8 +41,9 @@ class PathFormat:
 		output: PathFormat = deepcopy(self)
 		for key, value in other.__dict__.items():
 			if key == "path":
+				err_msg = f"Cannot overwrite path attribute! {self = }, {other = }"
 				raise ValueError(
-					f"Cannot overwrite path attribute! {self = }, {other = }",
+					err_msg,
 				)
 			if value is not None:
 				setattr(output, key, value)
@@ -92,8 +93,11 @@ def process_path_input(
 		# add default formatting
 		styled_path = styled_path.combine(DEFAULT_FORMATS[_default_key])
 	else:
+		err_msg: str = (
+			f"Expected CoordList, CoordArray or StyledPath, got {type(path)}: {path}"
+		)
 		raise TypeError(
-			f"Expected CoordList, CoordArray or StyledPath, got {type(path)}: {path}",
+			err_msg,
 		)
 
 	# add formatting from path_fmt
@@ -356,8 +360,9 @@ class MazePlot:
 					elif vals_max == self.colormap_center:
 						vals_max += 1e-10
 					else:
+						err_msg: str = f"Please pass colormap_center value between {vals_min} and {vals_max}"
 						raise ValueError(
-							f"Please pass colormap_center value between {vals_min} and {vals_max}",
+							err_msg,
 						)
 
 				norm = mpl.colors.TwoSlopeNorm(
@@ -488,8 +493,9 @@ class MazePlot:
 				x: np.ndarray = p_transformed[:, 0]
 				y: np.ndarray = p_transformed[:, 1]
 			except Exception as e:
+				err_msg = f"Error in plotting quiver path:\n{path_format = }\n{p_transformed = }\n{e}"
 				raise ValueError(
-					f"Error in plotting quiver path:\n{path_format = }\n{p_transformed = }\n{e}",
+					err_msg,
 				) from e
 
 			# Generate colors from the colormap

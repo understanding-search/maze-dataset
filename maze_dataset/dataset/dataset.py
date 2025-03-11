@@ -57,7 +57,8 @@ def _load_applied_filters(
 			for filter_info in filters
 		]
 	except Exception as e:
-		raise ValueError(f"failed to load applied filters:\n{filters}") from e
+		err_msg: str = f"failed to load applied filters:\n{filters}"
+		raise ValueError(err_msg) from e
 
 
 @serializable_dataclass(kw_only=True)
@@ -127,14 +128,16 @@ class GPTDatasetConfig(SerializableDataclass):
 
 
 def _dataset_config_load(*args, **kwargs) -> "GPTDatasetConfig":
+	err_msg: str = f"this `load` function should be implemented by subclasses! got: {args=}, {kwargs=}"
 	raise NotImplementedError(
-		f"this `load` function should be implemented by subclasses! got: {args=}, {kwargs=}",
+		err_msg,
 	)
 
 
 def _dataset_config_serialize(self, *args, **kwargs) -> JSONitem:
+	err_msg: str = f"this `serialize` function should be implemented by subclasses! got: {args=}, {kwargs=}"
 	raise NotImplementedError(
-		f"this `serialize` function should be implemented by subclasses! got: {args=}, {kwargs=}",
+		err_msg,
 	)
 
 
@@ -305,7 +308,8 @@ class GPTDataset(Dataset):
 				):
 					pass
 				else:
-					raise ValueError(f"config mismatch: {cfg_diff = }")
+					err_msg = f"config mismatch: {cfg_diff = }"
+					raise ValueError(err_msg)
 			else:
 				warnings.warn(f"config mismatch: {cfg_diff = }")
 
@@ -391,11 +395,13 @@ class GPTDataset(Dataset):
 			filter_name: str = filter_info["name"]
 			if filter_name not in output._FILTER_NAMESPACE.__dict__:
 				if filter_name.startswith("__custom__:"):
+					err_msg: str = f"the dataset {output.cfg.to_fname()} was filtering using a custom filter: '{filter_name}', which we don't know about. add it to MazeDatasetFilters!"
 					raise ValueError(
-						f"the dataset {output.cfg.to_fname()} was filtering using a custom filter: '{filter_name}', which we don't know about. add it to MazeDatasetFilters!",
+						err_msg,
 					)
+				err_msg: str = f"the dataset {output.cfg.to_fname()} was filtering using an unknown filter: '{filter_name}'"
 				raise ValueError(
-					f"the dataset {output.cfg.to_fname()} was filtering using an unknown filter: '{filter_name}'",
+					err_msg,
 				)
 			filter_args: list = filter_info["args"] if "args" in filter_info else list()
 			filter_kwargs: dict = (
@@ -468,8 +474,9 @@ def _check_filter_equality(
 				)
 
 	except AssertionError as e:
+		err_msg = f"config mismatch in applied filters: {filters_new} != {filters_old}"
 		raise FilterInfoMismatchError(
-			f"config mismatch in applied filters: {filters_new} != {filters_old}",
+			err_msg,
 		) from e
 
 

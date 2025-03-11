@@ -115,8 +115,9 @@ def sample_tokenizers_for_test(n: int | None) -> list[MazeTokenizerModular]:
 		return get_all_tokenizers()
 
 	if n < len(EVERY_TEST_TOKENIZERS):
+		err_msg: str = f"`n` must be at least {len(EVERY_TEST_TOKENIZERS) = } such that the sample can contain `EVERY_TEST_TOKENIZERS`."
 		raise ValueError(
-			f"`n` must be at least {len(EVERY_TEST_TOKENIZERS) = } such that the sample can contain `EVERY_TEST_TOKENIZERS`.",
+			err_msg,
 		)
 	sample: list[MazeTokenizerModular] = random.sample(
 		_all_tokenizers_except_every_test_tokenizers(),
@@ -174,8 +175,9 @@ def save_hashes(
 		sorted_hashes, counts = np.unique(hashes_array, return_counts=True)
 		if sorted_hashes.shape[0] != hashes_array.shape[0]:
 			collisions = sorted_hashes[counts > 1]
+			err_msg: str = f"{hashes_array.shape[0] - sorted_hashes.shape[0]} tokenizer hash collisions: {collisions}\nReport error to the developer to increase the hash size or otherwise update the tokenizer hashing algorithm."
 			raise ValueError(
-				f"{hashes_array.shape[0] - sorted_hashes.shape[0]} tokenizer hash collisions: {collisions}\nReport error to the developer to increase the hash size or otherwise update the tokenizer hashing algorithm.",
+				err_msg,
 			)
 
 	# save and return

@@ -56,7 +56,8 @@ def _escape_tok(
 	elif fmt == "terminal":
 		return tok
 	else:
-		raise ValueError(f"Unexpected format: {fmt}")
+		err_msg: str = f"Unexpected format: {fmt}"
+		raise ValueError(err_msg)
 
 
 def color_tokens_rgb(

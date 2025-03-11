@@ -82,8 +82,9 @@ def _load_maze_ctor(maze_ctor_serialized: str | dict) -> Callable:
 		)
 		return GENERATORS_MAP[maze_ctor_serialized]
 	else:
+		err_msg = f"maze_ctor_serialized is of type {type(maze_ctor_serialized) = }, expected str or dict\n{maze_ctor_serialized = }"
 		raise ValueError(
-			f"maze_ctor_serialized is of type {type(maze_ctor_serialized)}, expected str or dict",
+			err_msg,
 		)
 
 
@@ -227,8 +228,9 @@ class MazeDatasetConfig(GPTDatasetConfig):
 				f"except_on_no_valid_endpoint must be False, or else if any maze fails to generate, the whole dataset will fail: {self.endpoint_kwargs = }"
 			)
 		except AssertionError as e:
+			err_msg = f"invalid config for percolation success prediction: {self.summary() = }"
 			raise NoPercolationInConfigError(
-				f"invalid config for percolation success prediction: {self.summary()}",
+				err_msg,
 			) from e
 
 		endpoints_unique_flag: int = int(
@@ -350,8 +352,9 @@ class MazeDatasetConfig(GPTDatasetConfig):
 			except_if_all_success_expected=except_if_all_success_expected,
 		)
 		if success_fraction < epsilon:
+			err_msg = f"{success_fraction = } is below the threshold of {epsilon = }"
 			raise SuccessChanceTooSmallError(
-				f"{success_fraction = } is below the threshold of {epsilon = }",
+				err_msg,
 			)
 
 		# compute the new number of mazes
@@ -416,8 +419,11 @@ def _maze_gen_init_worker(config: MazeDatasetConfig):
 		# only set numpy seed, since we do not use other random gens
 		np.random.seed(_GLOBAL_WORKER_CONFIG.seed + process_id[0])
 	else:
+		err_msg = (
+			f"unexpected process id: {process_id = }\n{multiprocessing.Process() = }"
+		)
 		raise ValueError(
-			f"unexpected process id: {process_id}\n{multiprocessing.Process()}",
+			err_msg,
 		)
 
 
@@ -624,8 +630,9 @@ class MazeDataset(GPTDataset):
 				return cls._load_legacy(data)
 			return cls._load_full(data)
 		else:
+			err_msg: str = f"`_FORMAT_KEY` string {data[_FORMAT_KEY] = } is not a recognized `MazeDataset` format. ({_FORMAT_KEY = })"
 			raise KeyError(
-				f"`_FORMAT_KEY` string {data[_FORMAT_KEY] = } is not a recognized `MazeDataset` format. ({_FORMAT_KEY = })",
+				err_msg,
 			)
 
 	@classmethod
@@ -1066,10 +1073,11 @@ class MazeDatasetFilters:
 						try:
 							value = np.array(value)
 						except ValueError:
-							raise ValueError(
-								f"Cannot collect generation meta for {key} as it is a list of type '{type(value[0]) = !s}'",
-								"expected either a basic type (bool, int, float, str), a numpy coord, or a numpy array of coords",
+							err_msg: str = (
+								f"Cannot collect generation meta for {key} as it is a list of type '{type(value[0]) = !s}'"
+								"\nexpected either a basic type (bool, int, float, str), a numpy coord, or a numpy array of coords"
 							)
+							raise ValueError(err_msg)
 
 					if (len(value.shape) == 1) and (value.shape[0] == maze.lattice_dim):
 						# assume its a single coordinate
@@ -1080,15 +1088,17 @@ class MazeDatasetFilters:
 						# assume its a list of coordinates
 						gen_meta_lists[key].update([tuple(v) for v in value])
 					else:
-						raise ValueError(
-							f"Cannot collect generation meta for {key} as it is an ndarray of shape {value.shape}",
-							"expected either a coord of shape (2,) or a list of coords of shape (n, 2)",
+						err_msg: str = (
+							f"Cannot collect generation meta for {key} as it is an ndarray of shape {value.shape}\n"
+							"expected either a coord of shape (2,) or a list of coords of shape (n, 2)"
 						)
+						raise ValueError(err_msg)
 				else:
-					raise ValueError(
-						f"Cannot collect generation meta for {key} as it is of type '{type(value)!s}'",
-						"expected either a basic type (bool, int, float, str), a numpy coord, or a numpy array of coords",
+					err_msg: str = (
+						f"Cannot collect generation meta for {key} as it is of type '{type(value)!s}'\n"
+						"expected either a basic type (bool, int, float, str), a numpy coord, or a numpy array of coords"
 					)
+					raise ValueError(err_msg)
 
 			# clear the data
 			if clear_in_mazes:

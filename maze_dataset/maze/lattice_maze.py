@@ -62,7 +62,8 @@ def _fill_edges_with_walls(connection_list: ConnectionList) -> ConnectionList:
 		elif dim == 1:
 			connection_list[dim, :, -1] = False
 		else:
-			raise NotImplementedError(f"only 2d lattices supported. got {dim=}")
+			err_msg: str = f"only 2d lattices supported. got {dim=}"
+			raise NotImplementedError(err_msg)
 	return connection_list
 
 
@@ -373,8 +374,9 @@ class LatticeMaze(SerializableDataclass):
 			)
 			if visited_cells is None:
 				# TODO: dynamically generate visited_cells?
+				err_msg: str = f"a maze which is not marked as fully connected must have a visited_cells field in its generation_meta: {self.generation_meta}\n{self}\n{self.as_ascii()}"
 				raise ValueError(
-					f"a maze which is not marked as fully connected must have a visited_cells field in its generation_meta: {self.generation_meta}\n{self}\n{self.as_ascii()}",
+					err_msg,
 				)
 			visited_cells_np: Int[np.ndarray, "N 2"] = np.array(list(visited_cells))
 			return visited_cells_np
@@ -468,8 +470,9 @@ class LatticeMaze(SerializableDataclass):
 				]
 			except ValueError as e:
 				if except_on_no_valid_endpoint:
+					err_msg: str = f"No valid start or end positions found because we could not sample from {connected_component = }"
 					raise NoValidEndpointException(
-						f"No valid start or end positions found because we could not sample from {connected_component = }",
+						err_msg,
 					) from e
 				return None
 
@@ -509,8 +512,9 @@ class LatticeMaze(SerializableDataclass):
 		# check we have valid positions
 		if len(allowed_start_set) == 0 or len(allowed_end_set) == 0:
 			if except_on_no_valid_endpoint:
+				err_msg = f"No valid start (or end?) positions found: {allowed_start_set = }, {allowed_end_set = }"
 				raise NoValidEndpointException(
-					f"No valid start (or end?) positions found: {allowed_start_set = }, {allowed_end_set = }",
+					err_msg,
 				)
 			return None
 
@@ -528,8 +532,9 @@ class LatticeMaze(SerializableDataclass):
 			)
 		except ValueError as e:
 			if except_on_no_valid_endpoint:
+				err_msg: str = f"No valid start or end positions found, maybe can't find an endpoint after we removed the start point: {allowed_start_set = }, {allowed_end_set = }"
 				raise NoValidEndpointException(
-					f"No valid start or end positions found, maybe can't find an endpoint after we removed the start point: {allowed_start_set = }, {allowed_end_set = }",
+					err_msg,
 				) from e
 			return None
 
@@ -653,7 +658,8 @@ class LatticeMaze(SerializableDataclass):
 			)
 			return coords_processed
 		else:
-			raise NotImplementedError(f"Unsupported tokenizer type: {maze_tokenizer}")
+			err_msg = f"Unsupported tokenizer type: {maze_tokenizer}"
+			raise NotImplementedError(err_msg)
 
 	def as_tokens(
 		self,
@@ -791,8 +797,9 @@ class LatticeMaze(SerializableDataclass):
 			isinstance_by_type_name(maze_tokenizer, "MazeTokenizerModular")
 			and not maze_tokenizer.is_legacy_equivalent()  # type: ignore[union-attr]
 		):
+			err_msg: str = f"Only legacy tokenizers and their exact `MazeTokenizerModular` analogs supported, not {maze_tokenizer}."
 			raise NotImplementedError(
-				f"Only legacy tokenizers and their exact `MazeTokenizerModular` analogs supported, not {maze_tokenizer}.",
+				err_msg,
 			)
 
 		if isinstance(tokens, str):
@@ -962,8 +969,9 @@ class LatticeMaze(SerializableDataclass):
 		# otherwise, detect and check it's valid
 		cls_detected: typing.Type[LatticeMaze] = detect_pixels_type(pixel_grid)
 		if cls not in cls_detected.__mro__:
+			err_msg = f"Pixel grid cannot be cast to {cls.__name__ = }, detected type {cls_detected.__name__ = }"
 			raise ValueError(
-				f"Pixel grid cannot be cast to {cls.__name__}, detected type {cls_detected.__name__}",
+				err_msg,
 			)
 
 		(
@@ -1156,15 +1164,17 @@ class TargetedLatticeMaze(LatticeMaze):  # type: ignore[misc]
 			self.start_pos[0] >= self.grid_shape[0]
 			or self.start_pos[1] >= self.grid_shape[1]
 		):
+			err_msg: str = f"start_pos {self.start_pos} is out of bounds for grid shape {self.grid_shape}"
 			raise ValueError(
-				f"start_pos {self.start_pos} is out of bounds for grid shape {self.grid_shape}",
+				err_msg,
 			)
 		if (
 			self.end_pos[0] >= self.grid_shape[0]
 			or self.end_pos[1] >= self.grid_shape[1]
 		):
+			err_msg = f"end_pos {self.end_pos = } is out of bounds for grid shape {self.grid_shape = }"
 			raise ValueError(
-				f"end_pos {self.end_pos} is out of bounds for grid shape {self.grid_shape}",
+				err_msg,
 			)
 
 	def __eq__(self, other: object) -> bool:
@@ -1239,8 +1249,9 @@ class SolvedMaze(TargetedLatticeMaze):  # type: ignore[misc]
 				solution_valid = True
 
 		if not solution_valid and not allow_invalid:
+			err_msg: str = f"invalid solution: {solution.shape = } {solution = } {solution_valid = } {allow_invalid = }"
 			raise ValueError(
-				f"invalid solution: {solution.shape = } {solution = } {solution_valid = } {allow_invalid = }",
+				err_msg,
 				f"{connection_list = }",
 			)
 

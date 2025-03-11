@@ -40,25 +40,28 @@ def tokens_between(
 	except_when_tokens_not_unique: bool = False,
 ) -> list[str]:
 	if start_value == end_value:
+		err_msg = f"start_value and end_value cannot be the same: {start_value = } {end_value = }"
 		raise ValueError(
-			f"start_value and end_value cannot be the same: {start_value = } {end_value = }",
+			err_msg,
 		)
 	if except_when_tokens_not_unique:
 		if (tokens.count(start_value) != 1) or (tokens.count(end_value) != 1):
-			raise ValueError(
-				"start_value or end_value is not unique in the input tokens:",
-				f"{tokens.count(start_value) = } {tokens.count(end_value) = }"
-				f"{start_value = } {end_value = }",
-				f"{tokens = }",
+			err_msg: str = (
+				"start_value or end_value is not unique in the input tokens:"
+				f"\n{tokens.count(start_value) = } {tokens.count(end_value) = }"
+				f"\n{start_value = } {end_value = }"
+				f"\n{tokens = }"
 			)
+			raise ValueError(err_msg)
 	else:
 		if (tokens.count(start_value) < 1) or (tokens.count(end_value) < 1):
-			raise ValueError(
-				"start_value or end_value is not present in the input tokens:",
-				f"{tokens.count(start_value) = } {tokens.count(end_value) = }",
-				f"{start_value = } {end_value = }",
-				f"{tokens = }",
+			err_msg: str = (
+				"start_value or end_value is not present in the input tokens:"
+				f"\n{tokens.count(start_value) = } {tokens.count(end_value) = }"
+				f"\n{start_value = } {end_value = }"
+				f"\n{tokens = }"
 			)
+			raise ValueError(err_msg)
 
 	start_idx: int = tokens.index(start_value) + int(not include_start)
 	end_idx: int = tokens.index(end_value) + int(include_end)
@@ -79,8 +82,9 @@ def get_adj_list_tokens(tokens: list[str]) -> list[str]:
 def get_path_tokens(tokens: list[str], trim_end: bool = False) -> list[str]:
 	"""The path is considered everything from the first path coord to the path_end token, if it exists."""
 	if SPECIAL_TOKENS.PATH_START not in tokens:
+		err_msg = f"Path start token {SPECIAL_TOKENS.PATH_START} not found in tokens:\n{tokens}"
 		raise ValueError(
-			f"Path start token {SPECIAL_TOKENS.PATH_START} not found in tokens:\n{tokens}",
+			err_msg,
 		)
 	start_idx: int = tokens.index(SPECIAL_TOKENS.PATH_START) + int(trim_end)
 	end_idx: int | None = None
@@ -126,27 +130,31 @@ def get_cardinal_direction(coords: Int[np.ndarray, "start_end=2 row_col=2"]) -> 
 
 def get_relative_direction(coords: Int[np.ndarray, "prev_cur_next=3 row_col=2"]) -> str:
 	"""Returns the relative first-person direction token corresponding to traveling from `coords[1]` to `coords[2]`.
+
 	# Parameters
 	- `coords`: Contains 3 Coords, each of which must neighbor the previous Coord.
-	  - `coords[0]`: The previous location, used to determine the current absolute direction that the "agent" is facing.
-	  - `coords[1]`: The current location
-	  - `coords[2]`: The next location. May be equal to the current location.
+		- `coords[0]`: The previous location, used to determine the current absolute direction that the "agent" is facing.
+		- `coords[1]`: The current location
+		- `coords[2]`: The next location. May be equal to the current location.
 	"""
 	if coords.shape != (3, 2):
-		raise ValueError(f"`coords` must have shape (3,2). Got {coords.shape} instead.")
+		err_msg: str = f"`coords` must have shape (3,2). Got {coords.shape} instead."
+		raise ValueError(err_msg)
 	directions = coords[1:] - coords[:-1]
 	if not np.all(np.linalg.norm(directions, axis=1) <= np.array([1.1, 1.1])):
 		# Use floats as constant since `np.linalg.norm` returns float array
+		err_msg: str = f"Adjacent `coords` must be neighboring or equivalent. Got {coords} instead."
 		raise ValueError(
-			f"Adjacent `coords` must be neighboring or equivalent. Got {coords} instead.",
+			err_msg,
 		)
 	if np.array_equal(coords[1], coords[2]):
 		return VOCAB.PATH_STAY
 	if np.array_equal(coords[0], coords[2]):
 		return VOCAB.PATH_BACKWARD
 	if np.array_equal(coords[0], coords[1]):
+		err_msg: str = f"Previous first-person direction indeterminate from {coords=}."
 		raise ValueError(
-			f"Previous first-person direction indeterminate from {coords=}.",
+			err_msg,
 		)
 	if np.array_equal(directions[0], directions[1]):
 		return VOCAB.PATH_FORWARD
@@ -292,13 +300,17 @@ def strings_to_coords(
 			if when_noncoord == "skip":
 				continue
 			if when_noncoord == "error":
+				err_msg: str = (
+					f"Invalid non-coordinate token '{token}' in text: '{text}'"
+				)
 				raise ValueError(
-					f"Invalid non-coordinate token '{token}' in text: '{text}'",
+					err_msg,
 				)
 			if when_noncoord == "include":
 				result.append(token)
 			else:
-				raise ValueError(f"Invalid when_noncoord value '{when_noncoord}'")
+				err_msg: str = f"Invalid when_noncoord value '{when_noncoord}'"
+				raise ValueError(err_msg)
 		else:
 			result.append(coord)
 	return result
@@ -332,13 +344,17 @@ def coords_to_strings(
 			if when_noncoord == "skip":
 				continue
 			if when_noncoord == "error":
+				err_msg: str = (
+					f"Invalid non-coordinate '{coord}' in list of coords: '{coords}'"
+				)
 				raise ValueError(
-					f"Invalid non-coordinate '{coord}' in list of coords: '{coords}'",
+					err_msg,
 				)
 			if when_noncoord == "include":
 				result.append(coord)
 			else:
-				raise ValueError(f"Invalid when_noncoord value '{when_noncoord}'")
+				err_msg: str = f"Invalid when_noncoord value '{when_noncoord}'"
+				raise ValueError(err_msg)
 		else:
 			result.extend(coord_to_strings_func(coord))
 	return result
@@ -362,6 +378,7 @@ def equal_except_adj_list_sequence(
 	when_len_mismatch: ErrorMode = ErrorMode.EXCEPT,
 ) -> bool:
 	"""Returns if the rollout strings are equal, allowing for differently sequenced adjacency lists.
+
 	<ADJLIST_START> and <ADJLIST_END> tokens must be in the rollouts.
 	Intended ONLY for determining if two tokenization schemes are the same for rollouts generated from the same maze.
 	This function should NOT be used to determine if two rollouts encode the same `LatticeMaze` object.
@@ -379,14 +396,16 @@ def equal_except_adj_list_sequence(
 		return False
 	if ("<ADJLIST_START>" in rollout1) ^ ("<ADJLIST_START>" in rollout2):
 		if do_except:
+			err_msg: str = f"Rollouts do not have the same <ADJLIST_START> token: `{'<ADJLIST_START>' in rollout1 = }` != `{'<ADJLIST_START>' in rollout2 = }`"
 			raise ValueError(
-				f"Rollouts do not have the same <ADJLIST_START> token: `{'<ADJLIST_START>' in rollout1 = }` != `{'<ADJLIST_START>' in rollout2 = }`",
+				err_msg,
 			)
 		return False
 	if ("<ADJLIST_END>" in rollout1) ^ ("<ADJLIST_END>" in rollout2):
 		if do_except:
+			err_msg: str = f"Rollouts do not have the same <ADJLIST_END> token: `{'<ADJLIST_END>' in rollout1 = }` != `{'<ADJLIST_END>' in rollout2 = }`"
 			raise ValueError(
-				f"Rollouts do not have the same <ADJLIST_END> token: `{'<ADJLIST_END>' in rollout1 = }` != `{'<ADJLIST_END>' in rollout2 = }`",
+				err_msg,
 			)
 		return False
 
@@ -397,8 +416,9 @@ def equal_except_adj_list_sequence(
 			when_len_mismatch.process(
 				f"Non-adjacency list tokens are not the same:\n{non_adj_list1}\n!=\n{non_adj_list2}",
 			)
+			err_msg: str = f"Non-adjacency list tokens are not the same:\n{non_adj_list1}\n!=\n{non_adj_list2}"
 			raise ValueError(
-				f"Non-adjacency list tokens are not the same:\n{non_adj_list1}\n!=\n{non_adj_list2}",
+				err_msg,
 			)
 		return False
 	counter1: Counter = Counter(adj_list1)
@@ -423,17 +443,17 @@ def connection_list_to_adj_list(
 
 	# Parameters:
 	- `conn_list: ConnectionList`
-	    special internal format for graphs which are subgraphs of a lattice
+		special internal format for graphs which are subgraphs of a lattice
 	- `shuffle_d0: bool`
-	    shuffle the adjacency list along the 0th axis (order of pairs)
+		shuffle the adjacency list along the 0th axis (order of pairs)
 	- `shuffle_d1: bool`
-	    shuffle the adjacency list along the 1st axis (order of coordinates in each pair).
-	    If `False`, all pairs have the smaller coord first.
+		shuffle the adjacency list along the 1st axis (order of coordinates in each pair).
+		If `False`, all pairs have the smaller coord first.
 
 
 	# Returns:
-	 - `Int8[np.ndarray, "conn start_end=2 coord=2"]`
-	    adjacency list in the shape `(n_connections, 2, 2)`
+	- `Int8[np.ndarray, "conn start_end=2 coord=2"]`
+		adjacency list in the shape `(n_connections, 2, 2)`
 	"""
 	n_connections: int = conn_list.sum()
 	adj_list: Int8[np.ndarray, "conn start_end=2 coord=2"] = np.full(
