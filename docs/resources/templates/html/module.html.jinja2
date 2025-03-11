@@ -1,5 +1,6 @@
 {% extends "frame.html.jinja2" %}
 {% set path_to_root = "../" * (module.modulename.count(".")) %}
+{% set edit_url = package_code_url + module.modulename.replace(".", "/") + ".py" %}
 {% block title %}{{ module.modulename }} API documentation{% endblock %}
 {% block nav %}
     {% block module_list_link %}

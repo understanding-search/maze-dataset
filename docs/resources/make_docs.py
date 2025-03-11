@@ -8,9 +8,10 @@ as this makes it easier to find edits when updating
 """
 
 import argparse
-from dataclasses import dataclass, field
+from dataclasses import asdict, dataclass, field
 from functools import reduce
 import inspect
+import json
 import re
 from typing import Any, Dict, List, Optional
 import warnings
@@ -61,24 +62,24 @@ pdoc.render_helpers.markdown_extensions["admonitions"] = True  # type: ignore[as
 _CONFIG_NOTEBOOKS_INDEX_TEMPLATE: str = r"""<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Notebooks</title>
-    <link rel="stylesheet" href="../resources/css/bootstrap-reboot.min.css">
-    <link rel="stylesheet" href="../resources/css/theme.css">
-    <link rel="stylesheet" href="../resources/css/content.css">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Notebooks</title>
+	<link rel="stylesheet" href="../resources/css/bootstrap-reboot.min.css">
+	<link rel="stylesheet" href="../resources/css/theme.css">
+	<link rel="stylesheet" href="../resources/css/content.css">
 </head>
 <body>    
-    <h1>Notebooks</h1>
-    <p>
-        You can find the source code for the notebooks at
-        <a href="{{ notebook_url }}">{{ notebook_url }}</a>.
-    <ul>
-        {% for notebook in notebooks %}
-        <li><a href="{{ notebook.html }}">{{ notebook.ipynb }}</a> {{ notebook.desc }}</li>
-        {% endfor %}
-    </ul>
-    <a href="../">Back to index</a>
+	<h1>Notebooks</h1>
+	<p>
+		You can find the source code for the notebooks at
+		<a href="{{ notebook_url }}">{{ notebook_url }}</a>.
+	<ul>
+		{% for notebook in notebooks %}
+		<li><a href="{{ notebook.html }}">{{ notebook.ipynb }}</a> {{ notebook.desc }}</li>
+		{% endfor %}
+	</ul>
+	<a href="../">Back to index</a>
 </body>
 </html>
 """
@@ -91,6 +92,7 @@ def deep_get(
 	sep: str = ".",
 	warn_msg_on_default: Optional[str] = None,
 ) -> Any:
+	"Get a value from a nested dictionary"
 	output: Any = reduce(
 		lambda x, y: x.get(y, default) if isinstance(x, dict) else default,  # function
 		path.split(sep) if isinstance(path, str) else path,  # sequence
@@ -129,6 +131,10 @@ class Config:
 			return self.package_repo_url + "/blob/" + self.package_version
 		else:
 			return "unknown"
+		
+	@property
+	def module_name(self) -> str:
+		return self.package_name.replace("-", "_")
 
 	@property
 	def output_dir(self) -> Path:
@@ -351,8 +357,8 @@ def pdoc_combined(*modules, output_file: Path) -> None:
 	"""Render the documentation for a list of modules into a single HTML file.
 
 	Args:
-	    *modules: Paths or names of the modules to document.
-	    output_file: Path to the output HTML file.
+		*modules: Paths or names of the modules to document.
+		output_file: Path to the output HTML file.
 
 	This function will:
 	1. Extract all modules and submodules.
@@ -435,17 +441,19 @@ if __name__ == "__main__":
 		search=True,
 	)
 
+	print(json.dumps(asdict(CONFIG), indent=2))
+
 	# do the rendering
 	# --------------------------------------------------
 	if not parsed_args.combined:
 		pdoc.pdoc(
-			CONFIG.package_name,
+			CONFIG.module_name,
 			output_directory=CONFIG.output_dir,
 		)
 	else:
 		use_markdown_format()
 		pdoc_combined(
-			CONFIG.package_name,
+			CONFIG.module_name,
 			output_file=CONFIG.output_dir / "combined" / f"{CONFIG.package_name}.md",
 		)
 
