@@ -49,6 +49,7 @@
 		"pytest>=8.2.2",
         "pytest-xdist>=3.6.1", # for parallel all tokenizers tests
         "pytest-mock>=3.10.0",
+		"nbmake>=1.5.5",
 		# coverage
 		"pytest-cov>=4.1.0",
 		"coverage-badge>=1.1.0",
@@ -126,6 +127,8 @@
         "tests/unit/maze_dataset/generation/test_maze_dataset.py", # 29
         "tests/unit/maze_dataset/tokenization/test_tokenizer.py", # 47
         "tests/unit/maze_dataset/processing/test_get_forking_path_points.py", # 58
+		# extra low priority (test temp, generated from notebooks)
+		"tests/_temp/*",
     ]
     check_untyped_defs = true
 
