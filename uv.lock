@@ -1403,7 +1403,7 @@ wheels = [
 
 [[package]]
 name = "maze-dataset"
-version = "1.2.0b0"
+version = "1.2.0"
 source = { editable = "." }
 dependencies = [
     { name = "frozendict" },

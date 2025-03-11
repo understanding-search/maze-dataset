@@ -1,6 +1,6 @@
 [project]
     name = "maze-dataset"
-    version = "1.2.0-beta"
+    version = "1.2.0"
     description = "generating and working with datasets of mazes"
     authors = [
         { name = "Michael Ivanitskiy", email = "mivanits@umich.edu" },
