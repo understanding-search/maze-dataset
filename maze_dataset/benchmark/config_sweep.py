@@ -2,6 +2,7 @@
 
 import functools
 import json
+import warnings
 from pathlib import Path
 from typing import Any, Callable, Sequence, TypeVar
 
@@ -428,7 +429,7 @@ def _is_eq(a, b) -> bool:  # noqa: ANN001
 	return a == b
 
 
-def plot_grouped(
+def plot_grouped(  # noqa: C901
 	results: SweepResult,
 	predict_fn: Callable[[MazeDatasetConfig], float] | None = None,
 	prediction_density: int = 50,
@@ -472,7 +473,8 @@ def plot_grouped(
 	for ep_kw in endpoint_kwargs_set:
 		results_epkw: SweepResult = results.get_where(
 			"endpoint_kwargs",
-			functools.partial(_is_eq, ep_kw),
+			functools.partial(_is_eq, b=ep_kw),
+			# lambda x: x == ep_kw,
 		)
 		shared_keys: set[str] = set(results_epkw.configs_shared().keys())
 		cfg_keys: set[str] = shared_keys.intersection({"n_mazes", "endpoint_kwargs"})
@@ -480,8 +482,15 @@ def plot_grouped(
 		for gf_idx, gen_func in enumerate(generator_funcs_names):
 			results_filtered: SweepResult = results_epkw.get_where(
 				"maze_ctor",
-				functools.partial(_is_eq, gen_func),
+				# HACK: big hassle to do this without a lambda, is it really that bad?
+				lambda x: x.__name__ == gen_func,  # noqa: B023
 			)
+			if len(results_filtered.configs) < 1:
+				warnings.warn(
+					f"No results for {gen_func} and {ep_kw}. Skipping.",
+				)
+				continue
+
 			cmap_name = "Reds" if gf_idx == 0 else "Blues"
 			cmap = plt.get_cmap(cmap_name)
 
