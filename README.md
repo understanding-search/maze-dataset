@@ -97,16 +97,18 @@ from maze_dataset.plotting import MazePlot
 MazePlot(maze).plot()
 ```
 
-![textual and visual output formats](docs/output_formats.png)
+![textual and visual output formats](docs/assets/output_formats.png)
 
 
 # Development
 
+we use this [makefile template](https://github.com/mivanit/python-project-makefile-template) with slight modifications for our development workflow.
+
+- clone with `git clone https://github.com/understanding-search/maze-dataset`
+- `make dep` to install all dependencies
 - `make help` will print all available commands
-- all tests via `make test`
-    - unit tests via `make unit`
-    - notebook tests via `make test_notebooks`
-- formatter (black, pycln, and isort) via `make format`
-    - formatter in check-only mode via `make check-format`
+- `make test` will run basic tests to ensure the package is working
+- `make format` will run ruff to format and check the code
+
 
 

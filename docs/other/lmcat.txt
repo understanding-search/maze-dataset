@@ -1,8 +1,8 @@
 # Stats
 - 47 files
-- 14041 (14K) lines
-- 438575 (439K) chars
-- 48705 (49K) `whitespace-split` tokens
+- 14044 (14K) lines
+- 438768 (439K) chars
+- 48721 (49K) `whitespace-split` tokens
 
 # File Tree
 
@@ -18,7 +18,7 @@ maze-dataset
 │   │   ├── __init__.py                   [    6L       102C    15T]
 │   │   ├── config_sweep.py               [  537L    16,350C 1,738T]
 │   │   ├── speed.py                      [  132L     2,999C   322T]
-│   │   └── sweep_fit.py                  [  409L    11,634C 1,381T]
+│   │   └── sweep_fit.py                  [  409L    11,630C 1,381T]
 │   ├── dataset                           
 │   │   ├── __init__.py                   [   21L       502C    39T]
 │   │   ├── collected_dataset.py          [  231L     7,694C   811T]
@@ -57,14 +57,14 @@ maze-dataset
 │   ├── demo_latticemaze.ipynb            [  821L   323,594C 2,488T]
 │   ├── demo_mazetokenizermodular.ipynb   [1,757L    89,642C 6,819T]
 │   ├── demo_tokenization.ipynb           [  434L   145,864C 9,259T]
-│   ├── estimate_dataset_fractions.ipynb  [  479L 3,243,732C 1,236T]
+│   ├── estimate_dataset_fractions.ipynb  [  483L 3,248,926C 1,268T]
 │   ├── forking_points.ipynb              [  221L    28,462C   621T]
 │   ├── iterated_backfilling.ipynb        [  207L    30,509C   547T]
 │   └── profile_dataset_save_read.ipynb   [1,133L   269,709C 3,406T]
 ├── .lastversion                          [    1L         7C     1T]
-├── README.md                             [  112L     5,003C   506T]
+├── README.md                             [  114L     5,184C   521T]
 ├── makefile                              [1,726L    53,142C 6,251T]
-├── pyproject.toml                        [  400L    14,314C 1,654T]
+├── pyproject.toml                        [  400L    14,309C 1,654T]
 ```
 
 # File Contents
@@ -1113,7 +1113,7 @@ if __name__ == "__main__":
 	argparser.add_argument(
 		"--save_dir",
 		type=Path,
-		default=Path("docs/benchmarks/percolation_fractions/fit_plots/"),
+		default=Path("tests/_temp/percolation_fractions/fit_plots/"),
 		help="Path to save the plots",
 	)
 	argparser.add_argument(
@@ -12553,6 +12553,7 @@ results_sweep: SweepResult = full_percolation_analysis(
 	p_val_count=11,
 	grid_sizes=[2, 4, 6],
 	parallel=False,
+	save_dir=Path("tests/_temp/dataset_frac_sweep"),
 )
 ```
 
@@ -12582,7 +12583,7 @@ DATA_PATH: str = DATA_PATH_DIR / "small/result-n64-c30-p25.zanj"
 
 sweep_fit(
 	DATA_PATH,
-	Path("../docs/benchmarks/percolation_fractions/fit_plots/"),
+	Path("tests/_temp/fit_plots/"),
 	niterations=3,
 )
 ```
@@ -13345,17 +13346,19 @@ from maze_dataset.plotting import MazePlot
 MazePlot(maze).plot()
 ```
 
-![textual and visual output formats](docs/output_formats.png)
+![textual and visual output formats](docs/assets/output_formats.png)
 
 
 # Development
 
+we use this [makefile template](https://github.com/mivanit/python-project-makefile-template) with slight modifications for our development workflow.
+
+- clone with `git clone https://github.com/understanding-search/maze-dataset`
+- `make dep` to install all dependencies
 - `make help` will print all available commands
-- all tests via `make test`
-    - unit tests via `make unit`
-    - notebook tests via `make test_notebooks`
-- formatter (black, pycln, and isort) via `make format`
-    - formatter in check-only mode via `make check-format`
+- `make test` will run basic tests to ensure the package is working
+- `make format` will run ruff to format and check the code
+
 
 
 
@@ -13645,7 +13648,7 @@ help: help-targets info
 ``````{ path="pyproject.toml"  }
 [project]
     name = "maze-dataset"
-    version = "1.2.0-beta"
+    version = "1.2.0"
     description = "generating and working with datasets of mazes"
     authors = [
         { name = "Michael Ivanitskiy", email = "mivanits@umich.edu" },
