@@ -321,6 +321,17 @@ def _all_instances_wrapper(f):
 	return wrapper
 
 
+class UnsupportedAllInstancesError(TypeError):
+	"""Raised when `all_instances` is called on an unsupported type
+
+	either has unbounded possible values or is not supported (Enum is not supported)
+	"""
+
+	def __init__(self, type_: type):
+		msg: str = f"Type {type_} is not supported by `all_instances`. See docstring for details. {type_.__mro__ = }"
+		super().__init__(msg)
+
+
 @_all_instances_wrapper
 def all_instances(
 	type_: FiniteValued,
@@ -360,6 +371,9 @@ def all_instances(
 	- If `type_` is not found in `validation_funcs`, then the search is performed iteratively in mro order.
 	- If a superclass of `type_` is found while searching in mro order, that validation function is applied and the list is returned.
 	- If no superclass of `type_` is found, then no filter is applied.
+
+	# Raises:
+	- `UnsupportedAllInstancesError`: If `type_` is not supported by `all_instances`.
 	"""
 	if type_ == bool:  # noqa: E721
 		yield from [True, False]
@@ -416,6 +430,4 @@ def all_instances(
 			# Literal: return all Literal arguments
 			yield from get_args(type_)
 		else:
-			raise TypeError(
-				f"Type {type_} either has unbounded possible values or is not supported (Enum is not supported).",
-			)
+			raise UnsupportedAllInstancesError(type_)
