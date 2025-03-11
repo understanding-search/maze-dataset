@@ -4,7 +4,7 @@ import enum
 import itertools
 import math
 import typing
-from dataclasses import Field
+from dataclasses import Field  # noqa: TC003
 from functools import cache, wraps
 from types import UnionType
 from typing import (
@@ -34,24 +34,24 @@ def bool_array_from_string(
 	Parameters
 	----------
 	string: str
-	    The string representation of the array
+		The string representation of the array
 	shape: list[int]
-	    The shape of the resulting array
+		The shape of the resulting array
 	true_symbol:
-	    The character to parse as True. Whitespace will be removed. All other characters will be parsed as False.
+		The character to parse as True. Whitespace will be removed. All other characters will be parsed as False.
 
 	Returns
 	-------
 	np.ndarray
-	    A ndarray with dtype bool of shape `shape`
+		A ndarray with dtype bool of shape `shape`
 
 	Examples
 	--------
 	>>> bool_array_from_string(
-	...     "TT TF", shape=[2,2]
+	...	 "TT TF", shape=[2,2]
 	... )
 	array([[ True,  True],
-	    [ True, False]])
+		[ True, False]])
 
 	"""
 	stripped = "".join(string.split())
@@ -59,11 +59,12 @@ def bool_array_from_string(
 	expected_symbol_count = math.prod(shape)
 	symbol_count = len(stripped)
 	if len(stripped) != expected_symbol_count:
-		raise ValueError(
+		err_msg: str = (
 			f"Connection List contains the wrong number of symbols. Expected {expected_symbol_count}. Found {symbol_count} in {stripped}.",
 		)
+		raise ValueError(err_msg)
 
-	bools = [True if symbol == true_symbol else False for symbol in stripped]
+	bools = [(symbol == true_symbol) for symbol in stripped]
 	return np.array(bools).reshape(*shape)
 
 
@@ -85,22 +86,23 @@ def corner_first_ndindex(n: int, ndim: int = 2) -> list[tuple]:
 	unsorted: list = list(np.ndindex(tuple([n for _ in range(ndim)])))
 	return sorted(unsorted, key=lambda x: (max(x), x if x[0] % 2 == 0 else x[::-1]))
 
-	# alternate numpy version from GPT-4:
-	"""
-    # Create all index combinations
-    indices = np.indices([n]*ndim).reshape(ndim, -1).T
-    # Find the max value for each index
-    max_indices = np.max(indices, axis=1)
-    # Identify the odd max values
-    odd_mask = max_indices % 2 != 0
-    # Make a copy of indices to avoid changing the original one
-    indices_copy = indices.copy()
-    # Reverse the order of the coordinates for indices with odd max value
-    indices_copy[odd_mask] = indices_copy[odd_mask, ::-1]
-    # Sort by max index value, then by coordinates
-    sorted_order = np.lexsort((*indices_copy.T, max_indices))
-    return indices[sorted_order]
-    """
+
+# alternate numpy version from GPT-4:
+"""
+# Create all index combinations
+indices = np.indices([n]*ndim).reshape(ndim, -1).T
+# Find the max value for each index
+max_indices = np.max(indices, axis=1)
+# Identify the odd max values
+odd_mask = max_indices % 2 != 0
+# Make a copy of indices to avoid changing the original one
+indices_copy = indices.copy()
+# Reverse the order of the coordinates for indices with odd max value
+indices_copy[odd_mask] = indices_copy[odd_mask, ::-1]
+# Sort by max index value, then by coordinates
+sorted_order = np.lexsort((*indices_copy.T, max_indices))
+return indices[sorted_order]
+"""
 
 
 @overload
@@ -118,16 +120,16 @@ def manhattan_distance(
 	),
 ) -> Int8[np.ndarray, " edges"] | int:
 	"""Returns the Manhattan distance between two coords."""
-	if len(edges.shape) == 3:
+	# magic values for dims fine here
+	if len(edges.shape) == 3:  # noqa: PLR2004
 		return np.linalg.norm(edges[:, 0, :] - edges[:, 1, :], axis=1, ord=1).astype(
 			np.int8,
 		)
-	elif len(edges.shape) == 2:
+	elif len(edges.shape) == 2:  # noqa: PLR2004
 		return int(np.linalg.norm(edges[0, :] - edges[1, :], ord=1).astype(np.int8))
 	else:
-		raise ValueError(
-			f"{edges} has shape {edges.shape}, but must be match the shape in the type hints.",
-		)
+		err_msg: str = f"{edges} has shape {edges.shape}, but must be match the shape in the type hints."
+		raise ValueError(err_msg)
 
 
 def lattice_max_degrees(n: int) -> Int8[np.ndarray, "row col"]:
@@ -142,6 +144,7 @@ def lattice_connection_array(
 	n: int,
 ) -> Int8[np.ndarray, "edges=2*n*(n-1) leading_trailing_coord=2 row_col=2"]:
 	"""Returns a 3D NumPy array containing all the edges in a 2D square lattice of size n x n.
+
 	Thanks Claude.
 
 	# Parameters
@@ -254,6 +257,7 @@ def _apply_validation_func(
 	) = None,
 ) -> Generator[FiniteValued, None, None]:
 	"""Helper function for `all_instances`.
+
 	Filters `vals` according to `validation_funcs`.
 	If `type_` is a regular type, searches in MRO order in `validation_funcs` and applies the first match, if any.
 	Handles generic types supported by `all_instances` with special `if` clauses.
@@ -289,13 +293,14 @@ def _apply_validation_func(
 	return vals
 
 
-def _all_instances_wrapper(f):
+# TYPING: some better type hints would be nice here
+def _all_instances_wrapper(f: Callable) -> Callable:
 	"""Converts dicts to frozendicts to allow caching and applies `_apply_validation_func`."""
 
 	@wraps(f)
-	def wrapper(*args, **kwargs):
+	def wrapper(*args, **kwargs):  # noqa: ANN202
 		@cache
-		def cached_wrapper(
+		def cached_wrapper(  # noqa: ANN202
 			type_: type,
 			all_instances_func: Callable,
 			validation_funcs: (
@@ -310,7 +315,8 @@ def _all_instances_wrapper(f):
 			)
 
 		validation_funcs: frozendict.frozendict
-		if len(args) >= 2 and args[1] is not None:
+		# TODO: what is this magic value here exactly?
+		if len(args) >= 2 and args[1] is not None:  # noqa: PLR2004
 			validation_funcs = frozendict.frozendict(args[1])
 		elif "validation_funcs" in kwargs and kwargs["validation_funcs"] is not None:
 			validation_funcs = frozendict.frozendict(kwargs["validation_funcs"])
@@ -327,7 +333,8 @@ class UnsupportedAllInstancesError(TypeError):
 	either has unbounded possible values or is not supported (Enum is not supported)
 	"""
 
-	def __init__(self, type_: type):
+	def __init__(self, type_: type) -> None:
+		"constructs an error message with the type and mro of the type"
 		msg: str = f"Type {type_} is not supported by `all_instances`. See docstring for details. {type_.__mro__ = }"
 		super().__init__(msg)
 
@@ -338,6 +345,7 @@ def all_instances(
 	validation_funcs: dict[FiniteValued, Callable[[FiniteValued], bool]] | None = None,
 ) -> Generator[FiniteValued, None, None]:
 	"""Returns all possible values of an instance of `type_` if finite instances exist.
+
 	Uses type hinting to construct the possible values.
 	All nested elements of `type_` must themselves be typed.
 	Do not use with types whose members contain circular references.
@@ -345,12 +353,12 @@ def all_instances(
 
 	# Parameters
 	- `type_: FiniteValued`
-	    A finite-valued type. See docstring on `FiniteValued` for full details.
+		A finite-valued type. See docstring on `FiniteValued` for full details.
 	- `validation_funcs: dict[FiniteValued, Callable[[FiniteValued], bool]] | None`
-	    A mapping of types to auxiliary functions to validate instances of that type.
-	    This optional argument can provide an additional, more precise layer of validation for the instances generated beyond what type hinting alone can provide.
-	    See `validation_funcs` Details section below.
-	    (default: `None`)
+		A mapping of types to auxiliary functions to validate instances of that type.
+		This optional argument can provide an additional, more precise layer of validation for the instances generated beyond what type hinting alone can provide.
+		See `validation_funcs` Details section below.
+		(default: `None`)
 
 	## Supported `type_` Values
 	See docstring on `FiniteValued` for full details.
@@ -399,10 +407,7 @@ def all_instances(
 			)
 			yield from (
 				type_(
-					**{
-						fld: arg
-						for fld, arg in zip(fields_to_types.keys(), args, strict=False)
-					},
+					**dict(zip(fields_to_types.keys(), args, strict=False)),
 				)
 				for args in all_arg_sequences
 			)

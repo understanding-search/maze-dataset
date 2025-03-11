@@ -135,7 +135,7 @@
 
 # ruff config
 [tool.ruff]
-	exclude = ["__pycache__"]
+	exclude = ["__pycache__", "notebooks"]
 
 	[tool.ruff.format]
 		indent-style = "tab"
@@ -180,6 +180,10 @@
 			"PLR0913", # sometimes you have to have a lot of args
 			"B028", # fine to omit stacklevel on warnings
 			"SLF001", # fine to access private vars
+			# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+			# TODO: no type hints on *args or **kwargs for now
+			"ANN002",
+			"ANN003",
 			# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 			# only for old version compatibility
 			"UP007", # `Optional` is ok, we might not want to use `|` for compatibility

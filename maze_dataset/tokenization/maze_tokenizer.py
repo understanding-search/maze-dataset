@@ -1702,11 +1702,13 @@ class PathTokenizers(__TokenizerElementNamespace):
 			coord_tokenizer: CoordTokenizers._CoordTokenizer,
 		) -> list[str]:
 			"""Returns tokens following those from the sequence from `_single_step_tokens`.
+
 			<PATH_END> should NOT be included.
 			"""
 			return []
 
-		def is_valid(self) -> bool:
+		# inherits docstring
+		def is_valid(self) -> bool:  # noqa: D102
 			if len(set(self.step_tokenizers)) != len(self.step_tokenizers):
 				# Uninteresting: repeated elements are not useful
 				return False
@@ -1754,7 +1756,7 @@ class PromptSequencers(__TokenizerElementNamespace):
 			untrimmed: list[str],
 			is_untargeted: bool = False,
 			is_unsolved: bool = False,
-		):
+		) -> list[str]:
 			"""Trims a full `SolvedMaze` prompt if the maze data reflects an unsolved or untargeted maze.
 
 			# Development
@@ -1869,7 +1871,9 @@ class PromptSequencers(__TokenizerElementNamespace):
 			path: list[str] | None,
 		) -> list[str]:
 			"""Sequences token regions into a complete prompt.
+
 			Includes any boundary tokens in `constants.SPECIAL_TOKENS` such as <ADJLIST_START>, <ORIGIN_END>, etc.
+
 			# Parameters
 			- `adj_list`: Tokens representing the adjacency list
 			- `origin`: Tokens representing the origin
@@ -1928,6 +1932,7 @@ class PromptSequencers(__TokenizerElementNamespace):
 	@serializable_dataclass(frozen=True, kw_only=True)
 	class AOP(_PromptSequencer):
 		"""Sequences a prompt as [adjacency list, origin, path].
+
 		Still includes "<TARGET_START>" and "<TARGET_END>" tokens, but no representation of the target itself.
 
 		# Parameters
@@ -1944,7 +1949,8 @@ class PromptSequencers(__TokenizerElementNamespace):
 			self,
 			adj_list: list[str],
 			origin: list[str],
-			target: list[str],
+			# explicitly no target in this tokenizer
+			target: list[str],  # noqa: ARG002
 			path: list[str],
 		) -> list[str]:
 			return [
@@ -1985,12 +1991,13 @@ class MazeTokenizerModular(SerializableDataclass):
 	)
 
 	def hash_int(self) -> int:
+		"return integer hash using blake2b"
 		return int.from_bytes(
 			hashlib.blake2b(self.name.encode("utf-8")).digest(),
 			byteorder="big",
 		)
 
-	def __hash__(self):
+	def __hash__(self) -> int:
 		"Stable hash to identify unique `MazeTokenizerModular` instances. uses name"
 		return self.hash_int()
 
@@ -2011,6 +2018,7 @@ class MazeTokenizerModular(SerializableDataclass):
 
 	@cached_property
 	def tokenizer_elements(self) -> list[_TokenizerElement]:
+		"returns a list of all the elements of this tokenizer"
 		return [self.prompt_sequencer, *self.prompt_sequencer.tokenizer_elements()]
 
 	def tokenizer_element_tree(self, abstract: bool = False) -> str:
@@ -2030,7 +2038,7 @@ class MazeTokenizerModular(SerializableDataclass):
 		)
 
 	@property
-	def tokenizer_element_tree_concrete(self):
+	def tokenizer_element_tree_concrete(self) -> str:
 		"""Property wrapper for `tokenizer_element_tree` so that it can be used in `properties_to_serialize`."""
 		return self.tokenizer_element_tree()
 
@@ -2041,7 +2049,7 @@ class MazeTokenizerModular(SerializableDataclass):
 	@property
 	def name(self) -> str:
 		"""Serializes MazeTokenizer into a key for encoding in zanj"""
-		return "-".join([type(self).__name__, self.prompt_sequencer.name])
+		return "-".join([type(self).__name__, self.prompt_sequencer.name])  # noqa: FLY002
 
 	def summary(self) -> dict[str, str]:
 		"""Single-level dictionary of the internal `TokenizerElement`s."""
@@ -2057,13 +2065,17 @@ class MazeTokenizerModular(SerializableDataclass):
 			isinstance(obj, _TokenizerElement)
 			or (isinstance(obj, type) and issubclass(obj, _TokenizerElement))
 		):
-			raise TypeError(f"{obj} is not a `_TokenizerElement` instance or subclass.")
+			err_msg: str = f"{obj} is not a `_TokenizerElement` instance or subclass."
+			raise TypeError(err_msg)
 
-	def _has_element_singular(self, el: type[_TokenizerElement] | _TokenizerElement):
+	def _has_element_singular(
+		self,
+		el: type[_TokenizerElement] | _TokenizerElement,
+	) -> bool:
 		"""Helper method for `has_element`"""
 		self._type_check(el)
 		if isinstance(el, type):
-			return any([isinstance(e, el) for e in self.tokenizer_elements])
+			return any(isinstance(e, el) for e in self.tokenizer_elements)
 		else:
 			return el in self.tokenizer_elements
 
@@ -2083,21 +2095,20 @@ class MazeTokenizerModular(SerializableDataclass):
 		"""
 		if len(elements) == 1 and isinstance(elements[0], Iterable):
 			elements = elements[0]
-		return all([self._has_element_singular(e) for e in elements])
+		return all(self._has_element_singular(e) for e in elements)
 
-	def is_valid(self):
+	def is_valid(self) -> bool:
 		"""Returns `True` if `self` is a valid tokenizer.
+
 		Evaluates the validity of all of `self.tokenizer_elements` according to each one's method.
 		"""
-		return all([el.is_valid() for el in self.tokenizer_elements])
+		return all(el.is_valid() for el in self.tokenizer_elements)
 
 	def is_legacy_equivalent(self) -> bool:
 		"""Returns if `self` has identical stringification behavior as any legacy `MazeTokenizer`."""
 		return any(
-			[
-				self == MazeTokenizerModular.from_legacy(tok_mode)
-				for tok_mode in TokenizationMode
-			],
+			self == MazeTokenizerModular.from_legacy(tok_mode)
+			for tok_mode in TokenizationMode
 		)
 
 	def is_tested_tokenizer(self, do_assert: bool = False) -> bool:
@@ -2129,10 +2140,12 @@ class MazeTokenizerModular(SerializableDataclass):
 		else:
 			return in_range and hashes_match and is_valid
 
-	def is_AOTP(self) -> bool:
+	def is_AOTP(self) -> bool:  # noqa: N802
+		"is this tokenizer an AOTP tokenizer? AOTP = Adjacency list, Origin, Target, Path"
 		return self.has_element(PromptSequencers.AOTP)
 
-	def is_UT(self) -> bool:
+	def is_UT(self) -> bool:  # noqa: N802
+		"is this tokenizer a UT tokenizer? UT = Unique Token (for each coord)"
 		return self.has_element(CoordTokenizers.UT)
 
 	# Alternate Constructors
@@ -2185,12 +2198,13 @@ class MazeTokenizerModular(SerializableDataclass):
 
 	@property
 	def n_tokens(self) -> int:
-		raise NameError(
-			"`MazeTokenizerModular.n_tokens` has been removed. Use `len(maze_dataset.VOCAB_LIST)` instead.",
-		)
+		"get the number of tokens in the vocabulary (deprecated)"
+		err_msg: str = "`MazeTokenizerModular.n_tokens` has been removed. Use `len(maze_dataset.VOCAB_LIST)` instead."
+		raise NameError(err_msg)
 
 	@property
 	def padding_token_index(self) -> int:
+		"get the index of the padding token"
 		return VOCAB_TOKEN_TO_INDEX[VOCAB.PADDING]
 
 	# conversion functions
@@ -2204,27 +2218,30 @@ class MazeTokenizerModular(SerializableDataclass):
 		return self.prompt_sequencer.to_tokens(maze)
 
 	def coords_to_strings(self, coords: list[CoordTup | Coord]) -> list[str]:
+		"calls self.prompt_sequencer.coord_tokenizer.to_tokens(c) for each c in coords"
 		return list(
 			flatten(
 				[self.prompt_sequencer.coord_tokenizer.to_tokens(c) for c in coords],
 			),
 		)
 
+	# TODO: unclear why we need to use `noqa: N805` here since its a classmethod
+	# maybe we need to hit every overload with `@classmethod`?
 	@overload
 	def strings_to_coords(
-		cls,
+		cls,  # noqa: N805
 		text: str | list[str],
 		when_noncoord: Literal["skip"] = "skip",
 	) -> list[CoordTup]: ...
 	@overload
 	def strings_to_coords(
-		cls,
+		cls,  # noqa: N805
 		text: str | list[str],
 		when_noncoord: Literal["error"] = "error",
 	) -> list[CoordTup]: ...
 	@overload
 	def strings_to_coords(
-		cls,
+		cls,  # noqa: N805
 		text: str | list[str],
 		when_noncoord: Literal["include"] = "include",
 	) -> list[str | CoordTup]: ...
@@ -2234,6 +2251,7 @@ class MazeTokenizerModular(SerializableDataclass):
 		text: str | list[str],
 		when_noncoord: WhenMissing = "skip",
 	) -> list[str | CoordTup]:
+		"wrapper for maze_dataset.token_utils.strings_to_coords"
 		warnings.warn(
 			"`MazeTokenizerModular.strings_to_coords` only supports legacy UT strings.",
 			TokenizerPendingDeprecationWarning,
@@ -2248,10 +2266,8 @@ class MazeTokenizerModular(SerializableDataclass):
 				text = text.split()
 			return [VOCAB_TOKEN_TO_INDEX[token] for token in text]
 		except KeyError as e:
-			raise TokenError(
-				f"Token {e} not found",
-				"in `VOCAB`.",
-			) from e
+			err_msg: str = f"Token {e} not found in `VOCAB`."
+			raise TokenError(err_msg) from e
 
 	@staticmethod
 	def decode(
@@ -2262,7 +2278,8 @@ class MazeTokenizerModular(SerializableDataclass):
 		try:
 			output: list[str] = [VOCAB_LIST[token_id] for token_id in token_ids]
 		except IndexError as e:
-			raise TokenError(f"Token index '{e}' not found in `VOCAB`.") from e
+			err_msg: str = f"Token index '{e}' not found in `VOCAB`."
+			raise TokenError(err_msg) from e
 		if joined_tokens:
 			return " ".join(output)
 		else:
@@ -2275,7 +2292,7 @@ _TOKENIZER_HASHES_PATH: Path = Path(__file__).parent / "MazeTokenizerModular_has
 "path to where we expect the hashes file -- in the same dir as this file, by default. change with `set_tokenizer_hashes_path`"
 
 
-def set_tokenizer_hashes_path(path: Path):
+def set_tokenizer_hashes_path(path: Path) -> None:
 	"""set path to tokenizer hashes, and reload the hashes if needed
 
 	the hashes are expected to be stored in and read from `_TOKENIZER_HASHES_PATH`,
@@ -2283,15 +2300,15 @@ def set_tokenizer_hashes_path(path: Path):
 
 	However, this might not always work, so we provide a way to change this.
 	"""
-	global _TOKENIZER_HASHES_PATH
-	global _ALL_TOKENIZER_HASHES
+	global _TOKENIZER_HASHES_PATH, _ALL_TOKENIZER_HASHES  # noqa: PLW0603
 
 	path = Path(path)
 	if path.is_dir():
 		path = path / "MazeTokenizerModular_hashes.npz"
 
 	if not path.is_file():
-		raise FileNotFoundError(f"could not find maze tokenizer hashes file at: {path}")
+		err_msg: str = f"could not find maze tokenizer hashes file at: {path}"
+		raise FileNotFoundError(err_msg)
 
 	if _TOKENIZER_HASHES_PATH.absolute() != path.absolute():
 		# reload if they aren't equal
@@ -2304,21 +2321,24 @@ def set_tokenizer_hashes_path(path: Path):
 
 def _load_tokenizer_hashes() -> Int64[np.ndarray, " n_tokenizers"]:
 	"""Loads the sorted list of `all_tokenizers.get_all_tokenizers()` hashes from disk."""
-	global _TOKENIZER_HASHES_PATH
+	global _TOKENIZER_HASHES_PATH  # noqa: PLW0602
 	try:
 		path: Path = _TOKENIZER_HASHES_PATH
 		return np.load(path)["hashes"]
 	except FileNotFoundError as e:
-		raise FileNotFoundError(
-			"Tokenizers hashes cannot be loaded. To fix this, run",
-			"\n`python -m maze-dataset.tokenization.save_hashes` which will save the hashes to",
-			"\n`data/MazeTokenizerModular_hashes.npz`",
-			"relative to the current working directory -- this is where the code looks for them.",
-		) from e
+		err_msg: str = (
+			"Tokenizers hashes cannot be loaded. To fix this, run"
+			"\n`python -m maze-dataset.tokenization.save_hashes` which will save the hashes to"
+			"\n`data/MazeTokenizerModular_hashes.npz`"
+			"\nrelative to the current working directory -- this is where the code looks for them."
+		)
+		raise FileNotFoundError(err_msg) from e
 
 
 def get_all_tokenizer_hashes() -> Int64[np.ndarray, " n_tokenizers"]:
-	global _ALL_TOKENIZER_HASHES
+	"""returns all the tokenizer hashes in an Int64 array, setting global variable if needed"""
+	# naughty use of globals
+	global _ALL_TOKENIZER_HASHES  # noqa: PLW0603
 	try:
 		got_tokenizers: bool = len(_ALL_TOKENIZER_HASHES) > 0
 		if got_tokenizers:
