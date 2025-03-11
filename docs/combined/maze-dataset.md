@@ -5,7 +5,7 @@
 [![PyPI](https://img.shields.io/pypi/v/maze-dataset)](https://pypi.org/project/maze-dataset/)
 ![PyPI - Downloads](https://img.shields.io/pypi/dm/maze-dataset)
 [![Checks](https://github.com/understanding-search/maze-dataset/actions/workflows/checks.yml/badge.svg)](https://github.com/understanding-search/maze-dataset/actions/workflows/checks.yml)
-[![Coverage](data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI5OSIgaGVpZ2h0PSIyMCI+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImIiIHgyPSIwIiB5Mj0iMTAwJSI+CiAgICAgICAgPHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjYmJiIiBzdG9wLW9wYWNpdHk9Ii4xIi8+CiAgICAgICAgPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLW9wYWNpdHk9Ii4xIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogICAgPG1hc2sgaWQ9ImEiPgogICAgICAgIDxyZWN0IHdpZHRoPSI5OSIgaGVpZ2h0PSIyMCIgcng9IjMiIGZpbGw9IiNmZmYiLz4KICAgIDwvbWFzaz4KICAgIDxnIG1hc2s9InVybCgjYSkiPgogICAgICAgIDxwYXRoIGZpbGw9IiM1NTUiIGQ9Ik0wIDBoNjN2MjBIMHoiLz4KICAgICAgICA8cGF0aCBmaWxsPSIjZGZiMzE3IiBkPSJNNjMgMGgzNnYyMEg2M3oiLz4KICAgICAgICA8cGF0aCBmaWxsPSJ1cmwoI2IpIiBkPSJNMCAwaDk5djIwSDB6Ii8+CiAgICA8L2c+CiAgICA8ZyBmaWxsPSIjZmZmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iRGVqYVZ1IFNhbnMsVmVyZGFuYSxHZW5ldmEsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMSI+CiAgICAgICAgPHRleHQgeD0iMzEuNSIgeT0iMTUiIGZpbGw9IiMwMTAxMDEiIGZpbGwtb3BhY2l0eT0iLjMiPmNvdmVyYWdlPC90ZXh0PgogICAgICAgIDx0ZXh0IHg9IjMxLjUiIHk9IjE0Ij5jb3ZlcmFnZTwvdGV4dD4KICAgICAgICA8dGV4dCB4PSI4MCIgeT0iMTUiIGZpbGw9IiMwMTAxMDEiIGZpbGwtb3BhY2l0eT0iLjMiPjY3JTwvdGV4dD4KICAgICAgICA8dGV4dCB4PSI4MCIgeT0iMTQiPjY3JTwvdGV4dD4KICAgIDwvZz4KPC9zdmc+Cg==)](docs/coverage/coverage.txt)
+[![Coverage](data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI5OSIgaGVpZ2h0PSIyMCI+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImIiIHgyPSIwIiB5Mj0iMTAwJSI+CiAgICAgICAgPHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjYmJiIiBzdG9wLW9wYWNpdHk9Ii4xIi8+CiAgICAgICAgPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLW9wYWNpdHk9Ii4xIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogICAgPG1hc2sgaWQ9ImEiPgogICAgICAgIDxyZWN0IHdpZHRoPSI5OSIgaGVpZ2h0PSIyMCIgcng9IjMiIGZpbGw9IiNmZmYiLz4KICAgIDwvbWFzaz4KICAgIDxnIG1hc2s9InVybCgjYSkiPgogICAgICAgIDxwYXRoIGZpbGw9IiM1NTUiIGQ9Ik0wIDBoNjN2MjBIMHoiLz4KICAgICAgICA8cGF0aCBmaWxsPSIjZGZiMzE3IiBkPSJNNjMgMGgzNnYyMEg2M3oiLz4KICAgICAgICA8cGF0aCBmaWxsPSJ1cmwoI2IpIiBkPSJNMCAwaDk5djIwSDB6Ii8+CiAgICA8L2c+CiAgICA8ZyBmaWxsPSIjZmZmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iRGVqYVZ1IFNhbnMsVmVyZGFuYSxHZW5ldmEsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMSI+CiAgICAgICAgPHRleHQgeD0iMzEuNSIgeT0iMTUiIGZpbGw9IiMwMTAxMDEiIGZpbGwtb3BhY2l0eT0iLjMiPmNvdmVyYWdlPC90ZXh0PgogICAgICAgIDx0ZXh0IHg9IjMxLjUiIHk9IjE0Ij5jb3ZlcmFnZTwvdGV4dD4KICAgICAgICA8dGV4dCB4PSI4MCIgeT0iMTUiIGZpbGw9IiMwMTAxMDEiIGZpbGwtb3BhY2l0eT0iLjMiPjY0JTwvdGV4dD4KICAgICAgICA8dGV4dCB4PSI4MCIgeT0iMTQiPjY0JTwvdGV4dD4KICAgIDwvZz4KPC9zdmc+Cg==)](docs/coverage/coverage.txt)
 ![code size, bytes](https://img.shields.io/github/languages/code-size/understanding-search/maze-dataset)
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/t/understanding-search/maze-dataset)
 ![GitHub closed pull requests](https://img.shields.io/github/issues-pr-closed/understanding-search/maze-dataset)
@@ -174,7 +174,7 @@ MazePlot(maze).plot()
 [![PyPI](https://img.shields.io/pypi/v/maze-dataset)](https://pypi.org/project/maze-dataset/)
 ![PyPI - Downloads](https://img.shields.io/pypi/dm/maze-dataset)
 [![Checks](https://github.com/understanding-search/maze-dataset/actions/workflows/checks.yml/badge.svg)](https://github.com/understanding-search/maze-dataset/actions/workflows/checks.yml)
-[![Coverage](data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI5OSIgaGVpZ2h0PSIyMCI+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImIiIHgyPSIwIiB5Mj0iMTAwJSI+CiAgICAgICAgPHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjYmJiIiBzdG9wLW9wYWNpdHk9Ii4xIi8+CiAgICAgICAgPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLW9wYWNpdHk9Ii4xIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogICAgPG1hc2sgaWQ9ImEiPgogICAgICAgIDxyZWN0IHdpZHRoPSI5OSIgaGVpZ2h0PSIyMCIgcng9IjMiIGZpbGw9IiNmZmYiLz4KICAgIDwvbWFzaz4KICAgIDxnIG1hc2s9InVybCgjYSkiPgogICAgICAgIDxwYXRoIGZpbGw9IiM1NTUiIGQ9Ik0wIDBoNjN2MjBIMHoiLz4KICAgICAgICA8cGF0aCBmaWxsPSIjZGZiMzE3IiBkPSJNNjMgMGgzNnYyMEg2M3oiLz4KICAgICAgICA8cGF0aCBmaWxsPSJ1cmwoI2IpIiBkPSJNMCAwaDk5djIwSDB6Ii8+CiAgICA8L2c+CiAgICA8ZyBmaWxsPSIjZmZmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iRGVqYVZ1IFNhbnMsVmVyZGFuYSxHZW5ldmEsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMSI+CiAgICAgICAgPHRleHQgeD0iMzEuNSIgeT0iMTUiIGZpbGw9IiMwMTAxMDEiIGZpbGwtb3BhY2l0eT0iLjMiPmNvdmVyYWdlPC90ZXh0PgogICAgICAgIDx0ZXh0IHg9IjMxLjUiIHk9IjE0Ij5jb3ZlcmFnZTwvdGV4dD4KICAgICAgICA8dGV4dCB4PSI4MCIgeT0iMTUiIGZpbGw9IiMwMTAxMDEiIGZpbGwtb3BhY2l0eT0iLjMiPjY3JTwvdGV4dD4KICAgICAgICA8dGV4dCB4PSI4MCIgeT0iMTQiPjY3JTwvdGV4dD4KICAgIDwvZz4KPC9zdmc+Cg==)](docs/coverage/coverage.txt)
+[![Coverage](data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI5OSIgaGVpZ2h0PSIyMCI+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImIiIHgyPSIwIiB5Mj0iMTAwJSI+CiAgICAgICAgPHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjYmJiIiBzdG9wLW9wYWNpdHk9Ii4xIi8+CiAgICAgICAgPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLW9wYWNpdHk9Ii4xIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogICAgPG1hc2sgaWQ9ImEiPgogICAgICAgIDxyZWN0IHdpZHRoPSI5OSIgaGVpZ2h0PSIyMCIgcng9IjMiIGZpbGw9IiNmZmYiLz4KICAgIDwvbWFzaz4KICAgIDxnIG1hc2s9InVybCgjYSkiPgogICAgICAgIDxwYXRoIGZpbGw9IiM1NTUiIGQ9Ik0wIDBoNjN2MjBIMHoiLz4KICAgICAgICA8cGF0aCBmaWxsPSIjZGZiMzE3IiBkPSJNNjMgMGgzNnYyMEg2M3oiLz4KICAgICAgICA8cGF0aCBmaWxsPSJ1cmwoI2IpIiBkPSJNMCAwaDk5djIwSDB6Ii8+CiAgICA8L2c+CiAgICA8ZyBmaWxsPSIjZmZmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iRGVqYVZ1IFNhbnMsVmVyZGFuYSxHZW5ldmEsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMSI+CiAgICAgICAgPHRleHQgeD0iMzEuNSIgeT0iMTUiIGZpbGw9IiMwMTAxMDEiIGZpbGwtb3BhY2l0eT0iLjMiPmNvdmVyYWdlPC90ZXh0PgogICAgICAgIDx0ZXh0IHg9IjMxLjUiIHk9IjE0Ij5jb3ZlcmFnZTwvdGV4dD4KICAgICAgICA8dGV4dCB4PSI4MCIgeT0iMTUiIGZpbGw9IiMwMTAxMDEiIGZpbGwtb3BhY2l0eT0iLjMiPjY0JTwvdGV4dD4KICAgICAgICA8dGV4dCB4PSI4MCIgeT0iMTQiPjY0JTwvdGV4dD4KICAgIDwvZz4KPC9zdmc+Cg==)](docs/coverage/coverage.txt)
 ![code size, bytes](https://img.shields.io/github/languages/code-size/understanding-search/maze-dataset)
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/t/understanding-search/maze-dataset)
 ![GitHub closed pull requests](https://img.shields.io/github/issues-pr-closed/understanding-search/maze-dataset)
@@ -2153,7 +2153,7 @@ Benchmarking of how successful maze generation is for various values of percolat
 
 Benchmarking of how successful maze generation is for various values of percolation
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.2.0-betamaze_dataset/benchmark/config_sweep.py#L0-L530)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.2.0-betamaze_dataset/benchmark/config_sweep.py#L0-L536)
 
 
 
@@ -2212,9 +2212,9 @@ given a base config, parameter values list, key, and analysis function, return t
         _description_
 
 
-### `class SweepResult(muutils.json_serialize.serializable_dataclass.SerializableDataclass):` { #SweepResult }
+### `class SweepResult(muutils.json_serialize.serializable_dataclass.SerializableDataclass, typing.Generic[~ParamType, ~SweepReturnType]):` { #SweepResult }
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.2.0-betamaze_dataset/benchmark/config_sweep.py#L90-L330)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.2.0-betamaze_dataset/benchmark/config_sweep.py#L90-L335)
 
 
 result of a parameter sweep
@@ -2225,7 +2225,7 @@ result of a parameter sweep
 (
     configs: list[maze_dataset.dataset.maze_dataset.MazeDatasetConfig],
     param_values: list[~ParamType],
-    result_values: dict[str, list[~SweepReturnType]],
+    result_values: dict[str, typing.Sequence[~SweepReturnType]],
     param_key: str,
     analyze_func: Callable[[maze_dataset.dataset.maze_dataset.MazeDatasetConfig], ~SweepReturnType]
 )
@@ -2244,7 +2244,7 @@ result of a parameter sweep
 
 
 
-- `result_values: dict[str, list[~SweepReturnType]] `
+- `result_values: dict[str, typing.Sequence[~SweepReturnType]] `
 
 
 
@@ -2391,7 +2391,7 @@ get a subset of this `Result` where the configs has `key` satisfying `val_check`
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.2.0-betamaze_dataset/benchmark/config_sweep.py#L206-L252)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.2.0-betamaze_dataset/benchmark/config_sweep.py#L206-L254)
 
 
 Analyze success rate of maze generation for different percolation values
@@ -2420,53 +2420,17 @@ numpy array of values to try
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.2.0-betamaze_dataset/benchmark/config_sweep.py#L254-L330)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.2.0-betamaze_dataset/benchmark/config_sweep.py#L256-L335)
 
 
 Plot the results of percolation analysis
 
 
-### `def serialize` { #SweepResult.serialize }
-```python
-(self) -> dict[str, typing.Any]
-```
-
-
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.2.0-betamaze_dataset/benchmark/config_sweep.py#L713-L769)
-
-
-returns the class as a dict, implemented by using `@serializable_dataclass` decorator
-
-
-### `def load` { #SweepResult.load }
-```python
-(cls, data: Union[dict[str, Any], ~T]) -> Type[~T]
-```
-
-
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.2.0-betamaze_dataset/benchmark/config_sweep.py#L776-L862)
-
-
-takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
-
-
-### `def validate_fields_types` { #SweepResult.validate_fields_types }
-```python
-(
-    self: muutils.json_serialize.serializable_dataclass.SerializableDataclass,
-    on_typecheck_error: muutils.errormode.ErrorMode = ErrorMode.Except
-) -> bool
-```
-
-
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.2.0-betamaze_dataset/benchmark/config_sweep.py#L282-L291)
-
-
-validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
-
-
 ### Inherited Members                                
 
+- [`serialize`](#SweepResult.serialize)
+- [`load`](#SweepResult.load)
+- [`validate_fields_types`](#SweepResult.validate_fields_types)
 - [`validate_field_type`](#SweepResult.validate_field_type)
 - [`diff`](#SweepResult.diff)
 - [`update_from_nested_dict`](#SweepResult.update_from_nested_dict)
@@ -2483,7 +2447,7 @@ validate the types of all the fields on a `SerializableDataclass`. calls `Serial
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.2.0-betamaze_dataset/benchmark/config_sweep.py#L359-L367)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.2.0-betamaze_dataset/benchmark/config_sweep.py#L364-L372)
 
 
 convert endpoint kwargs options to a human-readable name
@@ -2504,7 +2468,7 @@ convert endpoint kwargs options to a human-readable name
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.2.0-betamaze_dataset/benchmark/config_sweep.py#L370-L424)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.2.0-betamaze_dataset/benchmark/config_sweep.py#L375-L430)
 
 
 run the full analysis of how percolation affects maze generation success
@@ -2523,7 +2487,7 @@ run the full analysis of how percolation affects maze generation success
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.2.0-betamaze_dataset/benchmark/config_sweep.py#L432-L531)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.2.0-betamaze_dataset/benchmark/config_sweep.py#L438-L537)
 
 
 Plot grouped sweep percolation value results for each distinct `endpoint_kwargs` in the configs
@@ -2572,7 +2536,7 @@ benchmark the speed of maze generation
 
 benchmark the speed of maze generation
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.2.0-betamaze_dataset/benchmark/speed.py#L0-L129)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.2.0-betamaze_dataset/benchmark/speed.py#L0-L131)
 
 
 
@@ -2588,7 +2552,7 @@ benchmark the speed of maze generation
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.2.0-betamaze_dataset/benchmark/speed.py#L34-L97)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.2.0-betamaze_dataset/benchmark/speed.py#L35-L98)
 
 
 time the generation of mazes for various configurations
@@ -2607,7 +2571,7 @@ time the generation of mazes for various configurations
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.2.0-betamaze_dataset/benchmark/speed.py#L100-L130)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.2.0-betamaze_dataset/benchmark/speed.py#L101-L132)
 
 
 run the benchmark and save the results to a file
@@ -5769,7 +5733,7 @@ dfs and then percolation (adds cycles)
 helper function to get a maze already with a solution
 
 
-- `numpy_rng = Generator(PCG64) at 0x74B584BCA7A0`
+- `numpy_rng = Generator(PCG64) at 0x78CBC6AEA7A0`
 
 
 
@@ -5835,7 +5799,7 @@ generation functions have signature `(grid_shape: Coord, **kwargs) -> LatticeMaz
 
 
 
-- `numpy_rng = Generator(PCG64) at 0x74B584BCA7A0`
+- `numpy_rng = Generator(PCG64) at 0x78CBC6AEA7A0`
 
 
 

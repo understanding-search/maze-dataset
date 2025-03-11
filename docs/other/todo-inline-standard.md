@@ -6,9 +6,9 @@
 ## [`maze_dataset/benchmark/config_sweep.py`](/maze_dataset/benchmark/config_sweep.py)
 
 - sort by grid size  
-  local link: [`/maze_dataset/benchmark/config_sweep.py:278`](/maze_dataset/benchmark/config_sweep.py#L278) 
-  | view on GitHub: [maze_dataset/benchmark/config_sweep.py#L278](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/benchmark/config_sweep.py#L278)
-  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=sort%20by%20grid%20size&body=%23%20source%0A%0A%5B%60maze_dataset%2Fbenchmark%2Fconfig_sweep.py%23L278%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Fbenchmark%2Fconfig_sweep.py%23L278%29%0A%0A%23%20context%0A%60%60%60python%0A%09%09%09sorted%28%0A%09%09%09%09self.result_values.items%28%29%2C%0A%09%09%09%09%23%20HACK%3A%20sort%20by%20grid%20size%0A%09%09%09%09%23%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7C--%3C%20name%20of%20config%0A%09%09%09%09%23%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7C%20%20%20%20%7C-----------%3C%20gets%20%27g%7Bn%7D%27%0A%60%60%60&labels=HACK)
+  local link: [`/maze_dataset/benchmark/config_sweep.py:280`](/maze_dataset/benchmark/config_sweep.py#L280) 
+  | view on GitHub: [maze_dataset/benchmark/config_sweep.py#L280](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/benchmark/config_sweep.py#L280)
+  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=sort%20by%20grid%20size&body=%23%20source%0A%0A%5B%60maze_dataset%2Fbenchmark%2Fconfig_sweep.py%23L280%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Fbenchmark%2Fconfig_sweep.py%23L280%29%0A%0A%23%20context%0A%60%60%60python%0A%09%09%09sorted%28%0A%09%09%09%09self.result_values.items%28%29%2C%0A%09%09%09%09%23%20HACK%3A%20sort%20by%20grid%20size%0A%09%09%09%09%23%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7C--%3C%20name%20of%20config%0A%09%09%09%09%23%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7C%20%20%20%20%7C-----------%3C%20gets%20%27g%7Bn%7D%27%0A%60%60%60&labels=HACK)
 
   ```python
   sorted(
@@ -20,9 +20,9 @@
 
 
 - big hassle to do this without a lambda, is it really that bad?  
-  local link: [`/maze_dataset/benchmark/config_sweep.py:485`](/maze_dataset/benchmark/config_sweep.py#L485) 
-  | view on GitHub: [maze_dataset/benchmark/config_sweep.py#L485](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/benchmark/config_sweep.py#L485)
-  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=big%20hassle%20to%20do%20this%20without%20a%20lambda%2C%20is%20it%20really%20that%20bad%3F&body=%23%20source%0A%0A%5B%60maze_dataset%2Fbenchmark%2Fconfig_sweep.py%23L485%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Fbenchmark%2Fconfig_sweep.py%23L485%29%0A%0A%23%20context%0A%60%60%60python%0A%09%09%09results_filtered%3A%20SweepResult%20%3D%20results_epkw.get_where%28%0A%09%09%09%09%22maze_ctor%22%2C%0A%09%09%09%09%23%20HACK%3A%20big%20hassle%20to%20do%20this%20without%20a%20lambda%2C%20is%20it%20really%20that%20bad%3F%0A%09%09%09%09lambda%20x%3A%20x.__name__%20%3D%3D%20gen_func%2C%20%20%23%20noqa%3A%20B023%0A%09%09%09%29%0A%60%60%60&labels=HACK)
+  local link: [`/maze_dataset/benchmark/config_sweep.py:491`](/maze_dataset/benchmark/config_sweep.py#L491) 
+  | view on GitHub: [maze_dataset/benchmark/config_sweep.py#L491](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/benchmark/config_sweep.py#L491)
+  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=big%20hassle%20to%20do%20this%20without%20a%20lambda%2C%20is%20it%20really%20that%20bad%3F&body=%23%20source%0A%0A%5B%60maze_dataset%2Fbenchmark%2Fconfig_sweep.py%23L491%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Fbenchmark%2Fconfig_sweep.py%23L491%29%0A%0A%23%20context%0A%60%60%60python%0A%09%09%09results_filtered%3A%20SweepResult%20%3D%20results_epkw.get_where%28%0A%09%09%09%09%22maze_ctor%22%2C%0A%09%09%09%09%23%20HACK%3A%20big%20hassle%20to%20do%20this%20without%20a%20lambda%2C%20is%20it%20really%20that%20bad%3F%0A%09%09%09%09lambda%20x%3A%20x.__name__%20%3D%3D%20gen_func%2C%20%20%23%20noqa%3A%20B023%0A%09%09%09%29%0A%60%60%60&labels=HACK)
 
   ```python
   results_filtered: SweepResult = results_epkw.get_where(
@@ -119,9 +119,9 @@
 ## [`maze_dataset/benchmark/config_sweep.py`](/maze_dataset/benchmark/config_sweep.py)
 
 - B007 noqaed because we dont use `ep_kw_name` or `gf_idx`  
-  local link: [`/maze_dataset/benchmark/config_sweep.py:390`](/maze_dataset/benchmark/config_sweep.py#L390) 
-  | view on GitHub: [maze_dataset/benchmark/config_sweep.py#L390](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/benchmark/config_sweep.py#L390)
-  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=B007%20noqaed%20because%20we%20dont%20use%20%60ep_kw_name%60%20or%20%60gf_idx%60&body=%23%20source%0A%0A%5B%60maze_dataset%2Fbenchmark%2Fconfig_sweep.py%23L390%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Fbenchmark%2Fconfig_sweep.py%23L390%29%0A%0A%23%20context%0A%60%60%60python%0A%09configs%3A%20list%5BMazeDatasetConfig%5D%20%3D%20list%28%29%0A%0A%09%23%20TODO%3A%20B007%20noqaed%20because%20we%20dont%20use%20%60ep_kw_name%60%20or%20%60gf_idx%60%0A%09for%20ep_kw_name%2C%20ep_kw%20in%20ep_kwargs%3A%20%20%23%20noqa%3A%20B007%0A%09%09for%20gf_idx%2C%20gen_func%20in%20enumerate%28generators%29%3A%20%20%23%20noqa%3A%20B007%0A%60%60%60&labels=enhancement)
+  local link: [`/maze_dataset/benchmark/config_sweep.py:395`](/maze_dataset/benchmark/config_sweep.py#L395) 
+  | view on GitHub: [maze_dataset/benchmark/config_sweep.py#L395](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/benchmark/config_sweep.py#L395)
+  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=B007%20noqaed%20because%20we%20dont%20use%20%60ep_kw_name%60%20or%20%60gf_idx%60&body=%23%20source%0A%0A%5B%60maze_dataset%2Fbenchmark%2Fconfig_sweep.py%23L395%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Fbenchmark%2Fconfig_sweep.py%23L395%29%0A%0A%23%20context%0A%60%60%60python%0A%09configs%3A%20list%5BMazeDatasetConfig%5D%20%3D%20list%28%29%0A%0A%09%23%20TODO%3A%20B007%20noqaed%20because%20we%20dont%20use%20%60ep_kw_name%60%20or%20%60gf_idx%60%0A%09for%20ep_kw_name%2C%20ep_kw%20in%20ep_kwargs%3A%20%20%23%20noqa%3A%20B007%0A%09%09for%20gf_idx%2C%20gen_func%20in%20enumerate%28generators%29%3A%20%20%23%20noqa%3A%20B007%0A%60%60%60&labels=enhancement)
 
   ```python
   configs: list[MazeDatasetConfig] = list()
@@ -799,6 +799,111 @@
 
 # TYPING
 
+## [`maze_dataset/benchmark/config_sweep.py`](/maze_dataset/benchmark/config_sweep.py)
+
+- error: Argument "func" to "run_maybe_parallel" has incompatible type "partial[list[SweepReturnType]]"; expected "Callable[[MazeDatasetConfig], float]"  [arg-type]  
+  local link: [`/maze_dataset/benchmark/config_sweep.py:230`](/maze_dataset/benchmark/config_sweep.py#L230) 
+  | view on GitHub: [maze_dataset/benchmark/config_sweep.py#L230](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/benchmark/config_sweep.py#L230)
+  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=error%3A%20Argument%20%22func%22%20to%20%22run_maybe_parallel%22%20has%20incompatible%20type%20%22partial%5Blist%5BSweepReturnType%5D%5D%22%3B%20expected%20%22Callable%5B%5BMazeDatasetConfig%5D%2C%20float%5D%22%20%20%5Barg-type%5D&body=%23%20source%0A%0A%5B%60maze_dataset%2Fbenchmark%2Fconfig_sweep.py%23L230%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Fbenchmark%2Fconfig_sweep.py%23L230%29%0A%0A%23%20context%0A%60%60%60python%0A%09%09result_values_list%3A%20list%5Bfloat%5D%20%3D%20run_maybe_parallel%28%0A%09%09%09%23%20TYPING%3A%20error%3A%20Argument%20%22func%22%20to%20%22run_maybe_parallel%22%20has%20incompatible%20type%20%22partial%5Blist%5BSweepReturnType%5D%5D%22%3B%20expected%20%22Callable%5B%5BMazeDatasetConfig%5D%2C%20float%5D%22%20%20%5Barg-type%5D%0A%09%09%09func%3Dfunctools.partial%28%20%20%23%20type%3A%20ignore%5Barg-type%5D%0A%09%09%09%09sweep%2C%0A%60%60%60&labels=TYPING)
+
+  ```python
+  result_values_list: list[float] = run_maybe_parallel(
+  	# TYPING: error: Argument "func" to "run_maybe_parallel" has incompatible type "partial[list[SweepReturnType]]"; expected "Callable[[MazeDatasetConfig], float]"  [arg-type]
+  	func=functools.partial(  # type: ignore[arg-type]
+  		sweep,
+  ```
+
+
+- error: Argument "result_values" to "SweepResult" has incompatible type "dict[str, ndarray[Any, Any]]"; expected "dict[str, Sequence[SweepReturnType]]"  [arg-type]  
+  local link: [`/maze_dataset/benchmark/config_sweep.py:250`](/maze_dataset/benchmark/config_sweep.py#L250) 
+  | view on GitHub: [maze_dataset/benchmark/config_sweep.py#L250](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/benchmark/config_sweep.py#L250)
+  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=error%3A%20Argument%20%22result_values%22%20to%20%22SweepResult%22%20has%20incompatible%20type%20%22dict%5Bstr%2C%20ndarray%5BAny%2C%20Any%5D%5D%22%3B%20expected%20%22dict%5Bstr%2C%20Sequence%5BSweepReturnType%5D%5D%22%20%20%5Barg-type%5D&body=%23%20source%0A%0A%5B%60maze_dataset%2Fbenchmark%2Fconfig_sweep.py%23L250%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Fbenchmark%2Fconfig_sweep.py%23L250%29%0A%0A%23%20context%0A%60%60%60python%0A%09%09%09configs%3Dconfigs%2C%0A%09%09%09param_values%3Dparam_values%2C%0A%09%09%09%23%20TYPING%3A%20error%3A%20Argument%20%22result_values%22%20to%20%22SweepResult%22%20has%20incompatible%20type%20%22dict%5Bstr%2C%20ndarray%5BAny%2C%20Any%5D%5D%22%3B%20expected%20%22dict%5Bstr%2C%20Sequence%5BSweepReturnType%5D%5D%22%20%20%5Barg-type%5D%0A%09%09%09result_values%3Dresult_values%2C%20%20%23%20type%3A%20ignore%5Barg-type%5D%0A%09%09%09param_key%3Dparam_key%2C%0A%60%60%60&labels=TYPING)
+
+  ```python
+  configs=configs,
+  param_values=param_values,
+  # TYPING: error: Argument "result_values" to "SweepResult" has incompatible type "dict[str, ndarray[Any, Any]]"; expected "dict[str, Sequence[SweepReturnType]]"  [arg-type]
+  result_values=result_values,  # type: ignore[arg-type]
+  param_key=param_key,
+  ```
+
+
+- error: Argument 1 to "plot" of "Axes" has incompatible type "list[ParamType]"; expected "float | Buffer | _SupportsArray[dtype[Any]] | _NestedSequence[_SupportsArray[dtype[Any]]] | bool | int | float | complex | str | bytes | _NestedSequence[bool | int | float | complex | str | bytes] | str"  [arg-type]  
+  local link: [`/maze_dataset/benchmark/config_sweep.py:289`](/maze_dataset/benchmark/config_sweep.py#L289) 
+  | view on GitHub: [maze_dataset/benchmark/config_sweep.py#L289](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/benchmark/config_sweep.py#L289)
+  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=error%3A%20Argument%201%20to%20%22plot%22%20of%20%22Axes%22%20has%20incompatible%20type%20%22list%5BParamType%5D%22%3B%20expected%20%22float%20%7C%20Buffer%20%7C%20_SupportsArray%5Bdtype%5BAny%5D%5D%20%7C%20_NestedSequence%5B_SupportsArray%5Bdtype%5BAny%5D%5D%5D%20%7C%20bool%20%7C%20int%20%7C%20float%20%7C%20complex%20%7C%20str%20%7C%20bytes%20%7C%20_NestedSequence%5Bbool%20%7C%20int%20%7C%20float%20%7C%20complex%20%7C%20str%20%7C%20bytes%5D%20%7C%20str%22%20%20%5Barg-type%5D&body=%23%20source%0A%0A%5B%60maze_dataset%2Fbenchmark%2Fconfig_sweep.py%23L289%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Fbenchmark%2Fconfig_sweep.py%23L289%29%0A%0A%23%20context%0A%60%60%60python%0A%09%09%29%3A%0A%09%09%09ax_.plot%28%0A%09%09%09%09%23%20TYPING%3A%20error%3A%20Argument%201%20to%20%22plot%22%20of%20%22Axes%22%20has%20incompatible%20type%20%22list%5BParamType%5D%22%3B%20expected%20%22float%20%7C%20Buffer%20%7C%20_SupportsArray%5Bdtype%5BAny%5D%5D%20%7C%20_NestedSequence%5B_SupportsArray%5Bdtype%5BAny%5D%5D%5D%20%7C%20bool%20%7C%20int%20%7C%20float%20%7C%20complex%20%7C%20str%20%7C%20bytes%20%7C%20_NestedSequence%5Bbool%20%7C%20int%20%7C%20float%20%7C%20complex%20%7C%20str%20%7C%20bytes%5D%20%7C%20str%22%20%20%5Barg-type%5D%0A%09%09%09%09self.param_values%2C%20%20%23%20type%3A%20ignore%5Barg-type%5D%0A%09%09%09%09%23%20TYPING%3A%20error%3A%20Argument%202%20to%20%22plot%22%20of%20%22Axes%22%20has%20incompatible%20type%20%22Sequence%5BSweepReturnType%5D%22%3B%20expected%20%22float%20%7C%20Buffer%20%7C%20_SupportsArray%5Bdtype%5BAny%5D%5D%20%7C%20_NestedSequence%5B_SupportsArray%5Bdtype%5BAny%5D%5D%5D%20%7C%20bool%20%7C%20int%20%7C%20float%20%7C%20complex%20%7C%20str%20%7C%20bytes%20%7C%20_NestedSequence%5Bbool%20%7C%20int%20%7C%20float%20%7C%20complex%20%7C%20str%20%7C%20bytes%5D%20%7C%20str%22%20%20%5Barg-type%5D%0A%60%60%60&labels=TYPING)
+
+  ```python
+  ):
+  	ax_.plot(
+  		# TYPING: error: Argument 1 to "plot" of "Axes" has incompatible type "list[ParamType]"; expected "float | Buffer | _SupportsArray[dtype[Any]] | _NestedSequence[_SupportsArray[dtype[Any]]] | bool | int | float | complex | str | bytes | _NestedSequence[bool | int | float | complex | str | bytes] | str"  [arg-type]
+  		self.param_values,  # type: ignore[arg-type]
+  		# TYPING: error: Argument 2 to "plot" of "Axes" has incompatible type "Sequence[SweepReturnType]"; expected "float | Buffer | _SupportsArray[dtype[Any]] | _NestedSequence[_SupportsArray[dtype[Any]]] | bool | int | float | complex | str | bytes | _NestedSequence[bool | int | float | complex | str | bytes] | str"  [arg-type]
+  ```
+
+
+- error: Argument 2 to "plot" of "Axes" has incompatible type "Sequence[SweepReturnType]"; expected "float | Buffer | _SupportsArray[dtype[Any]] | _NestedSequence[_SupportsArray[dtype[Any]]] | bool | int | float | complex | str | bytes | _NestedSequence[bool | int | float | complex | str | bytes] | str"  [arg-type]  
+  local link: [`/maze_dataset/benchmark/config_sweep.py:291`](/maze_dataset/benchmark/config_sweep.py#L291) 
+  | view on GitHub: [maze_dataset/benchmark/config_sweep.py#L291](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/benchmark/config_sweep.py#L291)
+  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=error%3A%20Argument%202%20to%20%22plot%22%20of%20%22Axes%22%20has%20incompatible%20type%20%22Sequence%5BSweepReturnType%5D%22%3B%20expected%20%22float%20%7C%20Buffer%20%7C%20_SupportsArray%5Bdtype%5BAny%5D%5D%20%7C%20_NestedSequence%5B_SupportsArray%5Bdtype%5BAny%5D%5D%5D%20%7C%20bool%20%7C%20int%20%7C%20float%20%7C%20complex%20%7C%20str%20%7C%20bytes%20%7C%20_NestedSequence%5Bbool%20%7C%20int%20%7C%20float%20%7C%20complex%20%7C%20str%20%7C%20bytes%5D%20%7C%20str%22%20%20%5Barg-type%5D&body=%23%20source%0A%0A%5B%60maze_dataset%2Fbenchmark%2Fconfig_sweep.py%23L291%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Fbenchmark%2Fconfig_sweep.py%23L291%29%0A%0A%23%20context%0A%60%60%60python%0A%09%09%09%09%23%20TYPING%3A%20error%3A%20Argument%201%20to%20%22plot%22%20of%20%22Axes%22%20has%20incompatible%20type%20%22list%5BParamType%5D%22%3B%20expected%20%22float%20%7C%20Buffer%20%7C%20_SupportsArray%5Bdtype%5BAny%5D%5D%20%7C%20_NestedSequence%5B_SupportsArray%5Bdtype%5BAny%5D%5D%5D%20%7C%20bool%20%7C%20int%20%7C%20float%20%7C%20complex%20%7C%20str%20%7C%20bytes%20%7C%20_NestedSequence%5Bbool%20%7C%20int%20%7C%20float%20%7C%20complex%20%7C%20str%20%7C%20bytes%5D%20%7C%20str%22%20%20%5Barg-type%5D%0A%09%09%09%09self.param_values%2C%20%20%23%20type%3A%20ignore%5Barg-type%5D%0A%09%09%09%09%23%20TYPING%3A%20error%3A%20Argument%202%20to%20%22plot%22%20of%20%22Axes%22%20has%20incompatible%20type%20%22Sequence%5BSweepReturnType%5D%22%3B%20expected%20%22float%20%7C%20Buffer%20%7C%20_SupportsArray%5Bdtype%5BAny%5D%5D%20%7C%20_NestedSequence%5B_SupportsArray%5Bdtype%5BAny%5D%5D%5D%20%7C%20bool%20%7C%20int%20%7C%20float%20%7C%20complex%20%7C%20str%20%7C%20bytes%20%7C%20_NestedSequence%5Bbool%20%7C%20int%20%7C%20float%20%7C%20complex%20%7C%20str%20%7C%20bytes%5D%20%7C%20str%22%20%20%5Barg-type%5D%0A%09%09%09%09result_values%2C%20%20%23%20type%3A%20ignore%5Barg-type%5D%0A%09%09%09%09%22.-%22%2C%0A%60%60%60&labels=TYPING)
+
+  ```python
+  # TYPING: error: Argument 1 to "plot" of "Axes" has incompatible type "list[ParamType]"; expected "float | Buffer | _SupportsArray[dtype[Any]] | _NestedSequence[_SupportsArray[dtype[Any]]] | bool | int | float | complex | str | bytes | _NestedSequence[bool | int | float | complex | str | bytes] | str"  [arg-type]
+  self.param_values,  # type: ignore[arg-type]
+  # TYPING: error: Argument 2 to "plot" of "Axes" has incompatible type "Sequence[SweepReturnType]"; expected "float | Buffer | _SupportsArray[dtype[Any]] | _NestedSequence[_SupportsArray[dtype[Any]]] | bool | int | float | complex | str | bytes | _NestedSequence[bool | int | float | complex | str | bytes] | str"  [arg-type]
+  result_values,  # type: ignore[arg-type]
+  ".-",
+  ```
+
+
+- error: Argument 2 to "isinstance" has incompatible type "<typing special form>"; expected "_ClassInfo"  [arg-type]  
+  local link: [`/maze_dataset/benchmark/config_sweep.py:308`](/maze_dataset/benchmark/config_sweep.py#L308) 
+  | view on GitHub: [maze_dataset/benchmark/config_sweep.py#L308](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/benchmark/config_sweep.py#L308)
+  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=error%3A%20Argument%202%20to%20%22isinstance%22%20has%20incompatible%20type%20%22%3Ctyping%20special%20form%3E%22%3B%20expected%20%22_ClassInfo%22%20%20%5Barg-type%5D&body=%23%20source%0A%0A%5B%60maze_dataset%2Fbenchmark%2Fconfig_sweep.py%23L308%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Fbenchmark%2Fconfig_sweep.py%23L308%29%0A%0A%23%20context%0A%60%60%60python%0A%09%09%09%09%09%5B%0A%09%09%09%09%09%09f%22%7Bk%7D%3D%7Bcfg_shared%5Bk%5D.__name__%7D%22%0A%09%09%09%09%09%09%23%20TYPING%3A%20error%3A%20Argument%202%20to%20%22isinstance%22%20has%20incompatible%20type%20%22%3Ctyping%20special%20form%3E%22%3B%20expected%20%22_ClassInfo%22%20%20%5Barg-type%5D%0A%09%09%09%09%09%09if%20isinstance%28cfg_shared%5Bk%5D%2C%20Callable%29%20%20%23%20type%3A%20ignore%5Barg-type%5D%0A%09%09%09%09%09%09else%20f%22%7Bk%7D%3D%7Bcfg_shared%5Bk%5D%7D%22%0A%60%60%60&labels=TYPING)
+
+  ```python
+  [
+  	f"{k}={cfg_shared[k].__name__}"
+  	# TYPING: error: Argument 2 to "isinstance" has incompatible type "<typing special form>"; expected "_ClassInfo"  [arg-type]
+  	if isinstance(cfg_shared[k], Callable)  # type: ignore[arg-type]
+  	else f"{k}={cfg_shared[k]}"
+  ```
+
+
+- error: Argument "param_values" to "analyze" of "SweepResult" has incompatible type "float | list[float] | list[list[float]] | list[list[list[Any]]]"; expected "list[Any]"  [arg-type]  
+  local link: [`/maze_dataset/benchmark/config_sweep.py:415`](/maze_dataset/benchmark/config_sweep.py#L415) 
+  | view on GitHub: [maze_dataset/benchmark/config_sweep.py#L415](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/benchmark/config_sweep.py#L415)
+  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=error%3A%20Argument%20%22param_values%22%20to%20%22analyze%22%20of%20%22SweepResult%22%20has%20incompatible%20type%20%22float%20%7C%20list%5Bfloat%5D%20%7C%20list%5Blist%5Bfloat%5D%5D%20%7C%20list%5Blist%5Blist%5BAny%5D%5D%5D%22%3B%20expected%20%22list%5BAny%5D%22%20%20%5Barg-type%5D&body=%23%20source%0A%0A%5B%60maze_dataset%2Fbenchmark%2Fconfig_sweep.py%23L415%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Fbenchmark%2Fconfig_sweep.py%23L415%29%0A%0A%23%20context%0A%60%60%60python%0A%09result%3A%20SweepResult%20%3D%20SweepResult.analyze%28%0A%09%09configs%3Dconfigs%2C%20%20%23%20type%3A%20ignore%5Bmisc%5D%0A%09%09%23%20TYPING%3A%20error%3A%20Argument%20%22param_values%22%20to%20%22analyze%22%20of%20%22SweepResult%22%20has%20incompatible%20type%20%22float%20%7C%20list%5Bfloat%5D%20%7C%20list%5Blist%5Bfloat%5D%5D%20%7C%20list%5Blist%5Blist%5BAny%5D%5D%5D%22%3B%20expected%20%22list%5BAny%5D%22%20%20%5Barg-type%5D%0A%09%09param_values%3Dnp.linspace%280.0%2C%201.0%2C%20p_val_count%29.tolist%28%29%2C%20%20%23%20type%3A%20ignore%5Barg-type%5D%0A%09%09param_key%3D%22maze_ctor_kwargs.p%22%2C%0A%60%60%60&labels=TYPING)
+
+  ```python
+  result: SweepResult = SweepResult.analyze(
+  	configs=configs,  # type: ignore[misc]
+  	# TYPING: error: Argument "param_values" to "analyze" of "SweepResult" has incompatible type "float | list[float] | list[list[float]] | list[list[list[Any]]]"; expected "list[Any]"  [arg-type]
+  	param_values=np.linspace(0.0, 1.0, p_val_count).tolist(),  # type: ignore[arg-type]
+  	param_key="maze_ctor_kwargs.p",
+  ```
+
+
+
+
+## [`maze_dataset/benchmark/sweep_fit.py`](/maze_dataset/benchmark/sweep_fit.py)
+
+- error: Incompatible types in assignment (expression has type "floating[Any]", variable has type "float")  [assignment]  
+  local link: [`/maze_dataset/benchmark/sweep_fit.py:336`](/maze_dataset/benchmark/sweep_fit.py#L336) 
+  | view on GitHub: [maze_dataset/benchmark/sweep_fit.py#L336](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/benchmark/sweep_fit.py#L336)
+  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=error%3A%20Incompatible%20types%20in%20assignment%20%28expression%20has%20type%20%22floating%5BAny%5D%22%2C%20variable%20has%20type%20%22float%22%29%20%20%5Bassignment%5D&body=%23%20source%0A%0A%5B%60maze_dataset%2Fbenchmark%2Fsweep_fit.py%23L336%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Fbenchmark%2Fsweep_fit.py%23L336%29%0A%0A%23%20context%0A%60%60%60python%0A%09%09%09%23%20Calculate%20f%28x%2Cp%29%20for%20all%20combinations%0A%09%09%09for%20i%2C%20p_val%20in%20enumerate%28ps%29%3A%0A%09%09%09%09%23%20TYPING%3A%20error%3A%20Incompatible%20types%20in%20assignment%20%28expression%20has%20type%20%22floating%5BAny%5D%22%2C%20variable%20has%20type%20%22float%22%29%20%20%5Bassignment%5D%0A%09%09%09%09for%20j%2C%20x_val%20in%20enumerate%28xs%29%3A%20%20%23%20type%3A%20ignore%5Bassignment%5D%0A%09%09%09%09%09Z%5Bi%2C%20j%5D%20%3D%20soft_step%28x_val%2C%20p_val%2C%20alpha%2C%20w%29%0A%60%60%60&labels=TYPING)
+
+  ```python
+  # Calculate f(x,p) for all combinations
+  for i, p_val in enumerate(ps):
+  	# TYPING: error: Incompatible types in assignment (expression has type "floating[Any]", variable has type "float")  [assignment]
+  	for j, x_val in enumerate(xs):  # type: ignore[assignment]
+  		Z[i, j] = soft_step(x_val, p_val, alpha, w)
+  ```
+
+
+
+
 ## [`maze_dataset/dataset/configs.py`](/maze_dataset/dataset/configs.py)
 
 - error: Return type "list[str]" of "keys" incompatible with return type "KeysView[str]" in supertype "Mapping"  [override]  
@@ -874,6 +979,24 @@
   # TYPING: error: Attributes without a default cannot follow attributes with one  [misc]
   @serializable_dataclass
   class RasterizedMazeDatasetConfig(MazeDatasetConfig):  # type: ignore[misc]
+  ```
+
+
+
+
+## [`maze_dataset/dataset/success_predict_math.py`](/maze_dataset/dataset/success_predict_math.py)
+
+- this is messed up, some of these args can be arrays but i dont remember which?  
+  local link: [`/maze_dataset/dataset/success_predict_math.py:68`](/maze_dataset/dataset/success_predict_math.py#L68) 
+  | view on GitHub: [maze_dataset/dataset/success_predict_math.py#L68](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/success_predict_math.py#L68)
+  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=this%20is%20messed%20up%2C%20some%20of%20these%20args%20can%20be%20arrays%20but%20i%20dont%20remember%20which%3F&body=%23%20source%0A%0A%5B%60maze_dataset%2Fdataset%2Fsuccess_predict_math.py%23L68%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Fdataset%2Fsuccess_predict_math.py%23L68%29%0A%0A%23%20context%0A%60%60%60python%0A%09https%3A%2F%2Fwww.desmos.com%2Fcalculator%2Fqllvhwftvy%0A%09%22%22%22%0A%09%23%20TYPING%3A%20this%20is%20messed%20up%2C%20some%20of%20these%20args%20can%20be%20arrays%20but%20i%20dont%20remember%20which%3F%0A%09return%20h_func%28%0A%09%09x%2C%20%20%23%20type%3A%20ignore%5Barg-type%5D%0A%60%60%60&labels=TYPING)
+
+  ```python
+  https://www.desmos.com/calculator/qllvhwftvy
+  """
+  # TYPING: this is messed up, some of these args can be arrays but i dont remember which?
+  return h_func(
+  	x,  # type: ignore[arg-type]
   ```
 
 

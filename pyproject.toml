@@ -311,8 +311,16 @@
 
         # Descriptions for notebooks, shown in index
         [tool.makefile.docs.notebooks.descriptions]
-            "example" = "Example notebook showing basic usage"
-            "advanced" = "Advanced usage patterns and techniques"
+            "demo_dataset" = "Creating and filtering a dataset, and various output formats"
+			"demo_generator" = "Exploring different maze generation algorithms and parameters"
+			"demo_latticemaze" = "Working with LatticeMaze class, visualization and solving mazes"
+			"demo_mazetokenizermodular" = "Using the modern MazeTokenizerModular system for tokenization"
+			"demo_tokenization" = "Legacy tokenization with MazeTokenizer and TokenizationMode"
+			"estimate_dataset_fractions" = "Estimating and predicting maze generation success rates"
+			"forking_points" = "Identifying and working with decision points in maze solutions"
+			"iterated_backfilling" = "Implementation of iterated backfilling as an algorithm for solving visual mazes"
+			"profile_dataset_save_read" = "Profiling and optimizing dataset serialization performance"
+            
         
         
 

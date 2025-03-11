@@ -1,8 +1,8 @@
 # Stats
 - 47 files
-- 14032 (14K) lines
-- 436788 (437K) chars
-- 48429 (48K) `whitespace-split` tokens
+- 14052 (14K) lines
+- 439728 (440K) chars
+- 48774 (49K) `whitespace-split` tokens
 
 # File Tree
 
@@ -16,9 +16,9 @@ maze-dataset
 ├── maze_dataset                          
 │   ├── benchmark                         
 │   │   ├── __init__.py                   [    6L       102C    15T]
-│   │   ├── config_sweep.py               [  531L    14,787C 1,548T]
-│   │   ├── speed.py                      [  130L     2,915C   316T]
-│   │   └── sweep_fit.py                  [  407L    11,312C 1,346T]
+│   │   ├── config_sweep.py               [  537L    16,350C 1,738T]
+│   │   ├── speed.py                      [  132L     2,999C   322T]
+│   │   └── sweep_fit.py                  [  409L    11,634C 1,381T]
 │   ├── dataset                           
 │   │   ├── __init__.py                   [   21L       502C    39T]
 │   │   ├── collected_dataset.py          [  231L     7,694C   811T]
@@ -26,7 +26,7 @@ maze-dataset
 │   │   ├── dataset.py                    [  542L    17,820C 2,058T]
 │   │   ├── maze_dataset.py               [1,218L    38,591C 4,064T]
 │   │   ├── rasterized.py                 [  331L     9,556C 1,003T]
-│   │   └── success_predict_math.py       [  104L     2,557C   420T]
+│   │   └── success_predict_math.py       [  106L     2,809C   460T]
 │   ├── generation                        
 │   │   ├── __init__.py                   [   23L       526C    53T]
 │   │   ├── default_generators.py         [   21L       754C    68T]
@@ -57,14 +57,14 @@ maze-dataset
 │   ├── demo_latticemaze.ipynb            [  821L   323,594C 2,488T]
 │   ├── demo_mazetokenizermodular.ipynb   [1,757L    89,642C 6,819T]
 │   ├── demo_tokenization.ipynb           [  434L   145,864C 9,259T]
-│   ├── estimate_dataset_fractions.ipynb  [  475L 3,198,624C 1,190T]
+│   ├── estimate_dataset_fractions.ipynb  [  479L 3,243,732C 1,236T]
 │   ├── forking_points.ipynb              [  221L    28,462C   621T]
 │   ├── iterated_backfilling.ipynb        [  207L    30,509C   547T]
 │   └── profile_dataset_save_read.ipynb   [1,133L   269,709C 3,406T]
 ├── .lastversion                          [    1L         7C     1T]
 ├── README.md                             [  123L     6,156C   575T]
 ├── makefile                              [1,726L    53,142C 6,251T]
-├── pyproject.toml                        [  392L    13,595C 1,580T]
+├── pyproject.toml                        [  400L    14,314C 1,654T]
 ```
 
 # File Contents
@@ -295,7 +295,7 @@ import functools
 import json
 import warnings
 from pathlib import Path
-from typing import Any, Callable, Sequence, TypeVar
+from typing import Any, Callable, Generic, Sequence, TypeVar
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -379,7 +379,7 @@ def sweep(
 
 
 @serializable_dataclass()
-class SweepResult(SerializableDataclass):
+class SweepResult(SerializableDataclass, Generic[ParamType, SweepReturnType]):
 	"""result of a parameter sweep"""
 
 	configs: list[MazeDatasetConfig] = serializable_field(
@@ -391,7 +391,7 @@ class SweepResult(SerializableDataclass):
 		deserialize_fn=lambda x: x,
 		assert_type=False,
 	)
-	result_values: dict[str, list[SweepReturnType]] = serializable_field(
+	result_values: dict[str, Sequence[SweepReturnType]] = serializable_field(
 		serialization_fn=lambda x: json_serialize(x),
 		deserialize_fn=lambda x: x,
 		assert_type=False,
@@ -482,7 +482,7 @@ class SweepResult(SerializableDataclass):
 			cfg for cfg in self.configs if val_check(getattr(cfg, key))
 		]
 		configs_keys: set[str] = {cfg.to_fname() for cfg in configs_list}
-		result_values: dict[str, np.ndarray] = {
+		result_values: dict[str, Sequence[SweepReturnType]] = {
 			k: self.result_values[k] for k in configs_keys
 		}
 
@@ -518,7 +518,8 @@ class SweepResult(SerializableDataclass):
 		n_pvals: int = len(param_values)
 
 		result_values_list: list[float] = run_maybe_parallel(
-			func=functools.partial(
+			# TYPING: error: Argument "func" to "run_maybe_parallel" has incompatible type "partial[list[SweepReturnType]]"; expected "Callable[[MazeDatasetConfig], float]"  [arg-type]
+			func=functools.partial(  # type: ignore[arg-type]
 				sweep,
 				param_values=param_values,
 				param_key=param_key,
@@ -537,7 +538,8 @@ class SweepResult(SerializableDataclass):
 		return cls(
 			configs=configs,
 			param_values=param_values,
-			result_values=result_values,
+			# TYPING: error: Argument "result_values" to "SweepResult" has incompatible type "dict[str, ndarray[Any, Any]]"; expected "dict[str, Sequence[SweepReturnType]]"  [arg-type]
+			result_values=result_values,  # type: ignore[arg-type]
 			param_key=param_key,
 			analyze_func=analyze_func,
 		)
@@ -575,8 +577,10 @@ class SweepResult(SerializableDataclass):
 			),
 		):
 			ax_.plot(
-				self.param_values,
-				result_values,
+				# TYPING: error: Argument 1 to "plot" of "Axes" has incompatible type "list[ParamType]"; expected "float | Buffer | _SupportsArray[dtype[Any]] | _NestedSequence[_SupportsArray[dtype[Any]]] | bool | int | float | complex | str | bytes | _NestedSequence[bool | int | float | complex | str | bytes] | str"  [arg-type]
+				self.param_values,  # type: ignore[arg-type]
+				# TYPING: error: Argument 2 to "plot" of "Axes" has incompatible type "Sequence[SweepReturnType]"; expected "float | Buffer | _SupportsArray[dtype[Any]] | _NestedSequence[_SupportsArray[dtype[Any]]] | bool | int | float | complex | str | bytes | _NestedSequence[bool | int | float | complex | str | bytes] | str"  [arg-type]
+				result_values,  # type: ignore[arg-type]
 				".-",
 				label=self.configs_by_key()[ep_cfg_name].name,
 				color=cmap((i + 0.5) / (n_cfgs - 0.5)),
@@ -592,7 +596,8 @@ class SweepResult(SerializableDataclass):
 				+ ", ".join(
 					[
 						f"{k}={cfg_shared[k].__name__}"
-						if isinstance(cfg_shared[k], Callable)
+						# TYPING: error: Argument 2 to "isinstance" has incompatible type "<typing special form>"; expected "_ClassInfo"  [arg-type]
+						if isinstance(cfg_shared[k], Callable)  # type: ignore[arg-type]
 						else f"{k}={cfg_shared[k]}"
 						for k in cfg_keys
 					],
@@ -697,8 +702,9 @@ def full_percolation_analysis(
 
 	# get results
 	result: SweepResult = SweepResult.analyze(
-		configs=configs,
-		param_values=np.linspace(0.0, 1.0, p_val_count).tolist(),
+		configs=configs,  # type: ignore[misc]
+		# TYPING: error: Argument "param_values" to "analyze" of "SweepResult" has incompatible type "float | list[float] | list[list[float]] | list[list[list[Any]]]"; expected "list[Any]"  [arg-type]
+		param_values=np.linspace(0.0, 1.0, p_val_count).tolist(),  # type: ignore[arg-type]
 		param_key="maze_ctor_kwargs.p",
 		analyze_func=dataset_success_fraction,
 		parallel=parallel,
@@ -751,7 +757,7 @@ def plot_grouped(  # noqa: C901
 	```
 	"""
 	# groups
-	endpoint_kwargs_set: set[tuple[dict]] = results.configs_value_set("endpoint_kwargs")  # type: ignore[assignment]
+	endpoint_kwargs_set: list[dict] = results.configs_value_set("endpoint_kwargs")  # type: ignore[assignment]
 	generator_funcs_names: list[str] = list(
 		{cfg.maze_ctor.__name__ for cfg in results.configs},
 	)
@@ -829,6 +835,7 @@ def plot_grouped(  # noqa: C901
 import functools
 import random
 import timeit
+from pathlib import Path
 from typing import Sequence
 
 from tqdm import tqdm
@@ -951,6 +958,7 @@ def run_benchmark(
 	print(df.to_csv())
 
 	# save to file
+	Path(save_path).parent.mkdir(parents=True, exist_ok=True)
 	df.to_json(save_path, orient="records", lines=True)
 
 	return df
@@ -961,14 +969,14 @@ def run_benchmark(
 """Fit a PySR model to a sweep result and plot the results"""
 
 from pathlib import Path
-from typing import Callable
+from typing import TYPE_CHECKING, Callable
 
 import numpy as np
-import sympy as sp
+import sympy as sp  # type: ignore[import-untyped]
 
 # other imports after pysr since it has to be before torch?
 from jaxtyping import Float
-from pysr import PySRRegressor
+from pysr import PySRRegressor  # type: ignore[import-untyped]
 
 from maze_dataset import MazeDatasetConfig
 from maze_dataset.benchmark.config_sweep import (
@@ -1001,7 +1009,7 @@ def extract_training_data(
 			# Temporarily override p in the config's array representation:
 			arr = cfg._to_ps_array().copy()
 			arr[0] = p  # index 0 is 'p'
-			x_list.append(arr)
+			x_list.append(arr)  # type: ignore[arg-type]
 			y_list.append(success_arr[i])
 
 	return np.array(x_list, dtype=np.float64), np.array(y_list, dtype=np.float64)
@@ -1143,7 +1151,7 @@ def create_interactive_plot(heatmap: bool = True) -> None:  # noqa: C901, PLR091
 	- `heatmap : bool`
 		Whether to show heatmaps (defaults to `True`)
 	"""
-	import ipywidgets as widgets
+	import ipywidgets as widgets  # type: ignore[import-untyped]
 	import matplotlib.pyplot as plt
 	from ipywidgets import FloatSlider, HBox, Layout, VBox
 	from matplotlib.gridspec import GridSpec
@@ -1293,7 +1301,8 @@ def create_interactive_plot(heatmap: bool = True) -> None:  # noqa: C901, PLR091
 
 			# Calculate f(x,p) for all combinations
 			for i, p_val in enumerate(ps):
-				for j, x_val in enumerate(xs):
+				# TYPING: error: Incompatible types in assignment (expression has type "floating[Any]", variable has type "float")  [assignment]
+				for j, x_val in enumerate(xs):  # type: ignore[assignment]
 					Z[i, j] = soft_step(x_val, p_val, alpha, w)
 
 			c = ax3.pcolormesh(X, P, Z, cmap="viridis", shading="auto")
@@ -1364,7 +1373,8 @@ def create_interactive_plot(heatmap: bool = True) -> None:  # noqa: C901, PLR091
 	)
 
 	# we noqa here because we will only call this function inside a notebook
-	display(VBox([slider_box, interactive_output]))  # noqa: F821
+	if not TYPE_CHECKING:
+		display(VBox([slider_box, interactive_output]))  # noqa: F821
 
 ``````{ end_of_file="maze_dataset/benchmark/sweep_fit.py" }
 
@@ -3810,6 +3820,7 @@ Desmos link: https://www.desmos.com/calculator/qllvhwftvy
 """
 
 import numpy as np
+from jaxtyping import Float
 
 
 def sigmoid(x: float) -> float:
@@ -3861,18 +3872,19 @@ def A_scaling(q: float, a: float, w: float) -> float:
 
 
 def soft_step(
-	x: float,
-	p: float,
-	alpha: float = 5,
-	w: float = 50,
+	x: float | np.floating | Float[np.ndarray, " n"],
+	p: float | np.floating,
+	alpha: float | np.floating = 5,
+	w: float | np.floating = 50,
 ) -> float:
 	"""when p is close to 0.5 acts like the identity wrt x, but when p is close to 0 or 1, pushes x to 0 or 1 (whichever is closest)
 
 	https://www.desmos.com/calculator/qllvhwftvy
 	"""
+	# TYPING: this is messed up, some of these args can be arrays but i dont remember which?
 	return h_func(
-		x,
-		A_scaling(p, alpha, w),
+		x,  # type: ignore[arg-type]
+		A_scaling(p, alpha, w),  # type: ignore[arg-type]
 	)
 
 
@@ -13955,8 +13967,16 @@ help: help-targets info
 
         # Descriptions for notebooks, shown in index
         [tool.makefile.docs.notebooks.descriptions]
-            "example" = "Example notebook showing basic usage"
-            "advanced" = "Advanced usage patterns and techniques"
+            "demo_dataset" = "Creating and filtering a dataset, and various output formats"
+			"demo_generator" = "Exploring different maze generation algorithms and parameters"
+			"demo_latticemaze" = "Working with LatticeMaze class, visualization and solving mazes"
+			"demo_mazetokenizermodular" = "Using the modern MazeTokenizerModular system for tokenization"
+			"demo_tokenization" = "Legacy tokenization with MazeTokenizer and TokenizationMode"
+			"estimate_dataset_fractions" = "Estimating and predicting maze generation success rates"
+			"forking_points" = "Identifying and working with decision points in maze solutions"
+			"iterated_backfilling" = "Implementation of iterated backfilling as an algorithm for solving visual mazes"
+			"profile_dataset_save_read" = "Profiling and optimizing dataset serialization performance"
+            
         
         
 

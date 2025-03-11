@@ -2,9 +2,9 @@ Name                                                                 Stmts   Mis
 --------------------------------------------------------------------------------------------------
 maze_dataset/__init__.py                                                 6      6     0%   3-28
 maze_dataset/benchmark/__init__.py                                       1      1     0%   3
-maze_dataset/benchmark/config_sweep.py                                 164    164     0%   3-531
-maze_dataset/benchmark/speed.py                                         36     36     0%   3-130
-maze_dataset/benchmark/sweep_fit.py                                    138    138     0%   3-407
+maze_dataset/benchmark/config_sweep.py                                 164    164     0%   3-537
+maze_dataset/benchmark/speed.py                                         38     38     0%   3-132
+maze_dataset/benchmark/sweep_fit.py                                    139    139     0%   3-409
 maze_dataset/constants.py                                               85     71    16%   3-74, 78-79, 83-87, 93-97, 105-111, 114, 117, 120, 123, 127-232
 maze_dataset/dataset/__init__.py                                         3      3     0%   3-9
 maze_dataset/dataset/collected_dataset.py                               86     57    34%   8-31, 41-46, 50-65, 69, 76-79, 99-100, 104-105, 109-110, 118, 122, 136-137, 149-162, 173-174, 185-210, 218
@@ -12,7 +12,7 @@ maze_dataset/dataset/configs.py                                         21      
 maze_dataset/dataset/dataset.py                                        203    125    38%   9-46, 60-86, 91, 95, 101-224, 258, 272-273, 279, 291, 313-316, 327, 334-335, 341-376, 380, 392-393, 397, 407-420, 432, 449-495, 509-522
 maze_dataset/dataset/maze_dataset.py                                   356    217    39%   7-71, 77, 82-108, 110, 125-135, 167-168, 172-173, 177-182, 193, 202-386, 411, 419, 434-450, 462-463, 502, 506, 510, 518-532, 555, 559, 563, 566, 572-573, 644-645, 649-650, 655, 660, 663-669, 677-678, 698-747, 756, 766, 807-855, 859, 880, 898, 927-933, 937-939, 943-945, 963-978, 997, 1027-1028, 1041-1043, 1054-1067, 1097, 1108, 1115-1117, 1131-1138, 1144-1160, 1175
 maze_dataset/dataset/rasterized.py                                      93     21    77%   234, 252-274, 304
-maze_dataset/dataset/success_predict_math.py                            19     19     0%   6-99
+maze_dataset/dataset/success_predict_math.py                            20     20     0%   6-101
 maze_dataset/generation/__init__.py                                      2      2     0%   7-14
 maze_dataset/generation/default_generators.py                            1      0   100%
 maze_dataset/generation/generators.py                                  132     31    77%   3-19, 37, 53-57, 97-101, 205-206, 228-229, 317-318, 360-361, 404-428
@@ -26,11 +26,10 @@ maze_dataset/plotting/print_tokens.py                                   79     3
 maze_dataset/testing_utils.py                                           20      0   100%
 maze_dataset/token_utils.py                                            202     72    64%   3-35, 99, 108, 111-112, 122-133, 144, 155, 160, 202-208, 231-241, 249, 261, 272, 277, 284, 297-312, 343-344, 350-362, 387-388, 394, 405, 425, 430-435, 437-442, 448-452, 460-464, 469, 527
 maze_dataset/tokenization/__init__.py                                    2      0   100%
-maze_dataset/tokenization/all_tokenizers.py                             59     25    58%   108, 117, 138-194
-maze_dataset/tokenization/maze_tokenizer.py                            748    133    82%   144-148, 242-243, 263-264, 291-294, 331, 336-338, 392-393, 426, 428-432, 442-446, 448, 459-473, 483-490, 561, 590, 598, 684, 711, 719, 751, 814, 887, 899, 948, 956-966, 1001, 1062, 1150, 1168, 1191-1195, 1259-1263, 1369, 1428, 1467-1474, 1498, 1538, 1664, 1846, 1945, 2109, 2130-2131, 2167, 2184-2203, 2223, 2242, 2254, 2264-2265, 2328, 2330-2332, 2342-2344, 2346, 2367-2381, 2387-2397, 2404-2413
+maze_dataset/tokenization/all_tokenizers.py                             59     59     0%   25-194
+maze_dataset/tokenization/maze_tokenizer.py                            748    174    77%   144-148, 242-243, 263-264, 291-294, 331, 336-338, 392-393, 426, 428-432, 442-446, 448, 459-473, 483-490, 561, 590, 598, 668-673, 684, 711, 719, 751, 791-800, 814, 818, 876, 887, 899, 948, 956-966, 980, 1001, 1054, 1062, 1146, 1150, 1168, 1191-1195, 1259-1263, 1369, 1373, 1423, 1428, 1467-1474, 1498, 1521, 1538, 1664, 1668, 1814, 1846, 1945, 2018, 2057, 2064, 2069-2077, 2092, 2105, 2109, 2118, 2130-2131, 2142, 2159, 2167, 2184-2203, 2223, 2242, 2249, 2254, 2259, 2264-2265, 2270, 2326-2332, 2340-2348, 2367-2381, 2387-2397, 2404-2413
 maze_dataset/tokenization/save_hashes.py                                31     31     0%   24-115
-maze_dataset/utils.py                                                  100     43    57%   3-27, 71, 91-116, 131-135, 143, 189, 202-252, 271, 297-301, 324, 327-343, 434-438
-tests/all_tokenizers/test_all_tokenizers.py                             91      1    99%   50
+maze_dataset/utils.py                                                  100     45    55%   3-27, 71, 91-116, 131-135, 143, 189, 202-252, 271, 297-301, 321-324, 327-343, 434-438
 tests/unit/maze_dataset/dataset/test_collected_dataset.py               45      0   100%
 tests/unit/maze_dataset/dataset/test_configs.py                         13      0   100%
 tests/unit/maze_dataset/dataset/test_rasterized.py                      34      0   100%
@@ -52,4 +51,4 @@ tests/unit/maze_dataset/tokenization/test_token_utils.py               174      
 tests/unit/maze_dataset/tokenization/test_tokenizer.py                 253     32    87%   260-266, 464-467, 476-488, 530-531, 624-642, 689-691, 711-718, 734
 tests/unit/maze_dataset/tokenization/test_vocab.py                      21      0   100%
 --------------------------------------------------------------------------------------------------
-TOTAL                                                                 4593   1537    67%
+TOTAL                                                                 4506   1617    64%
