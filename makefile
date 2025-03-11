@@ -1418,13 +1418,18 @@ test_notebooks: convert_notebooks
 	@echo "run tests on converted notebooks in $(CONVERTED_NOTEBOOKS_TEMP_DIR) using muutils.nbutils.run_notebook_tests.py"
 	$(PYTHON) -m muutils.nbutils.run_notebook_tests --notebooks-dir $(NOTEBOOKS_DIR) --converted-notebooks-temp-dir $(CONVERTED_NOTEBOOKS_TEMP_DIR) --python-tool uv 
 
+.PHONY: test_notebooks_nbmake
+test_notebooks_nbmake:
+	uv run pytest --nbmake notebooks/ --nbmake-timeout=300
+
 .PHONY: test
 test: clean unit test_notebooks
 	@echo "ran all tests: unit, integration, and notebooks"
 
 .PHONY: test-all
-test-all: clean test test_tok_hashes test_all_tok
-	@echo "run all tests, including tokenizers"
+test-all: clean
+	@echo "run all tests in one for coverage, including tokenizers"
+	uv run pytest --nbmake notebooks/ --nbmake-timeout=300 $(PYTEST_OPTIONS) tests/ notebooks/
 
 .PHONY: check
 check: clean format-check test typing

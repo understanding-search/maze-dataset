@@ -308,7 +308,8 @@ class LatticeMaze(SerializableDataclass):
 
 		while open_vtx:
 			# get lowest f_score node
-			c_current: CoordTup = min(open_vtx, key=lambda c: f_score[tuple(c)])
+			# mypy cant tell that c is of length 2
+			c_current: CoordTup = min(open_vtx, key=lambda c: f_score[tuple(c)]) # type: ignore[index]
 			# f_current: float = f_score[c_current]
 
 			# check if goal is reached
@@ -524,7 +525,7 @@ class LatticeMaze(SerializableDataclass):
 		# check we have valid positions
 		if len(allowed_start_set) == 0 or len(allowed_end_set) == 0:
 			if except_on_no_valid_endpoint:
-				err_msg: str = f"No valid start (or end?) positions found: {allowed_start_set = }, {allowed_end_set = }"
+				err_msg = f"No valid start (or end?) positions found: {allowed_start_set = }, {allowed_end_set = }"
 				raise NoValidEndpointException(
 					err_msg,
 				)
@@ -544,7 +545,7 @@ class LatticeMaze(SerializableDataclass):
 			)
 		except ValueError as e:
 			if except_on_no_valid_endpoint:
-				err_msg: str = f"No valid start or end positions found, maybe can't find an endpoint after we removed the start point: {allowed_start_set = }, {allowed_end_set = }"
+				err_msg = f"No valid start or end positions found, maybe can't find an endpoint after we removed the start point: {allowed_start_set = }, {allowed_end_set = }"
 				raise NoValidEndpointException(
 					err_msg,
 				) from e
@@ -1205,7 +1206,7 @@ class TargetedLatticeMaze(LatticeMaze):  # type: ignore[misc]
 			self.end_pos[0] >= self.grid_shape[0]
 			or self.end_pos[1] >= self.grid_shape[1]
 		):
-			err_msg: str = f"end_pos {self.end_pos = } is out of bounds for grid shape {self.grid_shape = }"
+			err_msg = f"end_pos {self.end_pos = } is out of bounds for grid shape {self.grid_shape = }"
 			raise ValueError(
 				err_msg,
 			)

@@ -1,7 +1,7 @@
 "`MAZE_DATASET_CONFIGS` contains some default configs for tests and demos"
 
 import copy
-from typing import Mapping
+from typing import Iterable, Mapping
 
 from maze_dataset.dataset.maze_dataset import MazeDatasetConfig
 from maze_dataset.generation.generators import LatticeMazeGenerators
@@ -44,19 +44,22 @@ class _MazeDatsetConfigsWrapper(Mapping[str, MazeDatasetConfig]):
 	def __len__(self) -> int:
 		return len(self._configs)
 
-	def __iter__(self) -> iter:
+	def __iter__(self) -> Iterable:
 		"iterate over the keys"
 		return iter(self._configs)
 
-	def keys(self) -> list[str]:
+	# TYPING: error: Return type "list[str]" of "keys" incompatible with return type "KeysView[str]" in supertype "Mapping"  [override]
+	def keys(self) -> list[str]: # type: ignore[override]
 		"return the keys"
 		return list(self._configs.keys())
 
-	def items(self) -> list[tuple[str, MazeDatasetConfig]]:
+	# TYPING: error: Return type "list[tuple[str, MazeDatasetConfig]]" of "items" incompatible with return type "ItemsView[str, MazeDatasetConfig]" in supertype "Mapping"  [override]
+	def items(self) -> list[tuple[str, MazeDatasetConfig]]: # type: ignore[override]
 		"return the items"
 		return [(k, copy.deepcopy(v)) for k, v in self._configs.items()]
 
-	def values(self) -> list[MazeDatasetConfig]:
+	# TYPING: error: Return type "list[MazeDatasetConfig]" of "values" incompatible with return type "ValuesView[MazeDatasetConfig]" in supertype "Mapping"  [override]
+	def values(self) -> list[MazeDatasetConfig]: # type: ignore[override]
 		return [copy.deepcopy(v) for v in self._configs.values()]
 
 
