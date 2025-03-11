@@ -37,16 +37,11 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Install Poetry
-        run: |
-          curl -sSL https://install.python-poetry.org | python3 -
-          poetry --version
+      - name: set up uv
+        run: curl -LsSf https://astral.sh/uv/install.sh | sh
 
       - name: Install package and deps
-        run: poetry install
-
-      - name: Unit tests, for coverage
-        run: make unit COV=1
+        run: make dep
 
       - name: Build Docs
         run: make docs

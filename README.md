@@ -9,13 +9,30 @@
 
 # `maze-dataset`
 
-This package provides utilities for generation, filtering, solving, visualizing, and processing of mazes for training ML systems. Primarily built for the [maze-transformer interpretability](https://github.com/understanding-search/maze-transformer) project. You can find our paper on it here: http://arxiv.org/abs/2309.10498
+This package provides utilities for generation, filtering, solving, visualizing, and processing of mazes for training or evaluating ML systems. Primarily built for the [maze-transformer interpretability](https://github.com/understanding-search/maze-transformer) project. You can find our paper on it here: http://arxiv.org/abs/2309.10498
 
-This package includes a variety of [maze generation algorithms](maze_dataset/generation/generators.py), including randomized depth first search, Wilson's algorithm for uniform spanning trees, and percolation. Datasets can be filtered to select mazes of a certain length or complexity, remove duplicates, and satisfy custom properties. A variety of output formats for visualization and training ML models are provided.
+This package includes a variety of maze generation algorithms, including randomized depth first search, Wilson's algorithm for uniform spanning trees, and percolation. Datasets can be filtered to select mazes of a certain length or complexity, remove duplicates, and satisfy custom properties. A variety of output formats for visualization and training ML models are provided.
 
 |   |   |   |   |
 |---|---|---|---|
 | ![Maze generated via percolation](docs/assets/maze_perc.png) |  ![Maze generated via constrained randomized depth first search](docs/assets/maze_dfs_constrained.png)  |  ![Maze with random heatmap](docs/assets/mazeplot_heatmap.png)  |  ![MazePlot with solution](docs/assets/mazeplot_path.png)  |
+
+# Citing
+
+If you use this code in your research, please cite [our paper](http://arxiv.org/abs/2309.10498):
+
+```
+@misc{maze-dataset,
+    title={A Configurable Library for Generating and Manipulating Maze Datasets}, 
+    author={Michael Igorevich Ivanitskiy and Rusheb Shah and Alex F. Spies and Tilman Räuker and Dan Valentine and Can Rager and Lucia Quirke and Chris Mathwin and Guillaume Corlouer and Cecilia Diniz Behn and Samy Wu Fung},
+    year={2023},
+    eprint={2309.10498},
+    archivePrefix={arXiv},
+    primaryClass={cs.LG},
+    url={http://arxiv.org/abs/2309.10498}
+}
+```
+
 
 # Installation
 This package is [available on PyPI](https://pypi.org/project/maze-dataset/), and can be installed via
@@ -27,18 +44,7 @@ pip install maze-dataset
 
 The full hosted documentation is available at [https://understanding-search.github.io/maze-dataset/](https://understanding-search.github.io/maze-dataset/).
 
-Additionally:
-
-- our notebooks serve as a good starting point for understanding the package:
-    - the [notebooks](https://understanding-search.github.io/maze-dataset/notebooks) page in the docs has links to the rendered notebooks
-    - the [`notebooks`](https://github.com/understanding-search/maze-dataset/tree/main/notebooks) folder has the source notebooks
-- combined, single page docs are available as:
-    - [plain text](https://understanding-search.github.io/maze-dataset/combined/maze_dataset.txt)
-    - [html](https://understanding-search.github.io/maze-dataset/combined/maze_dataset.html)
-    - [github markdown](https://github.com/understanding-search/maze-dataset/tree/main/docs/combined/maze_dataset.md)
-    - [pandoc markdown](https://github.com/understanding-search/maze-dataset/tree/main/docs/combined/maze_dataset.md)
-- test coverage reports are available on the [coverage](https://understanding-search.github.io/maze-dataset/coverage) page or the [`coverage/`](https://github.com/understanding-search/maze-dataset/tree/main/docs/coverage) folder
-- generation benchmark results are available on the [benchmarks](https://understanding-search.github.io/maze-dataset/benchmarks) page or the [`benchmarks/`](https://github.com/understanding-search/maze-dataset/tree/main/docs/benchmarks) folder
+Additionally, our [notebooks](https://understanding-search.github.io/maze-dataset/notebooks) serve as a good starting point for understanding the package.
 
 # Usage
 
@@ -96,13 +102,6 @@ MazePlot(maze).plot()
 
 # Development
 
-This project uses [Poetry](https://python-poetry.org/docs/#installation) for development. To install with dev requirements, run
-```
-poetry install --with dev
-```
-
-A makefile is included to simplify common development tasks:
-
 - `make help` will print all available commands
 - all tests via `make test`
     - unit tests via `make unit`
@@ -111,18 +110,3 @@ A makefile is included to simplify common development tasks:
     - formatter in check-only mode via `make check-format`
 
 
-# Citing
-
-If you use this code in your research, please cite [our paper](http://arxiv.org/abs/2309.10498):
-
-```
-@misc{maze-dataset,
-    title={A Configurable Library for Generating and Manipulating Maze Datasets}, 
-    author={Michael Igorevich Ivanitskiy and Rusheb Shah and Alex F. Spies and Tilman Räuker and Dan Valentine and Can Rager and Lucia Quirke and Chris Mathwin and Guillaume Corlouer and Cecilia Diniz Behn and Samy Wu Fung},
-    year={2023},
-    eprint={2309.10498},
-    archivePrefix={arXiv},
-    primaryClass={cs.LG},
-    url={http://arxiv.org/abs/2309.10498}
-}
-```

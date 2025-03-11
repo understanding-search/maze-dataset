@@ -1,105 +1,400 @@
-[tool.poetry]
-name = "maze-dataset"
-version = "1.1.0"
-description = "generating and working with datasets of mazes"
-authors = [
-    "Michael Ivanitskiy <mivanits@umich.edu>", "Aaron Sandoval <aaron.sandoval10@gmail.com>",
-    "Dan Valentine <danvalentine256@gmail.com>", "Rusheb Shah <rusheb.shah@gmail.com>",
-    "Lucia Quirke <luciaq@canva.com>", "Can Rager <can.rager@posteo.de>", "Alex Spies <alexfspies@gmail.com>", "Chris Mathwin <cwmathwin@gmail.com>", "Tilman Rauker <traeuker@googlemail.com>", "Guillaume Corlouer <guillaume.corlouer@gmail.com>"
-]
-readme = "README.md"
+[project]
+    name = "maze-dataset"
+    version = "1.2.0-beta"
+    description = "generating and working with datasets of mazes"
+    authors = [
+        { name = "Michael Ivanitskiy", email = "mivanits@umich.edu" },
+        { name = "Aaron Sandoval", email = "aaron.sandoval10@gmail.com" },
+        { name = "Rusheb Shah", email = "rusheb.shah@gmail.com" },
+        { name = "Dan Valentine", email = "danvalentine256@gmail.com" },
+        { name = "Lucia Quirke", email = "luciaq@canva.com" },
+        { name = "Can Rager", email = "can.rager@posteo.de" },
+        { name = "Alex Spies", email = "alexfspies@gmail.com" },
+        { name = "Chris Mathwin", email = "cwmathwin@gmail.com" },
+        { name = "Tilman Rauker", email = "traeuker@googlemail.com" },
+        { name = "Guillaume Corlouer", email = "guillaume.corlouer@gmail.com" },
+    ]
+    readme = "README.md"
+    requires-python = ">=3.10"
 
-# source info
-packages = [{include = "maze_dataset"}]
-exclude = ["maze_dataset/tokenization/MazeTokenizerModular_hashes.npz"] # don't ship the hashes
+    # source info
+    # packages = [{include = "maze_dataset"}]
+    # exclude = ["maze_dataset/tokenization/MazeTokenizerModular_hashes.npz"] # don't ship the hashes
 
-# informational metadata
-keywords = ["maze", "mazes", "labyrinth", "dataset", "procedural", "pathfinding", "tokenization"]
-repository = "https://github.com/understanding-search/maze-dataset"
-homepage = "https://github.com/understanding-search/maze-dataset"
-documentation = "https://understanding-search.github.io/maze-dataset/"
+    # informational metadata
+    keywords = ["maze", "mazes", "labyrinth", "dataset", "procedural", "pathfinding", "tokenization"]
 
-[tool.poetry.dependencies]
-python = "^3.10.6"
-# custom packages
-muutils = "^0.6.10"
-zanj = "^0.3.1"
-# torch and type hints
-torch = { version = ">=1.13.1", source = "torch_cpu" }
-jaxtyping = "^0.2.19"
-# standard numerical
-matplotlib = "^3.7.0"
-pandas = "^2.2.2"
-# notebooks
-jupyter = "^1.0.0"
-ipykernel = "^6.22.0"
-# misc
-tqdm = "^4.65.0"
-frozendict = "^2.4.4"
 
-[tool.poetry.group.dev.dependencies]
-# testing
-pytest = "^7.3.1"
-pytest-xdist = "^3.6.1" # for parallel all tokenizers tests
-pytest-mock = "^3.10.0"
-pytest-cov = "^4.1.0"
-coverage-badge = "^1.1.0"
-# type checking
-mypy = "^1.0.1"
-# formatting
-pycln = "^2.1.3"
-isort = "^5.12.0"
-black = "^24.1.0"
-typer = "^0.12.3" # for pycln -- takes forever to install?
+    dependencies = [
+        # custom packages
+        "muutils>=0.8.3",
+        "zanj>=0.4.0",
+        # torch and type hints
+        "torch>=1.13.1",
+        "jaxtyping>=0.2.19",
+        # standard numerical
+        "matplotlib>=3.7.0",
+        "pandas>=2.2.2",
+        # notebooks
+        "jupyter>=1.0.0",
+        "ipykernel>=6.22.0",
+        # misc
+        "tqdm>=4.65.0",
+        "frozendict>=2.4.4",
+    ]
 
-[tool.poetry.group.docs.dependencies]
-# generating docs
-pdoc = "^14.6.0"
-# converting demo notebooks to md
-nbconvert = "^7.16.4"
+[dependency-groups]
+	dev = [
+		# test
+		"pytest>=8.2.2",
+        "pytest-xdist>=3.6.1", # for parallel all tokenizers tests
+        "pytest-mock>=3.10.0",
+		"nbmake>=1.5.5",
+		# coverage
+		"pytest-cov>=4.1.0",
+		"coverage-badge>=1.1.0",
+		# type checking
+		"mypy>=1.0.1",
+        "types-tqdm",
+        "pandas-stubs",
+		# docs
+		'pdoc>=14.6.0',
+		"nbconvert>=7.16.4", # for notebooks
+		# lmcat -- a custom library. not exactly docs, but lets an LLM see all the code
+		"lmcat>=0.2.0; python_version >= '3.11'",
+		# tomli since no tomlib in python < 3.11
+		"tomli>=2.1.0; python_version < '3.11'",
+	]
+	lint = [
+		# lint
+		"pycln>=2.1.3",
+		"ruff>=0.4.8",
+	]
+    benchmark = [
+        # only used in `estimate_dataset_fractions.ipynb`
+        "pysr>=1.4.0",
+    ]
 
-[[tool.poetry.source]]
-name = "torch_cpu"
-url = "https://download.pytorch.org/whl/cpu"
-priority = "explicit"
+[project.urls]
+    Homepage = "https://github.com/understanding-search/maze-dataset"
+    Documentation = "https://understanding-search.github.io/maze-dataset/"
+    Repository = "https://github.com/understanding-search/maze-dataset"
+    Issues = "https://github.com/understanding-search/maze-dataset/issues"
 
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+	requires = ["hatchling"]
+	build-backend = "hatchling.build"
+
 
 [tool.pytest.ini_options]
-# Ignore numpy deprecation warnings triggered by muutils
-filterwarnings = [
-    # Warning from muutils: https://github.com/mivanit/muutils/issues/1
-    "ignore:`np\\.\\w*` is a deprecated alias for:DeprecationWarning",
+    # Ignore numpy deprecation warnings triggered by muutils
+    filterwarnings = [
+        # Warning from muutils: https://github.com/mivanit/muutils/issues/1
+        "ignore:`np\\.\\w*` is a deprecated alias for:DeprecationWarning",
 
-    # Warning from matplotlib. Issue: https://github.com/matplotlib/matplotlib/issues/25244
-    "ignore:Deprecated call to `pkg_resources.declare_namespace:DeprecationWarning",
+        # Warning from matplotlib. Issue: https://github.com/matplotlib/matplotlib/issues/25244
+        "ignore:Deprecated call to `pkg_resources.declare_namespace:DeprecationWarning",
 
-    # temporary fix for lots of deprecation warnings for old tokenizers
-    "ignore::maze_dataset.token_utils.TokenizerPendingDeprecationWarning",
-]
-testpaths = "tests"
-norecursedirs="maze_dataset/utils/test_helpers"
+        # temporary fix for lots of deprecation warnings for old tokenizers
+        "ignore::maze_dataset.token_utils.TokenizerPendingDeprecationWarning",
+    ]
+    testpaths = "tests"
+    norecursedirs="maze_dataset/utils/test_helpers"
 
-[[tool.mypy.overrides]]
-module = "fire"
-ignore_missing_imports = true
+[tool.mypy]
+    # generate this exclude with `make typing-report`
+    exclude = [
+        # high priority
+        "maze_dataset/constants.py", # 41
+        "maze_dataset/dataset/dataset.py", # 20
+        "maze_dataset/dataset/maze_dataset.py", # 41
+        "maze_dataset/dataset/collected_dataset.py", # 10
+        # high priority, difficult
+        "maze_dataset/token_utils.py", # 13, primarily issues with _VOCAB_BASE being a dynamically created dataclass
+        "maze_dataset/utils.py", # 18
+        "maze_dataset/tokenization/all_tokenizers.py", # 7
+        # low priority
+        "maze_dataset/benchmark/speed.py", # 8
+        "maze_dataset/benchmark/percolation_fractions.py", # 10
+        "maze_dataset/plotting/plot_maze.py", # 12
+        "maze_dataset/tokenization/maze_tokenizer.py", # 135
+        # low priority (tests)
+        "tests/unit/maze_dataset/dataset/test_collected_dataset.py", # 5
+        "tests/unit/maze_dataset/processing/test_collect_gen_metadata.py", # 5
+        "tests/unit/maze_dataset/generation/test_latticemaze.py", # 7
+        "tests/all_tokenizers/test_all_tokenizers.py", # 12
+        "tests/unit/maze_dataset/tokenization/test_token_utils.py", # 16
+        "tests/unit/maze_dataset/generation/test_maze_dataset.py", # 29
+        "tests/unit/maze_dataset/tokenization/test_tokenizer.py", # 47
+        "tests/unit/maze_dataset/processing/test_get_forking_path_points.py", # 58
+		# extra low priority (test temp, generated from notebooks)
+		"tests/_temp/*",
+    ]
+    check_untyped_defs = true
 
-[tool.isort]
-profile = "black"
-known_third_party = "wandb"
+    [[tool.mypy.overrides]]
+        module = "fire"
+        ignore_missing_imports = true
 
-[tool.pycln]
-disable-all-dunder-policy = true # this doesn't seem to work... :/
+# ruff config
+[tool.ruff]
+	exclude = ["__pycache__"]
 
-[tool.pyright]
-exclude = [".venv"]
-venvPath = "."
-venv = ".venv"
+	[tool.ruff.format]
+		indent-style = "tab"
+		skip-magic-trailing-comma = false
 
-[tool.pdoc]
-warnings_ignore = [
-    "Error parsing type annotation FilterBy for maze_dataset",
-    "Found 'coord_str_to_tuple' in maze_dataset.tokenization.__all__, but it does not resolve: Error importing maze_dataset.tokenization.coord_str_to_tuple",
-]
+	[tool.ruff.lint]
+		ignore = [
+			"TC002", # fine to normally import jaxtyping and others not in a TYPE_CHECKING block
+			"F722", # doesn't like jaxtyping
+			"W191", # we like tabs
+			"D400", # missing-trailing-period
+			"D415", # missing-terminal-punctuation
+			"E501", # line-too-long
+			"S101", # assert is fine
+			"D403", # first-word-uncapitalized
+			"D206", # docstring-tab-indentation
+			"ERA001", # commented-out-code
+			"T201", # print is fine lmao
+			"C408", # calling dict() is fine
+			"UP015", # we like specifying the mode even if it's the default
+			"D300", # we like docstrings
+			# boolean positional arguments are fine
+			"FBT001", 
+			"FBT002",
+			"FBT003",
+			"PTH123", # opening files is fine
+			"RET505", # else return is fine
+			"FIX001", # FIXME comments are ok since `make todo` handles them
+			"FIX002", # `make todo` will give us the TODO comments
+			"FIX004", # same for `HACK`
+			"PIE790", # be explicit about when we pass
+			"EM101", # fine to have string literal exceptions
+			"FURB129", # .readlines() is fine
+			"SIM108", # ternary operators can be hard to read, choose on a case-by-case basis
+			"PLR5501", # nested if else is fine, for readability
+			"D203", # docstring right after the class
+			"D213", # docstring on first line
+			"NPY002", # legacy numpy generator is fine
+			"D401", # dont care about imperative mood
+			"RUF022", # don't want to sort __all__ lexicographically, sort by meaning
+			"PLR0913", # sometimes you have to have a lot of args
+			"B028", # fine to omit stacklevel on warnings
+			"SLF001", # fine to access private vars
+			"N802", # uppercase in func names is fine
+			# warning: The following rule may cause conflicts when used with the formatter: `COM812`. To avoid unexpected behavior, we recommend disabling this rule, either by removing it from the `select` or `extend-select` configuration, or adding it to the `ignore` configuration.
+			"COM812", 
+			# todos:
+			"TD001", # we allow tags besides "TODO"
+			"TD002", # dont care about author
+			"TD003", # `make todo` will give us a table where we can create issues
+			# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+			# TODO: no type hints on *args or **kwargs for now
+			"ANN002",
+			"ANN003",
+			# TODO: more fine-grained exception classes
+			"TRY003",
+			# TODO: use extend instead of append?
+			"PERF401",
+			# HACK: need to be more specific about mypy ignores
+			"PGH003",
+			# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+			# only for old version compatibility
+			"UP007", # `Optional` is ok, we might not want to use `|` for compatibility
+			# old style hints `Tuple`, `List`, etc. are fine
+			"UP006", 
+			"UP035",
+		]
+		select = ["ALL"]
+		# select = ["ICN001"]
+
+		[tool.ruff.lint.per-file-ignores]
+			"maze_dataset/tokenization/maze_tokenizer.py" = [
+				# TODO: lots of unused args in the tokenizer code
+				"ARG002"
+			]
+			"tests/*" = [
+				# dont need docstrings in test functions or modules
+				"D100",
+				"D101",
+				"D102",
+				"D103", 
+				"INP001", # dont need __init__ either
+				# dont need type annotations in test functions
+				"ANN001",
+				"ANN201", 
+				"ANN202",
+				"TRY003", # long exception messages in tests are fine
+				"PLR2004", # magic variables are fine
+				"C419", # unnecessary comprehensions are fine
+				# uppercase is fine in tests (we write UT and AOTP a lot)
+				"N802",
+				"N806",
+				# using os for path in tests is fine (not in main lib tho)
+				"PTH100",
+				"PTH118",
+			]
+			"docs/*" = ["ALL"] # not our problem
+			"**/*.ipynb" = [
+				"D103", # dont need docstrings
+				"PLR2004", # magic variables are fine
+				"N806", # uppercase vars are fine
+			]
+
+[tool.lmcat]
+	output = "docs/other/lmcat.txt" # changing this might mean it wont be accessible from the docs
+	ignore_patterns = [
+		"docs/**",
+		".venv/**",
+		".git/**",
+		".meta/**",
+		"uv.lock",
+        ".ruff_cache/**",
+        ".github/ISSUE_TEMPLATE/**",
+        "_wip/**",
+        "sweep.yaml",
+        # there are... a lot of tests. we usually dont need to put these in lmcat
+        "tests/**",
+        "*.npz",
+	]
+    [tool.lmcat.glob_process]
+        "[mM]akefile" = "makefile_recipes"
+        "*.ipynb" = "ipynb_to_md"
+
+# [tool.pycln]
+#     disable-all-dunder-policy = true # this doesn't seem to work... :/
+
+# ============================================================
+[tool.makefile]
+
+# documentation configuration, for `make docs` and `make docs-clean`
+[tool.makefile.docs]
+    # Output directory for generated documentation
+    # MUST match DOCS_DIR in makefile
+    output_dir = "docs"
+
+    # List of files/directories in docs/ that should not be cleaned by `make docs-clean`
+    # These paths are relative to output_dir
+    no_clean = [
+        ".nojekyll",
+        "assets/",
+        "benchmarks",
+        # "resources/", # Templates, CSS, etc. this, or whatever is specified as DOCS_RESOURCES_DIR in makefile will always be preserved
+    ]
+
+    # Increment level of markdown headings in generated documentation
+    # e.g. if 2, then h1 -> h3, h2 -> h4, etc.
+    markdown_headings_increment = 2
+
+    # Warnings to ignore during documentation generation
+    warnings_ignore = [
+        "Error parsing type annotation FilterBy for maze_dataset",
+        "Found 'coord_str_to_tuple' in maze_dataset.tokenization.__all__, but it does not resolve: Error importing maze_dataset.tokenization.coord_str_to_tuple",
+    ]
+
+    # optional generation of notebooks as html pages
+    [tool.makefile.docs.notebooks]
+        # Enable notebook processing in documentation
+		# disabled by default
+        enabled = true
+        
+        # Source directory containing .ipynb files
+        source_path = "notebooks"
+        
+        # Output path relative to docs directory [tool.makefile.docs.output_dir]
+        output_path_relative = "notebooks"
+        
+        # Custom template for notebooks index page
+        # Available variables: notebook_url, notebooks (list of dicts with ipynb, html, desc)
+        # index_template = ...
+
+        # Descriptions for notebooks, shown in index
+        [tool.makefile.docs.notebooks.descriptions]
+            "demo_dataset" = "Creating and filtering a dataset, and various output formats"
+			"demo_generator" = "Exploring different maze generation algorithms and parameters"
+			"demo_latticemaze" = "Working with LatticeMaze class, visualization and solving mazes"
+			"demo_mazetokenizermodular" = "Using the modern MazeTokenizerModular system for tokenization"
+			"demo_tokenization" = "Legacy tokenization with MazeTokenizer and TokenizationMode"
+			"estimate_dataset_fractions" = "Estimating and predicting maze generation success rates"
+			"forking_points" = "Identifying and working with decision points in maze solutions"
+			"iterated_backfilling" = "Implementation of iterated backfilling as an algorithm for solving visual mazes"
+			"profile_dataset_save_read" = "Profiling and optimizing dataset serialization performance"
+            
+        
+        
+
+# Custom export configurations
+# affects `make dep` and related commands
+[tool.makefile.uv-exports]
+	args = [
+		"--no-hashes"
+	]
+	exports = [
+		# no groups, no extras, just the base dependencies
+		{ name = "base", groups = false, extras = false },
+		# all groups
+		{ name = "groups", groups = true, extras = false },
+		# only the lint group -- custom options for this
+		{ name = "lint", options = ["--only-group", "lint"] },
+		# # all groups and extras
+		{ name = "all", filename="requirements.txt", groups = true, extras=true },
+		# # all groups and extras, a different way
+		{ name = "all", groups = true, options = ["--all-extras"] },
+	]
+
+# configures `make todo`
+[tool.makefile.inline-todo]
+	# Directory to search for TODOs
+	search_dir = "."
+	
+	# Output file location (relative to project root)
+    # If changed, update docs references
+	out_file_base = "docs/other/todo-inline"
+
+	# Number of context lines to include around each TODO
+	context_lines = 2
+
+	# File extensions to search
+	extensions = ["py", "md"]
+
+	# Tags to look for
+	tags = ["CRIT", "TODO", "FIXME", "HACK", "BUG", "DOC", "DOCS", "TYPING"]
+
+	# Patterns to exclude from search
+	exclude = [
+		"docs/**",
+		".venv/**",
+		"scripts/get_todos.py",
+	]
+    
+    # configuring the output
+	# ------------------------------
+	# branch to put in the url
+	branch = "main"
+
+	# repo url -- by default this will come from `[project.urls.{repository, github}]`
+	# but you can override it here
+	# repo_url = ...
+
+    
+	
+	# template for the markdown output
+	# this uses jinja2. see `TEMPLATE_MD` in makefile under `SCRIPT_GET_TODOS`
+	# template_md = ...
+
+	# this uses standard python string formatting
+	# available variables: file, file_lang, line_num, code_url, context
+	# template_issue = ...
+
+	# this template has some custom syntax for adding the data directly to the html file. see that file for more info
+	# template_html_source = "docs/resources/templates/todo-template.html"
+
+    # Mapping of tags to GitHub issue labels
+    [tool.makefile.inline-todo.tag_label_map]
+        "BUG" = "bug"
+        "TODO" = "enhancement"
+		"DOC" = "documentation"
+
+# ============================================================
+

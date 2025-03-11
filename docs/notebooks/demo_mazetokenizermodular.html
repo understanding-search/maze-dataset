@@ -6454,7 +6454,7 @@ cell outputs.
 
 .jp-Notebook .jp-Cell.jp-mod-dirty .jp-InputPrompt::before {
   color: var(--jp-warn-color1);
-  content: '•';
+  content: 'â€¢';
 }
 
 .jp-Notebook .jp-Cell.jp-mod-active.jp-mod-dirty .jp-Collapser {
@@ -7312,6 +7312,7 @@ a.anchor-link {
                     processEnvironments: true
                 },
                 displayAlign: 'center',
+                messageStyle: 'none',
                 CommonHTML: {
                     linebreaks: {
                     automatic: true
@@ -7516,7 +7517,7 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="Imports">Imports<a class="anchor-link" href="#Imports">¶</a></h1>
+<h1 id="Imports">Imports<a class="anchor-link" href="#Imports">Â¶</a></h1>
 </div>
 </div>
 </div>
@@ -7525,60 +7526,48 @@ a.anchor-link {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [1]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">InÂ [1]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Any</span>
-<span class="kn">import</span> <span class="nn">json</span>
-<span class="kn">import</span> <span class="nn">random</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
 
-<span class="kn">import</span> <span class="nn">yaml</span>
-<span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
-<span class="kn">from</span> <span class="nn">muutils.errormode</span> <span class="kn">import</span> <span class="n">ErrorMode</span>
-<span class="kn">from</span> <span class="nn">muutils.misc</span> <span class="kn">import</span> <span class="n">shorten_numerical_to_str</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">yaml</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">muutils.misc</span><span class="w"> </span><span class="kn">import</span> <span class="n">shorten_numerical_to_str</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tqdm</span><span class="w"> </span><span class="kn">import</span> <span class="n">tqdm</span>
 
-<span class="kn">from</span> <span class="nn">maze_dataset.tokenization</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">MazeTokenizerModular</span><span class="p">,</span>
-    <span class="n">_TokenizerElement</span><span class="p">,</span>
-    <span class="n">MazeTokenizer</span><span class="p">,</span>
-    <span class="n">TokenizationMode</span><span class="p">,</span>
-    <span class="n">CoordTokenizers</span><span class="p">,</span>
-    <span class="n">PromptSequencers</span><span class="p">,</span>
-    <span class="n">AdjListTokenizers</span><span class="p">,</span>
-    <span class="n">PathTokenizers</span><span class="p">,</span>
-    <span class="n">TargetTokenizers</span><span class="p">,</span>
-    <span class="n">StepSizes</span><span class="p">,</span>
-    <span class="n">StepTokenizers</span><span class="p">,</span>
-    <span class="n">EdgePermuters</span><span class="p">,</span>
-    <span class="n">EdgeGroupings</span><span class="p">,</span>
-    <span class="n">EdgeSubsets</span><span class="p">,</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">maze_dataset</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+	<span class="n">VOCAB</span><span class="p">,</span>
+	<span class="n">VOCAB_LIST</span><span class="p">,</span>
+	<span class="n">VOCAB_TOKEN_TO_INDEX</span><span class="p">,</span>
+	<span class="n">LatticeMazeGenerators</span><span class="p">,</span>
+	<span class="n">MazeDataset</span><span class="p">,</span>
+	<span class="n">MazeDatasetConfig</span><span class="p">,</span>
+	<span class="n">SolvedMaze</span><span class="p">,</span>
 <span class="p">)</span>
-
-<span class="kn">import</span> <span class="nn">maze_dataset.tokenization</span> <span class="k">as</span> <span class="nn">md_tokenization</span>
-
-<span class="kn">from</span> <span class="nn">maze_dataset</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">VOCAB</span><span class="p">,</span>
-    <span class="n">VOCAB_LIST</span><span class="p">,</span>
-    <span class="n">VOCAB_TOKEN_TO_INDEX</span><span class="p">,</span>
-    <span class="n">LatticeMazeGenerators</span><span class="p">,</span>
-    <span class="n">MazeDataset</span><span class="p">,</span>
-    <span class="n">MazeDatasetConfig</span><span class="p">,</span>
-    <span class="n">SolvedMaze</span><span class="p">,</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">maze_dataset.plotting</span><span class="w"> </span><span class="kn">import</span> <span class="n">MazePlot</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">maze_dataset.tokenization</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+	<span class="n">AdjListTokenizers</span><span class="p">,</span>
+	<span class="n">CoordTokenizers</span><span class="p">,</span>
+	<span class="n">EdgePermuters</span><span class="p">,</span>
+	<span class="n">EdgeSubsets</span><span class="p">,</span>
+	<span class="n">MazeTokenizer</span><span class="p">,</span>
+	<span class="n">MazeTokenizerModular</span><span class="p">,</span>
+	<span class="n">PathTokenizers</span><span class="p">,</span>
+	<span class="n">PromptSequencers</span><span class="p">,</span>
+	<span class="n">StepSizes</span><span class="p">,</span>
+	<span class="n">StepTokenizers</span><span class="p">,</span>
+	<span class="n">TargetTokenizers</span><span class="p">,</span>
+	<span class="n">TokenizationMode</span><span class="p">,</span>
+	<span class="n">_TokenizerElement</span><span class="p">,</span>
 <span class="p">)</span>
-
-<span class="kn">from</span> <span class="nn">maze_dataset.plotting</span> <span class="kn">import</span> <span class="n">MazePlot</span>
-
-<span class="kn">from</span> <span class="nn">maze_dataset.token_utils</span> <span class="kn">import</span> <span class="n">equal_except_adj_list_sequence</span>
-
-<span class="kn">from</span> <span class="nn">maze_dataset.utils</span> <span class="kn">import</span> <span class="n">all_instances</span>
-
-<span class="kn">from</span> <span class="nn">maze_dataset.tokenization.all_tokenizers</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">get_all_tokenizers</span><span class="p">,</span> 
-    <span class="n">MAZE_TOKENIZER_MODULAR_DEFAULT_VALIDATION_FUNCS</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">maze_dataset.tokenization.all_tokenizers</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+	<span class="n">MAZE_TOKENIZER_MODULAR_DEFAULT_VALIDATION_FUNCS</span><span class="p">,</span>
+	<span class="n">get_all_tokenizers</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">maze_dataset.tokenization.maze_tokenizer</span> <span class="kn">import</span> <span class="n">get_all_tokenizer_hashes</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">maze_dataset.tokenization.maze_tokenizer</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_all_tokenizer_hashes</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">maze_dataset.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">all_instances</span>
 </pre></div>
 </div>
 </div>
@@ -7589,7 +7578,7 @@ a.anchor-link {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [2]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">InÂ [2]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># magic autoreload</span>
@@ -7607,7 +7596,7 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="MazeTokenizerModular-Initialization-and-Structure"><code>MazeTokenizerModular</code> Initialization and Structure<a class="anchor-link" href="#MazeTokenizerModular-Initialization-and-Structure">¶</a></h1><p>Initialiation can be done vai the default constructor or via <code>MazeTokenizerModular.from_legacy</code>. The latter is useful for converting a legacy <code>MazeTokenizer</code> into its equivalent <code>MazeTokenizerModular</code>.</p>
+<h1 id="MazeTokenizerModular-Initialization-and-Structure"><code>MazeTokenizerModular</code> Initialization and Structure<a class="anchor-link" href="#MazeTokenizerModular-Initialization-and-Structure">Â¶</a></h1><p>Initialiation can be done vai the default constructor or via <code>MazeTokenizerModular.from_legacy</code>. The latter is useful for converting a legacy <code>MazeTokenizer</code> into its equivalent <code>MazeTokenizerModular</code>.</p>
 <p>Most of the API for these tokenizers is contained in the <code>MazeTokenizerModular</code> class. The only time when users need to interact with the internal components of a <code>MazeTokenizerModular</code> is when initializing a non-default tokenizer.</p>
 </div>
 </div>
@@ -7617,11 +7606,13 @@ a.anchor-link {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [3]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">InÂ [3]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">mt_default</span><span class="p">:</span> <span class="n">MazeTokenizerModular</span> <span class="o">=</span> <span class="n">MazeTokenizerModular</span><span class="p">()</span>
-<span class="n">mt_ctt</span><span class="p">:</span> <span class="n">MazeTokenizerModular</span> <span class="o">=</span> <span class="n">MazeTokenizerModular</span><span class="o">.</span><span class="n">from_legacy</span><span class="p">(</span><span class="n">TokenizationMode</span><span class="o">.</span><span class="n">AOTP_CTT_indexed</span><span class="p">)</span>
+<span class="n">mt_ctt</span><span class="p">:</span> <span class="n">MazeTokenizerModular</span> <span class="o">=</span> <span class="n">MazeTokenizerModular</span><span class="o">.</span><span class="n">from_legacy</span><span class="p">(</span>
+	<span class="n">TokenizationMode</span><span class="o">.</span><span class="n">AOTP_CTT_indexed</span><span class="p">,</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -7643,11 +7634,13 @@ a.anchor-link {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [4]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">InÂ [4]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">elem</span><span class="p">)</span> <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">_TokenizerElement</span><span class="o">.</span><span class="n">__subclasses__</span><span class="p">()]))</span>
-<span class="k">assert</span> <span class="nb">all</span><span class="p">(</span><span class="nb">issubclass</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="n">_TokenizerElement</span><span class="p">)</span> <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">_TokenizerElement</span><span class="o">.</span><span class="n">__subclasses__</span><span class="p">())</span>
+<span class="k">assert</span> <span class="nb">all</span><span class="p">(</span>
+	<span class="nb">issubclass</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="n">_TokenizerElement</span><span class="p">)</span> <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">_TokenizerElement</span><span class="o">.</span><span class="n">__subclasses__</span><span class="p">()</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -7691,14 +7684,14 @@ a.anchor-link {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [5]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">InÂ [5]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">'</span><span class="se">\n</span><span class="s1">AOTP `_TokenizerElement` Structure:</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">AOTP `_TokenizerElement` Structure:</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">mt_default</span><span class="o">.</span><span class="n">tokenizer_element_tree</span><span class="p">(</span><span class="n">abstract</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Default tokenizer elements:</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Default tokenizer elements:</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">mt_default</span><span class="o">.</span><span class="n">tokenizer_element_tree</span><span class="p">())</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'`MazeTokenizerModular` structure with all fields:</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"`MazeTokenizerModular` structure with all fields:</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">mt_default</span><span class="o">.</span><span class="n">tokenizer_element_dict</span><span class="p">()))</span>
 </pre></div>
 </div>
@@ -7796,7 +7789,7 @@ MazeTokenizerModular:
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="Vocabulary">Vocabulary<a class="anchor-link" href="#Vocabulary">¶</a></h1><p>All instances of <code>MazeTokenizerModular</code> uses a static vocabulary <code>VOCAB</code>, which is one of the main functional differences from <code>MazeTokenizer</code>. Direct access to the static vocabulary can be made through 3 constants:</p>
+<h1 id="Vocabulary">Vocabulary<a class="anchor-link" href="#Vocabulary">Â¶</a></h1><p>All instances of <code>MazeTokenizerModular</code> uses a static vocabulary <code>VOCAB</code>, which is one of the main functional differences from <code>MazeTokenizer</code>. Direct access to the static vocabulary can be made through 3 constants:</p>
 <ul>
 <li><code>VOCAB</code><ul>
 <li>Extension of the <code>SPECIAL_TOKENS</code> dataclass</li>
@@ -7822,25 +7815,27 @@ MazeTokenizerModular:
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [6]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">InÂ [6]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">"`VOCAB`: IsDataclass"</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">VOCAB</span><span class="p">):</span>
-    <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="mi">5</span><span class="p">:</span> <span class="k">break</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\t</span><span class="s2">VOCAB.</span><span class="si">{</span><span class="n">t</span><span class="si">}</span><span class="s2"> =</span><span class="se">\t</span><span class="s2">'</span><span class="si">{</span><span class="nb">getattr</span><span class="p">(</span><span class="n">VOCAB</span><span class="p">,</span><span class="w"> </span><span class="n">t</span><span class="p">)</span><span class="si">}</span><span class="s2">'"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">'</span><span class="se">\t</span><span class="s1">...'</span><span class="p">)</span>
+	<span class="k">if</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="mi">5</span><span class="p">:</span>
+		<span class="k">break</span>
+	<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\t</span><span class="s2">VOCAB.</span><span class="si">{</span><span class="n">t</span><span class="si">}</span><span class="s2"> =</span><span class="se">\t</span><span class="s2">'</span><span class="si">{</span><span class="nb">getattr</span><span class="p">(</span><span class="n">VOCAB</span><span class="p">,</span><span class="w"> </span><span class="n">t</span><span class="p">)</span><span class="si">}</span><span class="s2">'"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\t</span><span class="s2">..."</span><span class="p">)</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">`VOCAB_LIST`: list[str]"</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">VOCAB_LIST</span><span class="p">[:</span><span class="mi">5</span><span class="p">]:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\t</span><span class="s2">'</span><span class="si">{</span><span class="n">t</span><span class="si">}</span><span class="s2">'"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">'</span><span class="se">\t</span><span class="s1">...'</span><span class="p">)</span>
-    
+	<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\t</span><span class="s2">'</span><span class="si">{</span><span class="n">t</span><span class="si">}</span><span class="s2">'"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\t</span><span class="s2">..."</span><span class="p">)</span>
+
 <span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">`VOCAB_TOKEN_TO_INDEX`: dict[str, int]"</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">VOCAB_TOKEN_TO_INDEX</span><span class="p">:</span>
-    <span class="k">if</span> <span class="n">VOCAB_TOKEN_TO_INDEX</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">5</span><span class="p">:</span> <span class="k">break</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\t</span><span class="s2">'</span><span class="si">{</span><span class="n">t</span><span class="si">}</span><span class="s2">':   </span><span class="se">\t</span><span class="si">{</span><span class="n">VOCAB_TOKEN_TO_INDEX</span><span class="p">[</span><span class="n">t</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">'</span><span class="se">\t</span><span class="s1">...'</span><span class="p">)</span>
+	<span class="k">if</span> <span class="n">VOCAB_TOKEN_TO_INDEX</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">5</span><span class="p">:</span>
+		<span class="k">break</span>
+	<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\t</span><span class="s2">'</span><span class="si">{</span><span class="n">t</span><span class="si">}</span><span class="s2">':   </span><span class="se">\t</span><span class="si">{</span><span class="n">VOCAB_TOKEN_TO_INDEX</span><span class="p">[</span><span class="n">t</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\t</span><span class="s2">..."</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -7888,7 +7883,7 @@ MazeTokenizerModular:
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Considerations-of-Static-Vocabulary">Considerations of Static Vocabulary<a class="anchor-link" href="#Considerations-of-Static-Vocabulary">¶</a></h3><ul>
+<h3 id="Considerations-of-Static-Vocabulary">Considerations of Static Vocabulary<a class="anchor-link" href="#Considerations-of-Static-Vocabulary">Â¶</a></h3><ul>
 <li>No more rasterized vs uniform indexing, it's all fixed as uniform now</li>
 <li>Fixed max grid size<ul>
 <li>There is now a fixed maximum maze size which is supported.</li>
@@ -7913,7 +7908,7 @@ MazeTokenizerModular:
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Refactoring-your-code-from-legacy-MazeTokenizer-and-TokenizationMode">Refactoring your code from legacy <code>MazeTokenizer</code> and <code>TokenizationMode</code><a class="anchor-link" href="#Refactoring-your-code-from-legacy-MazeTokenizer-and-TokenizationMode">¶</a></h3><p>Since <code>MazeTokenizerModular</code> uses a static vocabulary, it is not backwards compatible with any models trained using a legacy <code>MazeTokenizer</code>. The <code>maze-transformer</code> library is updated in vX.X.X to use <code>MazeTokenizerModular</code> by default.</p>
+<h3 id="Refactoring-your-code-from-legacy-MazeTokenizer-and-TokenizationMode">Refactoring your code from legacy <code>MazeTokenizer</code> and <code>TokenizationMode</code><a class="anchor-link" href="#Refactoring-your-code-from-legacy-MazeTokenizer-and-TokenizationMode">Â¶</a></h3><p>Since <code>MazeTokenizerModular</code> uses a static vocabulary, it is not backwards compatible with any models trained using a legacy <code>MazeTokenizer</code>. The <code>maze-transformer</code> library is updated in vX.X.X to use <code>MazeTokenizerModular</code> by default.</p>
 <p>If you've manually specified a <code>MazeTokenizer</code> or <code>TokenizationMode</code> in your research code, the easiest way to refactor is using <code>MazeTokenizerModular.from_legacy</code>, which will convert a <code>MazeTokenizer</code> or <code>TokenizationMode</code> to its corresponding <code>MazeTokenizerModular</code> instance. Note that this correspondence means only that the stringification of mazes are equivalent; the encodings of strings to integer vocabulary indices are not.</p>
 </div>
 </div>
@@ -7923,12 +7918,16 @@ MazeTokenizerModular:
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [7]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">InÂ [7]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">legacy_maze_tokenizer</span><span class="p">:</span> <span class="n">MazeTokenizer</span> <span class="o">=</span> <span class="n">TokenizationMode</span><span class="o">.</span><span class="n">AOTP_UT_uniform</span><span class="o">.</span><span class="n">to_legacy_tokenizer</span><span class="p">()</span>
-<span class="n">modular_tokenizer_equivalent</span><span class="p">:</span> <span class="n">MazeTokenizerModular</span> <span class="o">=</span> <span class="n">MazeTokenizerModular</span><span class="o">.</span><span class="n">from_legacy</span><span class="p">(</span><span class="n">legacy_maze_tokenizer</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">legacy_maze_tokenizer</span><span class="p">,</span> <span class="s1">'</span><span class="se">\n</span><span class="s1">'</span><span class="p">,</span> <span class="n">modular_tokenizer_equivalent</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">legacy_maze_tokenizer</span><span class="p">:</span> <span class="n">MazeTokenizer</span> <span class="o">=</span> <span class="p">(</span>
+	<span class="n">TokenizationMode</span><span class="o">.</span><span class="n">AOTP_UT_uniform</span><span class="o">.</span><span class="n">to_legacy_tokenizer</span><span class="p">()</span>
+<span class="p">)</span>
+<span class="n">modular_tokenizer_equivalent</span><span class="p">:</span> <span class="n">MazeTokenizerModular</span> <span class="o">=</span> <span class="n">MazeTokenizerModular</span><span class="o">.</span><span class="n">from_legacy</span><span class="p">(</span>
+	<span class="n">legacy_maze_tokenizer</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">legacy_maze_tokenizer</span><span class="p">,</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">,</span> <span class="n">modular_tokenizer_equivalent</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -7955,7 +7954,7 @@ MazeTokenizerModular:
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="get_all_tokenizers"><code>get_all_tokenizers</code><a class="anchor-link" href="#get_all_tokenizers">¶</a></h2>
+<h2 id="get_all_tokenizers"><code>get_all_tokenizers</code><a class="anchor-link" href="#get_all_tokenizers">Â¶</a></h2>
 </div>
 </div>
 </div>
@@ -7976,7 +7975,7 @@ MazeTokenizerModular:
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [8]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">InÂ [8]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">all_hashes</span> <span class="o">=</span> <span class="n">get_all_tokenizer_hashes</span><span class="p">()</span>
@@ -7990,10 +7989,10 @@ MazeTokenizerModular:
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [9]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">InÂ [9]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">all_hashes</span><span class="p">)</span><span class="si">}</span><span class="s1"> or </span><span class="si">{</span><span class="n">shorten_numerical_to_str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">all_hashes</span><span class="p">))</span><span class="si">}</span><span class="s1"> hashes found.'</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">all_hashes</span><span class="p">)</span><span class="si">}</span><span class="s2"> or </span><span class="si">{</span><span class="n">shorten_numerical_to_str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">all_hashes</span><span class="p">))</span><span class="si">}</span><span class="s2"> hashes found."</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -8017,7 +8016,7 @@ MazeTokenizerModular:
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [10]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">InÂ [10]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">all_tokenizers</span> <span class="o">=</span> <span class="n">get_all_tokenizers</span><span class="p">()</span>
@@ -8031,10 +8030,12 @@ MazeTokenizerModular:
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [11]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">InÂ [11]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">all_tokenizers</span><span class="p">)</span><span class="si">}</span><span class="s2"> or </span><span class="si">{</span><span class="n">shorten_numerical_to_str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">all_tokenizers</span><span class="p">))</span><span class="si">}</span><span class="s2"> tokenizers found."</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span>
+	<span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">all_tokenizers</span><span class="p">)</span><span class="si">}</span><span class="s2"> or </span><span class="si">{</span><span class="n">shorten_numerical_to_str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">all_tokenizers</span><span class="p">))</span><span class="si">}</span><span class="s2"> tokenizers found."</span><span class="p">,</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -8058,7 +8059,7 @@ MazeTokenizerModular:
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [12]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">InÂ [12]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">all_hashes</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">all_tokenizers</span><span class="p">)</span>
@@ -8083,7 +8084,7 @@ MazeTokenizerModular:
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [13]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">InÂ [13]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="k">assert</span> <span class="n">mt_default</span><span class="o">.</span><span class="n">is_tested_tokenizer</span><span class="p">(</span><span class="n">do_assert</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -8092,11 +8093,11 @@ MazeTokenizerModular:
 <span class="k">assert</span> <span class="n">mt_ctt</span><span class="o">.</span><span class="n">is_valid</span><span class="p">()</span>
 
 <span class="n">custom_untested_tokenizer</span> <span class="o">=</span> <span class="n">MazeTokenizerModular</span><span class="p">(</span>
-    <span class="n">prompt_sequencer</span><span class="o">=</span><span class="n">PromptSequencers</span><span class="o">.</span><span class="n">AOP</span><span class="p">(</span>
-        <span class="n">path_tokenizer</span><span class="o">=</span><span class="n">PathTokenizers</span><span class="o">.</span><span class="n">StepSequence</span><span class="p">(</span>
-            <span class="n">step_tokenizers</span><span class="o">=</span><span class="p">(</span><span class="n">StepTokenizers</span><span class="o">.</span><span class="n">Distance</span><span class="p">(),)</span> 
-        <span class="p">),</span>
-    <span class="p">)</span>
+	<span class="n">prompt_sequencer</span><span class="o">=</span><span class="n">PromptSequencers</span><span class="o">.</span><span class="n">AOP</span><span class="p">(</span>
+		<span class="n">path_tokenizer</span><span class="o">=</span><span class="n">PathTokenizers</span><span class="o">.</span><span class="n">StepSequence</span><span class="p">(</span>
+			<span class="n">step_tokenizers</span><span class="o">=</span><span class="p">(</span><span class="n">StepTokenizers</span><span class="o">.</span><span class="n">Distance</span><span class="p">(),),</span>
+		<span class="p">),</span>
+	<span class="p">),</span>
 <span class="p">)</span>
 
 <span class="k">assert</span> <span class="ow">not</span> <span class="n">custom_untested_tokenizer</span><span class="o">.</span><span class="n">is_tested_tokenizer</span><span class="p">()</span>
@@ -8114,7 +8115,7 @@ MazeTokenizerModular:
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="Filtering-Tokenizer-Collections">Filtering Tokenizer Collections<a class="anchor-link" href="#Filtering-Tokenizer-Collections">¶</a></h1><p>There are a several practical ways to filter down a collection of tokenizers, or alternatively, generate a new collection with a filter.</p>
+<h1 id="Filtering-Tokenizer-Collections">Filtering Tokenizer Collections<a class="anchor-link" href="#Filtering-Tokenizer-Collections">Â¶</a></h1><p>There are a several practical ways to filter down a collection of tokenizers, or alternatively, generate a new collection with a filter.</p>
 <p><strong>WARNING: Applying <code>filter</code> to the output of <code>get_all_tokenizers</code> is extremely slow due to the size of the initial population. Only use the first 3 methods for filtering much smaller collections of tokenizers. To generate a new collection based on filters, always use <code>utils.all_instances</code></strong></p>
 <p>In order of increasing speed, power and decreasing syntactic concision:</p>
 <ol>
@@ -8144,7 +8145,7 @@ MazeTokenizerModular:
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [14]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">InÂ [14]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">len_all</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">get_all_tokenizers</span><span class="p">())</span>
@@ -8158,42 +8159,59 @@ MazeTokenizerModular:
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [15]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">InÂ [15]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">filtered_1</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">MazeTokenizerModular</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
-    <span class="n">all_instances</span><span class="p">(</span>
-        <span class="n">MazeTokenizerModular</span><span class="p">,</span>
-        <span class="p">{</span>
-            <span class="o">**</span><span class="n">MAZE_TOKENIZER_MODULAR_DEFAULT_VALIDATION_FUNCS</span><span class="p">,</span> <span class="c1"># Always include this as the first item in the dict whenever calling `all_instances` with `MazeTokenizerModular` or any `_TokenizerElement`</span>
-            <span class="n">CoordTokenizers</span><span class="o">.</span><span class="n">_CoordTokenizer</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">CoordTokenizers</span><span class="o">.</span><span class="n">UT</span><span class="p">),</span>
-            <span class="n">StepTokenizers</span><span class="o">.</span><span class="n">StepTokenizerPermutation</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">StepTokenizers</span><span class="o">.</span><span class="n">Cardinal</span><span class="p">()</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">,</span>
-            <span class="n">AdjListTokenizers</span><span class="o">.</span><span class="n">_AdjListTokenizer</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">AdjListTokenizers</span><span class="o">.</span><span class="n">AdjListCardinal</span><span class="p">),</span>
-            <span class="n">EdgeSubsets</span><span class="o">.</span><span class="n">_EdgeSubset</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">==</span> <span class="n">EdgeSubsets</span><span class="o">.</span><span class="n">ConnectionEdges</span><span class="p">(</span><span class="n">walls</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
-        <span class="p">}</span>
-    <span class="p">)</span>
+	<span class="n">all_instances</span><span class="p">(</span>
+		<span class="n">MazeTokenizerModular</span><span class="p">,</span>
+		<span class="p">{</span>
+			<span class="o">**</span><span class="n">MAZE_TOKENIZER_MODULAR_DEFAULT_VALIDATION_FUNCS</span><span class="p">,</span>  <span class="c1"># Always include this as the first item in the dict whenever calling `all_instances` with `MazeTokenizerModular` or any `_TokenizerElement`</span>
+			<span class="n">CoordTokenizers</span><span class="o">.</span><span class="n">_CoordTokenizer</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">isinstance</span><span class="p">(</span>
+				<span class="n">x</span><span class="p">,</span>
+				<span class="n">CoordTokenizers</span><span class="o">.</span><span class="n">UT</span><span class="p">,</span>
+			<span class="p">),</span>
+			<span class="n">StepTokenizers</span><span class="o">.</span><span class="n">StepTokenizerPermutation</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+			<span class="o">==</span> <span class="n">StepTokenizers</span><span class="o">.</span><span class="n">Cardinal</span><span class="p">()</span>
+			<span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">,</span>
+			<span class="n">AdjListTokenizers</span><span class="o">.</span><span class="n">_AdjListTokenizer</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">isinstance</span><span class="p">(</span>
+				<span class="n">x</span><span class="p">,</span>
+				<span class="n">AdjListTokenizers</span><span class="o">.</span><span class="n">AdjListCardinal</span><span class="p">,</span>
+			<span class="p">),</span>
+			<span class="n">EdgeSubsets</span><span class="o">.</span><span class="n">_EdgeSubset</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span>
+			<span class="o">==</span> <span class="n">EdgeSubsets</span><span class="o">.</span><span class="n">ConnectionEdges</span><span class="p">(</span><span class="n">walls</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
+		<span class="p">},</span>
+	<span class="p">),</span>
 <span class="p">)</span>
 <span class="n">filtered_2</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">MazeTokenizerModular</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
-    <span class="n">all_instances</span><span class="p">(</span>
-        <span class="n">MazeTokenizerModular</span><span class="p">,</span>
-        <span class="p">{</span>
-            <span class="o">**</span><span class="n">MAZE_TOKENIZER_MODULAR_DEFAULT_VALIDATION_FUNCS</span><span class="p">,</span> <span class="c1"># Always include this as the first item in the dict whenever calling`all_instances` with `MazeTokenizerModular` or any `_TokenizerElement`</span>
-            <span class="n">_TokenizerElement</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">is_valid</span><span class="p">()</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="s2">"pre"</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="s2">"intra"</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="s2">"post"</span><span class="p">,</span> <span class="kc">False</span><span class="p">),</span>  <span class="c1"># Minimal delimiters everywhere...</span>
-            <span class="n">CoordTokenizers</span><span class="o">.</span><span class="n">CTT</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">pre</span> <span class="ow">and</span> <span class="n">x</span><span class="o">.</span><span class="n">intra</span> <span class="ow">and</span> <span class="n">x</span><span class="o">.</span><span class="n">post</span><span class="p">,</span>  <span class="c1"># ...except for the coord tokens</span>
-        <span class="p">}</span>
-    <span class="p">)</span>
+	<span class="n">all_instances</span><span class="p">(</span>
+		<span class="n">MazeTokenizerModular</span><span class="p">,</span>
+		<span class="p">{</span>
+			<span class="o">**</span><span class="n">MAZE_TOKENIZER_MODULAR_DEFAULT_VALIDATION_FUNCS</span><span class="p">,</span>  <span class="c1"># Always include this as the first item in the dict whenever calling`all_instances` with `MazeTokenizerModular` or any `_TokenizerElement`</span>
+			<span class="n">_TokenizerElement</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">is_valid</span><span class="p">()</span>
+			<span class="ow">and</span> <span class="ow">not</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="s2">"pre"</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+			<span class="ow">and</span> <span class="ow">not</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="s2">"intra"</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+			<span class="ow">and</span> <span class="ow">not</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="s2">"post"</span><span class="p">,</span> <span class="kc">False</span><span class="p">),</span>  <span class="c1"># Minimal delimiters everywhere...</span>
+			<span class="n">CoordTokenizers</span><span class="o">.</span><span class="n">CTT</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">pre</span>
+			<span class="ow">and</span> <span class="n">x</span><span class="o">.</span><span class="n">intra</span>
+			<span class="ow">and</span> <span class="n">x</span><span class="o">.</span><span class="n">post</span><span class="p">,</span>  <span class="c1"># ...except for the coord tokens</span>
+		<span class="p">},</span>
+	<span class="p">),</span>
 <span class="p">)</span>
 <span class="n">filtered_3</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">MazeTokenizerModular</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
-    <span class="n">all_instances</span><span class="p">(</span>
-        <span class="n">MazeTokenizerModular</span><span class="p">,</span>
-        <span class="p">{</span>
-            <span class="o">**</span><span class="n">MAZE_TOKENIZER_MODULAR_DEFAULT_VALIDATION_FUNCS</span><span class="p">,</span> <span class="c1"># Always include this as the first item in the dict whenever calling `all_instances` with `MazeTokenizerModular` or any `_TokenizerElement`</span>
-            <span class="n">PromptSequencers</span><span class="o">.</span><span class="n">_PromptSequencer</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">PromptSequencers</span><span class="o">.</span><span class="n">AOTP</span><span class="p">),</span>
-            <span class="n">TargetTokenizers</span><span class="o">.</span><span class="n">_TargetTokenizer</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">==</span> <span class="n">TargetTokenizers</span><span class="o">.</span><span class="n">Unlabeled</span><span class="p">(),</span>
-            <span class="n">StepSizes</span><span class="o">.</span><span class="n">Singles</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
-
-        <span class="p">}</span>
-    <span class="p">)</span>
+	<span class="n">all_instances</span><span class="p">(</span>
+		<span class="n">MazeTokenizerModular</span><span class="p">,</span>
+		<span class="p">{</span>
+			<span class="o">**</span><span class="n">MAZE_TOKENIZER_MODULAR_DEFAULT_VALIDATION_FUNCS</span><span class="p">,</span>  <span class="c1"># Always include this as the first item in the dict whenever calling `all_instances` with `MazeTokenizerModular` or any `_TokenizerElement`</span>
+			<span class="n">PromptSequencers</span><span class="o">.</span><span class="n">_PromptSequencer</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">isinstance</span><span class="p">(</span>
+				<span class="n">x</span><span class="p">,</span>
+				<span class="n">PromptSequencers</span><span class="o">.</span><span class="n">AOTP</span><span class="p">,</span>
+			<span class="p">),</span>
+			<span class="n">TargetTokenizers</span><span class="o">.</span><span class="n">_TargetTokenizer</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span>
+			<span class="o">==</span> <span class="n">TargetTokenizers</span><span class="o">.</span><span class="n">Unlabeled</span><span class="p">(),</span>
+			<span class="n">StepSizes</span><span class="o">.</span><span class="n">Singles</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>  <span class="c1"># noqa: ARG005</span>
+		<span class="p">},</span>
+	<span class="p">),</span>
 <span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"filtered 1: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">filtered_1</span><span class="p">)</span><span class="si">}</span><span class="s2"> tokenizers / </span><span class="si">{</span><span class="n">len_all</span><span class="si">}</span><span class="s2"> tokenizers"</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"filtered 2: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">filtered_2</span><span class="p">)</span><span class="si">}</span><span class="s2"> tokenizers / </span><span class="si">{</span><span class="n">len_all</span><span class="si">}</span><span class="s2"> tokenizers"</span><span class="p">)</span>
@@ -8234,20 +8252,23 @@ filtered 3: 979776 tokenizers / 5878656 tokenizers
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [16]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">InÂ [16]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">filtered_has_element</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">MazeTokenizerModular</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span>
-    <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">has_element</span><span class="p">(</span><span class="n">EdgePermuters</span><span class="o">.</span><span class="n">BothCoords</span><span class="p">())</span>
-<span class="p">,</span> <span class="n">filtered_1</span><span class="p">))</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">filtered_has_element</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">MazeTokenizerModular</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
+	<span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">has_element</span><span class="p">(</span><span class="n">EdgePermuters</span><span class="o">.</span><span class="n">BothCoords</span><span class="p">()),</span> <span class="n">filtered_1</span><span class="p">),</span>
+<span class="p">)</span>
 
-<span class="n">filtered_tokenizer_elements</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">MazeTokenizerModular</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span>
-    <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">EdgePermuters</span><span class="o">.</span><span class="n">BothCoords</span><span class="p">()</span> <span class="ow">in</span> <span class="n">x</span><span class="o">.</span><span class="n">tokenizer_elements</span>
-<span class="p">,</span> <span class="n">filtered_1</span><span class="p">))</span>
+<span class="n">filtered_tokenizer_elements</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">MazeTokenizerModular</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
+	<span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">EdgePermuters</span><span class="o">.</span><span class="n">BothCoords</span><span class="p">()</span> <span class="ow">in</span> <span class="n">x</span><span class="o">.</span><span class="n">tokenizer_elements</span><span class="p">,</span> <span class="n">filtered_1</span><span class="p">),</span>
+<span class="p">)</span>
 
-<span class="n">filtered_summary</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">MazeTokenizerModular</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span>
-    <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">summary</span><span class="p">()[</span><span class="s2">"edge_permuter"</span><span class="p">]</span> <span class="o">==</span> <span class="n">EdgePermuters</span><span class="o">.</span><span class="n">BothCoords</span><span class="p">()</span><span class="o">.</span><span class="n">name</span>
-<span class="p">,</span> <span class="n">filtered_1</span><span class="p">))</span>
+<span class="n">filtered_summary</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">MazeTokenizerModular</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
+	<span class="nb">filter</span><span class="p">(</span>
+		<span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">summary</span><span class="p">()[</span><span class="s2">"edge_permuter"</span><span class="p">]</span> <span class="o">==</span> <span class="n">EdgePermuters</span><span class="o">.</span><span class="n">BothCoords</span><span class="p">()</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+		<span class="n">filtered_1</span><span class="p">,</span>
+	<span class="p">),</span>
+<span class="p">)</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"filtered: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">filtered_has_element</span><span class="p">)</span><span class="si">}</span><span class="s2"> tokenizers / </span><span class="si">{</span><span class="n">len_all</span><span class="si">}</span><span class="s2"> tokenizers"</span><span class="p">)</span>
 
@@ -8280,7 +8301,7 @@ set(filtered_has_element).symmetric_difference(set(filtered_summary)) = set()
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="TokenizerElement-Behavior-Reference">TokenizerElement Behavior Reference<a class="anchor-link" href="#TokenizerElement-Behavior-Reference">¶</a></h1><p>For each primary <code>TokenizerElement</code>, tokenizations and encodings derived from the below maze are logged in DataFrames for reference.</p>
+<h1 id="TokenizerElement-Behavior-Reference">TokenizerElement Behavior Reference<a class="anchor-link" href="#TokenizerElement-Behavior-Reference">Â¶</a></h1><p>For each primary <code>TokenizerElement</code>, tokenizations and encodings derived from the below maze are logged in DataFrames for reference.</p>
 </div>
 </div>
 </div>
@@ -8289,23 +8310,23 @@ set(filtered_has_element).symmetric_difference(set(filtered_summary)) = set()
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [17]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">InÂ [17]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">cfg</span><span class="p">:</span> <span class="n">MazeDatasetConfig</span> <span class="o">=</span> <span class="n">MazeDatasetConfig</span><span class="p">(</span>
-    <span class="n">name</span><span class="o">=</span><span class="s2">"test"</span><span class="p">,</span>
-    <span class="n">grid_n</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
-    <span class="n">n_mazes</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-    <span class="n">maze_ctor</span><span class="o">=</span><span class="n">LatticeMazeGenerators</span><span class="o">.</span><span class="n">gen_dfs</span><span class="p">,</span>
+	<span class="n">name</span><span class="o">=</span><span class="s2">"test"</span><span class="p">,</span>
+	<span class="n">grid_n</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+	<span class="n">n_mazes</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+	<span class="n">maze_ctor</span><span class="o">=</span><span class="n">LatticeMazeGenerators</span><span class="o">.</span><span class="n">gen_dfs</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="n">dataset</span><span class="p">:</span> <span class="n">MazeDataset</span> <span class="o">=</span> <span class="n">MazeDataset</span><span class="o">.</span><span class="n">from_config</span><span class="p">(</span>
-    <span class="n">cfg</span><span class="p">,</span>
-    <span class="n">do_download</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-    <span class="n">load_local</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-    <span class="n">do_generate</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="n">save_local</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-    <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="n">gen_parallel</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+	<span class="n">cfg</span><span class="p">,</span>
+	<span class="n">do_download</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+	<span class="n">load_local</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+	<span class="n">do_generate</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+	<span class="n">save_local</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+	<span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+	<span class="n">gen_parallel</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span>
 </pre></div>
 </div>
@@ -8319,7 +8340,7 @@ set(filtered_has_element).symmetric_difference(set(filtered_summary)) = set()
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>trying to get the dataset 'test-g3-n1-a_dfs-h50097'
+<pre>trying to get the dataset 'test-g3-n1-a_dfs-h74622'
 generating dataset...
 </pre>
 </div>
@@ -8327,13 +8348,13 @@ generating dataset...
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
-<pre>generating &amp; solving mazes: 100%|â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ| 1/1 [00:00&lt;?, ?maze/s]</pre>
+<pre>generating &amp; solving mazes: 100%|â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ| 1/1 [00:00&lt;00:00, 776.44maze/s]</pre>
 </div>
 </div>
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>Got dataset test with 1 items. output.cfg.to_fname() = 'test-g3-n1-a_dfs-h50097'
+<pre>Got dataset test with 1 items. output.cfg.to_fname() = 'test-g3-n1-a_dfs-h74622'
 </pre>
 </div>
 </div>
@@ -8351,10 +8372,10 @@ generating dataset...
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [18]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">InÂ [18]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s1">'display.max_colwidth'</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s2">"display.max_colwidth"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 <span class="n">mz</span><span class="p">:</span> <span class="n">SolvedMaze</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 <span class="n">MazePlot</span><span class="p">(</span><span class="n">mz</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
@@ -8370,7 +8391,7 @@ generating dataset...
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedImage jp-OutputArea-output" tabindex="0">
-<img alt="No description has been provided for this image" class="" src="data:image/png;base64,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w8qQDOXl5dqwYYM2bdqkkSNH9lxrzs7OVlZWluPqbGLpuodVV1drzZo1amxs1BVXXKGf//znmj17tuuykAQ1NTW6/vrre+0vKyvTs88+O/AFIanO9BH269ev16JFiwa2GI8grAAA5nHNCgBgHmEFADCPsAIAmEdYAQDMI6wAAOYRVgAA8wgrAIB5hBUAwDzCCvCwRYsW8aGMGBQIKwCAeYQVAMA8wgpwLBgM6vHHH9cXv/hF+f1+jRs3To899pgk6a233tJXvvIVZWVlKTc3V3fddZdaW1sdVwwMPMIKcGzp0qVavXq1li1bpv3792vDhg3Kz89XW1ub5s+fr9GjR+uf//ynfv/732vLli2qqKhwXTIw4HjqOuDQyZMnNWbMGFVXV+vOO++Meu3pp5/WAw88oCNHjmjEiBGSpM2bN+umm25SQ0OD8vPztWjRIjU3N+vFF190UD0wcBhZAQ7961//UkdHh7761a/2+VpxcXFPUElSaWmpgsGgDhw4MJBlAs4RVoBDfCosEBvCCnBowoQJysrK0tatW3u9dtlll2nPnj1qa2vr2ff6668rIyNDkyZNGsgyAecIK8ChQCCgBx54QPfff7+ee+45HTp0SG+++abWrVunW2+9VYFAQGVlZdq3b59effVVLV68WN/73veUn5/vunRgQA1xXQAw2C1btkxDhgzR8uXL1dDQoIsuukh33323hg8frpdffln33nuvSkpKNHz4cN1yyy168sknXZcMDDhWAwIAzGMaEABgHmEFADCPsAIAmEdYAQDMI6wAAOYRVgAA8wgrAIB5hBUAwDzCCgBgHmEFADCPsAIAmPf/yZovFkjSjFwAAAAASUVORK5CYII="/>
+<img alt="No description has been provided for this image" class="" src="data:image/png;base64,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"/>
 </div>
 </div>
 </div>
@@ -8380,24 +8401,33 @@ generating dataset...
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [19]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">InÂ [19]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">all_elements_df</span><span class="p">(</span>
-        <span class="n">elem_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">_TokenizerElement</span><span class="p">],</span> 
-        <span class="n">encoding</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> 
-        <span class="o">**</span><span class="n">to_tokens_kwargs</span>
-        <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
-    <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"_TokenizerElement"</span><span class="p">,</span> <span class="s2">"tokens"</span><span class="p">]</span>
-    <span class="k">if</span> <span class="n">encoding</span><span class="p">:</span>
-        <span class="n">columns</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"encoding"</span><span class="p">)</span>
-    <span class="n">tokenizers</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">columns</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">all_elements_df</span><span class="p">(</span>
+	<span class="n">elem_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">_TokenizerElement</span><span class="p">],</span>
+	<span class="n">encoding</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+	<span class="o">**</span><span class="n">to_tokens_kwargs</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+	<span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"_TokenizerElement"</span><span class="p">,</span> <span class="s2">"tokens"</span><span class="p">]</span>
+	<span class="k">if</span> <span class="n">encoding</span><span class="p">:</span>
+		<span class="n">columns</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"encoding"</span><span class="p">)</span>
+	<span class="n">tokenizers</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">columns</span><span class="p">)</span>
 
-    <span class="n">tokenizers</span><span class="p">[</span><span class="s2">"_TokenizerElement"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">all_instances</span><span class="p">(</span><span class="n">elem_type</span><span class="p">,</span> <span class="n">validation_funcs</span><span class="o">=</span><span class="n">MAZE_TOKENIZER_MODULAR_DEFAULT_VALIDATION_FUNCS</span><span class="p">))</span>
-    <span class="n">tokenizers</span><span class="p">[</span><span class="s2">"tokens"</span><span class="p">]</span> <span class="o">=</span> <span class="n">tokenizers</span><span class="p">[</span><span class="s2">"_TokenizerElement"</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="s2">" "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">to_tokens</span><span class="p">(</span><span class="o">**</span><span class="n">to_tokens_kwargs</span><span class="p">)))</span>
-    <span class="k">if</span> <span class="n">encoding</span><span class="p">:</span>
-        <span class="n">tokenizers</span><span class="p">[</span><span class="s2">"encoding"</span><span class="p">]</span> <span class="o">=</span> <span class="n">tokenizers</span><span class="p">[</span><span class="s2">"tokens"</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">MazeTokenizerModular</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
-    <span class="k">return</span> <span class="n">tokenizers</span>
+	<span class="n">tokenizers</span><span class="p">[</span><span class="s2">"_TokenizerElement"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
+		<span class="n">all_instances</span><span class="p">(</span>
+			<span class="n">elem_type</span><span class="p">,</span>
+			<span class="n">validation_funcs</span><span class="o">=</span><span class="n">MAZE_TOKENIZER_MODULAR_DEFAULT_VALIDATION_FUNCS</span><span class="p">,</span>
+		<span class="p">),</span>
+	<span class="p">)</span>
+	<span class="n">tokenizers</span><span class="p">[</span><span class="s2">"tokens"</span><span class="p">]</span> <span class="o">=</span> <span class="n">tokenizers</span><span class="p">[</span><span class="s2">"_TokenizerElement"</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span>
+		<span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="s2">" "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">to_tokens</span><span class="p">(</span><span class="o">**</span><span class="n">to_tokens_kwargs</span><span class="p">)),</span>
+	<span class="p">)</span>
+	<span class="k">if</span> <span class="n">encoding</span><span class="p">:</span>
+		<span class="n">tokenizers</span><span class="p">[</span><span class="s2">"encoding"</span><span class="p">]</span> <span class="o">=</span> <span class="n">tokenizers</span><span class="p">[</span><span class="s2">"tokens"</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span>
+			<span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">MazeTokenizerModular</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">x</span><span class="p">),</span>
+		<span class="p">)</span>
+	<span class="k">return</span> <span class="n">tokenizers</span>
 </pre></div>
 </div>
 </div>
@@ -8410,7 +8440,7 @@ generating dataset...
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="CoordTokenizers"><code>CoordTokenizers</code><a class="anchor-link" href="#CoordTokenizers">¶</a></h2>
+<h2 id="CoordTokenizers"><code>CoordTokenizers</code><a class="anchor-link" href="#CoordTokenizers">Â¶</a></h2>
 </div>
 </div>
 </div>
@@ -8419,10 +8449,13 @@ generating dataset...
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [20]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">InÂ [20]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">coord_tokenizers</span> <span class="o">=</span> <span class="n">all_elements_df</span><span class="p">(</span><span class="n">CoordTokenizers</span><span class="o">.</span><span class="n">_CoordTokenizer</span><span class="p">,</span> <span class="n">coord</span><span class="o">=</span><span class="n">mz</span><span class="o">.</span><span class="n">solution</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">coord_tokenizers</span> <span class="o">=</span> <span class="n">all_elements_df</span><span class="p">(</span>
+	<span class="n">CoordTokenizers</span><span class="o">.</span><span class="n">_CoordTokenizer</span><span class="p">,</span>
+	<span class="n">coord</span><span class="o">=</span><span class="n">mz</span><span class="o">.</span><span class="n">solution</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+<span class="p">)</span>
 <span class="n">coord_tokenizers</span>
 </pre></div>
 </div>
@@ -8528,7 +8561,7 @@ generating dataset...
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Adjacency-List-Tokenizers">Adjacency List Tokenizers<a class="anchor-link" href="#Adjacency-List-Tokenizers">¶</a></h2>
+<h2 id="Adjacency-List-Tokenizers">Adjacency List Tokenizers<a class="anchor-link" href="#Adjacency-List-Tokenizers">Â¶</a></h2>
 </div>
 </div>
 </div>
@@ -8537,10 +8570,15 @@ generating dataset...
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [21]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">InÂ [21]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">adjlist_tokenizers</span> <span class="o">=</span> <span class="n">all_elements_df</span><span class="p">(</span><span class="n">AdjListTokenizers</span><span class="o">.</span><span class="n">_AdjListTokenizer</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">maze</span><span class="o">=</span><span class="n">mz</span><span class="p">,</span> <span class="n">coord_tokenizer</span><span class="o">=</span><span class="n">CoordTokenizers</span><span class="o">.</span><span class="n">UT</span><span class="p">())</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">adjlist_tokenizers</span> <span class="o">=</span> <span class="n">all_elements_df</span><span class="p">(</span>
+	<span class="n">AdjListTokenizers</span><span class="o">.</span><span class="n">_AdjListTokenizer</span><span class="p">,</span>
+	<span class="n">encoding</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+	<span class="n">maze</span><span class="o">=</span><span class="n">mz</span><span class="p">,</span>
+	<span class="n">coord_tokenizer</span><span class="o">=</span><span class="n">CoordTokenizers</span><span class="o">.</span><span class="n">UT</span><span class="p">(),</span>
+<span class="p">)</span>
 <span class="n">adjlist_tokenizers</span>
 </pre></div>
 </div>
@@ -8647,7 +8685,7 @@ generating dataset...
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Target-Tokenizers">Target Tokenizers<a class="anchor-link" href="#Target-Tokenizers">¶</a></h2>
+<h2 id="Target-Tokenizers">Target Tokenizers<a class="anchor-link" href="#Target-Tokenizers">Â¶</a></h2>
 </div>
 </div>
 </div>
@@ -8656,10 +8694,14 @@ generating dataset...
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [22]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">InÂ [22]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">target_tokenizers</span> <span class="o">=</span> <span class="n">all_elements_df</span><span class="p">(</span><span class="n">TargetTokenizers</span><span class="o">.</span><span class="n">_TargetTokenizer</span><span class="p">,</span> <span class="n">targets</span><span class="o">=</span><span class="p">[</span><span class="n">mz</span><span class="o">.</span><span class="n">end_pos</span><span class="p">],</span> <span class="n">coord_tokenizer</span><span class="o">=</span><span class="n">CoordTokenizers</span><span class="o">.</span><span class="n">UT</span><span class="p">())</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">target_tokenizers</span> <span class="o">=</span> <span class="n">all_elements_df</span><span class="p">(</span>
+	<span class="n">TargetTokenizers</span><span class="o">.</span><span class="n">_TargetTokenizer</span><span class="p">,</span>
+	<span class="n">targets</span><span class="o">=</span><span class="p">[</span><span class="n">mz</span><span class="o">.</span><span class="n">end_pos</span><span class="p">],</span>
+	<span class="n">coord_tokenizer</span><span class="o">=</span><span class="n">CoordTokenizers</span><span class="o">.</span><span class="n">UT</span><span class="p">(),</span>
+<span class="p">)</span>
 <span class="n">target_tokenizers</span>
 </pre></div>
 </div>
@@ -8723,7 +8765,7 @@ generating dataset...
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Path-Tokenizers">Path Tokenizers<a class="anchor-link" href="#Path-Tokenizers">¶</a></h2>
+<h2 id="Path-Tokenizers">Path Tokenizers<a class="anchor-link" href="#Path-Tokenizers">Â¶</a></h2>
 </div>
 </div>
 </div>
@@ -8732,10 +8774,14 @@ generating dataset...
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [23]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">InÂ [23]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">path_tokenizers</span> <span class="o">=</span> <span class="n">all_elements_df</span><span class="p">(</span><span class="n">PathTokenizers</span><span class="o">.</span><span class="n">_PathTokenizer</span><span class="p">,</span> <span class="n">maze</span><span class="o">=</span><span class="n">mz</span><span class="p">,</span> <span class="n">coord_tokenizer</span><span class="o">=</span><span class="n">CoordTokenizers</span><span class="o">.</span><span class="n">UT</span><span class="p">())</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">path_tokenizers</span> <span class="o">=</span> <span class="n">all_elements_df</span><span class="p">(</span>
+	<span class="n">PathTokenizers</span><span class="o">.</span><span class="n">_PathTokenizer</span><span class="p">,</span>
+	<span class="n">maze</span><span class="o">=</span><span class="n">mz</span><span class="p">,</span>
+	<span class="n">coord_tokenizer</span><span class="o">=</span><span class="n">CoordTokenizers</span><span class="o">.</span><span class="n">UT</span><span class="p">(),</span>
+<span class="p">)</span>
 <span class="n">path_tokenizers</span>
 </pre></div>
 </div>
@@ -8854,7 +8900,7 @@ generating dataset...
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Prompt-Sequencers">Prompt Sequencers<a class="anchor-link" href="#Prompt-Sequencers">¶</a></h2><p>Currently, the only difference in possible prompt sequencers is the inclusion/exclusion of target tokens.</p>
+<h2 id="Prompt-Sequencers">Prompt Sequencers<a class="anchor-link" href="#Prompt-Sequencers">Â¶</a></h2><p>Currently, the only difference in possible prompt sequencers is the inclusion/exclusion of target tokens.</p>
 </div>
 </div>
 </div>
@@ -8863,7 +8909,7 @@ generating dataset...
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [24]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">InÂ [24]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">prompt_sequencers</span> <span class="o">=</span> <span class="p">[</span><span class="n">PromptSequencers</span><span class="o">.</span><span class="n">AOTP</span><span class="p">(),</span> <span class="n">PromptSequencers</span><span class="o">.</span><span class="n">AOP</span><span class="p">()]</span>
@@ -8871,7 +8917,9 @@ generating dataset...
 <span class="n">tokenizers</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">columns</span><span class="p">)</span>
 
 <span class="n">tokenizers</span><span class="p">[</span><span class="s2">"_TokenizerElement"</span><span class="p">]</span> <span class="o">=</span> <span class="n">prompt_sequencers</span>
-<span class="n">tokenizers</span><span class="p">[</span><span class="s2">"tokens"</span><span class="p">]</span> <span class="o">=</span> <span class="n">tokenizers</span><span class="p">[</span><span class="s2">"_TokenizerElement"</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="s2">" "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">to_tokens</span><span class="p">(</span><span class="n">maze</span><span class="o">=</span><span class="n">mz</span><span class="p">)))</span>
+<span class="n">tokenizers</span><span class="p">[</span><span class="s2">"tokens"</span><span class="p">]</span> <span class="o">=</span> <span class="n">tokenizers</span><span class="p">[</span><span class="s2">"_TokenizerElement"</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span>
+	<span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="s2">" "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">to_tokens</span><span class="p">(</span><span class="n">maze</span><span class="o">=</span><span class="n">mz</span><span class="p">)),</span>
+<span class="p">)</span>
 <span class="n">tokenizers</span>
 </pre></div>
 </div>
@@ -8932,7 +8980,7 @@ generating dataset...
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Random-Sample-of-MazeTokenizerModulars">Random Sample of <code>MazeTokenizerModular</code>s<a class="anchor-link" href="#Random-Sample-of-MazeTokenizerModulars">¶</a></h2>
+<h2 id="Random-Sample-of-MazeTokenizerModulars">Random Sample of <code>MazeTokenizerModular</code>s<a class="anchor-link" href="#Random-Sample-of-MazeTokenizerModulars">Â¶</a></h2>
 </div>
 </div>
 </div>
@@ -8941,17 +8989,22 @@ generating dataset...
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [25]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">InÂ [25]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">random_sample_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1_000</span>
 
-<span class="n">tokenizers</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">MazeTokenizerModular</span><span class="p">]</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">get_all_tokenizers</span><span class="p">(),</span> <span class="n">random_sample_size</span><span class="p">)</span>
+<span class="n">tokenizers</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">MazeTokenizerModular</span><span class="p">]</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span>
+	<span class="n">get_all_tokenizers</span><span class="p">(),</span>
+	<span class="n">random_sample_size</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"MazeTokenizerModular"</span><span class="p">,</span> <span class="s2">"tokens"</span><span class="p">,</span> <span class="s2">"encoding"</span><span class="p">,</span> <span class="o">*</span><span class="n">mt_default</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span><span class="o">.</span><span class="n">keys</span><span class="p">()]</span>
 <span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">columns</span><span class="p">)</span>
 
 <span class="n">df</span><span class="p">[</span><span class="s2">"MazeTokenizerModular"</span><span class="p">]</span> <span class="o">=</span> <span class="n">tokenizers</span>
-<span class="n">df</span><span class="p">[</span><span class="s2">"tokens"</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">"MazeTokenizerModular"</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="s2">" "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">to_tokens</span><span class="p">(</span><span class="n">maze</span><span class="o">=</span><span class="n">mz</span><span class="p">)))</span>
+<span class="n">df</span><span class="p">[</span><span class="s2">"tokens"</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">"MazeTokenizerModular"</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span>
+	<span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="s2">" "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">to_tokens</span><span class="p">(</span><span class="n">maze</span><span class="o">=</span><span class="n">mz</span><span class="p">)),</span>
+<span class="p">)</span>
 <span class="n">df</span><span class="o">.</span><span class="n">encoding</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">tokens</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">MazeTokenizerModular</span><span class="o">.</span><span class="n">encode</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -8963,13 +9016,20 @@ generating dataset...
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [26]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">InÂ [26]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">mt_default</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="n">desc</span><span class="o">=</span><span class="s2">"Tokenizers"</span><span class="p">,</span> <span class="n">total</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">mt_default</span><span class="o">.</span><span class="n">summary</span><span class="p">())):</span>
-    <span class="n">df</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">MazeTokenizerModular</span><span class="o">.</span><span class="n">summary</span><span class="p">()[</span><span class="n">k</span><span class="p">]</span> <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">x</span><span class="o">.</span><span class="n">MazeTokenizerModular</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span>
+	<span class="n">mt_default</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span>
+	<span class="n">desc</span><span class="o">=</span><span class="s2">"Tokenizers"</span><span class="p">,</span>
+	<span class="n">total</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">mt_default</span><span class="o">.</span><span class="n">summary</span><span class="p">()),</span>
+<span class="p">):</span>
+	<span class="n">df</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span>
+		<span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">MazeTokenizerModular</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>  <span class="c1"># noqa: B023</span>
+		<span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+	<span class="p">)</span>
 
-<span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s1">'display.max_colwidth'</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s2">"display.max_colwidth"</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
 
 <span class="n">df</span>
 </pre></div>
@@ -8984,7 +9044,7 @@ generating dataset...
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
-<pre>Tokenizers: 100%|â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ| 10/10 [00:01&lt;00:00,  7.38it/s]
+<pre>Tokenizers: 100%|â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ| 10/10 [00:00&lt;00:00, 21.89it/s]
 </pre>
 </div>
 </div>
@@ -9214,7 +9274,7 @@ generating dataset...
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">InÂ [Â ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span> 

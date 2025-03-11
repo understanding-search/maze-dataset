@@ -35,16 +35,15 @@ jobs:
 
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.10"
+          python-version: "3.11"
         
-      - name: Install dependencies
-        run: |
-          curl -sSL https://install.python-poetry.org | python3 -
-          poetry lock --check
-          poetry install
+      - name: set up uv
+        run: curl -LsSf https://astral.sh/uv/install.sh | sh
+
       - name: tokenizer hash tests
         run: |
           make test_tok_hashes
+
       - name: all tokenizer tests
         run: |
           N_TO_TEST=${{ github.event.inputs.n_to_test || '5000' }}

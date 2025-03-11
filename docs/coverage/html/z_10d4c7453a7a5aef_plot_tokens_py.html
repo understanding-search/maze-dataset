@@ -64,8 +64,8 @@
             <a id="indexLink" class="nav" href="index.html">&Hat; index</a> &nbsp; &nbsp;
             <a id="nextFileLink" class="nav" href="z_10d4c7453a7a5aef_print_tokens_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
-            <a class="nav" href="https://coverage.readthedocs.io/en/7.6.1">coverage.py v7.6.1</a>,
-            created at 2024-09-10 13:21 -0600
+            <a class="nav" href="https://coverage.readthedocs.io/en/7.6.12">coverage.py v7.6.12</a>,
+            created at 2025-02-23 12:49 -0700
         </p>
         <aside class="hidden">
             <button type="button" class="button_next_chunk" data-shortcut="j"></button>
@@ -105,10 +105,10 @@
     <p class="pln"><span class="n"><a id="t23" href="#t23">23</a></span><span class="t">    <span class="nam">fig_width_scale</span><span class="op">:</span> <span class="nam">float</span> <span class="op">=</span> <span class="num">0.25</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t24" href="#t24">24</a></span><span class="t">    <span class="nam">char_min</span><span class="op">:</span> <span class="nam">int</span> <span class="op">=</span> <span class="num">4</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t25" href="#t25">25</a></span><span class="t"><span class="op">)</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t26" href="#t26">26</a></span><span class="t">    <span class="str">"hacky function to plot tokens on a matplotlib axis with colored backgrounds"</span> <span class="str">""</span>&nbsp;</span><span class="r"></span></p>
-    <p class="mis show_mis"><span class="n"><a id="t27" href="#t27">27</a></span><span class="t">    <span class="key">assert</span> <span class="nam">len</span><span class="op">(</span><span class="nam">tokens</span><span class="op">)</span> <span class="op">==</span> <span class="nam">len</span><span class="op">(</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t28" href="#t28">28</a></span><span class="t">        <span class="nam">weights</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t29" href="#t29">29</a></span><span class="t">    <span class="op">)</span><span class="op">,</span> <span class="str">f"The number of tokens and weights must be the same: {len(tokens)} != {len(weights)}"</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t26" href="#t26">26</a></span><span class="t">    <span class="str">"hacky function to plot tokens on a matplotlib axis with colored backgrounds"</span>&nbsp;</span><span class="r"></span></p>
+    <p class="mis show_mis"><span class="n"><a id="t27" href="#t27">27</a></span><span class="t">    <span class="key">assert</span> <span class="nam">len</span><span class="op">(</span><span class="nam">tokens</span><span class="op">)</span> <span class="op">==</span> <span class="nam">len</span><span class="op">(</span><span class="nam">weights</span><span class="op">)</span><span class="op">,</span> <span class="op">(</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t28" href="#t28">28</a></span><span class="t">        <span class="fst">f"</span><span class="fst">The number of tokens and weights must be the same: </span><span class="op">{</span><span class="nam">len</span><span class="op">(</span><span class="nam">tokens</span><span class="op">)</span><span class="op">}</span><span class="fst"> != </span><span class="op">{</span><span class="nam">len</span><span class="op">(</span><span class="nam">weights</span><span class="op">)</span><span class="op">}</span><span class="fst">"</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t29" href="#t29">29</a></span><span class="t">    <span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="mis show_mis"><span class="n"><a id="t30" href="#t30">30</a></span><span class="t">    <span class="nam">total_len_estimate</span><span class="op">:</span> <span class="nam">float</span> <span class="op">=</span> <span class="nam">sum</span><span class="op">(</span><span class="op">[</span><span class="nam">max</span><span class="op">(</span><span class="nam">len</span><span class="op">(</span><span class="nam">tok</span><span class="op">)</span><span class="op">,</span> <span class="nam">char_min</span><span class="op">)</span> <span class="key">for</span> <span class="nam">tok</span> <span class="key">in</span> <span class="nam">tokens</span><span class="op">]</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t31" href="#t31">31</a></span><span class="t">    <span class="com"># set up figure if needed</span>&nbsp;</span><span class="r"></span></p>
     <p class="mis show_mis"><span class="n"><a id="t32" href="#t32">32</a></span><span class="t">    <span class="key">if</span> <span class="nam">ax</span> <span class="key">is</span> <span class="key">None</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
@@ -158,7 +158,7 @@
     <p class="mis show_mis"><span class="n"><a id="t76" href="#t76">76</a></span><span class="t">        <span class="nam">ax</span><span class="op">.</span><span class="nam">text</span><span class="op">(</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t77" href="#t77">77</a></span><span class="t">            <span class="nam">x_pos</span> <span class="op">+</span> <span class="nam">width_offset</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t78" href="#t78">78</a></span><span class="t">            <span class="nam">label_height</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t79" href="#t79">79</a></span><span class="t">            <span class="str">f"{weight:.2f}"</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t79" href="#t79">79</a></span><span class="t">            <span class="fst">f"</span><span class="op">{</span><span class="nam">weight</span><span class="op">:</span><span class="fst">.2f</span><span class="op">}</span><span class="fst">"</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t80" href="#t80">80</a></span><span class="t">            <span class="nam">fontsize</span><span class="op">=</span><span class="nam">fontsize</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t81" href="#t81">81</a></span><span class="t">            <span class="nam">va</span><span class="op">=</span><span class="str">"center"</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t82" href="#t82">82</a></span><span class="t">            <span class="nam">ha</span><span class="op">=</span><span class="str">"left"</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
@@ -175,8 +175,8 @@
             <a class="nav" href="index.html">&Hat; index</a> &nbsp; &nbsp;
             <a class="nav" href="z_10d4c7453a7a5aef_print_tokens_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
-            <a class="nav" href="https://coverage.readthedocs.io/en/7.6.1">coverage.py v7.6.1</a>,
-            created at 2024-09-10 13:21 -0600
+            <a class="nav" href="https://coverage.readthedocs.io/en/7.6.12">coverage.py v7.6.12</a>,
+            created at 2025-02-23 12:49 -0700
         </p>
     </div>
 </footer>

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Coverage for tests\unit\maze_dataset\generation\test_solved_maze.py: 100%</title>
+    <title>Coverage for tests\unit\maze_dataset\generation\test_solved_maze.py: 79%</title>
     <link rel="icon" sizes="32x32" href="favicon_32_cb_58284776.png">
     <link rel="stylesheet" href="style_cb_718ce007.css" type="text/css">
     <script src="coverage_html_cb_497bf287.js" defer></script>
@@ -12,7 +12,7 @@
     <div class="content">
         <h1>
             <span class="text">Coverage for </span><b>tests\unit\maze_dataset\generation\test_solved_maze.py</b>:
-            <span class="pc_cov">100%</span>
+            <span class="pc_cov">79%</span>
         </h1>
         <aside id="help_panel_wrapper">
             <input id="help_panel_state" type="checkbox">
@@ -55,8 +55,8 @@
         </aside>
         <h2>
             <span class="text">14 statements &nbsp;</span>
-            <button type="button" class="run button_toggle_run" value="run" data-shortcut="r" title="Toggle lines run">14<span class="text"> run</span></button>
-            <button type="button" class="mis show_mis button_toggle_mis" value="mis" data-shortcut="m" title="Toggle lines missing">0<span class="text"> missing</span></button>
+            <button type="button" class="run button_toggle_run" value="run" data-shortcut="r" title="Toggle lines run">11<span class="text"> run</span></button>
+            <button type="button" class="mis show_mis button_toggle_mis" value="mis" data-shortcut="m" title="Toggle lines missing">3<span class="text"> missing</span></button>
             <button type="button" class="exc show_exc button_toggle_exc" value="exc" data-shortcut="x" title="Toggle lines excluded">0<span class="text"> excluded</span></button>
         </h2>
         <p class="text">
@@ -64,8 +64,8 @@
             <a id="indexLink" class="nav" href="index.html">&Hat; index</a> &nbsp; &nbsp;
             <a id="nextFileLink" class="nav" href="z_6b0ad3e6d42bedf8_test_maze_plot_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
-            <a class="nav" href="https://coverage.readthedocs.io/en/7.6.1">coverage.py v7.6.1</a>,
-            created at 2024-09-10 13:21 -0600
+            <a class="nav" href="https://coverage.readthedocs.io/en/7.6.12">coverage.py v7.6.12</a>,
+            created at 2025-02-23 12:49 -0700
         </p>
         <aside class="hidden">
             <button type="button" class="button_next_chunk" data-shortcut="j"></button>
@@ -102,15 +102,15 @@
     <p class="run"><span class="n"><a id="t20" href="#t20">20</a></span><span class="t">    <span class="nam">tokenized_maze</span><span class="op">:</span> <span class="nam">list</span><span class="op">[</span><span class="nam">str</span><span class="op">]</span> <span class="op">=</span> <span class="nam">solved_maze</span><span class="op">.</span><span class="nam">as_tokens</span><span class="op">(</span><span class="nam">tokenizer</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t21" href="#t21">21</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t22" href="#t22">22</a></span><span class="t">    <span class="nam">solved_maze_rt</span><span class="op">:</span> <span class="nam">SolvedMaze</span> <span class="op">=</span> <span class="nam">SolvedMaze</span><span class="op">.</span><span class="nam">from_tokens</span><span class="op">(</span><span class="nam">tokenized_maze</span><span class="op">,</span> <span class="nam">tokenizer</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t23" href="#t23">23</a></span><span class="t">    <span class="key">assert</span> <span class="op">(</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t24" href="#t24">24</a></span><span class="t">        <span class="nam">solved_maze</span> <span class="op">==</span> <span class="nam">solved_maze_rt</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t25" href="#t25">25</a></span><span class="t">    <span class="op">)</span><span class="op">,</span> <span class="str">f"solved_maze: {solved_maze}, solved_maze_rt: {solved_maze_rt}"</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t26" href="#t26">26</a></span><span class="t">    <span class="key">assert</span> <span class="op">(</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t27" href="#t27">27</a></span><span class="t">        <span class="nam">solved_maze</span><span class="op">.</span><span class="nam">connection_list</span> <span class="op">==</span> <span class="nam">solved_maze_rt</span><span class="op">.</span><span class="nam">connection_list</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t28" href="#t28">28</a></span><span class="t">    <span class="op">)</span><span class="op">.</span><span class="nam">all</span><span class="op">(</span><span class="op">)</span><span class="op">,</span> <span class="str">f"solved_maze.connection_list: {solved_maze.connection_list}, solved_maze_rt.connection_list: {solved_maze_rt.connection_list}"</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t29" href="#t29">29</a></span><span class="t">    <span class="key">assert</span> <span class="op">(</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t30" href="#t30">30</a></span><span class="t">        <span class="nam">solved_maze</span><span class="op">.</span><span class="nam">solution</span> <span class="op">==</span> <span class="nam">solved_maze_rt</span><span class="op">.</span><span class="nam">solution</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t31" href="#t31">31</a></span><span class="t">    <span class="op">)</span><span class="op">.</span><span class="nam">all</span><span class="op">(</span><span class="op">)</span><span class="op">,</span> <span class="str">f"solved_maze.solution: {solved_maze.solution}, solved_maze_rt.solution: {solved_maze_rt.solution}"</span>&nbsp;</span><span class="r"></span></p>
+    <p class="mis show_mis"><span class="n"><a id="t23" href="#t23">23</a></span><span class="t">    <span class="key">assert</span> <span class="nam">solved_maze</span> <span class="op">==</span> <span class="nam">solved_maze_rt</span><span class="op">,</span> <span class="op">(</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t24" href="#t24">24</a></span><span class="t">        <span class="fst">f"</span><span class="fst">solved_maze: </span><span class="op">{</span><span class="nam">solved_maze</span><span class="op">}</span><span class="fst">, solved_maze_rt: </span><span class="op">{</span><span class="nam">solved_maze_rt</span><span class="op">}</span><span class="fst">"</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t25" href="#t25">25</a></span><span class="t">    <span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="mis show_mis"><span class="n"><a id="t26" href="#t26">26</a></span><span class="t">    <span class="key">assert</span> <span class="op">(</span><span class="nam">solved_maze</span><span class="op">.</span><span class="nam">connection_list</span> <span class="op">==</span> <span class="nam">solved_maze_rt</span><span class="op">.</span><span class="nam">connection_list</span><span class="op">)</span><span class="op">.</span><span class="nam">all</span><span class="op">(</span><span class="op">)</span><span class="op">,</span> <span class="op">(</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t27" href="#t27">27</a></span><span class="t">        <span class="fst">f"</span><span class="fst">solved_maze.connection_list: </span><span class="op">{</span><span class="nam">solved_maze</span><span class="op">.</span><span class="nam">connection_list</span><span class="op">}</span><span class="fst">, solved_maze_rt.connection_list: </span><span class="op">{</span><span class="nam">solved_maze_rt</span><span class="op">.</span><span class="nam">connection_list</span><span class="op">}</span><span class="fst">"</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t28" href="#t28">28</a></span><span class="t">    <span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="mis show_mis"><span class="n"><a id="t29" href="#t29">29</a></span><span class="t">    <span class="key">assert</span> <span class="op">(</span><span class="nam">solved_maze</span><span class="op">.</span><span class="nam">solution</span> <span class="op">==</span> <span class="nam">solved_maze_rt</span><span class="op">.</span><span class="nam">solution</span><span class="op">)</span><span class="op">.</span><span class="nam">all</span><span class="op">(</span><span class="op">)</span><span class="op">,</span> <span class="op">(</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t30" href="#t30">30</a></span><span class="t">        <span class="fst">f"</span><span class="fst">solved_maze.solution: </span><span class="op">{</span><span class="nam">solved_maze</span><span class="op">.</span><span class="nam">solution</span><span class="op">}</span><span class="fst">, solved_maze_rt.solution: </span><span class="op">{</span><span class="nam">solved_maze_rt</span><span class="op">.</span><span class="nam">solution</span><span class="op">}</span><span class="fst">"</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t31" href="#t31">31</a></span><span class="t">    <span class="op">)</span>&nbsp;</span><span class="r"></span></p>
 </main>
 <footer>
     <div class="content">
@@ -119,8 +119,8 @@
             <a class="nav" href="index.html">&Hat; index</a> &nbsp; &nbsp;
             <a class="nav" href="z_6b0ad3e6d42bedf8_test_maze_plot_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
-            <a class="nav" href="https://coverage.readthedocs.io/en/7.6.1">coverage.py v7.6.1</a>,
-            created at 2024-09-10 13:21 -0600
+            <a class="nav" href="https://coverage.readthedocs.io/en/7.6.12">coverage.py v7.6.12</a>,
+            created at 2025-02-23 12:49 -0700
         </p>
     </div>
 </footer>

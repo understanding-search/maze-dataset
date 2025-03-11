@@ -7,45 +7,46 @@
 """
 
 from maze_dataset.tokenization.maze_tokenizer import (
-    AdjListTokenizers,
-    CoordTokenizers,
-    EdgeGroupings,
-    EdgePermuters,
-    EdgeSubsets,
-    MazeTokenizer,
-    MazeTokenizerModular,
-    PathTokenizers,
-    PromptSequencers,
-    StepSizes,
-    StepTokenizers,
-    TargetTokenizers,
-    TokenizationMode,
-    _TokenizerElement,
-    get_tokens_up_to_path_start,
+	AdjListTokenizers,
+	CoordTokenizers,
+	EdgeGroupings,
+	EdgePermuters,
+	EdgeSubsets,
+	MazeTokenizer,
+	MazeTokenizerModular,
+	PathTokenizers,
+	PromptSequencers,
+	StepSizes,
+	StepTokenizers,
+	TargetTokenizers,
+	TokenizationMode,
+	_TokenizerElement,
+	get_tokens_up_to_path_start,
 )
 
+# we don't sort alphabetically on purpose, we sort by the type
 __all__ = [
-    # submodules
-    "all_tokenizers",
-    "maze_tokenizer",
-    "save_hashes",
-    # modular maze tokenization components
-    "TokenizationMode",
-    "_TokenizerElement",
-    "MazeTokenizerModular",
-    "PromptSequencers",
-    "CoordTokenizers",
-    "AdjListTokenizers",
-    "EdgeGroupings",
-    "EdgePermuters",
-    "EdgeSubsets",
-    "TargetTokenizers",
-    "StepSizes",
-    "StepTokenizers",
-    "PathTokenizers",
-    # helpers
-    "coord_str_to_tuple",
-    "get_tokens_up_to_path_start",
-    # old tokenizer
-    "MazeTokenizer",
+	# submodules
+	"all_tokenizers",
+	"maze_tokenizer",
+	"save_hashes",
+	# modular maze tokenization components
+	"TokenizationMode",
+	"_TokenizerElement",
+	"MazeTokenizerModular",
+	"PromptSequencers",
+	"CoordTokenizers",
+	"AdjListTokenizers",
+	"EdgeGroupings",
+	"EdgePermuters",
+	"EdgeSubsets",
+	"TargetTokenizers",
+	"StepSizes",
+	"StepTokenizers",
+	"PathTokenizers",
+	# helpers
+	"coord_str_to_tuple",
+	"get_tokens_up_to_path_start",
+	# old tokenizer
+	"MazeTokenizer",
 ]
