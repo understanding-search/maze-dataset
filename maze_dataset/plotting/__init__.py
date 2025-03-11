@@ -9,24 +9,24 @@
 from maze_dataset.plotting.plot_dataset import plot_dataset_mazes, print_dataset_mazes
 from maze_dataset.plotting.plot_maze import DEFAULT_FORMATS, MazePlot, PathFormat
 from maze_dataset.plotting.print_tokens import (
-    color_maze_tokens_AOTP,
-    color_tokens_cmap,
-    color_tokens_rgb,
+	color_maze_tokens_AOTP,
+	color_tokens_cmap,
+	color_tokens_rgb,
 )
 
 __all__ = [
-    # submodules
-    "plot_dataset",
-    "plot_maze",
-    "plot_tokens",
-    "print_tokens",
-    # imports
-    "plot_dataset_mazes",
-    "print_dataset_mazes",
-    "DEFAULT_FORMATS",
-    "MazePlot",
-    "PathFormat",
-    "color_tokens_cmap",
-    "color_maze_tokens_AOTP",
-    "color_tokens_rgb",
+	# submodules
+	"plot_dataset",
+	"plot_maze",
+	"plot_tokens",
+	"print_tokens",
+	# imports
+	"plot_dataset_mazes",
+	"print_dataset_mazes",
+	"DEFAULT_FORMATS",
+	"MazePlot",
+	"PathFormat",
+	"color_tokens_cmap",
+	"color_maze_tokens_AOTP",
+	"color_tokens_rgb",
 ]
