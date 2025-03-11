@@ -145,7 +145,7 @@ if __name__ == "__main__":
 	argparser.add_argument(
 		"--save_dir",
 		type=Path,
-		default=Path("docs/benchmarks/percolation_fractions/fit_plots/"),
+		default=Path("tests/_temp/percolation_fractions/fit_plots/"),
 		help="Path to save the plots",
 	)
 	argparser.add_argument(
