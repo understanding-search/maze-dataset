@@ -88,6 +88,8 @@ jobs:
       
       - name: Notebook tests
         run: make test_notebooks
+        # see https://github.com/understanding-search/maze-dataset/issues/48
+        if: ${{ matrix.python != '3.13' }}
       
       - name: Test Tokenizer Hashes
         run: make test_tok_hashes
