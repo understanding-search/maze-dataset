@@ -4,7 +4,7 @@ import functools
 import json
 import warnings
 from pathlib import Path
-from typing import Any, Callable, Sequence, TypeVar
+from typing import Any, Callable, Generic, Sequence, TypeVar
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -88,7 +88,7 @@ def sweep(
 
 
 @serializable_dataclass()
-class SweepResult(SerializableDataclass):
+class SweepResult(SerializableDataclass, Generic[ParamType, SweepReturnType]):
 	"""result of a parameter sweep"""
 
 	configs: list[MazeDatasetConfig] = serializable_field(
@@ -100,7 +100,7 @@ class SweepResult(SerializableDataclass):
 		deserialize_fn=lambda x: x,
 		assert_type=False,
 	)
-	result_values: dict[str, list[SweepReturnType]] = serializable_field(
+	result_values: dict[str, Sequence[SweepReturnType]] = serializable_field(
 		serialization_fn=lambda x: json_serialize(x),
 		deserialize_fn=lambda x: x,
 		assert_type=False,
@@ -191,7 +191,7 @@ class SweepResult(SerializableDataclass):
 			cfg for cfg in self.configs if val_check(getattr(cfg, key))
 		]
 		configs_keys: set[str] = {cfg.to_fname() for cfg in configs_list}
-		result_values: dict[str, np.ndarray] = {
+		result_values: dict[str, Sequence[SweepReturnType]] = {
 			k: self.result_values[k] for k in configs_keys
 		}
 
@@ -227,7 +227,8 @@ class SweepResult(SerializableDataclass):
 		n_pvals: int = len(param_values)
 
 		result_values_list: list[float] = run_maybe_parallel(
-			func=functools.partial(
+			# TYPING: error: Argument "func" to "run_maybe_parallel" has incompatible type "partial[list[SweepReturnType]]"; expected "Callable[[MazeDatasetConfig], float]"  [arg-type]
+			func=functools.partial(  # type: ignore[arg-type]
 				sweep,
 				param_values=param_values,
 				param_key=param_key,
@@ -246,7 +247,8 @@ class SweepResult(SerializableDataclass):
 		return cls(
 			configs=configs,
 			param_values=param_values,
-			result_values=result_values,
+			# TYPING: error: Argument "result_values" to "SweepResult" has incompatible type "dict[str, ndarray[Any, Any]]"; expected "dict[str, Sequence[SweepReturnType]]"  [arg-type]
+			result_values=result_values,  # type: ignore[arg-type]
 			param_key=param_key,
 			analyze_func=analyze_func,
 		)
@@ -284,8 +286,10 @@ class SweepResult(SerializableDataclass):
 			),
 		):
 			ax_.plot(
-				self.param_values,
-				result_values,
+				# TYPING: error: Argument 1 to "plot" of "Axes" has incompatible type "list[ParamType]"; expected "float | Buffer | _SupportsArray[dtype[Any]] | _NestedSequence[_SupportsArray[dtype[Any]]] | bool | int | float | complex | str | bytes | _NestedSequence[bool | int | float | complex | str | bytes] | str"  [arg-type]
+				self.param_values,  # type: ignore[arg-type]
+				# TYPING: error: Argument 2 to "plot" of "Axes" has incompatible type "Sequence[SweepReturnType]"; expected "float | Buffer | _SupportsArray[dtype[Any]] | _NestedSequence[_SupportsArray[dtype[Any]]] | bool | int | float | complex | str | bytes | _NestedSequence[bool | int | float | complex | str | bytes] | str"  [arg-type]
+				result_values,  # type: ignore[arg-type]
 				".-",
 				label=self.configs_by_key()[ep_cfg_name].name,
 				color=cmap((i + 0.5) / (n_cfgs - 0.5)),
@@ -301,7 +305,8 @@ class SweepResult(SerializableDataclass):
 				+ ", ".join(
 					[
 						f"{k}={cfg_shared[k].__name__}"
-						if isinstance(cfg_shared[k], Callable)
+						# TYPING: error: Argument 2 to "isinstance" has incompatible type "<typing special form>"; expected "_ClassInfo"  [arg-type]
+						if isinstance(cfg_shared[k], Callable)  # type: ignore[arg-type]
 						else f"{k}={cfg_shared[k]}"
 						for k in cfg_keys
 					],
@@ -406,8 +411,9 @@ def full_percolation_analysis(
 
 	# get results
 	result: SweepResult = SweepResult.analyze(
-		configs=configs,
-		param_values=np.linspace(0.0, 1.0, p_val_count).tolist(),
+		configs=configs,  # type: ignore[misc]
+		# TYPING: error: Argument "param_values" to "analyze" of "SweepResult" has incompatible type "float | list[float] | list[list[float]] | list[list[list[Any]]]"; expected "list[Any]"  [arg-type]
+		param_values=np.linspace(0.0, 1.0, p_val_count).tolist(),  # type: ignore[arg-type]
 		param_key="maze_ctor_kwargs.p",
 		analyze_func=dataset_success_fraction,
 		parallel=parallel,
@@ -522,7 +528,7 @@ def plot_grouped(  # noqa: C901
 
 		# save and show
 		if save_dir:
-			save_path: Path = save_dir / f"ep_{endpoint_kwargs_to_name(ep_kw)}.svg"
+			save_path: Path = save_dir / f"ep_{endpoint_kwargs_to_name(ep_kw[0])}.svg"
 			print(f"Saving plot to {save_path.as_posix()}")
 			save_path.parent.mkdir(exist_ok=True, parents=True)
 			plt.savefig(save_path)

@@ -4,6 +4,7 @@ Desmos link: https://www.desmos.com/calculator/qllvhwftvy
 """
 
 import numpy as np
+from jaxtyping import Float
 
 
 def sigmoid(x: float) -> float:
@@ -55,18 +56,19 @@ def A_scaling(q: float, a: float, w: float) -> float:
 
 
 def soft_step(
-	x: float,
-	p: float,
-	alpha: float = 5,
-	w: float = 50,
+	x: float | np.floating | Float[np.ndarray, " n"],
+	p: float | np.floating,
+	alpha: float | np.floating = 5,
+	w: float | np.floating = 50,
 ) -> float:
 	"""when p is close to 0.5 acts like the identity wrt x, but when p is close to 0 or 1, pushes x to 0 or 1 (whichever is closest)
 
 	https://www.desmos.com/calculator/qllvhwftvy
 	"""
+	# TYPING: this is messed up, some of these args can be arrays but i dont remember which?
 	return h_func(
-		x,
-		A_scaling(p, alpha, w),
+		x,  # type: ignore[arg-type]
+		A_scaling(p, alpha, w),  # type: ignore[arg-type]
 	)
 
 

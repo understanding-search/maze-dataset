@@ -1,14 +1,14 @@
 """Fit a PySR model to a sweep result and plot the results"""
 
 from pathlib import Path
-from typing import Callable
+from typing import TYPE_CHECKING, Callable
 
 import numpy as np
-import sympy as sp
+import sympy as sp  # type: ignore[import-untyped]
 
 # other imports after pysr since it has to be before torch?
 from jaxtyping import Float
-from pysr import PySRRegressor
+from pysr import PySRRegressor  # type: ignore[import-untyped]
 
 from maze_dataset import MazeDatasetConfig
 from maze_dataset.benchmark.config_sweep import (
@@ -41,7 +41,7 @@ def extract_training_data(
 			# Temporarily override p in the config's array representation:
 			arr = cfg._to_ps_array().copy()
 			arr[0] = p  # index 0 is 'p'
-			x_list.append(arr)
+			x_list.append(arr)  # type: ignore[arg-type]
 			y_list.append(success_arr[i])
 
 	return np.array(x_list, dtype=np.float64), np.array(y_list, dtype=np.float64)
@@ -183,7 +183,7 @@ def create_interactive_plot(heatmap: bool = True) -> None:  # noqa: C901, PLR091
 	- `heatmap : bool`
 		Whether to show heatmaps (defaults to `True`)
 	"""
-	import ipywidgets as widgets
+	import ipywidgets as widgets  # type: ignore[import-untyped]
 	import matplotlib.pyplot as plt
 	from ipywidgets import FloatSlider, HBox, Layout, VBox
 	from matplotlib.gridspec import GridSpec
@@ -333,7 +333,8 @@ def create_interactive_plot(heatmap: bool = True) -> None:  # noqa: C901, PLR091
 
 			# Calculate f(x,p) for all combinations
 			for i, p_val in enumerate(ps):
-				for j, x_val in enumerate(xs):
+				# TYPING: error: Incompatible types in assignment (expression has type "floating[Any]", variable has type "float")  [assignment]
+				for j, x_val in enumerate(xs):  # type: ignore[assignment]
 					Z[i, j] = soft_step(x_val, p_val, alpha, w)
 
 			c = ax3.pcolormesh(X, P, Z, cmap="viridis", shading="auto")
@@ -404,4 +405,5 @@ def create_interactive_plot(heatmap: bool = True) -> None:  # noqa: C901, PLR091
 	)
 
 	# we noqa here because we will only call this function inside a notebook
-	display(VBox([slider_box, interactive_output]))  # noqa: F821
+	if not TYPE_CHECKING:
+		display(VBox([slider_box, interactive_output]))  # noqa: F821
