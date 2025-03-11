@@ -519,7 +519,7 @@ class LatticeMaze(SerializableDataclass):
 		# check we have valid positions
 		if len(allowed_start_set) == 0 or len(allowed_end_set) == 0:
 			if except_on_no_valid_endpoint:
-				err_msg = f"No valid start (or end?) positions found: {allowed_start_set = }, {allowed_end_set = }"
+				err_msg: str = f"No valid start (or end?) positions found: {allowed_start_set = }, {allowed_end_set = }"
 				raise NoValidEndpointException(
 					err_msg,
 				)
@@ -667,7 +667,7 @@ class LatticeMaze(SerializableDataclass):
 			)
 			return coords_processed
 		else:
-			err_msg = f"Unsupported tokenizer type: {maze_tokenizer}"
+			err_msg: str = f"Unsupported tokenizer type: {maze_tokenizer}"
 			raise NotImplementedError(err_msg)
 
 	def as_tokens(
@@ -990,7 +990,7 @@ class LatticeMaze(SerializableDataclass):
 		# otherwise, detect and check it's valid
 		cls_detected: typing.Type[LatticeMaze] = detect_pixels_type(pixel_grid)
 		if cls not in cls_detected.__mro__:
-			err_msg = f"Pixel grid cannot be cast to {cls.__name__ = }, detected type {cls_detected.__name__ = }"
+			err_msg: str = f"Pixel grid cannot be cast to {cls.__name__ = }, detected type {cls_detected.__name__ = }"
 			raise ValueError(
 				err_msg,
 			)
@@ -1200,7 +1200,7 @@ class TargetedLatticeMaze(LatticeMaze):  # type: ignore[misc]
 			self.end_pos[0] >= self.grid_shape[0]
 			or self.end_pos[1] >= self.grid_shape[1]
 		):
-			err_msg = f"end_pos {self.end_pos = } is out of bounds for grid shape {self.grid_shape = }"
+			err_msg: str = f"end_pos {self.end_pos = } is out of bounds for grid shape {self.grid_shape = }"
 			raise ValueError(
 				err_msg,
 			)

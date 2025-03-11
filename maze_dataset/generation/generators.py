@@ -68,23 +68,23 @@ class LatticeMazeGenerators:
 		# Arguments
 		- `grid_shape: Coord`: the shape of the grid
 		- `lattice_dim: int`: the dimension of the lattice
-		  (default: `2`)
+			(default: `2`)
 		- `accessible_cells: int | float |None`: the number of accessible cells in the maze. If `None`, defaults to the total number of cells in the grid. if a float, asserts it is <= 1 and treats it as a proportion of **total cells**
-		    (default: `None`)
+			(default: `None`)
 		- `max_tree_depth: int | float | None`: the maximum depth of the tree. If `None`, defaults to `2 * accessible_cells`. if a float, asserts it is <= 1 and treats it as a proportion of the **sum of the grid shape**
-		    (default: `None`)
+			(default: `None`)
 		- `do_forks: bool`: whether to allow forks in the maze. If `False`, the maze will be have no forks and will be a simple hallway.
 		- `start_coord: Coord | None`: the starting coordinate of the generation algorithm. If `None`, defaults to a random coordinate.
 
 		# algorithm
 		1. Choose the initial cell, mark it as visited and push it to the stack
 		2. While the stack is not empty
-		        1. Pop a cell from the stack and make it a current cell
-		        2. If the current cell has any neighbours which have not been visited
-		                1. Push the current cell to the stack
-		                2. Choose one of the unvisited neighbours
-		                3. Remove the wall between the current cell and the chosen cell
-		                4. Mark the chosen cell as visited and push it to the stack
+			1. Pop a cell from the stack and make it a current cell
+			2. If the current cell has any neighbours which have not been visited
+				1. Push the current cell to the stack
+				2. Choose one of the unvisited neighbours
+				3. Remove the wall between the current cell and the chosen cell
+				4. Mark the chosen cell as visited and push it to the stack
 		"""
 		# Default values if no constraints have been passed
 		grid_shape_: Coord = np.array(grid_shape)
@@ -184,7 +184,7 @@ class LatticeMazeGenerators:
 			else:
 				current_tree_depth -= 1
 
-		output = LatticeMaze(
+		return LatticeMaze(
 			connection_list=connection_list,
 			generation_meta=dict(
 				func_name="gen_dfs",
@@ -200,8 +200,6 @@ class LatticeMazeGenerators:
 			),
 		)
 
-		return output
-
 	@staticmethod
 	def gen_prim(
 		grid_shape: Coord | CoordTup,
@@ -211,6 +209,7 @@ class LatticeMazeGenerators:
 		do_forks: bool = True,
 		start_coord: Coord | None = None,
 	) -> LatticeMaze:
+		"(broken!) generate a lattice maze using Prim's algorithm"
 		warnings.warn(
 			"gen_prim does not correctly implement prim's algorithm, see issue: https://github.com/understanding-search/maze-dataset/issues/12",
 		)
@@ -330,7 +329,7 @@ class LatticeMazeGenerators:
 		- `p: float`: the probability of a cell being accessible (default: `0.5`)
 		- `start_coord: Coord | None`: the starting coordinate for the connected component (default: `None` will give a random start)
 		"""
-		assert p >= 0 and p <= 1, f"p must be between 0 and 1, got {p}"
+		assert p >= 0 and p <= 1, f"p must be between 0 and 1, got {p}"  # noqa: PT018
 		grid_shape_: Coord = np.array(grid_shape)
 
 		start_coord = _random_start_coord(grid_shape_, start_coord)

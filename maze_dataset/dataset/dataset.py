@@ -308,7 +308,7 @@ class GPTDataset(Dataset):
 				):
 					pass
 				else:
-					err_msg = f"config mismatch: {cfg_diff = }"
+					err_msg: str = f"config mismatch: {cfg_diff = }"
 					raise ValueError(err_msg)
 			else:
 				warnings.warn(f"config mismatch: {cfg_diff = }")
@@ -474,7 +474,9 @@ def _check_filter_equality(
 				)
 
 	except AssertionError as e:
-		err_msg = f"config mismatch in applied filters: {filters_new} != {filters_old}"
+		err_msg: str = (
+			f"config mismatch in applied filters: {filters_new} != {filters_old}"
+		)
 		raise FilterInfoMismatchError(
 			err_msg,
 		) from e

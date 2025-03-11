@@ -356,6 +356,7 @@ DEFAULT_ENDPOINT_KWARGS: list[tuple[str, dict]] = [
 
 
 def endpoint_kwargs_to_name(ep_kwargs: dict) -> str:
+	"""convert endpoint kwargs options to a human-readable name"""
 	if ep_kwargs.get("deadend_start", False) or ep_kwargs.get("deadend_end", False):
 		if ep_kwargs.get("endpoints_not_equal", False):
 			return "deadends_unique"
@@ -378,6 +379,7 @@ def full_percolation_analysis(
 	parallel: bool | int = False,
 	**analyze_kwargs,
 ) -> SweepResult:
+	"run the full analysis of how percolation affects maze generation success"
 	if ep_kwargs is None:
 		ep_kwargs = DEFAULT_ENDPOINT_KWARGS
 

@@ -7,6 +7,7 @@ import numpy as np
 
 
 def sigmoid(x: float) -> float:
+	r"$\sigma(x) = \frac{1}{1 + e^{-x}}$"
 	return 1 / (1 + np.exp(-x))
 
 
@@ -27,24 +28,29 @@ def sigmoid(x: float) -> float:
 
 
 def sigmoid_shifted(x: float) -> float:
+	r"\sigma_s(x)= \frac{1}{1 + e^{-10^3 \cdot (x-0.5)}}"
 	return 1 / (1 + np.exp(-1000 * (x - 0.5)))
 
 
 def g_poly(q: float, a: float) -> float:
+	r"$g(q,a) = 1 - (|2q-1|)^{a}$"
 	return 1 - np.abs(2 * q - 1) ** a
 
 
 def f_poly(q: float, a: float) -> float:
+	r"$f(q,a) = q \cdot g(q,a)$"
 	return q * g_poly(q, a)
 
 
 def h_func(q: float, a: float) -> float:
+	r"""$h(q,a,b) = f(q,a) \cdot (1-\sigma_s(q)) + (1-f(1-q,a)) \cdot \sigma_s(q)$"""
 	return f_poly(q, a) * (1 - sigmoid_shifted(q)) + (
 		1 - f_poly(1 - q, a)
 	) * sigmoid_shifted(q)
 
 
 def A_scaling(q: float, a: float, w: float) -> float:
+	r"$A(q) = w \cdot g(q, a)$"
 	return w * g_poly(q, a)
 
 
@@ -64,7 +70,7 @@ def soft_step(
 	)
 
 
-def cfg_success_predict_fn(cfg):
+def cfg_success_predict_fn(cfg) -> float:
 	"learned by pysr, see `estimate_dataset_fractions.ipynb` and `maze_dataset.benchmark.config_fit`"
 	x = cfg._to_ps_array()
 	raw_val: float = sigmoid(

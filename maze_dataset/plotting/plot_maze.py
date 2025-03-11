@@ -41,7 +41,7 @@ class PathFormat:
 		output: PathFormat = deepcopy(self)
 		for key, value in other.__dict__.items():
 			if key == "path":
-				err_msg = f"Cannot overwrite path attribute! {self = }, {other = }"
+				err_msg: str = f"Cannot overwrite path attribute! {self = }, {other = }"
 				raise ValueError(
 					err_msg,
 				)
@@ -533,7 +533,7 @@ class MazePlot:
 				x: np.ndarray = p_transformed[:, 0]
 				y: np.ndarray = p_transformed[:, 1]
 			except Exception as e:
-				err_msg = f"Error in plotting quiver path:\n{path_format = }\n{p_transformed = }\n{e}"
+				err_msg: str = f"Error in plotting quiver path:\n{path_format = }\n{p_transformed = }\n{e}"
 				raise ValueError(
 					err_msg,
 				) from e

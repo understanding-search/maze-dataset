@@ -65,7 +65,7 @@ def tokens_between(
 	- `ValueError` : if `start_value` or `end_value` are not present in the input tokens
 	"""
 	if start_value == end_value:
-		err_msg = f"start_value and end_value cannot be the same: {start_value = } {end_value = }"
+		err_msg: str = f"start_value and end_value cannot be the same: {start_value = } {end_value = }"
 		raise ValueError(
 			err_msg,
 		)
@@ -108,7 +108,7 @@ def get_adj_list_tokens(tokens: list[str]) -> list[str]:
 def get_path_tokens(tokens: list[str], trim_end: bool = False) -> list[str]:
 	"""The path is considered everything from the first path coord to the path_end token, if it exists."""
 	if SPECIAL_TOKENS.PATH_START not in tokens:
-		err_msg = f"Path start token {SPECIAL_TOKENS.PATH_START} not found in tokens:\n{tokens}"
+		err_msg: str = f"Path start token {SPECIAL_TOKENS.PATH_START} not found in tokens:\n{tokens}"
 		raise ValueError(
 			err_msg,
 		)

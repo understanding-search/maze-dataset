@@ -57,10 +57,14 @@ _PercolationSuccessArray = Float[
 
 
 class NoPercolationInConfigError(ValueError):
+	"""raised when trying to predict the success fraction of a config that doesn't have percolation"""
+
 	pass
 
 
 class SuccessChanceTooSmallError(ValueError):
+	"""raised when the success fraction is below the threshold in `MazeDatasetConfig.success_fraction_compensate`"""
+
 	pass
 
 
@@ -78,14 +82,12 @@ def _load_maze_ctor(maze_ctor_serialized: str | dict) -> Callable:
 		# this is a version I switched to for a while but now we are switching back
 		warnings.warn(
 			"you are loading an old model/config in `_load_maze_ctor()`!!! this should not be happening, please report: "
-			+ "https://github.com/understanding-search/maze-dataset/issues/new",
+			"https://github.com/understanding-search/maze-dataset/issues/new",
 		)
 		return GENERATORS_MAP[maze_ctor_serialized]
 	else:
-		err_msg = f"maze_ctor_serialized is of type {type(maze_ctor_serialized) = }, expected str or dict\n{maze_ctor_serialized = }"
-		raise ValueError(
-			err_msg,
-		)
+		err_msg: str = f"maze_ctor_serialized is of type {type(maze_ctor_serialized) = }, expected str or dict\n{maze_ctor_serialized = }"
+		raise TypeError(err_msg)
 
 
 EndpointKwargsType = dict[
@@ -163,17 +165,21 @@ class MazeDatasetConfig(GPTDatasetConfig):
 
 	@property
 	def grid_shape(self) -> CoordTup:
+		"""return the shape of the grid as a tuple"""
 		return (self.grid_n, self.grid_n)
 
 	@property
 	def grid_shape_np(self) -> Coord:
+		"""return the shape of the grid as a numpy array"""
 		return np.array(self.grid_shape)
 
 	@property
 	def max_grid_n(self) -> int:
+		"""return the maximum of the grid shape"""
 		return max(self.grid_shape)
 
 	def stable_hash_cfg(self) -> int:
+		"""return a stable hash of the config"""
 		return stable_hash(
 			json.dumps(
 				self.serialize(),
@@ -184,6 +190,7 @@ class MazeDatasetConfig(GPTDatasetConfig):
 
 	# TODO: include fname in serialized form, but exclude it when hashing so we dont infinitely loop?
 	def to_fname(self) -> str:
+		"""return a unique identifier (valid as a filename) for this config"""
 		n_mazes_str: str = shorten_numerical_to_str(self.n_mazes)
 		maze_ctor_name: str = self.maze_ctor.__name__.removeprefix("gen_")
 		hash_id: int = self.stable_hash_cfg() % 10**MAZEDATASETCONFIG_FNAME_HASH_LENGTH
@@ -228,7 +235,7 @@ class MazeDatasetConfig(GPTDatasetConfig):
 				f"except_on_no_valid_endpoint must be False, or else if any maze fails to generate, the whole dataset will fail: {self.endpoint_kwargs = }"
 			)
 		except AssertionError as e:
-			err_msg = f"invalid config for percolation success prediction: {self.summary() = }"
+			err_msg: str = f"invalid config for percolation success prediction: {self.summary() = }"
 			raise NoPercolationInConfigError(
 				err_msg,
 			) from e
@@ -274,8 +281,8 @@ class MazeDatasetConfig(GPTDatasetConfig):
 		"""Reconstruct a config from an array [p, grid_n, deadends, endpoints_not_equal, generator_func] and other config parameters.
 
 		# Returns:
-		 - `MazeDatasetConfig`
-		    Config corresponding to `arr`
+		- `MazeDatasetConfig`
+			Config corresponding to `arr`
 		"""
 		return cls(
 			name=name,
@@ -304,19 +311,25 @@ class MazeDatasetConfig(GPTDatasetConfig):
 		this estimate comes from `estimate_dataset_fractions.ipynb` and `maze_dataset.benchmarks.sweep_fit`
 
 		# Parameters:
-		 - `except_if_all_success_expected : bool`
-		   if `True`, don't raise an error if the success fraction is below the threshold.
-		   will always return `1.0` if the config is not expected to fail
+		- `except_if_all_success_expected : bool`
+			if `True`, don't raise an error if the success fraction is below the threshold.
+			will always return `1.0` if the config is not expected to fail
 
 		# Returns:
-		    - `float`
-		    estimated success fraction. if
+		- `float`
+			estimated success fraction
+
+		# Raises:
+		- `NoPercolationInConfigError` : if the config is not expected to fail, and `except_if_all_success_expected` is `False`
 		"""
 		try:
 			return cfg_success_predict_fn(self)
 
-		except NoPercolationInConfigError:
-			return 1.0
+		except NoPercolationInConfigError as e:
+			if except_if_all_success_expected:
+				return 1.0
+			else:
+				raise e  # noqa: TRY201
 
 	def success_fraction_compensate(
 		self,
@@ -327,32 +340,34 @@ class MazeDatasetConfig(GPTDatasetConfig):
 		"""return a new `MazeDatasetConfig` like this one with `n_mazes` adjusted to compensate for the success fraction
 
 		# Parameters:
-		 - `safety_margin : float`
-		   safety margin to apply to the success fraction estimate
-		   (defaults to `1.2`, or 20% more mazes than estimated)
-		 - `except_if_all_success_expected : bool`
-		   if `True`, don't raise an error if the success fraction is below the threshold.
-		   this is passed to `MazeDatasetConfig.success_fraction_estimate`.
-		   if your config isn't expected to fail, passing this might mean you generate more mazes than needed
-		   since `safety_margin` is still applied.
-		   (defaults to `False`)
-		 - `epsilon : float`
-		   raise `SuccessChanceTooSmallError` if the success fraction is below this threshold
-		   (defaults to `1e-2`)
+		- `safety_margin : float`
+			safety margin to apply to the success fraction estimate
+			(defaults to `1.2`, or 20% more mazes than estimated)
+		- `except_if_all_success_expected : bool`
+			if `True`, don't raise an error if the success fraction is below the threshold.
+			this is passed to `MazeDatasetConfig.success_fraction_estimate`.
+			if your config isn't expected to fail, passing this might mean you generate more mazes than needed
+			since `safety_margin` is still applied.
+			(defaults to `False`)
+		- `epsilon : float`
+			raise `SuccessChanceTooSmallError` if the success fraction is below this threshold
+			(defaults to `1e-2`)
 
 		# Returns:
-		 - `MazeDatasetConfig`
-		   new config with adjusted `n_mazes`
+		- `MazeDatasetConfig`
+			new config with adjusted `n_mazes`
 
 		# Raises:
-		 - `SuccessChanceTooSmallError` : if the computed success fraction is below `epsilon`
+		- `SuccessChanceTooSmallError` : if the computed success fraction is below `epsilon`
 		"""
 		# compute and check the success fraction
 		success_fraction: float = self.success_fraction_estimate(
 			except_if_all_success_expected=except_if_all_success_expected,
 		)
 		if success_fraction < epsilon:
-			err_msg = f"{success_fraction = } is below the threshold of {epsilon = }"
+			err_msg: str = (
+				f"{success_fraction = } is below the threshold of {epsilon = }"
+			)
 			raise SuccessChanceTooSmallError(
 				err_msg,
 			)
@@ -399,7 +414,7 @@ def _generate_maze_helper(index: int) -> Optional[SolvedMaze]:
 	)
 
 
-def _maze_gen_init_worker(config: MazeDatasetConfig):
+def _maze_gen_init_worker(config: MazeDatasetConfig) -> None:
 	"""special worker helper
 
 	> [!CAUTION]
@@ -436,6 +451,7 @@ class MazeDataset(GPTDataset):
 		mazes: typing.Sequence[SolvedMaze],
 		generation_metadata_collected: dict | None = None,
 	) -> None:
+		"""initialize a maze dataset from a config and a list of solved mazes"""
 		super().__init__()
 		self.cfg: MazeDatasetConfig = cfg
 		self.mazes: list[SolvedMaze] = list(mazes)
@@ -458,7 +474,7 @@ class MazeDataset(GPTDataset):
 	) -> "MazeDataset":
 		"""create a maze dataset from a config
 
-		        priority of loading:
+		priority of loading:
 		1. load from local
 		2. download
 		3. generate
@@ -482,25 +498,32 @@ class MazeDataset(GPTDataset):
 		)
 
 	def data_hash(self) -> int:
+		"""return a hash of the data"""
 		return stable_hash(str(tuple([x.serialize() for x in self.mazes])))
 
 	def __getitem__(self, i: int) -> SolvedMaze:
+		"""get a maze by index"""
 		return self.mazes[i]
 
 	def __deepcopy__(self, memo) -> "MazeDataset":
+		"""deepcopy the dataset
+
+		FIX: this isnt actually a deepcopy I think?
+		"""
 		return MazeDataset.load(self._serialize_full())
 
+	# TYPING: get type hints on the tokenizer here
 	@overload
 	def as_tokens(
 		self,
-		maze_tokenizer,
+		maze_tokenizer,  # noqa: ANN001
 		limit: int | None = None,
 		join_tokens_individual_maze: Literal[False] = False,
 	) -> list[list[str]]: ...
 	@overload
 	def as_tokens(
 		self,
-		maze_tokenizer,
+		maze_tokenizer,  # noqa: ANN001
 		limit: int | None = None,
 		join_tokens_individual_maze: Literal[True] = True,
 	) -> list[str]: ...
@@ -518,10 +541,10 @@ class MazeDataset(GPTDataset):
 		joined with a space, and the result is a list of strings.
 		i.e.:
 
-		    >>> dataset.as_tokens(join_tokens_individual_maze=False)
-		    [["a", "b", "c"], ["d", "e", "f"]]
-		    >>> dataset.as_tokens(join_tokens_individual_maze=True)
-		    ["a b c", "d e f"]
+			>>> dataset.as_tokens(join_tokens_individual_maze=False)
+			[["a", "b", "c"], ["d", "e", "f"]]
+			>>> dataset.as_tokens(join_tokens_individual_maze=True)
+			["a b c", "d e f"]
 		"""
 		output: list[list[str]] = [
 			maze.as_tokens(maze_tokenizer) for maze in self.mazes[:limit]
@@ -532,11 +555,15 @@ class MazeDataset(GPTDataset):
 			return output
 
 	def __len__(self) -> int:
+		"""return the number of mazes in the dataset"""
 		return len(self.mazes)
 
 	def __eq__(self, other: object) -> bool:
+		"""compare two datasets"""
 		if not isinstance(other, MazeDataset):
-			return NotImplemented
+			raise NotImplementedError(
+				"can only compare with other MazeDataset objects",
+			)
 		# TODO: compare hashes of data instead of the data itself?
 		return self.cfg == other.cfg and self.mazes == other.mazes
 
@@ -614,6 +641,7 @@ class MazeDataset(GPTDataset):
 
 	@classmethod
 	def download(cls, cfg: MazeDatasetConfig, **kwargs) -> "MazeDataset":
+		"(not implemented yet!) download a maze dataset from the internet"
 		raise NotImplementedError("not implemented yet")
 
 	@classmethod
@@ -822,7 +850,7 @@ class MazeDataset(GPTDataset):
 			"maze_solutions_concat": maze_solutions_concat,  # type: ignore[dict-item]
 		}
 
-	def update_self_config(self):
+	def update_self_config(self) -> None:
 		"""update the config to match the current state of the dataset (number of mazes, such as after filtering)"""
 		self.cfg.n_mazes = len(self.mazes)
 
@@ -847,15 +875,17 @@ class MazeDataset(GPTDataset):
 
 
 # register things with zanj
-MazeDatasetConfig._dataset_class = property(lambda self: MazeDataset)  # type: ignore[method-assign]
+MazeDatasetConfig._dataset_class = property(  # type: ignore[method-assign]
+	lambda self: MazeDataset,  # noqa: ARG005
+)
 register_loader_handler(
 	LoaderHandler(
-		check=lambda json_item, path=None, z=None: (
+		check=lambda json_item, path=None, z=None: (  # noqa: ARG005
 			isinstance(json_item, typing.Mapping)
 			and _FORMAT_KEY in json_item
 			and json_item[_FORMAT_KEY].startswith("MazeDataset")
 		),
-		load=lambda json_item, path=None, z=None: MazeDataset.load(json_item),
+		load=lambda json_item, path=None, z=None: MazeDataset.load(json_item),  # noqa: ARG005
 		uid="MazeDataset",
 		source_pckg="maze_dataset.generation.maze_dataset",
 		desc="MazeDataset",
@@ -874,7 +904,7 @@ def register_maze_filter(
 	"""
 
 	@functools.wraps(method)
-	def wrapper(dataset: MazeDataset, *args, **kwargs):
+	def wrapper(dataset: MazeDataset, *args, **kwargs) -> MazeDataset:
 		# copy and filter
 		new_dataset: MazeDataset = copy.deepcopy(
 			MazeDataset(
@@ -958,7 +988,8 @@ class MazeDatasetFilters:
 		Gotchas:
 		- if two mazes are of different sizes, they will never be considered duplicates
 		- if two solutions are of different lengths, they will never be considered duplicates
-		    TODO: check for overlap?
+
+		TODO: check for overlap?
 		"""
 		if len(dataset) > _max_dataset_len_threshold:
 			raise ValueError(
@@ -974,7 +1005,7 @@ class MazeDatasetFilters:
 			a_unique: bool = True
 			for maze_b in dataset.mazes[i + 1 :]:
 				# after all that nesting, more nesting to perform checks
-				if (minimum_difference_connection_list is not None) and (
+				if (minimum_difference_connection_list is not None) and (  # noqa: SIM102
 					maze_a.connection_list.shape == maze_b.connection_list.shape
 				):
 					if (
@@ -984,7 +1015,7 @@ class MazeDatasetFilters:
 						a_unique = False
 						break
 
-				if (minimum_difference_solution is not None) and (
+				if (minimum_difference_solution is not None) and (  # noqa: SIM102
 					maze_a.solution.shape == maze_b.solution.shape
 				):
 					if (
@@ -1036,6 +1067,29 @@ class MazeDatasetFilters:
 		inplace: bool = True,
 		allow_fail: bool = False,
 	) -> MazeDataset:
+		"""collect the generation metadata from each maze into a dataset-level metadata (saves space)
+
+		# Parameters:
+		- `dataset : MazeDataset`
+		- `clear_in_mazes : bool`
+			whether to clear the generation meta in the mazes after collecting it, keep it there if `False`
+			(defaults to `True`)
+		- `inplace : bool`
+			whether to modify the dataset in place or return a new one
+			(defaults to `True`)
+		- `allow_fail : bool`
+			whether to allow the collection to fail if the generation meta is not present in a maze
+			(defaults to `False`)
+
+		# Returns:
+		- `MazeDataset`
+			the dataset with the generation metadata collected
+
+		# Raises:
+		- `ValueError` : if the generation meta is not present in a maze and `allow_fail` is `False`
+		- `ValueError` : if we have other problems converting the generation metadata
+		- `TypeError` : if the generation meta on a maze is of an unexpected type
+		"""
 		if dataset.generation_metadata_collected is not None:
 			return dataset
 		else:
@@ -1061,23 +1115,24 @@ class MazeDatasetFilters:
 					"generation meta is not present in a maze, cannot collect generation meta",
 				)
 			for key, value in maze.generation_meta.items():
-				if isinstance(value, (bool, int, float, str)):
+				if isinstance(value, (bool, int, float, str)):  # noqa: UP038
 					gen_meta_lists[key][value] += 1
 
 				elif isinstance(value, set):
 					# special case for visited_cells
 					gen_meta_lists[key].update(value)
 
-				elif isinstance(value, (list, np.ndarray)):
+				elif isinstance(value, (list, np.ndarray)):  # noqa: UP038
 					if isinstance(value, list):
+						# TODO: `for` loop variable `value` overwritten by assignment target (Ruff PLW2901)
 						try:
-							value = np.array(value)
-						except ValueError:
+							value = np.array(value)  # noqa: PLW2901
+						except ValueError as convert_to_np_err:
 							err_msg: str = (
 								f"Cannot collect generation meta for {key} as it is a list of type '{type(value[0]) = !s}'"
 								"\nexpected either a basic type (bool, int, float, str), a numpy coord, or a numpy array of coords"
 							)
-							raise ValueError(err_msg)
+							raise ValueError(err_msg) from convert_to_np_err
 
 					if (len(value.shape) == 1) and (value.shape[0] == maze.lattice_dim):
 						# assume its a single coordinate
@@ -1098,7 +1153,7 @@ class MazeDatasetFilters:
 						f"Cannot collect generation meta for {key} as it is of type '{type(value)!s}'\n"
 						"expected either a basic type (bool, int, float, str), a numpy coord, or a numpy array of coords"
 					)
-					raise ValueError(err_msg)
+					raise TypeError(err_msg)
 
 			# clear the data
 			if clear_in_mazes:
@@ -1145,7 +1200,7 @@ for key, key_type in metadata_types.items():
 			# its a list of something else, do a counter on those
 			# TODO: throw except here?
 			metadata_actions[key] = Counter
-			
+
 	elif all(kt in (bool, int, float) for kt in key_type):
 		# statcounter for numeric types
 		metadata_actions[key] = StatCounter

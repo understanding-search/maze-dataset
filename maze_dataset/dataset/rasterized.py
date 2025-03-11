@@ -7,12 +7,12 @@ see their paper:
 
 ```bibtex
 @misc{schwarzschild2021learn,
-      title={Can You Learn an Algorithm? Generalizing from Easy to Hard Problems with Recurrent Networks},
-      author={Avi Schwarzschild and Eitan Borgnia and Arjun Gupta and Furong Huang and Uzi Vishkin and Micah Goldblum and Tom Goldstein},
-      year={2021},
-      eprint={2106.04537},
-      archivePrefix={arXiv},
-      primaryClass={cs.LG}
+	title={Can You Learn an Algorithm? Generalizing from Easy to Hard Problems with Recurrent Networks},
+	author={Avi Schwarzschild and Eitan Borgnia and Arjun Gupta and Furong Huang and Uzi Vishkin and Micah Goldblum and Tom Goldstein},
+	year={2021},
+	eprint={2106.04537},
+	archivePrefix={arXiv},
+	primaryClass={cs.LG}
 }
 ```
 """
@@ -52,14 +52,12 @@ def _extend_pixels(
 	)
 
 	# pad on all sides by n_bdry
-	output = np.pad(
+	return np.pad(
 		output,
 		pad_width=((n_bdry, n_bdry), (n_bdry, n_bdry), (0, 0)),
 		mode="constant",
 		constant_values=wall_fill,
 	)
-
-	return output
 
 
 _RASTERIZED_CFG_ADDED_PARAMS: list[str] = [
@@ -75,6 +73,23 @@ def process_maze_rasterized_input_target(
 	extend_pixels: bool = True,
 	endpoints_as_open: bool = False,
 ) -> Float[torch.Tensor, "in/tgt=2 x y rgb=3"]:
+	"""turn a single `SolvedMaze` into an array representation
+
+	has extra options for matching the format in https://github.com/aks2203/easy-to-hard
+
+	# Parameters:
+	- `maze: SolvedMaze`
+		the maze to process
+	- `remove_isolated_cells: bool`
+		whether to set isolated cells (no connections) to walls
+		(default: `True`)
+	- `extend_pixels: bool`
+		whether to extend pixels to match easy_2_hard dataset (2x2 cells, extra 1 pixel row of wall around maze)
+		(default: `True`)
+	- `endpoints_as_open: bool`
+		whether to set endpoints to open
+		(default: `False`)
+	"""
 	# problem and solution mazes
 	maze_pixels: PixelGrid = maze.as_pixels(show_endpoints=True, show_solution=True)
 	problem_maze: PixelGrid = maze_pixels.copy()
@@ -106,7 +121,9 @@ def process_maze_rasterized_input_target(
 # TYPING: error: Attributes without a default cannot follow attributes with one  [misc]
 @serializable_dataclass
 class RasterizedMazeDatasetConfig(MazeDatasetConfig):  # type: ignore[misc]
-	"""- `remove_isolated_cells: bool` whether to set isolated cells to walls
+	"""adds options which we then pass to `process_maze_rasterized_input_target`
+
+	- `remove_isolated_cells: bool` whether to set isolated cells to walls
 	- `extend_pixels: bool` whether to extend pixels to match easy_2_hard dataset (2x2 cells, extra 1 pixel row of wall around maze)
 	- `endpoints_as_open: bool` whether to set endpoints to open
 	"""
@@ -117,10 +134,13 @@ class RasterizedMazeDatasetConfig(MazeDatasetConfig):  # type: ignore[misc]
 
 
 class RasterizedMazeDataset(MazeDataset):
+	"subclass of `MazeDataset` that uses a `RasterizedMazeDatasetConfig`"
+
 	cfg: RasterizedMazeDatasetConfig
 
 	# this override here is intentional
 	def __getitem__(self, idx: int) -> Float[torch.Tensor, "item in/tgt=2 x y rgb=3"]:  # type: ignore[override]
+		"""get a single maze"""
 		# get the solved maze
 		solved_maze: SolvedMaze = self.mazes[idx]
 
@@ -135,6 +155,7 @@ class RasterizedMazeDataset(MazeDataset):
 		self,
 		idxs: list[int] | None,
 	) -> Float[torch.Tensor, "in/tgt=2 item x y rgb=3"]:
+		"""get a batch of mazes as a tensor, from a list of indices"""
 		if idxs is None:
 			idxs = list(range(len(self)))
 
@@ -227,6 +248,7 @@ class RasterizedMazeDataset(MazeDataset):
 		return output
 
 	def plot(self, count: int | None = None, show: bool = True) -> tuple | None:
+		"""plot the first `count` mazes in the dataset"""
 		import matplotlib.pyplot as plt
 
 		print(f"{self[0][0].shape = }, {self[0][1].shape = }")
@@ -267,14 +289,14 @@ def make_numpy_collection(
 	output is of structure:
 	```
 	{
-	    "configs": {
-	        "<n>x<n>": RasterizedMazeDatasetConfig,
-	        ...
-	    },
-	    "arrays": {
-	        "<n>x<n>": np.ndarray,
-	        ...
-	    },
+		"configs": {
+			"<n>x<n>": RasterizedMazeDatasetConfig,
+			...
+		},
+		"arrays": {
+			"<n>x<n>": np.ndarray,
+			...
+		},
 	}
 	```
 	"""
