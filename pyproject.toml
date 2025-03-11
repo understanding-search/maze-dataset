@@ -135,7 +135,7 @@
 
 # ruff config
 [tool.ruff]
-	exclude = ["__pycache__", "notebooks"]
+	exclude = ["__pycache__"]
 
 	[tool.ruff.format]
 		indent-style = "tab"
