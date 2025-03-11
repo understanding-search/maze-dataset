@@ -281,7 +281,7 @@ def coord_str_to_tuple_noneable(coord_str: str) -> CoordTup | None:
 	return coord_str_to_tuple(coord_str)
 
 
-def coords_string_split_UT(coords: str) -> list[str]:  # noqa: N802
+def coords_string_split_UT(coords: str) -> list[str]:
 	"""Splits a string of tokens into a list containing the UT tokens for each coordinate.
 
 	Not capable of producing indexed tokens ("(", "1", ",", "2", ")"), only unique tokens ("(1,2)").
@@ -510,7 +510,8 @@ def connection_list_to_adj_list(
 			adj_list[i, 1] = np.array(c_end, dtype=np.int8)
 
 			# flip if shuffling
-			if shuffle_d1 and (flip_d1[i] > 0.5):
+			# magic value is fine here
+			if shuffle_d1 and (flip_d1[i] > 0.5):  # noqa: PLR2004
 				c_s, c_e = adj_list[i, 0].copy(), adj_list[i, 1].copy()
 				adj_list[i, 0] = c_e
 				adj_list[i, 1] = c_s

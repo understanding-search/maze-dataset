@@ -1,5 +1,6 @@
 "benchmark the speed of maze generation"
 
+import functools
 import random
 import timeit
 from typing import Sequence
@@ -59,21 +60,20 @@ def time_generation(
 
 	# time generation for each config
 	times: list[dict] = list()
-	idx: int = 0
 	total: int = len(configs)
-	for cfg in tqdm(
-		configs,
+	for idx, cfg in tqdm(
+		enumerate(configs),
 		desc="Timing generation",
 		unit="config",
 		total=total,
 		disable=verbose,
 	):
 		if verbose:
-			print(f"Timing generation for config {idx}/{total}\n{cfg}")
+			print(f"Timing generation for config {idx + 1}/{total}\n{cfg}")
 
 		t: float = (
 			timeit.timeit(
-				stmt=lambda: MazeDataset.generate(cfg, **_GENERATE_KWARGS),  # type: ignore[arg-type]
+				stmt=functools.partial(MazeDataset.generate, cfg, **_GENERATE_KWARGS),  # type: ignore[arg-type]
 				number=trials,
 			)
 			/ trials
@@ -93,8 +93,6 @@ def time_generation(
 				time=t,
 			),
 		)
-
-		idx += 1
 
 	return times
 

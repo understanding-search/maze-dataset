@@ -180,7 +180,7 @@ _MAZE_TOKENS_DEFAULT_COLORS: dict[tuple[str, str], tuple[int, int, int]] = {
 "default colors for maze tokens, roughly matches the format of `as_pixels`"
 
 
-def color_maze_tokens_AOTP(  # noqa: N802
+def color_maze_tokens_AOTP(
 	tokens: list[str],
 	fmt: FormatType = "html",
 	template: str | None = None,
@@ -218,7 +218,7 @@ def color_maze_tokens_AOTP(  # noqa: N802
 	)
 
 
-def display_html(html: str):
+def display_html(html: str) -> None:
 	"display html string"
 	display(HTML(html))
 
@@ -242,7 +242,7 @@ def display_color_tokens_cmap(
 	display_html(html)
 
 
-def display_color_maze_tokens_AOTP(  # noqa: N802
+def display_color_maze_tokens_AOTP(
 	tokens: list[str],
 ) -> None:
 	"""display maze tokens (as html) with AOTP coloring"""

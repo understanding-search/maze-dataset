@@ -71,6 +71,7 @@ MAZE_TOKENIZER_MODULAR_DEFAULT_VALIDATION_FUNCS: frozendict.frozendict[
 @cache
 def get_all_tokenizers() -> list[MazeTokenizerModular]:
 	"""Computes a complete list of all valid tokenizers.
+
 	Warning: This is an expensive function.
 	"""
 	return list(
@@ -109,6 +110,7 @@ def sample_all_tokenizers(n: int) -> list[MazeTokenizerModular]:
 
 def sample_tokenizers_for_test(n: int | None) -> list[MazeTokenizerModular]:
 	"""Returns a sample of size `n` of unique elements from `get_all_tokenizers()`,
+
 	always including every element in `EVERY_TEST_TOKENIZERS`.
 	"""
 	if n is None:
@@ -149,7 +151,7 @@ def save_hashes(
 		n_cpus: int = (
 			parallelize if int(parallelize) > 1 else multiprocessing.cpu_count()
 		)
-		with spinner(
+		with spinner(  # noqa: SIM117
 			initial_value=f"using {n_cpus} processes to compute {len(all_tokenizers)} tokenizer hashes...",
 			update_interval=2.0,
 		):

@@ -175,13 +175,17 @@
 			"D213", # docstring on first line
 			"NPY002", # legacy numpy generator is fine
 			"D401", # dont care about imperative mood
+			"RUF022", # don't want to sort __all__ lexicographically, sort by meaning
+			"PLR0913", # sometimes you have to have a lot of args
+			"B028", # fine to omit stacklevel on warnings
+			"SLF001", # fine to access private vars
+			"N802", # uppercase in func names is fine
+			# warning: The following rule may cause conflicts when used with the formatter: `COM812`. To avoid unexpected behavior, we recommend disabling this rule, either by removing it from the `select` or `extend-select` configuration, or adding it to the `ignore` configuration.
+			"COM812", 
 			# todos:
 			"TD001", # we allow tags besides "TODO"
 			"TD002", # dont care about author
 			"TD003", # `make todo` will give us a table where we can create issues
-			"PLR0913", # sometimes you have to have a lot of args
-			"B028", # fine to omit stacklevel on warnings
-			"SLF001", # fine to access private vars
 			# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 			# TODO: no type hints on *args or **kwargs for now
 			"ANN002",

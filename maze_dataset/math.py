@@ -70,7 +70,8 @@ def soft_step(
 	)
 
 
-def cfg_success_predict_fn(cfg) -> float:
+# `cfg: MazeDatasetConfig` but we can't import that because it would create a circular import
+def cfg_success_predict_fn(cfg) -> float:  # noqa: ANN001
 	"learned by pysr, see `estimate_dataset_fractions.ipynb` and `maze_dataset.benchmark.config_fit`"
 	x = cfg._to_ps_array()
 	raw_val: float = sigmoid(

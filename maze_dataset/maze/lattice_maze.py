@@ -50,6 +50,9 @@ PixelGrid = Int[np.ndarray, "x y rgb"]
 BinaryPixelGrid = Bool[np.ndarray, "x y"]
 "boolean grid of pixels"
 
+DIM_2: int = 2
+"2 dimensions"
+
 
 class NoValidEndpointException(Exception):  # noqa: N818
 	"""Raised when no valid start or end positions are found in a maze."""
@@ -296,7 +299,7 @@ class LatticeMaze(SerializableDataclass):
 		g_score[c_start] = self.heuristic(c_start, c_end)
 
 		closed_vtx: set[CoordTup] = set()  # nodes already evaluated
-		open_vtx: set[CoordTup] = set([c_start])  # nodes to be evaluated
+		open_vtx: set[CoordTup] = set(c_start)  # nodes to be evaluated
 		source: dict[CoordTup, CoordTup] = (
 			dict()
 		)  # node immediately preceding each node in the path (currently known shortest path)
@@ -637,7 +640,7 @@ class LatticeMaze(SerializableDataclass):
 			SPECIAL_TOKENS.ADJLIST_END,
 		]
 
-	def _as_coords_and_special_AOTP(self) -> list[CoordTup | str]:  # noqa: N802
+	def _as_coords_and_special_AOTP(self) -> list[CoordTup | str]:
 		"""turn the maze into adjacency list, origin, target, and solution -- keep coords as tuples"""
 		output: list[CoordTup | str] = self._as_adj_list_tokens()
 		# if getattr(self, "start_pos", None) is not None:
@@ -681,7 +684,7 @@ class LatticeMaze(SerializableDataclass):
 			return self._as_tokens(maze_tokenizer)  # type: ignore[union-attr,arg-type]
 
 	@classmethod
-	def _from_tokens_AOTP(  # noqa: N802
+	def _from_tokens_AOTP(
 		cls,
 		tokens: list[str],
 		maze_tokenizer: "MazeTokenizer | MazeTokenizerModular",
@@ -717,7 +720,7 @@ class LatticeMaze(SerializableDataclass):
 				# this assertion depends on the tokenizer having exactly one token for the connector
 				# which is also why we "include" above
 				# the connector token is discarded below
-				assert len(e_coords) == 3, f"invalid edge: {e = } {e_coords = }"
+				assert len(e_coords) == 3, f"invalid edge: {e = } {e_coords = }"  # noqa: PLR2004
 				assert e_coords[1] == SPECIAL_TOKENS.CONNECTOR, (
 					f"invalid edge: {e = } {e_coords = }"
 				)
@@ -725,7 +728,7 @@ class LatticeMaze(SerializableDataclass):
 				e_coords_last: CoordTup = e_coords[-1]  # type: ignore[assignment]
 				coordinates.append((e_coords_first, e_coords_last))
 
-		assert all(len(c) == 2 for c in coordinates), (
+		assert all(len(c) == DIM_2 for c in coordinates), (
 			f"invalid coordinates: {coordinates = }"
 		)
 		adj_list: Int8[np.ndarray, "conn start_end coord"] = np.array(coordinates)
@@ -824,7 +827,7 @@ class LatticeMaze(SerializableDataclass):
 	# to and from pixels
 	# ============================================================
 	def _as_pixels_bw(self) -> BinaryPixelGrid:
-		assert self.lattice_dim == 2, "only 2D mazes are supported"
+		assert self.lattice_dim == DIM_2, "only 2D mazes are supported"
 		# Create an empty pixel grid with walls
 		pixel_grid: Int[np.ndarray, "x y"] = np.full(
 			(self.grid_shape[0] * 2 + 1, self.grid_shape[1] * 2 + 1),
@@ -983,7 +986,7 @@ class LatticeMaze(SerializableDataclass):
 		grid_shape: tuple[int, int]
 
 		# if a binary pixel grid, return regular LatticeMaze
-		if len(pixel_grid.shape) == 2:
+		if len(pixel_grid.shape) == 2:  # noqa: PLR2004
 			connection_list, grid_shape = cls._from_pixel_grid_bw(pixel_grid)
 			return LatticeMaze(connection_list=connection_list)
 
@@ -1042,8 +1045,8 @@ class LatticeMaze(SerializableDataclass):
 
 		# raw solution, only contains path elements and not start or end
 		solution_raw: CoordArray = marked_pos["solution"]
-		if len(solution_raw.shape) == 2:
-			assert solution_raw.shape[1] == 2, (
+		if len(solution_raw.shape) == 2:  # noqa: PLR2004
+			assert solution_raw.shape[1] == 2, (  # noqa: PLR2004
 				f"solution {solution_raw} has shape {solution_raw.shape}, expected shape (n, 2)"
 			)
 		elif solution_raw.shape == (0,):
@@ -1063,7 +1066,7 @@ class LatticeMaze(SerializableDataclass):
 			# use `get_coord_neighbors` to find connected neighbors
 			neighbors: CoordArray = temp_maze.get_coord_neighbors(solution[-1])
 			# TODO: make this less ugly
-			assert (len(neighbors.shape) == 2) and (neighbors.shape[1] == 2), (  # noqa: PT018
+			assert (len(neighbors.shape) == 2) and (neighbors.shape[1] == 2), (  # noqa: PT018, PLR2004
 				f"neighbors {neighbors} has shape {neighbors.shape}, expected shape (n, 2)\n{neighbors = }\n{solution = }\n{solution_raw = }\n{temp_maze.as_ascii()}"
 			)
 			# neighbors = neighbors[:, [1, 0]]

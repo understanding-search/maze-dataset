@@ -32,7 +32,10 @@ _MAZE_DATASET_CONFIGS_SRC: dict[str, MazeDatasetConfig] = {
 
 
 class _MazeDatsetConfigsWrapper(Mapping[str, MazeDatasetConfig]):
-	def __init__(self, configs: dict[str, MazeDatasetConfig]):
+	"wrap the default configs in a read-only dict-like object"
+
+	def __init__(self, configs: dict[str, MazeDatasetConfig]) -> None:
+		"initialize with a dict of configs"
 		self._configs = configs
 
 	def __getitem__(self, item: str) -> MazeDatasetConfig:
@@ -41,16 +44,19 @@ class _MazeDatsetConfigsWrapper(Mapping[str, MazeDatasetConfig]):
 	def __len__(self) -> int:
 		return len(self._configs)
 
-	def __iter__(self):
+	def __iter__(self) -> iter:
+		"iterate over the keys"
 		return iter(self._configs)
 
-	def keys(self):
-		return self._configs.keys()
+	def keys(self) -> list[str]:
+		"return the keys"
+		return list(self._configs.keys())
 
-	def items(self):
+	def items(self) -> list[tuple[str, MazeDatasetConfig]]:
+		"return the items"
 		return [(k, copy.deepcopy(v)) for k, v in self._configs.items()]
 
-	def values(self):
+	def values(self) -> list[MazeDatasetConfig]:
 		return [copy.deepcopy(v) for v in self._configs.values()]
 
 

@@ -136,7 +136,8 @@ class LatticeMazeGenerators:
 			# get the current coord from the stack
 			current_coord: Coord
 			if randomized_stack:
-				current_coord = stack.pop(random.randint(0, len(stack) - 1))
+				# we dont care about S311 because this isnt security related
+				current_coord = stack.pop(random.randint(0, len(stack) - 1))  # noqa: S311
 			else:
 				current_coord = stack.pop()
 
@@ -164,7 +165,8 @@ class LatticeMazeGenerators:
 					stack.append(current_coord)
 
 				# choose one of the unvisited neighbors
-				chosen_neighbor, delta = random.choice(unvisited_neighbors_deltas)
+				# we dont care about S311 because this isn't security related
+				chosen_neighbor, delta = random.choice(unvisited_neighbors_deltas)  # noqa: S311
 
 				# add connection
 				dim: int = int(np.argmax(np.abs(delta)))
@@ -226,7 +228,7 @@ class LatticeMazeGenerators:
 	@staticmethod
 	def gen_wilson(
 		grid_shape: Coord | CoordTup,
-		**kwargs: Any,
+		**kwargs,
 	) -> LatticeMaze:
 		"""Generate a lattice maze using Wilson's algorithm.
 

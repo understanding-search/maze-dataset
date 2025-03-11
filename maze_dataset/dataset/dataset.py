@@ -1,4 +1,5 @@
 """`GPTDatasetConfig` and `GPTDataset` are base classes for datasets
+
 they implement some basic functionality, saving/loading, the `from_config` pipeline, and filtering
 
 > [!NOTE]
@@ -82,7 +83,7 @@ class GPTDatasetConfig(SerializableDataclass):
 		assert_type=False,  # TODO: check the type here once muutils supports checking Callable signatures
 	)
 
-	def __post_init__(self):
+	def __post_init__(self) -> None:
 		"post init, where we set a random seed if none is set"
 		assert self.seq_len_min <= self.seq_len_max
 		# if seed set to None, then generate a new random seed
@@ -134,7 +135,8 @@ def _dataset_config_load(*args, **kwargs) -> "GPTDatasetConfig":
 	)
 
 
-def _dataset_config_serialize(self, *args, **kwargs) -> JSONitem:
+# abstract function, hence we dont care that `self` is unused
+def _dataset_config_serialize(self, *args, **kwargs) -> JSONitem:  # noqa: ANN001, ARG001
 	err_msg: str = f"this `serialize` function should be implemented by subclasses! got: {args=}, {kwargs=}"
 	raise NotImplementedError(
 		err_msg,

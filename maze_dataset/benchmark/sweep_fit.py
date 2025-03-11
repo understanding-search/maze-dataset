@@ -74,13 +74,13 @@ def train_pysr_model(
 ) -> PySRRegressor:
 	"""Train a PySR model on the given sweep result data"""
 	# Convert to arrays
-	X, y = extract_training_data(data)
+	x, y = extract_training_data(data)
 
-	print(f"training data extracted: {X.shape = }, {y.shape = }")
+	print(f"training data extracted: {x.shape = }, {y.shape = }")
 
 	# Fit the PySR model
 	model: PySRRegressor = PySRRegressor(**{**DEFAULT_PYSR_KWARGS, **pysr_kwargs})
-	model.fit(X, y)
+	model.fit(x, y)
 
 	return model
 
@@ -216,7 +216,7 @@ def create_interactive_plot(heatmap: bool = True) -> None:  # noqa: C901, PLR091
 		max=30.0,
 		step=0.1,
 		value=10.0,
-		description="α:",
+		description="α:",  # noqa: RUF001
 		style={"description_width": "30px"},
 		layout=Layout(width="98%"),
 	)
@@ -284,7 +284,7 @@ def create_interactive_plot(heatmap: bool = True) -> None:  # noqa: C901, PLR091
 		ax1.set_ylim(0, 1)
 		ax1.set_xlabel("x")
 		ax1.set_ylabel("f(x)")
-		ax1.set_title(f"f(x) with p={p:.2f}, w={w:.2f}, α={alpha:.1f}")
+		ax1.set_title(f"f(x) with p={p:.2f}, w={w:.2f}, α={alpha:.1f}")  # noqa: RUF001
 		ax1.grid(True, alpha=0.3)
 		ax1.legend(loc="best")
 
@@ -300,7 +300,8 @@ def create_interactive_plot(heatmap: bool = True) -> None:  # noqa: C901, PLR091
 		colors = ["purple", "orange", "magenta", "green"]
 
 		for x_val, color in zip(x_values, colors, strict=False):
-			if abs(x_val - x) > 0.05:  # Don't draw if too close to current x
+			# Don't draw if too close to current x
+			if abs(x_val - x) > 0.05:  # noqa: PLR2004
 				f_p_values = np.array(
 					[soft_step(x_val, p_val, alpha, w) for p_val in ps],
 				)
@@ -320,15 +321,15 @@ def create_interactive_plot(heatmap: bool = True) -> None:  # noqa: C901, PLR091
 		ax2.set_ylim(0, 1)
 		ax2.set_xlabel("p")
 		ax2.set_ylabel("f(x,p)")
-		ax2.set_title(f"f(x,p) for fixed x={x:.2f}, w={w:.2f}, α={alpha:.1f}")
+		ax2.set_title(f"f(x,p) for fixed x={x:.2f}, w={w:.2f}, α={alpha:.1f}")  # noqa: RUF001
 		ax2.grid(True, alpha=0.3)
 		ax2.legend(loc="best")
 
 		if heatmap:
 			# Plot 3: Heatmap of f(x,p) (bottom left)
 			ax3 = fig.add_subplot(gs[1, 0])
-			X, P = np.meshgrid(xs, ps)
-			Z = np.zeros_like(X)
+			X, P = np.meshgrid(xs, ps)  # noqa: N806
+			Z = np.zeros_like(X)  # noqa: N806
 
 			# Calculate f(x,p) for all combinations
 			for i, p_val in enumerate(ps):
@@ -344,15 +345,17 @@ def create_interactive_plot(heatmap: bool = True) -> None:  # noqa: C901, PLR091
 
 			# Add lines for the reference x values used in the top-right plot
 			for x_val, color in zip(x_values, colors, strict=False):
-				if abs(x_val - x) > 0.05:  # Don't draw if too close to current x
+				# Don't draw if too close to current x, magic value is fine
+				if abs(x_val - x) > 0.05:  # noqa: PLR2004
 					ax3.axvline(x=x_val, color=color, linestyle=":", alpha=0.4)
 
 			# Mark the specific point corresponding to the current x and p values
 			ax3.plot(x, p, "ro", markersize=8)
 
+			# yes we mean to use alpha here (RUF001)
 			ax3.set_xlabel("x")
 			ax3.set_ylabel("p")
-			ax3.set_title(f"f(x,p) heatmap with w={w:.2f}, α={alpha:.1f}")
+			ax3.set_title(f"f(x,p) heatmap with w={w:.2f}, α={alpha:.1f}")  # noqa: RUF001
 			fig.colorbar(c, ax=ax3, label="f(x,p)")
 
 			# Plot 4: NEW Heatmap of f(x,p) as function of k and alpha (bottom right)
@@ -373,21 +376,23 @@ def create_interactive_plot(heatmap: bool = True) -> None:  # noqa: C901, PLR091
 			c2 = ax4.pcolormesh(K, A, Z_ka, cmap="plasma", shading="auto")
 
 			# Add current parameter values as lines
+			# yes we mean to use alpha here (RUF001)
 			ax4.axhline(
 				y=alpha,
 				color="purple",
 				linestyle="--",
-				label=f"α = {alpha:.1f}",
+				label=f"α = {alpha:.1f}",  # noqa: RUF001
 			)
 			ax4.axvline(x=w, color="green", linestyle="--", label=f"w = {w:.2f}")
 
 			# Mark the specific point corresponding to the current w and alpha values
 			ax4.plot(w, alpha, "ro", markersize=8)
 
+			# yes we mean to use alpha here (RUF001)
 			ax4.set_xlabel("w")
-			ax4.set_ylabel("α")
+			ax4.set_ylabel("α")  # noqa: RUF001
 			ax4.set_title(f"f(x,p) heatmap with fixed x={x:.2f}, p={p:.2f}")
-			fig.colorbar(c2, ax=ax4, label="f(x,p,w,α)")
+			fig.colorbar(c2, ax=ax4, label="f(x,p,w,α)")  # noqa: RUF001
 
 		plt.tight_layout()
 		plt.show()

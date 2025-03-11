@@ -405,7 +405,8 @@ def _generate_maze_helper(index: int) -> Optional[SolvedMaze]:  # noqa: ARG001
 		solution is None
 		or len(solution) == 0
 		or not isinstance(solution, np.ndarray)
-		or len(solution.shape) != 2
+		# magic value is fine here
+		or len(solution.shape) != 2  # noqa: PLR2004
 	):
 		return None  # Return None if the solution is invalid
 
@@ -1062,7 +1063,8 @@ class MazeDatasetFilters:
 
 	@register_dataset_filter
 	@staticmethod
-	def collect_generation_meta(  # noqa: C901
+	# yes, this function is complicated hence the noqa
+	def collect_generation_meta(  # noqa: C901, PLR0912
 		dataset: MazeDataset,
 		clear_in_mazes: bool = True,
 		inplace: bool = True,
@@ -1138,7 +1140,8 @@ class MazeDatasetFilters:
 					if (len(value.shape) == 1) and (value.shape[0] == maze.lattice_dim):
 						# assume its a single coordinate
 						gen_meta_lists[key][tuple(value)] += 1
-					elif (len(value.shape) == 2) and (
+					# magic value is fine here
+					elif (len(value.shape) == 2) and (  # noqa: PLR2004
 						value.shape[1] == maze.lattice_dim
 					):
 						# assume its a list of coordinates

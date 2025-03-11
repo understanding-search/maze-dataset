@@ -423,6 +423,11 @@ def full_percolation_analysis(
 	return result
 
 
+def _is_eq(a, b) -> bool:  # noqa: ANN001
+	"""check if two objects are equal"""
+	return a == b
+
+
 def plot_grouped(
 	results: SweepResult,
 	predict_fn: Callable[[MazeDatasetConfig], float] | None = None,
@@ -467,7 +472,7 @@ def plot_grouped(
 	for ep_kw in endpoint_kwargs_set:
 		results_epkw: SweepResult = results.get_where(
 			"endpoint_kwargs",
-			lambda x: x == ep_kw,
+			functools.partial(_is_eq, ep_kw),
 		)
 		shared_keys: set[str] = set(results_epkw.configs_shared().keys())
 		cfg_keys: set[str] = shared_keys.intersection({"n_mazes", "endpoint_kwargs"})
@@ -475,7 +480,7 @@ def plot_grouped(
 		for gf_idx, gen_func in enumerate(generator_funcs_names):
 			results_filtered: SweepResult = results_epkw.get_where(
 				"maze_ctor",
-				lambda x: x.__name__ == gen_func,
+				functools.partial(_is_eq, gen_func),
 			)
 			cmap_name = "Reds" if gf_idx == 0 else "Blues"
 			cmap = plt.get_cmap(cmap_name)

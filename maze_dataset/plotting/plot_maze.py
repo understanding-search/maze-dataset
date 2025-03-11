@@ -225,7 +225,7 @@ class MazePlot:
 	def add_multiple_paths(
 		self,
 		path_list: Sequence[CoordList | CoordArray | StyledPath],
-	):
+	) -> MazePlot:
 		"""Function for adding multiple paths to MazePlot at once.
 
 		> DOCS: what are the two ways?
@@ -358,7 +358,7 @@ class MazePlot:
 
 		return self
 
-	def _plot_maze(self) -> None:
+	def _plot_maze(self) -> None:  # noqa: C901, PLR0912
 		"""Define Colormap and plot maze.
 
 		Colormap: x is -inf: black

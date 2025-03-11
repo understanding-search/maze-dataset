@@ -24,6 +24,7 @@ from maze_dataset.tokenization.maze_tokenizer import (
 	get_tokens_up_to_path_start,
 )
 
+# we don't sort alphabetically on purpose, we sort by the type
 __all__ = [
 	# submodules
 	"all_tokenizers",

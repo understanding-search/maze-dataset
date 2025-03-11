@@ -119,7 +119,7 @@ class MazeDatasetCollection(GPTDataset):
 		"""return the total number of mazes in the collection"""
 		return sum(len(dataset) for dataset in self.maze_datasets)
 
-	def __getitem__(self, index: int):
+	def __getitem__(self, index: int) -> LatticeMaze:
 		"get a maze by index"
 		# find which dataset the index belongs to
 		# we add 1, since np.searchsorted returns the

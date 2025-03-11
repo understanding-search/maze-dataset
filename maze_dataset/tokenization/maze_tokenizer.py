@@ -105,7 +105,7 @@ _NDINDEX_FUNC_MAP: dict[
 }
 
 
-def is_UT(tokenization_mode: TokenizationMode) -> bool:  # noqa: N802
+def is_UT(tokenization_mode: TokenizationMode) -> bool:
 	"returns true if a tokenization mode is a UT mode: UT = Unique Token (for each coordinate)"
 	return tokenization_mode in (
 		TokenizationMode.AOTP_UT_rasterized,
@@ -500,7 +500,7 @@ class MazeTokenizer(SerializableDataclass):
 			"vocab_size": self.vocab_size,
 		}
 
-	def is_AOTP(self) -> bool:  # noqa: N802
+	def is_AOTP(self) -> bool:
 		"""returns true if a tokenization mode is Adjacency list, Origin, Target, Path"""
 		return self.tokenization_mode in (
 			TokenizationMode.AOTP_UT_rasterized,
@@ -508,7 +508,7 @@ class MazeTokenizer(SerializableDataclass):
 			TokenizationMode.AOTP_CTT_indexed,
 		)
 
-	def is_UT(self) -> bool:  # noqa: N802
+	def is_UT(self) -> bool:
 		"returns true if a tokenization mode is a UT mode: UT = Unique Token (for each coordinate)"
 		return is_UT(self.tokenization_mode)
 
@@ -2202,11 +2202,11 @@ class MazeTokenizerModular(SerializableDataclass):
 		else:
 			return in_range and hashes_match and is_valid
 
-	def is_AOTP(self) -> bool:  # noqa: N802
+	def is_AOTP(self) -> bool:
 		"is this tokenizer an AOTP tokenizer? AOTP = Adjacency list, Origin, Target, Path"
 		return self.has_element(PromptSequencers.AOTP)
 
-	def is_UT(self) -> bool:  # noqa: N802
+	def is_UT(self) -> bool:
 		"is this tokenizer a UT tokenizer? UT = Unique Token (for each coord)"
 		return self.has_element(CoordTokenizers.UT)
 

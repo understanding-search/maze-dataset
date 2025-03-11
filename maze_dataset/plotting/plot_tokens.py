@@ -9,7 +9,8 @@ import numpy as np
 def plot_colored_text(
 	tokens: Sequence[str],
 	weights: Sequence[float],
-	cmap: str | Any,  # assume its a colormap if not a string
+	# assume its a colormap if not a string
+	cmap: str | Any,  # noqa: ANN401
 	ax: plt.Axes | None = None,
 	width_scale: float = 0.023,
 	width_offset: float = 0.005,
@@ -22,7 +23,7 @@ def plot_colored_text(
 	fig_height: float = 0.7,
 	fig_width_scale: float = 0.25,
 	char_min: int = 4,
-):
+) -> plt.Axes:
 	"hacky function to plot tokens on a matplotlib axis with colored backgrounds"
 	assert len(tokens) == len(weights), (
 		f"The number of tokens and weights must be the same: {len(tokens)} != {len(weights)}"
@@ -47,7 +48,7 @@ def plot_colored_text(
 		colormap = cmap
 
 	x_pos: float = 0.0
-	for i, (tok, weight, norm_wgt) in enumerate(
+	for i, (tok, weight, norm_wgt) in enumerate(  # noqa: B007
 		zip(tokens, weights, norm_weights, strict=False),
 	):
 		color = colormap(norm_wgt)[:3]
