@@ -131,7 +131,7 @@ class Config:
 			return self.package_repo_url + "/blob/" + self.package_version
 		else:
 			return "unknown"
-		
+
 	@property
 	def module_name(self) -> str:
 		return self.package_name.replace("-", "_")
