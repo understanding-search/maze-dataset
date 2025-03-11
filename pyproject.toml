@@ -190,6 +190,8 @@
 			"TRY003",
 			# TODO: use extend instead of append?
 			"PERF401",
+			# HACK: need to be more specific about mypy ignores
+			"PGH003",
 			# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 			# only for old version compatibility
 			"UP007", # `Optional` is ok, we might not want to use `|` for compatibility

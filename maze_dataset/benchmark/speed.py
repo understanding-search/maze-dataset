@@ -1,3 +1,5 @@
+"benchmark the speed of maze generation"
+
 import random
 import timeit
 from typing import Sequence
@@ -35,6 +37,7 @@ def time_generation(
 	trials: int = 10,
 	verbose: bool = False,
 ) -> dict[str, float]:
+	"time the generation of mazes for various configurations"
 	# assemble configs
 	configs: list[MazeDatasetConfig] = list()
 
@@ -99,11 +102,12 @@ def time_generation(
 def run_benchmark(
 	save_path: str,
 	base_configs: list[tuple[str, dict]] | None = None,
-	grid_n_vals: Sequence[int] = tuple([2, 3, 4, 5, 8, 10, 16, 25, 32]),
-	n_mazes_vals: Sequence[int] = tuple(list(range(1, 12, 2))),
+	grid_n_vals: Sequence[int] = (2, 3, 4, 5, 8, 10, 16, 25, 32),
+	n_mazes_vals: Sequence[int] = tuple(range(1, 12, 2)),
 	trials: int = 10,
 	verbose: bool = True,
-):
+) -> "pd.DataFrame":  # noqa: F821
+	"run the benchmark and save the results to a file"
 	import pandas as pd
 
 	if base_configs is None:

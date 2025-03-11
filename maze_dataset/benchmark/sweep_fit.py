@@ -1,3 +1,5 @@
+"""Fit a PySR model to a sweep result and plot the results"""
+
 from pathlib import Path
 from typing import Callable
 
@@ -21,16 +23,16 @@ def extract_training_data(
 	"""Extract data (X, y) from a SweepResult.
 
 	# Parameters:
-	 - `sweep_result : SweepResult`
-	    The sweep result holding configs and success arrays.
+	- `sweep_result : SweepResult`
+		The sweep result holding configs and success arrays.
 
 	# Returns:
-	 - `X : Float[np.ndarray, "num_rows 5"]`
-	    Stacked [p, grid_n, deadends, endpoints_not_equal, generator_func] for each config & param-value
-	 - `y : Float[np.ndarray, "num_rows"]`
-	    The corresponding success rate
+	- `X : Float[np.ndarray, "num_rows 5"]`
+		Stacked [p, grid_n, deadends, endpoints_not_equal, generator_func] for each config & param-value
+	- `y : Float[np.ndarray, "num_rows"]`
+		The corresponding success rate
 	"""
-	X_list: list[list[float]] = []
+	x_list: list[list[float]] = []
 	y_list: list[float] = []
 	for cfg in sweep_result.configs:
 		# success_arr is an array of success rates for param_values
@@ -39,10 +41,10 @@ def extract_training_data(
 			# Temporarily override p in the config's array representation:
 			arr = cfg._to_ps_array().copy()
 			arr[0] = p  # index 0 is 'p'
-			X_list.append(arr)
+			x_list.append(arr)
 			y_list.append(success_arr[i])
 
-	return np.array(X_list, dtype=np.float64), np.array(y_list, dtype=np.float64)
+	return np.array(x_list, dtype=np.float64), np.array(y_list, dtype=np.float64)
 
 
 DEFAULT_PYSR_KWARGS: dict = dict(
@@ -70,6 +72,7 @@ def train_pysr_model(
 	data: SweepResult,
 	**pysr_kwargs,
 ) -> PySRRegressor:
+	"""Train a PySR model on the given sweep result data"""
 	# Convert to arrays
 	X, y = extract_training_data(data)
 
@@ -88,6 +91,7 @@ def plot_model(
 	save_dir: Path,
 	show: bool = True,
 ) -> None:
+	"""Plot the model predictions against the sweep data"""
 	# save all the equations
 	save_dir.mkdir(parents=True, exist_ok=True)
 	equations_file: Path = save_dir / "equations.txt"
@@ -117,6 +121,7 @@ def sweep_fit(
 	save_dir: Path,
 	**pysr_kwargs,
 ) -> None:
+	"""read a sweep result, train a PySR model, and plot the results"""
 	# Load the sweep result
 	data: SweepResult = SweepResult.read(data_path)
 	print(f"loaded data: {data.summary() = }")
@@ -171,12 +176,12 @@ if __name__ == "__main__":
 	)
 
 
-def create_interactive_plot(heatmap: bool = True) -> None:
+def create_interactive_plot(heatmap: bool = True) -> None:  # noqa: C901, PLR0915
 	"""Create an interactive plot with the specified grid layout
 
 	# Parameters:
-	 - `heatmap : bool`
-	    Whether to show heatmaps (defaults to `True`)
+	- `heatmap : bool`
+		Whether to show heatmaps (defaults to `True`)
 	"""
 	import ipywidgets as widgets
 	import matplotlib.pyplot as plt
@@ -241,18 +246,18 @@ def create_interactive_plot(heatmap: bool = True) -> None:
 		],
 	)
 
-	def update_plot(x: float, p: float, alpha: float, w: float) -> None:
+	def update_plot(x: float, p: float, alpha: float, w: float) -> None:  # noqa: PLR0915
 		"""Update the plot with current slider values
 
 		# Parameters:
-		 - `x : float`
-		    x value
-		 - `p : float`
-		    p value
-		 - `k : float`
-		    k value
-		 - `alpha : float`
-		    alpha value
+		- `x : float`
+			x value
+		- `p : float`
+			p value
+		- `k : float`
+			k value
+		- `alpha : float`
+			alpha value
 		"""
 		# Set up the figure and grid - now 2x2 grid
 		fig = plt.figure(figsize=(14, 10))
@@ -357,8 +362,8 @@ def create_interactive_plot(heatmap: bool = True) -> None:
 			ws = np.linspace(0.0, 1.0, 100)
 			alphas = np.linspace(0.1, 30.0, 100)
 
-			K, A = np.meshgrid(ws, alphas)
-			Z_ka = np.zeros_like(K)
+			K, A = np.meshgrid(ws, alphas)  # noqa: N806
+			Z_ka = np.zeros_like(K)  # noqa: N806
 
 			# Calculate f(x,p) for all combinations of k and alpha
 			for i, alpha_val in enumerate(alphas):
@@ -393,4 +398,5 @@ def create_interactive_plot(heatmap: bool = True) -> None:
 		{"x": x_slider, "p": p_slider, "w": w_slider, "alpha": alpha_slider},
 	)
 
-	display(VBox([slider_box, interactive_output]))
+	# we noqa here because we will only call this function inside a notebook
+	display(VBox([slider_box, interactive_output]))  # noqa: F821

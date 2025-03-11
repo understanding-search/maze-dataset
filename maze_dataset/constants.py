@@ -34,6 +34,8 @@ ConnectionArray = Int8[np.ndarray, "edges leading_trailing_coord=2 row_col=2"]
 
 
 class SpecialTokensError(Exception):
+	"(unused!) errors related to special tokens"
+
 	pass
 
 
@@ -54,7 +56,7 @@ _SPECIAL_TOKENS_ABBREVIATIONS: dict[str, str] = {
 
 
 @dataclass(frozen=True)
-class _SPECIAL_TOKENS_BASE:
+class _SPECIAL_TOKENS_BASE:  # noqa: N801
 	"special dataclass used for handling special tokens"
 
 	ADJLIST_START: str = "<ADJLIST_START>"
@@ -77,7 +79,7 @@ class _SPECIAL_TOKENS_BASE:
 			raise TypeError(err_msg)
 
 		# error checking for old lowercase format
-		if not key == key_upper:
+		if key != key_upper:
 			warnings.warn(
 				f"Accessing special token '{key}' without uppercase. this is deprecated and will be removed in the future.",
 				DeprecationWarning,
@@ -110,7 +112,7 @@ class _SPECIAL_TOKENS_BASE:
 		return len(self.__dict__.keys())
 
 	def __contains__(self, key: str) -> bool:
-		return key in self.__dict__.keys()
+		return key in self.__dict__
 
 	def values(self) -> Iterator[str]:
 		return self.__dict__.values()
