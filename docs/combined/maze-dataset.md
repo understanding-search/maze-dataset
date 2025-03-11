@@ -48,18 +48,7 @@ pip install maze-dataset
 
 The full hosted documentation is available at [https://understanding-search.github.io/maze-dataset/](https://understanding-search.github.io/maze-dataset/).
 
-Additionally:
-
-- our notebooks serve as a good starting point for understanding the package:
-    - the [notebooks](https://understanding-search.github.io/maze-dataset/notebooks) page in the docs has links to the rendered notebooks
-    - the [`notebooks`](https://github.com/understanding-search/maze-dataset/tree/main/notebooks) folder has the source notebooks
-- combined, single page docs are available as:
-    - [plain text](https://understanding-search.github.io/maze-dataset/combined/maze_dataset.txt)
-    - [html](https://understanding-search.github.io/maze-dataset/combined/maze_dataset.html)
-    - [github markdown](https://github.com/understanding-search/maze-dataset/tree/main/docs/combined/maze_dataset.md)
-    - [pandoc markdown](https://github.com/understanding-search/maze-dataset/tree/main/docs/combined/maze_dataset.md)
-- test coverage reports are available on the [coverage](https://understanding-search.github.io/maze-dataset/coverage) page or the [`coverage/`](https://github.com/understanding-search/maze-dataset/tree/main/docs/coverage) folder
-- generation benchmark results are available on the [benchmarks](https://understanding-search.github.io/maze-dataset/benchmarks) page or the [`benchmarks/`](https://github.com/understanding-search/maze-dataset/tree/main/docs/benchmarks) folder
+Additionally, our [notebooks](https://understanding-search.github.io/maze-dataset/notebooks) serve as a good starting point for understanding the package.
 
 # Usage
 
@@ -217,18 +206,7 @@ pip install maze-dataset
 
 The full hosted documentation is available at [https://understanding-search.github.io/maze-dataset/](https://understanding-search.github.io/maze-dataset/).
 
-Additionally:
-
-- our notebooks serve as a good starting point for understanding the package:
-    - the [notebooks](https://understanding-search.github.io/maze-dataset/notebooks) page in the docs has links to the rendered notebooks
-    - the [`notebooks`](https://github.com/understanding-search/maze-dataset/tree/main/notebooks) folder has the source notebooks
-- combined, single page docs are available as:
-    - [plain text](https://understanding-search.github.io/maze-dataset/combined/maze_dataset.txt)
-    - [html](https://understanding-search.github.io/maze-dataset/combined/maze_dataset.html)
-    - [github markdown](https://github.com/understanding-search/maze-dataset/tree/main/docs/combined/maze_dataset.md)
-    - [pandoc markdown](https://github.com/understanding-search/maze-dataset/tree/main/docs/combined/maze_dataset.md)
-- test coverage reports are available on the [coverage](https://understanding-search.github.io/maze-dataset/coverage) page or the [`coverage/`](https://github.com/understanding-search/maze-dataset/tree/main/docs/coverage) folder
-- generation benchmark results are available on the [benchmarks](https://understanding-search.github.io/maze-dataset/benchmarks) page or the [`benchmarks/`](https://github.com/understanding-search/maze-dataset/tree/main/docs/benchmarks) folder
+Additionally, our [notebooks](https://understanding-search.github.io/maze-dataset/notebooks) serve as a good starting point for understanding the package.
 
 ### Usage
 
@@ -5733,7 +5711,7 @@ dfs and then percolation (adds cycles)
 helper function to get a maze already with a solution
 
 
-- `numpy_rng = Generator(PCG64) at 0x78CBC6AEA7A0`
+- `numpy_rng = Generator(PCG64) at 0x71F4F01E27A0`
 
 
 
@@ -5799,7 +5777,7 @@ generation functions have signature `(grid_shape: Coord, **kwargs) -> LatticeMaz
 
 
 
-- `numpy_rng = Generator(PCG64) at 0x78CBC6AEA7A0`
+- `numpy_rng = Generator(PCG64) at 0x71F4F01E27A0`
 
 
 
