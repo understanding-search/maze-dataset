@@ -6,6 +6,7 @@ tests/_temp/**
 htmlcov/
 .vscode/**
 notebooks/data/**
+notebooks/tests/**
 *.bak
 # pysr outputs
 notebooks/outputs/**
