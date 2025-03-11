@@ -64,6 +64,8 @@
 		"lmcat>=0.2.0; python_version >= '3.11'",
 		# tomli since no tomlib in python < 3.11
 		"tomli>=2.1.0; python_version < '3.11'",
+		# uploading
+		"twine",
 	]
 	lint = [
 		# lint

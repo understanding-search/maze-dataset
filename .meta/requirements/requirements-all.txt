@@ -10,6 +10,7 @@ asttokens==3.0.0
 async-lru==2.0.4
 attrs==25.1.0
 babel==2.17.0
+backports-tarfile==1.2.0 ; python_full_version < '3.12' and platform_machine != 'ppc64le' and platform_machine != 's390x'
 beautifulsoup4==4.13.3
 bleach==6.2.0
 bracex==2.5.post1 ; python_full_version >= '3.11'
@@ -23,10 +24,12 @@ comm==0.2.2
 contourpy==1.3.1
 coverage==7.6.12
 coverage-badge==1.1.2
+cryptography==44.0.2 ; platform_machine != 'ppc64le' and platform_machine != 's390x' and sys_platform == 'linux'
 cycler==0.12.1
-debugpy==1.8.12
-decorator==5.1.1
+debugpy==1.8.13
+decorator==5.2.1
 defusedxml==0.7.1
+docutils==0.21.2
 exceptiongroup==1.2.2 ; python_full_version < '3.11'
 execnet==2.1.1
 executing==2.2.0
@@ -35,26 +38,34 @@ filelock==3.17.0
 fonttools==4.56.0
 fqdn==1.5.1
 frozendict==2.4.6
-fsspec==2025.2.0
+fsspec==2025.3.0
 h11==0.14.0
 httpcore==1.0.7
 httpx==0.28.1
+id==1.5.0
 idna==3.10
 igittigitt==2.1.5 ; python_full_version >= '3.11'
+importlib-metadata==8.6.1 ; python_full_version < '3.12' and platform_machine != 'ppc64le' and platform_machine != 's390x'
 iniconfig==2.0.0
 ipykernel==6.29.5
-ipython==8.32.0
+ipython==8.34.0 ; python_full_version < '3.11'
+ipython==9.0.2 ; python_full_version >= '3.11'
+ipython-pygments-lexers==1.1.1 ; python_full_version >= '3.11'
 ipywidgets==8.1.5
 isoduration==20.11.0
+jaraco-classes==3.4.0 ; platform_machine != 'ppc64le' and platform_machine != 's390x'
+jaraco-context==6.0.1 ; platform_machine != 'ppc64le' and platform_machine != 's390x'
+jaraco-functools==4.1.0 ; platform_machine != 'ppc64le' and platform_machine != 's390x'
 jaxtyping==0.2.38
 jedi==0.19.2
-jinja2==3.1.5
+jeepney==0.9.0 ; platform_machine != 'ppc64le' and platform_machine != 's390x' and sys_platform == 'linux'
+jinja2==3.1.6
 joblib==1.4.2
 json5==0.10.0
 jsonpointer==3.0.0
 jsonschema==4.23.0
 jsonschema-specifications==2024.10.1
-juliacall==0.9.23
+juliacall==0.9.24
 juliapkg==0.1.16
 jupyter==1.1.1
 jupyter-client==8.6.3
@@ -68,16 +79,18 @@ jupyterlab==4.3.5
 jupyterlab-pygments==0.3.0
 jupyterlab-server==2.27.3
 jupyterlab-widgets==3.0.13
+keyring==25.6.0 ; platform_machine != 'ppc64le' and platform_machine != 's390x'
 kiwisolver==1.4.8
 lib-detect-testenv==2.0.8 ; python_full_version >= '3.11'
 libcst==1.6.0
 lmcat==0.2.0 ; python_full_version >= '3.11'
 markdown-it-py==3.0.0
 markupsafe==3.0.2
-matplotlib==3.10.0
+matplotlib==3.10.1
 matplotlib-inline==0.1.7
 mdurl==0.1.2
-mistune==3.1.1
+mistune==3.1.2
+more-itertools==10.6.0 ; platform_machine != 'ppc64le' and platform_machine != 's390x'
 mpmath==1.3.0
 muutils==0.8.3
 mypy==1.15.0
@@ -88,6 +101,7 @@ nbformat==5.10.4
 nbmake==1.5.5
 nest-asyncio==1.6.0
 networkx==3.4.2
+nh3==0.2.21
 notebook==7.3.2
 notebook-shim==0.2.4
 numpy==2.2.3
@@ -107,7 +121,7 @@ nvidia-nvtx-cu12==12.4.127 ; platform_machine == 'x86_64' and sys_platform == 'l
 overrides==7.7.0
 packaging==24.2
 pandas==2.2.3
-pandas-stubs==2.2.3.241126
+pandas-stubs==2.2.3.250308
 pandocfilters==1.5.1
 parso==0.8.4
 pathspec==0.12.1
@@ -125,30 +139,35 @@ pycln==2.5.0
 pycparser==2.22
 pygments==2.19.1
 pyparsing==3.2.1
-pysr==1.4.0
-pytest==8.3.4
+pysr==1.5.2
+pytest==8.3.5
 pytest-cov==6.0.0
 pytest-mock==3.14.0
 pytest-xdist==3.6.1
 python-dateutil==2.9.0.post0
-python-json-logger==3.2.1
+python-json-logger==3.3.0
 pytz==2025.1
-pywin32==308 ; platform_python_implementation != 'PyPy' and sys_platform == 'win32'
+pywin32==309 ; platform_python_implementation != 'PyPy' and sys_platform == 'win32'
+pywin32-ctypes==0.2.3 ; platform_machine != 'ppc64le' and platform_machine != 's390x' and sys_platform == 'win32'
 pywinpty==2.0.15 ; os_name == 'nt'
 pyyaml==6.0.2
 pyzmq==26.2.1
+readme-renderer==44.0
 referencing==0.36.2
 requests==2.32.3
+requests-toolbelt==1.0.0
 rfc3339-validator==0.1.4
+rfc3986==2.0.0
 rfc3986-validator==0.1.1
 rich==13.9.4
-rpds-py==0.22.3
-ruff==0.9.6
+rpds-py==0.23.1
+ruff==0.9.10
 scikit-learn==1.6.1
 scipy==1.15.2
+secretstorage==3.3.3 ; platform_machine != 'ppc64le' and platform_machine != 's390x' and sys_platform == 'linux'
 semver==3.0.4
 send2trash==1.8.3
-setuptools==75.8.0
+setuptools==76.0.0
 shellingham==1.5.4
 six==1.17.0
 sniffio==1.3.1
@@ -165,11 +184,12 @@ tornado==6.4.2
 tqdm==4.67.1
 traitlets==5.14.3
 triton==3.2.0 ; platform_machine == 'x86_64' and sys_platform == 'linux'
-typer==0.15.1
+twine==6.1.0
+typer==0.15.2
 types-python-dateutil==2.9.0.20241206
 types-pytz==2025.1.0.20250204
-types-requests==2.32.0.20241016
-types-tqdm==4.67.0.20241221
+types-requests==2.32.0.20250306
+types-tqdm==4.67.0.20250301
 typing-extensions==4.12.2
 tzdata==2025.1
 uri-template==1.3.0
@@ -182,3 +202,4 @@ webencodings==0.5.1
 websocket-client==1.8.0
 widgetsnbextension==4.0.13
 zanj==0.4.0
+zipp==3.21.0 ; python_full_version < '3.12' and platform_machine != 'ppc64le' and platform_machine != 's390x'
