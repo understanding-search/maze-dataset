@@ -163,7 +163,9 @@
 			"FBT003",
 			"PTH123", # opening files is fine
 			"RET505", # else return is fine
+			"FIX001", # FIXME comments are ok since `make todo` handles them
 			"FIX002", # `make todo` will give us the TODO comments
+			"FIX004", # same for `HACK`
 			"PIE790", # be explicit about when we pass
 			"EM101", # fine to have string literal exceptions
 			"FURB129", # .readlines() is fine
@@ -177,7 +179,6 @@
 			"TD001", # we allow tags besides "TODO"
 			"TD002", # dont care about author
 			"TD003", # `make todo` will give us a table where we can create issues
-			"FIX001", # FIXME comments are ok since `make todo` handles them
 			"PLR0913", # sometimes you have to have a lot of args
 			"B028", # fine to omit stacklevel on warnings
 			"SLF001", # fine to access private vars
@@ -187,6 +188,8 @@
 			"ANN003",
 			# TODO: more fine-grained exception classes
 			"TRY003",
+			# TODO: use extend instead of append?
+			"PERF401",
 			# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 			# only for old version compatibility
 			"UP007", # `Optional` is ok, we might not want to use `|` for compatibility

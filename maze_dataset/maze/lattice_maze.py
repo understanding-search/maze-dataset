@@ -1,3 +1,8 @@
+"""Implements `LatticeMaze`, and the `TargetedLatticeMaze` and `SolvedMaze` subclasses.
+
+also includes basic utilities, including converting to/from ascii and pixel representations.
+"""
+
 import typing
 import warnings
 from dataclasses import dataclass
@@ -46,7 +51,7 @@ BinaryPixelGrid = Bool[np.ndarray, "x y"]
 "boolean grid of pixels"
 
 
-class NoValidEndpointException(Exception):
+class NoValidEndpointException(Exception):  # noqa: N818
 	"""Raised when no valid start or end positions are found in a maze."""
 
 	pass
@@ -68,6 +73,7 @@ def _fill_edges_with_walls(connection_list: ConnectionList) -> ConnectionList:
 
 
 def color_in_pixel_grid(pixel_grid: PixelGrid, color: RGB) -> bool:
+	"""check if a color is in a pixel grid"""
 	for row in pixel_grid:
 		for pixel in row:
 			if np.all(pixel == color):
@@ -121,28 +127,28 @@ class LatticeMaze(SerializableDataclass):
 	respectively.
 
 	Example:
-	  Connection list:
-	    [
-	      [ # down
-	        [F T],
-	        [F F]
-	      ],
-	      [ # right
-	        [T F],
-	        [T F]
-	      ]
-	    ]
+		Connection list:
+			[
+				[ # down
+					[F T],
+					[F F]
+				],
+				[ # right
+					[T F],
+					[T F]
+				]
+			]
 
-	  Nodes with connections
-	    N T N F
-	    F   T
-	    N T N F
-	    F   F
+		Nodes with connections
+			N T N F
+			F	T
+			N T N F
+			F	F
 
-	  Graph:
-	    N - N
-	        |
-	    N - N
+		Graph:
+			N - N
+				|
+			N - N
 
 	Note: the bottom row connections going down, and the
 	right-hand connections going right, will always be False.
@@ -158,6 +164,7 @@ class LatticeMaze(SerializableDataclass):
 
 	@property
 	def grid_n(self) -> int:
+		"grid size as int, raises `AssertionError` if not square"
 		assert self.grid_shape[0] == self.grid_shape[1], "only square mazes supported"
 		return self.grid_shape[0]
 
@@ -166,6 +173,7 @@ class LatticeMaze(SerializableDataclass):
 	# ============================================================
 
 	def __eq__(self, other: object) -> bool:
+		"equality check calls super"
 		return super().__eq__(other)
 
 	@staticmethod
@@ -174,6 +182,7 @@ class LatticeMaze(SerializableDataclass):
 		return np.abs(a[0] - b[0]) + np.abs(a[1] - b[1])
 
 	def __hash__(self) -> int:
+		"""hash the connection list by converting connection list to bytes"""
 		return hash(self.connection_list.tobytes())
 
 	def nodes_connected(self, a: Coord, b: Coord, /) -> bool:
@@ -192,10 +201,7 @@ class LatticeMaze(SerializableDataclass):
 		"""check if a path is valid"""
 		# check path is not empty
 		if len(path) == 0:
-			if not empty_is_valid:
-				return False
-			else:
-				return True
+			return empty_is_valid
 
 		# check all coords in bounds of maze
 		if not np.all((path >= 0) & (path < self.grid_shape)):
@@ -209,6 +215,7 @@ class LatticeMaze(SerializableDataclass):
 
 	def coord_degrees(self) -> Int8[np.ndarray, "row col"]:
 		"""Returns an array with the connectivity degree of each coord.
+
 		I.e., how many neighbors each coord has.
 		"""
 		int_conn: Int8[np.ndarray, "lattice_dim=2 row col"] = (
@@ -401,7 +408,7 @@ class LatticeMaze(SerializableDataclass):
 		endpoints_not_equal: bool = False,
 		except_on_no_valid_endpoint: typing.Literal[False] = False,
 	) -> typing.Optional[CoordArray]: ...
-	def generate_random_path(
+	def generate_random_path(  # noqa: C901
 		self,
 		allowed_start: CoordList | None = None,
 		allowed_end: CoordList | None = None,
@@ -415,35 +422,35 @@ class LatticeMaze(SerializableDataclass):
 		Note that setting special conditions on start and end positions might cause the same position to be selected as both start and end.
 
 		# Parameters:
-		 - `allowed_start : CoordList | None`
-		    a list of allowed start positions. If `None`, any position in the connected component is allowed
-		   (defaults to `None`)
-		 - `allowed_end : CoordList | None`
-		    a list of allowed end positions. If `None`, any position in the connected component is allowed
-		   (defaults to `None`)
-		 - `deadend_start : bool`
-		    whether to ***force*** the start position to be a deadend (defaults to `False`)
-		   (defaults to `False`)
-		 - `deadend_end : bool`
-		    whether to ***force*** the end position to be a deadend (defaults to `False`)
-		    (defaults to `False`)
-		 - `endpoints_not_equal : bool`
-		    whether to ensure tha the start and end point are not the same
-		    (defaults to `False`)
-		 - `except_on_no_valid_endpoint : bool`
-		    whether to raise an error if no valid start or end positions are found
-		    if this is `False`, the function might return `None` and this must be handled by the caller
-		    (defaults to `True`)
+		- `allowed_start : CoordList | None`
+			a list of allowed start positions. If `None`, any position in the connected component is allowed
+			(defaults to `None`)
+		- `allowed_end : CoordList | None`
+			a list of allowed end positions. If `None`, any position in the connected component is allowed
+			(defaults to `None`)
+		- `deadend_start : bool`
+			whether to ***force*** the start position to be a deadend (defaults to `False`)
+			(defaults to `False`)
+		- `deadend_end : bool`
+			whether to ***force*** the end position to be a deadend (defaults to `False`)
+			(defaults to `False`)
+		- `endpoints_not_equal : bool`
+			whether to ensure tha the start and end point are not the same
+			(defaults to `False`)
+		- `except_on_no_valid_endpoint : bool`
+			whether to raise an error if no valid start or end positions are found
+			if this is `False`, the function might return `None` and this must be handled by the caller
+			(defaults to `True`)
 
 		# Returns:
-		 - `CoordArray`
-		    a path between the selected start and end positions
+		- `CoordArray`
+			a path between the selected start and end positions
 
 		# Raises:
-		 - `NoValidEndpointException` : if no valid start or end positions are found, and `except_on_no_valid_endpoint` is `True`
+		- `NoValidEndpointException` : if no valid start or end positions are found, and `except_on_no_valid_endpoint` is `True`
 		"""
 		# we can't create a "path" in a single-node maze
-		assert self.grid_shape[0] > 1 and self.grid_shape[1] > 1, (
+		assert self.grid_shape[0] > 1 and self.grid_shape[1] > 1, (  # noqa: PT018
 			f"can't create path in single-node maze: {self.as_ascii()}"
 		)
 
@@ -548,6 +555,7 @@ class LatticeMaze(SerializableDataclass):
 		shuffle_d0: bool = True,
 		shuffle_d1: bool = True,
 	) -> Int8[np.ndarray, "conn start_end coord"]:
+		"""return the maze as an adjacency list, wraps `maze_dataset.token_utils.connection_list_to_adj_list`"""
 		return connection_list_to_adj_list(self.connection_list, shuffle_d0, shuffle_d1)
 
 	@classmethod
@@ -591,6 +599,7 @@ class LatticeMaze(SerializableDataclass):
 		)
 
 	def as_adj_list_tokens(self) -> list[str | CoordTup]:
+		"""(deprecated!) turn the maze into adjacency list tokens, use `MazeTokenizerModular` instead"""
 		warnings.warn(
 			"`LatticeMaze.as_adj_list_tokens` will be removed from the public API in a future release.",
 			TokenizerDeprecationWarning,
@@ -628,7 +637,7 @@ class LatticeMaze(SerializableDataclass):
 			SPECIAL_TOKENS.ADJLIST_END,
 		]
 
-	def _as_coords_and_special_AOTP(self) -> list[CoordTup | str]:
+	def _as_coords_and_special_AOTP(self) -> list[CoordTup | str]:  # noqa: N802
 		"""turn the maze into adjacency list, origin, target, and solution -- keep coords as tuples"""
 		output: list[CoordTup | str] = self._as_adj_list_tokens()
 		# if getattr(self, "start_pos", None) is not None:
@@ -672,7 +681,7 @@ class LatticeMaze(SerializableDataclass):
 			return self._as_tokens(maze_tokenizer)  # type: ignore[union-attr,arg-type]
 
 	@classmethod
-	def _from_tokens_AOTP(
+	def _from_tokens_AOTP(  # noqa: N802
 		cls,
 		tokens: list[str],
 		maze_tokenizer: "MazeTokenizer | MazeTokenizerModular",
@@ -788,6 +797,7 @@ class LatticeMaze(SerializableDataclass):
 		maze_tokenizer: "MazeTokenizer | TokenizationMode | MazeTokenizerModular",
 	) -> "LatticeMaze | TargetedLatticeMaze | SolvedMaze":
 		"""Constructs a maze from a tokenization.
+
 		Only legacy tokenizers and their `MazeTokenizerModular` analogs are supported.
 		"""
 		# HACK: type ignores here fine since we check the instance
@@ -844,6 +854,12 @@ class LatticeMaze(SerializableDataclass):
 		show_endpoints: bool = True,
 		show_solution: bool = True,
 	) -> PixelGrid:
+		"""convert the maze to a pixel grid
+
+		- useful as a simpler way of plotting the maze than the more complex `MazePlot`
+		- the same underlying representation as `as_ascii` but as an image
+		- used in `RasterizedMazeDataset`, which mimics the mazes in https://github.com/aks2203/easy-to-hard-data
+		"""
 		# HACK: lots of `# type: ignore[attr-defined]` here since its defined for any `LatticeMaze`
 		# but solution, start_pos, end_pos not always defined
 		# but its fine since we explicitly check the type
@@ -958,6 +974,11 @@ class LatticeMaze(SerializableDataclass):
 		cls,
 		pixel_grid: PixelGrid,
 	) -> "LatticeMaze":
+		"""create a LatticeMaze from a pixel grid. reverse of `as_pixels`
+
+		# Raises:
+		- `ValueError` : if the pixel grid cannot be cast to a `LatticeMaze` -- it's probably a `TargetedLatticeMaze` or `SolvedMaze`
+		"""
 		connection_list: ConnectionList
 		grid_shape: tuple[int, int]
 
@@ -1042,7 +1063,7 @@ class LatticeMaze(SerializableDataclass):
 			# use `get_coord_neighbors` to find connected neighbors
 			neighbors: CoordArray = temp_maze.get_coord_neighbors(solution[-1])
 			# TODO: make this less ugly
-			assert (len(neighbors.shape) == 2) and (neighbors.shape[1] == 2), (
+			assert (len(neighbors.shape) == 2) and (neighbors.shape[1] == 2), (  # noqa: PT018
 				f"neighbors {neighbors} has shape {neighbors.shape}, expected shape (n, 2)\n{neighbors = }\n{solution = }\n{solution_raw = }\n{temp_maze.as_ascii()}"
 			)
 			# neighbors = neighbors[:, [1, 0]]
@@ -1101,7 +1122,12 @@ class LatticeMaze(SerializableDataclass):
 		show_endpoints: bool = True,
 		show_solution: bool = True,
 	) -> str:
-		"""return an ASCII grid of the maze"""
+		"""return an ASCII grid of the maze
+
+		useful for debugging in the terminal, or as it's own format
+
+		can be reversed with `LatticeMaze.from_ascii()`
+		"""
 		ascii_grid: Shaped[np.ndarray, "x y"] = self._as_ascii_grid()
 		pixel_grid: PixelGrid = self.as_pixels(
 			show_endpoints=show_endpoints,
@@ -1122,6 +1148,7 @@ class LatticeMaze(SerializableDataclass):
 
 	@classmethod
 	def from_ascii(cls, ascii_str: str) -> "LatticeMaze":
+		"get a `LatticeMaze` from an ASCII representation (reverses `LaticeMaze.as_ascii`)"
 		lines: list[str] = ascii_str.strip().split("\n")
 		lines = [line.strip() for line in lines]
 		ascii_grid: Shaped[np.ndarray, "x y"] = np.array(
@@ -1154,6 +1181,7 @@ class TargetedLatticeMaze(LatticeMaze):  # type: ignore[misc]
 	)
 
 	def __post_init__(self) -> None:
+		"post init converts start and end pos to numpy arrays, checks they exist and are in bounds"
 		# make things numpy arrays (very jank to override frozen dataclass)
 		self.__dict__["start_pos"] = np.array(self.start_pos)
 		self.__dict__["end_pos"] = np.array(self.end_pos)
@@ -1178,6 +1206,7 @@ class TargetedLatticeMaze(LatticeMaze):  # type: ignore[misc]
 			)
 
 	def __eq__(self, other: object) -> bool:
+		"check equality, calls parent class equality check"
 		return super().__eq__(other)
 
 	def _get_start_pos_tokens(self) -> list[str | CoordTup]:
@@ -1188,6 +1217,7 @@ class TargetedLatticeMaze(LatticeMaze):  # type: ignore[misc]
 		]
 
 	def get_start_pos_tokens(self) -> list[str | CoordTup]:
+		"(deprecated!) return the start position as a list of tokens"
 		warnings.warn(
 			"`TargetedLatticeMaze.get_start_pos_tokens` will be removed from the public API in a future release.",
 			TokenizerDeprecationWarning,
@@ -1202,6 +1232,7 @@ class TargetedLatticeMaze(LatticeMaze):  # type: ignore[misc]
 		]
 
 	def get_end_pos_tokens(self) -> list[str | CoordTup]:
+		"(deprecated!) return the end position as a list of tokens"
 		warnings.warn(
 			"`TargetedLatticeMaze.get_end_pos_tokens` will be removed from the public API in a future release.",
 			TokenizerDeprecationWarning,
@@ -1215,6 +1246,7 @@ class TargetedLatticeMaze(LatticeMaze):  # type: ignore[misc]
 		start_pos: Coord | CoordTup,
 		end_pos: Coord | CoordTup,
 	) -> "TargetedLatticeMaze":
+		"get a `TargetedLatticeMaze` from a `LatticeMaze` by specifying start and end positions"
 		return cls(
 			connection_list=lattice_maze.connection_list,
 			start_pos=np.array(start_pos),
@@ -1240,12 +1272,16 @@ class SolvedMaze(TargetedLatticeMaze):  # type: ignore[misc]
 		end_pos: Coord | None = None,
 		allow_invalid: bool = False,
 	) -> None:
+		"""Create a SolvedMaze from a connection list and a solution
+
+		> DOCS: better documentation for this init method
+		"""
 		# figure out the solution
 		solution_valid: bool = False
 		if solution is not None:
 			solution = np.array(solution)
 			# note that a path length of 1 here is valid, since the start and end pos could be the same
-			if (solution.shape[0] > 0) and (solution.shape[1] == 2):
+			if (solution.shape[0] > 0) and (solution.shape[1] == 2):  # noqa: PLR2004
 				solution_valid = True
 
 		if not solution_valid and not allow_invalid:
@@ -1281,9 +1317,11 @@ class SolvedMaze(TargetedLatticeMaze):  # type: ignore[misc]
 			# TODO: assert the path does not backtrack, walk through walls, etc?
 
 	def __eq__(self, other: object) -> bool:
+		"check equality, calls parent class equality check"
 		return super().__eq__(other)
 
 	def __hash__(self) -> int:
+		"hash the `SolvedMaze` by hashing a tuple of the connection list and solution arrays as bytes"
 		return hash((self.connection_list.tobytes(), self.solution.tobytes()))
 
 	def _get_solution_tokens(self) -> list[str | CoordTup]:
@@ -1294,6 +1332,7 @@ class SolvedMaze(TargetedLatticeMaze):  # type: ignore[misc]
 		]
 
 	def get_solution_tokens(self) -> list[str | CoordTup]:
+		"(deprecated!) return the solution as a list of tokens"
 		warnings.warn(
 			"`LatticeMaze.get_solution_tokens` is deprecated.",
 			TokenizerDeprecationWarning,
@@ -1303,6 +1342,7 @@ class SolvedMaze(TargetedLatticeMaze):  # type: ignore[misc]
 	# for backwards compatibility
 	@property
 	def maze(self) -> LatticeMaze:
+		"(deprecated!) return the maze without the solution"
 		warnings.warn(
 			"`maze` is deprecated, SolvedMaze now inherits from LatticeMaze.",
 			DeprecationWarning,
@@ -1316,6 +1356,7 @@ class SolvedMaze(TargetedLatticeMaze):  # type: ignore[misc]
 		lattice_maze: LatticeMaze,
 		solution: list[CoordTup] | CoordArray,
 	) -> "SolvedMaze":
+		"get a `SolvedMaze` from a `LatticeMaze` by specifying a solution"
 		return cls(
 			connection_list=lattice_maze.connection_list,
 			solution=np.array(solution),

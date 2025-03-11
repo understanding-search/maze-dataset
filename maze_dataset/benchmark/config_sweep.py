@@ -28,6 +28,10 @@ AnalysisFunc = Callable[[MazeDatasetConfig], SweepReturnType]
 
 
 def dataset_success_fraction(cfg: MazeDatasetConfig) -> float:
+	"""empirical success fraction of maze generation
+
+	for use as an `analyze_func` in `sweep()`
+	"""
 	dataset: MazeDataset = MazeDataset.from_config(
 		cfg,
 		do_download=False,
@@ -50,6 +54,22 @@ def sweep(
 	param_key: str,
 	analyze_func: Callable[[MazeDatasetConfig], SweepReturnType],
 ) -> list[SweepReturnType]:
+	"""given a base config, parameter values list, key, and analysis function, return the results of the analysis function for each parameter value
+
+	# Parameters:
+	- `cfg_base : MazeDatasetConfig`
+		base config on which we will modify the value at `param_key` with values from `param_values`
+	- `param_values : list[ParamType]`
+		list of values to try
+	- `param_key : str`
+		value to modify in `cfg_base`
+	- `analyze_func : Callable[[MazeDatasetConfig], SweepReturnType]`
+		function which analyzes the resulting config. originally built for `dataset_success_fraction`
+
+	# Returns:
+	- `list[SweepReturnType]`
+		_description_
+	"""
 	outputs: list[SweepReturnType] = []
 
 	for p in param_values:
@@ -68,6 +88,8 @@ def sweep(
 
 @serializable_dataclass()
 class SweepResult(SerializableDataclass):
+	"""result of a parameter sweep"""
+
 	configs: list[MazeDatasetConfig] = serializable_field(
 		serialization_fn=lambda cfgs: [cfg.serialize() for cfg in cfgs],
 		deserialize_fn=lambda cfgs: [MazeDatasetConfig.load(cfg) for cfg in cfgs],
@@ -90,6 +112,7 @@ class SweepResult(SerializableDataclass):
 	)
 
 	def summary(self) -> JSONitem:
+		"human-readable and json-dumpable short summary of the result"
 		return {
 			"len(configs)": len(self.configs),
 			"len(param_values)": len(self.param_values),
@@ -99,6 +122,7 @@ class SweepResult(SerializableDataclass):
 		}
 
 	def save(self, path: str | Path, z: ZANJ | None = None) -> None:
+		"save to a file with zanj"
 		if z is None:
 			z = ZANJ()
 
@@ -106,6 +130,7 @@ class SweepResult(SerializableDataclass):
 
 	@classmethod
 	def read(cls, path: str | Path, z: ZANJ | None = None) -> "SweepResult":
+		"read from a file with zanj"
 		if z is None:
 			z = ZANJ()
 
@@ -144,7 +169,7 @@ class SweepResult(SerializableDataclass):
 		shared_vals: dict[str, Any] = self.configs_shared()
 		differing_keys: set[str] = set()
 
-		for k in MazeDatasetConfig.__dataclass_fields__.keys():
+		for k in MazeDatasetConfig.__dataclass_fields__:
 			if k not in shared_vals:
 				differing_keys.add(k)
 
@@ -359,8 +384,9 @@ def full_percolation_analysis(
 	# configs
 	configs: list[MazeDatasetConfig] = list()
 
-	for ep_kw_name, ep_kw in ep_kwargs:
-		for gf_idx, gen_func in enumerate(generators):
+	# TODO: B007 noqaed because we dont use `ep_kw_name` or `gf_idx`
+	for ep_kw_name, ep_kw in ep_kwargs:  # noqa: B007
+		for gf_idx, gen_func in enumerate(generators):  # noqa: B007
 			configs.extend(
 				[
 					MazeDatasetConfig(
@@ -403,20 +429,21 @@ def plot_grouped(
 	show: bool = True,
 	logy: bool = False,
 ) -> None:
-	"""Plot grouped sweep percolation value results for each distinct `endpoint_kwargs` in the configs,
-	with separate colormaps for each maze generator function.
+	"""Plot grouped sweep percolation value results for each distinct `endpoint_kwargs` in the configs
+
+	with separate colormaps for each maze generator function
 
 	# Parameters:
-	 - `results : SweepResult`
-	    The sweep results to plot
-	 - `predict_fn : Callable[[MazeDatasetConfig], float] | None`
-	    Optional function that predicts success rate from a config. If provided, will plot predictions as dashed lines.
-	 - `prediction_density : int`
-	    Number of points to use for prediction curves (default: 50)
-	 - `save_dir : Path | None`
-	    Directory to save plots (defaults to `None`, meaning no saving)
-	 - `show : bool`
-	    Whether to display the plots (defaults to `True`)
+	- `results : SweepResult`
+		The sweep results to plot
+	- `predict_fn : Callable[[MazeDatasetConfig], float] | None`
+		Optional function that predicts success rate from a config. If provided, will plot predictions as dashed lines.
+	- `prediction_density : int`
+		Number of points to use for prediction curves (default: 50)
+	- `save_dir : Path | None`
+		Directory to save plots (defaults to `None`, meaning no saving)
+	- `show : bool`
+		Whether to display the plots (defaults to `True`)
 
 	# Usage:
 	```python

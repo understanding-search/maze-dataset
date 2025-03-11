@@ -182,6 +182,7 @@ class MazePlot:
 		path_fmt: PathFormat | None = None,
 		**kwargs,
 	) -> MazePlot:
+		"add a true path to the maze with optional formatting"
 		self.true_path = process_path_input(
 			path=path,
 			_default_key="true",

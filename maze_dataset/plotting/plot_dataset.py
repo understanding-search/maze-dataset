@@ -14,6 +14,7 @@ def plot_dataset_mazes(
 	figsize_mult: tuple[float, float] = (1.0, 2.0),
 	title: bool | str = True,
 ) -> tuple | None:
+	"plot `count` mazes from the dataset `d` in a single figure using `SolvedMaze.as_pixels()`"
 	count = count or len(ds)
 	if count == 0:
 		print("No mazes to plot for dataset")
@@ -53,7 +54,8 @@ def plot_dataset_mazes(
 	return fig, axes
 
 
-def print_dataset_mazes(ds: MazeDataset, count: int | None = None):
+def print_dataset_mazes(ds: MazeDataset, count: int | None = None) -> None:
+	"print ascii representation of `count` mazes from the dataset `d`"
 	count = count or len(ds)
 	if count == 0:
 		print("No mazes to print for dataset")

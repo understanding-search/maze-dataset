@@ -314,7 +314,7 @@ def _helper_dataset_from_ascii(ascii_rep: str) -> MazeDataset:
 	mazes: list[SolvedMaze] = list()
 	for maze_ascii in ascii_rep:
 		# TODO: PERF401 Use `list.extend` to create a transformed list
-		mazes.append(SolvedMaze.from_ascii(maze_ascii.strip()))  # noqa: PERF401
+		mazes.append(SolvedMaze.from_ascii(maze_ascii.strip()))
 
 	return MazeDataset(
 		MazeDatasetConfig(
