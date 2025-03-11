@@ -2,7 +2,7 @@
 #| python project makefile template                                 |
 #| originally by Michael Ivanitskiy (mivanits@umich.edu)            |
 #| https://github.com/mivanit/python-project-makefile-template      |
-#| version: v0.2.2                                                  |
+#| version: v0.3.2                                                  |
 #| license: https://creativecommons.org/licenses/by-sa/4.0/         |
 #| modifications from the original should be denoted with `~~~~~`   |
 #| as this makes it easier to find edits when updating makefile     |
@@ -168,6 +168,12 @@ default: help
 
 # create commands for exporting requirements as specified in `pyproject.toml:tool.uv-exports.exports`
 define SCRIPT_EXPORT_REQUIREMENTS
+# source: https://github.com/mivanit/python-project-makefile-template/tree/main/scripts/export_requirements.py
+
+"export to requirements.txt files based on pyproject.toml configuration"
+
+from __future__ import annotations
+
 import sys
 import warnings
 
@@ -175,14 +181,15 @@ try:
 	import tomllib  # type: ignore[import-not-found]
 except ImportError:
 	import tomli as tomllib  # type: ignore
-from pathlib import Path
-from typing import Any, Dict, Union, List
 from functools import reduce
+from pathlib import Path
+from typing import Any, Dict, List, Union
 
 TOOL_PATH: str = "tool.makefile.uv-exports"
 
 
-def deep_get(d: dict, path: str, default: Any = None, sep: str = ".") -> Any:
+def deep_get(d: dict, path: str, default: Any = None, sep: str = ".") -> Any:  # noqa: ANN401
+	"get a value from a nested dictionary"
 	return reduce(
 		lambda x, y: x.get(y, default) if isinstance(x, dict) else default,  # function
 		path.split(sep) if isinstance(path, str) else path,  # sequence
@@ -196,7 +203,8 @@ def export_configuration(
 	all_extras: List[str],
 	export_opts: dict,
 	output_dir: Path,
-):
+) -> None:
+	"print to console a uv command for make which will export a requirements.txt file"
 	# get name and validate
 	name = export.get("name")
 	if not name or not name.isalnum():
@@ -207,12 +215,12 @@ def export_configuration(
 
 	# get other options with default fallbacks
 	filename: str = export.get("filename") or f"requirements-{name}.txt"
-	groups: Union[List[str], bool, None] = export.get("groups", None)
+	groups: Union[List[str], bool, None] = export.get("groups")
 	extras: Union[List[str], bool] = export.get("extras", [])
 	options: List[str] = export.get("options", [])
 
 	# init command
-	cmd: List[str] = ["uv", "export"] + export_opts.get("args", [])
+	cmd: List[str] = ["uv", "export", *export_opts.get("args", [])]
 
 	# handle groups
 	if groups is not None:
@@ -251,7 +259,8 @@ def export_configuration(
 def main(
 	pyproject_path: Path,
 	output_dir: Path,
-):
+) -> None:
+	"export to requirements.txt files based on pyproject.toml configuration"
 	# read pyproject.toml
 	with open(pyproject_path, "rb") as f:
 		pyproject_data: dict = tomllib.load(f)
@@ -259,7 +268,7 @@ def main(
 	# all available groups
 	all_groups: List[str] = list(pyproject_data.get("dependency-groups", {}).keys())
 	all_extras: List[str] = list(
-		deep_get(pyproject_data, "project.optional-dependencies", {}).keys()
+		deep_get(pyproject_data, "project.optional-dependencies", {}).keys(),
 	)
 
 	# options for exporting
@@ -294,6 +303,12 @@ export SCRIPT_EXPORT_REQUIREMENTS
 
 # get the version from `pyproject.toml:project.version`
 define SCRIPT_GET_VERSION
+# source: https://github.com/mivanit/python-project-makefile-template/tree/main/scripts/get_version.py
+
+"write the current version of the project to a file"
+
+from __future__ import annotations
+
 import sys
 
 try:
@@ -308,7 +323,7 @@ try:
 		pyproject_data: dict = tomllib.load(f)
 
 	print("v" + pyproject_data["project"]["version"], end="")
-except Exception:
+except Exception:  # noqa: BLE001
 	print("NULL", end="")
 	sys.exit(1)
 
@@ -319,6 +334,12 @@ export SCRIPT_GET_VERSION
 
 # get the commit log since the last version from `$(LAST_VERSION_FILE)`
 define SCRIPT_GET_COMMIT_LOG
+# source: https://github.com/mivanit/python-project-makefile-template/tree/main/scripts/get_commit_log.py
+
+"pretty print a commit log amd wrote it to a file"
+
+from __future__ import annotations
+
 import subprocess
 import sys
 from typing import List
@@ -327,7 +348,8 @@ from typing import List
 def main(
 	last_version: str,
 	commit_log_file: str,
-):
+) -> None:
+	"pretty print a commit log amd wrote it to a file"
 	if last_version == "NULL":
 		print("!!! ERROR !!!", file=sys.stderr)
 		print("LAST_VERSION is NULL, can't get commit log!", file=sys.stderr)
@@ -341,7 +363,7 @@ def main(
 			"--pretty=format:- %s (%h)",
 		]
 		commits: List[str] = (
-			subprocess.check_output(log_cmd).decode("utf-8").strip().split("\n")
+			subprocess.check_output(log_cmd).decode("utf-8").strip().split("\n")  # noqa: S603
 		)
 		with open(commit_log_file, "w") as f:
 			f.write("\n".join(reversed(commits)))
@@ -363,10 +385,16 @@ export SCRIPT_GET_COMMIT_LOG
 
 # get cuda information and whether torch sees it
 define SCRIPT_CHECK_TORCH
+# source: https://github.com/mivanit/python-project-makefile-template/tree/main/scripts/check_torch.py
+
+"print info about current python, torch, cuda, and devices"
+
+from __future__ import annotations
+
 import os
-import sys
 import re
 import subprocess
+import sys
 from typing import Any, Callable, Dict, List, Optional, Tuple, Union
 
 
@@ -375,6 +403,7 @@ def print_info_dict(
 	indent: str = "  ",
 	level: int = 1,
 ) -> None:
+	"pretty print the info"
 	indent_str: str = indent * level
 	longest_key_len: int = max(map(len, info.keys()))
 	for key, value in info.items():
@@ -386,29 +415,29 @@ def print_info_dict(
 
 
 def get_nvcc_info() -> Dict[str, str]:
+	"get info about cuda from nvcc --version"
 	# Run the nvcc command.
 	try:
-		result: subprocess.CompletedProcess[str] = subprocess.run(
-			["nvcc", "--version"],
+		result: subprocess.CompletedProcess[str] = subprocess.run(  # noqa: S603
+			["nvcc", "--version"],  # noqa: S607
 			check=True,
-			stdout=subprocess.PIPE,
-			stderr=subprocess.PIPE,
+			capture_output=True,
 			text=True,
 		)
-	except Exception as e:
+	except Exception as e:  # noqa: BLE001
 		return {"Failed to run 'nvcc --version'": str(e)}
 
 	output: str = result.stdout
 	lines: List[str] = [line.strip() for line in output.splitlines() if line.strip()]
 
 	# Ensure there are exactly 5 lines in the output.
-	assert len(lines) == 5, (
+	assert len(lines) == 5, (  # noqa: PLR2004
 		f"Expected exactly 5 lines from nvcc --version, got {len(lines)} lines:\n{output}"
 	)
 
 	# Compile shared regex for release info.
 	release_regex: re.Pattern = re.compile(
-		r"Cuda compilation tools,\s*release\s*([^,]+),\s*(V.+)"
+		r"Cuda compilation tools,\s*release\s*([^,]+),\s*(V.+)",
 	)
 
 	# Define a mapping for each desired field:
@@ -429,9 +458,10 @@ def get_nvcc_info() -> Dict[str, str]:
 	for key, (line_index, pattern, group_index, transform) in patterns.items():
 		match: Optional[re.Match] = pattern.search(lines[line_index])
 		if not match:
-			raise ValueError(
+			err_msg: str = (
 				f"Unable to parse {key} from nvcc output: {lines[line_index]}"
 			)
+			raise ValueError(err_msg)
 		info[key] = transform(match.group(group_index))
 
 	info["release_short"] = info["release"].replace(".", "").strip()
@@ -440,6 +470,7 @@ def get_nvcc_info() -> Dict[str, str]:
 
 
 def get_torch_info() -> Tuple[List[Exception], Dict[str, Any]]:
+	"get info about pytorch and cuda devices"
 	exceptions: List[Exception] = []
 	info: Dict[str, Any] = {}
 
@@ -462,7 +493,7 @@ def get_torch_info() -> Tuple[List[Exception], Dict[str, Any]]:
 						current_device_info: Dict[str, Union[str, int]] = {}
 
 						dev_prop = torch.cuda.get_device_properties(
-							torch.device(f"cuda:{current_device}")
+							torch.device(f"cuda:{current_device}"),
 						)
 
 						current_device_info["name"] = dev_prop.name
@@ -482,19 +513,21 @@ def get_torch_info() -> Tuple[List[Exception], Dict[str, Any]]:
 
 						info[f"device cuda:{current_device}"] = current_device_info
 
-					except Exception as e:
+					except Exception as e:  # noqa: PERF203,BLE001
 						exceptions.append(e)
 			else:
-				raise Exception(
+				err_msg_nodevice: str = (
 					f"{torch.cuda.device_count() = } devices detected, invalid"
 				)
+				raise ValueError(err_msg_nodevice)  # noqa: TRY301
 
 		else:
-			raise Exception(
-				f"CUDA is NOT available in torch: {torch.cuda.is_available() =}"
+			err_msg_nocuda: str = (
+				f"CUDA is NOT available in torch: {torch.cuda.is_available() = }"
 			)
+			raise ValueError(err_msg_nocuda)  # noqa: TRY301
 
-	except Exception as e:
+	except Exception as e:  # noqa: BLE001
 		exceptions.append(e)
 
 	return exceptions, info
@@ -506,10 +539,10 @@ if __name__ == "__main__":
 		{
 			"python executable path: sys.executable": str(sys.executable),
 			"sys.platform": sys.platform,
-			"current working directory: os.getcwd()": os.getcwd(),
+			"current working directory: os.getcwd()": os.getcwd(),  # noqa: PTH109
 			"Host name: os.name": os.name,
 			"CPU count: os.cpu_count()": str(os.cpu_count()),
-		}
+		},
 	)
 
 	nvcc_info: Dict[str, Any] = get_nvcc_info()
@@ -532,17 +565,23 @@ export SCRIPT_CHECK_TORCH
 
 # get todo's from the code
 define SCRIPT_GET_TODOS
+# source: https://github.com/mivanit/python-project-makefile-template/tree/main/scripts/get_todos.py
+
+"read all TODO type comments and write them to markdown, jsonl, html. configurable in pyproject.toml"
+
 from __future__ import annotations
 
-import urllib.parse
 import argparse
 import fnmatch
-from dataclasses import asdict, dataclass, field
 import json
+import textwrap
+import urllib.parse
+import warnings
+from dataclasses import asdict, dataclass, field
+from functools import reduce
 from pathlib import Path
 from typing import Any, Dict, List, Union
-from functools import reduce
-import warnings
+
 from jinja2 import Template
 
 try:
@@ -553,7 +592,8 @@ except ImportError:
 TOOL_PATH: str = "tool.makefile.inline-todo"
 
 
-def deep_get(d: dict, path: str, default: Any = None, sep: str = ".") -> Any:
+def deep_get(d: dict, path: str, default: Any = None, sep: str = ".") -> Any:  # noqa: ANN401
+	"get a value from a nested dictionary"
 	return reduce(
 		lambda x, y: x.get(y, default) if isinstance(x, dict) else default,  # function
 		path.split(sep) if isinstance(path, str) else path,  # sequence
@@ -561,7 +601,7 @@ def deep_get(d: dict, path: str, default: Any = None, sep: str = ".") -> Any:
 	)
 
 
-TEMPLATE_MD: str = """\
+_TEMPLATE_MD_LIST: str = """\
 # Inline TODOs
 
 {% for tag, file_map in grouped|dictsort %}
@@ -570,12 +610,12 @@ TEMPLATE_MD: str = """\
 ## [`{{ filepath }}`](/{{ filepath }})
 {% for itm in item_list %}
 - {{ itm.stripped_title }}  
-  local link: [`/{{ filepath }}#{{ itm.line_num }}`](/{{ filepath }}#{{ itm.line_num }}) 
+  local link: [`/{{ filepath }}:{{ itm.line_num }}`](/{{ filepath }}#L{{ itm.line_num }}) 
   | view on GitHub: [{{ itm.file }}#L{{ itm.line_num }}]({{ itm.code_url | safe }})
   | [Make Issue]({{ itm.issue_url | safe }})
 {% if itm.context %}
   ```{{ itm.file_lang }}
-{{ itm.context.strip() }}
+{{ itm.context_indented }}
   ```
 {% endif %}
 {% endfor %}
@@ -583,6 +623,20 @@ TEMPLATE_MD: str = """\
 {% endfor %}
 {% endfor %}
 """
+
+_TEMPLATE_MD_TABLE: str = """\
+# Inline TODOs
+
+| Location | Tag | Todo | GitHub | Issue |
+|:---------|:----|:-----|:-------|:------|
+{% for itm in all_items %}| [`{{ itm.file }}:{{ itm.line_num }}`](/{{ itm.file }}#L{{ itm.line_num }}) | {{ itm.tag }} | {{ itm.stripped_title_escaped }} | [View]({{ itm.code_url | safe }}) | [Create]({{ itm.issue_url | safe }}) |
+{% endfor %}
+"""
+
+TEMPLATES_MD: Dict[str, str] = dict(
+	standard=_TEMPLATE_MD_LIST,
+	table=_TEMPLATE_MD_TABLE,
+)
 
 TEMPLATE_ISSUE: str = """\
 # source
@@ -600,14 +654,16 @@ TEMPLATE_ISSUE: str = """\
 class Config:
 	"""Configuration for the inline-todo scraper"""
 
-	search_dir: Path = Path(".")
-	out_file: Path = Path("docs/todo-inline.md")
+	search_dir: Path = Path()
+	out_file_base: Path = Path("docs/todo-inline")
 	tags: List[str] = field(
-		default_factory=lambda: ["CRIT", "TODO", "FIXME", "HACK", "BUG"]
+		default_factory=lambda: ["CRIT", "TODO", "FIXME", "HACK", "BUG"],
 	)
 	extensions: List[str] = field(default_factory=lambda: ["py", "md"])
 	exclude: List[str] = field(default_factory=lambda: ["docs/**", ".venv/**"])
 	context_lines: int = 2
+	valid_post_tag: Union[str, List[str]] = " \t:<>|[](){{}}"
+	valid_pre_tag: Union[str, List[str]] = " \t:<>|[](){{}}#"
 	tag_label_map: Dict[str, str] = field(
 		default_factory=lambda: {
 			"CRIT": "bug",
@@ -615,7 +671,7 @@ class Config:
 			"FIXME": "bug",
 			"BUG": "bug",
 			"HACK": "enhancement",
-		}
+		},
 	)
 	extension_lang_map: Dict[str, str] = field(
 		default_factory=lambda: {
@@ -624,11 +680,11 @@ class Config:
 			"html": "html",
 			"css": "css",
 			"js": "javascript",
-		}
+		},
 	)
 
-	template_md: str = TEMPLATE_MD
-	# template for the output markdown file
+	templates_md: dict[str, str] = field(default_factory=lambda: TEMPLATES_MD)
+	# templates for the output markdown file
 
 	template_issue: str = TEMPLATE_ISSUE
 	# template for the issue creation
@@ -638,6 +694,7 @@ class Config:
 
 	@property
 	def template_html(self) -> str:
+		"read the html template"
 		return self.template_html_source.read_text(encoding="utf-8")
 
 	template_code_url_: str = "{repo_url}/blob/{branch}/{file}#L{line_num}"
@@ -645,8 +702,10 @@ class Config:
 
 	@property
 	def template_code_url(self) -> str:
+		"code url with repo url and branch substituted"
 		return self.template_code_url_.replace("{repo_url}", self.repo_url).replace(
-			"{branch}", self.branch
+			"{branch}",
+			self.branch,
 		)
 
 	repo_url: str = "UNKNOWN"
@@ -657,6 +716,7 @@ class Config:
 
 	@classmethod
 	def read(cls, config_file: Path) -> Config:
+		"read from a file, or return default"
 		output: Config
 		if config_file.is_file():
 			# read file and load if present
@@ -673,14 +733,16 @@ class Config:
 					repo_url = urls["repository"]
 				if "github" in urls:
 					repo_url = urls["github"]
-			except Exception as e:
+			except Exception as e:  # noqa: BLE001
 				warnings.warn(
-					f"No repository URL found in pyproject.toml, 'make issue' links will not work.\n{e}"
+					f"No repository URL found in pyproject.toml, 'make issue' links will not work.\n{e}",
 				)
 
 			# load the inline-todo config if present
 			data_inline_todo: Dict[str, Any] = deep_get(
-				d=data, path=TOOL_PATH, default={}
+				d=data,
+				path=TOOL_PATH,
+				default={},
 			)
 
 			if "repo_url" not in data_inline_todo:
@@ -695,9 +757,19 @@ class Config:
 
 	@classmethod
 	def load(cls, data: dict) -> Config:
+		"load from a dictionary, converting to `Path` as needed"
+		# process variables that should be paths
 		data = {
-			k: Path(v) if k in {"search_dir", "out_file", "template_html_source"} else v
+			k: Path(v)
+			if k in {"search_dir", "out_file_base", "template_html_source"}
+			else v
 			for k, v in data.items()
+		}
+
+		# default value for the templates
+		data["templates_md"] = {
+			**TEMPLATES_MD,
+			**data.get("templates_md", {}),
 		}
 
 		return cls(**data)
@@ -718,6 +790,7 @@ class TodoItem:
 	context: str = ""
 
 	def serialize(self) -> Dict[str, Union[str, int]]:
+		"serialize to a dict we can dump to json"
 		return {
 			**asdict(self),
 			"issue_url": self.issue_url,
@@ -725,6 +798,12 @@ class TodoItem:
 			"stripped_title": self.stripped_title,
 			"code_url": self.code_url,
 		}
+
+	@property
+	def context_indented(self) -> str:
+		"""Returns the context with each line indented"""
+		dedented: str = textwrap.dedent(self.context)
+		return textwrap.indent(dedented, "  ")
 
 	@property
 	def code_url(self) -> str:
@@ -740,6 +819,11 @@ class TodoItem:
 		return self.content.split(self.tag, 1)[-1].lstrip(":").strip()
 
 	@property
+	def stripped_title_escaped(self) -> str:
+		"""Returns the title of the issue, stripped of the tag and escaped for markdown"""
+		return self.stripped_title.replace("|", "\\|")
+
+	@property
 	def issue_url(self) -> str:
 		"""Constructs a GitHub issue creation URL for a given TodoItem."""
 		# title
@@ -751,6 +835,7 @@ class TodoItem:
 			file=self.file,
 			line_num=self.line_num,
 			context=self.context,
+			context_indented=self.context_indented,
 			code_url=self.code_url,
 			file_lang=self.file_lang,
 		).strip()
@@ -770,8 +855,7 @@ class TodoItem:
 
 def scrape_file(
 	file_path: Path,
-	tags: List[str],
-	context_lines: int,
+	cfg: Config,
 ) -> List[TodoItem]:
 	"""Scrapes a file for lines containing any of the specified tags"""
 	items: List[TodoItem] = []
@@ -779,21 +863,32 @@ def scrape_file(
 		return items
 	lines: List[str] = file_path.read_text(encoding="utf-8").splitlines(True)
 
+	# over all lines
 	for i, line in enumerate(lines):
-		for tag in tags:
+		# over all tags
+		for tag in cfg.tags:
+			# check tag is present
 			if tag in line[:200]:
-				start: int = max(0, i - context_lines)
-				end: int = min(len(lines), i + context_lines + 1)
-				snippet: str = "".join(lines[start:end])
-				items.append(
-					TodoItem(
-						tag=tag,
-						file=file_path.as_posix(),
-						line_num=i + 1,
-						content=line.strip("\n"),
-						context=snippet.strip("\n"),
+				# check tag is surrounded by valid strings
+				tag_idx_start: int = line.index(tag)
+				tag_idx_end: int = tag_idx_start + len(tag)
+				if (
+					line[tag_idx_start - 1] in cfg.valid_pre_tag
+					and line[tag_idx_end] in cfg.valid_post_tag
+				):
+					# get the context and add the item
+					start: int = max(0, i - cfg.context_lines)
+					end: int = min(len(lines), i + cfg.context_lines + 1)
+					snippet: str = "".join(lines[start:end])
+					items.append(
+						TodoItem(
+							tag=tag,
+							file=file_path.as_posix(),
+							line_num=i + 1,
+							content=line.strip("\n"),
+							context=snippet.strip("\n"),
+						),
 					)
-				)
 				break
 	return items
 
@@ -808,12 +903,11 @@ def collect_files(
 	for ext in extensions:
 		results.extend(search_dir.rglob(f"*.{ext}"))
 
-	filtered: List[Path] = []
-	for f in results:
-		# Skip if it matches any exclude glob
-		if not any(fnmatch.fnmatch(f.as_posix(), pattern) for pattern in exclude):
-			filtered.append(f)
-	return filtered
+	return [
+		f
+		for f in results
+		if not any(fnmatch.fnmatch(f.as_posix(), pattern) for pattern in exclude)
+	]
 
 
 def group_items_by_tag_and_file(
@@ -830,7 +924,8 @@ def group_items_by_tag_and_file(
 
 
 def main(config_file: Path) -> None:
-	global CFG
+	"cli interface to get todos"
+	global CFG  # noqa: PLW0603
 	# read configuration
 	cfg: Config = Config.read(config_file)
 	CFG = cfg
@@ -841,37 +936,46 @@ def main(config_file: Path) -> None:
 	n_files: int = len(files)
 	for i, fpath in enumerate(files):
 		print(f"Scraping {i + 1:>2}/{n_files:>2}: {fpath.as_posix():<60}", end="\r")
-		all_items.extend(scrape_file(fpath, cfg.tags, cfg.context_lines))
+		all_items.extend(scrape_file(fpath, cfg))
 
 	# create dir
-	cfg.out_file.parent.mkdir(parents=True, exist_ok=True)
+	cfg.out_file_base.parent.mkdir(parents=True, exist_ok=True)
 
 	# write raw to jsonl
-	with open(cfg.out_file.with_suffix(".jsonl"), "w", encoding="utf-8") as f:
+	with open(cfg.out_file_base.with_suffix(".jsonl"), "w", encoding="utf-8") as f:
 		for itm in all_items:
 			f.write(json.dumps(itm.serialize()) + "\n")
 
 	# group, render
 	grouped: Dict[str, Dict[str, List[TodoItem]]] = group_items_by_tag_and_file(
-		all_items
+		all_items,
 	)
 
-	rendered: str = Template(cfg.template_md).render(grouped=grouped)
-
-	# write md output
-	cfg.out_file.with_suffix(".md").write_text(rendered, encoding="utf-8")
+	# render each template and save
+	for template_key, template in cfg.templates_md.items():
+		rendered: str = Template(template).render(grouped=grouped, all_items=all_items)
+		template_out_path: Path = Path(
+			cfg.out_file_base.with_stem(
+				cfg.out_file_base.stem + f"-{template_key}",
+			).with_suffix(".md"),
+		)
+		template_out_path.write_text(rendered, encoding="utf-8")
 
 	# write html output
 	try:
 		html_rendered: str = cfg.template_html.replace(
-			"//{{DATA}}//", json.dumps([itm.serialize() for itm in all_items])
+			"//{{DATA}}//",
+			json.dumps([itm.serialize() for itm in all_items]),
 		)
-		cfg.out_file.with_suffix(".html").write_text(html_rendered, encoding="utf-8")
-	except Exception as e:
+		cfg.out_file_base.with_suffix(".html").write_text(
+			html_rendered,
+			encoding="utf-8",
+		)
+	except Exception as e:  # noqa: BLE001
 		warnings.warn(f"Failed to write html output: {e}")
 
 	print("wrote to:")
-	print(cfg.out_file.with_suffix(".md").as_posix())
+	print(cfg.out_file_base.with_suffix(".md").as_posix())
 
 
 if __name__ == "__main__":
@@ -893,6 +997,12 @@ export SCRIPT_GET_TODOS
 
 # markdown to html using pdoc
 define SCRIPT_PDOC_MARKDOWN2_CLI
+# source: https://github.com/mivanit/python-project-makefile-template/tree/main/scripts/pdoc_markdown2_cli.py
+
+"cli to convert markdown files to HTML using pdoc's markdown2"
+
+from __future__ import annotations
+
 import argparse
 from pathlib import Path
 from typing import Optional
@@ -922,8 +1032,9 @@ def convert_file(
 
 
 def main() -> None:
+	"cli entry point"
 	parser: argparse.ArgumentParser = argparse.ArgumentParser(
-		description="Convert markdown files to HTML using pdoc's markdown2"
+		description="Convert markdown files to HTML using pdoc's markdown2",
 	)
 	parser.add_argument("input", type=Path, help="Input markdown file path")
 	parser.add_argument("output", type=Path, help="Output HTML file path")
@@ -941,7 +1052,10 @@ def main() -> None:
 	args: argparse.Namespace = parser.parse_args()
 
 	convert_file(
-		args.input, args.output, safe_mode=args.safe_mode, encoding=args.encoding
+		args.input,
+		args.output,
+		safe_mode=args.safe_mode,
+		encoding=args.encoding,
 	)
 
 
@@ -954,8 +1068,14 @@ export SCRIPT_PDOC_MARKDOWN2_CLI
 
 # clean up the docs (configurable in pyproject.toml)
 define SCRIPT_DOCS_CLEAN
-import sys
+# source: https://github.com/mivanit/python-project-makefile-template/tree/main/scripts/docs_clean.py
+
+"clean up docs directory based on pyproject.toml configuration"
+
+from __future__ import annotations
+
 import shutil
+import sys
 from functools import reduce
 from pathlib import Path
 from typing import Any, List, Set
@@ -969,7 +1089,7 @@ TOOL_PATH: str = "tool.makefile.docs"
 DEFAULT_DOCS_DIR: str = "docs"
 
 
-def deep_get(d: dict, path: str, default: Any = None, sep: str = ".") -> Any:
+def deep_get(d: dict, path: str, default: Any = None, sep: str = ".") -> Any:  # noqa: ANN401
 	"""Get nested dictionary value via separated path with default."""
 	return reduce(
 		lambda x, y: x.get(y, default) if isinstance(x, dict) else default,  # function
@@ -979,6 +1099,7 @@ def deep_get(d: dict, path: str, default: Any = None, sep: str = ".") -> Any:
 
 
 def read_config(pyproject_path: Path) -> tuple[Path, Set[Path]]:
+	"read configuration from pyproject.toml"
 	if not pyproject_path.is_file():
 		return Path(DEFAULT_DOCS_DIR), set()
 
@@ -993,13 +1114,18 @@ def read_config(pyproject_path: Path) -> tuple[Path, Set[Path]]:
 	for p in preserved:
 		full_path = (docs_dir / p).resolve()
 		if not full_path.as_posix().startswith(docs_dir.resolve().as_posix()):
-			raise ValueError(f"Preserved path '{p}' must be within docs directory")
+			err_msg: str = f"Preserved path '{p}' must be within docs directory"
+			raise ValueError(err_msg)
 		preserve_set.add(docs_dir / p)
 
 	return docs_dir, preserve_set
 
 
 def clean_docs(docs_dir: Path, preserved: Set[Path]) -> None:
+	"""delete files not in preserved set
+
+	TODO: this is not recursive
+	"""
 	for path in docs_dir.iterdir():
 		if path.is_file() and path not in preserved:
 			path.unlink()
@@ -1012,6 +1138,7 @@ def main(
 	docs_dir_cli: str,
 	extra_preserve: list[str],
 ) -> None:
+	"Clean up docs directory based on pyproject.toml configuration."
 	docs_dir: Path
 	preserved: Set[Path]
 	docs_dir, preserved = read_config(Path(pyproject_path))
@@ -1035,15 +1162,18 @@ export SCRIPT_DOCS_CLEAN
 
 # generate a report of the mypy output
 define SCRIPT_MYPY_REPORT
+# source: https://github.com/mivanit/python-project-makefile-template/tree/main/scripts/mypy_report.py
+
 "usage: mypy ... | mypy_report.py [--mode jsonl|exclude]"
 
 from __future__ import annotations
-import sys
+
 import argparse
-import re
 import json
-from typing import List, Dict, Tuple
+import re
+import sys
 from pathlib import Path
+from typing import Dict, List, Tuple
 
 
 def parse_mypy_output(lines: List[str]) -> Dict[str, int]:
@@ -1060,13 +1190,15 @@ def parse_mypy_output(lines: List[str]) -> Dict[str, int]:
 
 
 def main() -> None:
-	parser = argparse.ArgumentParser()
+	"cli interface for mypy_report"
+	parser: argparse.ArgumentParser = argparse.ArgumentParser()
 	parser.add_argument("--mode", choices=["jsonl", "toml"], default="jsonl")
-	args = parser.parse_args()
+	args: argparse.Namespace = parser.parse_args()
 	lines: List[str] = sys.stdin.read().splitlines()
 	error_dict: Dict[str, int] = parse_mypy_output(lines)
 	sorted_errors: List[Tuple[str, int]] = sorted(
-		error_dict.items(), key=lambda x: x[1]
+		error_dict.items(),
+		key=lambda x: x[1],
 	)
 	if len(sorted_errors) == 0:
 		print("# no errors found!")
@@ -1078,7 +1210,8 @@ def main() -> None:
 		for fname, count in sorted_errors:
 			print(f'"{fname}", # {count}')
 	else:
-		raise ValueError(f"unknown mode {args.mode}")
+		err_msg: str = f"unknown mode {args.mode}"
+		raise ValueError(err_msg)
 	print(f"# total errors: {sum(error_dict.values())}")
 
 
@@ -1379,7 +1512,6 @@ todo:
 	@echo "get all TODO's from the code"
 	$(PYTHON) -c "$$SCRIPT_GET_TODOS"
 
-
 .PHONY: lmcat-tree
 lmcat-tree:
 	@echo "show in console the lmcat tree view"
@@ -1487,7 +1619,7 @@ clean:
 	rm -rf build
 	rm -rf $(PACKAGE_NAME).egg-info
 	rm -rf $(TESTS_TEMP_DIR)
-	$(PYTHON_BASE) -Bc "import pathlib; [p.unlink() for path in ['$(PACKAGE_NAME)', '$(TESTS_DIR)', '$(DOCS_DIR)'] for pattern in ['*.py[co]', '__pycache__/*'] for p in pathlib.Path(path).rglob(pattern)]"
+	$(PYTHON) -Bc "import pathlib; [p.unlink() for path in ['$(PACKAGE_NAME)', '$(TESTS_DIR)', '$(DOCS_DIR)'] for pattern in ['*.py[co]', '__pycache__/*'] for p in pathlib.Path(path).rglob(pattern)]"
 
 .PHONY: clean-all
 clean-all: clean docs-clean dep-clean
@@ -1514,7 +1646,7 @@ clean-all: clean docs-clean dep-clean
 help-targets:
 	@echo -n "# make targets"
 	@echo ":"
-	@cat Makefile | sed -n '/^\.PHONY: / h; /\(^\t@*echo\|^\t:\)/ {H; x; /PHONY/ s/.PHONY: \(.*\)\n.*"\(.*\)"/    make \1\t\2/p; d; x}'| sort -k2,2 |expand -t 30
+	@cat makefile | sed -n '/^\.PHONY: / h; /\(^\t@*echo\|^\t:\)/ {H; x; /PHONY/ s/.PHONY: \(.*\)\n.*"\(.*\)"/    make \1\t\2/p; d; x}'| sort -k2,2 |expand -t 30
 
 
 .PHONY: info
