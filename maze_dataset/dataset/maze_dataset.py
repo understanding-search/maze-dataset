@@ -1101,48 +1101,49 @@ class MazeDatasetFilters:
 
 		return new_dataset
 
-		# the code below is for doing some smarter collecting and type checking. Probably will delete.
-		"""
-        collect either the type at the field, or the shape of the field if it is an array
-        metadata_types: dict[str, set[type, tuple]] = dict()
-        for maze in new_dataset:
-            for key, value in maze.generation_meta.items():
-                if key not in metadata_types:
-                    metadata_types[key] = set()
 
-                if isinstance(value, np.ndarray):
-                    metadata_types[key].add(value.shape)
-                else:
-                    metadata_types[key].add(type(value))
+# the code below is for doing some smarter collecting and type checking. Probably will delete.
+"""
+collect either the type at the field, or the shape of the field if it is an array
+metadata_types: dict[str, set[type, tuple]] = dict()
+for maze in new_dataset:
+	for key, value in maze.generation_meta.items():
+		if key not in metadata_types:
+			metadata_types[key] = set()
 
-        # figure out what to do for each field
-        metadata_actions: dict[str, typing.Callable] = dict()
-        for key, key_type in metadata_types.items():
-            if all(isinstance(kt, tuple) for kt in key_type):
-                if all(kt == (2,) for kt in key_type):
-                    # its all coords, do a statcounter on those coords
-                    metadata_actions[key] = lambda vals: Counter(tuple(x) for x in vals)
-                elif all(
-                    (len(kt) == 2) and (kt[1] == 2) 
-                    for kt in key_type
-                ):
-                    # its a list of coords, do a statcounter on those coords
-                    metadata_actions[key] = lambda vals: Counter(
-                        tuple(x) for x in np.concatenate(vals)
-                    )
-                else:
-                    # its a list of something else, do a counter on those
-                    # TODO: throw except here?
-                    metadata_actions[key] = Counter
-                    
-            elif all(kt in (bool, int, float) for kt in key_type):
-                # statcounter for numeric types
-                metadata_actions[key] = StatCounter
-            elif all(kt == str for kt in key_type):
-                # counter for string types
-                metadata_actions[key] = Counter
-            else:
-                # counter for everything else
-                # TODO: throw except here?
-                metadata_actions[key] = Counter
-        """
+		if isinstance(value, np.ndarray):
+			metadata_types[key].add(value.shape)
+		else:
+			metadata_types[key].add(type(value))
+
+# figure out what to do for each field
+metadata_actions: dict[str, typing.Callable] = dict()
+for key, key_type in metadata_types.items():
+	if all(isinstance(kt, tuple) for kt in key_type):
+		if all(kt == (2,) for kt in key_type):
+			# its all coords, do a statcounter on those coords
+			metadata_actions[key] = lambda vals: Counter(tuple(x) for x in vals)
+		elif all(
+			(len(kt) == 2) and (kt[1] == 2) 
+			for kt in key_type
+		):
+			# its a list of coords, do a statcounter on those coords
+			metadata_actions[key] = lambda vals: Counter(
+				tuple(x) for x in np.concatenate(vals)
+			)
+		else:
+			# its a list of something else, do a counter on those
+			# TODO: throw except here?
+			metadata_actions[key] = Counter
+			
+	elif all(kt in (bool, int, float) for kt in key_type):
+		# statcounter for numeric types
+		metadata_actions[key] = StatCounter
+	elif all(kt == str for kt in key_type):
+		# counter for string types
+		metadata_actions[key] = Counter
+	else:
+		# counter for everything else
+		# TODO: throw except here?
+		metadata_actions[key] = Counter
+"""

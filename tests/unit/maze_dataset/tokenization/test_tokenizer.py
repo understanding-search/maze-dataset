@@ -7,10 +7,10 @@ from typing import Iterable, Sequence
 
 import frozendict
 import numpy as np
+import pytest
 from jaxtyping import Int
 from muutils.misc import flatten
 from muutils.mlutils import GLOBAL_SEED
-from pytest import mark, param
 
 from maze_dataset import (
 	VOCAB,
@@ -58,8 +58,8 @@ from maze_dataset.utils import all_instances, lattice_max_degrees, manhattan_dis
 NUM_TOKENIZERS_TO_TEST = 100
 
 
-@mark.parametrize(
-	"tok_mode, max_grid_size",
+@pytest.mark.parametrize(
+	("tok_mode", "max_grid_size"),
 	list(
 		product(
 			[
@@ -158,10 +158,10 @@ def test_tokenizer():
 			print(color_maze_tokens_AOTP(maze_tok, fmt="terminal"))
 
 
-@mark.parametrize(
-	"maze_ascii, tokenizer, tokens",
+@pytest.mark.parametrize(
+	("maze_ascii", "tokenizer", "tokens"),
 	[
-		param(
+		pytest.param(
 			ASCII_MAZES[maze_ascii_key][1],  # maze_ascii
 			tokenizer,  # tok_mode
 			ASCII_MAZES[maze_ascii_key][0],  # tokens
@@ -203,10 +203,10 @@ def test_maze_to_tokens_roundtrip(
 	assert equal_except_adj_list_sequence(tokens_original_split, tokens_roundtrip)
 
 
-@mark.parametrize(
-	"tok_mode, max_grid_size, result",
+@pytest.mark.parametrize(
+	("tok_mode", "max_grid_size", "result"),
 	[
-		param(
+		pytest.param(
 			tok_mode,
 			max_grid_size,
 			MazeTokenizer(tokenization_mode=tok_mode, max_grid_size=max_grid_size),
@@ -235,13 +235,13 @@ def test_to_legacy_tokenizer(
 # =============================
 
 
-@mark.parametrize(
-	"maze,legacy_tokenizer",
+@pytest.mark.parametrize(
+	("maze", "legacy_tokenizer"),
 	[
-		param(maze[0], tok_spec, id=f"{tok_spec.value}-maze{maze[1]}")
+		pytest.param(maze[0], tok_spec, id=f"{tok_spec.value}-maze{maze[1]}")
 		for maze, tok_spec in itertools.product(
 			[(maze, i) for i, maze in enumerate(MIXED_MAZES)],
-			[tok_mode for tok_mode in TokenizationMode],
+			[tok_mode for tok_mode in TokenizationMode],  # noqa: C416
 		)
 	],
 )
@@ -258,23 +258,24 @@ def test_to_tokens_backwards_compatible(
 		assert equal_except_adj_list_sequence(toks, toks_legacy)
 		assert equal_except_adj_list_sequence(toks2, toks_legacy)
 	except AssertionError as e:
-		raise AssertionError(
+		msg: str = (
 			"Tokens from `as_tokens` and `to_tokens` should be equal to tokens from `as_tokens` with the legacy tokenizer.\n"
 			f"{len(toks) = }, {len(toks2) = }, {len(toks_legacy) = }\n"
-			f"{toks = }\n{toks2 = }\n{toks_legacy = }",
-		) from e
+			f"{toks = }\n{toks2 = }\n{toks_legacy = }"
+		)
+		raise AssertionError(msg) from e
 
 
-@mark.parametrize(
-	"coords, legacy_tok_mode",
+@pytest.mark.parametrize(
+	("coords", "legacy_tok_mode"),
 	[
-		param(
+		pytest.param(
 			coords,
 			tok_mode,
 			id=f"{tok_mode.value}-coords(type={type(coords[0])},len={len(coords)})",
 		)
 		for tok_mode, coords in itertools.product(
-			[tok_mode for tok_mode in TokenizationMode],
+			[tok_mode for tok_mode in TokenizationMode],  # noqa: C416
 			[
 				*[[maze.start_pos] for maze in MAZE_DATASET.mazes[:2]],
 				[maze.start_pos for maze in MAZE_DATASET.mazes],
@@ -295,13 +296,13 @@ def test_coords_to_strings_backwards_compatible(
 	assert strings == strings_legacy
 
 
-@mark.parametrize(
-	"maze,tok_mode",
+@pytest.mark.parametrize(
+	("maze", "tok_mode"),
 	[
-		param(maze[0], tok_spec, id=f"{tok_spec.value}-maze{maze[1]}")
+		pytest.param(maze[0], tok_spec, id=f"{tok_spec.value}-maze{maze[1]}")
 		for maze, tok_spec in itertools.product(
 			[(maze, i) for i, maze in enumerate(MIXED_MAZES)],
-			[tok_mode for tok_mode in TokenizationMode],
+			[tok_mode for tok_mode in TokenizationMode],  # noqa: C416
 		)
 	],
 )
@@ -321,10 +322,10 @@ def test_from_tokens_backwards_compatible(
 # ===========================
 
 
-@mark.parametrize(
-	"el, result",
+@pytest.mark.parametrize(
+	("el", "result"),
 	[
-		param(elem, result, id=elem.name)
+		pytest.param(elem, result, id=elem.name)
 		for elem, result in [
 			(CoordTokenizers.CTT(), True),
 			(CoordTokenizers.CTT(intra=True), True),
@@ -374,10 +375,10 @@ def test_tokenizer_element_is_valid(el: _TokenizerElement, result: bool):
 	assert el.is_valid() == result
 
 
-@mark.parametrize(
-	"tokenizer, result",
+@pytest.mark.parametrize(
+	("tokenizer", "result"),
 	[
-		param(tokenizer, result, id=str(tokenizer))
+		pytest.param(tokenizer, result, id=str(tokenizer))
 		for tokenizer, result in [
 			(MazeTokenizerModular(), True),
 			(MazeTokenizerModular.from_legacy(TokenizationMode.AOTP_CTT_indexed), True),
@@ -402,11 +403,11 @@ def _helper_test_path_tokenizers(
 		footprint_inds
 	]
 	if StepTokenizers.Coord() in pt.step_tokenizers:
-		non_steps: set[CoordTup] = set(tuple(c) for c in maze.solution) - set(
+		non_steps: set[CoordTup] = {tuple(c) for c in maze.solution} - {
 			tuple(c) for c in footprints
-		)
-		assert all([ct.to_tokens(coord)[0] in path_toks_set for coord in footprints])
-		assert all([ct.to_tokens(coord)[0] not in path_toks_set for coord in non_steps])
+		}
+		assert all(ct.to_tokens(coord)[0] in path_toks_set for coord in footprints)
+		assert all(ct.to_tokens(coord)[0] not in path_toks_set for coord in non_steps)
 	if StepTokenizers.Distance() in pt.step_tokenizers:
 		distances: list[int] = footprint_inds[1:] - footprint_inds[:-1]
 		assert (
@@ -436,16 +437,16 @@ def _helper_test_path_tokenizers(
 		)
 
 
-@mark.parametrize(
-	"pt,manual_maze",
+@pytest.mark.parametrize(
+	("pt", "manual_maze"),
 	[
-		param(tokenizer, maze_kv[1], id=f"{tokenizer.name}-{maze_kv[0]}")
+		pytest.param(tokenizer, maze_kv[1], id=f"{tokenizer.name}-{maze_kv[0]}")
 		for maze_kv, tokenizer in itertools.product(
 			ASCII_MAZES.items(),
 			random.sample(
 				list(
 					all_instances(
-						PathTokenizers._PathTokenizer,
+						PathTokenizers._PathTokenizer,  # noqa: SLF001
 						{_TokenizerElement: lambda x: x.is_valid()},
 					),
 				),
@@ -460,9 +461,9 @@ def test_path_tokenizers(pt: PathTokenizers._PathTokenizer, manual_maze: MANUAL_
 		case StepSizes.Singles:
 			footprint_inds = range(solved_maze.solution.shape[0])
 		case StepSizes.Straightaways:
-			swy_coordtup_set: set[CoordTup] = set(
+			swy_coordtup_set: set[CoordTup] = {
 				tuple(c) for c in manual_maze.straightaway_footprints
-			)
+			}
 			footprint_inds: list[int] = [
 				i
 				for i, c in enumerate(solved_maze.solution)
@@ -473,7 +474,7 @@ def test_path_tokenizers(pt: PathTokenizers._PathTokenizer, manual_maze: MANUAL_
 				always_include_endpoints=True,
 			)[0]
 		case StepSizes.ForksAndStraightaways:
-			swy_step_inds: list[int] = StepSizes.Straightaways()._step_single_indices(
+			swy_step_inds: list[int] = StepSizes.Straightaways()._step_single_indices(  # noqa: SLF001
 				solved_maze,
 			)
 			footprint_inds: Int[np.ndarray, " footprint_index"] = np.concatenate(
@@ -492,14 +493,14 @@ def test_path_tokenizers(pt: PathTokenizers._PathTokenizer, manual_maze: MANUAL_
 	)
 
 
-@mark.parametrize(
-	"ep,maze",
+@pytest.mark.parametrize(
+	("ep", "maze"),
 	[
-		param(tokenizer, maze, id=f"{tokenizer.name}-maze[{i}]")
+		pytest.param(tokenizer, maze, id=f"{tokenizer.name}-maze[{i}]")
 		for (i, maze), tokenizer in itertools.product(
 			enumerate(MIXED_MAZES[:6]),
 			all_instances(
-				EdgePermuters._EdgePermuter,
+				EdgePermuters._EdgePermuter,  # noqa: SLF001
 				frozendict.frozendict({_TokenizerElement: lambda x: x.is_valid()}),
 			),
 		)
@@ -518,7 +519,7 @@ def test_edge_permuters(ep: EdgePermuters._EdgePermuter, maze: LatticeMaze):
 	)
 	assert np.array_equal(edges, edges_copy)
 	old_shape = edges.shape
-	permuted: ConnectionArray = ep._permute(edges)
+	permuted: ConnectionArray = ep._permute(edges)  # noqa: SLF001
 	match ep:
 		case EdgePermuters.RandomCoords():
 			assert permuted.shape == old_shape
@@ -526,7 +527,7 @@ def test_edge_permuters(ep: EdgePermuters._EdgePermuter, maze: LatticeMaze):
 			i = 0
 			while np.array_equal(permuted, edges_copy) and i < 2:
 				# Permute again in case for small mazes the random selection happened to not change anything
-				permuted: ConnectionArray = ep._permute(permuted)
+				permuted: ConnectionArray = ep._permute(permuted)  # noqa: SLF001
 				i += 1
 			assert not np.array_equal(permuted, edges_copy)
 		case EdgePermuters.BothCoords():
@@ -539,21 +540,21 @@ def test_edge_permuters(ep: EdgePermuters._EdgePermuter, maze: LatticeMaze):
 			assert edges is not permuted
 
 
-@mark.parametrize(
-	"es,maze",
+@pytest.mark.parametrize(
+	("es", "maze"),
 	[
-		param(tokenizer, maze, id=f"{tokenizer.name}-maze[{i}]")
+		pytest.param(tokenizer, maze, id=f"{tokenizer.name}-maze[{i}]")
 		for (i, maze), tokenizer in itertools.product(
 			enumerate(MIXED_MAZES[:6]),
 			all_instances(
-				EdgeSubsets._EdgeSubset,
+				EdgeSubsets._EdgeSubset,  # noqa: SLF001
 				frozendict.frozendict({_TokenizerElement: lambda x: x.is_valid()}),
 			),
 		)
 	],
 )
 def test_edge_subsets(es: EdgeSubsets._EdgeSubset, maze: LatticeMaze):
-	edges: ConnectionArray = es._get_edges(maze)
+	edges: ConnectionArray = es._get_edges(maze)  # noqa: SLF001
 	n: int = maze.grid_n
 	match type(es):
 		case EdgeSubsets.AllLatticeEdges:
@@ -578,14 +579,15 @@ def test_edge_subsets(es: EdgeSubsets._EdgeSubset, maze: LatticeMaze):
 	)
 
 
-@mark.parametrize(
-	"tok_elem,es,maze",
+@pytest.mark.parametrize(
+	("tok_elem", "es", "maze"),
 	[
-		param(tok_elem, es, maze, id=f"{tok_elem.name}-{es.name}-maze[{i}]")
+		# we do a little accessing private members here
+		pytest.param(tok_elem, es, maze, id=f"{tok_elem.name}-{es.name}-maze[{i}]")
 		for (i, maze), tok_elem, es in itertools.product(
 			enumerate(MIXED_MAZES[:6]),
 			all_instances(
-				EdgeGroupings._EdgeGrouping,
+				EdgeGroupings._EdgeGrouping,  # noqa: SLF001
 				frozendict.frozendict(
 					{
 						_TokenizerElement: lambda x: x.is_valid(),
@@ -596,7 +598,7 @@ def test_edge_subsets(es: EdgeSubsets._EdgeSubset, maze: LatticeMaze):
 				),
 			),
 			all_instances(
-				EdgeSubsets._EdgeSubset,
+				EdgeSubsets._EdgeSubset,  # noqa: SLF001
 				frozendict.frozendict({_TokenizerElement: lambda x: x.is_valid()}),
 			),
 		)
@@ -607,9 +609,10 @@ def test_edge_groupings(
 	es: EdgeSubsets._EdgeSubset,
 	maze: LatticeMaze,
 ):
-	edges: ConnectionArray = es._get_edges(maze)
+	# we do a little more accessing private members here
+	edges: ConnectionArray = es._get_edges(maze)  # noqa: SLF001
 	# n: int = maze.grid_n
-	groups: Sequence[ConnectionArray] = tok_elem._group_edges(edges)
+	groups: Sequence[ConnectionArray] = tok_elem._group_edges(edges)  # noqa: SLF001
 
 	assert all(
 		not np.any(np.diff(g[:, 0], axis=0)) for g in groups
@@ -644,16 +647,17 @@ def test_edge_groupings(
 random.seed(GLOBAL_SEED)
 
 
-@mark.parametrize(
-	"tok_elem,maze",
+@pytest.mark.parametrize(
+	("tok_elem", "maze"),
 	[
-		param(tok_elem, maze, id=f"{tok_elem.name}-maze[{i}]")
+		pytest.param(tok_elem, maze, id=f"{tok_elem.name}-maze[{i}]")
 		for (i, maze), tok_elem in itertools.product(
 			enumerate(MAZE_DATASET),
 			random.sample(
 				list(
 					all_instances(
-						AdjListTokenizers._AdjListTokenizer,
+						# yes we access a private member
+						AdjListTokenizers._AdjListTokenizer,  # noqa: SLF001
 						{
 							_TokenizerElement: lambda x: x.is_valid(),
 						},
@@ -664,7 +668,8 @@ random.seed(GLOBAL_SEED)
 		)
 	],
 )
-def test_adjlist_tokenizers(
+# too many branches and "too complex" but whatever
+def test_adjlist_tokenizers(  # noqa: PLR0912,C901
 	tok_elem: AdjListTokenizers._AdjListTokenizer,
 	maze: LatticeMaze,
 ):
@@ -682,9 +687,8 @@ def test_adjlist_tokenizers(
 		case EdgeSubsets.ConnectionEdges(walls=True):
 			edge_count *= n * (n - 1) * 2 - np.count_nonzero(maze.connection_list)
 		case _:
-			raise NotImplementedError(
-				f"`match` case missing for {tok_elem.edge_subset=}",
-			)
+			msg: str = f"`match` case missing for {tok_elem.edge_subset = }"
+			raise NotImplementedError(msg)
 
 	match tok_elem.edge_permuter:
 		case EdgePermuters.BothCoords():
@@ -710,9 +714,8 @@ def test_adjlist_tokenizers(
 			if tok_elem.edge_grouping.intra:
 				assert tok_counter[VOCAB.ADJLIST_INTRA] == edge_count
 		case _:
-			raise NotImplementedError(
-				f"`match` case missing for {tok_elem.edge_grouping=}",
-			)
+			msg: str = f"`match` case missing for {tok_elem.edge_grouping = }"
+			raise NotImplementedError(msg)
 
 	match type(tok_elem):
 		case AdjListTokenizers.AdjListCoord:
@@ -735,10 +738,10 @@ def test_adjlist_tokenizers(
 	assert tok_counter[VOCAB.CONNECTOR] + tok_counter[VOCAB.ADJLIST_WALL] == edge_count
 
 
-@mark.parametrize(
-	"tok_elem, valid",
+@pytest.mark.parametrize(
+	("tok_elem", "valid"),
 	[
-		param(
+		pytest.param(
 			tok_elem,
 			valid,
 			id=f"{tok_elem!r}",

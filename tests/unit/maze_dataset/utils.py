@@ -4,7 +4,6 @@ from typing import Callable, Iterable, Literal
 
 import pytest
 from muutils.misc import IsDataclass, dataclass_set_equals
-from pytest import mark, param
 
 from maze_dataset.utils import FiniteValued, all_instances
 
@@ -69,10 +68,10 @@ class DC9(DC7):
 		pass
 
 
-@mark.parametrize(
+@pytest.mark.parametrize(
 	("type_", "validation_funcs", "result"),
 	[
-		param(
+		pytest.param(
 			type_,
 			vfs,
 			result,

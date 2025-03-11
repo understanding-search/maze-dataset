@@ -133,10 +133,83 @@
         module = "fire"
         ignore_missing_imports = true
 
-[tool.ruff.lint]
-    ignore = [
-        "F722"
-    ]
+# ruff config
+[tool.ruff]
+	exclude = ["__pycache__"]
+
+	[tool.ruff.format]
+		indent-style = "tab"
+		skip-magic-trailing-comma = false
+
+	[tool.ruff.lint]
+		ignore = [
+			"F722", # doesn't like jaxtyping
+			"W191", # we like tabs
+			"D400", # missing-trailing-period
+			"D415", # missing-terminal-punctuation
+			"E501", # line-too-long
+			"S101", # assert is fine
+			"D403", # first-word-uncapitalized
+			"D206", # docstring-tab-indentation
+			"ERA001", # commented-out-code
+			"T201", # print is fine lmao
+			"C408", # calling dict() is fine
+			"UP015", # we like specifying the mode even if it's the default
+			"D300", # we like docstrings
+			# boolean positional arguments are fine
+			"FBT001", 
+			"FBT002",
+			"FBT003",
+			"PTH123", # opening files is fine
+			"RET505", # else return is fine
+			"FIX002", # `make todo` will give us the TODO comments
+			"PIE790", # be explicit about when we pass
+			"EM101", # fine to have string literal exceptions
+			"FURB129", # .readlines() is fine
+			"SIM108", # ternary operators can be hard to read, choose on a case-by-case basis
+			"PLR5501", # nested if else is fine, for readability
+			"D203", # docstring right after the class
+			"D213", # docstring on first line
+			"NPY002", # legacy numpy generator is fine
+			"D401", # dont care about imperative mood
+			# todos:
+			"TD001", # we allow tags besides "TODO"
+			"TD002", # dont care about author
+			"TD003", # `make todo` will give us a table where we can create issues
+			"FIX001", # FIXME comments are ok since `make todo` handles them
+			"PLR0913", # sometimes you have to have a lot of args
+			"B028", # fine to omit stacklevel on warnings
+			# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+			# only for old version compatibility
+			"UP007", # `Optional` is ok, we might not want to use `|` for compatibility
+			# old style hints `Tuple`, `List`, etc. are fine
+			"UP006", 
+			"UP035",
+		]
+		select = ["ALL"]
+		# select = ["ICN001"]
+
+		[tool.ruff.lint.per-file-ignores]
+			"tests/*" = [
+				# dont need docstrings in test functions or modules
+				"D100",
+				"D101",
+				"D102",
+				"D103", 
+				"INP001", # dont need __init__ either
+				# dont need type annotations in test functions
+				"ANN001",
+				"ANN201", 
+				"ANN202",
+				"TRY003", # long exception messages in tests are fine
+				"PLR2004", # magic variables are fine
+			]
+			"docs/*" = ["ALL"] # not our problem
+			"**/*.ipynb" = [
+				"D103", # dont need docstrings
+				"PLR2004", # magic variables are fine
+				"N806", # uppercase vars are fine
+			]
 
 [tool.lmcat]
 	output = "docs/other/lmcat.txt" # changing this might mean it wont be accessible from the docs

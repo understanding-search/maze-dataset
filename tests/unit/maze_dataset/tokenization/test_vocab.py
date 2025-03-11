@@ -29,7 +29,7 @@ def test_special_tokens_base():
 	assert ("ADJLIST_START", "<ADJLIST_START>") in SPECIAL_TOKENS.items()
 
 	# Test the keys method
-	assert "ADJLIST_START" in SPECIAL_TOKENS.keys()
+	assert "ADJLIST_START" in SPECIAL_TOKENS
 
 
 def test_vocab():

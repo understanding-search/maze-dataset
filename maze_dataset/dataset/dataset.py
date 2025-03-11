@@ -152,7 +152,7 @@ class GPTDataset(Dataset):
 
 	# Requires:
 	the following methods should be implemented in subclasses:
-	    - `__init__(self, cfg: GPTDatasetConfig, **kwargs)`
+	 - `__init__(self, cfg: GPTDatasetConfig, **kwargs)`
 	    initialize the dataset from a given config. kwargs are not passed through, the kwargs should take the actual generated or loaded data (a list of objects or sequences probably)
 	    - `generate(cls, cfg: GPTDatasetConfig, **kwargs) -> GPTDataset`
 	    generate the dataset from a given config. kwargs are passed through from `from_config`, and should only contain things that dont belong in the config (i.e. how many threads to use for generation)
