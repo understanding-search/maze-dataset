@@ -299,14 +299,16 @@ class LatticeMaze(SerializableDataclass):
 		g_score[c_start] = self.heuristic(c_start, c_end)
 
 		closed_vtx: set[CoordTup] = set()  # nodes already evaluated
-		open_vtx: set[CoordTup] = set(c_start)  # nodes to be evaluated
+		# nodes to be evaluated
+		# we need a set of the tuples, dont place the ints in the set
+		open_vtx: set[CoordTup] = set([c_start])  # noqa: C405
 		source: dict[CoordTup, CoordTup] = (
 			dict()
 		)  # node immediately preceding each node in the path (currently known shortest path)
 
 		while open_vtx:
 			# get lowest f_score node
-			c_current: CoordTup = min(open_vtx, key=lambda c: f_score[c])
+			c_current: CoordTup = min(open_vtx, key=lambda c: f_score[tuple(c)])
 			# f_current: float = f_score[c_current]
 
 			# check if goal is reached
