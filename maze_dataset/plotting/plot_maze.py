@@ -54,6 +54,8 @@ class PathFormat:
 # styled path
 @dataclass
 class StyledPath(PathFormat):
+	"a `StyledPath` is a `PathFormat` with a specific path"
+
 	path: CoordArray
 
 
@@ -81,6 +83,7 @@ def process_path_input(
 	path_fmt: PathFormat | None = None,
 	**kwargs,
 ) -> StyledPath:
+	"convert a path, which might be a list or array of coords, into a `StyledPath`"
 	styled_path: StyledPath
 	if isinstance(path, StyledPath):
 		styled_path = path
@@ -111,20 +114,22 @@ def process_path_input(
 	return styled_path
 
 
+DEFAULT_PREDICTED_PATH_COLORS: list[str] = [
+	"tab:orange",
+	"tab:olive",
+	"sienna",
+	"mediumseagreen",
+	"tab:purple",
+	"slategrey",
+]
+
+
 class MazePlot:
 	"""Class for displaying mazes and paths"""
 
-	DEFAULT_PREDICTED_PATH_COLORS: list[str] = [
-		"tab:orange",
-		"tab:olive",
-		"sienna",
-		"mediumseagreen",
-		"tab:purple",
-		"slategrey",
-	]
-
 	def __init__(self, maze: LatticeMaze, unit_length: int = 14) -> None:
 		"""UNIT_LENGTH: Set ratio between node size and wall thickness in image.
+
 		Wall thickness is fixed to 1px
 		A "unit" consists of a single node and the right and lower connection/wall.
 		Example: ul = 14 yields 13:1 ratio between node size and wall thickness
@@ -161,6 +166,7 @@ class MazePlot:
 
 	@property
 	def solved_maze(self) -> SolvedMaze:
+		"get the underlying `SolvedMaze` object"
 		if self.true_path is None:
 			raise ValueError(
 				"Cannot return SolvedMaze object without true path. Add true path with add_true_path method.",
@@ -192,6 +198,7 @@ class MazePlot:
 		**kwargs,
 	) -> MazePlot:
 		"""Recieve predicted path and formatting preferences from input and save in predicted_path list.
+
 		Default formatting depends on nuber of paths already saved in predicted path list.
 		"""
 		styled_path: StyledPath = process_path_input(
@@ -207,9 +214,9 @@ class MazePlot:
 
 		if styled_path.color is None:
 			color_num: int = len(self.predicted_paths) % len(
-				self.DEFAULT_PREDICTED_PATH_COLORS,
+				DEFAULT_PREDICTED_PATH_COLORS,
 			)
-			styled_path.color = self.DEFAULT_PREDICTED_PATH_COLORS[color_num]
+			styled_path.color = DEFAULT_PREDICTED_PATH_COLORS[color_num]
 
 		self.predicted_paths.append(styled_path)
 		return self
@@ -218,7 +225,10 @@ class MazePlot:
 		self,
 		path_list: Sequence[CoordList | CoordArray | StyledPath],
 	):
-		"""Function for adding multiple paths to MazePlot at once. This can be done in two ways:
+		"""Function for adding multiple paths to MazePlot at once.
+
+		> DOCS: what are the two ways?
+		This can be done in two ways:
 		1. Passing a list of
 		"""
 		for path in path_list:
@@ -235,6 +245,28 @@ class MazePlot:
 		colormap_max: float | None = None,
 		hide_colorbar: bool = False,
 	) -> MazePlot:
+		"""add node values to the maze for visualization as a heatmap
+
+		> DOCS: what are these arguments?
+
+		# Parameters:
+		- `node_values : Float[np.ndarray, &quot;grid_n grid_n&quot;]`
+		- `color_map : str`
+			(defaults to `"Blues"`)
+		- `target_token_coord : Coord | None`
+			(defaults to `None`)
+		- `preceeding_tokens_coords : CoordArray`
+			(defaults to `None`)
+		- `colormap_center : float | None`
+			(defaults to `None`)
+		- `colormap_max : float | None`
+			(defaults to `None`)
+		- `hide_colorbar : bool`
+			(defaults to `False`)
+
+		# Returns:
+		- `MazePlot`
+		"""
 		assert node_values.shape == self.maze.grid_shape, (
 			"Please pass node values of the same sape as LatticeMaze.grid_shape"
 		)
@@ -301,6 +333,11 @@ class MazePlot:
 		return self.unit_length * (point + 0.5)
 
 	def mark_coords(self, coords: CoordArray | list[Coord], **kwargs) -> MazePlot:
+		"""Mark coordinates on the maze with a marker.
+
+		default marker is a blue "+":
+		`dict(marker="+", color="blue")`
+		"""
 		kwargs = {
 			**dict(marker="+", color="blue"),
 			**kwargs,
@@ -322,8 +359,9 @@ class MazePlot:
 
 	def _plot_maze(self) -> None:
 		"""Define Colormap and plot maze.
+
 		Colormap: x is -inf: black
-		          else: use colormap
+		else: use colormap
 		"""
 		img = self._lattice_maze_to_img()
 
@@ -409,20 +447,21 @@ class MazePlot:
 		connection_val_scale: float = 0.93,
 	) -> Bool[np.ndarray, "row col"]:
 		"""Build an image to visualise the maze.
+
 		Each "unit" consists of a node and the right and lower adjacent wall/connection. Its area is ul * ul.
 		- Nodes have area: (ul-1) * (ul-1) and value 1 by default
-		    - take node_value if passed via .add_node_values()
+			- take node_value if passed via .add_node_values()
 		- Walls have area: 1 * (ul-1) and value -1
 		- Connections have area: 1 * (ul-1); color and value 0.93 by default
-		    - take node_value if passed via .add_node_values()
+			- take node_value if passed via .add_node_values()
 
 		Axes definition:
 		(0,0)     col
 		----|----------->
-		    |
+			|
 		row |
-		    |
-		    v
+			|
+			v
 
 		Returns a matrix of side length (ul) * n + 1 where n is the number of nodes.
 		"""
@@ -547,6 +586,7 @@ class MazePlot:
 		show_endpoints: bool = True,
 		show_solution: bool = True,
 	) -> str:
+		"wrapper for `self.solved_maze.as_ascii()`, shows the path if we have `self.true_path`"
 		if self.true_path:
 			return self.solved_maze.as_ascii(
 				show_endpoints=show_endpoints,

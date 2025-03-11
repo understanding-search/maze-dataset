@@ -78,7 +78,7 @@ if __name__ == "__main__":
 
 		# set up path
 		if args.path is not None:
-			raise ValueError("cannot use --check with a custom path")  # noqa: TRY003
+			raise ValueError("cannot use --check with a custom path")
 		temp_path: Path = Path("tests/_temp/tok_hashes.npz")
 		temp_path.parent.mkdir(parents=True, exist_ok=True)
 

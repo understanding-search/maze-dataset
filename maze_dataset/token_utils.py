@@ -26,9 +26,10 @@ from maze_dataset.constants import (
 
 
 def remove_padding_from_token_str(token_str: str) -> str:
+	"""remove padding tokens from a joined token string"""
 	token_str = token_str.replace(f"{SPECIAL_TOKENS.PADDING} ", "")
 	token_str = token_str.replace(f"{SPECIAL_TOKENS.PADDING}", "")
-	return token_str
+	return token_str  # noqa: RET504
 
 
 def tokens_between(
@@ -39,6 +40,30 @@ def tokens_between(
 	include_end: bool = False,
 	except_when_tokens_not_unique: bool = False,
 ) -> list[str]:
+	"""given a list `tokens`, get the tokens between `start_value` and `end_value`
+
+	_extended_summary_
+
+	# Parameters:
+	- `tokens : list[str]`
+	- `start_value : str`
+	- `end_value : str`
+	- `include_start : bool`
+		(defaults to `False`)
+	- `include_end : bool`
+		(defaults to `False`)
+	- `except_when_tokens_not_unique : bool`
+		when `True`, raise an error if `start_value` or `end_value` are not unique in the input tokens
+		(defaults to `False`)
+
+	# Returns:
+	- `list[str]`
+
+	# Raises:
+	- `ValueError` : if `start_value` and `end_value` are the same
+	- `ValueError` : if `except_when_tokens_not_unique` is `True` and `start_value` or `end_value` are not unique in the input tokens
+	- `ValueError` : if `start_value` or `end_value` are not present in the input tokens
+	"""
 	if start_value == end_value:
 		err_msg = f"start_value and end_value cannot be the same: {start_value = } {end_value = }"
 		raise ValueError(
@@ -72,6 +97,7 @@ def tokens_between(
 
 
 def get_adj_list_tokens(tokens: list[str]) -> list[str]:
+	"get tokens between ADJLIST_START and ADJLIST_END, without the special tokens themselves"
 	return tokens_between(
 		tokens,
 		SPECIAL_TOKENS.ADJLIST_START,
@@ -94,6 +120,7 @@ def get_path_tokens(tokens: list[str], trim_end: bool = False) -> list[str]:
 
 
 def get_context_tokens(tokens: list[str]) -> list[str]:
+	"get tokens between ADJLIST_START and PATH_START"
 	return tokens_between(
 		tokens,
 		SPECIAL_TOKENS.ADJLIST_START,
@@ -104,6 +131,7 @@ def get_context_tokens(tokens: list[str]) -> list[str]:
 
 
 def get_origin_tokens(tokens: list[str]) -> list[str]:
+	"get tokens_between ORIGIN_START and ORIGIN_END"
 	return tokens_between(
 		tokens,
 		SPECIAL_TOKENS.ORIGIN_START,
@@ -114,6 +142,7 @@ def get_origin_tokens(tokens: list[str]) -> list[str]:
 
 
 def get_target_tokens(tokens: list[str]) -> list[str]:
+	"get tokens_between TARGET_START and TARGET_END"
 	return tokens_between(
 		tokens,
 		SPECIAL_TOKENS.TARGET_START,
@@ -192,10 +221,8 @@ def str_is_coord(coord_str: str, allow_whitespace: bool = True) -> bool:
 			coord_str.endswith(")"),
 			"," in coord_str,
 			all(
-				[
-					strip_func(x).isdigit()
-					for x in strip_func(coord_str.lstrip("(").rstrip(")")).split(",")
-				],
+				strip_func(x).isdigit()
+				for x in strip_func(coord_str.lstrip("(").rstrip(")")).split(",")
 			),
 		],
 	)
@@ -213,13 +240,17 @@ class TokenizerDeprecationWarning(DeprecationWarning):
 
 def _coord_to_strings_UT(coord: typing.Sequence[int]) -> list[str]:
 	"""convert a coordinate to a string: `(i,j)`->"(i,j)"
+
 	always returns a list of length 1
 	"""
 	return [f"({','.join(str(c) for c in coord)})"]
 
 
 def _coord_to_strings_indexed(coord: typing.Sequence[int]) -> list[str]:
-	"""convert a coordinate to a list of indexed strings: `(i,j)`->"(", "i", ",", "j", ")" """
+	"""convert a coordinate to a list of indexed strings: `(i,j)`->"(", "i", ",", "j", ")"
+
+	always returns a list of length 5
+	"""
 	return [
 		"(",
 		*list_join([str(c) for c in coord], lambda: ","),
@@ -250,7 +281,7 @@ def coord_str_to_tuple_noneable(coord_str: str) -> CoordTup | None:
 	return coord_str_to_tuple(coord_str)
 
 
-def coords_string_split_UT(coords: str) -> list[str]:
+def coords_string_split_UT(coords: str) -> list[str]:  # noqa: N802
 	"""Splits a string of tokens into a list containing the UT tokens for each coordinate.
 
 	Not capable of producing indexed tokens ("(", "1", ",", "2", ")"), only unique tokens ("(1,2)").
@@ -361,6 +392,7 @@ def coords_to_strings(
 
 
 def get_token_regions(toks: list[str]) -> tuple[list[str], list[str]]:
+	"""Splits a list of tokens into adjacency list tokens and non-adjacency list tokens."""
 	adj_list_start, adj_list_end = (
 		toks.index("<ADJLIST_START>") + 1,
 		toks.index("<ADJLIST_END>"),
@@ -370,7 +402,7 @@ def get_token_regions(toks: list[str]) -> tuple[list[str], list[str]]:
 	return adj_list, non_adj_list
 
 
-def equal_except_adj_list_sequence(
+def equal_except_adj_list_sequence(  # noqa: C901
 	rollout1: list[str],
 	rollout2: list[str],
 	do_except: bool = False,

@@ -1,4 +1,5 @@
 """Shared utilities for tests only.
+
 Do not import into any module outside of the tests directory
 """
 
@@ -57,7 +58,9 @@ MIXED_MAZES: Final[tuple[LatticeMaze | TargetedLatticeMaze | SolvedMaze, ...]] =
 )
 
 
-class MANUAL_MAZE(NamedTuple):
+class MANUAL_MAZE(NamedTuple):  # noqa: N801
+	"""A named tuple for manual maze definitions"""
+
 	tokens: str
 	ascii: Sequence[str]
 	straightaway_footprints: CoordArray

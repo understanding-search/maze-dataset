@@ -8,7 +8,7 @@ from typing import Iterable, Sequence
 import frozendict
 import numpy as np
 import pytest
-from jaxtyping import Int  # noqa: TC002
+from jaxtyping import Int
 from muutils.misc import flatten
 from muutils.mlutils import GLOBAL_SEED
 

@@ -91,7 +91,8 @@ class TokenizationMode(Enum):
 	AOTP_UT_uniform = "AOTP_UT_uniform"
 	AOTP_CTT_indexed = "AOTP_CTT_indexed"
 
-	def to_legacy_tokenizer(self, max_grid_size: int | None = None):
+	def to_legacy_tokenizer(self, max_grid_size: int | None = None) -> "MazeTokenizer":
+		"convert the mode to a legacy `MazeTokenizer` object given a `max_grid_size`"
 		return MazeTokenizer(tokenization_mode=self, max_grid_size=max_grid_size)
 
 
@@ -117,6 +118,21 @@ def get_tokens_up_to_path_start(
 	include_start_coord: bool = True,
 	tokenization_mode: TokenizationMode = TokenizationMode.AOTP_UT_uniform,
 ) -> list[str]:
+	"""get tokens up to the path start token
+
+	# Parameters:
+	- `tokens : list[str]`
+	- `include_start_coord : bool`
+		(defaults to `True`)
+	- `tokenization_mode : TokenizationMode`
+		(defaults to `TokenizationMode.AOTP_UT_uniform`)
+
+	# Returns:
+	- `list[str]` subsequence of `tokens` up to the path start token
+
+	# Raises:
+	- `ValueError` : if `tokenization_mode` is invalid
+	"""
 	warnings.warn(
 		"`maze_tokenizer.get_tokens_up_to_path_start` will be deprecated for a `MazeTokenizerModular`-compatible function in a future release.",
 		TokenizerPendingDeprecationWarning,

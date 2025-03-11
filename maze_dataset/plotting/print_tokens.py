@@ -14,7 +14,7 @@ import html
 import textwrap
 from typing import Literal, Sequence
 
-import matplotlib
+import matplotlib  # noqa: ICN001
 import numpy as np
 from IPython.display import HTML, display
 from jaxtyping import Float, UInt8
@@ -86,7 +86,9 @@ def color_tokens_rgb(
 		clr_join = _COLOR_JOIN[fmt]
 
 	if max_length is not None:
-		wrapped = list(
+		# TODO: why are we using a map here again?
+		# TYPING: this is missing a lot of type hints
+		wrapped: list = list(  # noqa: C417
 			map(
 				lambda x: textwrap.wrap(
 					x,
@@ -118,6 +120,7 @@ def color_tokens_rgb(
 	return " ".join(output)
 
 
+# TYPING: would be nice to type hint as html, latex, or terminal string and overload depending on `FormatType`
 def color_tokens_cmap(
 	tokens: list[str],
 	weights: Sequence[float],
@@ -125,7 +128,7 @@ def color_tokens_cmap(
 	fmt: FormatType = "html",
 	template: str | None = None,
 	labels: bool = False,
-):
+) -> str:
 	"color tokens given a list of weights and a colormap"
 	n_tok: int = len(tokens)
 	assert n_tok == len(weights), f"'{len(tokens) = }' != '{len(weights) = }'"
@@ -177,7 +180,7 @@ _MAZE_TOKENS_DEFAULT_COLORS: dict[tuple[str, str], tuple[int, int, int]] = {
 "default colors for maze tokens, roughly matches the format of `as_pixels`"
 
 
-def color_maze_tokens_AOTP(
+def color_maze_tokens_AOTP(  # noqa: N802
 	tokens: list[str],
 	fmt: FormatType = "html",
 	template: str | None = None,
@@ -216,6 +219,7 @@ def color_maze_tokens_AOTP(
 
 
 def display_html(html: str):
+	"display html string"
 	display(HTML(html))
 
 
@@ -223,6 +227,7 @@ def display_color_tokens_rgb(
 	tokens: list[str],
 	colors: RGBArray,
 ) -> None:
+	"""display tokens (as html) with custom colors"""
 	html: str = color_tokens_rgb(tokens, colors, fmt="html")
 	display_html(html)
 
@@ -232,12 +237,14 @@ def display_color_tokens_cmap(
 	weights: Sequence[float],
 	cmap: str | matplotlib.colors.Colormap = "Blues",
 ) -> None:
+	"""display tokens (as html) with color based on weights"""
 	html: str = color_tokens_cmap(tokens, weights, cmap)
 	display_html(html)
 
 
-def display_color_maze_tokens_AOTP(
+def display_color_maze_tokens_AOTP(  # noqa: N802
 	tokens: list[str],
 ) -> None:
+	"""display maze tokens (as html) with AOTP coloring"""
 	html: str = color_maze_tokens_AOTP(tokens)
 	display_html(html)

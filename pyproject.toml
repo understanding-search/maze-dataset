@@ -143,6 +143,7 @@
 
 	[tool.ruff.lint]
 		ignore = [
+			"TC002", # fine to normally import jaxtyping and others not in a TYPE_CHECKING block
 			"F722", # doesn't like jaxtyping
 			"W191", # we like tabs
 			"D400", # missing-trailing-period
@@ -184,6 +185,8 @@
 			# TODO: no type hints on *args or **kwargs for now
 			"ANN002",
 			"ANN003",
+			# TODO: more fine-grained exception classes
+			"TRY003",
 			# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 			# only for old version compatibility
 			"UP007", # `Optional` is ok, we might not want to use `|` for compatibility
@@ -336,7 +339,7 @@
 	extensions = ["py", "md"]
 
 	# Tags to look for
-	tags = ["CRIT", "TODO", "FIXME", "HACK", "BUG", "DOC", "TYPING"]
+	tags = ["CRIT", "TODO", "FIXME", "HACK", "BUG", "DOC", "DOCS", "TYPING"]
 
 	# Patterns to exclude from search
 	exclude = [
