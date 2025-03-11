@@ -309,7 +309,7 @@ class LatticeMaze(SerializableDataclass):
 		while open_vtx:
 			# get lowest f_score node
 			# mypy cant tell that c is of length 2
-			c_current: CoordTup = min(open_vtx, key=lambda c: f_score[tuple(c)]) # type: ignore[index]
+			c_current: CoordTup = min(open_vtx, key=lambda c: f_score[tuple(c)])  # type: ignore[index]
 			# f_current: float = f_score[c_current]
 
 			# check if goal is reached
