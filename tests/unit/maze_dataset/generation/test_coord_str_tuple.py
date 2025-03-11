@@ -78,7 +78,7 @@ def test_coords_to_strings():
 		_coord_to_strings_UT,
 		when_noncoord="include",
 	) == ["(1,2)", "<ADJLIST_START>", "(5,6)"]
-	with pytest.raises(ValueError):
+	with pytest.raises(ValueError):  # noqa: PT011
 		# this is meant to raise an error, so type ignore
 		coords_to_strings(  # type: ignore[call-overload]
 			[(1, 2), "<ADJLIST_START>", (5, 6)],
@@ -114,9 +114,9 @@ def test_str_is_coord_2():
 
 def test_coord_str_to_tuple_excepts():
 	assert coord_str_to_tuple("(1,2)") == (1, 2)
-	with pytest.raises(ValueError):
+	with pytest.raises(ValueError):  # noqa: PT011
 		coord_str_to_tuple("(1, a)")
-	with pytest.raises(ValueError):
+	with pytest.raises(ValueError):  # noqa: PT011
 		coord_str_to_tuple("()")
 
 

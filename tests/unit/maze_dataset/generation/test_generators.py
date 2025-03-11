@@ -8,7 +8,7 @@ from maze_dataset.generation.generators import (
 	LatticeMazeGenerators,
 	get_maze_with_solution,
 )
-from maze_dataset.maze import Coord, SolvedMaze
+from maze_dataset.maze import Coord, SolvedMaze  # noqa: TC001
 
 
 def test_gen_dfs_square():
@@ -37,7 +37,7 @@ def test_get_maze_with_solution(gfunc_name):
 				f"Skipping test for {gfunc_name} because percolation is stochastic, and a connected component might not be found",
 			)
 		else:
-			raise e
+			raise e  # noqa: TRY201
 
 	assert maze.connection_list.shape == (2, 5, 5)
 	assert len(maze.solution[0]) == 2

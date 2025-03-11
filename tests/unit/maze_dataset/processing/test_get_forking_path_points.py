@@ -143,8 +143,8 @@ def test_fork_and_following_points(example_name):
 	# check that entire solution is covered
 	fork_coords_set = set(map(tuple, fork_coords))
 	follow_coords_set = set(map(tuple, follow_coords))
-	for s_idx, s_coord in enumerate(maze.solution):
-		s_coord = tuple(s_coord)
+	for s_idx, s_coord_ in enumerate(maze.solution):
+		s_coord = tuple(s_coord_)
 		# exclusive or
 		assert (s_idx in fork_idxs) != (s_idx in follow_idxs)
 		assert (s_coord in fork_coords_set) != (s_coord in follow_coords_set)

@@ -79,7 +79,7 @@ class TestMazeDatasetCollection:
 			).all()
 
 	def test_download(self):
-		# TODO
+		# TODO: test downloading after we implement downloading datasets
 		pass
 
 	def test_serialize_and_load(self):

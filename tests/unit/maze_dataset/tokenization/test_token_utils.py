@@ -5,7 +5,6 @@ import frozendict
 import numpy as np
 import pytest
 from jaxtyping import Int
-from pytest import mark, param
 
 from maze_dataset import LatticeMaze
 from maze_dataset.constants import VOCAB, Connection, ConnectionArray
@@ -50,10 +49,10 @@ TEST_TOKEN_LISTS: list[tuple[list[str], str]] = [
 ]
 
 
-@mark.parametrize(
-	"toks, tokenizer_name",
+@pytest.mark.parametrize(
+	("toks", "tokenizer_name"),
 	[
-		param(
+		pytest.param(
 			token_list[0],
 			token_list[1],
 			id=f"{token_list[1]}",
@@ -85,7 +84,7 @@ def test_tokens_between(toks: list[str], tokenizer_name: str):
 	]
 
 	# When start_value or end_value is not unique and except_when_tokens_not_unique is True
-	with pytest.raises(ValueError):
+	with pytest.raises(ValueError):  # noqa: PT011
 		tokens_between(tokens, "the", "dog", False, False, True)
 
 	# When start_value or end_value is not unique and except_when_tokens_not_unique is False
@@ -100,15 +99,15 @@ def test_tokens_between(toks: list[str], tokenizer_name: str):
 	]
 
 	# Empty tokens list
-	with pytest.raises(ValueError):
+	with pytest.raises(ValueError):  # noqa: PT011
 		tokens_between([], "start", "end")
 
 	# start_value and end_value are the same
-	with pytest.raises(ValueError):
+	with pytest.raises(ValueError):  # noqa: PT011
 		tokens_between(tokens, "fox", "fox")
 
 	# start_value or end_value not in the tokens list
-	with pytest.raises(ValueError):
+	with pytest.raises(ValueError):  # noqa: PT011
 		tokens_between(tokens, "start", "end")
 
 	# start_value comes after end_value in the tokens list
@@ -119,14 +118,14 @@ def test_tokens_between(toks: list[str], tokenizer_name: str):
 	assert tokens_between(tokens, "the", "dog", True, True) == tokens
 
 	# Single element in the tokens list, which is the same as start_value and end_value
-	with pytest.raises(ValueError):
+	with pytest.raises(ValueError):  # noqa: PT011
 		tokens_between(["fox"], "fox", "fox", True, True)
 
 
-@mark.parametrize(
-	"toks, tokenizer_name",
+@pytest.mark.parametrize(
+	("toks", "tokenizer_name"),
 	[
-		param(
+		pytest.param(
 			token_list[0],
 			token_list[1],
 			id=f"{token_list[1]}",
@@ -135,14 +134,15 @@ def test_tokens_between(toks: list[str], tokenizer_name: str):
 	],
 )
 def test_tokens_between_out_of_order(toks: list[str], tokenizer_name: str):
+	assert tokenizer_name
 	with pytest.raises(AssertionError):
 		tokens_between(toks, "<PATH_END>", "<PATH_START>")
 
 
-@mark.parametrize(
-	"toks, tokenizer_name",
+@pytest.mark.parametrize(
+	("toks", "tokenizer_name"),
 	[
-		param(
+		pytest.param(
 			token_list[0],
 			token_list[1],
 			id=f"{token_list[1]}",
@@ -162,10 +162,10 @@ def test_get_adj_list_tokens(toks: list[str], tokenizer_name: str):
 	assert result == expected
 
 
-@mark.parametrize(
-	"toks, tokenizer_name",
+@pytest.mark.parametrize(
+	("toks", "tokenizer_name"),
 	[
-		param(
+		pytest.param(
 			token_list[0],
 			token_list[1],
 			id=f"{token_list[1]}",
@@ -187,10 +187,10 @@ def test_get_path_tokens(toks: list[str], tokenizer_name: str):
 			assert result_trim == "( 1 , 0 ) ( 1 , 1 )".split()
 
 
-@mark.parametrize(
-	"toks, tokenizer_name",
+@pytest.mark.parametrize(
+	("toks", "tokenizer_name"),
 	[
-		param(
+		pytest.param(
 			token_list[0],
 			token_list[1],
 			id=f"{token_list[1]}",
@@ -207,10 +207,10 @@ def test_get_origin_tokens(toks: list[str], tokenizer_name: str):
 			assert result == "( 1 , 0 )".split()
 
 
-@mark.parametrize(
-	"toks, tokenizer_name",
+@pytest.mark.parametrize(
+	("toks", "tokenizer_name"),
 	[
-		param(
+		pytest.param(
 			token_list[0],
 			token_list[1],
 			id=f"{token_list[1]}",
@@ -227,10 +227,10 @@ def test_get_target_tokens(toks: list[str], tokenizer_name: str):
 			assert result == "( 1 , 1 )".split()
 
 
-@mark.parametrize(
-	"toks, tokenizer_name",
+@pytest.mark.parametrize(
+	("toks", "tokenizer_name"),
 	[
-		param(
+		pytest.param(
 			token_list[0],
 			token_list[1],
 			id=f"{token_list[1]}",
@@ -252,10 +252,10 @@ def test_get_tokens_up_to_path_start_including_start(
 	assert result == expected
 
 
-@mark.parametrize(
-	"toks, tokenizer_name",
+@pytest.mark.parametrize(
+	("toks", "tokenizer_name"),
 	[
-		param(
+		pytest.param(
 			token_list[0],
 			token_list[1],
 			id=f"{token_list[1]}",
@@ -276,10 +276,10 @@ def test_get_tokens_up_to_path_start_excluding_start(
 	assert result == expected
 
 
-@mark.parametrize(
-	"toks, tokenizer_name",
+@pytest.mark.parametrize(
+	("toks", "tokenizer_name"),
 	[
-		param(
+		pytest.param(
 			token_list[0],
 			token_list[1],
 			id=f"{token_list[1]}",
@@ -288,6 +288,7 @@ def test_get_tokens_up_to_path_start_excluding_start(
 	],
 )
 def test_strings_to_coords(toks: list[str], tokenizer_name: str):
+	assert tokenizer_name
 	adj_list = get_adj_list_tokens(toks)
 	skipped = strings_to_coords(adj_list, when_noncoord="skip")
 	included = strings_to_coords(adj_list, when_noncoord="include")
@@ -316,7 +317,7 @@ def test_strings_to_coords(toks: list[str], tokenizer_name: str):
 		";",
 	]
 
-	with pytest.raises(ValueError):
+	with pytest.raises(ValueError):  # noqa: PT011
 		strings_to_coords(adj_list, when_noncoord="error")
 
 	assert strings_to_coords("(1,2) <ADJLIST_START> (5,6)") == [(1, 2), (5, 6)]
@@ -328,14 +329,14 @@ def test_strings_to_coords(toks: list[str], tokenizer_name: str):
 		"(1,2) <ADJLIST_START> (5,6)",
 		when_noncoord="include",
 	) == [(1, 2), "<ADJLIST_START>", (5, 6)]
-	with pytest.raises(ValueError):
+	with pytest.raises(ValueError):  # noqa: PT011
 		strings_to_coords("(1,2) <ADJLIST_START> (5,6)", when_noncoord="error")
 
 
-@mark.parametrize(
-	"toks, tokenizer_name",
+@pytest.mark.parametrize(
+	("toks", "tokenizer_name"),
 	[
-		param(
+		pytest.param(
 			token_list[0],
 			token_list[1],
 			id=f"{token_list[1]}",
@@ -344,6 +345,7 @@ def test_strings_to_coords(toks: list[str], tokenizer_name: str):
 	],
 )
 def test_coords_to_strings(toks: list[str], tokenizer_name: str):
+	assert tokenizer_name
 	adj_list = get_adj_list_tokens(toks)
 	# config = MazeDatasetConfig(name="test", grid_n=2, n_mazes=1)
 	coords = strings_to_coords(adj_list, when_noncoord="include")
@@ -383,7 +385,7 @@ def test_coords_to_strings(toks: list[str], tokenizer_name: str):
 		";",
 	]
 
-	with pytest.raises(ValueError):
+	with pytest.raises(ValueError):  # noqa: PT011
 		coords_to_strings(
 			coords,
 			coord_to_strings_func=_coord_to_strings_UT,
@@ -425,12 +427,12 @@ def test_equal_except_adj_list_sequence():
 		"<ADJLIST_START> (0,1) <--> (1,1) ; (1,0) <--> (1,1) ; (0,1) <--> (0,0) ; <ADJLIST_END> <ORIGIN_START> (1,0) <ORIGIN_END> <TARGET_START> (1,1) <TARGET_END> <PATH_START> (1,0) (1,1) <PATH_END>".split(),
 		"(0,1) <--> (1,1) ; (1,0) <--> (1,1) ; (0,1) <--> (0,0) ; <ADJLIST_END> <ORIGIN_START> (1,0) <ORIGIN_END> <TARGET_START> (1,1) <TARGET_END> <PATH_START> (1,0) (1,1) <PATH_END>".split(),
 	)
-	with pytest.raises(ValueError):
+	with pytest.raises(ValueError):  # noqa: PT011
 		equal_except_adj_list_sequence(
 			"(0,1) <--> (1,1) ; (1,0) <--> (1,1) ; (0,1) <--> (0,0) ; <ADJLIST_END> <ORIGIN_START> (1,0) <ORIGIN_END> <TARGET_START> (1,1) <TARGET_END> <PATH_START> (1,0) (1,1) <PATH_END>".split(),
 			"(0,1) <--> (1,1) ; (1,0) <--> (1,1) ; (0,1) <--> (0,0) ; <ADJLIST_END> <ORIGIN_START> (1,0) <ORIGIN_END> <TARGET_START> (1,1) <TARGET_END> <PATH_START> (1,0) (1,1) <PATH_END>".split(),
 		)
-	with pytest.raises(ValueError):
+	with pytest.raises(ValueError):  # noqa: PT011
 		equal_except_adj_list_sequence(
 			"<ADJLIST_START> (0,1) <--> (1,1) ; (1,0) <--> (1,1) ; (0,1) <--> (0,0) ; <ORIGIN_START> (1,0) <ORIGIN_END> <TARGET_START> (1,1) <TARGET_END> <PATH_START> (1,0) (1,1) <PATH_END>".split(),
 			"<ADJLIST_START> (0,1) <--> (1,1) ; (1,0) <--> (1,1) ; (0,1) <--> (0,0) ; <ORIGIN_START> (1,0) <ORIGIN_END> <TARGET_START> (1,1) <TARGET_END> <PATH_START> (1,0) (1,1) <PATH_END>".split(),
@@ -458,10 +460,10 @@ def test_equal_except_adj_list_sequence():
 
 
 # @mivanit: this was really difficult to understand
-@mark.parametrize(
-	"type_, validation_funcs, assertion",
+@pytest.mark.parametrize(
+	("type_", "validation_funcs", "assertion"),
 	[
-		param(
+		pytest.param(
 			type_,
 			vfs,
 			assertion,
@@ -513,10 +515,10 @@ def test_all_instances2(
 	assert assertion(all_instances(type_, validation_funcs))
 
 
-@mark.parametrize(
-	"coords, result",
+@pytest.mark.parametrize(
+	("coords", "result"),
 	[
-		param(
+		pytest.param(
 			np.array(coords),
 			res,
 			id=f"{coords}",
@@ -564,10 +566,10 @@ def test_get_relative_direction(
 	assert get_relative_direction(coords) == result
 
 
-@mark.parametrize(
-	"edges, result",
+@pytest.mark.parametrize(
+	("edges", "result"),
 	[
-		param(
+		pytest.param(
 			edges,
 			res,
 			id=f"{edges}",
@@ -605,9 +607,9 @@ def test_manhattan_distance(
 	assert np.array_equal(manhattan_distance(edges), np.array(result, dtype=np.int8))
 
 
-@mark.parametrize(
+@pytest.mark.parametrize(
 	"n",
-	[param(n) for n in [2, 3, 5, 20]],
+	[pytest.param(n) for n in [2, 3, 5, 20]],
 )
 def test_lattice_connection_arrray(n):
 	edges = lattice_connection_array(n)
@@ -616,10 +618,10 @@ def test_lattice_connection_arrray(n):
 	assert tuple(np.unique(edges, axis=0).shape) == (2 * n * (n - 1), 2, 2)
 
 
-@mark.parametrize(
-	"edges, maze",
+@pytest.mark.parametrize(
+	("edges", "maze"),
 	[
-		param(
+		pytest.param(
 			edges(),
 			maze,
 			id=f"edges[{i}]; maze[{j}]",

@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from jaxtyping import Bool, Float
 
-from maze_dataset.constants import Coord, CoordArray, CoordList
+from maze_dataset.constants import Coord, CoordArray, CoordList  # noqa: TC001
 from maze_dataset.maze import (
 	LatticeMaze,
 	SolvedMaze,

@@ -4,7 +4,6 @@ from collections import Counter
 from typing import Callable, Iterable
 
 import pytest
-from pytest import mark, param
 from zanj import ZANJ
 
 from maze_dataset import VOCAB, VOCAB_LIST, LatticeMaze
@@ -51,9 +50,9 @@ def save_tokenizer_hashes():
 	save_hashes()
 
 
-@mark.parametrize(
+@pytest.mark.parametrize(
 	"class_",
-	[param(c, id=c.__name__) for c in _TokenizerElement.__subclasses__()],
+	[pytest.param(c, id=c.__name__) for c in _TokenizerElement.__subclasses__()],
 )
 def test_all_instances_tokenizerelement(class_: type):
 	all_vals = list(
@@ -68,10 +67,10 @@ def test_all_instances_tokenizerelement(class_: type):
 SAMPLE_MIN: int = len(EVERY_TEST_TOKENIZERS)
 
 
-@mark.parametrize(
-	"n, result",
+@pytest.mark.parametrize(
+	("n", "result"),
 	[
-		param(i, result)
+		pytest.param(i, result)
 		for i, result in [
 			(SAMPLE_MIN - 1, ValueError),
 			(SAMPLE_MIN, None),
@@ -94,9 +93,9 @@ def test_sample_tokenizers_for_test(n: int, result: type[Exception] | None):
 		assert set(mts2) != mts_set  # Check that succesive samples are different
 
 
-@mark.parametrize(
+@pytest.mark.parametrize(
 	"tokenizer",
-	[param(tokenizer, id=tokenizer.name) for tokenizer in SAMPLED_TOKENIZERS],
+	[pytest.param(tokenizer, id=tokenizer.name) for tokenizer in SAMPLED_TOKENIZERS],
 )
 def test_token_region_delimiters(tokenizer: MazeTokenizerModular):
 	"""<PATH_START> and similar token region delimiters should appear at most 1 time, regardless of tokenizer."""
@@ -105,9 +104,9 @@ def test_token_region_delimiters(tokenizer: MazeTokenizerModular):
 		assert all([counts[tok] < 2 for tok in VOCAB_LIST[:8]])
 
 
-@mark.parametrize(
+@pytest.mark.parametrize(
 	"tokenizer",
-	[param(tokenizer, id=tokenizer.name) for tokenizer in SAMPLED_TOKENIZERS],
+	[pytest.param(tokenizer, id=tokenizer.name) for tokenizer in SAMPLED_TOKENIZERS],
 )
 def test_token_stability(tokenizer: MazeTokenizerModular):
 	"""Tests consistency of tokenizations over multiple method calls."""
@@ -132,9 +131,9 @@ def test_token_stability(tokenizer: MazeTokenizerModular):
 			assert equal_except_adj_list_sequence(tokens1, tokens2)
 
 
-@mark.parametrize(
+@pytest.mark.parametrize(
 	"tokenizer",
-	[param(tokenizer, id=tokenizer.name) for tokenizer in SAMPLED_TOKENIZERS],
+	[pytest.param(tokenizer, id=tokenizer.name) for tokenizer in SAMPLED_TOKENIZERS],
 )
 def test_tokenizer_properties(tokenizer: MazeTokenizerModular):
 	# Just make sure the call doesn't raise exception
@@ -149,9 +148,9 @@ def test_tokenizer_properties(tokenizer: MazeTokenizerModular):
 	print(tokenizer.summary())
 
 
-@mark.parametrize(
+@pytest.mark.parametrize(
 	"tokenizer",
-	[param(tokenizer, id=tokenizer.name) for tokenizer in SAMPLED_TOKENIZERS],
+	[pytest.param(tokenizer, id=tokenizer.name) for tokenizer in SAMPLED_TOKENIZERS],
 )
 def test_encode_decode(tokenizer: MazeTokenizerModular):
 	for maze in SAMPLED_MAZES:
@@ -161,9 +160,9 @@ def test_encode_decode(tokenizer: MazeTokenizerModular):
 		assert maze_tok == maze_decoded
 
 
-@mark.parametrize(
+@pytest.mark.parametrize(
 	"tokenizer",
-	[param(tokenizer, id=tokenizer.name) for tokenizer in SAMPLED_TOKENIZERS],
+	[pytest.param(tokenizer, id=tokenizer.name) for tokenizer in SAMPLED_TOKENIZERS],
 )
 def test_zanj_save_read(tokenizer: MazeTokenizerModular):
 	path = os.path.abspath(
@@ -178,9 +177,9 @@ def test_zanj_save_read(tokenizer: MazeTokenizerModular):
 	assert zanj.read(path) == tokenizer
 
 
-@mark.parametrize(
+@pytest.mark.parametrize(
 	"tokenizer",
-	[param(tokenizer, id=tokenizer.name) for tokenizer in SAMPLED_TOKENIZERS],
+	[pytest.param(tokenizer, id=tokenizer.name) for tokenizer in SAMPLED_TOKENIZERS],
 )
 def test_is_AOTP(tokenizer: MazeTokenizerModular):
 	if isinstance(tokenizer.prompt_sequencer, PromptSequencers.AOTP):
@@ -189,9 +188,9 @@ def test_is_AOTP(tokenizer: MazeTokenizerModular):
 		assert not tokenizer.is_AOTP()
 
 
-@mark.parametrize(
+@pytest.mark.parametrize(
 	"tokenizer",
-	[param(tokenizer, id=tokenizer.name) for tokenizer in SAMPLED_TOKENIZERS],
+	[pytest.param(tokenizer, id=tokenizer.name) for tokenizer in SAMPLED_TOKENIZERS],
 )
 def test_is_UT(tokenizer: MazeTokenizerModular):
 	if isinstance(tokenizer.prompt_sequencer.coord_tokenizer, CoordTokenizers.UT):
@@ -207,10 +206,10 @@ _has_elems_type = (
 )
 
 
-@mark.parametrize(
-	"tokenizer, elems, result_func",
+@pytest.mark.parametrize(
+	("tokenizer", "elems", "result_func"),
 	[
-		param(
+		pytest.param(
 			tokenizer,
 			elems_tuple[0],
 			elems_tuple[1],

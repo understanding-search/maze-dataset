@@ -15,7 +15,7 @@ FIG_SAVE: str = "tests/_temp/figures/"
 def test_maze_plot():
 	N: int = 10
 
-	os.makedirs(FIG_SAVE, exist_ok=True)
+	os.makedirs(FIG_SAVE, exist_ok=True)  # noqa: PTH103
 
 	maze = LatticeMazeGenerators.gen_dfs(np.array([N, N]))
 	tgt_maze: TargetedLatticeMaze = TargetedLatticeMaze.from_lattice_maze(

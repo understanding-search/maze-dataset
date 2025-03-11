@@ -8,7 +8,7 @@ from typing import Iterable, Sequence
 import frozendict
 import numpy as np
 import pytest
-from jaxtyping import Int
+from jaxtyping import Int  # noqa: TC002
 from muutils.misc import flatten
 from muutils.mlutils import GLOBAL_SEED
 
@@ -446,7 +446,7 @@ def _helper_test_path_tokenizers(
 			random.sample(
 				list(
 					all_instances(
-						PathTokenizers._PathTokenizer,  # noqa: SLF001
+						PathTokenizers._PathTokenizer,
 						{_TokenizerElement: lambda x: x.is_valid()},
 					),
 				),
@@ -474,7 +474,7 @@ def test_path_tokenizers(pt: PathTokenizers._PathTokenizer, manual_maze: MANUAL_
 				always_include_endpoints=True,
 			)[0]
 		case StepSizes.ForksAndStraightaways:
-			swy_step_inds: list[int] = StepSizes.Straightaways()._step_single_indices(  # noqa: SLF001
+			swy_step_inds: list[int] = StepSizes.Straightaways()._step_single_indices(
 				solved_maze,
 			)
 			footprint_inds: Int[np.ndarray, " footprint_index"] = np.concatenate(
@@ -500,7 +500,7 @@ def test_path_tokenizers(pt: PathTokenizers._PathTokenizer, manual_maze: MANUAL_
 		for (i, maze), tokenizer in itertools.product(
 			enumerate(MIXED_MAZES[:6]),
 			all_instances(
-				EdgePermuters._EdgePermuter,  # noqa: SLF001
+				EdgePermuters._EdgePermuter,
 				frozendict.frozendict({_TokenizerElement: lambda x: x.is_valid()}),
 			),
 		)
@@ -519,7 +519,7 @@ def test_edge_permuters(ep: EdgePermuters._EdgePermuter, maze: LatticeMaze):
 	)
 	assert np.array_equal(edges, edges_copy)
 	old_shape = edges.shape
-	permuted: ConnectionArray = ep._permute(edges)  # noqa: SLF001
+	permuted: ConnectionArray = ep._permute(edges)
 	match ep:
 		case EdgePermuters.RandomCoords():
 			assert permuted.shape == old_shape
@@ -527,7 +527,7 @@ def test_edge_permuters(ep: EdgePermuters._EdgePermuter, maze: LatticeMaze):
 			i = 0
 			while np.array_equal(permuted, edges_copy) and i < 2:
 				# Permute again in case for small mazes the random selection happened to not change anything
-				permuted: ConnectionArray = ep._permute(permuted)  # noqa: SLF001
+				permuted: ConnectionArray = ep._permute(permuted)
 				i += 1
 			assert not np.array_equal(permuted, edges_copy)
 		case EdgePermuters.BothCoords():
@@ -547,14 +547,14 @@ def test_edge_permuters(ep: EdgePermuters._EdgePermuter, maze: LatticeMaze):
 		for (i, maze), tokenizer in itertools.product(
 			enumerate(MIXED_MAZES[:6]),
 			all_instances(
-				EdgeSubsets._EdgeSubset,  # noqa: SLF001
+				EdgeSubsets._EdgeSubset,
 				frozendict.frozendict({_TokenizerElement: lambda x: x.is_valid()}),
 			),
 		)
 	],
 )
 def test_edge_subsets(es: EdgeSubsets._EdgeSubset, maze: LatticeMaze):
-	edges: ConnectionArray = es._get_edges(maze)  # noqa: SLF001
+	edges: ConnectionArray = es._get_edges(maze)
 	n: int = maze.grid_n
 	match type(es):
 		case EdgeSubsets.AllLatticeEdges:
@@ -587,7 +587,7 @@ def test_edge_subsets(es: EdgeSubsets._EdgeSubset, maze: LatticeMaze):
 		for (i, maze), tok_elem, es in itertools.product(
 			enumerate(MIXED_MAZES[:6]),
 			all_instances(
-				EdgeGroupings._EdgeGrouping,  # noqa: SLF001
+				EdgeGroupings._EdgeGrouping,
 				frozendict.frozendict(
 					{
 						_TokenizerElement: lambda x: x.is_valid(),
@@ -598,7 +598,7 @@ def test_edge_subsets(es: EdgeSubsets._EdgeSubset, maze: LatticeMaze):
 				),
 			),
 			all_instances(
-				EdgeSubsets._EdgeSubset,  # noqa: SLF001
+				EdgeSubsets._EdgeSubset,
 				frozendict.frozendict({_TokenizerElement: lambda x: x.is_valid()}),
 			),
 		)
@@ -610,9 +610,9 @@ def test_edge_groupings(
 	maze: LatticeMaze,
 ):
 	# we do a little more accessing private members here
-	edges: ConnectionArray = es._get_edges(maze)  # noqa: SLF001
+	edges: ConnectionArray = es._get_edges(maze)
 	# n: int = maze.grid_n
-	groups: Sequence[ConnectionArray] = tok_elem._group_edges(edges)  # noqa: SLF001
+	groups: Sequence[ConnectionArray] = tok_elem._group_edges(edges)
 
 	assert all(
 		not np.any(np.diff(g[:, 0], axis=0)) for g in groups
@@ -657,7 +657,7 @@ random.seed(GLOBAL_SEED)
 				list(
 					all_instances(
 						# yes we access a private member
-						AdjListTokenizers._AdjListTokenizer,  # noqa: SLF001
+						AdjListTokenizers._AdjListTokenizer,
 						{
 							_TokenizerElement: lambda x: x.is_valid(),
 						},

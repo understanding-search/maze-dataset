@@ -179,6 +179,7 @@
 			"FIX001", # FIXME comments are ok since `make todo` handles them
 			"PLR0913", # sometimes you have to have a lot of args
 			"B028", # fine to omit stacklevel on warnings
+			"SLF001", # fine to access private vars
 			# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 			# only for old version compatibility
 			"UP007", # `Optional` is ok, we might not want to use `|` for compatibility
@@ -203,6 +204,13 @@
 				"ANN202",
 				"TRY003", # long exception messages in tests are fine
 				"PLR2004", # magic variables are fine
+				"C419", # unnecessary comprehensions are fine
+				# uppercase is fine in tests (we write UT and AOTP a lot)
+				"N802",
+				"N806",
+				# using os for path in tests is fine (not in main lib tho)
+				"PTH100",
+				"PTH118",
 			]
 			"docs/*" = ["ALL"] # not our problem
 			"**/*.ipynb" = [

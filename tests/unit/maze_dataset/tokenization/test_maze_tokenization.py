@@ -1,4 +1,4 @@
-from pytest import mark, param
+import pytest
 
 from maze_dataset import (
 	LatticeMazeGenerators,
@@ -10,10 +10,10 @@ from maze_dataset.testing_utils import LEGACY_AND_EQUIVALENT_TOKENIZERS
 from maze_dataset.tokenization import MazeTokenizer, MazeTokenizerModular
 
 
-@mark.parametrize(
+@pytest.mark.parametrize(
 	"tokenizer",
 	[
-		param(tokenizer, id=tokenizer.name)
+		pytest.param(tokenizer, id=tokenizer.name)
 		for tokenizer in LEGACY_AND_EQUIVALENT_TOKENIZERS
 	],
 )

@@ -1,7 +1,7 @@
 import numpy as np
 import pytest
 
-from maze_dataset.constants import CoordArray
+from maze_dataset.constants import CoordArray  # noqa: TC001
 from maze_dataset.generation.default_generators import DEFAULT_GENERATORS
 from maze_dataset.generation.generators import GENERATORS_MAP
 from maze_dataset.maze import LatticeMaze, PixelColors, SolvedMaze, TargetedLatticeMaze
@@ -101,12 +101,14 @@ def test_from_pixel_grid_with_positions(example_rgb_pixel_grid):
 
 	assert isinstance(out_positions, dict)
 	assert len(out_positions) == 3
-	assert "start" in out_positions and "end" in out_positions
-	assert (
-		isinstance(out_positions["start"], np.ndarray)
-		and isinstance(out_positions["end"], np.ndarray)
-		and isinstance(out_positions["path"], np.ndarray)
-	)
+
+	assert "start" in out_positions
+	assert "end" in out_positions
+
+	assert isinstance(out_positions["start"], np.ndarray)
+	assert isinstance(out_positions["end"], np.ndarray)
+	assert isinstance(out_positions["path"], np.ndarray)
+
 	assert out_positions["start"].shape == (0,)
 	assert out_positions["end"].shape == (0,)
 	assert out_positions["path"].shape == (0,)
@@ -173,19 +175,18 @@ def test_find_start_end_points_in_rgb_pixel_grid():
 
 	assert isinstance(out_positions, dict)
 	assert len(out_positions) == 3
-	assert "start" in out_positions and "end" in out_positions
-	assert (
-		isinstance(out_positions["start"], np.ndarray)
-		and isinstance(out_positions["end"], np.ndarray)
-		and isinstance(out_positions["path"], np.ndarray)
-	)
+	assert "start" in out_positions
+	assert "end" in out_positions
+	assert isinstance(out_positions["start"], np.ndarray)
+	assert isinstance(out_positions["end"], np.ndarray)
+	assert isinstance(out_positions["path"], np.ndarray)
 
 	assert np.all(out_positions["start"] == np.array([[0, 0]]))
 	assert np.all(out_positions["end"] == np.array([[0, 1]]))
 	assert out_positions["path"].shape == (0,)
 
 
-@pytest.mark.parametrize("gfunc_name, kwargs", DEFAULT_GENERATORS)
+@pytest.mark.parametrize(("gfunc_name", "kwargs"), DEFAULT_GENERATORS)
 def test_pixels_ascii_roundtrip(gfunc_name, kwargs):
 	"""tests all generators work and can be written to/from ascii and pixels"""
 	n: int = 5
@@ -207,7 +208,7 @@ def test_pixels_ascii_roundtrip(gfunc_name, kwargs):
 	)
 
 
-@pytest.mark.parametrize("gfunc_name, kwargs", DEFAULT_GENERATORS)
+@pytest.mark.parametrize(("gfunc_name", "kwargs"), DEFAULT_GENERATORS)
 def test_targeted_solved_maze(gfunc_name, kwargs):
 	n: int = 5
 	maze_gen_func = GENERATORS_MAP[gfunc_name]
@@ -271,7 +272,7 @@ def test_as_adj_list():
 	assert adj_list_to_nested_set(expected) == adj_list_to_nested_set(adj_list)
 
 
-@pytest.mark.parametrize("gfunc_name, kwargs", DEFAULT_GENERATORS)
+@pytest.mark.parametrize(("gfunc_name", "kwargs"), DEFAULT_GENERATORS)
 def test_get_nodes(gfunc_name, kwargs):
 	maze_gen_func = GENERATORS_MAP[gfunc_name]
 	maze = maze_gen_func(np.array((3, 2)), **kwargs)
@@ -281,7 +282,7 @@ def test_get_nodes(gfunc_name, kwargs):
 	)
 
 
-@pytest.mark.parametrize("gfunc_name, kwargs", DEFAULT_GENERATORS)
+@pytest.mark.parametrize(("gfunc_name", "kwargs"), DEFAULT_GENERATORS)
 def test_generate_random_path(gfunc_name, kwargs):
 	maze_gen_func = GENERATORS_MAP[gfunc_name]
 	maze = maze_gen_func(np.array((2, 2)), **kwargs)
@@ -291,7 +292,7 @@ def test_generate_random_path(gfunc_name, kwargs):
 	assert len(path) > 1
 
 
-@pytest.mark.parametrize("gfunc_name, kwargs", DEFAULT_GENERATORS)
+@pytest.mark.parametrize(("gfunc_name", "kwargs"), DEFAULT_GENERATORS)
 def test_generate_random_path_size_1(gfunc_name, kwargs):
 	maze_gen_func = GENERATORS_MAP[gfunc_name]
 	maze = maze_gen_func(np.array((1, 1)), **kwargs)

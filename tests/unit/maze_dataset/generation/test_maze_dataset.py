@@ -3,7 +3,6 @@ from pathlib import Path
 
 import numpy as np
 import pytest
-from pytest import mark, param
 from zanj import ZANJ
 
 from maze_dataset.constants import CoordArray
@@ -46,7 +45,7 @@ def test_generate_serial():
 	dataset = MazeDataset.generate(TEST_CONFIGS[0], gen_parallel=False)
 
 	assert len(dataset) == 5
-	for i, maze in enumerate(dataset):
+	for maze in dataset:
 		assert maze.grid_shape == (3, 3)
 
 
@@ -59,7 +58,7 @@ def test_generate_parallel():
 	)
 
 	assert len(dataset) == 5
-	for i, maze in enumerate(dataset):
+	for maze in dataset:
 		assert maze.grid_shape == (3, 3)
 
 
@@ -83,10 +82,10 @@ def test_serialize_load():
 		assert maze == maze_copy
 
 
-@mark.parametrize(
+@pytest.mark.parametrize(
 	"config",
 	[
-		param(
+		pytest.param(
 			c,
 			id=f"{c.grid_n=}; {c.n_mazes=}; {c.maze_ctor_kwargs=}",
 		)
@@ -98,10 +97,10 @@ def test_serialize_load_minimal(config):
 	assert MazeDataset.load(d._serialize_minimal()) == d
 
 
-@mark.parametrize(
+@pytest.mark.parametrize(
 	"config",
 	[
-		param(
+		pytest.param(
 			c,
 			id=f"{c.grid_n=}; {c.n_mazes=}; {c.maze_ctor_kwargs=}",
 		)
@@ -278,43 +277,44 @@ DUPE_DATASET = [
 #  E#
 ###X#
 #SXX#
-##### 
+#####
 """,
 	"""
 #####
 #SXE#
 ### #
 #   #
-##### 
+#####
 """,
 	"""
 #####
 #  E#
 ###X#
 #SXX#
-##### 
+#####
 """,
 	"""
 #####
 # # #
 # # #
 #EXS#
-##### 
+#####
 """,
 	"""
 #####
 #SXX#
 ###X#
 #EXX#
-##### 
+#####
 """,
 ]
 
 
-def _helper_dataset_from_ascii(ascii: str) -> MazeDataset:
+def _helper_dataset_from_ascii(ascii_rep: str) -> MazeDataset:
 	mazes: list[SolvedMaze] = list()
-	for maze in ascii:
-		mazes.append(SolvedMaze.from_ascii(maze.strip()))
+	for maze_ascii in ascii_rep:
+		# TODO: PERF401 Use `list.extend` to create a transformed list
+		mazes.append(SolvedMaze.from_ascii(maze_ascii.strip()))  # noqa: PERF401
 
 	return MazeDataset(
 		MazeDatasetConfig(

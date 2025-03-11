@@ -14,7 +14,7 @@ def test_get_configs():
 	assert len(MAZE_DATASET_CONFIGS.items()) == len(MAZE_DATASET_CONFIGS)
 	assert len(MAZE_DATASET_CONFIGS.values()) == len(MAZE_DATASET_CONFIGS)
 
-	assert all([isinstance(key, str) for key in MAZE_DATASET_CONFIGS.keys()]), (
+	assert all([isinstance(key, str) for key in MAZE_DATASET_CONFIGS]), (
 		f".keys() must be strings: {MAZE_DATASET_CONFIGS.keys()}"
 	)
 	assert all(

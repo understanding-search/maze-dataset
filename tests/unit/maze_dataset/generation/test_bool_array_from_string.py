@@ -25,7 +25,7 @@ def test_bool_array_from_string():
 
 
 def test_bool_array_from_string_wrong_shape():
-	with pytest.raises(ValueError):
+	with pytest.raises(ValueError):  # noqa: PT011
 		bool_array_from_string("TF TF TF F", shape=[2, 2, 2])
 
 
