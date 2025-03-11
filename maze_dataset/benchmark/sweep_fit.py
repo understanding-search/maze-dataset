@@ -188,7 +188,7 @@ def create_interactive_plot(heatmap: bool = True) -> None:  # noqa: C901, PLR091
 	from ipywidgets import FloatSlider, HBox, Layout, VBox
 	from matplotlib.gridspec import GridSpec
 
-	from maze_dataset.math import soft_step
+	from maze_dataset.dataset.success_predict_math import soft_step
 
 	# Create sliders with better layout
 	x_slider = FloatSlider(

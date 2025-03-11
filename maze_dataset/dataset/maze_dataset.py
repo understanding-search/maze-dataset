@@ -40,8 +40,8 @@ from maze_dataset.dataset.dataset import (
 	register_dataset_filter,
 	register_filter_namespace_for_dataset,
 )
+from maze_dataset.dataset.success_predict_math import cfg_success_predict_fn
 from maze_dataset.generation.generators import _GENERATORS_PERCOLATED, GENERATORS_MAP
-from maze_dataset.math import cfg_success_predict_fn
 from maze_dataset.maze import LatticeMaze, SolvedMaze
 
 # If `n_mazes>=SERIALIZE_MINIMAL_THRESHOLD`, then the MazeDataset will use `serialize_minimal`.
