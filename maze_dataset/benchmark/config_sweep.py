@@ -466,7 +466,7 @@ def plot_grouped(  # noqa: C901
 	```
 	"""
 	# groups
-	endpoint_kwargs_set: set[tuple[dict]] = results.configs_value_set("endpoint_kwargs")  # type: ignore[assignment]
+	endpoint_kwargs_set: list[dict] = results.configs_value_set("endpoint_kwargs")  # type: ignore[assignment]
 	generator_funcs_names: list[str] = list(
 		{cfg.maze_ctor.__name__ for cfg in results.configs},
 	)
@@ -528,7 +528,7 @@ def plot_grouped(  # noqa: C901
 
 		# save and show
 		if save_dir:
-			save_path: Path = save_dir / f"ep_{endpoint_kwargs_to_name(ep_kw[0])}.svg"
+			save_path: Path = save_dir / f"ep_{endpoint_kwargs_to_name(ep_kw)}.svg"
 			print(f"Saving plot to {save_path.as_posix()}")
 			save_path.parent.mkdir(exist_ok=True, parents=True)
 			plt.savefig(save_path)

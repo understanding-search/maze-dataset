@@ -3,6 +3,7 @@
 import functools
 import random
 import timeit
+from pathlib import Path
 from typing import Sequence
 
 from tqdm import tqdm
@@ -125,6 +126,7 @@ def run_benchmark(
 	print(df.to_csv())
 
 	# save to file
+	Path(save_path).parent.mkdir(parents=True, exist_ok=True)
 	df.to_json(save_path, orient="records", lines=True)
 
 	return df
