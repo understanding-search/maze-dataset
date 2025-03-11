@@ -1526,19 +1526,30 @@ lmcat:
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # benchmark generation
 
+.PHONY: benchmark-speed-test
+benchmark-speed-test:
+	@echo "test speed benchmarks"
+	$(PYTHON) docs/benchmarks/benchmark_generation.py test
+
 .PHONY: benchmark-speed
 benchmark-speed:
 	@echo "run speed benchmarks"
-	$(PYTHON) docs/benchmarks/benchmark_generation.py
+	$(PYTHON) docs/benchmarks/benchmark_generation.py default
+
+.PHONY: benchmark-success-test
+benchmark-success-test:
+	@echo "test success benchmarks"
+	$(PYTHON) docs/benchmarks/percolation_benchmarks.py test -p 12
 
 .PHONY: benchmark-success
-benchmark-success:
+benchmark-success: benchmark-success-test
 	@echo "run success benchmarks"
-	$(PYTHON) docs/benchmarks/percolation_benchmarks.py test -p 12
 	$(PYTHON) docs/benchmarks/percolation_benchmarks.py small -p 12
+	$(PYTHON) docs/benchmarks/percolation_benchmarks.py medium -p 12
 
-# takes too long
-# $(PYTHON) docs/benchmarks/percolation_benchmarks.py medium -p 12
+.PHONY: benchmark-test
+benchmark-test: benchmark-speed-test benchmark-success-test
+	@echo "run all benchmarks tests"
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

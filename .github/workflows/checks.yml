@@ -95,3 +95,6 @@ jobs:
       - name: check typing (3.11+)
         run: make typing
         if: ${{ matrix.python != '3.10' }}
+
+      - name: run benchmarks
+        run: make benchmark-test
