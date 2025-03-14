@@ -31,7 +31,6 @@ from typing import Callable
 
 import frozendict
 import numpy as np
-from jaxtyping import Int64
 from muutils.spinner import NoOpContextManager, SpinnerContext
 from tqdm import tqdm
 
@@ -41,6 +40,11 @@ from maze_dataset.tokenization import (
 	PromptSequencers,
 	StepTokenizers,
 	_TokenizerElement,
+)
+from maze_dataset.tokenization.maze_tokenizer import (
+	AllTokenizersHashBitLength,
+	AllTokenizersHashDtype,
+	AllTokenizersHashesArray,
 )
 from maze_dataset.utils import FiniteValued, all_instances
 
@@ -66,6 +70,8 @@ MAZE_TOKENIZER_MODULAR_DEFAULT_VALIDATION_FUNCS: frozendict.frozendict[
 		and x != (StepTokenizers.Distance(),),
 	},
 )
+
+DOWNLOAD_URL: str = "https://raw.githubusercontent.com/understanding-search/maze-dataset/main/maze_dataset/tokenization/MazeTokenizerModular_hashes.npz"
 
 
 @cache
@@ -133,7 +139,7 @@ def save_hashes(
 	path: Path | None = None,
 	verbose: bool = False,
 	parallelize: bool | int = False,
-) -> Int64[np.ndarray, " tokenizers"]:
+) -> AllTokenizersHashesArray:
 	"""Computes, sorts, and saves the hashes of every member of `get_all_tokenizers()`."""
 	spinner = (
 		functools.partial(SpinnerContext, spinner_chars="square_dot")
@@ -146,7 +152,7 @@ def save_hashes(
 		all_tokenizers = get_all_tokenizers()
 
 	# compute hashes
-	hashes_array: Int64[np.ndarray, " tokenizers+dupes"]
+	hashes_array_np64: AllTokenizersHashesArray
 	if parallelize:
 		n_cpus: int = (
 			parallelize if int(parallelize) > 1 else multiprocessing.cpu_count()
@@ -159,12 +165,12 @@ def save_hashes(
 				hashes_list: list[int] = list(pool.map(hash, all_tokenizers))
 
 		with spinner(initial_value="converting hashes to numpy array..."):
-			hashes_array = np.array(hashes_list, dtype=np.int64)
+			hashes_array_np64 = np.array(hashes_list, dtype=np.int64)
 	else:
 		with spinner(
 			initial_value=f"computing {len(all_tokenizers)} tokenizer hashes...",
 		):
-			hashes_array = np.array(
+			hashes_array_np64 = np.array(
 				[
 					hash(obj)  # uses stable hash
 					for obj in tqdm(all_tokenizers, disable=not verbose)
@@ -172,12 +178,23 @@ def save_hashes(
 				dtype=np.int64,
 			)
 
+	# convert to correct dtype
+	hashes_array: AllTokenizersHashesArray = (
+		hashes_array_np64 % (1 << AllTokenizersHashBitLength)
+	).astype(AllTokenizersHashDtype)
+
 	# make sure there are no dupes
 	with spinner(initial_value="sorting and checking for hash collisions..."):
 		sorted_hashes, counts = np.unique(hashes_array, return_counts=True)
 		if sorted_hashes.shape[0] != hashes_array.shape[0]:
-			collisions = sorted_hashes[counts > 1]
-			err_msg: str = f"{hashes_array.shape[0] - sorted_hashes.shape[0]} tokenizer hash collisions: {collisions}\nReport error to the developer to increase the hash size or otherwise update the tokenizer hashing algorithm."
+			collisions: np.array = sorted_hashes[counts > 1]
+			n_collisions: int = hashes_array.shape[0] - sorted_hashes.shape[0]
+			err_msg: str = (
+				f"{n_collisions} tokenizer hash collisions: {collisions}\n"
+				"Report error to the developer to increase the hash size or otherwise update the tokenizer hashing size:\n"
+				f"https://github.com/understanding-search/maze-dataset/issues/new?labels=bug,tokenization&title=Tokenizer+hash+collision+error&body={n_collisions}+collisions+out+of+{hashes_array.shape[0]}+total+hashes",
+			)
+
 			raise ValueError(
 				err_msg,
 			)
@@ -192,3 +209,8 @@ def save_hashes(
 		)
 
 	return sorted_hashes
+
+
+# def download_hashes(
+# 	download_url: str = DOWNLOAD_URL,
+# )

@@ -21,7 +21,7 @@ from typing import (
 )
 
 import numpy as np
-from jaxtyping import Bool, Int, Int64
+from jaxtyping import Bool, Int, UInt64
 from muutils.json_serialize import (
 	SerializableDataclass,
 	serializable_dataclass,
@@ -59,6 +59,17 @@ from maze_dataset.token_utils import (
 	tokens_between,
 )
 from maze_dataset.utils import corner_first_ndindex, lattice_connection_array
+
+# NOTE: these all need to match!
+
+AllTokenizersHashBitLength = 64
+"bit length of the hashes of all tokenizers, must match `AllTokenizersHashDtype` and `AllTokenizersHashesArray`"
+
+AllTokenizersHashDtype = np.uint64
+"numpy data type of the hashes of all tokenizers, must match `AllTokenizersHashBitLength` and `AllTokenizersHashesArray`"
+
+AllTokenizersHashesArray = UInt64[np.ndarray, " n_tokens"]
+"jaxtyping type of the hashes of all tokenizers, must match `AllTokenizersHashBitLength` and `AllTokenizersHashDtype`"
 
 
 class TokenError(ValueError):
@@ -149,6 +160,16 @@ def get_tokens_up_to_path_start(
 	else:
 		return tokens[:path_start_idx]
 
+
+"""
+##       ########  ######      ###     ######  ##    ##
+##       ##       ##    ##    ## ##   ##    ##  ##  ##
+##       ##       ##         ##   ##  ##         ####
+##       ######   ##   #### ##     ## ##          ##
+##       ##       ##    ##  ######### ##          ##
+##       ##       ##    ##  ##     ## ##    ##    ##
+######## ########  ######   ##     ##  ######     ##
+"""
 
 _MAZETOKENIZER_PROPERTIES_TO_SERIALIZE: list[str] = [
 	"name",
@@ -522,6 +543,17 @@ class MazeTokenizer(SerializableDataclass):
 					delattr(self, name)
 				except AttributeError:
 					pass
+
+
+"""
+######## ##       ######## ##     ## ######## ##    ## ########  ######
+##       ##       ##       ###   ### ##       ###   ##    ##    ##    ##
+##       ##       ##       #### #### ##       ####  ##    ##    ##
+######   ##       ######   ## ### ## ######   ## ## ##    ##     ######
+##       ##       ##       ##     ## ##       ##  ####    ##          ##
+##       ##       ##       ##     ## ##       ##   ###    ##    ##    ##
+######## ######## ######## ##     ## ######## ##    ##    ##     ######
+"""
 
 
 @serializable_dataclass(frozen=True, kw_only=True)
@@ -2030,6 +2062,17 @@ class PromptSequencers(__TokenizerElementNamespace):
 			]
 
 
+"""
+##     ## ##     ## ########
+###   ### ###   ###    ##
+#### #### #### ####    ##
+## ### ## ## ### ##    ##
+##     ## ##     ##    ##
+##     ## ##     ##    ##
+##     ## ##     ##    ##
+"""
+
+
 @serializable_dataclass(
 	frozen=True,
 	kw_only=True,
@@ -2181,9 +2224,7 @@ class MazeTokenizerModular(SerializableDataclass):
 
 		if `do_assert` is `True`, raises an `AssertionError` if the tokenizer is not tested.
 		"""
-		all_tokenizer_hashes: Int64[np.ndarray, " n_tokenizers"] = (
-			get_all_tokenizer_hashes()
-		)
+		all_tokenizer_hashes: AllTokenizersHashesArray = get_all_tokenizer_hashes()
 		hash_index: int = np.searchsorted(all_tokenizer_hashes, hash(self))
 
 		in_range: bool = hash_index < len(all_tokenizer_hashes)
@@ -2348,7 +2389,17 @@ class MazeTokenizerModular(SerializableDataclass):
 			return output
 
 
-_ALL_TOKENIZER_HASHES: Int64[np.ndarray, " n_tokenizers"]
+"""
+##     ##    ###     ######  ##     ## ########  ######
+##     ##   ## ##   ##    ## ##     ## ##       ##    ##
+##     ##  ##   ##  ##       ##     ## ##       ##
+######### ##     ##  ######  ######### ######    ######
+##     ## #########       ## ##     ## ##             ##
+##     ## ##     ## ##    ## ##     ## ##       ##    ##
+##     ## ##     ##  ######  ##     ## ########  ######
+"""
+
+_ALL_TOKENIZER_HASHES: AllTokenizersHashesArray
 "private array of all tokenizer hashes"
 _TOKENIZER_HASHES_PATH: Path = Path(__file__).parent / "MazeTokenizerModular_hashes.npz"
 "path to where we expect the hashes file -- in the same dir as this file, by default. change with `set_tokenizer_hashes_path`"
@@ -2381,7 +2432,7 @@ def set_tokenizer_hashes_path(path: Path) -> None:
 		_TOKENIZER_HASHES_PATH = path
 
 
-def _load_tokenizer_hashes() -> Int64[np.ndarray, " n_tokenizers"]:
+def _load_tokenizer_hashes() -> AllTokenizersHashesArray:
 	"""Loads the sorted list of `all_tokenizers.get_all_tokenizers()` hashes from disk."""
 	global _TOKENIZER_HASHES_PATH  # noqa: PLW0602
 	try:
@@ -2397,8 +2448,8 @@ def _load_tokenizer_hashes() -> Int64[np.ndarray, " n_tokenizers"]:
 		raise FileNotFoundError(err_msg) from e
 
 
-def get_all_tokenizer_hashes() -> Int64[np.ndarray, " n_tokenizers"]:
-	"""returns all the tokenizer hashes in an Int64 array, setting global variable if needed"""
+def get_all_tokenizer_hashes() -> AllTokenizersHashesArray:
+	"""returns all the tokenizer hashes in an `AllTokenizersHashesDtype` array, setting global variable if needed"""
 	# naughty use of globals
 	global _ALL_TOKENIZER_HASHES  # noqa: PLW0603
 	try:

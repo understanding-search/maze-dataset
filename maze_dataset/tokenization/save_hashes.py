@@ -38,7 +38,7 @@ if __name__ == "__main__":
 	import argparse
 
 	parser: argparse.ArgumentParser = argparse.ArgumentParser(
-		description="generate and save the hashes of all supported tokenizers",
+		description="generate and save (or download) the hashes of all supported tokenizers",
 	)
 
 	parser.add_argument("path", type=str, nargs="?", help="path to save the hashes to")
@@ -59,6 +59,12 @@ if __name__ == "__main__":
 		"-c",
 		action="store_true",
 		help="save to temp location, then compare to existing",
+	)
+	parser.add_argument(
+		"--download",
+		"-d",
+		action="store_true",
+		help=f"download the hashes from github: {all_tokenizers.DOWNLOAD_URL}",
 	)
 
 	args: argparse.Namespace = parser.parse_args()
