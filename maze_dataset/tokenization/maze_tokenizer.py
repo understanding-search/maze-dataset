@@ -21,7 +21,7 @@ from typing import (
 )
 
 import numpy as np
-from jaxtyping import Bool, Int, UInt64
+from jaxtyping import Bool, Int, UInt32, UInt64
 from muutils.json_serialize import (
 	SerializableDataclass,
 	serializable_dataclass,
@@ -62,13 +62,13 @@ from maze_dataset.utils import corner_first_ndindex, lattice_connection_array
 
 # NOTE: these all need to match!
 
-AllTokenizersHashBitLength = 64
+AllTokenizersHashBitLength = 32
 "bit length of the hashes of all tokenizers, must match `AllTokenizersHashDtype` and `AllTokenizersHashesArray`"
 
-AllTokenizersHashDtype = np.uint64
+AllTokenizersHashDtype = np.uint32
 "numpy data type of the hashes of all tokenizers, must match `AllTokenizersHashBitLength` and `AllTokenizersHashesArray`"
 
-AllTokenizersHashesArray = UInt64[np.ndarray, " n_tokens"]
+AllTokenizersHashesArray = UInt32[np.ndarray, " n_tokens"]
 "jaxtyping type of the hashes of all tokenizers, must match `AllTokenizersHashBitLength` and `AllTokenizersHashDtype`"
 
 
@@ -620,7 +620,7 @@ class _TokenizerElement(SerializableDataclass, abc.ABC):
 	def __hash__(self) -> int:
 		"Stable hash to identify unique `MazeTokenizerModular` instances. uses name"
 		return int.from_bytes(
-			hashlib.blake2b(self.name.encode("utf-8")).digest(),
+			hashlib.md5(self.name.encode("utf-8")).digest(),
 			byteorder="big",
 		)
 

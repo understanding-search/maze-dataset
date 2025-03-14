@@ -181,6 +181,8 @@ def save_hashes(
 	# convert to correct dtype
 	hashes_array: AllTokenizersHashesArray = (
 		hashes_array_np64 % (1 << AllTokenizersHashBitLength)
+		if AllTokenizersHashBitLength < 64 # noqa: PLR2004
+		else hashes_array_np64
 	).astype(AllTokenizersHashDtype)
 
 	# make sure there are no dupes
