@@ -77,6 +77,12 @@ class TokenError(ValueError):
 
 	pass
 
+def _hash_tokenizer_name(s: str) -> int:
+	h64: int = int.from_bytes(
+		hashlib.shake_256(s.encode("utf-8")).digest(64),
+		byteorder="big",
+	)
+	return (h64 >> 32) ^ (h64 & 0xFFFFFFFF)
 
 class TokenizationMode(Enum):
 	"""legacy tokenization modes
@@ -619,10 +625,7 @@ class _TokenizerElement(SerializableDataclass, abc.ABC):
 
 	def __hash__(self) -> int:
 		"Stable hash to identify unique `MazeTokenizerModular` instances. uses name"
-		return int.from_bytes(
-			hashlib.md5(self.name.encode("utf-8")).digest(),
-			byteorder="big",
-		)
+		return _hash_tokenizer_name(self.name)
 
 	@classmethod
 	def _level_one_subclass(cls) -> type["_TokenizerElement"]:
@@ -2097,10 +2100,7 @@ class MazeTokenizerModular(SerializableDataclass):
 
 	def hash_int(self) -> int:
 		"return integer hash using blake2b"
-		return int.from_bytes(
-			hashlib.blake2b(self.name.encode("utf-8")).digest(),
-			byteorder="big",
-		)
+		return _hash_tokenizer_name(self.name)
 
 	def __hash__(self) -> int:
 		"Stable hash to identify unique `MazeTokenizerModular` instances. uses name"

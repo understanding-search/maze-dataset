@@ -1,5 +1,8 @@
 """generate and save the hashes of all supported tokenizers
 
+> [!CAUTION]
+> using hashes to validate validate a `MazeTokenizerModular` is deprecated in favor of using fst
+
 calls `maze_dataset.tokenization.all_tokenizers.save_hashes()`
 
 Usage:
