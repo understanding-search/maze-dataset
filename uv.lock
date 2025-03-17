@@ -1600,6 +1600,7 @@ dependencies = [
     { name = "matplotlib" },
     { name = "muutils" },
     { name = "pandas" },
+    { name = "rust-fst" },
     { name = "torch" },
     { name = "tqdm" },
     { name = "zanj" },
@@ -1639,6 +1640,7 @@ requires-dist = [
     { name = "matplotlib", specifier = ">=3.7.0" },
     { name = "muutils", specifier = ">=0.8.3" },
     { name = "pandas", specifier = ">=2.2.2" },
+    { name = "rust-fst", specifier = ">=0.1.2" },
     { name = "torch", specifier = ">=1.13.1" },
     { name = "tqdm", specifier = ">=4.65.0" },
     { name = "zanj", specifier = ">=0.4.0" },
@@ -2879,6 +2881,21 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/a7/8f/1f545ea6f9fcd7bf4368551fb91d2064d8f0577b3079bb3f0ae5779fb773/ruff-0.9.10-py3-none-win32.whl", hash = "sha256:bfb834e87c916521ce46b1788fbb8484966e5113c02df216680102e9eb960029", size = 10247401 },
     { url = "https://files.pythonhosted.org/packages/4f/18/fb703603ab108e5c165f52f5b86ee2aa9be43bb781703ec87c66a5f5d604/ruff-0.9.10-py3-none-win_amd64.whl", hash = "sha256:f2160eeef3031bf4b17df74e307d4c5fb689a6f3a26a2de3f7ef4044e3c484f1", size = 11366360 },
     { url = "https://files.pythonhosted.org/packages/35/85/338e603dc68e7d9994d5d84f24adbf69bae760ba5efd3e20f5ff2cec18da/ruff-0.9.10-py3-none-win_arm64.whl", hash = "sha256:5fd804c0327a5e5ea26615550e706942f348b197d5475ff34c19733aee4b2e69", size = 10436892 },
+]
+
+[[package]]
+name = "rust-fst"
+version = "0.1.2"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "cffi" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/fb/88/db1427d446119800e00c6e01bd2ffc2cab6babe39e84a014e6afef4a9b22/rust-fst-0.1.2.tar.gz", hash = "sha256:e647e9ae1c38ae2e6f6967ea7bb9075bb06c020e5d0f344f4182786040105886", size = 8291 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/23/12/42db4ee067877f1a9be3f4f2c1c70499036c45ab2dd0abb44b329ee66756/rust_fst-0.1.2-py2.py3-none-macosx_10_9_x86_64.whl", hash = "sha256:bb4107866472df3ed878e714726e59764867c8262b353206c812ef38c1ebb0ad", size = 858064 },
+    { url = "https://files.pythonhosted.org/packages/f2/64/d8aba6d4bc2193377359086062af8367afb3d8726774fe4750f00c07653a/rust_fst-0.1.2-py2.py3-none-manylinux1_x86_64.whl", hash = "sha256:0ee2261e89264709d8ef040965c12538bb3b7db89ee00e22f8816d19c86295ce", size = 1025960 },
+    { url = "https://files.pythonhosted.org/packages/cd/24/3e47451113ab401be513e8ed64023d7c96c2203a4e1493155e9cf44b4fc4/rust_fst-0.1.2-py2.py3-none-win32.whl", hash = "sha256:5ea0461726d0f044a32ae39620ab93762a0cefd0c7a825a36eff59f9d3c4f508", size = 1216115 },
+    { url = "https://files.pythonhosted.org/packages/c0/9d/a116a1eb984c4798d8386f8366147b0a2e8562d7386f23db6327a0b007ee/rust_fst-0.1.2-py2.py3-none-win_amd64.whl", hash = "sha256:04c3bcd57ed20688d885e220c0e83df69b956c929b3e1c12ed8431effa3a1e52", size = 1256460 },
 ]
 
 [[package]]

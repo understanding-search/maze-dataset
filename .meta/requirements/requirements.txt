@@ -162,6 +162,7 @@ rfc3986-validator==0.1.1
 rich==13.9.4
 rpds-py==0.23.1
 ruff==0.9.10
+rust-fst==0.1.2
 scikit-learn==1.6.1
 scipy==1.15.2
 secretstorage==3.3.3 ; platform_machine != 'ppc64le' and platform_machine != 's390x' and sys_platform == 'linux'

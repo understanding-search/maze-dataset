@@ -34,17 +34,20 @@
         "jaxtyping>=0.2.19",
         # standard numerical
         "matplotlib>=3.7.0",
-        "pandas>=2.2.2",
         # notebooks
         "jupyter>=1.0.0",
         "ipykernel>=6.22.0",
         # misc
         "tqdm>=4.65.0",
         "frozendict>=2.4.4",
+		# storing valid tokenizers
+		"rust_fst>=0.1.2",
     ]
 
 [dependency-groups]
 	dev = [
+		# for benchmarking
+        "pandas>=2.2.2",
 		# test
 		"pytest>=8.2.2",
         "pytest-xdist>=3.6.1", # for parallel all tokenizers tests
