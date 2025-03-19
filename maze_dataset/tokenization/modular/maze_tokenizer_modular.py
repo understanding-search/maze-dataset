@@ -174,12 +174,12 @@ class MazeTokenizerModular(SerializableDataclass):
 			elements = elements[0]
 		return all(self._has_element_singular(e) for e in elements)
 
-	def is_valid(self) -> bool:
+	def is_valid(self, do_except: bool = False) -> bool:
 		"""Returns `True` if `self` is a valid tokenizer.
 
 		Evaluates the validity of all of `self.tokenizer_elements` according to each one's method.
 		"""
-		return all(el.is_valid() for el in self.tokenizer_elements)
+		return all(el.is_valid(do_except=do_except) for el in self.tokenizer_elements)
 
 	def is_legacy_equivalent(self) -> bool:
 		"""Returns if `self` has identical stringification behavior as any legacy `MazeTokenizer`."""

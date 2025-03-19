@@ -60,7 +60,7 @@ class CoordTokenizers(__TokenizerElementNamespace):
 		def attribute_key(cls) -> str:
 			return CoordTokenizers.key
 
-		def is_valid(self) -> bool:
+		def is_valid(self, do_except: bool = False) -> bool:
 			# No invalid instances possible within data member type hint bounds
 			return True
 
@@ -118,7 +118,7 @@ class EdgeGroupings(__TokenizerElementNamespace):
 		def attribute_key(cls) -> str:
 			return EdgeGroupings.key
 
-		def is_valid(self) -> bool:
+		def is_valid(self, do_except: bool = False) -> bool:
 			return True
 
 		@abc.abstractmethod
@@ -222,7 +222,7 @@ class EdgePermuters(__TokenizerElementNamespace):
 		def attribute_key(cls) -> str:
 			return EdgePermuters.key
 
-		def is_valid(self) -> bool:
+		def is_valid(self, do_except: bool = False) -> bool:
 			# No invalid instances possible within data member type hint bounds
 			return True
 
@@ -296,7 +296,7 @@ class EdgeSubsets(__TokenizerElementNamespace):
 		def attribute_key(cls) -> str:
 			return EdgeSubsets.key
 
-		def is_valid(self) -> bool:
+		def is_valid(self, do_except: bool = False) -> bool:
 			return True
 
 		@abc.abstractmethod
@@ -388,7 +388,7 @@ class AdjListTokenizers(__TokenizerElementNamespace):
 		def attribute_key(cls) -> str:
 			return AdjListTokenizers.key
 
-		def is_valid(self) -> bool:
+		def is_valid(self, do_except: bool = False) -> bool:
 			# No invalid instances possible within data member type hint bounds
 			return True
 
@@ -647,7 +647,7 @@ class TargetTokenizers(__TokenizerElementNamespace):
 			)
 
 		# inherit docstring
-		def is_valid(self) -> bool:  # noqa: D102
+		def is_valid(self, do_except: bool = False) -> bool:  # noqa: D102
 			# No invalid instances possible within data member type hint bounds
 			return True
 
@@ -681,7 +681,7 @@ class StepSizes(__TokenizerElementNamespace):
 				for start, end in zip(indices[:-1], indices[1:], strict=False)  # noqa: RUF007
 			]
 
-		def is_valid(self) -> bool:
+		def is_valid(self, do_except: bool = False) -> bool:
 			# No invalid instances possible within data member type hint bounds
 			return True
 
@@ -782,7 +782,7 @@ class StepTokenizers(__TokenizerElementNamespace):
 				"Subclasses must implement `StepTokenizer.to_tokens.",
 			)
 
-		def is_valid(self) -> bool:
+		def is_valid(self, do_except: bool = False) -> bool:
 			# No invalid instances possible within data member type hint bounds
 			return True
 
@@ -1012,20 +1012,29 @@ class PathTokenizers(__TokenizerElementNamespace):
 			return []
 
 		# inherits docstring
-		def is_valid(self) -> bool:  # noqa: D102
+		def is_valid(self, do_except: bool = False) -> bool:  # noqa: D102
+			output: bool
+
 			if len(set(self.step_tokenizers)) != len(self.step_tokenizers):
 				# Uninteresting: repeated elements are not useful
-				return False
-
-			# we do noqa for the comment if false
-			if len(self.step_tokenizers) == 1 and isinstance(  # noqa: SIM103
-				self.step_tokenizers[0],
-				StepTokenizers.Distance,
-			):
-				# Untrainable: `Distance` alone cannot encode a path. >=1 `StepTokenizer` which indicates direction/location is required.
-				return False
+				output = False
 			else:
-				return True
+				# we do noqa for the comment if false
+				if len(self.step_tokenizers) == 1 and isinstance(
+					self.step_tokenizers[0],
+					StepTokenizers.Distance,
+				):
+					# Untrainable: `Distance` alone cannot encode a path. >=1 `StepTokenizer` which indicates direction/location is required.
+					output = False
+				else:
+					output = True
+
+			if not output and do_except:
+				raise ValueError(
+					"PathTokenizer must contain at least one `StepTokenizer` which indicates direction/location.",
+				)
+
+			return output
 
 
 class PromptSequencers(__TokenizerElementNamespace):
@@ -1187,7 +1196,7 @@ class PromptSequencers(__TokenizerElementNamespace):
 			"""
 			pass
 
-		def is_valid(self) -> bool:
+		def is_valid(self, do_except: bool = False) -> bool:
 			# No invalid instances possible within data member type hint bounds
 			return True
 

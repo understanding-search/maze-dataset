@@ -217,7 +217,7 @@ class _TokenizerElement(SerializableDataclass, abc.ABC):
 		raise NotImplementedError
 
 	@abc.abstractmethod
-	def is_valid(self) -> bool:
+	def is_valid(self, do_except: bool = False) -> bool:
 		"""Returns if `self` contains data members capable of producing an overall valid `MazeTokenizerModular`.
 
 		Some `_TokenizerElement` instances may be created which are not useful despite obeying data member type hints.
