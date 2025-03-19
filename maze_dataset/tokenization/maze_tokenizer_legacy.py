@@ -1,3 +1,11 @@
+"""legacy tokenizer which uses a `TokenizationMode` enum and a `MazeTokenizer` class
+
+> [!CAUTION]
+> `MazeTokenizerModular` is the new standard for tokenization. This class is no longer recommended
+> for use, but will remain for compatibility with existing code.
+
+"""
+
 import warnings
 from enum import Enum
 from functools import cached_property
@@ -117,16 +125,6 @@ def get_tokens_up_to_path_start(
 	else:
 		return tokens[:path_start_idx]
 
-
-"""
-##       ########  ######      ###     ######  ##    ##
-##       ##       ##    ##    ## ##   ##    ##  ##  ##
-##       ##       ##         ##   ##  ##         ####
-##       ######   ##   #### ##     ## ##          ##
-##       ##       ##    ##  ######### ##          ##
-##       ##       ##    ##  ##     ## ##    ##    ##
-######## ########  ######   ##     ##  ######     ##
-"""
 
 _MAZETOKENIZER_PROPERTIES_TO_SERIALIZE: list[str] = [
 	"name",

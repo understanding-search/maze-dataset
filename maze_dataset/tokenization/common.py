@@ -1,4 +1,4 @@
-# from maze_dataset import SolvedMaze
+"common code for various tokenizers"
 
 
 class TokenError(ValueError):

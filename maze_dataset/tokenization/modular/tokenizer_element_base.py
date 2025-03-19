@@ -1,3 +1,8 @@
+"""provides the base `_TokenizerElement` class and related functionality for modular maze tokenization
+
+see the code in `maze_dataset.tokenization.modular.elements` for examples of subclasses of `_TokenizerElement`
+"""
+
 import abc
 from typing import (
 	Any,
