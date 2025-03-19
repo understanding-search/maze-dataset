@@ -1,4 +1,4 @@
-"""preserve legacy imports"""
+"""preserving legacy imports"""
 
 from maze_dataset.tokenization.maze_tokenizer_legacy import (
 	MazeTokenizer,

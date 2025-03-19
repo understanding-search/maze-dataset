@@ -6,22 +6,24 @@
 
 """
 
-from maze_dataset.tokenization.maze_tokenizer import (
+from maze_dataset.tokenization.maze_tokenizer_legacy import (
+	MazeTokenizer,
+	TokenizationMode,
+	get_tokens_up_to_path_start,
+)
+from maze_dataset.tokenization.modular import MazeTokenizerModular
+from maze_dataset.tokenization.modular.element_base import _TokenizerElement
+from maze_dataset.tokenization.modular.elements import (
 	AdjListTokenizers,
 	CoordTokenizers,
 	EdgeGroupings,
 	EdgePermuters,
 	EdgeSubsets,
-	MazeTokenizer,
-	MazeTokenizerModular,
 	PathTokenizers,
 	PromptSequencers,
 	StepSizes,
 	StepTokenizers,
 	TargetTokenizers,
-	TokenizationMode,
-	_TokenizerElement,
-	get_tokens_up_to_path_start,
 )
 
 # we don't sort alphabetically on purpose, we sort by the type
@@ -30,10 +32,14 @@ __all__ = [
 	"all_tokenizers",
 	"maze_tokenizer",
 	"save_hashes",
-	# modular maze tokenization components
+	# legacy tokenizer
+	"MazeTokenizer",
 	"TokenizationMode",
-	"_TokenizerElement",
+	# MMT
 	"MazeTokenizerModular",
+	# element base
+	"_TokenizerElement",
+	# elements
 	"PromptSequencers",
 	"CoordTokenizers",
 	"AdjListTokenizers",
@@ -45,8 +51,5 @@ __all__ = [
 	"StepTokenizers",
 	"PathTokenizers",
 	# helpers
-	"coord_str_to_tuple",
 	"get_tokens_up_to_path_start",
-	# old tokenizer
-	"MazeTokenizer",
 ]

@@ -26,3 +26,7 @@ def save_all_tokenizers_fst() -> FstSet:
 	# we expect it to be 1.6kb or so
 	tok_set: FstSet = FstSet.from_iter(all_tokenizers_names_sorted, path=MMT_FST_PATH)
 	return tok_set
+
+
+if __name__ == "__main__":
+	save_all_tokenizers_fst()
