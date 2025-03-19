@@ -87,6 +87,11 @@ def get_all_tokenizers() -> list[MazeTokenizerModular]:
 		),
 	)
 
+@cache
+def get_all_tokenizers_names() -> list[str]:
+	"""computes the sorted list of names of all tokenizers"""
+	return sorted([tokenizer.name for tokenizer in get_all_tokenizers()])
+
 
 EVERY_TEST_TOKENIZERS: list[MazeTokenizerModular] = [
 	MazeTokenizerModular(),
@@ -211,8 +216,3 @@ def save_hashes(
 		)
 
 	return sorted_hashes
-
-
-# def download_hashes(
-# 	download_url: str = DOWNLOAD_URL,
-# )
