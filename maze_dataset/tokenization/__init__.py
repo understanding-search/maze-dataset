@@ -11,7 +11,6 @@ from maze_dataset.tokenization.maze_tokenizer_legacy import (
 	TokenizationMode,
 	get_tokens_up_to_path_start,
 )
-from maze_dataset.tokenization.modular import MazeTokenizerModular
 from maze_dataset.tokenization.modular.element_base import _TokenizerElement
 from maze_dataset.tokenization.modular.elements import (
 	AdjListTokenizers,
@@ -24,6 +23,9 @@ from maze_dataset.tokenization.modular.elements import (
 	StepSizes,
 	StepTokenizers,
 	TargetTokenizers,
+)
+from maze_dataset.tokenization.modular.maze_tokenizer_modular import (
+	MazeTokenizerModular,
 )
 
 # we don't sort alphabetically on purpose, we sort by the type
