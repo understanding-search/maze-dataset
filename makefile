@@ -1408,12 +1408,12 @@ test_all_tok:
 .PHONY: tokenizer-fst-gen
 tokenizer-fst-gen:
 	@echo "generate and save tokenizer FSTs"
-	$(PYTHON) -m maze_dataset.tokenization.modular.fst
+	$(PYTHON) -m maze_dataset.tokenization.modular.fst -p
 
 .PHONY: tokenizer-fst-check
 tokenizer-fst-check:
 	@echo "regen all tokenizers, check their names are in the fst"
-	$(PYTHON) -m maze_dataset.tokenization.modular.fst --check
+	$(PYTHON) -m maze_dataset.tokenization.modular.fst --check -p
 
 
 .PHONY: convert_notebooks
