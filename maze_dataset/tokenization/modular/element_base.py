@@ -20,7 +20,8 @@ from muutils.json_serialize.util import _FORMAT_KEY
 from muutils.misc import flatten
 from zanj.loading import load_item_recursive
 
-from maze_dataset.tokenization.maze_tokenizer import _hash_tokenizer_name
+from maze_dataset.tokenization.modular.hashing import _hash_tokenizer_name
+
 
 # from maze_dataset import SolvedMaze
 
