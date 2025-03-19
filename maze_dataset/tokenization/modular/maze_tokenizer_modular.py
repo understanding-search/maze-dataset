@@ -10,7 +10,6 @@ from typing import (
 	overload,
 )
 
-import numpy as np
 from muutils.json_serialize import (
 	SerializableDataclass,
 	serializable_dataclass,

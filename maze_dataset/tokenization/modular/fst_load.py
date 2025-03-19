@@ -1,3 +1,16 @@
+"""to check if a tokenizer is one of our "approved" ones, look in an fst set we made with `rust_fst`
+
+this file handles the creation of this fst file, which we ship to the user
+
+this file relies on importing `get_all_tokenizers` and thus `MazeTokenizerModular`.
+as such, loading this file for validating a tokenizer is the separate `maze_dataset.tokenization.modular.fst_load`
+module, since we need to be able to import that from `maze_dataset.tokenization.modular.maze_tokenizer_modular` and
+we cannot circularly import
+
+thanks to https://github.com/rozbb for suggesting doing this instead of storing a whole bunch of hashes like we were doing before
+
+"""
+
 from functools import cache
 from pathlib import Path
 
