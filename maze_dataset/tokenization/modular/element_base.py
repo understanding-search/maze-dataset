@@ -252,8 +252,20 @@ class _TokenizerElement(SerializableDataclass, abc.ABC):
 T = TypeVar("T", bound=_TokenizerElement)
 
 
+def _unsupported_is_invalid(self, do_except: bool = False) -> bool:  # noqa: ANN001
+	"""Default implementation of `is_valid` for `mark_as_unsupported`-decorated classes"""
+	if do_except:
+		err_msg: str = (
+			f"Class `{type(self).__name__ = }, marked as unsupported, is not valid."
+			f"{type(self) = }, {self = }"
+		)
+		raise ValueError(err_msg)
+
+	return False
+
+
 # TYPING: better type hints for this function
-def mark_as_unsupported(is_valid: Callable[[T], bool], *args) -> T:  # noqa: ARG001
+def mark_as_unsupported(is_valid: Callable[[T, bool], bool], *args) -> T:  # noqa: ARG001
 	"""mark a _TokenizerElement as unsupported.
 
 	Classes marked with this decorator won't show up in `get_all_tokenizers()` and thus wont be tested.

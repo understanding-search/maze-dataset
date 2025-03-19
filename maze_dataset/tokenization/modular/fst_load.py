@@ -22,7 +22,7 @@ MMT_FST_PATH: Path = Path(__file__).parent / "MazeTokenizerModular_tested.fst"
 @cache
 def get_tokenizers_fst() -> FstSet:
 	"""(cached) load the tokenizers fst set from `MMT_FST_PATH`"""
-	return FstSet(MMT_FST_PATH)
+	return FstSet(MMT_FST_PATH.as_posix())
 
 
 def check_tokenizer_in_fst(tokenizer_name: str, do_except: bool = False) -> bool:

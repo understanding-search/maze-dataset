@@ -187,17 +187,17 @@ class MazeTokenizerModular(SerializableDataclass):
 			for tok_mode in TokenizationMode
 		)
 
-	def is_tested_tokenizer(self, do_assert: bool = False) -> bool:
+	def is_tested_tokenizer(self, do_except: bool = False) -> bool:
 		"""Returns if the tokenizer is returned by `all_tokenizers.get_all_tokenizers`, the set of tested and reliable tokenizers.
 
 		uses an fst on the `name` attributes of all the tokenizers
 
 		if `do_assert` is `True`, raises an `AssertionError` if the tokenizer is not tested.
 		"""
-		is_valid: bool = self.is_valid()
-		in_tested_fst: bool = check_tokenizer_in_fst(self.name, do_except=do_assert)
+		is_valid: bool = self.is_valid(do_except=do_except)
+		in_tested_fst: bool = check_tokenizer_in_fst(self.name, do_except=do_except)
 
-		if do_assert:
+		if do_except:
 			assert is_valid, "self.is_valid returns False"
 			return True
 		else:

@@ -38,6 +38,7 @@ from maze_dataset.tokenization.modular.element_base import (
 	__TokenizerElementNamespace,
 	_load_tokenizer_element,
 	_TokenizerElement,
+	_unsupported_is_invalid,
 	mark_as_unsupported,
 )
 from maze_dataset.utils import lattice_connection_array
@@ -166,7 +167,7 @@ class EdgeGroupings(__TokenizerElementNamespace):
 			return np.expand_dims(edges, 1)
 
 	@serializable_dataclass(frozen=True, kw_only=True)
-	@mark_as_unsupported(lambda self_: False)  # noqa: ARG005
+	@mark_as_unsupported(_unsupported_is_invalid)
 	class ByLeadingCoord(_EdgeGrouping):
 		"""All edges with the same leading coord are grouped together.
 
@@ -340,13 +341,24 @@ class EdgeSubsets(__TokenizerElementNamespace):
 			)
 
 
+def _adjlist_no_pre_unsupported(self_, do_except: bool = False) -> bool:  # noqa: ANN001
+	"""Returns False if `pre` is True, True otherwise."""
+	output: bool = self_.pre is False
+	if do_except and not output:
+		raise ValueError(
+			"AdjListCoord does not support `pre == False`.",
+		)
+
+	return output
+
+
 class AdjListTokenizers(__TokenizerElementNamespace):
 	"""Namespace for `_AdjListTokenizer` subclass hierarchy used by `MazeTokenizerModular`."""
 
 	key = "adj_list_tokenizer"
 
 	@serializable_dataclass(frozen=True, kw_only=True)
-	@mark_as_unsupported(lambda self_: self_.pre is False)
+	@mark_as_unsupported(_adjlist_no_pre_unsupported)
 	class _AdjListTokenizer(_TokenizerElement, abc.ABC):
 		"""Specifies how the adjacency list is tokenized.
 
@@ -697,7 +709,7 @@ class StepSizes(__TokenizerElementNamespace):
 			return list(range(maze.solution.shape[0]))
 
 	@serializable_dataclass(frozen=True, kw_only=True)
-	@mark_as_unsupported(lambda self_: False)  # noqa: ARG005
+	@mark_as_unsupported(_unsupported_is_invalid)
 	class Straightaways(_StepSize):
 		"""Only coords where the path turns are represented in the path.
 
@@ -729,7 +741,7 @@ class StepSizes(__TokenizerElementNamespace):
 			return maze.get_solution_forking_points(always_include_endpoints=True)[0]
 
 	@serializable_dataclass(frozen=True, kw_only=True)
-	@mark_as_unsupported(lambda self_: False)  # noqa: ARG005
+	@mark_as_unsupported(_unsupported_is_invalid)
 	class ForksAndStraightaways(_StepSize):
 		"""Includes the union of the coords included by `Forks` and `Straightaways`.
 
@@ -1031,7 +1043,7 @@ class PathTokenizers(__TokenizerElementNamespace):
 
 			if not output and do_except:
 				raise ValueError(
-					"PathTokenizer must contain at least one `StepTokenizer` which indicates direction/location.",
+					"PathTokenizer must contain at least one `StepTokenizer` which indicates direction/location, or it will be untrainable.",
 				)
 
 			return output

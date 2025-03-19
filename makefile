@@ -1376,6 +1376,7 @@ typing-report:
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # separate unit and notebook tests
+
 .PHONY: unit
 unit:
 	@echo "run unit tests"
@@ -1404,6 +1405,10 @@ test_all_tok:
 	fi
 	$(PYTHON) -m pytest $(PYTEST_OPTIONS) --verbosity=-1 --durations=50 tests/all_tokenizers
 
+.PHONY: gen-tokenizer-fst
+gen-tokenizer-fst:
+	@echo "generate and save tokenizer FSTs"
+	$(PYTHON) -m maze_dataset.tokenization.modular.fst
 
 
 .PHONY: convert_notebooks
