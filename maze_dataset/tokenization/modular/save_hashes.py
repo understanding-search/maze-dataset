@@ -29,8 +29,8 @@ from pathlib import Path
 import numpy as np
 from muutils.spinner import SpinnerContext
 
-from maze_dataset.tokenization import all_tokenizers
-from maze_dataset.tokenization.maze_tokenizer import (
+from maze_dataset.tokenization.modular import all_tokenizers
+from maze_dataset.tokenization.modular.hashing import (
 	_load_tokenizer_hashes,
 	get_all_tokenizer_hashes,
 )

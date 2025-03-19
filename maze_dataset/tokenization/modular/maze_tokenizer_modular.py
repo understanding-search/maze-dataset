@@ -33,11 +33,6 @@ from maze_dataset.token_utils import (
 	strings_to_coords,
 )
 from maze_dataset.tokenization.common import TokenError
-from maze_dataset.tokenization.maze_tokenizer import (
-	AllTokenizersHashesArray,
-	_hash_tokenizer_name,
-	get_all_tokenizer_hashes,
-)
 from maze_dataset.tokenization.maze_tokenizer_legacy import (
 	MazeTokenizer,
 	TokenizationMode,
@@ -47,6 +42,10 @@ from maze_dataset.tokenization.modular.element_base import (
 	_TokenizerElement,
 )
 from maze_dataset.tokenization.modular.elements import CoordTokenizers, PromptSequencers
+from maze_dataset.tokenization.modular.fst_load import check_tokenizer_in_fst
+from maze_dataset.tokenization.modular.hashing import (
+	_hash_tokenizer_name,
+)
 
 
 @serializable_dataclass(
@@ -192,29 +191,18 @@ class MazeTokenizerModular(SerializableDataclass):
 	def is_tested_tokenizer(self, do_assert: bool = False) -> bool:
 		"""Returns if the tokenizer is returned by `all_tokenizers.get_all_tokenizers`, the set of tested and reliable tokenizers.
 
-		Since evaluating `all_tokenizers.get_all_tokenizers` is expensive,
-		instead checks for membership of `self`'s hash in `get_all_tokenizer_hashes()`.
+		uses an fst on the `name` attributes of all the tokenizers
 
 		if `do_assert` is `True`, raises an `AssertionError` if the tokenizer is not tested.
 		"""
-		all_tokenizer_hashes: AllTokenizersHashesArray = get_all_tokenizer_hashes()
-		hash_index: int = np.searchsorted(all_tokenizer_hashes, hash(self))
-
-		in_range: bool = hash_index < len(all_tokenizer_hashes)
-		hashes_match: bool = all_tokenizer_hashes[hash_index] == hash(self)
 		is_valid: bool = self.is_valid()
+		in_tested_fst: bool = check_tokenizer_in_fst(self.name, do_except=do_assert)
 
 		if do_assert:
-			assert in_range, (
-				f"{hash_index = } is invalid, must be at most {len(all_tokenizer_hashes) - 1}"
-			)
-			assert hashes_match, (
-				f"{all_tokenizer_hashes[hash_index] = } != {hash(self) = }"
-			)
 			assert is_valid, "self.is_valid returns False"
 			return True
 		else:
-			return in_range and hashes_match and is_valid
+			return in_tested_fst and is_valid
 
 	def is_AOTP(self) -> bool:
 		"is this tokenizer an AOTP tokenizer? AOTP = Adjacency list, Origin, Target, Path"
