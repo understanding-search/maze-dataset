@@ -82,7 +82,6 @@ jupyterlab-widgets==3.0.13
 keyring==25.6.0 ; platform_machine != 'ppc64le' and platform_machine != 's390x'
 kiwisolver==1.4.8
 lib-detect-testenv==2.0.8 ; python_full_version >= '3.11'
-libcst==1.6.0
 lmcat==0.2.0 ; python_full_version >= '3.11'
 markdown-it-py==3.0.0
 markupsafe==3.0.2
@@ -124,7 +123,6 @@ pandas==2.2.3
 pandas-stubs==2.2.3.250308
 pandocfilters==1.5.1
 parso==0.8.4
-pathspec==0.12.1
 pdoc==15.0.1
 pexpect==4.9.0 ; sys_platform != 'emscripten' and sys_platform != 'win32'
 pillow==11.1.0
@@ -135,7 +133,6 @@ prompt-toolkit==3.0.50
 psutil==7.0.0
 ptyprocess==0.7.0 ; os_name != 'nt' or (sys_platform != 'emscripten' and sys_platform != 'win32')
 pure-eval==0.2.3
-pycln==2.5.0
 pycparser==2.22
 pygments==2.19.1
 pyparsing==3.2.1
@@ -169,7 +166,6 @@ secretstorage==3.3.3 ; platform_machine != 'ppc64le' and platform_machine != 's3
 semver==3.0.4
 send2trash==1.8.3
 setuptools==76.0.0
-shellingham==1.5.4
 six==1.17.0
 sniffio==1.3.1
 soupsieve==2.6
@@ -179,14 +175,12 @@ terminado==0.18.1
 threadpoolctl==3.5.0
 tinycss2==1.4.0
 tomli==2.2.1 ; python_full_version <= '3.11'
-tomlkit==0.13.2
 torch==2.6.0
 tornado==6.4.2
 tqdm==4.67.1
 traitlets==5.14.3
 triton==3.2.0 ; platform_machine == 'x86_64' and sys_platform == 'linux'
 twine==6.1.0
-typer==0.15.2
 types-python-dateutil==2.9.0.20241206
 types-pytz==2025.1.0.20250204
 types-requests==2.32.0.20250306

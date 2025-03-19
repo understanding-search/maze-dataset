@@ -72,7 +72,6 @@
 	]
 	lint = [
 		# lint
-		"pycln>=2.1.3",
 		"ruff>=0.4.8",
 	]
     benchmark = [
@@ -270,8 +269,6 @@
         "[mM]akefile" = "makefile_recipes"
         "*.ipynb" = "ipynb_to_md"
 
-# [tool.pycln]
-#     disable-all-dunder-policy = true # this doesn't seem to work... :/
 
 # ============================================================
 [tool.makefile]
