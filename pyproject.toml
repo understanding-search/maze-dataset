@@ -217,7 +217,7 @@
 		# select = ["ICN001"]
 
 		[tool.ruff.lint.per-file-ignores]
-			"maze_dataset/tokenization/maze_tokenizer.py" = [
+			"maze_dataset/tokenization/modular/*.py" = [
 				# TODO: lots of unused args in the tokenizer code
 				"ARG002"
 			]
@@ -243,6 +243,7 @@
 				"PTH118",
 			]
 			"docs/*" = ["ALL"] # not our problem
+			"test.ipynb" = ["ALL"] # this is just a test notebook
 			"**/*.ipynb" = [
 				"D103", # dont need docstrings
 				"PLR2004", # magic variables are fine

@@ -87,6 +87,7 @@ def get_all_tokenizers() -> list[MazeTokenizerModular]:
 		),
 	)
 
+
 @cache
 def get_all_tokenizers_names() -> list[str]:
 	"""computes the sorted list of names of all tokenizers"""
@@ -186,7 +187,7 @@ def save_hashes(
 	# convert to correct dtype
 	hashes_array: AllTokenizersHashesArray = (
 		hashes_array_np64 % (1 << AllTokenizersHashBitLength)
-		if AllTokenizersHashBitLength < 64 # noqa: PLR2004
+		if AllTokenizersHashBitLength < 64  # noqa: PLR2004
 		else hashes_array_np64
 	).astype(AllTokenizersHashDtype)
 
