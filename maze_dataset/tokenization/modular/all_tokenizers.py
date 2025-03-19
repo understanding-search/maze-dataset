@@ -41,7 +41,7 @@ from maze_dataset.tokenization import (
 	StepTokenizers,
 	_TokenizerElement,
 )
-from maze_dataset.tokenization.maze_tokenizer import (
+from maze_dataset.tokenization.modular.hashing import (
 	AllTokenizersHashBitLength,
 	AllTokenizersHashDtype,
 	AllTokenizersHashesArray,
