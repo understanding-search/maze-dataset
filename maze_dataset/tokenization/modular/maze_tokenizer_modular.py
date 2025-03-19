@@ -1,3 +1,5 @@
+"implements the actual `MazeTokenizerModular` class"
+
 import base64
 import warnings
 from functools import cached_property
@@ -40,11 +42,11 @@ from maze_dataset.tokenization.maze_tokenizer_legacy import (
 	MazeTokenizer,
 	TokenizationMode,
 )
-from maze_dataset.tokenization.modular.elements import CoordTokenizers, PromptSequencers
-from maze_dataset.tokenization.modular.tokenizer_element_base import (
+from maze_dataset.tokenization.modular.element_base import (
 	_load_tokenizer_element,
 	_TokenizerElement,
 )
+from maze_dataset.tokenization.modular.elements import CoordTokenizers, PromptSequencers
 
 
 @serializable_dataclass(

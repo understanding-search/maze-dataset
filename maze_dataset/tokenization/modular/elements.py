@@ -1,3 +1,5 @@
+"""implements subclasses of `_TokenizerElement` to be used in `MazeTokenizerModular`"""
+
 import abc
 import random
 from typing import (
@@ -32,7 +34,7 @@ from maze_dataset.token_utils import (
 	is_connection,
 	tokens_between,
 )
-from maze_dataset.tokenization.modular.tokenizer_element_base import (
+from maze_dataset.tokenization.modular.element_base import (
 	__TokenizerElementNamespace,
 	_load_tokenizer_element,
 	_TokenizerElement,

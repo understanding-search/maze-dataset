@@ -6,5 +6,5 @@ __all__ = [
 	"elements",
 	"maze_tokenizer_modular",
 	"save_hashes",
-	"tokenizer_element_base",
+	"element_base",
 ]
