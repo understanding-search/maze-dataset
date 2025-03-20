@@ -32,11 +32,9 @@ jobs:
       matrix:
         python: ["3.10", "3.11", "3.12", "3.13"]
         pkg:
-          - torch: "1.13.1"
-            numpy: "1.24.4"
+          - numpy: "1.24.4"
             group: "legacy"
-          - torch: ""
-            numpy: ""
+          - numpy: ""
             group: "latest"
         exclude:
           - python: "3.12"
@@ -66,11 +64,6 @@ jobs:
       - name: install dependencies and package
         run: make dep
 
-      - name: Install different pytorch version
-        if: ${{ matrix.pkg.torch != '' }}
-        run: |
-          uv pip install torch==${{ matrix.pkg.torch }}+cpu --extra-index-url https://download.pytorch.org/whl/cpu
-      
       - name: Install different numpy version
         if: ${{ matrix.pkg.numpy != '' }}
         run: uv pip install numpy==${{ matrix.pkg.numpy }}
