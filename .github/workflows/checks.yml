@@ -82,7 +82,7 @@ jobs:
         run: make format-check
 
       - name: Unit tests
-        run: make unit
+        run: make test-unit
       
       - name: Notebook tests (muutils)
         run: make test-notebooks-muutils
