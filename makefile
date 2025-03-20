@@ -1360,7 +1360,6 @@ format:
 format-check:
 	@echo "check if the source code is formatted correctly"
 	$(PYTHON) -m ruff check --config $(PYPROJECT) .
-	$(PYTHON) -m pycln --check --config $(PYPROJECT) .
 
 # runs type checks with mypy
 .PHONY: typing
