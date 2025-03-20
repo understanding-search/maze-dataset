@@ -1419,7 +1419,8 @@ tokenizer-fst-gen:
 .PHONY: tokenizer-fst-check
 tokenizer-fst-check:
 	@echo "regen all tokenizers, check their names are in the fst"
-	$(PYTHON) -m maze_dataset.tokenization.modular.fst --check -p
+	@echo "NUM_TOKENIZERS_TO_TEST=$(NUM_TOKENIZERS_TO_TEST)"
+	$(PYTHON) -m maze_dataset.tokenization.modular.fst --check -p --n-check $(NUM_TOKENIZERS_TO_TEST)
 
 
 .PHONY: test-notebooks-muutils-convert

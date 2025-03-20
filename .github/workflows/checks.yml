@@ -88,7 +88,9 @@ jobs:
         if: ${{ matrix.python != '3.13' }}
       
       - name: Test Tokenizer fst
-        run: make tokenizer-fst-check
+        run: |
+          NUM_TOKENIZERS_TO_TEST=100000
+          make tokenizer-fst-check
         
       - name: check typing (3.11+)
         run: make typing

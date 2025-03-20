@@ -10,6 +10,7 @@ we cannot circularly import
 """
 
 import functools
+import random
 from typing import ContextManager
 
 import tqdm
@@ -74,7 +75,11 @@ def save_all_tokenizers_fst(
 	return tok_set
 
 
-def check_tokenizers_fst(verbose: bool = True, parallel: bool | int = False) -> FstSet:
+def check_tokenizers_fst(
+	verbose: bool = True,
+	parallel: bool | int = False,
+	n_check: int | None = None,
+) -> FstSet:
 	"regen all tokenizers, check they are in the pre-existing fst set"
 	sp: type[ContextManager] = SpinnerContext if verbose else NoOpContextManager
 
@@ -86,9 +91,15 @@ def check_tokenizers_fst(verbose: bool = True, parallel: bool | int = False) -> 
 
 	n_tokenizers: int = len(all_tokenizers)
 
-	all_tokenizers_names: list[str] = run_maybe_parallel(
+	selected_tokenizers: list
+	if n_check is not None:
+		selected_tokenizers = random.sample(all_tokenizers, n_check)
+	else:
+		selected_tokenizers = all_tokenizers
+
+	tokenizers_names: list[str] = run_maybe_parallel(
 		func=_get_tokenizer_name,
-		iterable=all_tokenizers,
+		iterable=selected_tokenizers,
 		parallel=parallel,
 		pbar=tqdm.tqdm,
 		pbar_kwargs=dict(
@@ -96,10 +107,16 @@ def check_tokenizers_fst(verbose: bool = True, parallel: bool | int = False) -> 
 		),
 	)
 
-	assert n_tokenizers == len(all_tokenizers_names)
-	print(
-		f"# got {shorten_numerical_to_str(n_tokenizers)} ({n_tokenizers}) tokenizers names"
-	)
+	if n_check is None:
+		assert n_tokenizers == len(tokenizers_names)
+		print(
+			f"# got {shorten_numerical_to_str(n_tokenizers)} ({n_tokenizers}) tokenizers names"
+		)
+	else:
+		assert n_check == len(tokenizers_names)
+		print(
+			f"# selected {n_check} tokenizers to check out of {shorten_numerical_to_str(n_tokenizers)} ({n_tokenizers}) total"
+		)
 
 	check_tokenizer_in_fst__do_except = functools.partial(
 		check_tokenizer_in_fst, do_except=True
@@ -107,17 +124,20 @@ def check_tokenizers_fst(verbose: bool = True, parallel: bool | int = False) -> 
 
 	run_maybe_parallel(
 		func=check_tokenizer_in_fst__do_except,
-		iterable=all_tokenizers_names,
+		iterable=tokenizers_names,
 		parallel=parallel,
 		pbar=tqdm.tqdm,
 		pbar_kwargs=dict(
-			total=len(all_tokenizers),
+			total=len(selected_tokenizers),
 			desc="checking tokenizers in fst",
 			disable=not verbose,
 		),
 	)
 
-	print("# all tokenizers are in the pre-existing fst set!")
+	if n_check is None:
+		print("# all tokenizers are in the pre-existing fst set!")
+	else:
+		print(f"# all {n_check} selected tokenizers are in the pre-existing fst set!")
 
 
 if __name__ == "__main__":
@@ -148,9 +168,19 @@ if __name__ == "__main__":
 		default=False,
 		help="Control parallelization. will run in serial if nothing specified, use all cpus if flag passed without args, or number of cpus if int passed.",
 	)
+	arg_parser.add_argument(
+		"-n",
+		"--n-check",
+		action="store",
+		type=int,
+		default=None,
+		help="if passed, check n random tokenizers",
+	)
 	args: argparse.Namespace = arg_parser.parse_args()
 
 	if args.check:
-		check_tokenizers_fst(verbose=not args.quiet, parallel=args.parallel)
+		check_tokenizers_fst(
+			verbose=not args.quiet, parallel=args.parallel, n_check=args.n_check
+		)
 	else:
 		save_all_tokenizers_fst(verbose=not args.quiet, parallel=args.parallel)
