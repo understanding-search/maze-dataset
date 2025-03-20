@@ -1405,9 +1405,9 @@ tokenizer-hashes-test:
 	$(PYTHON) -m maze_dataset.tokenization.save_hashes -p --check
 
 
-.PHONY: tokenizers-test-all
-tokenizers-test-all:
-	@echo "run tests on all tokenizers. can pass NUM_TOKENIZERS_TO_TEST arg or SKIP_HASH_TEST"
+.PHONY: tokenizer-test-long
+tokenizer-test-long:
+	@echo "run tests on all tokenizers. can pass NUM_TOKENIZERS_TO_TEST. doesn't check fst"
 	@echo "NUM_TOKENIZERS_TO_TEST=$(NUM_TOKENIZERS_TO_TEST)"
 	$(PYTHON) -m pytest $(PYTEST_OPTIONS) --verbosity=-1 --durations=50 tests/all_tokenizers
 
@@ -1443,13 +1443,17 @@ test-notebooks: test-notebooks-muutils test-notebooks-nbmake
 	@echo "run tests on notebooks in $(NOTEBOOKS_DIR) using both muutils and nbmake"	
 
 .PHONY: test
-test: clean unit test-notebooks
-	@echo "ran all tests: unit, integration, and notebooks"
+test: clean test-unit test-notebooks-muutils tokenizer-fst-check
+	@echo "run all usual tests: unit, notebooks, and fst check (but not tokenizer-test-long)"
 
-.PHONY: test-all
-test-all: clean
+.PHONY: test-cov
+test-cov: clean
 	@echo "run all pytest tests in one for coverage, including tokenizers"
 	uv run pytest --nbmake notebooks/ --nbmake-timeout=300 $(PYTEST_OPTIONS) tests/ notebooks/
+
+.PHONY: test-all
+test-all: clean test-unit test-notebooks tokenizer-fst-check tokenizer-test-long
+	@echo "run literally all tests: unit, notebooks both ways, tokenizers fst check, long tokenizer test"
 
 .PHONY: check
 check: clean format-check test typing
