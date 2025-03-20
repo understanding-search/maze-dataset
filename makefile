@@ -1389,6 +1389,9 @@ typing-report:
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # separate unit and notebook tests
 
+
+NUM_TOKENIZERS_TO_TEST ?= none
+
 .PHONY: test-unit
 test-unit:
 	@echo "run unit tests"

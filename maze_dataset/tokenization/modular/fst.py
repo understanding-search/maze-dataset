@@ -178,9 +178,17 @@ if __name__ == "__main__":
 	)
 	args: argparse.Namespace = arg_parser.parse_args()
 
+	n_check: int | None = (
+		int(args.n_check)
+		if (args.n_check is not None and args.n_check.lower() != "none")
+		else None
+	)
+
 	if args.check:
 		check_tokenizers_fst(
-			verbose=not args.quiet, parallel=args.parallel, n_check=args.n_check
+			verbose=not args.quiet,
+			parallel=args.parallel,
+			n_check=n_check,
 		)
 	else:
 		save_all_tokenizers_fst(verbose=not args.quiet, parallel=args.parallel)
