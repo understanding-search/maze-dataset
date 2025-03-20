@@ -78,7 +78,8 @@ class _TokenizerElement(SerializableDataclass, abc.ABC):
 		Ignore Pylance complaining about the arg to `Literal` being an expression.
 		"""
 		super().__init_subclass__(**kwargs)
-		cls._type_ = serializable_field(
+		# we are adding a new attr here intentionally
+		cls._type_ = serializable_field(  # type: ignore[attr-defined]
 			init=True,
 			repr=False,
 			default=repr(cls),
@@ -265,7 +266,7 @@ def _unsupported_is_invalid(self, do_except: bool = False) -> bool:  # noqa: ANN
 
 
 # TYPING: better type hints for this function
-def mark_as_unsupported(is_valid: Callable[[T, bool], bool], *args) -> T:  # noqa: ARG001
+def mark_as_unsupported(is_valid: Callable[[T, bool], bool]) -> Callable[[T], T]:
 	"""mark a _TokenizerElement as unsupported.
 
 	Classes marked with this decorator won't show up in `get_all_tokenizers()` and thus wont be tested.
@@ -275,8 +276,10 @@ def mark_as_unsupported(is_valid: Callable[[T, bool], bool], *args) -> T:  # noq
 	These decorators could be removed in future releases to expand the space of possible tokenizers.
 	"""
 
-	def wrapper(cls):  # noqa: ANN001, ANN202
-		cls.is_valid = is_valid
+	def wrapper(cls: T) -> T:
+		# intentionally modifying method here
+		# idk why it things `T`/`self` should not be an argument
+		cls.is_valid = is_valid  # type: ignore[assignment, method-assign]
 		return cls
 
 	return wrapper
@@ -290,7 +293,8 @@ class __TokenizerElementNamespace(abc.ABC):  # noqa: B024
 	- key: The binding used in `MazeTokenizerModular` for instances of the classes contained within that `__TokenizerElementNamespace`.
 	"""
 
-	key: str = NotImplementedError
+	# HACK: this is not the right way of doing this lol
+	key: str = NotImplementedError  # type: ignore[assignment]
 
 
 def _load_tokenizer_element(

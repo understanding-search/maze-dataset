@@ -111,28 +111,28 @@
     # generate this exclude with `make typing-report`
     exclude = [
         # high priority
-        "maze_dataset/constants.py", # 41
-        "maze_dataset/dataset/dataset.py", # 20
-        "maze_dataset/dataset/maze_dataset.py", # 41
-        "maze_dataset/dataset/collected_dataset.py", # 10
-        # high priority, difficult
-        "maze_dataset/token_utils.py", # 13, primarily issues with _VOCAB_BASE being a dynamically created dataclass
-        "maze_dataset/utils.py", # 18
-        "maze_dataset/tokenization/all_tokenizers.py", # 7
-        # low priority
-        "maze_dataset/benchmark/speed.py", # 8
-        "maze_dataset/benchmark/percolation_fractions.py", # 10
-        "maze_dataset/plotting/plot_maze.py", # 12
-        "maze_dataset/tokenization/maze_tokenizer.py", # 135
-        # low priority (tests)
-        "tests/unit/maze_dataset/dataset/test_collected_dataset.py", # 5
-        "tests/unit/maze_dataset/processing/test_collect_gen_metadata.py", # 5
-        "tests/unit/maze_dataset/generation/test_latticemaze.py", # 7
-        "tests/all_tokenizers/test_all_tokenizers.py", # 12
-        "tests/unit/maze_dataset/tokenization/test_token_utils.py", # 16
-        "tests/unit/maze_dataset/generation/test_maze_dataset.py", # 29
-        "tests/unit/maze_dataset/tokenization/test_tokenizer.py", # 47
-        "tests/unit/maze_dataset/processing/test_get_forking_path_points.py", # 58
+		"maze_dataset/tokenization/modular/all_tokenizers.py", # 8
+		"maze_dataset/constants.py", # 9
+		"maze_dataset/dataset/dataset.py", # 16
+		"maze_dataset/utils.py", # 19
+		"maze_dataset/dataset/maze_dataset.py", # 45
+		# tokenization
+		"maze_dataset/tokenization/modular/maze_tokenizer_modular.py", # 12
+		"maze_dataset/tokenization/maze_tokenizer_legacy.py", # 19
+		"maze_dataset/token_utils.py", # 21
+		"maze_dataset/tokenization/modular/elements.py", # 97
+		# low priority
+		"maze_dataset/dataset/collected_dataset.py", # 10
+		"maze_dataset/plotting/plot_maze.py", # 11
+		# tests (low priority)
+		"tests/unit/maze_dataset/dataset/test_collected_dataset.py", # 3
+		"tests/unit/maze_dataset/processing/test_collect_gen_metadata.py", # 5
+		"tests/unit/maze_dataset/generation/test_latticemaze.py", # 7
+		"tests/all_tokenizers/test_all_tokenizers.py", # 13
+		"tests/unit/maze_dataset/tokenization/test_token_utils.py", # 16
+		"tests/unit/maze_dataset/generation/test_maze_dataset.py", # 24
+		"tests/unit/maze_dataset/tokenization/test_tokenizer.py", # 48
+		"tests/unit/maze_dataset/processing/test_get_forking_path_points.py", # 58
 		# extra low priority (test temp, generated from notebooks)
 		"tests/_temp/*",
     ]

@@ -11,13 +11,12 @@ we cannot circularly import
 
 import functools
 import random
-from typing import ContextManager
 
 import tqdm
 from muutils.misc.numerical import shorten_numerical_to_str
 from muutils.parallel import run_maybe_parallel
 from muutils.spinner import NoOpContextManager, SpinnerContext
-from rust_fst import Set as FstSet
+from rust_fst import Set as FstSet  # type: ignore[import-untyped]
 
 from maze_dataset.tokenization.modular.all_tokenizers import get_all_tokenizers
 from maze_dataset.tokenization.modular.fst_load import (
@@ -35,7 +34,11 @@ def save_all_tokenizers_fst(
 	verbose: bool = True, parallel: bool | int = False
 ) -> FstSet:
 	"""get all the tokenizers, save an fst file at `MMT_FST_PATH` and return the set"""
-	sp: type[ContextManager] = SpinnerContext if verbose else NoOpContextManager
+	# TYPING: add a protocol or abc for both of these which is a context manager that takes the args we care about
+	# probably do this in muutils
+	sp: type[SpinnerContext | NoOpContextManager] = (
+		SpinnerContext if verbose else NoOpContextManager
+	)
 
 	with sp(message="getting all tokenizers"):
 		all_tokenizers: list = get_all_tokenizers()
@@ -81,7 +84,9 @@ def check_tokenizers_fst(
 	n_check: int | None = None,
 ) -> FstSet:
 	"regen all tokenizers, check they are in the pre-existing fst set"
-	sp: type[ContextManager] = SpinnerContext if verbose else NoOpContextManager
+	sp: type[SpinnerContext | NoOpContextManager] = (
+		SpinnerContext if verbose else NoOpContextManager
+	)
 
 	with sp(message="getting all tokenizers from scratch"):
 		all_tokenizers: list = get_all_tokenizers()

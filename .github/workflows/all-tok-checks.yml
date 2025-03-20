@@ -45,8 +45,8 @@ jobs:
         run: |
           make tokenizer-fst-check
 
-      - name: all tokenizer tests
+      - name: long tokenizer tests
         run: |
           N_TO_TEST=${{ github.event.inputs.n_to_test || '5000' }}
           PYTEST_PARALLEL=${{ github.event.inputs.pytest_parallel || '1' }}
-          make tokenizers-test-all NUM_TOKENIZERS_TO_TEST=$N_TO_TEST PYTEST_PARALLEL=$PYTEST_PARALLEL
+          make tokenizers-test-long NUM_TOKENIZERS_TO_TEST=$N_TO_TEST PYTEST_PARALLEL=$PYTEST_PARALLEL

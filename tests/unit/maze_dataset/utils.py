@@ -286,12 +286,14 @@ def test_all_instances(
 		with pytest.raises(result):
 			list(all_instances(type_, validation_funcs))
 	elif hasattr(type_, "__dataclass_fields__"):
-		assert dataclass_set_equals(all_instances(type_, validation_funcs), result)
+		# TYPING: error: Argument 2 to "dataclass_set_equals" has incompatible type "Iterable[FiniteValued]"; expected "Iterable[IsDataclass]"  [arg-type]
+		assert dataclass_set_equals(all_instances(type_, validation_funcs), result)  # type: ignore[arg-type]
 	else:  # General case, due to nesting, results might contain some dataclasses and some other types
 		out = list(all_instances(type_, validation_funcs))
 		assert dataclass_set_equals(
-			filter(lambda x: isinstance(x, IsDataclass), out),
-			filter(lambda x: isinstance(x, IsDataclass), result),
+			# TYPING: error: Argument 1 to "filter" has incompatible type "Callable[[Any], bool]"; expected "Callable[[FiniteValued], TypeGuard[IsDataclass]]"  [arg-type]
+			filter(lambda x: isinstance(x, IsDataclass), out),  # type: ignore[arg-type]
+			filter(lambda x: isinstance(x, IsDataclass), result),  # type: ignore[arg-type]
 		)
 		assert set(filter(lambda x: not isinstance(x, IsDataclass), out)) == set(
 			filter(lambda x: not isinstance(x, IsDataclass), result),

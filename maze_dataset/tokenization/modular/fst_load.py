@@ -14,7 +14,7 @@ thanks to https://github.com/rozbb for suggesting doing this instead of storing 
 from functools import cache
 from pathlib import Path
 
-from rust_fst import Set as FstSet
+from rust_fst import Set as FstSet  # type: ignore[import-untyped]
 
 MMT_FST_PATH: Path = Path(__file__).parent / "MazeTokenizerModular_tested.fst"
 
