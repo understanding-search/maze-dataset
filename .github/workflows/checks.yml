@@ -94,7 +94,5 @@ jobs:
       - name: run benchmarks tests
         run: make benchmark-test
       
-      - name: Test Tokenizer fst
-        run: |
-          NUM_TOKENIZERS_TO_TEST=1000
-          make tokenizer-fst-check
+      - name: Test Tokenizer fst # test a reduced number of tokenizers
+        run: make tokenizer-fst-check NUM_TOKENIZERS_TO_TEST=1000
