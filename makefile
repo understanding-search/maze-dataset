@@ -1435,15 +1435,20 @@ test-notebooks-muutils: test-notebooks-muutils-convert
 
 .PHONY: test-notebooks-nbmake
 test-notebooks-nbmake:
+	@echo "run tests on notebooks in $(NOTEBOOKS_DIR) using nbmake"
 	uv run pytest --nbmake notebooks/ --nbmake-timeout=300
 
+.PHONY: test-notebooks
+test-notebooks: test-notebooks-muutils test-notebooks-nbmake
+	@echo "run tests on notebooks in $(NOTEBOOKS_DIR) using both muutils and nbmake"	
+
 .PHONY: test
-test: clean unit test-notebooks-muutils
+test: clean unit test-notebooks
 	@echo "ran all tests: unit, integration, and notebooks"
 
 .PHONY: test-all
 test-all: clean
-	@echo "run all tests in one for coverage, including tokenizers"
+	@echo "run all pytest tests in one for coverage, including tokenizers"
 	uv run pytest --nbmake notebooks/ --nbmake-timeout=300 $(PYTEST_OPTIONS) tests/ notebooks/
 
 .PHONY: check

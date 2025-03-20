@@ -76,9 +76,7 @@ jobs:
         run: uv pip install numpy==${{ matrix.pkg.numpy }}
       
       - name: info
-        run: |
-          make info-long
-          make dep-check-torch
+        run: make info-long
 
       - name: format check
         run: make format-check
