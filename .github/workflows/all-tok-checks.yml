@@ -40,12 +40,12 @@ jobs:
       - name: set up uv
         run: curl -LsSf https://astral.sh/uv/install.sh | sh
 
-      - name: tokenizer hash tests
+      - name: tokenizer fst check
         run: |
-          make test_tok_hashes
+          make tokenizer-fst-check
 
       - name: all tokenizer tests
         run: |
           N_TO_TEST=${{ github.event.inputs.n_to_test || '5000' }}
           PYTEST_PARALLEL=${{ github.event.inputs.pytest_parallel || '1' }}
-          make test_all_tok SKIP_HASH_TEST=1 NUM_TOKENIZERS_TO_TEST=$N_TO_TEST PYTEST_PARALLEL=$PYTEST_PARALLEL
+          make tokenizers-test-all NUM_TOKENIZERS_TO_TEST=$N_TO_TEST PYTEST_PARALLEL=$PYTEST_PARALLEL

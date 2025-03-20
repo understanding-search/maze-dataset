@@ -1389,32 +1389,26 @@ typing-report:
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # separate unit and notebook tests
 
-.PHONY: unit
-unit:
+.PHONY: test-unit
+test-unit:
 	@echo "run unit tests"
 	$(PYTHON) -m pytest $(PYTEST_OPTIONS) tests/unit
 
-.PHONY: save_tok_hashes
-save_tok_hashes:
+.PHONY: tokenizer-hashes-save
+tokenizer-hashes-save:
 	@echo "generate and save tokenizer hashes"
 	$(PYTHON) -m maze_dataset.tokenization.save_hashes -p
 
-.PHONY: test_tok_hashes
-test_tok_hashes:
+.PHONY: tokenizer-hashes-test
+tokenizer-hashes-test:
 	@echo "re-run tokenizer hashes and compare"
 	$(PYTHON) -m maze_dataset.tokenization.save_hashes -p --check
 
 
-.PHONY: test_all_tok
-test_all_tok:
+.PHONY: tokenizers-test-all
+tokenizers-test-all:
 	@echo "run tests on all tokenizers. can pass NUM_TOKENIZERS_TO_TEST arg or SKIP_HASH_TEST"
 	@echo "NUM_TOKENIZERS_TO_TEST=$(NUM_TOKENIZERS_TO_TEST)"
-	@if [ "$(SKIP_HASH_TEST)" != "1" ]; then \
-		echo "Running tokenizer hash tests"; \
-		$(MAKE) test_tok_hashes; \
-	else \
-		echo "Skipping tokenizer hash tests"; \
-	fi
 	$(PYTHON) -m pytest $(PYTEST_OPTIONS) --verbosity=-1 --durations=50 tests/all_tokenizers
 
 .PHONY: tokenizer-fst-gen
@@ -1428,23 +1422,23 @@ tokenizer-fst-check:
 	$(PYTHON) -m maze_dataset.tokenization.modular.fst --check -p
 
 
-.PHONY: convert_notebooks
-convert_notebooks:
+.PHONY: test-notebooks-muutils-convert
+test-notebooks-muutils-convert:
 	@echo "convert notebooks in $(NOTEBOOKS_DIR) using muutils.nbutils.convert_ipynb_to_script.py"
 	$(PYTHON) -m muutils.nbutils.convert_ipynb_to_script $(NOTEBOOKS_DIR) --output-dir $(CONVERTED_NOTEBOOKS_TEMP_DIR) --disable-plots
 
 
-.PHONY: test_notebooks
-test_notebooks: convert_notebooks
+.PHONY: test-notebooks-muutils
+test-notebooks-muutils: test-notebooks-muutils-convert
 	@echo "run tests on converted notebooks in $(CONVERTED_NOTEBOOKS_TEMP_DIR) using muutils.nbutils.run_notebook_tests.py"
 	$(PYTHON) -m muutils.nbutils.run_notebook_tests --notebooks-dir $(NOTEBOOKS_DIR) --converted-notebooks-temp-dir $(CONVERTED_NOTEBOOKS_TEMP_DIR) --python-tool uv 
 
-.PHONY: test_notebooks_nbmake
-test_notebooks_nbmake:
+.PHONY: test-notebooks-nbmake
+test-notebooks-nbmake:
 	uv run pytest --nbmake notebooks/ --nbmake-timeout=300
 
 .PHONY: test
-test: clean unit test_notebooks
+test: clean unit test-notebooks-muutils
 	@echo "ran all tests: unit, integration, and notebooks"
 
 .PHONY: test-all
