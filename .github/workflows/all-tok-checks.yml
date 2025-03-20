@@ -19,7 +19,7 @@ on:
       n_to_test:
         description: 'Number of tokenizers to test'
         required: false
-        default: 5000
+        default: 10000
         type: number
       pytest_parallel:
         description: '1 to parallelize tests with -n auto, to run without parallelization'
@@ -47,6 +47,6 @@ jobs:
 
       - name: long tokenizer tests
         run: |
-          N_TO_TEST=${{ github.event.inputs.n_to_test || '5000' }}
+          N_TO_TEST=${{ github.event.inputs.n_to_test || '10000' }}
           PYTEST_PARALLEL=${{ github.event.inputs.pytest_parallel || '1' }}
           make tokenizers-test-long NUM_TOKENIZERS_TO_TEST=$N_TO_TEST PYTEST_PARALLEL=$PYTEST_PARALLEL
