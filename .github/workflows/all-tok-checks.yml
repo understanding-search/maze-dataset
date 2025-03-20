@@ -40,7 +40,7 @@ jobs:
       - name: set up uv
         run: curl -LsSf https://astral.sh/uv/install.sh | sh
 
-      - name: tokenizer fst check (check all)
+      - name: tokenizer fst check (check all, this will take a while)
         run: |
           make tokenizer-fst-check
 
