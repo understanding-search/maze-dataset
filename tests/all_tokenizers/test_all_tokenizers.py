@@ -22,7 +22,7 @@ from maze_dataset.tokenization import (
 	StepTokenizers,
 	_TokenizerElement,
 )
-from maze_dataset.tokenization.all_tokenizers import (
+from maze_dataset.tokenization.modular.all_tokenizers import (
 	EVERY_TEST_TOKENIZERS,
 	MAZE_TOKENIZER_MODULAR_DEFAULT_VALIDATION_FUNCS,
 	sample_tokenizers_for_test,
