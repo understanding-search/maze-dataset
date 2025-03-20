@@ -7,6 +7,7 @@ on:
       - 'maze_dataset/token_utils.py' # temporary
       - 'maze_dataset/constants.py'
       - 'maze_dataset/tokenization/*.py'
+      - 'maze_dataset/tokenization/modular/*.py'
       - 'maze_dataset/tokenization/modular/MazeTokenizerModular_tested.fst'
       - 'notebooks/demo_mazetokenizermodular.ipynb'
       - 'tests/all_tokenizers/*.py'

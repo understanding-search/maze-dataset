@@ -172,9 +172,8 @@ if __name__ == "__main__":
 		"-n",
 		"--n-check",
 		action="store",
-		type=int,
 		default=None,
-		help="if passed, check n random tokenizers",
+		help="if passed, check n random tokenizers. pass an int to check that many. pass 'none' or a -1 to check all",
 	)
 	args: argparse.Namespace = arg_parser.parse_args()
 
@@ -183,6 +182,8 @@ if __name__ == "__main__":
 		if (args.n_check is not None and args.n_check.lower() != "none")
 		else None
 	)
+	if n_check < 0:
+		n_check = None
 
 	if args.check:
 		check_tokenizers_fst(
