@@ -10,7 +10,6 @@ import numpy as np
 import pytest
 from jaxtyping import Int
 from muutils.misc import flatten
-from muutils.mlutils import GLOBAL_SEED
 
 from maze_dataset import (
 	VOCAB,
@@ -24,6 +23,7 @@ from maze_dataset import (
 	SolvedMaze,
 )
 from maze_dataset.generation import LatticeMazeGenerators
+from maze_dataset.generation.seed import GLOBAL_SEED
 from maze_dataset.plotting.print_tokens import color_maze_tokens_AOTP
 from maze_dataset.testing_utils import (
 	ASCII_MAZES,

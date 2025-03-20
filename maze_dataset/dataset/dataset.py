@@ -14,7 +14,6 @@ import warnings
 from pathlib import Path
 from typing import Callable, Type, TypeVar
 
-import muutils
 import numpy as np
 from muutils.json_serialize import (
 	JSONitem,
@@ -24,6 +23,8 @@ from muutils.json_serialize import (
 )
 from muutils.misc import sanitize_fname, shorten_numerical_to_str, stable_hash
 from zanj import ZANJ
+
+from maze_dataset.generation.seed import GLOBAL_SEED
 
 
 def set_reproducibility(seed: int) -> None:
@@ -69,7 +70,7 @@ class GPTDatasetConfig(SerializableDataclass):
 	seq_len_max: int = serializable_field(default=512)
 	# --------------------------------------------------
 
-	seed: int | None = serializable_field(default=muutils.mlutils.DEFAULT_SEED)
+	seed: int | None = serializable_field(default=GLOBAL_SEED)
 	applied_filters: list[
 		dict[typing.Literal["name", "args", "kwargs"], str | list | dict]
 	] = serializable_field(
@@ -86,9 +87,9 @@ class GPTDatasetConfig(SerializableDataclass):
 			self.seed = np.random.randint(2**31)
 
 		# TODO: something here is broken
-		if self.seed not in (muutils.mlutils.DEFAULT_SEED, muutils.mlutils.GLOBAL_SEED):
+		if self.seed != GLOBAL_SEED:
 			warnings.warn(
-				f"in GPTDatasetConfig {self.name=}, {self.seed=} is trying to override {muutils.mlutils.GLOBAL_SEED=} which has already been changed elsewhere from {muutils.mlutils.DEFAULT_SEED=}",
+				f"in GPTDatasetConfig {self.name=}, {self.seed=} is trying to override {GLOBAL_SEED = }",
 			)
 
 		set_reproducibility(self.seed)
