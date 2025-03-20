@@ -182,7 +182,7 @@ if __name__ == "__main__":
 		if (args.n_check is not None and args.n_check.lower() != "none")
 		else None
 	)
-	if n_check < 0:
+	if n_check is not None and n_check < 0:
 		n_check = None
 
 	if args.check:
