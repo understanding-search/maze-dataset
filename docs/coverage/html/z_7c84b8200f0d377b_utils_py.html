@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Coverage for maze_dataset/utils.py: 55%</title>
+    <title>Coverage for maze_dataset/utils.py: 57%</title>
     <link rel="icon" sizes="32x32" href="favicon_32_cb_58284776.png">
     <link rel="stylesheet" href="style_cb_8e611ae1.css" type="text/css">
     <script src="coverage_html_cb_6fb7b396.js" defer></script>
@@ -12,7 +12,7 @@
     <div class="content">
         <h1>
             <span class="text">Coverage for </span><b>maze_dataset/utils.py</b>:
-            <span class="pc_cov">55%</span>
+            <span class="pc_cov">57%</span>
         </h1>
         <aside id="help_panel_wrapper">
             <input id="help_panel_state" type="checkbox">
@@ -55,17 +55,17 @@
         </aside>
         <h2>
             <span class="text">100 statements &nbsp;</span>
-            <button type="button" class="run button_toggle_run" value="run" data-shortcut="r" title="Toggle lines run">55<span class="text"> run</span></button>
-            <button type="button" class="mis show_mis button_toggle_mis" value="mis" data-shortcut="m" title="Toggle lines missing">45<span class="text"> missing</span></button>
+            <button type="button" class="run button_toggle_run" value="run" data-shortcut="r" title="Toggle lines run">57<span class="text"> run</span></button>
+            <button type="button" class="mis show_mis button_toggle_mis" value="mis" data-shortcut="m" title="Toggle lines missing">43<span class="text"> missing</span></button>
             <button type="button" class="exc show_exc button_toggle_exc" value="exc" data-shortcut="x" title="Toggle lines excluded">0<span class="text"> excluded</span></button>
         </h2>
         <p class="text">
-            <a id="prevFileLink" class="nav" href="z_5bd720f4584d86c4_save_hashes_py.html">&#xab; prev</a> &nbsp; &nbsp;
+            <a id="prevFileLink" class="nav" href="z_38e480958b233a62_save_hashes_py.html">&#xab; prev</a> &nbsp; &nbsp;
             <a id="indexLink" class="nav" href="index.html">&Hat; index</a> &nbsp; &nbsp;
-            <a id="nextFileLink" class="nav" href="z_6c6bba7efe651d29_test_collected_dataset_py.html">&#xbb; next</a>
+            <a id="nextFileLink" class="nav" href="z_44b58e93005e9882_test_all_tokenizers_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
             <a class="nav" href="https://coverage.readthedocs.io/en/7.6.12">coverage.py v7.6.12</a>,
-            created at 2025-03-11 01:43 -0600
+            created at 2025-03-20 17:51 -0600
         </p>
         <aside class="hidden">
             <button type="button" class="button_next_chunk" data-shortcut="j"></button>
@@ -400,8 +400,8 @@
     <p class="pln"><span class="n"><a id="t318" href="#t318">318</a></span><span class="t">                <span class="com"># TODO: what is this magic value here exactly?</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t319" href="#t319">319</a></span><span class="t">                <span class="key">if</span> <span class="nam">len</span><span class="op">(</span><span class="nam">args</span><span class="op">)</span> <span class="op">>=</span> <span class="num">2</span> <span class="key">and</span> <span class="nam">args</span><span class="op">[</span><span class="num">1</span><span class="op">]</span> <span class="key">is</span> <span class="key">not</span> <span class="key">None</span><span class="op">:</span>  <span class="com"># noqa: PLR2004</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t320" href="#t320">320</a></span><span class="t">                        <span class="nam">validation_funcs</span> <span class="op">=</span> <span class="nam">frozendict</span><span class="op">.</span><span class="nam">frozendict</span><span class="op">(</span><span class="nam">args</span><span class="op">[</span><span class="num">1</span><span class="op">]</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
-    <p class="mis show_mis"><span class="n"><a id="t321" href="#t321">321</a></span><span class="t">                <span class="key">elif</span> <span class="str">"validation_funcs"</span> <span class="key">in</span> <span class="nam">kwargs</span> <span class="key">and</span> <span class="nam">kwargs</span><span class="op">[</span><span class="str">"validation_funcs"</span><span class="op">]</span> <span class="key">is</span> <span class="key">not</span> <span class="key">None</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
-    <p class="mis show_mis"><span class="n"><a id="t322" href="#t322">322</a></span><span class="t">                        <span class="nam">validation_funcs</span> <span class="op">=</span> <span class="nam">frozendict</span><span class="op">.</span><span class="nam">frozendict</span><span class="op">(</span><span class="nam">kwargs</span><span class="op">[</span><span class="str">"validation_funcs"</span><span class="op">]</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t321" href="#t321">321</a></span><span class="t">                <span class="key">elif</span> <span class="str">"validation_funcs"</span> <span class="key">in</span> <span class="nam">kwargs</span> <span class="key">and</span> <span class="nam">kwargs</span><span class="op">[</span><span class="str">"validation_funcs"</span><span class="op">]</span> <span class="key">is</span> <span class="key">not</span> <span class="key">None</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t322" href="#t322">322</a></span><span class="t">                        <span class="nam">validation_funcs</span> <span class="op">=</span> <span class="nam">frozendict</span><span class="op">.</span><span class="nam">frozendict</span><span class="op">(</span><span class="nam">kwargs</span><span class="op">[</span><span class="str">"validation_funcs"</span><span class="op">]</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t323" href="#t323">323</a></span><span class="t">                <span class="key">else</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
     <p class="mis show_mis"><span class="n"><a id="t324" href="#t324">324</a></span><span class="t">                        <span class="nam">validation_funcs</span> <span class="op">=</span> <span class="key">None</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t325" href="#t325">325</a></span><span class="t">                <span class="key">return</span> <span class="nam">cached_wrapper</span><span class="op">(</span><span class="nam">args</span><span class="op">[</span><span class="num">0</span><span class="op">]</span><span class="op">,</span> <span class="nam">f</span><span class="op">,</span> <span class="nam">validation_funcs</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
@@ -522,12 +522,12 @@
 <footer>
     <div class="content">
         <p>
-            <a class="nav" href="z_5bd720f4584d86c4_save_hashes_py.html">&#xab; prev</a> &nbsp; &nbsp;
+            <a class="nav" href="z_38e480958b233a62_save_hashes_py.html">&#xab; prev</a> &nbsp; &nbsp;
             <a class="nav" href="index.html">&Hat; index</a> &nbsp; &nbsp;
-            <a class="nav" href="z_6c6bba7efe651d29_test_collected_dataset_py.html">&#xbb; next</a>
+            <a class="nav" href="z_44b58e93005e9882_test_all_tokenizers_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
             <a class="nav" href="https://coverage.readthedocs.io/en/7.6.12">coverage.py v7.6.12</a>,
-            created at 2025-03-11 01:43 -0600
+            created at 2025-03-20 17:51 -0600
         </p>
     </div>
 </footer>

@@ -263,7 +263,7 @@
         "sweep.yaml",
         # there are... a lot of tests. we usually dont need to put these in lmcat
         "tests/**",
-        "*.npz",
+        "maze_dataset/tokenization/modular/MazeTokenizerModular_tested.fst",
 	]
     [tool.lmcat.glob_process]
         "[mM]akefile" = "makefile_recipes"
