@@ -8,6 +8,7 @@ they implement some basic functionality, saving/loading, the `from_config` pipel
 
 import functools
 import json
+import random
 import typing
 import warnings
 from pathlib import Path
@@ -15,7 +16,6 @@ from typing import Callable, Type, TypeVar
 
 import muutils
 import numpy as np
-import torch
 from muutils.json_serialize import (
 	JSONitem,
 	SerializableDataclass,
@@ -23,24 +23,19 @@ from muutils.json_serialize import (
 	serializable_field,
 )
 from muutils.misc import sanitize_fname, shorten_numerical_to_str, stable_hash
-from muutils.mlutils import set_reproducibility
-from muutils.tensor_utils import DTYPE_MAP
-from torch.utils.data import Dataset
 from zanj import ZANJ
+
+
+def set_reproducibility(seed: int) -> None:
+	"set reproducibility in stdlib random and numpy (but not torch)"
+	random.seed(seed)
+	np.random.seed(seed)
 
 
 class FilterInfoMismatchError(ValueError):
 	"""raised when the filter info in a dataset config does not match the filter info in the dataset"""
 
 	pass
-
-
-def _dtype_serialization_fn(datatype: torch.dtype | np.dtype) -> str:
-	"""convert torch dtype to string, while checking that the conversion is reversible"""
-	x_str: str = str(datatype)
-	assert x_str in DTYPE_MAP, f"unknown dtype {datatype}"
-	assert DTYPE_MAP[x_str] == datatype
-	return x_str
 
 
 def _load_applied_filters(
@@ -88,7 +83,7 @@ class GPTDatasetConfig(SerializableDataclass):
 		assert self.seq_len_min <= self.seq_len_max
 		# if seed set to None, then generate a new random seed
 		if self.seed is None:
-			self.seed = torch.random.seed() % 2**31
+			self.seed = np.random.randint(2**31)
 
 		# TODO: something here is broken
 		if self.seed not in (muutils.mlutils.DEFAULT_SEED, muutils.mlutils.GLOBAL_SEED):
@@ -147,7 +142,7 @@ GPTDatasetConfig.load = _dataset_config_load
 GPTDatasetConfig.serialize = _dataset_config_serialize
 
 
-class GPTDataset(Dataset):
+class GPTDataset:
 	"""wrapper for torch dataset with some extra functionality
 
 	(meaning the functionality should be inherited in downstream classes)
@@ -170,10 +165,9 @@ class GPTDataset(Dataset):
 	- `download(cls, cfg: GPTDatasetConfig, **kwargs) -> GPTDataset`
 		given a config, try to download a dataset from some source. kwargs are passed through from `from_config`, and should only contain things that dont belong in the config (i.e. some kind of auth token or source url)
 	- `__len__(self) -> int`
-		return the length of the dataset, required for `torch.utils.data.Dataset`
+		return the length of the dataset, required to match interface of `torch.utils.data.Dataset`
 	- `__getitem__(self, i: int) -> list[str]`
-		return the ith item in the dataset, required for `torch.utils.data.Dataset`
-		return the ith item in the dataset, required for `torch.utils.data.Dataset`
+		return the ith item in the dataset, required to match interface of `torch.utils.data.Dataset`
 	-  `update_self_config(self) -> None`
 		update the config of the dataset to match the current state of the dataset, used primarily in filtering and validation
 	-  decorating the appropriate filter namespace with `register_filter_namespace_for_dataset(your_dataset_class)` if you want to use filters

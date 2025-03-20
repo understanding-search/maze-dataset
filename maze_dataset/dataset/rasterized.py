@@ -21,7 +21,6 @@ import typing
 from pathlib import Path
 
 import numpy as np
-import torch
 from jaxtyping import Float, Int
 from muutils.json_serialize import serializable_dataclass, serializable_field
 from zanj import ZANJ
@@ -72,7 +71,7 @@ def process_maze_rasterized_input_target(
 	remove_isolated_cells: bool = True,
 	extend_pixels: bool = True,
 	endpoints_as_open: bool = False,
-) -> Float[torch.Tensor, "in/tgt=2 x y rgb=3"]:
+) -> Float[np.ndarray, "in/tgt=2 x y rgb=3"]:
 	"""turn a single `SolvedMaze` into an array representation
 
 	has extra options for matching the format in https://github.com/aks2203/easy-to-hard
@@ -115,7 +114,7 @@ def process_maze_rasterized_input_target(
 		problem_maze = _extend_pixels(problem_maze)
 		solution_maze = _extend_pixels(solution_maze)
 
-	return torch.tensor(np.array([problem_maze, solution_maze]))
+	return np.array([problem_maze, solution_maze])
 
 
 # TYPING: error: Attributes without a default cannot follow attributes with one  [misc]
@@ -139,7 +138,7 @@ class RasterizedMazeDataset(MazeDataset):
 	cfg: RasterizedMazeDatasetConfig
 
 	# this override here is intentional
-	def __getitem__(self, idx: int) -> Float[torch.Tensor, "item in/tgt=2 x y rgb=3"]:  # type: ignore[override]
+	def __getitem__(self, idx: int) -> Float[np.ndarray, "item in/tgt=2 x y rgb=3"]:  # type: ignore[override]
 		"""get a single maze"""
 		# get the solved maze
 		solved_maze: SolvedMaze = self.mazes[idx]
@@ -154,16 +153,16 @@ class RasterizedMazeDataset(MazeDataset):
 	def get_batch(
 		self,
 		idxs: list[int] | None,
-	) -> Float[torch.Tensor, "in/tgt=2 item x y rgb=3"]:
+	) -> Float[np.ndarray, "in/tgt=2 item x y rgb=3"]:
 		"""get a batch of mazes as a tensor, from a list of indices"""
 		if idxs is None:
 			idxs = list(range(len(self)))
 
-		inputs: list[Float[torch.Tensor, "x y rgb=3"]]
-		targets: list[Float[torch.Tensor, "x y rgb=3"]]
+		inputs: list[Float[np.ndarray, "x y rgb=3"]]
+		targets: list[Float[np.ndarray, "x y rgb=3"]]
 		inputs, targets = zip(*[self[i] for i in idxs], strict=False)  # type: ignore[assignment]
 
-		return torch.stack([torch.stack(inputs), torch.stack(targets)])
+		return np.array([inputs, targets])
 
 	# override here is intentional
 	@classmethod

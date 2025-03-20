@@ -5,8 +5,6 @@ from typing import TYPE_CHECKING, Callable
 
 import numpy as np
 import sympy as sp  # type: ignore[import-untyped]
-
-# other imports after pysr since it has to be before torch?
 from jaxtyping import Float
 from pysr import PySRRegressor  # type: ignore[import-untyped]
 
