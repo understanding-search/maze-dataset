@@ -84,6 +84,8 @@ jobs:
       
       - name: Notebook tests (nbmake)
         run: make test-notebooks-nbmake  
+        # also see https://github.com/understanding-search/maze-dataset/issues/48
+        if: ${{ matrix.python != '3.13' }}
       
       - name: Test Tokenizer fst
         run: make tokenizer-fst-check
