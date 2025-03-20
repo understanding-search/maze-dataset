@@ -324,7 +324,7 @@ def make_numpy_collection(
 		},
 		arrays={
 			# get_batch(None) returns a single tensor of shape (n, 2, x, y, 3)
-			key_fmt.format(size=size): dataset.get_batch(None).cpu().numpy()
+			key_fmt.format(size=size): dataset.get_batch(None)
 			for size, dataset in datasets.items()
 		},
 	)
