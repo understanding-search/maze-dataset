@@ -113,6 +113,23 @@
 
 
 
+## [`maze_dataset/tokenization/modular/element_base.py`](/maze_dataset/tokenization/modular/element_base.py)
+
+- this is not the right way of doing this lol  
+  local link: [`/maze_dataset/tokenization/modular/element_base.py:296`](/maze_dataset/tokenization/modular/element_base.py#L296) 
+  | view on GitHub: [maze_dataset/tokenization/modular/element_base.py#L296](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/modular/element_base.py#L296)
+  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=this%20is%20not%20the%20right%20way%20of%20doing%20this%20lol&body=%23%20source%0A%0A%5B%60maze_dataset%2Ftokenization%2Fmodular%2Felement_base.py%23L296%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Ftokenization%2Fmodular%2Felement_base.py%23L296%29%0A%0A%23%20context%0A%60%60%60python%0A%09%22%22%22%0A%0A%09%23%20HACK%3A%20this%20is%20not%20the%20right%20way%20of%20doing%20this%20lol%0A%09key%3A%20str%20%3D%20NotImplementedError%20%20%23%20type%3A%20ignore%5Bassignment%5D%0A%60%60%60&labels=HACK)
+
+  ```python
+  """
+
+  # HACK: this is not the right way of doing this lol
+  key: str = NotImplementedError  # type: ignore[assignment]
+  ```
+
+
+
+
 
 # TODO
 
@@ -201,9 +218,9 @@
 ## [`maze_dataset/dataset/dataset.py`](/maze_dataset/dataset/dataset.py)
 
 - get rid of all these things as part of migration to tokenizer-free dataset config  
-  local link: [`/maze_dataset/dataset/dataset.py:71`](/maze_dataset/dataset/dataset.py#L71) 
-  | view on GitHub: [maze_dataset/dataset/dataset.py#L71](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/dataset.py#L71)
-  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=get%20rid%20of%20all%20these%20things%20as%20part%20of%20migration%20to%20tokenizer-free%20dataset%20config&body=%23%20source%0A%0A%5B%60maze_dataset%2Fdataset%2Fdataset.py%23L71%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Fdataset%2Fdataset.py%23L71%29%0A%0A%23%20context%0A%60%60%60python%0A%09name%3A%20str%0A%0A%09%23%20TODO%3A%20get%20rid%20of%20all%20these%20things%20as%20part%20of%20migration%20to%20tokenizer-free%20dataset%20config%0A%09%23%20--------------------------------------------------%0A%09seq_len_min%3A%20int%20%3D%20serializable_field%28default%3D1%29%0A%60%60%60&labels=enhancement)
+  local link: [`/maze_dataset/dataset/dataset.py:67`](/maze_dataset/dataset/dataset.py#L67) 
+  | view on GitHub: [maze_dataset/dataset/dataset.py#L67](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/dataset.py#L67)
+  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=get%20rid%20of%20all%20these%20things%20as%20part%20of%20migration%20to%20tokenizer-free%20dataset%20config&body=%23%20source%0A%0A%5B%60maze_dataset%2Fdataset%2Fdataset.py%23L67%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Fdataset%2Fdataset.py%23L67%29%0A%0A%23%20context%0A%60%60%60python%0A%09name%3A%20str%0A%0A%09%23%20TODO%3A%20get%20rid%20of%20all%20these%20things%20as%20part%20of%20migration%20to%20tokenizer-free%20dataset%20config%0A%09%23%20--------------------------------------------------%0A%09seq_len_min%3A%20int%20%3D%20serializable_field%28default%3D1%29%0A%60%60%60&labels=enhancement)
 
   ```python
   name: str
@@ -215,9 +232,9 @@
 
 
 - check the type here once muutils supports checking Callable signatures  
-  local link: [`/maze_dataset/dataset/dataset.py:83`](/maze_dataset/dataset/dataset.py#L83) 
-  | view on GitHub: [maze_dataset/dataset/dataset.py#L83](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/dataset.py#L83)
-  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=check%20the%20type%20here%20once%20muutils%20supports%20checking%20Callable%20signatures&body=%23%20source%0A%0A%5B%60maze_dataset%2Fdataset%2Fdataset.py%23L83%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Fdataset%2Fdataset.py%23L83%29%0A%0A%23%20context%0A%60%60%60python%0A%09%09default_factory%3Dlist%2C%0A%09%09deserialize_fn%3D_load_applied_filters%2C%0A%09%09assert_type%3DFalse%2C%20%20%23%20TODO%3A%20check%20the%20type%20here%20once%20muutils%20supports%20checking%20Callable%20signatures%0A%09%29%0A%60%60%60&labels=enhancement)
+  local link: [`/maze_dataset/dataset/dataset.py:79`](/maze_dataset/dataset/dataset.py#L79) 
+  | view on GitHub: [maze_dataset/dataset/dataset.py#L79](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/dataset.py#L79)
+  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=check%20the%20type%20here%20once%20muutils%20supports%20checking%20Callable%20signatures&body=%23%20source%0A%0A%5B%60maze_dataset%2Fdataset%2Fdataset.py%23L79%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Fdataset%2Fdataset.py%23L79%29%0A%0A%23%20context%0A%60%60%60python%0A%09%09default_factory%3Dlist%2C%0A%09%09deserialize_fn%3D_load_applied_filters%2C%0A%09%09assert_type%3DFalse%2C%20%20%23%20TODO%3A%20check%20the%20type%20here%20once%20muutils%20supports%20checking%20Callable%20signatures%0A%09%29%0A%60%60%60&labels=enhancement)
 
   ```python
   	default_factory=list,
@@ -228,23 +245,23 @@
 
 
 - something here is broken  
-  local link: [`/maze_dataset/dataset/dataset.py:93`](/maze_dataset/dataset/dataset.py#L93) 
-  | view on GitHub: [maze_dataset/dataset/dataset.py#L93](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/dataset.py#L93)
-  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=something%20here%20is%20broken&body=%23%20source%0A%0A%5B%60maze_dataset%2Fdataset%2Fdataset.py%23L93%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Fdataset%2Fdataset.py%23L93%29%0A%0A%23%20context%0A%60%60%60python%0A%09%09%09self.seed%20%3D%20torch.random.seed%28%29%20%25%202%2A%2A31%0A%0A%09%09%23%20TODO%3A%20something%20here%20is%20broken%0A%09%09if%20self.seed%20not%20in%20%28muutils.mlutils.DEFAULT_SEED%2C%20muutils.mlutils.GLOBAL_SEED%29%3A%0A%09%09%09warnings.warn%28%0A%60%60%60&labels=enhancement)
+  local link: [`/maze_dataset/dataset/dataset.py:89`](/maze_dataset/dataset/dataset.py#L89) 
+  | view on GitHub: [maze_dataset/dataset/dataset.py#L89](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/dataset.py#L89)
+  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=something%20here%20is%20broken&body=%23%20source%0A%0A%5B%60maze_dataset%2Fdataset%2Fdataset.py%23L89%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Fdataset%2Fdataset.py%23L89%29%0A%0A%23%20context%0A%60%60%60python%0A%09%09%09self.seed%20%3D%20np.random.randint%282%2A%2A31%29%0A%0A%09%09%23%20TODO%3A%20something%20here%20is%20broken%0A%09%09if%20self.seed%20%21%3D%20GLOBAL_SEED%3A%0A%09%09%09warnings.warn%28%0A%60%60%60&labels=enhancement)
 
   ```python
-  	self.seed = torch.random.seed() % 2**31
+  	self.seed = np.random.randint(2**31)
 
   # TODO: something here is broken
-  if self.seed not in (muutils.mlutils.DEFAULT_SEED, muutils.mlutils.GLOBAL_SEED):
+  if self.seed != GLOBAL_SEED:
   	warnings.warn(
   ```
 
 
 - some funny business with manually specified filters here?  
-  local link: [`/maze_dataset/dataset/dataset.py:426`](/maze_dataset/dataset/dataset.py#L426) 
-  | view on GitHub: [maze_dataset/dataset/dataset.py#L426](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/dataset.py#L426)
-  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=some%20funny%20business%20with%20manually%20specified%20filters%20here%3F&body=%23%20source%0A%0A%5B%60maze_dataset%2Fdataset%2Fdataset.py%23L426%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Fdataset%2Fdataset.py%23L426%29%0A%0A%23%20context%0A%60%60%60python%0A%09%09%23%20update%20the%20config%2C%20perform%20checks%0A%09%09%23%20TODO%3A%20some%20funny%20business%20with%20manually%20specified%20filters%20here%3F%0A%09%09output.update_self_config%28%29%0A%09%09_check_filter_equality%28applied_filters_old%2C%20output.cfg.applied_filters%29%0A%60%60%60&labels=enhancement)
+  local link: [`/maze_dataset/dataset/dataset.py:421`](/maze_dataset/dataset/dataset.py#L421) 
+  | view on GitHub: [maze_dataset/dataset/dataset.py#L421](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/dataset.py#L421)
+  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=some%20funny%20business%20with%20manually%20specified%20filters%20here%3F&body=%23%20source%0A%0A%5B%60maze_dataset%2Fdataset%2Fdataset.py%23L421%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Fdataset%2Fdataset.py%23L421%29%0A%0A%23%20context%0A%60%60%60python%0A%09%09%23%20update%20the%20config%2C%20perform%20checks%0A%09%09%23%20TODO%3A%20some%20funny%20business%20with%20manually%20specified%20filters%20here%3F%0A%09%09output.update_self_config%28%29%0A%09%09_check_filter_equality%28applied_filters_old%2C%20output.cfg.applied_filters%29%0A%60%60%60&labels=enhancement)
 
   ```python
   # update the config, perform checks
@@ -586,29 +603,12 @@
 
 
 
-## [`maze_dataset/tokenization/all_tokenizers.py`](/maze_dataset/tokenization/all_tokenizers.py)
-
-- add more here as specific tokenizers become canonical and frequently used  
-  local link: [`/maze_dataset/tokenization/all_tokenizers.py:90`](/maze_dataset/tokenization/all_tokenizers.py#L90) 
-  | view on GitHub: [maze_dataset/tokenization/all_tokenizers.py#L90](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/all_tokenizers.py#L90)
-  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=add%20more%20here%20as%20specific%20tokenizers%20become%20canonical%20and%20frequently%20used&body=%23%20source%0A%0A%5B%60maze_dataset%2Ftokenization%2Fall_tokenizers.py%23L90%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Ftokenization%2Fall_tokenizers.py%23L90%29%0A%0A%23%20context%0A%60%60%60python%0A%09%09prompt_sequencer%3DPromptSequencers.AOTP%28coord_tokenizer%3DCoordTokenizers.CTT%28%29%29%2C%0A%09%29%2C%0A%09%23%20TODO%3A%20add%20more%20here%20as%20specific%20tokenizers%20become%20canonical%20and%20frequently%20used%0A%5D%0A%60%60%60&labels=enhancement)
-
-  ```python
-  		prompt_sequencer=PromptSequencers.AOTP(coord_tokenizer=CoordTokenizers.CTT()),
-  	),
-  	# TODO: add more here as specific tokenizers become canonical and frequently used
-  ]
-  ```
-
-
-
-
-## [`maze_dataset/tokenization/maze_tokenizer.py`](/maze_dataset/tokenization/maze_tokenizer.py)
+## [`maze_dataset/tokenization/maze_tokenizer_legacy.py`](/maze_dataset/tokenization/maze_tokenizer_legacy.py)
 
 - this is hacky, but we don't want to modify the original SPECIAL_TOKENS since that will break old models  
-  local link: [`/maze_dataset/tokenization/maze_tokenizer.py:281`](/maze_dataset/tokenization/maze_tokenizer.py#L281) 
-  | view on GitHub: [maze_dataset/tokenization/maze_tokenizer.py#L281](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L281)
-  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=this%20is%20hacky%2C%20but%20we%20don%27t%20want%20to%20modify%20the%20original%20SPECIAL_TOKENS%20since%20that%20will%20break%20old%20models&body=%23%20source%0A%0A%5B%60maze_dataset%2Ftokenization%2Fmaze_tokenizer.py%23L281%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Ftokenization%2Fmaze_tokenizer.py%23L281%29%0A%0A%23%20context%0A%60%60%60python%0A%09%09%09%29%0A%09%09elif%20self.tokenization_mode%20%3D%3D%20TokenizationMode.AOTP_CTT_indexed%3A%0A%09%09%09%23%20TODO%3A%20this%20is%20hacky%2C%20but%20we%20don%27t%20want%20to%20modify%20the%20original%20SPECIAL_TOKENS%20since%20that%20will%20break%20old%20models%0A%09%09%09output.extend%28%0A%09%09%09%09%5B%0A%60%60%60&labels=enhancement)
+  local link: [`/maze_dataset/tokenization/maze_tokenizer_legacy.py:257`](/maze_dataset/tokenization/maze_tokenizer_legacy.py#L257) 
+  | view on GitHub: [maze_dataset/tokenization/maze_tokenizer_legacy.py#L257](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer_legacy.py#L257)
+  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=this%20is%20hacky%2C%20but%20we%20don%27t%20want%20to%20modify%20the%20original%20SPECIAL_TOKENS%20since%20that%20will%20break%20old%20models&body=%23%20source%0A%0A%5B%60maze_dataset%2Ftokenization%2Fmaze_tokenizer_legacy.py%23L257%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Ftokenization%2Fmaze_tokenizer_legacy.py%23L257%29%0A%0A%23%20context%0A%60%60%60python%0A%09%09%09%29%0A%09%09elif%20self.tokenization_mode%20%3D%3D%20TokenizationMode.AOTP_CTT_indexed%3A%0A%09%09%09%23%20TODO%3A%20this%20is%20hacky%2C%20but%20we%20don%27t%20want%20to%20modify%20the%20original%20SPECIAL_TOKENS%20since%20that%20will%20break%20old%20models%0A%09%09%09output.extend%28%0A%09%09%09%09%5B%0A%60%60%60&labels=enhancement)
 
   ```python
   	)
@@ -620,9 +620,9 @@
 
 
 - deprecate  
-  local link: [`/maze_dataset/tokenization/maze_tokenizer.py:330`](/maze_dataset/tokenization/maze_tokenizer.py#L330) 
-  | view on GitHub: [maze_dataset/tokenization/maze_tokenizer.py#L330](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L330)
-  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=deprecate&body=%23%20source%0A%0A%5B%60maze_dataset%2Ftokenization%2Fmaze_tokenizer.py%23L330%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Ftokenization%2Fmaze_tokenizer.py%23L330%29%0A%0A%23%20context%0A%60%60%60python%0A%09%40property%0A%09def%20_n_tokens%28self%29%20-%3E%20int%3A%0A%09%09%23%20TODO%3A%20deprecate%0A%09%09return%20self._vocab_size%0A%60%60%60&labels=enhancement)
+  local link: [`/maze_dataset/tokenization/maze_tokenizer_legacy.py:306`](/maze_dataset/tokenization/maze_tokenizer_legacy.py#L306) 
+  | view on GitHub: [maze_dataset/tokenization/maze_tokenizer_legacy.py#L306](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer_legacy.py#L306)
+  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=deprecate&body=%23%20source%0A%0A%5B%60maze_dataset%2Ftokenization%2Fmaze_tokenizer_legacy.py%23L306%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Ftokenization%2Fmaze_tokenizer_legacy.py%23L306%29%0A%0A%23%20context%0A%60%60%60python%0A%09%40property%0A%09def%20_n_tokens%28self%29%20-%3E%20int%3A%0A%09%09%23%20TODO%3A%20deprecate%0A%09%09return%20self._vocab_size%0A%60%60%60&labels=enhancement)
 
   ```python
   @property
@@ -632,10 +632,31 @@
   ```
 
 
+
+
+## [`maze_dataset/tokenization/modular/all_tokenizers.py`](/maze_dataset/tokenization/modular/all_tokenizers.py)
+
+- add more here as specific tokenizers become canonical and frequently used  
+  local link: [`/maze_dataset/tokenization/modular/all_tokenizers.py:102`](/maze_dataset/tokenization/modular/all_tokenizers.py#L102) 
+  | view on GitHub: [maze_dataset/tokenization/modular/all_tokenizers.py#L102](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/modular/all_tokenizers.py#L102)
+  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=add%20more%20here%20as%20specific%20tokenizers%20become%20canonical%20and%20frequently%20used&body=%23%20source%0A%0A%5B%60maze_dataset%2Ftokenization%2Fmodular%2Fall_tokenizers.py%23L102%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Ftokenization%2Fmodular%2Fall_tokenizers.py%23L102%29%0A%0A%23%20context%0A%60%60%60python%0A%09%09prompt_sequencer%3DPromptSequencers.AOTP%28coord_tokenizer%3DCoordTokenizers.CTT%28%29%29%2C%0A%09%29%2C%0A%09%23%20TODO%3A%20add%20more%20here%20as%20specific%20tokenizers%20become%20canonical%20and%20frequently%20used%0A%5D%0A%60%60%60&labels=enhancement)
+
+  ```python
+  		prompt_sequencer=PromptSequencers.AOTP(coord_tokenizer=CoordTokenizers.CTT()),
+  	),
+  	# TODO: add more here as specific tokenizers become canonical and frequently used
+  ]
+  ```
+
+
+
+
+## [`maze_dataset/tokenization/modular/element_base.py`](/maze_dataset/tokenization/modular/element_base.py)
+
 - why noqa here? `B024 `__TokenizerElementNamespace` is an abstract base class, but it has no abstract methods or properties`  
-  local link: [`/maze_dataset/tokenization/maze_tokenizer.py:775`](/maze_dataset/tokenization/maze_tokenizer.py#L775) 
-  | view on GitHub: [maze_dataset/tokenization/maze_tokenizer.py#L775](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L775)
-  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=why%20noqa%20here%3F%20%60B024%20%60__TokenizerElementNamespace%60%20is%20an%20abstract%20base%20class%2C%20but%20it%20has%20no%20abstract%20methods%20or%20properties%60&body=%23%20source%0A%0A%5B%60maze_dataset%2Ftokenization%2Fmaze_tokenizer.py%23L775%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Ftokenization%2Fmaze_tokenizer.py%23L775%29%0A%0A%23%20context%0A%60%60%60python%0A%23%20TODO%3A%20why%20noqa%20here%3F%20%60B024%20%60__TokenizerElementNamespace%60%20is%20an%20abstract%20base%20class%2C%20but%20it%20has%20no%20abstract%20methods%20or%20properties%60%0Aclass%20__TokenizerElementNamespace%28abc.ABC%29%3A%20%20%23%20noqa%3A%20B024%0A%09%22%22%22ABC%20for%20namespaces%0A%60%60%60&labels=enhancement)
+  local link: [`/maze_dataset/tokenization/modular/element_base.py:288`](/maze_dataset/tokenization/modular/element_base.py#L288) 
+  | view on GitHub: [maze_dataset/tokenization/modular/element_base.py#L288](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/modular/element_base.py#L288)
+  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=why%20noqa%20here%3F%20%60B024%20%60__TokenizerElementNamespace%60%20is%20an%20abstract%20base%20class%2C%20but%20it%20has%20no%20abstract%20methods%20or%20properties%60&body=%23%20source%0A%0A%5B%60maze_dataset%2Ftokenization%2Fmodular%2Felement_base.py%23L288%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Ftokenization%2Fmodular%2Felement_base.py%23L288%29%0A%0A%23%20context%0A%60%60%60python%0A%23%20TODO%3A%20why%20noqa%20here%3F%20%60B024%20%60__TokenizerElementNamespace%60%20is%20an%20abstract%20base%20class%2C%20but%20it%20has%20no%20abstract%20methods%20or%20properties%60%0Aclass%20__TokenizerElementNamespace%28abc.ABC%29%3A%20%20%23%20noqa%3A%20B024%0A%09%22%22%22ABC%20for%20namespaces%0A%60%60%60&labels=enhancement)
 
   ```python
   # TODO: why noqa here? `B024 `__TokenizerElementNamespace` is an abstract base class, but it has no abstract methods or properties`
@@ -644,10 +665,14 @@
   ```
 
 
+
+
+## [`maze_dataset/tokenization/modular/elements.py`](/maze_dataset/tokenization/modular/elements.py)
+
 - make this a static/class method, allowing ForksAndStraightaways to skip object construction at every call  
-  local link: [`/maze_dataset/tokenization/maze_tokenizer.py:1425`](/maze_dataset/tokenization/maze_tokenizer.py#L1425) 
-  | view on GitHub: [maze_dataset/tokenization/maze_tokenizer.py#L1425](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L1425)
-  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=make%20this%20a%20static%2Fclass%20method%2C%20allowing%20ForksAndStraightaways%20to%20skip%20object%20construction%20at%20every%20call&body=%23%20source%0A%0A%5B%60maze_dataset%2Ftokenization%2Fmaze_tokenizer.py%23L1425%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Ftokenization%2Fmaze_tokenizer.py%23L1425%29%0A%0A%23%20context%0A%60%60%60python%0A%09%09%09return%20StepSizes.key%0A%0A%09%09%40abc.abstractmethod%20%20%23%20TODO%3A%20make%20this%20a%20static%2Fclass%20method%2C%20allowing%20ForksAndStraightaways%20to%20skip%20object%20construction%20at%20every%20call%0A%09%09def%20_step_single_indices%28self%2C%20maze%3A%20SolvedMaze%29%20-%3E%20list%5Bint%5D%3A%0A%09%09%09%22%22%22Returns%20the%20indices%20of%20%60maze.solution%60%20corresponding%20to%20the%20steps%20to%20be%20tokenized.%22%22%22%0A%60%60%60&labels=enhancement)
+  local link: [`/maze_dataset/tokenization/modular/elements.py:680`](/maze_dataset/tokenization/modular/elements.py#L680) 
+  | view on GitHub: [maze_dataset/tokenization/modular/elements.py#L680](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/modular/elements.py#L680)
+  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=make%20this%20a%20static%2Fclass%20method%2C%20allowing%20ForksAndStraightaways%20to%20skip%20object%20construction%20at%20every%20call&body=%23%20source%0A%0A%5B%60maze_dataset%2Ftokenization%2Fmodular%2Felements.py%23L680%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Ftokenization%2Fmodular%2Felements.py%23L680%29%0A%0A%23%20context%0A%60%60%60python%0A%09%09%09return%20StepSizes.key%0A%0A%09%09%40abc.abstractmethod%20%20%23%20TODO%3A%20make%20this%20a%20static%2Fclass%20method%2C%20allowing%20ForksAndStraightaways%20to%20skip%20object%20construction%20at%20every%20call%0A%09%09def%20_step_single_indices%28self%2C%20maze%3A%20SolvedMaze%29%20-%3E%20list%5Bint%5D%3A%0A%09%09%09%22%22%22Returns%20the%20indices%20of%20%60maze.solution%60%20corresponding%20to%20the%20steps%20to%20be%20tokenized.%22%22%22%0A%60%60%60&labels=enhancement)
 
   ```python
   	return StepSizes.key
@@ -659,9 +684,9 @@
 
 
 - RUF007 Prefer `itertools.pairwise()` over `zip()` when iterating over successive pairs  
-  local link: [`/maze_dataset/tokenization/maze_tokenizer.py:1435`](/maze_dataset/tokenization/maze_tokenizer.py#L1435) 
-  | view on GitHub: [maze_dataset/tokenization/maze_tokenizer.py#L1435](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L1435)
-  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=RUF007%20Prefer%20%60itertools.pairwise%28%29%60%20over%20%60zip%28%29%60%20when%20iterating%20over%20successive%20pairs&body=%23%20source%0A%0A%5B%60maze_dataset%2Ftokenization%2Fmaze_tokenizer.py%23L1435%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Ftokenization%2Fmaze_tokenizer.py%23L1435%29%0A%0A%23%20context%0A%60%60%60python%0A%09%09%09%22%22%22Returns%20steps%20as%20tuples%20of%20starting%20and%20ending%20positions%20for%20each%20step.%22%22%22%0A%09%09%09indices%3A%20list%5Bint%5D%20%3D%20self._step_single_indices%28maze%29%0A%09%09%09%23%20TODO%3A%20RUF007%20Prefer%20%60itertools.pairwise%28%29%60%20over%20%60zip%28%29%60%20when%20iterating%20over%20successive%20pairs%0A%09%09%09return%20%5B%0A%09%09%09%09%28start%2C%20end%29%0A%60%60%60&labels=enhancement)
+  local link: [`/maze_dataset/tokenization/modular/elements.py:690`](/maze_dataset/tokenization/modular/elements.py#L690) 
+  | view on GitHub: [maze_dataset/tokenization/modular/elements.py#L690](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/modular/elements.py#L690)
+  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=RUF007%20Prefer%20%60itertools.pairwise%28%29%60%20over%20%60zip%28%29%60%20when%20iterating%20over%20successive%20pairs&body=%23%20source%0A%0A%5B%60maze_dataset%2Ftokenization%2Fmodular%2Felements.py%23L690%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Ftokenization%2Fmodular%2Felements.py%23L690%29%0A%0A%23%20context%0A%60%60%60python%0A%09%09%09%22%22%22Returns%20steps%20as%20tuples%20of%20starting%20and%20ending%20positions%20for%20each%20step.%22%22%22%0A%09%09%09indices%3A%20list%5Bint%5D%20%3D%20self._step_single_indices%28maze%29%0A%09%09%09%23%20TODO%3A%20RUF007%20Prefer%20%60itertools.pairwise%28%29%60%20over%20%60zip%28%29%60%20when%20iterating%20over%20successive%20pairs%0A%09%09%09return%20%5B%0A%09%09%09%09%28start%2C%20end%29%0A%60%60%60&labels=enhancement)
 
   ```python
   """Returns steps as tuples of starting and ending positions for each step."""
@@ -672,10 +697,14 @@
   ```
 
 
+
+
+## [`maze_dataset/tokenization/modular/maze_tokenizer_modular.py`](/maze_dataset/tokenization/modular/maze_tokenizer_modular.py)
+
 - unclear why we need to use `noqa: N805` here since its a classmethod  
-  local link: [`/maze_dataset/tokenization/maze_tokenizer.py:2290`](/maze_dataset/tokenization/maze_tokenizer.py#L2290) 
-  | view on GitHub: [maze_dataset/tokenization/maze_tokenizer.py#L2290](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L2290)
-  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=unclear%20why%20we%20need%20to%20use%20%60noqa%3A%20N805%60%20here%20since%20its%20a%20classmethod&body=%23%20source%0A%0A%5B%60maze_dataset%2Ftokenization%2Fmaze_tokenizer.py%23L2290%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Ftokenization%2Fmaze_tokenizer.py%23L2290%29%0A%0A%23%20context%0A%60%60%60python%0A%09%09%29%0A%0A%09%23%20TODO%3A%20unclear%20why%20we%20need%20to%20use%20%60noqa%3A%20N805%60%20here%20since%20its%20a%20classmethod%0A%09%23%20maybe%20we%20need%20to%20hit%20every%20overload%20with%20%60%40classmethod%60%3F%0A%09%40overload%0A%60%60%60&labels=enhancement)
+  local link: [`/maze_dataset/tokenization/modular/maze_tokenizer_modular.py:291`](/maze_dataset/tokenization/modular/maze_tokenizer_modular.py#L291) 
+  | view on GitHub: [maze_dataset/tokenization/modular/maze_tokenizer_modular.py#L291](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/modular/maze_tokenizer_modular.py#L291)
+  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=unclear%20why%20we%20need%20to%20use%20%60noqa%3A%20N805%60%20here%20since%20its%20a%20classmethod&body=%23%20source%0A%0A%5B%60maze_dataset%2Ftokenization%2Fmodular%2Fmaze_tokenizer_modular.py%23L291%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Ftokenization%2Fmodular%2Fmaze_tokenizer_modular.py%23L291%29%0A%0A%23%20context%0A%60%60%60python%0A%09%09%29%0A%0A%09%23%20TODO%3A%20unclear%20why%20we%20need%20to%20use%20%60noqa%3A%20N805%60%20here%20since%20its%20a%20classmethod%0A%09%23%20maybe%20we%20need%20to%20hit%20every%20overload%20with%20%60%40classmethod%60%3F%0A%09%40overload%0A%60%60%60&labels=enhancement)
 
   ```python
   	)
@@ -889,9 +918,9 @@
 ## [`maze_dataset/benchmark/sweep_fit.py`](/maze_dataset/benchmark/sweep_fit.py)
 
 - error: Incompatible types in assignment (expression has type "floating[Any]", variable has type "float")  [assignment]  
-  local link: [`/maze_dataset/benchmark/sweep_fit.py:336`](/maze_dataset/benchmark/sweep_fit.py#L336) 
-  | view on GitHub: [maze_dataset/benchmark/sweep_fit.py#L336](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/benchmark/sweep_fit.py#L336)
-  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=error%3A%20Incompatible%20types%20in%20assignment%20%28expression%20has%20type%20%22floating%5BAny%5D%22%2C%20variable%20has%20type%20%22float%22%29%20%20%5Bassignment%5D&body=%23%20source%0A%0A%5B%60maze_dataset%2Fbenchmark%2Fsweep_fit.py%23L336%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Fbenchmark%2Fsweep_fit.py%23L336%29%0A%0A%23%20context%0A%60%60%60python%0A%09%09%09%23%20Calculate%20f%28x%2Cp%29%20for%20all%20combinations%0A%09%09%09for%20i%2C%20p_val%20in%20enumerate%28ps%29%3A%0A%09%09%09%09%23%20TYPING%3A%20error%3A%20Incompatible%20types%20in%20assignment%20%28expression%20has%20type%20%22floating%5BAny%5D%22%2C%20variable%20has%20type%20%22float%22%29%20%20%5Bassignment%5D%0A%09%09%09%09for%20j%2C%20x_val%20in%20enumerate%28xs%29%3A%20%20%23%20type%3A%20ignore%5Bassignment%5D%0A%09%09%09%09%09Z%5Bi%2C%20j%5D%20%3D%20soft_step%28x_val%2C%20p_val%2C%20alpha%2C%20w%29%0A%60%60%60&labels=TYPING)
+  local link: [`/maze_dataset/benchmark/sweep_fit.py:334`](/maze_dataset/benchmark/sweep_fit.py#L334) 
+  | view on GitHub: [maze_dataset/benchmark/sweep_fit.py#L334](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/benchmark/sweep_fit.py#L334)
+  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=error%3A%20Incompatible%20types%20in%20assignment%20%28expression%20has%20type%20%22floating%5BAny%5D%22%2C%20variable%20has%20type%20%22float%22%29%20%20%5Bassignment%5D&body=%23%20source%0A%0A%5B%60maze_dataset%2Fbenchmark%2Fsweep_fit.py%23L334%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Fbenchmark%2Fsweep_fit.py%23L334%29%0A%0A%23%20context%0A%60%60%60python%0A%09%09%09%23%20Calculate%20f%28x%2Cp%29%20for%20all%20combinations%0A%09%09%09for%20i%2C%20p_val%20in%20enumerate%28ps%29%3A%0A%09%09%09%09%23%20TYPING%3A%20error%3A%20Incompatible%20types%20in%20assignment%20%28expression%20has%20type%20%22floating%5BAny%5D%22%2C%20variable%20has%20type%20%22float%22%29%20%20%5Bassignment%5D%0A%09%09%09%09for%20j%2C%20x_val%20in%20enumerate%28xs%29%3A%20%20%23%20type%3A%20ignore%5Bassignment%5D%0A%09%09%09%09%09Z%5Bi%2C%20j%5D%20%3D%20soft_step%28x_val%2C%20p_val%2C%20alpha%2C%20w%29%0A%60%60%60&labels=TYPING)
 
   ```python
   # Calculate f(x,p) for all combinations
@@ -971,9 +1000,9 @@
 ## [`maze_dataset/dataset/rasterized.py`](/maze_dataset/dataset/rasterized.py)
 
 - error: Attributes without a default cannot follow attributes with one  [misc]  
-  local link: [`/maze_dataset/dataset/rasterized.py:121`](/maze_dataset/dataset/rasterized.py#L121) 
-  | view on GitHub: [maze_dataset/dataset/rasterized.py#L121](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/rasterized.py#L121)
-  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=error%3A%20Attributes%20without%20a%20default%20cannot%20follow%20attributes%20with%20one%20%20%5Bmisc%5D&body=%23%20source%0A%0A%5B%60maze_dataset%2Fdataset%2Frasterized.py%23L121%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Fdataset%2Frasterized.py%23L121%29%0A%0A%23%20context%0A%60%60%60python%0A%23%20TYPING%3A%20error%3A%20Attributes%20without%20a%20default%20cannot%20follow%20attributes%20with%20one%20%20%5Bmisc%5D%0A%40serializable_dataclass%0Aclass%20RasterizedMazeDatasetConfig%28MazeDatasetConfig%29%3A%20%20%23%20type%3A%20ignore%5Bmisc%5D%0A%60%60%60&labels=TYPING)
+  local link: [`/maze_dataset/dataset/rasterized.py:120`](/maze_dataset/dataset/rasterized.py#L120) 
+  | view on GitHub: [maze_dataset/dataset/rasterized.py#L120](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/rasterized.py#L120)
+  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=error%3A%20Attributes%20without%20a%20default%20cannot%20follow%20attributes%20with%20one%20%20%5Bmisc%5D&body=%23%20source%0A%0A%5B%60maze_dataset%2Fdataset%2Frasterized.py%23L120%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Fdataset%2Frasterized.py%23L120%29%0A%0A%23%20context%0A%60%60%60python%0A%23%20TYPING%3A%20error%3A%20Attributes%20without%20a%20default%20cannot%20follow%20attributes%20with%20one%20%20%5Bmisc%5D%0A%40serializable_dataclass%0Aclass%20RasterizedMazeDatasetConfig%28MazeDatasetConfig%29%3A%20%20%23%20type%3A%20ignore%5Bmisc%5D%0A%60%60%60&labels=TYPING)
 
   ```python
   # TYPING: error: Attributes without a default cannot follow attributes with one  [misc]
@@ -1064,12 +1093,12 @@
 
 
 
-## [`maze_dataset/tokenization/all_tokenizers.py`](/maze_dataset/tokenization/all_tokenizers.py)
+## [`maze_dataset/tokenization/modular/all_tokenizers.py`](/maze_dataset/tokenization/modular/all_tokenizers.py)
 
 - error: Type variable "maze_dataset.utils.FiniteValued" is unbound  [valid-type]  
-  local link: [`/maze_dataset/tokenization/all_tokenizers.py:48`](/maze_dataset/tokenization/all_tokenizers.py#L48) 
-  | view on GitHub: [maze_dataset/tokenization/all_tokenizers.py#L48](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/all_tokenizers.py#L48)
-  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=error%3A%20Type%20variable%20%22maze_dataset.utils.FiniteValued%22%20is%20unbound%20%20%5Bvalid-type%5D&body=%23%20source%0A%0A%5B%60maze_dataset%2Ftokenization%2Fall_tokenizers.py%23L48%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Ftokenization%2Fall_tokenizers.py%23L48%29%0A%0A%23%20context%0A%60%60%60python%0A%23%20Always%20include%20this%20as%20the%20first%20item%20in%20the%20dict%20%60validation_funcs%60%20whenever%20using%20%60all_instances%60%20with%20%60MazeTokenizerModular%60%0A%23%20TYPING%3A%20error%3A%20Type%20variable%20%22maze_dataset.utils.FiniteValued%22%20is%20unbound%20%20%5Bvalid-type%5D%0A%23%20%20%20note%3A%20%28Hint%3A%20Use%20%22Generic%5BFiniteValued%5D%22%20or%20%22Protocol%5BFiniteValued%5D%22%20base%20class%20to%20bind%20%22FiniteValued%22%20inside%20a%20class%29%0A%23%20%20%20note%3A%20%28Hint%3A%20Use%20%22FiniteValued%22%20in%20function%20signature%20to%20bind%20%22FiniteValued%22%20inside%20a%20function%29%0A%60%60%60&labels=TYPING)
+  local link: [`/maze_dataset/tokenization/modular/all_tokenizers.py:52`](/maze_dataset/tokenization/modular/all_tokenizers.py#L52) 
+  | view on GitHub: [maze_dataset/tokenization/modular/all_tokenizers.py#L52](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/modular/all_tokenizers.py#L52)
+  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=error%3A%20Type%20variable%20%22maze_dataset.utils.FiniteValued%22%20is%20unbound%20%20%5Bvalid-type%5D&body=%23%20source%0A%0A%5B%60maze_dataset%2Ftokenization%2Fmodular%2Fall_tokenizers.py%23L52%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Ftokenization%2Fmodular%2Fall_tokenizers.py%23L52%29%0A%0A%23%20context%0A%60%60%60python%0A%23%20Always%20include%20this%20as%20the%20first%20item%20in%20the%20dict%20%60validation_funcs%60%20whenever%20using%20%60all_instances%60%20with%20%60MazeTokenizerModular%60%0A%23%20TYPING%3A%20error%3A%20Type%20variable%20%22maze_dataset.utils.FiniteValued%22%20is%20unbound%20%20%5Bvalid-type%5D%0A%23%20%20%20note%3A%20%28Hint%3A%20Use%20%22Generic%5BFiniteValued%5D%22%20or%20%22Protocol%5BFiniteValued%5D%22%20base%20class%20to%20bind%20%22FiniteValued%22%20inside%20a%20class%29%0A%23%20%20%20note%3A%20%28Hint%3A%20Use%20%22FiniteValued%22%20in%20function%20signature%20to%20bind%20%22FiniteValued%22%20inside%20a%20function%29%0A%60%60%60&labels=TYPING)
 
   ```python
   # Always include this as the first item in the dict `validation_funcs` whenever using `all_instances` with `MazeTokenizerModular`
@@ -1080,9 +1109,9 @@
 
 
 - Item "bool" of the upper bound "bool | IsDataclass | Enum" of type variable "FiniteValued" has no attribute "is_valid"  [union-attr]  
-  local link: [`/maze_dataset/tokenization/all_tokenizers.py:56`](/maze_dataset/tokenization/all_tokenizers.py#L56) 
-  | view on GitHub: [maze_dataset/tokenization/all_tokenizers.py#L56](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/all_tokenizers.py#L56)
-  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=Item%20%22bool%22%20of%20the%20upper%20bound%20%22bool%20%7C%20IsDataclass%20%7C%20Enum%22%20of%20type%20variable%20%22FiniteValued%22%20has%20no%20attribute%20%22is_valid%22%20%20%5Bunion-attr%5D&body=%23%20source%0A%0A%5B%60maze_dataset%2Ftokenization%2Fall_tokenizers.py%23L56%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Ftokenization%2Fall_tokenizers.py%23L56%29%0A%0A%23%20context%0A%60%60%60python%0A%5D%20%3D%20frozendict.frozendict%28%0A%09%7B%0A%09%09%23%20TYPING%3A%20Item%20%22bool%22%20of%20the%20upper%20bound%20%22bool%20%7C%20IsDataclass%20%7C%20Enum%22%20of%20type%20variable%20%22FiniteValued%22%20has%20no%20attribute%20%22is_valid%22%20%20%5Bunion-attr%5D%0A%09%09_TokenizerElement%3A%20lambda%20x%3A%20x.is_valid%28%29%2C%0A%09%09%23%20Currently%20no%20need%20for%20%60MazeTokenizerModular.is_valid%60%20since%20that%20method%20contains%20no%20special%20cases%20not%20already%20covered%20by%20%60_TokenizerElement.is_valid%60%0A%60%60%60&labels=TYPING)
+  local link: [`/maze_dataset/tokenization/modular/all_tokenizers.py:60`](/maze_dataset/tokenization/modular/all_tokenizers.py#L60) 
+  | view on GitHub: [maze_dataset/tokenization/modular/all_tokenizers.py#L60](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/modular/all_tokenizers.py#L60)
+  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=Item%20%22bool%22%20of%20the%20upper%20bound%20%22bool%20%7C%20IsDataclass%20%7C%20Enum%22%20of%20type%20variable%20%22FiniteValued%22%20has%20no%20attribute%20%22is_valid%22%20%20%5Bunion-attr%5D&body=%23%20source%0A%0A%5B%60maze_dataset%2Ftokenization%2Fmodular%2Fall_tokenizers.py%23L60%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Ftokenization%2Fmodular%2Fall_tokenizers.py%23L60%29%0A%0A%23%20context%0A%60%60%60python%0A%5D%20%3D%20frozendict.frozendict%28%0A%09%7B%0A%09%09%23%20TYPING%3A%20Item%20%22bool%22%20of%20the%20upper%20bound%20%22bool%20%7C%20IsDataclass%20%7C%20Enum%22%20of%20type%20variable%20%22FiniteValued%22%20has%20no%20attribute%20%22is_valid%22%20%20%5Bunion-attr%5D%0A%09%09_TokenizerElement%3A%20lambda%20x%3A%20x.is_valid%28%29%2C%0A%09%09%23%20Currently%20no%20need%20for%20%60MazeTokenizerModular.is_valid%60%20since%20that%20method%20contains%20no%20special%20cases%20not%20already%20covered%20by%20%60_TokenizerElement.is_valid%60%0A%60%60%60&labels=TYPING)
 
   ```python
   ] = frozendict.frozendict(
@@ -1094,9 +1123,9 @@
 
 
 - error: No overload variant of "set" matches argument type "FiniteValued"  [call-overload]  
-  local link: [`/maze_dataset/tokenization/all_tokenizers.py:60`](/maze_dataset/tokenization/all_tokenizers.py#L60) 
-  | view on GitHub: [maze_dataset/tokenization/all_tokenizers.py#L60](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/all_tokenizers.py#L60)
-  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=error%3A%20No%20overload%20variant%20of%20%22set%22%20matches%20argument%20type%20%22FiniteValued%22%20%20%5Bcall-overload%5D&body=%23%20source%0A%0A%5B%60maze_dataset%2Ftokenization%2Fall_tokenizers.py%23L60%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Ftokenization%2Fall_tokenizers.py%23L60%29%0A%0A%23%20context%0A%60%60%60python%0A%09%09%23%20Currently%20no%20need%20for%20%60MazeTokenizerModular.is_valid%60%20since%20that%20method%20contains%20no%20special%20cases%20not%20already%20covered%20by%20%60_TokenizerElement.is_valid%60%0A%09%09%23%20MazeTokenizerModular%3A%20lambda%20x%3A%20x.is_valid%28%29%2C%0A%09%09%23%20TYPING%3A%20error%3A%20No%20overload%20variant%20of%20%22set%22%20matches%20argument%20type%20%22FiniteValued%22%20%20%5Bcall-overload%5D%0A%09%09%23%20%20%20note%3A%20Possible%20overload%20variants%3A%0A%09%09%23%20%20%20note%3A%20%20%20%20%20def%20%5B_T%5D%20set%28self%29%20-%3E%20set%5B_T%5D%0A%60%60%60&labels=TYPING)
+  local link: [`/maze_dataset/tokenization/modular/all_tokenizers.py:64`](/maze_dataset/tokenization/modular/all_tokenizers.py#L64) 
+  | view on GitHub: [maze_dataset/tokenization/modular/all_tokenizers.py#L64](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/modular/all_tokenizers.py#L64)
+  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=error%3A%20No%20overload%20variant%20of%20%22set%22%20matches%20argument%20type%20%22FiniteValued%22%20%20%5Bcall-overload%5D&body=%23%20source%0A%0A%5B%60maze_dataset%2Ftokenization%2Fmodular%2Fall_tokenizers.py%23L64%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Ftokenization%2Fmodular%2Fall_tokenizers.py%23L64%29%0A%0A%23%20context%0A%60%60%60python%0A%09%09%23%20Currently%20no%20need%20for%20%60MazeTokenizerModular.is_valid%60%20since%20that%20method%20contains%20no%20special%20cases%20not%20already%20covered%20by%20%60_TokenizerElement.is_valid%60%0A%09%09%23%20MazeTokenizerModular%3A%20lambda%20x%3A%20x.is_valid%28%29%2C%0A%09%09%23%20TYPING%3A%20error%3A%20No%20overload%20variant%20of%20%22set%22%20matches%20argument%20type%20%22FiniteValued%22%20%20%5Bcall-overload%5D%0A%09%09%23%20%20%20note%3A%20Possible%20overload%20variants%3A%0A%09%09%23%20%20%20note%3A%20%20%20%20%20def%20%5B_T%5D%20set%28self%29%20-%3E%20set%5B_T%5D%0A%60%60%60&labels=TYPING)
 
   ```python
   # Currently no need for `MazeTokenizerModular.is_valid` since that method contains no special cases not already covered by `_TokenizerElement.is_valid`
@@ -1108,9 +1137,9 @@
 
 
 - error: Argument 1 to "len" has incompatible type "FiniteValued"; expected "Sized"  [arg-type]  
-  local link: [`/maze_dataset/tokenization/all_tokenizers.py:64`](/maze_dataset/tokenization/all_tokenizers.py#L64) 
-  | view on GitHub: [maze_dataset/tokenization/all_tokenizers.py#L64](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/all_tokenizers.py#L64)
-  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=error%3A%20Argument%201%20to%20%22len%22%20has%20incompatible%20type%20%22FiniteValued%22%3B%20expected%20%22Sized%22%20%20%5Barg-type%5D&body=%23%20source%0A%0A%5B%60maze_dataset%2Ftokenization%2Fall_tokenizers.py%23L64%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Ftokenization%2Fall_tokenizers.py%23L64%29%0A%0A%23%20context%0A%60%60%60python%0A%09%09%23%20%20%20note%3A%20%20%20%20%20def%20%5B_T%5D%20set%28self%29%20-%3E%20set%5B_T%5D%0A%09%09%23%20%20%20note%3A%20%20%20%20%20def%20%5B_T%5D%20set%28self%2C%20Iterable%5B_T%5D%2C%20%2F%29%20-%3E%20set%5B_T%5D%0A%09%09%23%20TYPING%3A%20error%3A%20Argument%201%20to%20%22len%22%20has%20incompatible%20type%20%22FiniteValued%22%3B%20expected%20%22Sized%22%20%20%5Barg-type%5D%0A%09%09StepTokenizers.StepTokenizerPermutation%3A%20lambda%20x%3A%20len%28set%28x%29%29%20%3D%3D%20len%28x%29%0A%09%09and%20x%20%21%3D%20%28StepTokenizers.Distance%28%29%2C%29%2C%0A%60%60%60&labels=TYPING)
+  local link: [`/maze_dataset/tokenization/modular/all_tokenizers.py:68`](/maze_dataset/tokenization/modular/all_tokenizers.py#L68) 
+  | view on GitHub: [maze_dataset/tokenization/modular/all_tokenizers.py#L68](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/modular/all_tokenizers.py#L68)
+  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=error%3A%20Argument%201%20to%20%22len%22%20has%20incompatible%20type%20%22FiniteValued%22%3B%20expected%20%22Sized%22%20%20%5Barg-type%5D&body=%23%20source%0A%0A%5B%60maze_dataset%2Ftokenization%2Fmodular%2Fall_tokenizers.py%23L68%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Ftokenization%2Fmodular%2Fall_tokenizers.py%23L68%29%0A%0A%23%20context%0A%60%60%60python%0A%09%09%23%20%20%20note%3A%20%20%20%20%20def%20%5B_T%5D%20set%28self%29%20-%3E%20set%5B_T%5D%0A%09%09%23%20%20%20note%3A%20%20%20%20%20def%20%5B_T%5D%20set%28self%2C%20Iterable%5B_T%5D%2C%20%2F%29%20-%3E%20set%5B_T%5D%0A%09%09%23%20TYPING%3A%20error%3A%20Argument%201%20to%20%22len%22%20has%20incompatible%20type%20%22FiniteValued%22%3B%20expected%20%22Sized%22%20%20%5Barg-type%5D%0A%09%09StepTokenizers.StepTokenizerPermutation%3A%20lambda%20x%3A%20len%28set%28x%29%29%20%3D%3D%20len%28x%29%0A%09%09and%20x%20%21%3D%20%28StepTokenizers.Distance%28%29%2C%29%2C%0A%60%60%60&labels=TYPING)
 
   ```python
   #   note:     def [_T] set(self) -> set[_T]
@@ -1123,12 +1152,12 @@
 
 
 
-## [`maze_dataset/tokenization/maze_tokenizer.py`](/maze_dataset/tokenization/maze_tokenizer.py)
+## [`maze_dataset/tokenization/modular/element_base.py`](/maze_dataset/tokenization/modular/element_base.py)
 
 - type hint `v` more specifically  
-  local link: [`/maze_dataset/tokenization/maze_tokenizer.py:542`](/maze_dataset/tokenization/maze_tokenizer.py#L542) 
-  | view on GitHub: [maze_dataset/tokenization/maze_tokenizer.py#L542](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L542)
-  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=type%20hint%20%60v%60%20more%20specifically&body=%23%20source%0A%0A%5B%60maze_dataset%2Ftokenization%2Fmaze_tokenizer.py%23L542%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Ftokenization%2Fmaze_tokenizer.py%23L542%29%0A%0A%23%20context%0A%60%60%60python%0A%09%22%22%22%0A%0A%09%23%20TYPING%3A%20type%20hint%20%60v%60%20more%20specifically%0A%09%40staticmethod%0A%09def%20_stringify%28k%3A%20str%2C%20v%3A%20Any%29%20-%3E%20str%3A%20%20%23%20noqa%3A%20ANN401%0A%60%60%60&labels=TYPING)
+  local link: [`/maze_dataset/tokenization/modular/element_base.py:43`](/maze_dataset/tokenization/modular/element_base.py#L43) 
+  | view on GitHub: [maze_dataset/tokenization/modular/element_base.py#L43](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/modular/element_base.py#L43)
+  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=type%20hint%20%60v%60%20more%20specifically&body=%23%20source%0A%0A%5B%60maze_dataset%2Ftokenization%2Fmodular%2Felement_base.py%23L43%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Ftokenization%2Fmodular%2Felement_base.py%23L43%29%0A%0A%23%20context%0A%60%60%60python%0A%09%22%22%22%0A%0A%09%23%20TYPING%3A%20type%20hint%20%60v%60%20more%20specifically%0A%09%40staticmethod%0A%09def%20_stringify%28k%3A%20str%2C%20v%3A%20Any%29%20-%3E%20str%3A%20%20%23%20noqa%3A%20ANN401%0A%60%60%60&labels=TYPING)
 
   ```python
   """
@@ -1140,9 +1169,9 @@
 
 
 - type hints for `__init_subclass__`?  
-  local link: [`/maze_dataset/tokenization/maze_tokenizer.py:568`](/maze_dataset/tokenization/maze_tokenizer.py#L568) 
-  | view on GitHub: [maze_dataset/tokenization/maze_tokenizer.py#L568](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L568)
-  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=type%20hints%20for%20%60__init_subclass__%60%3F&body=%23%20source%0A%0A%5B%60maze_dataset%2Ftokenization%2Fmaze_tokenizer.py%23L568%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Ftokenization%2Fmaze_tokenizer.py%23L568%29%0A%0A%23%20context%0A%60%60%60python%0A%09%09return%20self.name%0A%0A%09%23%20TYPING%3A%20type%20hints%20for%20%60__init_subclass__%60%3F%0A%09def%20__init_subclass__%28cls%2C%20%2A%2Akwargs%29%3A%20%20%23%20noqa%3A%20ANN204%0A%09%09%22%22%22Hack%3A%20dataclass%20hashes%20don%27t%20include%20the%20class%20itself%20in%20the%20hash%20function%20inputs.%0A%60%60%60&labels=TYPING)
+  local link: [`/maze_dataset/tokenization/modular/element_base.py:69`](/maze_dataset/tokenization/modular/element_base.py#L69) 
+  | view on GitHub: [maze_dataset/tokenization/modular/element_base.py#L69](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/modular/element_base.py#L69)
+  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=type%20hints%20for%20%60__init_subclass__%60%3F&body=%23%20source%0A%0A%5B%60maze_dataset%2Ftokenization%2Fmodular%2Felement_base.py%23L69%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Ftokenization%2Fmodular%2Felement_base.py%23L69%29%0A%0A%23%20context%0A%60%60%60python%0A%09%09return%20self.name%0A%0A%09%23%20TYPING%3A%20type%20hints%20for%20%60__init_subclass__%60%3F%0A%09def%20__init_subclass__%28cls%2C%20%2A%2Akwargs%29%3A%20%20%23%20noqa%3A%20ANN204%0A%09%09%22%22%22Hack%3A%20dataclass%20hashes%20don%27t%20include%20the%20class%20itself%20in%20the%20hash%20function%20inputs.%0A%60%60%60&labels=TYPING)
 
   ```python
   	return self.name
@@ -1154,14 +1183,32 @@
 
 
 - better type hints for this function  
-  local link: [`/maze_dataset/tokenization/maze_tokenizer.py:757`](/maze_dataset/tokenization/maze_tokenizer.py#L757) 
-  | view on GitHub: [maze_dataset/tokenization/maze_tokenizer.py#L757](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/maze_tokenizer.py#L757)
-  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=better%20type%20hints%20for%20this%20function&body=%23%20source%0A%0A%5B%60maze_dataset%2Ftokenization%2Fmaze_tokenizer.py%23L757%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Ftokenization%2Fmaze_tokenizer.py%23L757%29%0A%0A%23%20context%0A%60%60%60python%0A%23%20TYPING%3A%20better%20type%20hints%20for%20this%20function%0Adef%20mark_as_unsupported%28is_valid%3A%20Callable%5B%5BT%5D%2C%20bool%5D%2C%20%2Aargs%29%20-%3E%20T%3A%20%20%23%20noqa%3A%20ARG001%0A%09%22%22%22mark%20a%20_TokenizerElement%20as%20unsupported.%0A%60%60%60&labels=TYPING)
+  local link: [`/maze_dataset/tokenization/modular/element_base.py:268`](/maze_dataset/tokenization/modular/element_base.py#L268) 
+  | view on GitHub: [maze_dataset/tokenization/modular/element_base.py#L268](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/modular/element_base.py#L268)
+  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=better%20type%20hints%20for%20this%20function&body=%23%20source%0A%0A%5B%60maze_dataset%2Ftokenization%2Fmodular%2Felement_base.py%23L268%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Ftokenization%2Fmodular%2Felement_base.py%23L268%29%0A%0A%23%20context%0A%60%60%60python%0A%23%20TYPING%3A%20better%20type%20hints%20for%20this%20function%0Adef%20mark_as_unsupported%28is_valid%3A%20Callable%5B%5BT%2C%20bool%5D%2C%20bool%5D%29%20-%3E%20Callable%5B%5BT%5D%2C%20T%5D%3A%0A%09%22%22%22mark%20a%20_TokenizerElement%20as%20unsupported.%0A%60%60%60&labels=TYPING)
 
   ```python
   # TYPING: better type hints for this function
-  def mark_as_unsupported(is_valid: Callable[[T], bool], *args) -> T:  # noqa: ARG001
+  def mark_as_unsupported(is_valid: Callable[[T, bool], bool]) -> Callable[[T], T]:
   	"""mark a _TokenizerElement as unsupported.
+  ```
+
+
+
+
+## [`maze_dataset/tokenization/modular/fst.py`](/maze_dataset/tokenization/modular/fst.py)
+
+- add a protocol or abc for both of these which is a context manager that takes the args we care about  
+  local link: [`/maze_dataset/tokenization/modular/fst.py:37`](/maze_dataset/tokenization/modular/fst.py#L37) 
+  | view on GitHub: [maze_dataset/tokenization/modular/fst.py#L37](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/modular/fst.py#L37)
+  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=add%20a%20protocol%20or%20abc%20for%20both%20of%20these%20which%20is%20a%20context%20manager%20that%20takes%20the%20args%20we%20care%20about&body=%23%20source%0A%0A%5B%60maze_dataset%2Ftokenization%2Fmodular%2Ffst.py%23L37%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Ftokenization%2Fmodular%2Ffst.py%23L37%29%0A%0A%23%20context%0A%60%60%60python%0A%29%20-%3E%20FstSet%3A%0A%09%22%22%22get%20all%20the%20tokenizers%2C%20save%20an%20fst%20file%20at%20%60MMT_FST_PATH%60%20and%20return%20the%20set%22%22%22%0A%09%23%20TYPING%3A%20add%20a%20protocol%20or%20abc%20for%20both%20of%20these%20which%20is%20a%20context%20manager%20that%20takes%20the%20args%20we%20care%20about%0A%09%23%20probably%20do%20this%20in%20muutils%0A%09sp%3A%20type%5BSpinnerContext%20%7C%20NoOpContextManager%5D%20%3D%20%28%0A%60%60%60&labels=TYPING)
+
+  ```python
+  ) -> FstSet:
+  	"""get all the tokenizers, save an fst file at `MMT_FST_PATH` and return the set"""
+  	# TYPING: add a protocol or abc for both of these which is a context manager that takes the args we care about
+  	# probably do this in muutils
+  	sp: type[SpinnerContext | NoOpContextManager] = (
   ```
 
 
@@ -1206,6 +1253,38 @@
   # TYPING: some better type hints would be nice here
   def _all_instances_wrapper(f: Callable) -> Callable:
   	"""Converts dicts to frozendicts to allow caching and applies `_apply_validation_func`."""
+  ```
+
+
+
+
+## [`tests/unit/maze_dataset/utils.py`](/tests/unit/maze_dataset/utils.py)
+
+- error: Argument 2 to "dataclass_set_equals" has incompatible type "Iterable[FiniteValued]"; expected "Iterable[IsDataclass]"  [arg-type]  
+  local link: [`/tests/unit/maze_dataset/utils.py:289`](/tests/unit/maze_dataset/utils.py#L289) 
+  | view on GitHub: [tests/unit/maze_dataset/utils.py#L289](https://github.com/understanding-search/maze-dataset/blob/main/tests/unit/maze_dataset/utils.py#L289)
+  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=error%3A%20Argument%202%20to%20%22dataclass_set_equals%22%20has%20incompatible%20type%20%22Iterable%5BFiniteValued%5D%22%3B%20expected%20%22Iterable%5BIsDataclass%5D%22%20%20%5Barg-type%5D&body=%23%20source%0A%0A%5B%60tests%2Funit%2Fmaze_dataset%2Futils.py%23L289%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Ftests%2Funit%2Fmaze_dataset%2Futils.py%23L289%29%0A%0A%23%20context%0A%60%60%60python%0A%09%09%09list%28all_instances%28type_%2C%20validation_funcs%29%29%0A%09elif%20hasattr%28type_%2C%20%22__dataclass_fields__%22%29%3A%0A%09%09%23%20TYPING%3A%20error%3A%20Argument%202%20to%20%22dataclass_set_equals%22%20has%20incompatible%20type%20%22Iterable%5BFiniteValued%5D%22%3B%20expected%20%22Iterable%5BIsDataclass%5D%22%20%20%5Barg-type%5D%0A%09%09assert%20dataclass_set_equals%28all_instances%28type_%2C%20validation_funcs%29%2C%20result%29%20%20%23%20type%3A%20ignore%5Barg-type%5D%0A%09else%3A%20%20%23%20General%20case%2C%20due%20to%20nesting%2C%20results%20might%20contain%20some%20dataclasses%20and%20some%20other%20types%0A%60%60%60&labels=TYPING)
+
+  ```python
+  		list(all_instances(type_, validation_funcs))
+  elif hasattr(type_, "__dataclass_fields__"):
+  	# TYPING: error: Argument 2 to "dataclass_set_equals" has incompatible type "Iterable[FiniteValued]"; expected "Iterable[IsDataclass]"  [arg-type]
+  	assert dataclass_set_equals(all_instances(type_, validation_funcs), result)  # type: ignore[arg-type]
+  else:  # General case, due to nesting, results might contain some dataclasses and some other types
+  ```
+
+
+- error: Argument 1 to "filter" has incompatible type "Callable[[Any], bool]"; expected "Callable[[FiniteValued], TypeGuard[IsDataclass]]"  [arg-type]  
+  local link: [`/tests/unit/maze_dataset/utils.py:294`](/tests/unit/maze_dataset/utils.py#L294) 
+  | view on GitHub: [tests/unit/maze_dataset/utils.py#L294](https://github.com/understanding-search/maze-dataset/blob/main/tests/unit/maze_dataset/utils.py#L294)
+  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=error%3A%20Argument%201%20to%20%22filter%22%20has%20incompatible%20type%20%22Callable%5B%5BAny%5D%2C%20bool%5D%22%3B%20expected%20%22Callable%5B%5BFiniteValued%5D%2C%20TypeGuard%5BIsDataclass%5D%5D%22%20%20%5Barg-type%5D&body=%23%20source%0A%0A%5B%60tests%2Funit%2Fmaze_dataset%2Futils.py%23L294%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Ftests%2Funit%2Fmaze_dataset%2Futils.py%23L294%29%0A%0A%23%20context%0A%60%60%60python%0A%09%09out%20%3D%20list%28all_instances%28type_%2C%20validation_funcs%29%29%0A%09%09assert%20dataclass_set_equals%28%0A%09%09%09%23%20TYPING%3A%20error%3A%20Argument%201%20to%20%22filter%22%20has%20incompatible%20type%20%22Callable%5B%5BAny%5D%2C%20bool%5D%22%3B%20expected%20%22Callable%5B%5BFiniteValued%5D%2C%20TypeGuard%5BIsDataclass%5D%5D%22%20%20%5Barg-type%5D%0A%09%09%09filter%28lambda%20x%3A%20isinstance%28x%2C%20IsDataclass%29%2C%20out%29%2C%20%20%23%20type%3A%20ignore%5Barg-type%5D%0A%09%09%09filter%28lambda%20x%3A%20isinstance%28x%2C%20IsDataclass%29%2C%20result%29%2C%20%20%23%20type%3A%20ignore%5Barg-type%5D%0A%60%60%60&labels=TYPING)
+
+  ```python
+  out = list(all_instances(type_, validation_funcs))
+  assert dataclass_set_equals(
+  	# TYPING: error: Argument 1 to "filter" has incompatible type "Callable[[Any], bool]"; expected "Callable[[FiniteValued], TypeGuard[IsDataclass]]"  [arg-type]
+  	filter(lambda x: isinstance(x, IsDataclass), out),  # type: ignore[arg-type]
+  	filter(lambda x: isinstance(x, IsDataclass), result),  # type: ignore[arg-type]
   ```
 
 

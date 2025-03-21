@@ -2,7 +2,7 @@
 #| python project makefile template                                 |
 #| originally by Michael Ivanitskiy (mivanits@umich.edu)            |
 #| https://github.com/mivanit/python-project-makefile-template      |
-#| version: v0.3.2                                                  |
+#| version: v0.3.4                                                  |
 #| license: https://creativecommons.org/licenses/by-sa/4.0/         |
 #| modifications from the original should be denoted with `~~~~~`   |
 #| as this makes it easier to find edits when updating makefile     |
@@ -113,8 +113,16 @@ PYTHON_VERSION := NULL
 # RUN_GLOBAL=1 to use global `PYTHON_BASE` instead of `uv run $(PYTHON_BASE)`
 RUN_GLOBAL ?= 0
 
+# for running tests or other commands without updating the env, set this to 1
+# and it will pass `--no-sync` to `uv run`
+UV_NOSYNC ?= 0
+
 ifeq ($(RUN_GLOBAL),0)
-	PYTHON = uv run $(PYTHON_BASE)
+	ifeq ($(UV_NOSYNC),1)
+		PYTHON = uv run --no-sync $(PYTHON_BASE)
+	else
+		PYTHON = uv run $(PYTHON_BASE)
+	endif
 else
 	PYTHON = $(PYTHON_BASE)
 endif
@@ -168,7 +176,7 @@ default: help
 
 # create commands for exporting requirements as specified in `pyproject.toml:tool.uv-exports.exports`
 define SCRIPT_EXPORT_REQUIREMENTS
-# source: https://github.com/mivanit/python-project-makefile-template/tree/main/scripts/export_requirements.py
+# source: https://github.com/mivanit/python-project-makefile-template/tree/main/scripts/make/export_requirements.py
 
 "export to requirements.txt files based on pyproject.toml configuration"
 
@@ -303,7 +311,7 @@ export SCRIPT_EXPORT_REQUIREMENTS
 
 # get the version from `pyproject.toml:project.version`
 define SCRIPT_GET_VERSION
-# source: https://github.com/mivanit/python-project-makefile-template/tree/main/scripts/get_version.py
+# source: https://github.com/mivanit/python-project-makefile-template/tree/main/scripts/make/get_version.py
 
 "write the current version of the project to a file"
 
@@ -334,7 +342,7 @@ export SCRIPT_GET_VERSION
 
 # get the commit log since the last version from `$(LAST_VERSION_FILE)`
 define SCRIPT_GET_COMMIT_LOG
-# source: https://github.com/mivanit/python-project-makefile-template/tree/main/scripts/get_commit_log.py
+# source: https://github.com/mivanit/python-project-makefile-template/tree/main/scripts/make/get_commit_log.py
 
 "pretty print a commit log amd wrote it to a file"
 
@@ -385,7 +393,7 @@ export SCRIPT_GET_COMMIT_LOG
 
 # get cuda information and whether torch sees it
 define SCRIPT_CHECK_TORCH
-# source: https://github.com/mivanit/python-project-makefile-template/tree/main/scripts/check_torch.py
+# source: https://github.com/mivanit/python-project-makefile-template/tree/main/scripts/make/check_torch.py
 
 "print info about current python, torch, cuda, and devices"
 
@@ -476,7 +484,12 @@ def get_torch_info() -> Tuple[List[Exception], Dict[str, Any]]:
 
 	try:
 		import torch
+	except ImportError as e:
+		info["torch.__version__"] = "not available"
+		exceptions.append(e)
+		return exceptions, info
 
+	try:
 		info["torch.__version__"] = torch.__version__
 		info["torch.cuda.is_available()"] = torch.cuda.is_available()
 
@@ -565,7 +578,7 @@ export SCRIPT_CHECK_TORCH
 
 # get todo's from the code
 define SCRIPT_GET_TODOS
-# source: https://github.com/mivanit/python-project-makefile-template/tree/main/scripts/get_todos.py
+# source: https://github.com/mivanit/python-project-makefile-template/tree/main/scripts/make/get_todos.py
 
 "read all TODO type comments and write them to markdown, jsonl, html. configurable in pyproject.toml"
 
@@ -997,7 +1010,7 @@ export SCRIPT_GET_TODOS
 
 # markdown to html using pdoc
 define SCRIPT_PDOC_MARKDOWN2_CLI
-# source: https://github.com/mivanit/python-project-makefile-template/tree/main/scripts/pdoc_markdown2_cli.py
+# source: https://github.com/mivanit/python-project-makefile-template/tree/main/scripts/make/pdoc_markdown2_cli.py
 
 "cli to convert markdown files to HTML using pdoc's markdown2"
 
@@ -1068,7 +1081,7 @@ export SCRIPT_PDOC_MARKDOWN2_CLI
 
 # clean up the docs (configurable in pyproject.toml)
 define SCRIPT_DOCS_CLEAN
-# source: https://github.com/mivanit/python-project-makefile-template/tree/main/scripts/docs_clean.py
+# source: https://github.com/mivanit/python-project-makefile-template/tree/main/scripts/make/docs_clean.py
 
 "clean up docs directory based on pyproject.toml configuration"
 
@@ -1162,7 +1175,7 @@ export SCRIPT_DOCS_CLEAN
 
 # generate a report of the mypy output
 define SCRIPT_MYPY_REPORT
-# source: https://github.com/mivanit/python-project-makefile-template/tree/main/scripts/mypy_report.py
+# source: https://github.com/mivanit/python-project-makefile-template/tree/main/scripts/make/mypy_report.py
 
 "usage: mypy ... | mypy_report.py [--mode jsonl|exclude]"
 
@@ -1354,14 +1367,12 @@ format:
 	@echo "format the source code"
 	$(PYTHON) -m ruff format --config $(PYPROJECT) .
 	$(PYTHON) -m ruff check --fix --config $(PYPROJECT) .
-	$(PYTHON) -m pycln --config $(PYPROJECT) --all .
 
 # runs ruff and pycln to check if the code is formatted correctly
 .PHONY: format-check
 format-check:
 	@echo "check if the source code is formatted correctly"
 	$(PYTHON) -m ruff check --config $(PYPROJECT) .
-	$(PYTHON) -m pycln --check --config $(PYPROJECT) .
 
 # runs type checks with mypy
 .PHONY: typing
@@ -1377,59 +1388,76 @@ typing-report:
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # separate unit and notebook tests
-.PHONY: unit
-unit:
+
+
+NUM_TOKENIZERS_TO_TEST ?= none
+
+.PHONY: test-unit
+test-unit:
 	@echo "run unit tests"
 	$(PYTHON) -m pytest $(PYTEST_OPTIONS) tests/unit
 
-.PHONY: save_tok_hashes
-save_tok_hashes:
+.PHONY: tokenizer-hashes-save
+tokenizer-hashes-save:
 	@echo "generate and save tokenizer hashes"
 	$(PYTHON) -m maze_dataset.tokenization.save_hashes -p
 
-.PHONY: test_tok_hashes
-test_tok_hashes:
+.PHONY: tokenizer-hashes-test
+tokenizer-hashes-test:
 	@echo "re-run tokenizer hashes and compare"
 	$(PYTHON) -m maze_dataset.tokenization.save_hashes -p --check
 
 
-.PHONY: test_all_tok
-test_all_tok:
-	@echo "run tests on all tokenizers. can pass NUM_TOKENIZERS_TO_TEST arg or SKIP_HASH_TEST"
+.PHONY: tokenizer-test-long
+tokenizer-test-long:
+	@echo "run tests on all tokenizers. can pass NUM_TOKENIZERS_TO_TEST. doesn't check fst"
 	@echo "NUM_TOKENIZERS_TO_TEST=$(NUM_TOKENIZERS_TO_TEST)"
-	@if [ "$(SKIP_HASH_TEST)" != "1" ]; then \
-		echo "Running tokenizer hash tests"; \
-		$(MAKE) test_tok_hashes; \
-	else \
-		echo "Skipping tokenizer hash tests"; \
-	fi
 	$(PYTHON) -m pytest $(PYTEST_OPTIONS) --verbosity=-1 --durations=50 tests/all_tokenizers
 
+.PHONY: tokenizer-fst-gen
+tokenizer-fst-gen:
+	@echo "generate and save tokenizer FSTs"
+	$(PYTHON) -m maze_dataset.tokenization.modular.fst -p
+
+.PHONY: tokenizer-fst-check
+tokenizer-fst-check:
+	@echo "regen all tokenizers, check their names are in the fst"
+	@echo "NUM_TOKENIZERS_TO_TEST=$(NUM_TOKENIZERS_TO_TEST)"
+	$(PYTHON) -m maze_dataset.tokenization.modular.fst --check -p --n-check $(NUM_TOKENIZERS_TO_TEST)
 
 
-.PHONY: convert_notebooks
-convert_notebooks:
+.PHONY: test-notebooks-muutils-convert
+test-notebooks-muutils-convert:
 	@echo "convert notebooks in $(NOTEBOOKS_DIR) using muutils.nbutils.convert_ipynb_to_script.py"
 	$(PYTHON) -m muutils.nbutils.convert_ipynb_to_script $(NOTEBOOKS_DIR) --output-dir $(CONVERTED_NOTEBOOKS_TEMP_DIR) --disable-plots
 
 
-.PHONY: test_notebooks
-test_notebooks: convert_notebooks
+.PHONY: test-notebooks-muutils
+test-notebooks-muutils: test-notebooks-muutils-convert
 	@echo "run tests on converted notebooks in $(CONVERTED_NOTEBOOKS_TEMP_DIR) using muutils.nbutils.run_notebook_tests.py"
 	$(PYTHON) -m muutils.nbutils.run_notebook_tests --notebooks-dir $(NOTEBOOKS_DIR) --converted-notebooks-temp-dir $(CONVERTED_NOTEBOOKS_TEMP_DIR) --python-tool uv 
 
-.PHONY: test_notebooks_nbmake
-test_notebooks_nbmake:
+.PHONY: test-notebooks-nbmake
+test-notebooks-nbmake:
+	@echo "run tests on notebooks in $(NOTEBOOKS_DIR) using nbmake"
 	uv run pytest --nbmake notebooks/ --nbmake-timeout=300
 
+.PHONY: test-notebooks
+test-notebooks: test-notebooks-muutils test-notebooks-nbmake
+	@echo "run tests on notebooks in $(NOTEBOOKS_DIR) using both muutils and nbmake"	
+
 .PHONY: test
-test: clean unit test_notebooks
-	@echo "ran all tests: unit, integration, and notebooks"
+test: clean test-unit test-notebooks-muutils tokenizer-fst-check
+	@echo "run all usual tests: unit, notebooks, and fst check (but not tokenizer-test-long)"
+
+.PHONY: test-cov
+test-cov: clean
+	@echo "run all pytest tests in one for coverage, including tokenizers"
+	uv run pytest --nbmake notebooks/ --nbmake-timeout=300 $(PYTEST_OPTIONS) tests/ notebooks/
 
 .PHONY: test-all
-test-all: clean
-	@echo "run all tests in one for coverage, including tokenizers"
-	uv run pytest --nbmake notebooks/ --nbmake-timeout=300 $(PYTEST_OPTIONS) tests/ notebooks/
+test-all: clean test-unit test-notebooks tokenizer-fst-check tokenizer-test-long
+	@echo "run literally all tests: unit, notebooks both ways, tokenizers fst check, long tokenizer test"
 
 .PHONY: check
 check: clean format-check test typing
@@ -1672,7 +1700,7 @@ clean-all: clean docs-clean dep-clean
 help-targets:
 	@echo -n "# make targets"
 	@echo ":"
-	@cat makefile | sed -n '/^\.PHONY: / h; /\(^\t@*echo\|^\t:\)/ {H; x; /PHONY/ s/.PHONY: \(.*\)\n.*"\(.*\)"/    make \1\t\2/p; d; x}'| sort -k2,2 |expand -t 30
+	@cat makefile | sed -n '/^\.PHONY: / h; /\(^\t@*echo\|^\t:\)/ {H; x; /PHONY/ s/.PHONY: \(.*\)\n.*"\(.*\)"/    make \1\t\2/p; d; x}'| sort -k2,2 |expand -t 35
 
 
 .PHONY: info

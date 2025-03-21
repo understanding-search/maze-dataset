@@ -7,7 +7,8 @@ on:
       - 'maze_dataset/token_utils.py' # temporary
       - 'maze_dataset/constants.py'
       - 'maze_dataset/tokenization/*.py'
-      - 'maze_dataset/tokenization/MazeTokenizerModular_hashes.npz'
+      - 'maze_dataset/tokenization/modular/*.py'
+      - 'maze_dataset/tokenization/modular/MazeTokenizerModular_tested.fst'
       - 'notebooks/demo_mazetokenizermodular.ipynb'
       - 'tests/all_tokenizers/*.py'
       - 'pyproject.toml' # on new version or update deps
@@ -18,7 +19,7 @@ on:
       n_to_test:
         description: 'Number of tokenizers to test'
         required: false
-        default: 5000
+        default: 10000
         type: number
       pytest_parallel:
         description: '1 to parallelize tests with -n auto, to run without parallelization'
@@ -40,12 +41,12 @@ jobs:
       - name: set up uv
         run: curl -LsSf https://astral.sh/uv/install.sh | sh
 
-      - name: tokenizer hash tests
+      - name: tokenizer fst check (check all, this will take a while)
         run: |
-          make test_tok_hashes
+          make tokenizer-fst-check
 
-      - name: all tokenizer tests
+      - name: long tokenizer tests
         run: |
-          N_TO_TEST=${{ github.event.inputs.n_to_test || '5000' }}
+          N_TO_TEST=${{ github.event.inputs.n_to_test || '10000' }}
           PYTEST_PARALLEL=${{ github.event.inputs.pytest_parallel || '1' }}
-          make test_all_tok SKIP_HASH_TEST=1 NUM_TOKENIZERS_TO_TEST=$N_TO_TEST PYTEST_PARALLEL=$PYTEST_PARALLEL
+          make tokenizers-test-long NUM_TOKENIZERS_TO_TEST=$N_TO_TEST PYTEST_PARALLEL=$PYTEST_PARALLEL

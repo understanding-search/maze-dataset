@@ -4,7 +4,7 @@ import functools
 import random
 import timeit
 from pathlib import Path
-from typing import Sequence
+from typing import Any, Sequence
 
 from tqdm import tqdm
 
@@ -38,12 +38,12 @@ def time_generation(
 	n_mazes_vals: list[int],
 	trials: int = 10,
 	verbose: bool = False,
-) -> dict[str, float]:
+) -> list[dict[str, Any]]:
 	"time the generation of mazes for various configurations"
 	# assemble configs
 	configs: list[MazeDatasetConfig] = list()
 
-	for cfg in base_configs:
+	for b_cfg in base_configs:
 		for grid_n in grid_n_vals:
 			for n_mazes in n_mazes_vals:
 				configs.append(
@@ -51,8 +51,8 @@ def time_generation(
 						name="benchmark",
 						grid_n=grid_n,
 						n_mazes=n_mazes,
-						maze_ctor=GENERATORS_MAP[cfg[0]],
-						maze_ctor_kwargs=cfg[1],
+						maze_ctor=GENERATORS_MAP[b_cfg[0]],
+						maze_ctor_kwargs=b_cfg[1],
 					),
 				)
 
@@ -60,7 +60,7 @@ def time_generation(
 	random.shuffle(configs)
 
 	# time generation for each config
-	times: list[dict] = list()
+	times: list[dict[str, Any]] = list()
 	total: int = len(configs)
 	for idx, cfg in tqdm(
 		enumerate(configs),
@@ -105,7 +105,7 @@ def run_benchmark(
 	n_mazes_vals: Sequence[int] = tuple(range(1, 12, 2)),
 	trials: int = 10,
 	verbose: bool = True,
-) -> "pd.DataFrame":  # noqa: F821
+) -> "pd.DataFrame":  # type: ignore[name-defined] # noqa: F821
 	"run the benchmark and save the results to a file"
 	import pandas as pd
 

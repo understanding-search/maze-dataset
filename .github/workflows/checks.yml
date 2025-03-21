@@ -32,11 +32,9 @@ jobs:
       matrix:
         python: ["3.10", "3.11", "3.12", "3.13"]
         pkg:
-          - torch: "1.13.1"
-            numpy: "1.24.4"
+          - numpy: "1.24.4"
             group: "legacy"
-          - torch: ""
-            numpy: ""
+          - numpy: ""
             group: "latest"
         exclude:
           - python: "3.12"
@@ -66,37 +64,35 @@ jobs:
       - name: install dependencies and package
         run: make dep
 
-      - name: Install different pytorch version
-        if: ${{ matrix.pkg.torch != '' }}
-        run: |
-          uv pip install torch==${{ matrix.pkg.torch }}+cpu --extra-index-url https://download.pytorch.org/whl/cpu
-      
       - name: Install different numpy version
         if: ${{ matrix.pkg.numpy != '' }}
         run: uv pip install numpy==${{ matrix.pkg.numpy }}
       
       - name: info
-        run: |
-          make info-long
-          make dep-check-torch
+        run: make info-long
 
       - name: format check
         run: make format-check
 
       - name: Unit tests
-        run: make unit
+        run: make test-unit
       
-      - name: Notebook tests
-        run: make test_notebooks
+      - name: Notebook tests (muutils)
+        run: make test-notebooks-muutils
         # see https://github.com/understanding-search/maze-dataset/issues/48
         if: ${{ matrix.python != '3.13' }}
       
-      - name: Test Tokenizer Hashes
-        run: make test_tok_hashes
+      - name: Notebook tests (nbmake)
+        run: make test-notebooks-nbmake  
+        # also see https://github.com/understanding-search/maze-dataset/issues/48
+        if: ${{ matrix.python != '3.13' }}
         
       - name: check typing (3.11+)
         run: make typing
         if: ${{ matrix.python != '3.10' }}
-
-      - name: run benchmarks
+        
+      - name: run benchmarks tests
         run: make benchmark-test
+      
+      - name: Test Tokenizer fst # test a reduced number of tokenizers
+        run: make tokenizer-fst-check NUM_TOKENIZERS_TO_TEST=1000

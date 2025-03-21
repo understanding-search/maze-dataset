@@ -7526,12 +7526,13 @@ a.anchor-link {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [1]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># other package imports</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>  <span class="c1"># keep this import for CI to work</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">muutils.mlutils</span><span class="w"> </span><span class="kn">import</span> <span class="n">pprint_summary</span>  <span class="c1"># pretty printing as json</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">zanj</span><span class="w"> </span><span class="kn">import</span> <span class="n">ZANJ</span>  <span class="c1"># saving/loading data</span>
 
 <span class="c1"># maze_dataset imports</span>
@@ -7546,6 +7547,11 @@ a.anchor-link {
 <span class="c1"># for saving/loading things</span>
 <span class="n">LOCAL_DATA_PATH</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"../data/maze_dataset/"</span>
 <span class="n">zanj</span><span class="p">:</span> <span class="n">ZANJ</span> <span class="o">=</span> <span class="n">ZANJ</span><span class="p">(</span><span class="n">external_list_threshold</span><span class="o">=</span><span class="mi">256</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">pprint_summary</span><span class="p">(</span><span class="n">summary</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+	<span class="s2">"pretty print as json"</span>
+	<span class="nb">print</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">summary</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>

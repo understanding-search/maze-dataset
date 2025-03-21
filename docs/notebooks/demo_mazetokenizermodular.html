@@ -7562,11 +7562,10 @@ a.anchor-link {
 	<span class="n">TokenizationMode</span><span class="p">,</span>
 	<span class="n">_TokenizerElement</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">maze_dataset.tokenization.all_tokenizers</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">maze_dataset.tokenization.modular.all_tokenizers</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
 	<span class="n">MAZE_TOKENIZER_MODULAR_DEFAULT_VALIDATION_FUNCS</span><span class="p">,</span>
 	<span class="n">get_all_tokenizers</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">maze_dataset.tokenization.maze_tokenizer</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_all_tokenizer_hashes</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">maze_dataset.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">all_instances</span>
 </pre></div>
 </div>
@@ -7653,16 +7652,16 @@ a.anchor-link {
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>&lt;class 'maze_dataset.tokenization.maze_tokenizer.CoordTokenizers._CoordTokenizer'&gt;
-&lt;class 'maze_dataset.tokenization.maze_tokenizer.EdgeGroupings._EdgeGrouping'&gt;
-&lt;class 'maze_dataset.tokenization.maze_tokenizer.EdgePermuters._EdgePermuter'&gt;
-&lt;class 'maze_dataset.tokenization.maze_tokenizer.EdgeSubsets._EdgeSubset'&gt;
-&lt;class 'maze_dataset.tokenization.maze_tokenizer.AdjListTokenizers._AdjListTokenizer'&gt;
-&lt;class 'maze_dataset.tokenization.maze_tokenizer.TargetTokenizers._TargetTokenizer'&gt;
-&lt;class 'maze_dataset.tokenization.maze_tokenizer.StepSizes._StepSize'&gt;
-&lt;class 'maze_dataset.tokenization.maze_tokenizer.StepTokenizers._StepTokenizer'&gt;
-&lt;class 'maze_dataset.tokenization.maze_tokenizer.PathTokenizers._PathTokenizer'&gt;
-&lt;class 'maze_dataset.tokenization.maze_tokenizer.PromptSequencers._PromptSequencer'&gt;
+<pre>&lt;class 'maze_dataset.tokenization.modular.elements.CoordTokenizers._CoordTokenizer'&gt;
+&lt;class 'maze_dataset.tokenization.modular.elements.EdgeGroupings._EdgeGrouping'&gt;
+&lt;class 'maze_dataset.tokenization.modular.elements.EdgePermuters._EdgePermuter'&gt;
+&lt;class 'maze_dataset.tokenization.modular.elements.EdgeSubsets._EdgeSubset'&gt;
+&lt;class 'maze_dataset.tokenization.modular.elements.AdjListTokenizers._AdjListTokenizer'&gt;
+&lt;class 'maze_dataset.tokenization.modular.elements.TargetTokenizers._TargetTokenizer'&gt;
+&lt;class 'maze_dataset.tokenization.modular.elements.StepSizes._StepSize'&gt;
+&lt;class 'maze_dataset.tokenization.modular.elements.StepTokenizers._StepTokenizer'&gt;
+&lt;class 'maze_dataset.tokenization.modular.elements.PathTokenizers._PathTokenizer'&gt;
+&lt;class 'maze_dataset.tokenization.modular.elements.PromptSequencers._PromptSequencer'&gt;
 </pre>
 </div>
 </div>
@@ -7691,6 +7690,8 @@ a.anchor-link {
 <span class="nb">print</span><span class="p">(</span><span class="n">mt_default</span><span class="o">.</span><span class="n">tokenizer_element_tree</span><span class="p">(</span><span class="n">abstract</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">"Default tokenizer elements:</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">mt_default</span><span class="o">.</span><span class="n">tokenizer_element_tree</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Default tokenizer `name`:</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">mt_default</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">"`MazeTokenizerModular` structure with all fields:</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">mt_default</span><span class="o">.</span><span class="n">tokenizer_element_dict</span><span class="p">()))</span>
 </pre></div>
@@ -7734,6 +7735,10 @@ MazeTokenizerModular
 			Singles
 			Coord
 
+
+Default tokenizer `name`:
+
+MazeTokenizerModular-AOTP(UT(), AdjListCoord(pre=F, post=T, shuffle_d0=T, Ungrouped(connection_token_ordinal=1), ConnectionEdges(walls=F), RandomCoords()), Unlabeled(post=F), StepSequence(Singles(), step_tokenizers=(Coord(), ), pre=F, intra=F, post=F))
 `MazeTokenizerModular` structure with all fields:
 
 MazeTokenizerModular:
@@ -7978,47 +7983,6 @@ MazeTokenizerModular:
 <div class="jp-InputPrompt jp-InputArea-prompt">In [8]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">all_hashes</span> <span class="o">=</span> <span class="n">get_all_tokenizer_hashes</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [9]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">all_hashes</span><span class="p">)</span><span class="si">}</span><span class="s2"> or </span><span class="si">{</span><span class="n">shorten_numerical_to_str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">all_hashes</span><span class="p">))</span><span class="si">}</span><span class="s2"> hashes found."</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>5878656 or 5.9M hashes found.
-</pre>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [10]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">all_tokenizers</span> <span class="o">=</span> <span class="n">get_all_tokenizers</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -8030,7 +7994,7 @@ MazeTokenizerModular:
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [11]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [9]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span>
@@ -8054,20 +8018,6 @@ MazeTokenizerModular:
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [12]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">all_hashes</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">all_tokenizers</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
 </div>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper" tabindex="0">
@@ -8084,10 +8034,10 @@ MazeTokenizerModular:
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [13]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [10]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">assert</span> <span class="n">mt_default</span><span class="o">.</span><span class="n">is_tested_tokenizer</span><span class="p">(</span><span class="n">do_assert</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">assert</span> <span class="n">mt_default</span><span class="o">.</span><span class="n">is_tested_tokenizer</span><span class="p">(</span><span class="n">do_except</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">assert</span> <span class="n">mt_default</span><span class="o">.</span><span class="n">is_valid</span><span class="p">()</span>
 <span class="k">assert</span> <span class="n">mt_ctt</span><span class="o">.</span><span class="n">is_tested_tokenizer</span><span class="p">()</span>
 <span class="k">assert</span> <span class="n">mt_ctt</span><span class="o">.</span><span class="n">is_valid</span><span class="p">()</span>
@@ -8104,6 +8054,91 @@ MazeTokenizerModular:
 <span class="k">assert</span> <span class="ow">not</span> <span class="n">custom_untested_tokenizer</span><span class="o">.</span><span class="n">is_valid</span><span class="p">()</span>
 <span class="c1"># Danger, use this tokenizer at your own risk!</span>
 </pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p>this uses below file, shipped with the package, to keep track of which tokenizer names are valid. the code for generating them is in <code>maze_dataset.tokenization.modular.fst</code></p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [11]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">maze_dataset.tokenization.modular.fst_load</span><span class="w"> </span><span class="kn">import</span> <span class="n">MMT_FST_PATH</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">MMT_FST_PATH</span><span class="w"> </span><span class="si">= }</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">MMT_FST_PATH</span><span class="o">.</span><span class="n">stat</span><span class="p">()</span><span class="o">.</span><span class="n">st_size</span><span class="w"> </span><span class="si">= }</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>MMT_FST_PATH = PosixPath('/home/miv/projects/mazes/maze-dataset/maze_dataset/tokenization/modular/MazeTokenizerModular_tested.fst')
+MMT_FST_PATH.stat().st_size = 1619
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># we can also use `check_tokenizer_in_fst` manually, and if it cant find a tokenizer it will give us similar ones</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">maze_dataset.tokenization.modular.fst_load</span><span class="w"> </span><span class="kn">import</span> <span class="n">check_tokenizer_in_fst</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">mt_default</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+<span class="n">mt_name_modified</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">mt_default</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>
+	<span class="s2">"ConnectionEdges(walls=F),"</span><span class="p">,</span> <span class="s2">"ConnectionEdges(walls=X),"</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">mt_name_modified</span><span class="p">)</span>
+<span class="k">try</span><span class="p">:</span>
+	<span class="n">check_tokenizer_in_fst</span><span class="p">(</span><span class="n">mt_name_modified</span><span class="p">,</span> <span class="n">do_except</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>  <span class="c1"># noqa: BLE001</span>
+	<span class="nb">print</span><span class="p">(</span><span class="s2">"[ERROR]: "</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>MazeTokenizerModular-AOTP(UT(), AdjListCoord(pre=F, post=T, shuffle_d0=T, Ungrouped(connection_token_ordinal=1), ConnectionEdges(walls=F), RandomCoords()), Unlabeled(post=F), StepSequence(Singles(), step_tokenizers=(Coord(), ), pre=F, intra=F, post=F))
+MazeTokenizerModular-AOTP(UT(), AdjListCoord(pre=F, post=T, shuffle_d0=T, Ungrouped(connection_token_ordinal=1), ConnectionEdges(walls=X), RandomCoords()), Unlabeled(post=F), StepSequence(Singles(), step_tokenizers=(Coord(), ), pre=F, intra=F, post=F))
+[ERROR]:  Tokenizer `MazeTokenizerModular-AOTP(UT(), AdjListCoord(pre=F, post=T, shuffle_d0=T, Ungrouped(connection_token_ordinal=1), ConnectionEdges(walls=X), RandomCoords()), Unlabeled(post=F), StepSequence(Singles(), step_tokenizers=(Coord(), ), pre=F, intra=F, post=F))` not found in the list of tested tokenizers, and do_except = True. We found the following matches based on edit distance:
+edit dist 0 (should be empty?): []
+edit dist 1: ['MazeTokenizerModular-AOTP(UT(), AdjListCoord(pre=F, post=T, shuffle_d0=T, Ungrouped(connection_token_ordinal=1), ConnectionEdges(walls=F), RandomCoords()), Unlabeled(post=F), StepSequence(Singles(), step_tokenizers=(Coord(), ), pre=F, intra=F, post=F))', 'MazeTokenizerModular-AOTP(UT(), AdjListCoord(pre=F, post=T, shuffle_d0=T, Ungrouped(connection_token_ordinal=1), ConnectionEdges(walls=T), RandomCoords()), Unlabeled(post=F), StepSequence(Singles(), step_tokenizers=(Coord(), ), pre=F, intra=F, post=F))']
+</pre>
 </div>
 </div>
 </div>
@@ -8145,7 +8180,7 @@ MazeTokenizerModular:
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [14]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [13]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">len_all</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">get_all_tokenizers</span><span class="p">())</span>
@@ -8159,7 +8194,7 @@ MazeTokenizerModular:
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [15]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [14]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">filtered_1</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">MazeTokenizerModular</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
@@ -8252,7 +8287,7 @@ filtered 3: 979776 tokenizers / 5878656 tokenizers
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [16]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [15]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">filtered_has_element</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">MazeTokenizerModular</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
@@ -8310,7 +8345,7 @@ set(filtered_has_element).symmetric_difference(set(filtered_summary)) = set()
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [17]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [16]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">cfg</span><span class="p">:</span> <span class="n">MazeDatasetConfig</span> <span class="o">=</span> <span class="n">MazeDatasetConfig</span><span class="p">(</span>
@@ -8348,7 +8383,7 @@ generating dataset...
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
-<pre>generating &amp; solving mazes: 100%|██████████| 1/1 [00:00&lt;00:00, 776.44maze/s]</pre>
+<pre>generating &amp; solving mazes: 100%|██████████| 1/1 [00:00&lt;00:00, 756.28maze/s]</pre>
 </div>
 </div>
 <div class="jp-OutputArea-child">
@@ -8372,7 +8407,7 @@ generating dataset...
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [18]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [17]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s2">"display.max_colwidth"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
@@ -8391,7 +8426,7 @@ generating dataset...
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedImage jp-OutputArea-output" tabindex="0">
-<img alt="No description has been provided for this image" class="" src="data:image/png;base64,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"/>
+<img alt="No description has been provided for this image" class="" src="data:image/png;base64,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"/>
 </div>
 </div>
 </div>
@@ -8401,7 +8436,7 @@ generating dataset...
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [19]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [18]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">all_elements_df</span><span class="p">(</span>
@@ -8449,7 +8484,7 @@ generating dataset...
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [20]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [19]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">coord_tokenizers</span> <span class="o">=</span> <span class="n">all_elements_df</span><span class="p">(</span>
@@ -8467,7 +8502,7 @@ generating dataset...
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[20]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[19]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
 <div>
 <style scoped="">
@@ -8570,7 +8605,7 @@ generating dataset...
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [21]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [20]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">adjlist_tokenizers</span> <span class="o">=</span> <span class="n">all_elements_df</span><span class="p">(</span>
@@ -8590,7 +8625,7 @@ generating dataset...
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[21]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[20]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
 <div>
 <style scoped="">
@@ -8694,7 +8729,7 @@ generating dataset...
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [22]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [21]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">target_tokenizers</span> <span class="o">=</span> <span class="n">all_elements_df</span><span class="p">(</span>
@@ -8713,7 +8748,7 @@ generating dataset...
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[22]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[21]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
 <div>
 <style scoped="">
@@ -8774,7 +8809,7 @@ generating dataset...
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [23]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [22]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">path_tokenizers</span> <span class="o">=</span> <span class="n">all_elements_df</span><span class="p">(</span>
@@ -8793,7 +8828,7 @@ generating dataset...
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[23]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[22]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
 <div>
 <style scoped="">
@@ -8909,7 +8944,7 @@ generating dataset...
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [24]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [23]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">prompt_sequencers</span> <span class="o">=</span> <span class="p">[</span><span class="n">PromptSequencers</span><span class="o">.</span><span class="n">AOTP</span><span class="p">(),</span> <span class="n">PromptSequencers</span><span class="o">.</span><span class="n">AOP</span><span class="p">()]</span>
@@ -8931,7 +8966,7 @@ generating dataset...
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[24]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[23]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
 <div>
 <style scoped="">
@@ -8989,7 +9024,7 @@ generating dataset...
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [25]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [24]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">random_sample_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1_000</span>
@@ -9016,7 +9051,7 @@ generating dataset...
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [26]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [25]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span>
@@ -9044,12 +9079,12 @@ generating dataset...
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
-<pre>Tokenizers: 100%|██████████| 10/10 [00:00&lt;00:00, 21.89it/s]
+<pre>Tokenizers: 100%|██████████| 10/10 [00:00&lt;00:00, 25.21it/s]
 </pre>
 </div>
 </div>
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[26]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[25]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
 <div>
 <style scoped="">
