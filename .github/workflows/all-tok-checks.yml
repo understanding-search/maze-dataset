@@ -49,4 +49,4 @@ jobs:
         run: |
           N_TO_TEST=${{ github.event.inputs.n_to_test || '10000' }}
           PYTEST_PARALLEL=${{ github.event.inputs.pytest_parallel || '1' }}
-          make tokenizers-test-long NUM_TOKENIZERS_TO_TEST=$N_TO_TEST PYTEST_PARALLEL=$PYTEST_PARALLEL
+          make tokenizer-test-long NUM_TOKENIZERS_TO_TEST=$N_TO_TEST PYTEST_PARALLEL=$PYTEST_PARALLEL
