@@ -12,6 +12,9 @@ notebooks/tests/**
 notebooks/outputs/**
 outputs/**
 
+# paper related
+docs/paper/inara*
+
 .meta/local/**
 .pypi-token
 .commit_log

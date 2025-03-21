@@ -1752,3 +1752,45 @@ help: help-targets info
 # custom targets
 # ==================================================
 # (put them down here, or delimit with ~~~~~)
+
+PAPER_PATH := $(DOCS_DIR)/paper
+PAPER_PATH_INARA := $(PAPER_PATH)/inara
+
+PAPER_DRAFT ?= true
+
+$(PAPER_PATH_INARA)/README.md:
+	wget https://github.com/openjournals/inara/archive/refs/heads/main.zip -O $(PAPER_PATH_INARA).zip
+	unzip $(PAPER_PATH_INARA).zip -d $(PAPER_PATH_INARA)-temp
+	mv $(PAPER_PATH_INARA)-temp/inara-main $(PAPER_PATH_INARA)
+	rm -rf $(PAPER_PATH_INARA)-temp
+	rm -f $(PAPER_PATH_INARA).zip
+	@echo "downloaded and extracted inara for the paper into $(PAPER_PATH_INARA)"
+
+.PHONY: paper-setup
+paper-setup: $(PAPER_PATH_INARA)/README.md
+	@echo "set up inara for compiling the paper"
+
+.PHONY: paper-build
+paper-build:
+	pandoc \
+		--data-dir="$(PAPER_PATH_INARA)/data" \
+        --defaults="$(PAPER_PATH_INARA)/resources/joss/defaults.yaml" \
+		--defaults="$(PAPER_PATH_INARA)/data/defaults/pdf.yaml" \
+		--resource-path=.:$(PAPER_PATH):$(PAPER_PATH_INARA)/resources \
+        "$(PAPER_PATH)/paper.md"
+
+# --resource-path=.:$(PAPER_PATH):$(PAPER_PATH_INARA):$(PAPER_PATH_INARA)/resources \
+# --variable="joss" \
+# --defaults=shared \
+# --variable=draft:"$(PAPER_DRAFT)" \
+# --metadata=draft:"$(PAPER_DRAFT)" \
+
+# --log="$(PAPER_PATH)/paper.log" \
+# --csl="$(PAPER_PATH_INARA)/resources/apa.csl" \
+
+.PHONY: paper-clean
+paper-clean:
+	@echo "clean up ephemeral files related to the paper"
+	rm -rf $(PAPER_PATH_INARA)
+	rm -rf $(PAPER_PATH_INARA)-temp
+	rm -f $(PAPER_PATH_INARA).zip
