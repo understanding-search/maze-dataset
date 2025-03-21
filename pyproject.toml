@@ -283,8 +283,10 @@
     # These paths are relative to output_dir
     no_clean = [
         ".nojekyll",
-        "assets/",
+        "assets",
         "benchmarks",
+		"paper",
+		"resources",
         # "resources/", # Templates, CSS, etc. this, or whatever is specified as DOCS_RESOURCES_DIR in makefile will always be preserved
     ]
 
