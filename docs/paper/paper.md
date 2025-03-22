@@ -27,17 +27,17 @@ affiliations:
     index: 1
   - name: Imperial College London
     index: 2
-date: 2025-03-21
+date: March 2025
 bibliography: refs.bib
 ---
-
+    
 # Summary
 
-Understanding how machine learning models respond to distributional shifts is a key research challenge. 
-Mazes serve as an excellent testbed for this problem due to varied generation algorithms offering a nuanced platform to simulate both subtle and pronounced distributional shifts. 
-To enable systematic investigations of model behavior on out-of-distribution maze data, we present `maze-dataset`, a comprehensive library for generating, processing, and visualizing datasets consisting of maze-solving tasks. 
+Understanding how machine learning models respond to distributional shifts and different input representations is a key research challenge. 
+Mazes serve as an excellent testbed for this problem due to the degree of control we have over quantifiable distributional shifts.
+To enable systematic investigations of model behavior on maze tasks, we present `maze-dataset`, a comprehensive library for generating, processing, visualizing, and tokenizing datasets consisting of maze-solving tasks. 
 With this library, researchers can easily create datasets and have extensive control over the generation algorithm used, the parameters fed to the algorithm of choice, and the filters that generated mazes must satisfy. 
-Furthermore, this library supports multiple output formats, including rasterized and text-based formats, catering to convolutional neural networks and autoregressive transformer models. 
+Furthermore, this library supports multiple output formats, including rasterized and a large number of text-based formats, catering to convolutional neural networks and autoregressive transformer models. 
 These formats, along with tools for visualizing and converting between them, ensure versatility and adaptability in research applications.
 
 # Introduction
@@ -192,21 +192,21 @@ The breadth of tokenizers is also easily scaled in the opposite direction. Due t
 
 We provide approximate benchmarks for relative generation time across various algorithms, parameter choices, maze sizes, and dataset sizes.
 
-| Method & Parameters   | Average time per maze (ms) |                   |                   |                      |                   |
-| --------------------- | -------------------------- | ----------------- | ----------------- | -------------------- | ----------------- |
-| Generation algorithm  | Generation parameters      | all sizes         | small (g ≤ 10)    | medium (10 < g ≤ 32) | large (g > 32)    |
-| :===============:     | :===============:          | :===============: | :===============: | :===============:    | :===============: |
-| gen_dfs               | accessible_cells=20        | 2.4               | 2.4               | 2.6                  | 2.4               |
-| gen_dfs               | do_forks=False             | 3.0               | 2.4               | 3.7                  | 3.8               |
-| gen_dfs               | max_tree_depth=0.5         | 4.5               | 2.2               | 4.9                  | 11.6              |
-| gen_dfs               | --                         | 31.1              | 2.8               | 28.0                 | 136.5             |
-| gen_dfs_percolation   | p=0.1                      | 53.9              | 3.6               | 42.5                 | 252.9             |
-| gen_dfs_percolation   | p=0.4                      | 58.8              | 3.7               | 44.7                 | 280.2             |
-| gen_percolation       | --                         | 59.1              | 3.3               | 43.6                 | 285.2             |
-| gen_wilson            | --                         | 767.9             | 10.1              | 212.9                | 4530.4            |
-| :===============:     | :===============:          | :===============: | :===============: | :===============:    | :===============: |
-| **median (all runs)** |                            | 10.8              | 6.0               | 44.4                 | 367.7             |
-| **mean (all runs)**   |                            | 490.0             | 11.7              | 187.2                | 2769.6            |
+| Method & Parameters   | Average time per maze (ms) |                   |                     |                           |                   |
+| --------------------- | -------------------------- | ----------------- | ------------------- | ------------------------- | ----------------- |
+| Generation algorithm  | Generation parameters      | all sizes         | small ($g \leq 10$) | medium ($10 < g \leq 32$) | large ($g > 32$)  |
+| :===============:     | :===============:          | :===============: | :===============:   | :===============:         | :===============: |
+| gen_dfs               | accessible_cells=20        | 2.4               | 2.4                 | 2.6                       | 2.4               |
+| gen_dfs               | do_forks=False             | 3.0               | 2.4                 | 3.7                       | 3.8               |
+| gen_dfs               | max_tree_depth=0.5         | 4.5               | 2.2                 | 4.9                       | 11.6              |
+| gen_dfs               | --                         | 31.1              | 2.8                 | 28.0                      | 136.5             |
+| gen_dfs_percolation   | p=0.1                      | 53.9              | 3.6                 | 42.5                      | 252.9             |
+| gen_dfs_percolation   | p=0.4                      | 58.8              | 3.7                 | 44.7                      | 280.2             |
+| gen_percolation       | --                         | 59.1              | 3.3                 | 43.6                      | 285.2             |
+| gen_wilson            | --                         | 767.9             | 10.1                | 212.9                     | 4530.4            |
+| :===============:     | :===============:          | :===============: | :===============:   | :===============:         | :===============: |
+| **median (all runs)** |                            | 10.8              | 6.0                 | 44.4                      | 367.7             |
+| **mean (all runs)**   |                            | 490.0             | 11.7                | 187.2                     | 2769.6            |
 
 ![Plots of maze generation time. Generation time scales exponentially with maze size for all algorithms (left). Generation time does not depend on the number of mazes being generated, and there is minimal overhead to initializing the generation process for a small dataset (right). Wilson's algorithm is notably less efficient than others and has high variance. Note that for both plots, values are averaged across all parameter sets for that algorithm, and parallelization is disabled.](figures/gridsize-vs-gentime.pdf){width=95%}
 
