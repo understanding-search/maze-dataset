@@ -110,10 +110,10 @@
 [tool.mypy]
     # generate this exclude with `make typing-report`
     exclude = [
+		# "maze_dataset/dataset/dataset.py", # 16
         # high priority
 		"maze_dataset/tokenization/modular/all_tokenizers.py", # 8
 		"maze_dataset/constants.py", # 9
-		"maze_dataset/dataset/dataset.py", # 16
 		"maze_dataset/utils.py", # 19
 		"maze_dataset/dataset/maze_dataset.py", # 45
 		# tokenization

@@ -24,11 +24,13 @@ from maze_dataset.dataset.dataset import (
 from maze_dataset.dataset.success_predict_math import cfg_success_predict_fn
 from maze_dataset.generation.generators import _GENERATORS_PERCOLATED, GENERATORS_MAP
 
-# If `n_mazes>=SERIALIZE_MINIMAL_THRESHOLD`, then the MazeDataset will use `serialize_minimal`.
-# Setting to None means that `serialize_minimal` will never be used.
-# Set to -1 to make calls to `read` use `MazeDataset._load_legacy`. Used for profiling only.
 SERIALIZE_MINIMAL_THRESHOLD: int | None = 100
+"""If `n_mazes>=SERIALIZE_MINIMAL_THRESHOLD`, then the MazeDataset will use `serialize_minimal`.
+Setting to None means that `serialize_minimal` will never be used.
+Set to -1 to make calls to `read` use `MazeDataset._load_legacy`. Used for profiling only."""
 
+MAZEDATASETCONFIG_FNAME_HASH_LENGTH: int = 5
+"length of the has, in characters, of the hash in the fname of a `MazeDatasetConfig`"
 
 _PercolationSuccessArray = Float[
 	np.ndarray,
@@ -102,12 +104,9 @@ def _load_endpoint_kwargs(data: dict) -> EndpointKwargsType:
 		}
 
 
-MAZEDATASETCONFIG_FNAME_HASH_LENGTH: int = 5
-
-
 @serializable_dataclass(kw_only=True, properties_to_serialize=["grid_shape"])
-class MazeDatasetConfig(GPTDatasetConfig):
-	"""config object which is passed to `MazeDataset.from_config` to generate or load a dataset"""
+class _MazeDatasetConfig_base(GPTDatasetConfig):  # noqa: N801
+	"""base config -- we serialize, dump to json, and hash this to get the fname. all actual variables we want to be hashed are here"""
 
 	grid_n: int = serializable_field()
 
@@ -159,11 +158,15 @@ class MazeDatasetConfig(GPTDatasetConfig):
 		"""return the maximum of the grid shape"""
 		return max(self.grid_shape)
 
+	def _serialize_base(self) -> dict:
+		"""serialize the base config"""
+		return self.serialize()
+
 	def stable_hash_cfg(self) -> int:
 		"""return a stable hash of the config"""
 		return stable_hash(
 			json.dumps(
-				self.serialize(),
+				self._serialize_base(),
 				sort_keys=True,
 				indent=None,
 			),
@@ -178,6 +181,28 @@ class MazeDatasetConfig(GPTDatasetConfig):
 		return sanitize_fname(
 			f"{self.name}-g{self.grid_n}-n{n_mazes_str}-a_{maze_ctor_name}-h{hash_id}",
 		)
+
+
+@serializable_dataclass(kw_only=True)
+class MazeDatasetConfig(_MazeDatasetConfig_base):
+	"""config object which is passed to `MazeDataset.from_config` to generate or load a dataset"""
+
+	@property
+	def config_version(self) -> str:
+		"""return the version of the config. added in maze_dataset v1.3.0, previous versions had no dataset config"""
+		return "1.0"
+
+	def _serialize_base(self) -> dict:
+		"""serialize the base config"""
+		return super().serialize()
+
+	def serialize(self) -> dict:
+		"serialize the MazeDatasetConfig with all fields and fname"
+		return {
+			**self._serialize_base(),
+			"fname": self.to_fname(),
+			"versions": {"config": self.config_version, "maze_dataset": "1.3.0"},
+		}
 
 	def summary(self) -> dict:
 		"""return a summary of the config"""
