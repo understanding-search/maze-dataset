@@ -288,34 +288,16 @@
         "benchmarks",
         # "resources/", # Templates, CSS, etc. this, or whatever is specified as DOCS_RESOURCES_DIR in makefile will always be preserved
     ]
-
-    # Increment level of markdown headings in generated documentation
-    # e.g. if 2, then h1 -> h3, h2 -> h4, etc.
     markdown_headings_increment = 2
-
-    # Warnings to ignore during documentation generation
     warnings_ignore = [
         "Error parsing type annotation FilterBy for maze_dataset",
         "Found 'coord_str_to_tuple' in maze_dataset.tokenization.__all__, but it does not resolve: Error importing maze_dataset.tokenization.coord_str_to_tuple",
     ]
 
-    # optional generation of notebooks as html pages
     [tool.makefile.docs.notebooks]
-        # Enable notebook processing in documentation
-		# disabled by default
         enabled = true
-        
-        # Source directory containing .ipynb files
         source_path = "notebooks"
-        
-        # Output path relative to docs directory [tool.makefile.docs.output_dir]
         output_path_relative = "notebooks"
-        
-        # Custom template for notebooks index page
-        # Available variables: notebook_url, notebooks (list of dicts with ipynb, html, desc)
-        # index_template = ...
-
-        # Descriptions for notebooks, shown in index
         [tool.makefile.docs.notebooks.descriptions]
             "demo_dataset" = "Creating and filtering a dataset, and various output formats"
 			"demo_generator" = "Exploring different maze generation algorithms and parameters"
@@ -326,8 +308,6 @@
 			"forking_points" = "Identifying and working with decision points in maze solutions"
 			"iterated_backfilling" = "Implementation of iterated backfilling as an algorithm for solving visual mazes"
 			"profile_dataset_save_read" = "Profiling and optimizing dataset serialization performance"
-            
-        
         
 
 # Custom export configurations
@@ -351,56 +331,20 @@
 
 # configures `make todo`
 [tool.makefile.inline-todo]
-	# Directory to search for TODOs
 	search_dir = "."
-	
-	# Output file location (relative to project root)
-    # If changed, update docs references
 	out_file_base = "docs/other/todo-inline"
-
-	# Number of context lines to include around each TODO
 	context_lines = 2
-
-	# File extensions to search
 	extensions = ["py", "md"]
-
-	# Tags to look for
 	tags = ["CRIT", "TODO", "FIXME", "HACK", "BUG", "DOC", "DOCS", "TYPING"]
-
-	# Patterns to exclude from search
 	exclude = [
 		"docs/**",
 		".venv/**",
 		"scripts/get_todos.py",
 	]
-    
-    # configuring the output
-	# ------------------------------
 	# branch to put in the url
 	branch = "main"
-
-	# repo url -- by default this will come from `[project.urls.{repository, github}]`
-	# but you can override it here
-	# repo_url = ...
-
-    
-	
-	# template for the markdown output
-	# this uses jinja2. see `TEMPLATE_MD` in makefile under `SCRIPT_GET_TODOS`
-	# template_md = ...
-
-	# this uses standard python string formatting
-	# available variables: file, file_lang, line_num, code_url, context
-	# template_issue = ...
-
-	# this template has some custom syntax for adding the data directly to the html file. see that file for more info
-	# template_html_source = "docs/resources/templates/todo-template.html"
-
     # Mapping of tags to GitHub issue labels
     [tool.makefile.inline-todo.tag_label_map]
         "BUG" = "bug"
         "TODO" = "enhancement"
 		"DOC" = "documentation"
-
-# ============================================================
-
