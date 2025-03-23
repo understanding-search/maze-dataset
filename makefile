@@ -1788,7 +1788,8 @@ paper-clean:
 	rm -f $(PAPER_PATH)/paper.html
 
 .PHONY: paper-tex
-paper-tex: paper-clean
+paper-tex:
+	@echo "compile the paper to tex"
 	INARA_ARTIFACTS_PATH=$(PAPER_PATH) pandoc \
 		--data-dir=$(PAPER_PATH_INARA)/data \
 		--defaults=shared \
@@ -1802,10 +1803,13 @@ paper-tex: paper-clean
 
 .PHONY: paper-pdf
 paper-pdf: paper-tex
-	latexmk -interaction=batchmode -pdf -outdir=$(PAPER_PATH)/output -lualatex $(PAPER_PATH)/paper.tex
+	@echo "compile the paper to pdf"
+	latexmk -interaction=nonstopmode -pdf -outdir=$(PAPER_PATH)/output -lualatex $(PAPER_PATH)/paper.tex || true
+	cp $(PAPER_PATH)/output/paper.pdf $(PAPER_PATH)/paper.pdf
 
 .PHONY: paper-html
-paper-html: paper-clean
+paper-html:
+	@echo "compile the paper to html"
 	INARA_ARTIFACTS_PATH=$(PAPER_PATH) pandoc \
 		--data-dir=$(PAPER_PATH_INARA)/data \
 		--defaults=shared \
