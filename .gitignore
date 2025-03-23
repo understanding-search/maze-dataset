@@ -11,6 +11,9 @@ notebooks/tests/**
 # pysr outputs
 notebooks/outputs/**
 outputs/**
+# paper:
+docs/paper/inara*
+docs/paper/output/**
 
 .meta/local/**
 .pypi-token
