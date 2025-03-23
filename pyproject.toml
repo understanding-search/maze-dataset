@@ -190,7 +190,8 @@
 			"SLF001", # fine to access private vars
 			"N802", # uppercase in func names is fine
 			# warning: The following rule may cause conflicts when used with the formatter: `COM812`. To avoid unexpected behavior, we recommend disabling this rule, either by removing it from the `select` or `extend-select` configuration, or adding it to the `ignore` configuration.
-			"COM812", 
+			"COM812",
+			"TC001", # don't force us to import things in type checking blocks 
 			# todos:
 			"TD001", # we allow tags besides "TODO"
 			"TD002", # dont care about author

@@ -1,42 +1,28 @@
-import copy
-import functools
+"implements `MazeDatasetConfig` which is used to generate or load a dataset"
+
 import json
-import multiprocessing
 import typing
 import warnings
-from collections import Counter, defaultdict
-from pathlib import Path
-from typing import Callable, Literal, Optional, cast, overload
+from typing import Callable
 
 import numpy as np
-import tqdm
-from jaxtyping import Float, Int
+from jaxtyping import Float
 from muutils.json_serialize import (
-	json_serialize,
 	serializable_dataclass,
 	serializable_field,
 )
 from muutils.json_serialize.util import (
-	_FORMAT_KEY,
-	JSONdict,
 	safe_getsource,
 	string_as_lines,
 )
 from muutils.misc import sanitize_fname, shorten_numerical_to_str, stable_hash
-from zanj import ZANJ
-from zanj.loading import LoaderHandler, load_item_recursive, register_loader_handler
 
-from maze_dataset.constants import Coord, CoordArray, CoordTup
+from maze_dataset.constants import Coord, CoordTup
 from maze_dataset.dataset.dataset import (
-	DatasetFilterProtocol,
-	GPTDataset,
 	GPTDatasetConfig,
-	register_dataset_filter,
-	register_filter_namespace_for_dataset,
 )
 from maze_dataset.dataset.success_predict_math import cfg_success_predict_fn
 from maze_dataset.generation.generators import _GENERATORS_PERCOLATED, GENERATORS_MAP
-from maze_dataset.maze import LatticeMaze, SolvedMaze
 
 # If `n_mazes>=SERIALIZE_MINIMAL_THRESHOLD`, then the MazeDataset will use `serialize_minimal`.
 # Setting to None means that `serialize_minimal` will never be used.

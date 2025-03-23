@@ -8,7 +8,7 @@ from maze_dataset.generation.generators import (
 	LatticeMazeGenerators,
 	get_maze_with_solution,
 )
-from maze_dataset.maze import Coord, SolvedMaze  # noqa: TC001
+from maze_dataset.maze import Coord, SolvedMaze
 
 
 def test_gen_dfs_square():
