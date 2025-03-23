@@ -40,8 +40,8 @@ class FilterInfoMismatchError(ValueError):
 
 
 def _load_applied_filters(
-	filters: list[dict[typing.Literal["name", "args", "kwargs"], str | list | dict]],
-) -> list[dict[typing.Literal["name", "args", "kwargs"], str | list | dict]]:
+	filters: list[dict[typing.Literal["name", "args", "kwargs"], str | tuple | dict]],
+) -> list[dict[typing.Literal["name", "args", "kwargs"], str | tuple | dict]]:
 	try:
 		return [
 			dict(
@@ -49,7 +49,7 @@ def _load_applied_filters(
 				args=tuple(
 					filter_info["args"],
 				),  # muutils/zanj save tuples as lists, and this causes problems
-				kwargs=dict(filter_info["kwargs"]),
+				kwargs=dict(filter_info["kwargs"]),  # type: ignore[arg-type]
 			)
 			for filter_info in filters
 		]
@@ -72,7 +72,7 @@ class GPTDatasetConfig(SerializableDataclass):
 
 	seed: int | None = serializable_field(default=GLOBAL_SEED)
 	applied_filters: list[
-		dict[typing.Literal["name", "args", "kwargs"], str | list | dict]
+		dict[typing.Literal["name", "args", "kwargs"], str | list | tuple | dict]
 	] = serializable_field(
 		default_factory=list,
 		deserialize_fn=_load_applied_filters,
@@ -107,9 +107,8 @@ class GPTDatasetConfig(SerializableDataclass):
 			applied_filters=self.applied_filters,
 		)
 
-	@classmethod
 	@property
-	def _dataset_class(cls) -> type:
+	def _dataset_class(self) -> type:
 		raise NotImplementedError("this should be implemented by subclasses!")
 
 	def to_fname(self) -> str:
@@ -120,7 +119,8 @@ class GPTDatasetConfig(SerializableDataclass):
 			f"using fallblack to_fname() method for {self.__class__.__name__}, this should be implemented by subclasses!",
 		)
 		return sanitize_fname(
-			f"f{self.name}-n{shorten_numerical_to_str(len(self))}-h{self_json_hash}",
+			# TYPING: error: Argument 1 to "len" has incompatible type "GPTDatasetConfig"; expected "Sized"  [arg-type]
+			f"f{self.name}-n{shorten_numerical_to_str(len(self))}-h{self_json_hash}",  # type: ignore[arg-type]
 		)
 
 
@@ -139,9 +139,8 @@ def _dataset_config_serialize(self, *args, **kwargs) -> JSONitem:  # noqa: ANN00
 	)
 
 
-GPTDatasetConfig.load = _dataset_config_load
-GPTDatasetConfig.serialize = _dataset_config_serialize
-
+GPTDatasetConfig.load = _dataset_config_load  # type: ignore[method-assign]
+GPTDatasetConfig.serialize = _dataset_config_serialize  # type: ignore[method-assign,assignment]
 
 class GPTDataset:
 	"""wrapper for torch dataset with some extra functionality
@@ -213,12 +212,12 @@ class GPTDataset:
 
 	_FILTER_NAMESPACE: type = "this isn't a filter namespace! you have to initialize this by registering with `register_filter_namespace_for_dataset`"  # type: ignore
 
-	cfg: GPTDatasetConfig
+	cfg: "T_DatasetConfig"
 
 	@classmethod
 	def from_config(  # noqa: C901, PLR0912
 		cls,
-		cfg: GPTDatasetConfig,
+		cfg: "T_DatasetConfig",
 		do_generate: bool = True,
 		load_local: bool = True,
 		save_local: bool = True,
@@ -229,7 +228,7 @@ class GPTDataset:
 		allow_generation_metadata_filter_mismatch: bool = True,
 		verbose: bool = False,
 		**kwargs,
-	) -> "GPTDataset":
+	) -> "T_Dataset":
 		"""base class for gpt datasets
 
 		priority of loading:
@@ -242,7 +241,7 @@ class GPTDataset:
 
 		local_base_path = Path(local_base_path)
 		fname: Path = Path(f"{cfg.to_fname()}.zanj")
-		output: GPTDataset | None = None
+		output: T_Dataset | None = None
 		did_load_local: bool = False
 		if zanj is None:
 			zanj = ZANJ()
@@ -327,7 +326,7 @@ class GPTDataset:
 
 	# serialization & loading
 	@classmethod
-	def read(cls, file_path: str, zanj: ZANJ | None = None) -> "GPTDataset":
+	def read(cls: "type[T_Dataset]", file_path: str | Path, zanj: ZANJ | None = None) -> "T_Dataset":
 		"read dataset from a file with zanj"
 		if zanj is None:
 			zanj = ZANJ()
@@ -365,16 +364,20 @@ class GPTDataset:
 		"""
 		pass
 
+	def __len__(self) -> int:
+		"return the length of the dataset"
+		raise NotImplementedError("implement in subclass!")
+
 	class FilterBy:
 		"""thanks GPT-4"""
 
-		def __init__(self, dataset: "GPTDataset") -> None:
+		def __init__(self, dataset: "T_Dataset") -> None:
 			"mock class so we can call `my_dataset.filter_by.some_registered_filter()`"
-			self.dataset: GPTDataset = dataset
+			self.dataset: T_Dataset = dataset
 
-		def __getattr__(self, name: str) -> typing.Callable[..., "GPTDataset"]:
+		def __getattr__(self, name: str) -> typing.Callable[..., "T_Dataset"]:
 			"override getattr so we can call `my_dataset.filter_by.some_registered_filter()`"
-			filter_func: DatasetFilterProtocol = getattr(
+			filter_func: DatasetFilterFunc = getattr(
 				self.dataset._FILTER_NAMESPACE,
 				name,
 			)
@@ -389,9 +392,9 @@ class GPTDataset:
 		"can call `my_dataset.filter_by.some_registered_filter()` to filter the dataset"
 		return self.FilterBy(self)
 
-	def _apply_filters_from_config(self) -> "GPTDataset":
+	def _apply_filters_from_config(self: "T_Dataset") -> "T_Dataset":
 		"""apply filters to the dataset, as specified in the config. used in `from_config()`"""
-		output: GPTDataset = self
+		output: T_Dataset = self
 		# copy the list, and then clear it in the config. we do this because each time we apply a filter it will update config.applied_filters
 		applied_filters_old: list[
 			dict[typing.Literal["name", "args", "kwargs"], typing.Any]
@@ -402,11 +405,11 @@ class GPTDataset:
 			filter_name: str = filter_info["name"]
 			if filter_name not in output._FILTER_NAMESPACE.__dict__:
 				if filter_name.startswith("__custom__:"):
-					err_msg: str = f"the dataset {output.cfg.to_fname()} was filtering using a custom filter: '{filter_name}', which we don't know about. add it to MazeDatasetFilters!"
+					err_msg = f"the dataset {output.cfg.to_fname()} was filtering using a custom filter: '{filter_name}', which we don't know about. add it to MazeDatasetFilters!"
 					raise ValueError(
 						err_msg,
 					)
-				err_msg: str = f"the dataset {output.cfg.to_fname()} was filtering using an unknown filter: '{filter_name}'"
+				err_msg = f"the dataset {output.cfg.to_fname()} was filtering using an unknown filter: '{filter_name}'"
 				raise ValueError(
 					err_msg,
 				)
@@ -420,7 +423,10 @@ class GPTDataset:
 		# update the config, perform checks
 		# TODO: some funny business with manually specified filters here?
 		output.update_self_config()
-		_check_filter_equality(applied_filters_old, output.cfg.applied_filters)
+		_check_filter_equality(
+			filters_old=applied_filters_old,
+			filters_new=output.cfg.applied_filters,  # type: ignore[arg-type]
+		)
 		return output
 
 
@@ -474,7 +480,7 @@ def _check_filter_equality(
 				assert key in filterinfo_new["kwargs"], (
 					f"filter kwargs don't match: missing key '{key}'"
 				)
-				assert filterinfo_new["kwargs"][key] == filterinfo_old["kwargs"][key], (
+				assert filterinfo_new["kwargs"][key] == filterinfo_old["kwargs"][key], (  # type: ignore[index]
 					f"filter kwargs don't match: values for key '{key}' don't match"
 				)
 
@@ -501,37 +507,34 @@ def register_filter_namespace_for_dataset(
 	return decorator
 
 
-class DatasetFilterProtocol(typing.Protocol):
-	"protocol for typing hinting what a dataset filter should look like"
-
-	def __call__(  # noqa: D102
-		self,
-		dataset: GPTDataset,
-		**kwargs,
-	) -> GPTDataset: ...
-
-
-DatasetType = TypeVar("DatasetType", bound=GPTDataset)
-
+T_DatasetConfig = TypeVar("T_DatasetConfig", bound=GPTDatasetConfig)
+T_Dataset = TypeVar("T_Dataset", bound=GPTDataset)
+P_FilterKwargs = typing.ParamSpec("P_FilterKwargs")
+DatasetFilterFunc = Callable[typing.Concatenate[T_Dataset, P_FilterKwargs], T_Dataset]
 
 def register_dataset_filter(
-	method: DatasetFilterProtocol,
-) -> DatasetFilterProtocol:
+	method: DatasetFilterFunc,
+) -> DatasetFilterFunc:
 	"""register a dataset filter, copying the underlying dataset and updating the config
 
 	be sure to return a COPY, not the original?
+	# TODO: what the heck do we mean by the above? why the question mark? it should be a copy right?
 
 	method should be a staticmethod of a namespace class registered with `register_filter_namespace_for_dataset`
 	"""
 
 	@functools.wraps(method)
-	def wrapper(dataset: DatasetType, *args, **kwargs) -> DatasetType:
+	def wrapper(
+		# TYPING: error: ParamSpec "P_FilterKwargs" is unbound  [valid-type]
+		dataset: T_Dataset, *args: P_FilterKwargs.args, **kwargs: P_FilterKwargs.kwargs # type: ignore[valid-type]
+	) -> T_Dataset:
 		new_dataset = method(dataset, *args, **kwargs)
 		# update the config
 		new_dataset.cfg.applied_filters.append(
-			dict(name=method.__name__, args=args, kwargs=kwargs),
+			dict(name=method.__name__, args=args, kwargs=kwargs),  # type: ignore[attr-defined]
 		)
 		new_dataset.update_self_config()
 		return new_dataset
 
-	return wrapper
+	# TYPING: error: Incompatible return value type (got "_Wrapped[[Any, KwArg(Any)], Any, [Never, VarArg(Any), KwArg(Any)], Never]", expected "DatasetFilterProtocol[Any]")  [return-value]
+	return wrapper  # type: ignore[return-value]

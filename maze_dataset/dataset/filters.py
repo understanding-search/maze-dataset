@@ -9,7 +9,7 @@ import numpy as np
 
 from maze_dataset.constants import CoordTup
 from maze_dataset.dataset.dataset import (
-	DatasetFilterProtocol,
+	DatasetFilterFunc,
 	register_dataset_filter,
 	register_filter_namespace_for_dataset,
 )
@@ -19,7 +19,7 @@ from maze_dataset.maze import SolvedMaze
 
 def register_maze_filter(
 	method: typing.Callable[[SolvedMaze, typing.Any], bool],
-) -> DatasetFilterProtocol:
+) -> DatasetFilterFunc:
 	"""register a maze filter, casting it to operate over the whole list of mazes
 
 	method should be a staticmethod of a namespace class registered with `register_filter_namespace_for_dataset`
@@ -60,7 +60,9 @@ class MazeDatasetFilters:
 	@staticmethod
 	def start_end_distance(maze: SolvedMaze, min_distance: int) -> bool:
 		"""filter out datasets where the start and end pos are less than `min_distance` apart on the manhattan distance (ignoring walls)"""
-		return np.linalg.norm(maze.start_pos - maze.end_pos, 1) >= min_distance
+		return bool(
+			(np.linalg.norm(maze.start_pos - maze.end_pos, 1) >= min_distance).all()
+		)
 
 	@register_dataset_filter
 	@staticmethod
@@ -253,7 +255,7 @@ class MazeDatasetFilters:
 						try:
 							value = np.array(value)  # noqa: PLW2901
 						except ValueError as convert_to_np_err:
-							err_msg: str = (
+							err_msg = (
 								f"Cannot collect generation meta for {key} as it is a list of type '{type(value[0]) = !s}'"
 								"\nexpected either a basic type (bool, int, float, str), a numpy coord, or a numpy array of coords"
 							)
@@ -269,13 +271,13 @@ class MazeDatasetFilters:
 						# assume its a list of coordinates
 						gen_meta_lists[key].update([tuple(v) for v in value])
 					else:
-						err_msg: str = (
+						err_msg = (
 							f"Cannot collect generation meta for {key} as it is an ndarray of shape {value.shape}\n"
 							"expected either a coord of shape (2,) or a list of coords of shape (n, 2)"
 						)
 						raise ValueError(err_msg)
 				else:
-					err_msg: str = (
+					err_msg = (
 						f"Cannot collect generation meta for {key} as it is of type '{type(value)!s}'\n"
 						"expected either a basic type (bool, int, float, str), a numpy coord, or a numpy array of coords"
 					)

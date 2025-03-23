@@ -34,7 +34,10 @@ from maze_dataset.dataset.maze_dataset_config import (
 	EndpointKwargsType,
 	MazeDatasetConfig,
 )
+from maze_dataset.generation.seed import GLOBAL_SEED
 from maze_dataset.maze import LatticeMaze, SolvedMaze
+
+_GLOBAL_WORKER_CONFIG: MazeDatasetConfig
 
 
 def _generate_maze_helper(index: int) -> Optional[SolvedMaze]:  # noqa: ARG001
@@ -43,6 +46,7 @@ def _generate_maze_helper(index: int) -> Optional[SolvedMaze]:  # noqa: ARG001
 	> [!CAUTION]
 	> don't use this unless generating in parallel!
 	"""
+	global _GLOBAL_WORKER_CONFIG  # noqa: PLW0602
 	# TODO: don't use this unless generating in parallel!
 	maze: LatticeMaze = _GLOBAL_WORKER_CONFIG.maze_ctor(
 		grid_shape=_GLOBAL_WORKER_CONFIG.grid_shape_np,
@@ -52,7 +56,9 @@ def _generate_maze_helper(index: int) -> Optional[SolvedMaze]:  # noqa: ARG001
 	endpoint_kwargs: EndpointKwargsType = _GLOBAL_WORKER_CONFIG.endpoint_kwargs.copy()
 
 	# Generate the solution
-	solution: Optional[CoordArray] = maze.generate_random_path(**endpoint_kwargs)
+	# mypy doesnt realize EndpointKwargsType has only string keys: `Keywords must be strings  [misc]`
+	# TYPING: error: No overload variant of "generate_random_path" of "LatticeMaze" matches argument type "dict[Literal['allowed_start', 'allowed_end', 'deadend_start', 'deadend_end', 'endpoints_not_equal', 'except_on_no_valid_endpoint'], bool | list[tuple[int, int]] | None]"  [call-overload]
+	solution: Optional[CoordArray] = maze.generate_random_path(**endpoint_kwargs) # type: ignore[misc, call-overload]
 
 	# Validate the solution
 	if (
@@ -81,14 +87,17 @@ def _maze_gen_init_worker(config: MazeDatasetConfig) -> None:
 	global _GLOBAL_WORKER_CONFIG  # noqa: PLW0603
 	_GLOBAL_WORKER_CONFIG = config
 
-	process_id: tuple[int] = multiprocessing.current_process()._identity
+	process_id: tuple[int, ...] = multiprocessing.current_process()._identity
 	if len(process_id) == 0:
 		# no multiprocessing, seed was already set
 		pass
 	elif len(process_id) == 1:
 		# multiprocessing, adjust seed based on process id
 		# only set numpy seed, since we do not use other random gens
-		np.random.seed(_GLOBAL_WORKER_CONFIG.seed + process_id[0])
+		np.random.seed(
+			_GLOBAL_WORKER_CONFIG.seed or GLOBAL_SEED # if the seed is None, use the global seed
+			+ process_id[0]
+		)
 	else:
 		err_msg = (
 			f"unexpected process id: {process_id = }\n{multiprocessing.Process() = }"
@@ -113,10 +122,12 @@ class MazeDataset(GPTDataset):
 		self.mazes: list[SolvedMaze] = list(mazes)
 		self.generation_metadata_collected: dict | None = generation_metadata_collected
 
+	# TYPING: error: Return type "MazeDataset" of "from_config" incompatible with return type "T_Dataset" in supertype "GPTDataset"  [override]
 	@classmethod
-	def from_config(
+	def from_config( # type: ignore[override]
 		cls,
-		cfg: MazeDatasetConfig,
+		# TYPING: error: Argument 1 of "from_config" is incompatible with supertype "GPTDataset"; supertype defines the argument type as "T_DatasetConfig"  [override]
+		cfg: MazeDatasetConfig, # type: ignore[override]
 		do_generate: bool = True,
 		load_local: bool = True,
 		save_local: bool = True,
@@ -160,6 +171,10 @@ class MazeDataset(GPTDataset):
 	def __getitem__(self, i: int) -> SolvedMaze:
 		"""get a maze by index"""
 		return self.mazes[i]
+
+	def __iter__(self) -> typing.Iterator[SolvedMaze]:
+		"""iterate over the mazes"""
+		return iter(self.mazes)
 
 	def __deepcopy__(self, memo) -> "MazeDataset":  # noqa: ANN001
 		"""deepcopy the dataset

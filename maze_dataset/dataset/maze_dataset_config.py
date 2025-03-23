@@ -108,10 +108,12 @@ def _load_endpoint_kwargs(data: dict) -> EndpointKwargsType:
 class _MazeDatasetConfig_base(GPTDatasetConfig):  # noqa: N801
 	"""base config -- we serialize, dump to json, and hash this to get the fname. all actual variables we want to be hashed are here"""
 
-	grid_n: int = serializable_field()
+	# NOTE: type: ignore[misc] is because it tells us non-default attributes aren't allowed after ones with defaults, but everything is kw_only
+
+	grid_n: int = serializable_field()  # type: ignore[misc]
 
 	# not comparing n_mazes is done primarily to avoid conflicts which happen during `from_config` when we have applied filters
-	n_mazes: int = serializable_field(compare=False)
+	n_mazes: int = serializable_field(compare=False)  # type: ignore[misc]
 
 	maze_ctor: Callable = serializable_field(
 		default=GENERATORS_MAP["gen_dfs"],
@@ -183,8 +185,9 @@ class _MazeDatasetConfig_base(GPTDatasetConfig):  # noqa: N801
 		)
 
 
+# NOTE: type: ignore[misc] is because it tells us non-default attributes aren't allowed after ones with defaults, but everything is kw_only
 @serializable_dataclass(kw_only=True)
-class MazeDatasetConfig(_MazeDatasetConfig_base):
+class MazeDatasetConfig(_MazeDatasetConfig_base):  # type: ignore[misc]
 	"""config object which is passed to `MazeDataset.from_config` to generate or load a dataset"""
 
 	@property
@@ -247,7 +250,8 @@ class MazeDatasetConfig(_MazeDatasetConfig_base):
 			) from e
 
 		endpoints_unique_flag: int = int(
-			self.endpoint_kwargs.get("endpoints_not_equal", True),
+			# we are pretty sure it will be an int or bool here
+			self.endpoint_kwargs.get("endpoints_not_equal", True),  # type: ignore[arg-type]
 		)
 
 		# adjustment for bknutson0
@@ -258,7 +262,7 @@ class MazeDatasetConfig(_MazeDatasetConfig_base):
 			# we didnt train on this, but if either endpoint is not required to be in a dead end
 			# then  requiring the endpoints to be unique does not really affect the success rate
 			# (except for very small percolation values, pure percolation generation)
-			endpoints_unique_flag: int = 0
+			endpoints_unique_flag = 0
 
 		return np.array(
 			[
@@ -266,7 +270,7 @@ class MazeDatasetConfig(_MazeDatasetConfig_base):
 				float(self.grid_n),
 				float(
 					int(
-						self.endpoint_kwargs.get("deadend_start", False)
+						self.endpoint_kwargs.get("deadend_start", False)  # type: ignore[arg-type]
 						or self.endpoint_kwargs.get("deadend_end", False),
 					),
 				),
@@ -294,7 +298,7 @@ class MazeDatasetConfig(_MazeDatasetConfig_base):
 			name=name,
 			grid_n=int(arr[1]),
 			n_mazes=n_mazes,
-			maze_ctor=_GENERATORS_PERCOLATED[int(arr[4])],
+			maze_ctor=GENERATORS_MAP[_GENERATORS_PERCOLATED[int(arr[4])]],
 			maze_ctor_kwargs={"p": float(arr[0])},
 			endpoint_kwargs=dict(
 				deadend_start=bool(arr[2]),
