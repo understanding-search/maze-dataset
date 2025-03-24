@@ -136,8 +136,7 @@ class LatticeMazeGenerators:
 			# get the current coord from the stack
 			current_coord: Coord
 			if randomized_stack:
-				# we dont care about S311 because this isnt security related
-				current_coord = stack.pop(random.randint(0, len(stack) - 1))  # noqa: S311
+				current_coord = stack.pop(random.randint(0, len(stack) - 1))
 			else:
 				current_coord = stack.pop()
 
@@ -165,8 +164,7 @@ class LatticeMazeGenerators:
 					stack.append(current_coord)
 
 				# choose one of the unvisited neighbors
-				# we dont care about S311 because this isn't security related
-				chosen_neighbor, delta = random.choice(unvisited_neighbors_deltas)  # noqa: S311
+				chosen_neighbor, delta = random.choice(unvisited_neighbors_deltas)
 
 				# add connection
 				dim: int = int(np.argmax(np.abs(delta)))
@@ -399,6 +397,213 @@ class LatticeMazeGenerators:
 
 		return maze
 
+	@staticmethod
+	def gen_kruskal(
+		grid_shape: "Coord | CoordTup",
+		lattice_dim: int = 2,
+		start_coord: "Coord | None" = None,
+	) -> "LatticeMaze":
+		"""Generate a maze using Kruskal's algorithm.
+
+		This function generates a random spanning tree over a grid using Kruskal's algorithm.
+		Each cell is treated as a node, and all valid adjacent edges are listed and processed
+		in random order. An edge is added (i.e. its passage carved) only if it connects two cells
+		that are not already connected. The resulting maze is a perfect maze (i.e. a spanning tree)
+		without cycles.
+
+		https://en.wikipedia.org/wiki/Kruskal's_algorithm
+
+		# Parameters:
+		- `grid_shape : Coord | CoordTup`
+			The shape of the maze grid (for example, `(n_rows, n_cols)`).
+		- `lattice_dim : int`
+			The lattice dimension (default is `2`).
+		- `start_coord : Coord | None`
+			Optionally, specify a starting coordinate. If `None`, a random coordinate will be chosen.
+		- `**kwargs`
+			Additional keyword arguments (currently unused).
+
+		# Returns:
+		- `LatticeMaze`
+			A maze represented by a connection list, generated as a spanning tree using Kruskal's algorithm.
+
+		# Usage:
+		```python
+		maze = gen_kruskal((10, 10))
+		```
+		"""
+		assert lattice_dim == 2, (  # noqa: PLR2004
+			"Kruskal's algorithm is only implemented for 2D lattices."
+		)
+		# Convert grid_shape to a tuple of ints
+		grid_shape = tuple(int(x) for x in grid_shape)
+		n_rows, n_cols = grid_shape
+
+		# Initialize union-find data structure.
+		parent: dict[tuple[int, int], tuple[int, int]] = {}
+
+		def find(cell: tuple[int, int]) -> tuple[int, int]:
+			while parent[cell] != cell:
+				parent[cell] = parent[parent[cell]]
+				cell = parent[cell]
+			return cell
+
+		def union(cell1: tuple[int, int], cell2: tuple[int, int]) -> None:
+			root1 = find(cell1)
+			root2 = find(cell2)
+			parent[root2] = root1
+
+		# Initialize each cell as its own set.
+		for i in range(n_rows):
+			for j in range(n_cols):
+				parent[(i, j)] = (i, j)
+
+		# List all possible edges.
+		# For vertical edges (i.e. connecting a cell to its right neighbor):
+		edges: list[tuple[tuple[int, int], tuple[int, int], int]] = []
+		for i in range(n_rows):
+			for j in range(n_cols - 1):
+				edges.append(((i, j), (i, j + 1), 1))
+		# For horizontal edges (i.e. connecting a cell to its bottom neighbor):
+		for i in range(n_rows - 1):
+			for j in range(n_cols):
+				edges.append(((i, j), (i + 1, j), 0))
+
+		# Shuffle the list of edges.
+		import random
+
+		random.shuffle(edges)
+
+		# Initialize connection_list with no connections.
+		# connection_list[0] stores downward connections (from cell (i,j) to (i+1,j)).
+		# connection_list[1] stores rightward connections (from cell (i,j) to (i,j+1)).
+		import numpy as np
+
+		connection_list = np.zeros((2, n_rows, n_cols), dtype=bool)
+
+		# Process each edge; if it connects two different trees, union them and carve the passage.
+		for cell1, cell2, direction in edges:
+			if find(cell1) != find(cell2):
+				union(cell1, cell2)
+				if direction == 0:
+					# Horizontal edge: connection is stored in connection_list[0] at cell1.
+					connection_list[0, cell1[0], cell1[1]] = True
+				else:
+					# Vertical edge: connection is stored in connection_list[1] at cell1.
+					connection_list[1, cell1[0], cell1[1]] = True
+
+		if start_coord is None:
+			start_coord = tuple(np.random.randint(0, n) for n in grid_shape)
+
+		generation_meta: dict = dict(
+			func_name="gen_kruskal",
+			grid_shape=grid_shape,
+			start_coord=start_coord,
+			algorithm="kruskal",
+			fully_connected=True,
+		)
+		return LatticeMaze(
+			connection_list=connection_list, generation_meta=generation_meta
+		)
+
+	@staticmethod
+	def gen_recursive_division(
+		grid_shape: "Coord | CoordTup",
+		lattice_dim: int = 2,
+		start_coord: "Coord | None" = None,
+	) -> "LatticeMaze":
+		"""Generate a maze using the recursive division algorithm.
+
+		This function generates a maze by recursively dividing the grid with walls and carving a single
+		passage through each wall. The algorithm begins with a fully connected grid (i.e. every pair of adjacent
+		cells is connected) and then removes connections along a chosen division line—leaving one gap as a passage.
+		The resulting maze is a perfect maze, meaning there is exactly one path between any two cells.
+
+		# Parameters:
+		- `grid_shape : Coord | CoordTup`
+			The shape of the maze grid (e.g., `(n_rows, n_cols)`).
+		- `lattice_dim : int`
+			The lattice dimension (default is `2`).
+		- `start_coord : Coord | None`
+			Optionally, specify a starting coordinate. If `None`, a random coordinate is chosen.
+		- `**kwargs`
+			Additional keyword arguments (currently unused).
+
+		# Returns:
+		- `LatticeMaze`
+			A maze represented by a connection list, generated using recursive division.
+
+		# Usage:
+		```python
+		maze = gen_recursive_division((10, 10))
+		```
+		"""
+		assert lattice_dim == 2, (  # noqa: PLR2004
+			"Recursive division algorithm is only implemented for 2D lattices."
+		)
+		# Convert grid_shape to a tuple of ints.
+		grid_shape = tuple(int(x) for x in grid_shape)
+		n_rows, n_cols = grid_shape
+
+		# Initialize connection_list as a fully connected grid.
+		# For horizontal connections: for each cell (i,j) with i in [0, n_rows-2], set connection to True.
+		# For vertical connections: for each cell (i,j) with j in [0, n_cols-2], set connection to True.
+		connection_list = np.zeros((2, n_rows, n_cols), dtype=bool)
+		connection_list[0, : n_rows - 1, :] = True
+		connection_list[1, :, : n_cols - 1] = True
+
+		def divide(x: int, y: int, width: int, height: int) -> None:
+			"""Recursively divide the region starting at (x, y) with the given width and height.
+
+			Removes connections along the chosen division line except for one randomly chosen gap.
+			"""
+			if width < 2 or height < 2:  # noqa: PLR2004
+				return
+
+			if width > height:
+				# Vertical division.
+				wall_col = random.randint(x + 1, x + width - 1)
+				gap_row = random.randint(y, y + height - 1)
+				for row in range(y, y + height):
+					if row == gap_row:
+						continue
+					# Remove the vertical connection between (row, wall_col-1) and (row, wall_col).
+					if wall_col - 1 < n_cols - 1:
+						connection_list[1, row, wall_col - 1] = False
+				# Recurse on the left and right subregions.
+				divide(x, y, wall_col - x, height)
+				divide(wall_col, y, x + width - wall_col, height)
+			else:
+				# Horizontal division.
+				wall_row = random.randint(y + 1, y + height - 1)
+				gap_col = random.randint(x, x + width - 1)
+				for col in range(x, x + width):
+					if col == gap_col:
+						continue
+					# Remove the horizontal connection between (wall_row-1, col) and (wall_row, col).
+					if wall_row - 1 < n_rows - 1:
+						connection_list[0, wall_row - 1, col] = False
+				# Recurse on the top and bottom subregions.
+				divide(x, y, width, wall_row - y)
+				divide(x, wall_row, width, y + height - wall_row)
+
+		# Begin the division on the full grid.
+		divide(0, 0, n_cols, n_rows)
+
+		if start_coord is None:
+			start_coord = tuple(np.random.randint(0, n) for n in grid_shape)
+
+		generation_meta: dict = dict(
+			func_name="gen_recursive_division",
+			grid_shape=grid_shape,
+			start_coord=start_coord,
+			algorithm="recursive_division",
+			fully_connected=True,
+		)
+		return LatticeMaze(
+			connection_list=connection_list, generation_meta=generation_meta
+		)
+
 
 # cant automatically populate this because it messes with pickling :(
 GENERATORS_MAP: dict[str, Callable[[Coord | CoordTup, Any], "LatticeMaze"]] = {
@@ -412,6 +617,8 @@ GENERATORS_MAP: dict[str, Callable[[Coord | CoordTup, Any], "LatticeMaze"]] = {
 	"gen_percolation": LatticeMazeGenerators.gen_percolation,
 	"gen_dfs_percolation": LatticeMazeGenerators.gen_dfs_percolation,
 	"gen_prim": LatticeMazeGenerators.gen_prim,
+	"gen_kruskal": LatticeMazeGenerators.gen_kruskal,
+	"gen_recursive_division": LatticeMazeGenerators.gen_recursive_division,
 }
 "mapping of generator names to generator functions, useful for loading `MazeDatasetConfig`"
 

@@ -18,4 +18,6 @@ DEFAULT_GENERATORS: list[tuple[str, dict]] = [
 	# ("gen_prim", dict(accessible_cells=0.5)),
 	# ("gen_prim", dict(max_tree_depth=0.5)),
 	# ("gen_prim", dict(accessible_cells=0.5, max_tree_depth=0.5)),
+	("gen_kruskal", dict()),
+	("gen_recursive_division", dict()),
 ]
