@@ -1,6 +1,8 @@
 from pathlib import Path
 from typing import Any
 
+from maze_dataset import MazeDatasetConfig
+
 SAVE_DIR: Path = Path("docs/benchmarks/percolation_fractions/")
 
 
@@ -51,7 +53,7 @@ if __name__ == "__main__":
 	)
 	parser.add_argument(
 		"-s",
-		"--save_dir",
+		"--save-dir",
 		type=str,
 		default=None,
 		help=f"The directory to save the results. if `None`, will be saved to {SAVE_DIR.as_posix()}/<analysis>",
@@ -84,6 +86,7 @@ if __name__ == "__main__":
 	# plot results
 	plot_grouped(
 		results,
+		predict_fn=MazeDatasetConfig.success_fraction_estimate,
 		save_dir=save_dir,
 		show=False,
 	)

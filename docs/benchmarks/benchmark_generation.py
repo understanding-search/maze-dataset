@@ -27,7 +27,7 @@ if __name__ == "__main__":
 	)
 	parser.add_argument(
 		"-s",
-		"--save_path",
+		"--save-path",
 		type=str,
 		default="tests/_temp/benchmark_generation.jsonl",
 		help="The path to save the results",
