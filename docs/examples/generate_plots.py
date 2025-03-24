@@ -36,9 +36,10 @@ TEMPLATE_FILE: Path = "maze_examples.html.jinja2"
 
 N_EXAMPLES_GENERATE: int = 6
 
+
 def generate_maze_plots(config_src: dict[str, Any]) -> tuple[str, dict]:
 	"""Generate mazes from the given configuration and plots and metadata for it
-	
+
 	returns (config fname, metadata)
 	"""
 	# Extract maze config parameters
@@ -59,8 +60,10 @@ def generate_maze_plots(config_src: dict[str, Any]) -> tuple[str, dict]:
 		maze_ctor_kwargs=maze_ctor_kwargs,
 		endpoint_kwargs=endpoint_kwargs,
 	)
-	md_config = md_config.success_fraction_compensate(safety_margin=1.5, except_if_all_success_expected=False)
-	
+	md_config = md_config.success_fraction_compensate(
+		safety_margin=1.5, except_if_all_success_expected=False
+	)
+
 	# get the fname and the path
 	cfg_fname: str = md_config.to_fname()
 	this_cfg_path: Path = PLOTS_DIR / cfg_fname
@@ -73,7 +76,7 @@ def generate_maze_plots(config_src: dict[str, Any]) -> tuple[str, dict]:
 		load_local=False,
 		save_local=False,
 		verbose=False,
-    )
+	)
 
 	# create and save the plots
 	for i, maze in enumerate(dataset):
@@ -110,7 +113,11 @@ def main() -> None:
 	maze_examples: list[dict] = []
 	all_tags: set[str] = set()
 
-	for i, cfg_src in tqdm(enumerate(configs_sources), desc="Generating maze examples", total=len(configs_sources)):		
+	for i, cfg_src in tqdm(
+		enumerate(configs_sources),
+		desc="Generating maze examples",
+		total=len(configs_sources),
+	):
 		fname, metadata = generate_maze_plots(cfg_src)
 
 		# Update the set of all tags
@@ -128,10 +135,12 @@ def main() -> None:
 	# render the html
 	template: jinja2.Template = jinja_env.get_template(TEMPLATE_FILE)
 	with open(HTML_PATH, "w") as f:
-		f.write(template.render(
-			maze_examples=maze_examples,
-			all_tags=sorted(all_tags),
-		))
+		f.write(
+			template.render(
+				maze_examples=maze_examples,
+				all_tags=sorted(all_tags),
+			)
+		)
 
 	print(f"Generated HTML at {HTML_PATH}")
 

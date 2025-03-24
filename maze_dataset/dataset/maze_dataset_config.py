@@ -389,8 +389,7 @@ class MazeDatasetConfig(_MazeDatasetConfig_base):  # type: ignore[misc]
 		except NoPercolationInConfigError as e:
 			if except_if_all_success_expected:
 				raise e  # noqa: TRY201
-			else:
-				return 1.0
+			return 1.0
 
 	def success_fraction_compensate(
 		self,

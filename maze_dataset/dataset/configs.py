@@ -107,7 +107,7 @@ def _get_configs_for_examples() -> list[dict]:
 		# Wilson's algorithm
 		configs.append(
 			{
-				"name": f"basic",
+				"name": "basic",
 				"grid_n": grid_n,
 				"maze_ctor": LatticeMazeGenerators.gen_wilson,
 				"maze_ctor_kwargs": {},
