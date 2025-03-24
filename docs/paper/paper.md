@@ -9,7 +9,7 @@ tags:
 authors:
   - name: Michael Igorevich Ivanitskiy
     orcid: 0000-0002-4213-4993
-    affiliation: "1"
+    affiliation: 1
     corresponding: true
   - name: Aaron Sandoval
   - name: Alex F. Spies
@@ -18,6 +18,8 @@ authors:
   - name: Rusheb Shah
     orcid: 0009-0008-3058-0217
   - name: Brandon Knutson
+  - orcid: 0009-0004-8413-0239
+    affiliation: 1
   - name: Cecilia Diniz Behn
     affiliation: 1
   - name: Samy Wu Fung
