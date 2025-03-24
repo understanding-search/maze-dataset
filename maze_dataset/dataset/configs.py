@@ -123,7 +123,12 @@ def _get_configs_for_examples() -> list[dict]:
 					maze_ctor=LatticeMazeGenerators.gen_percolation,
 					maze_ctor_kwargs=dict(p=p),
 					description=f"Pure percolation (p={p}) ({grid_n}x{grid_n})",
-					tags=["algo:percolation", "percolation", f"percolation:{p}", f"grid:{grid_n}"],
+					tags=[
+						"algo:percolation",
+						"percolation",
+						f"percolation:{p}",
+						f"grid:{grid_n}",
+					],
 				)
 			)
 
@@ -135,7 +140,13 @@ def _get_configs_for_examples() -> list[dict]:
 					maze_ctor=LatticeMazeGenerators.gen_dfs_percolation,
 					maze_ctor_kwargs=dict(p=p),
 					description=f"DFS with percolation (p={p}) ({grid_n}x{grid_n})",
-					tags=["algo:dfs_percolation", "dfs", "percolation", f"percolation:{p}", f"grid:{grid_n}"],
+					tags=[
+						"algo:dfs_percolation",
+						"dfs",
+						"percolation",
+						f"percolation:{p}",
+						f"grid:{grid_n}",
+					],
 				)
 			)
 
@@ -144,7 +155,12 @@ def _get_configs_for_examples() -> list[dict]:
 		grid_n=10,
 		maze_ctor=LatticeMazeGenerators.gen_dfs,
 	)
-	constraint_base_tags: list[str] = ["algo:dfs", "dfs", "constrained_dfs", f"grid:{constraint_base_config['grid_n']}"]
+	constraint_base_tags: list[str] = [
+		"algo:dfs",
+		"dfs",
+		"constrained_dfs",
+		f"grid:{constraint_base_config['grid_n']}",
+	]
 
 	constraint_configs: list[dict] = [
 		# DFS without forks (simple path)
@@ -256,7 +272,13 @@ def _get_configs_for_examples() -> list[dict]:
 				except_on_no_valid_endpoint=False,
 			),
 			description="DFS percolation (p=0.3) with deadend endpoints",
-			tags=["algo:dfs_percolation", "dfs", "percolation", "deadend_endpoints", "grid:8"],
+			tags=[
+				"algo:dfs_percolation",
+				"dfs",
+				"percolation",
+				"deadend_endpoints",
+				"grid:8",
+			],
 		)
 	)
 

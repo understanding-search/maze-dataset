@@ -212,6 +212,12 @@
 		# select = ["ICN001"]
 
 		[tool.ruff.lint.per-file-ignores]
+			"maze_dataset/generation/generators.py" = [
+				# none of this is for security
+				"S311",
+				# yes the generation functions are complicated
+				"C901",
+			]
 			"maze_dataset/tokenization/modular/*.py" = [
 				# TODO: lots of unused args in the tokenizer code
 				"ARG002"
