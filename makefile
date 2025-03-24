@@ -1594,11 +1594,13 @@ benchmark-test: benchmark-speed-test benchmark-success-test
 example-clean:
 	@echo "clean up generated examples"
 	rm -rf docs/examples/datasets
+	rm -rf docs/examples/plots
 
 .PHONY: example-gen
 example-gen:
 	@echo "generate examples"
-	$(PYTHON) docs/examples/generate_examples.py
+	$(PYTHON) docs/examples/generate_datasets.py
+	$(PYTHON) docs/examples/generate_plots.py
 
 
 .PHONY: regenerate-when-cfg-hashes-changed
