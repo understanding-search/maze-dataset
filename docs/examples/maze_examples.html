@@ -112,6 +112,7 @@
             border: 2px solid transparent;
             border-radius: 4px;
             overflow: hidden;
+            flex: 0 0 80px; /* Fixed width and height for square thumbnails */
         }
         .maze-thumbnail.active {
             border-color: #007bff;
@@ -133,7 +134,13 @@
             border-radius: 10px;
             font-size: 12px;
         }
-        .config-toggle {
+        .button-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        .button {
             background-color: #007bff;
             color: white;
             border: none;
@@ -141,6 +148,12 @@
             border-radius: 4px;
             cursor: pointer;
             font-size: 14px;
+            flex: 1;
+            min-width: 120px;
+            text-align: center;
+        }
+        .button:hover {
+            background-color: #0056b3;
         }
         .config-code {
             display: none;
@@ -248,14 +261,18 @@
                 
             </div>
             <div class="maze-details">
-                <div class="maze-title">basic</div>
-                <div class="maze-description">Grid size: 5x5</div>
+                <div class="maze-title">basic-g5-n10-a_dfs-h74636</div>
                 <div class="maze-tags">
                     <span class="maze-tag">dfs</span>
                     <span class="maze-tag">basic</span>
                 </div>
-                <button class="config-toggle">Show Configuration</button>
-                <div class="config-code"></div>
+                <div class="button-group">
+                    <button class="button show-constructor-btn">Show Constructor</button>
+                    <button class="button copy-constructor-btn">Copy Constructor</button>
+                    <button class="button show-json-btn">Show Config JSON</button>
+                    <button class="button copy-json-btn">Copy Config JSON</button>
+                </div>
+                <div class="config-code constructor-code"></div>
             </div>
         </div>
         <div class="maze-card" 
@@ -296,15 +313,19 @@
                 
             </div>
             <div class="maze-details">
-                <div class="maze-title">forkless</div>
-                <div class="maze-description">Grid size: 5x5</div>
+                <div class="maze-title">forkless-g5-n10-a_dfs-h97534</div>
                 <div class="maze-tags">
                     <span class="maze-tag">dfs</span>
                     <span class="maze-tag">no_forks</span>
                     <span class="maze-tag">simple_path</span>
                 </div>
-                <button class="config-toggle">Show Configuration</button>
-                <div class="config-code"></div>
+                <div class="button-group">
+                    <button class="button show-constructor-btn">Show Constructor</button>
+                    <button class="button copy-constructor-btn">Copy Constructor</button>
+                    <button class="button show-json-btn">Show Config JSON</button>
+                    <button class="button copy-json-btn">Copy Config JSON</button>
+                </div>
+                <div class="config-code constructor-code"></div>
             </div>
         </div>
         <div class="maze-card" 
@@ -345,14 +366,18 @@
                 
             </div>
             <div class="maze-details">
-                <div class="maze-title">basic</div>
-                <div class="maze-description">Grid size: 5x5</div>
+                <div class="maze-title">basic-g5-n10-a_wilson-h32576</div>
                 <div class="maze-tags">
                     <span class="maze-tag">wilson</span>
                     <span class="maze-tag">uniform_random</span>
                 </div>
-                <button class="config-toggle">Show Configuration</button>
-                <div class="config-code"></div>
+                <div class="button-group">
+                    <button class="button show-constructor-btn">Show Constructor</button>
+                    <button class="button copy-constructor-btn">Copy Constructor</button>
+                    <button class="button show-json-btn">Show Config JSON</button>
+                    <button class="button copy-json-btn">Copy Config JSON</button>
+                </div>
+                <div class="config-code constructor-code"></div>
             </div>
         </div>
         <div class="maze-card" 
@@ -393,14 +418,18 @@
                 
             </div>
             <div class="maze-details">
-                <div class="maze-title">p0.3</div>
-                <div class="maze-description">Grid size: 5x5</div>
+                <div class="maze-title">p0.3-g5-n12-a_percolation-h58892</div>
                 <div class="maze-tags">
                     <span class="maze-tag">percolation</span>
                     <span class="maze-tag">p=0.3</span>
                 </div>
-                <button class="config-toggle">Show Configuration</button>
-                <div class="config-code"></div>
+                <div class="button-group">
+                    <button class="button show-constructor-btn">Show Constructor</button>
+                    <button class="button copy-constructor-btn">Copy Constructor</button>
+                    <button class="button show-json-btn">Show Config JSON</button>
+                    <button class="button copy-json-btn">Copy Config JSON</button>
+                </div>
+                <div class="config-code constructor-code"></div>
             </div>
         </div>
         <div class="maze-card" 
@@ -441,15 +470,19 @@
                 
             </div>
             <div class="maze-details">
-                <div class="maze-title">p0.3</div>
-                <div class="maze-description">Grid size: 5x5</div>
+                <div class="maze-title">p0.3-g5-n10-a_dfs_percolation-h40286</div>
                 <div class="maze-tags">
                     <span class="maze-tag">dfs</span>
                     <span class="maze-tag">percolation</span>
                     <span class="maze-tag">p=0.3</span>
                 </div>
-                <button class="config-toggle">Show Configuration</button>
-                <div class="config-code"></div>
+                <div class="button-group">
+                    <button class="button show-constructor-btn">Show Constructor</button>
+                    <button class="button copy-constructor-btn">Copy Constructor</button>
+                    <button class="button show-json-btn">Show Config JSON</button>
+                    <button class="button copy-json-btn">Copy Config JSON</button>
+                </div>
+                <div class="config-code constructor-code"></div>
             </div>
         </div>
         <div class="maze-card" 
@@ -490,14 +523,18 @@
                 
             </div>
             <div class="maze-details">
-                <div class="maze-title">p0.5</div>
-                <div class="maze-description">Grid size: 5x5</div>
+                <div class="maze-title">p0.5-g5-n10-a_percolation-h39662</div>
                 <div class="maze-tags">
                     <span class="maze-tag">percolation</span>
                     <span class="maze-tag">p=0.5</span>
                 </div>
-                <button class="config-toggle">Show Configuration</button>
-                <div class="config-code"></div>
+                <div class="button-group">
+                    <button class="button show-constructor-btn">Show Constructor</button>
+                    <button class="button copy-constructor-btn">Copy Constructor</button>
+                    <button class="button show-json-btn">Show Config JSON</button>
+                    <button class="button copy-json-btn">Copy Config JSON</button>
+                </div>
+                <div class="config-code constructor-code"></div>
             </div>
         </div>
         <div class="maze-card" 
@@ -538,15 +575,19 @@
                 
             </div>
             <div class="maze-details">
-                <div class="maze-title">p0.5</div>
-                <div class="maze-description">Grid size: 5x5</div>
+                <div class="maze-title">p0.5-g5-n10-a_dfs_percolation-h46217</div>
                 <div class="maze-tags">
                     <span class="maze-tag">dfs</span>
                     <span class="maze-tag">percolation</span>
                     <span class="maze-tag">p=0.5</span>
                 </div>
-                <button class="config-toggle">Show Configuration</button>
-                <div class="config-code"></div>
+                <div class="button-group">
+                    <button class="button show-constructor-btn">Show Constructor</button>
+                    <button class="button copy-constructor-btn">Copy Constructor</button>
+                    <button class="button show-json-btn">Show Config JSON</button>
+                    <button class="button copy-json-btn">Copy Config JSON</button>
+                </div>
+                <div class="config-code constructor-code"></div>
             </div>
         </div>
         <div class="maze-card" 
@@ -587,14 +628,18 @@
                 
             </div>
             <div class="maze-details">
-                <div class="maze-title">p0.7</div>
-                <div class="maze-description">Grid size: 5x5</div>
+                <div class="maze-title">p0.7-g5-n10-a_percolation-h64356</div>
                 <div class="maze-tags">
                     <span class="maze-tag">percolation</span>
                     <span class="maze-tag">p=0.7</span>
                 </div>
-                <button class="config-toggle">Show Configuration</button>
-                <div class="config-code"></div>
+                <div class="button-group">
+                    <button class="button show-constructor-btn">Show Constructor</button>
+                    <button class="button copy-constructor-btn">Copy Constructor</button>
+                    <button class="button show-json-btn">Show Config JSON</button>
+                    <button class="button copy-json-btn">Copy Config JSON</button>
+                </div>
+                <div class="config-code constructor-code"></div>
             </div>
         </div>
         <div class="maze-card" 
@@ -635,15 +680,19 @@
                 
             </div>
             <div class="maze-details">
-                <div class="maze-title">p0.7</div>
-                <div class="maze-description">Grid size: 5x5</div>
+                <div class="maze-title">p0.7-g5-n10-a_dfs_percolation-h17557</div>
                 <div class="maze-tags">
                     <span class="maze-tag">dfs</span>
                     <span class="maze-tag">percolation</span>
                     <span class="maze-tag">p=0.7</span>
                 </div>
-                <button class="config-toggle">Show Configuration</button>
-                <div class="config-code"></div>
+                <div class="button-group">
+                    <button class="button show-constructor-btn">Show Constructor</button>
+                    <button class="button copy-constructor-btn">Copy Constructor</button>
+                    <button class="button show-json-btn">Show Config JSON</button>
+                    <button class="button copy-json-btn">Copy Config JSON</button>
+                </div>
+                <div class="config-code constructor-code"></div>
             </div>
         </div>
         <div class="maze-card" 
@@ -684,14 +733,18 @@
                 
             </div>
             <div class="maze-details">
-                <div class="maze-title">basic</div>
-                <div class="maze-description">Grid size: 8x8</div>
+                <div class="maze-title">basic-g8-n10-a_dfs-h29050</div>
                 <div class="maze-tags">
                     <span class="maze-tag">dfs</span>
                     <span class="maze-tag">basic</span>
                 </div>
-                <button class="config-toggle">Show Configuration</button>
-                <div class="config-code"></div>
+                <div class="button-group">
+                    <button class="button show-constructor-btn">Show Constructor</button>
+                    <button class="button copy-constructor-btn">Copy Constructor</button>
+                    <button class="button show-json-btn">Show Config JSON</button>
+                    <button class="button copy-json-btn">Copy Config JSON</button>
+                </div>
+                <div class="config-code constructor-code"></div>
             </div>
         </div>
         <div class="maze-card" 
@@ -732,15 +785,19 @@
                 
             </div>
             <div class="maze-details">
-                <div class="maze-title">forkless</div>
-                <div class="maze-description">Grid size: 8x8</div>
+                <div class="maze-title">forkless-g8-n10-a_dfs-h61692</div>
                 <div class="maze-tags">
                     <span class="maze-tag">dfs</span>
                     <span class="maze-tag">no_forks</span>
                     <span class="maze-tag">simple_path</span>
                 </div>
-                <button class="config-toggle">Show Configuration</button>
-                <div class="config-code"></div>
+                <div class="button-group">
+                    <button class="button show-constructor-btn">Show Constructor</button>
+                    <button class="button copy-constructor-btn">Copy Constructor</button>
+                    <button class="button show-json-btn">Show Config JSON</button>
+                    <button class="button copy-json-btn">Copy Config JSON</button>
+                </div>
+                <div class="config-code constructor-code"></div>
             </div>
         </div>
         <div class="maze-card" 
@@ -781,14 +838,18 @@
                 
             </div>
             <div class="maze-details">
-                <div class="maze-title">basic</div>
-                <div class="maze-description">Grid size: 8x8</div>
+                <div class="maze-title">basic-g8-n10-a_wilson-h27146</div>
                 <div class="maze-tags">
                     <span class="maze-tag">wilson</span>
                     <span class="maze-tag">uniform_random</span>
                 </div>
-                <button class="config-toggle">Show Configuration</button>
-                <div class="config-code"></div>
+                <div class="button-group">
+                    <button class="button show-constructor-btn">Show Constructor</button>
+                    <button class="button copy-constructor-btn">Copy Constructor</button>
+                    <button class="button show-json-btn">Show Config JSON</button>
+                    <button class="button copy-json-btn">Copy Config JSON</button>
+                </div>
+                <div class="config-code constructor-code"></div>
             </div>
         </div>
         <div class="maze-card" 
@@ -829,14 +890,18 @@
                 
             </div>
             <div class="maze-details">
-                <div class="maze-title">p0.3</div>
-                <div class="maze-description">Grid size: 8x8</div>
+                <div class="maze-title">p0.3-g8-n12-a_percolation-h67259</div>
                 <div class="maze-tags">
                     <span class="maze-tag">percolation</span>
                     <span class="maze-tag">p=0.3</span>
                 </div>
-                <button class="config-toggle">Show Configuration</button>
-                <div class="config-code"></div>
+                <div class="button-group">
+                    <button class="button show-constructor-btn">Show Constructor</button>
+                    <button class="button copy-constructor-btn">Copy Constructor</button>
+                    <button class="button show-json-btn">Show Config JSON</button>
+                    <button class="button copy-json-btn">Copy Config JSON</button>
+                </div>
+                <div class="config-code constructor-code"></div>
             </div>
         </div>
         <div class="maze-card" 
@@ -877,15 +942,19 @@
                 
             </div>
             <div class="maze-details">
-                <div class="maze-title">p0.3</div>
-                <div class="maze-description">Grid size: 8x8</div>
+                <div class="maze-title">p0.3-g8-n10-a_dfs_percolation-h31742</div>
                 <div class="maze-tags">
                     <span class="maze-tag">dfs</span>
                     <span class="maze-tag">percolation</span>
                     <span class="maze-tag">p=0.3</span>
                 </div>
-                <button class="config-toggle">Show Configuration</button>
-                <div class="config-code"></div>
+                <div class="button-group">
+                    <button class="button show-constructor-btn">Show Constructor</button>
+                    <button class="button copy-constructor-btn">Copy Constructor</button>
+                    <button class="button show-json-btn">Show Config JSON</button>
+                    <button class="button copy-json-btn">Copy Config JSON</button>
+                </div>
+                <div class="config-code constructor-code"></div>
             </div>
         </div>
         <div class="maze-card" 
@@ -926,14 +995,18 @@
                 
             </div>
             <div class="maze-details">
-                <div class="maze-title">p0.5</div>
-                <div class="maze-description">Grid size: 8x8</div>
+                <div class="maze-title">p0.5-g8-n10-a_percolation-h36186</div>
                 <div class="maze-tags">
                     <span class="maze-tag">percolation</span>
                     <span class="maze-tag">p=0.5</span>
                 </div>
-                <button class="config-toggle">Show Configuration</button>
-                <div class="config-code"></div>
+                <div class="button-group">
+                    <button class="button show-constructor-btn">Show Constructor</button>
+                    <button class="button copy-constructor-btn">Copy Constructor</button>
+                    <button class="button show-json-btn">Show Config JSON</button>
+                    <button class="button copy-json-btn">Copy Config JSON</button>
+                </div>
+                <div class="config-code constructor-code"></div>
             </div>
         </div>
         <div class="maze-card" 
@@ -974,15 +1047,19 @@
                 
             </div>
             <div class="maze-details">
-                <div class="maze-title">p0.5</div>
-                <div class="maze-description">Grid size: 8x8</div>
+                <div class="maze-title">p0.5-g8-n10-a_dfs_percolation-h70582</div>
                 <div class="maze-tags">
                     <span class="maze-tag">dfs</span>
                     <span class="maze-tag">percolation</span>
                     <span class="maze-tag">p=0.5</span>
                 </div>
-                <button class="config-toggle">Show Configuration</button>
-                <div class="config-code"></div>
+                <div class="button-group">
+                    <button class="button show-constructor-btn">Show Constructor</button>
+                    <button class="button copy-constructor-btn">Copy Constructor</button>
+                    <button class="button show-json-btn">Show Config JSON</button>
+                    <button class="button copy-json-btn">Copy Config JSON</button>
+                </div>
+                <div class="config-code constructor-code"></div>
             </div>
         </div>
         <div class="maze-card" 
@@ -1023,14 +1100,18 @@
                 
             </div>
             <div class="maze-details">
-                <div class="maze-title">p0.7</div>
-                <div class="maze-description">Grid size: 8x8</div>
+                <div class="maze-title">p0.7-g8-n10-a_percolation-h84837</div>
                 <div class="maze-tags">
                     <span class="maze-tag">percolation</span>
                     <span class="maze-tag">p=0.7</span>
                 </div>
-                <button class="config-toggle">Show Configuration</button>
-                <div class="config-code"></div>
+                <div class="button-group">
+                    <button class="button show-constructor-btn">Show Constructor</button>
+                    <button class="button copy-constructor-btn">Copy Constructor</button>
+                    <button class="button show-json-btn">Show Config JSON</button>
+                    <button class="button copy-json-btn">Copy Config JSON</button>
+                </div>
+                <div class="config-code constructor-code"></div>
             </div>
         </div>
         <div class="maze-card" 
@@ -1071,15 +1152,19 @@
                 
             </div>
             <div class="maze-details">
-                <div class="maze-title">p0.7</div>
-                <div class="maze-description">Grid size: 8x8</div>
+                <div class="maze-title">p0.7-g8-n10-a_dfs_percolation-h13842</div>
                 <div class="maze-tags">
                     <span class="maze-tag">dfs</span>
                     <span class="maze-tag">percolation</span>
                     <span class="maze-tag">p=0.7</span>
                 </div>
-                <button class="config-toggle">Show Configuration</button>
-                <div class="config-code"></div>
+                <div class="button-group">
+                    <button class="button show-constructor-btn">Show Constructor</button>
+                    <button class="button copy-constructor-btn">Copy Constructor</button>
+                    <button class="button show-json-btn">Show Config JSON</button>
+                    <button class="button copy-json-btn">Copy Config JSON</button>
+                </div>
+                <div class="config-code constructor-code"></div>
             </div>
         </div>
         <div class="maze-card" 
@@ -1120,14 +1205,18 @@
                 
             </div>
             <div class="maze-details">
-                <div class="maze-title">basic</div>
-                <div class="maze-description">Grid size: 12x12</div>
+                <div class="maze-title">basic-g12-n10-a_dfs-h61706</div>
                 <div class="maze-tags">
                     <span class="maze-tag">dfs</span>
                     <span class="maze-tag">basic</span>
                 </div>
-                <button class="config-toggle">Show Configuration</button>
-                <div class="config-code"></div>
+                <div class="button-group">
+                    <button class="button show-constructor-btn">Show Constructor</button>
+                    <button class="button copy-constructor-btn">Copy Constructor</button>
+                    <button class="button show-json-btn">Show Config JSON</button>
+                    <button class="button copy-json-btn">Copy Config JSON</button>
+                </div>
+                <div class="config-code constructor-code"></div>
             </div>
         </div>
         <div class="maze-card" 
@@ -1168,15 +1257,19 @@
                 
             </div>
             <div class="maze-details">
-                <div class="maze-title">forkless</div>
-                <div class="maze-description">Grid size: 12x12</div>
+                <div class="maze-title">forkless-g12-n10-a_dfs-h95251</div>
                 <div class="maze-tags">
                     <span class="maze-tag">dfs</span>
                     <span class="maze-tag">no_forks</span>
                     <span class="maze-tag">simple_path</span>
                 </div>
-                <button class="config-toggle">Show Configuration</button>
-                <div class="config-code"></div>
+                <div class="button-group">
+                    <button class="button show-constructor-btn">Show Constructor</button>
+                    <button class="button copy-constructor-btn">Copy Constructor</button>
+                    <button class="button show-json-btn">Show Config JSON</button>
+                    <button class="button copy-json-btn">Copy Config JSON</button>
+                </div>
+                <div class="config-code constructor-code"></div>
             </div>
         </div>
         <div class="maze-card" 
@@ -1217,14 +1310,18 @@
                 
             </div>
             <div class="maze-details">
-                <div class="maze-title">basic</div>
-                <div class="maze-description">Grid size: 12x12</div>
+                <div class="maze-title">basic-g12-n10-a_wilson-h87798</div>
                 <div class="maze-tags">
                     <span class="maze-tag">wilson</span>
                     <span class="maze-tag">uniform_random</span>
                 </div>
-                <button class="config-toggle">Show Configuration</button>
-                <div class="config-code"></div>
+                <div class="button-group">
+                    <button class="button show-constructor-btn">Show Constructor</button>
+                    <button class="button copy-constructor-btn">Copy Constructor</button>
+                    <button class="button show-json-btn">Show Config JSON</button>
+                    <button class="button copy-json-btn">Copy Config JSON</button>
+                </div>
+                <div class="config-code constructor-code"></div>
             </div>
         </div>
         <div class="maze-card" 
@@ -1265,14 +1362,18 @@
                 
             </div>
             <div class="maze-details">
-                <div class="maze-title">p0.3</div>
-                <div class="maze-description">Grid size: 12x12</div>
+                <div class="maze-title">p0.3-g12-n12-a_percolation-h67733</div>
                 <div class="maze-tags">
                     <span class="maze-tag">percolation</span>
                     <span class="maze-tag">p=0.3</span>
                 </div>
-                <button class="config-toggle">Show Configuration</button>
-                <div class="config-code"></div>
+                <div class="button-group">
+                    <button class="button show-constructor-btn">Show Constructor</button>
+                    <button class="button copy-constructor-btn">Copy Constructor</button>
+                    <button class="button show-json-btn">Show Config JSON</button>
+                    <button class="button copy-json-btn">Copy Config JSON</button>
+                </div>
+                <div class="config-code constructor-code"></div>
             </div>
         </div>
         <div class="maze-card" 
@@ -1313,15 +1414,19 @@
                 
             </div>
             <div class="maze-details">
-                <div class="maze-title">p0.3</div>
-                <div class="maze-description">Grid size: 12x12</div>
+                <div class="maze-title">p0.3-g12-n10-a_dfs_percolation-h2807</div>
                 <div class="maze-tags">
                     <span class="maze-tag">dfs</span>
                     <span class="maze-tag">percolation</span>
                     <span class="maze-tag">p=0.3</span>
                 </div>
-                <button class="config-toggle">Show Configuration</button>
-                <div class="config-code"></div>
+                <div class="button-group">
+                    <button class="button show-constructor-btn">Show Constructor</button>
+                    <button class="button copy-constructor-btn">Copy Constructor</button>
+                    <button class="button show-json-btn">Show Config JSON</button>
+                    <button class="button copy-json-btn">Copy Config JSON</button>
+                </div>
+                <div class="config-code constructor-code"></div>
             </div>
         </div>
         <div class="maze-card" 
@@ -1362,14 +1467,18 @@
                 
             </div>
             <div class="maze-details">
-                <div class="maze-title">p0.5</div>
-                <div class="maze-description">Grid size: 12x12</div>
+                <div class="maze-title">p0.5-g12-n10-a_percolation-h82864</div>
                 <div class="maze-tags">
                     <span class="maze-tag">percolation</span>
                     <span class="maze-tag">p=0.5</span>
                 </div>
-                <button class="config-toggle">Show Configuration</button>
-                <div class="config-code"></div>
+                <div class="button-group">
+                    <button class="button show-constructor-btn">Show Constructor</button>
+                    <button class="button copy-constructor-btn">Copy Constructor</button>
+                    <button class="button show-json-btn">Show Config JSON</button>
+                    <button class="button copy-json-btn">Copy Config JSON</button>
+                </div>
+                <div class="config-code constructor-code"></div>
             </div>
         </div>
         <div class="maze-card" 
@@ -1410,15 +1519,19 @@
                 
             </div>
             <div class="maze-details">
-                <div class="maze-title">p0.5</div>
-                <div class="maze-description">Grid size: 12x12</div>
+                <div class="maze-title">p0.5-g12-n10-a_dfs_percolation-h1870</div>
                 <div class="maze-tags">
                     <span class="maze-tag">dfs</span>
                     <span class="maze-tag">percolation</span>
                     <span class="maze-tag">p=0.5</span>
                 </div>
-                <button class="config-toggle">Show Configuration</button>
-                <div class="config-code"></div>
+                <div class="button-group">
+                    <button class="button show-constructor-btn">Show Constructor</button>
+                    <button class="button copy-constructor-btn">Copy Constructor</button>
+                    <button class="button show-json-btn">Show Config JSON</button>
+                    <button class="button copy-json-btn">Copy Config JSON</button>
+                </div>
+                <div class="config-code constructor-code"></div>
             </div>
         </div>
         <div class="maze-card" 
@@ -1459,14 +1572,18 @@
                 
             </div>
             <div class="maze-details">
-                <div class="maze-title">p0.7</div>
-                <div class="maze-description">Grid size: 12x12</div>
+                <div class="maze-title">p0.7-g12-n10-a_percolation-h56477</div>
                 <div class="maze-tags">
                     <span class="maze-tag">percolation</span>
                     <span class="maze-tag">p=0.7</span>
                 </div>
-                <button class="config-toggle">Show Configuration</button>
-                <div class="config-code"></div>
+                <div class="button-group">
+                    <button class="button show-constructor-btn">Show Constructor</button>
+                    <button class="button copy-constructor-btn">Copy Constructor</button>
+                    <button class="button show-json-btn">Show Config JSON</button>
+                    <button class="button copy-json-btn">Copy Config JSON</button>
+                </div>
+                <div class="config-code constructor-code"></div>
             </div>
         </div>
         <div class="maze-card" 
@@ -1507,15 +1624,19 @@
                 
             </div>
             <div class="maze-details">
-                <div class="maze-title">p0.7</div>
-                <div class="maze-description">Grid size: 12x12</div>
+                <div class="maze-title">p0.7-g12-n10-a_dfs_percolation-h13964</div>
                 <div class="maze-tags">
                     <span class="maze-tag">dfs</span>
                     <span class="maze-tag">percolation</span>
                     <span class="maze-tag">p=0.7</span>
                 </div>
-                <button class="config-toggle">Show Configuration</button>
-                <div class="config-code"></div>
+                <div class="button-group">
+                    <button class="button show-constructor-btn">Show Constructor</button>
+                    <button class="button copy-constructor-btn">Copy Constructor</button>
+                    <button class="button show-json-btn">Show Config JSON</button>
+                    <button class="button copy-json-btn">Copy Config JSON</button>
+                </div>
+                <div class="config-code constructor-code"></div>
             </div>
         </div>
         <div class="maze-card" 
@@ -1556,14 +1677,18 @@
                 
             </div>
             <div class="maze-details">
-                <div class="maze-title">accessible_cells</div>
-                <div class="maze-description">Grid size: 10x10</div>
+                <div class="maze-title">accessible_cells-g10-n10-a_dfs-h59176</div>
                 <div class="maze-tags">
                     <span class="maze-tag">dfs</span>
                     <span class="maze-tag">limited_cells</span>
                 </div>
-                <button class="config-toggle">Show Configuration</button>
-                <div class="config-code"></div>
+                <div class="button-group">
+                    <button class="button show-constructor-btn">Show Constructor</button>
+                    <button class="button copy-constructor-btn">Copy Constructor</button>
+                    <button class="button show-json-btn">Show Config JSON</button>
+                    <button class="button copy-json-btn">Copy Config JSON</button>
+                </div>
+                <div class="config-code constructor-code"></div>
             </div>
         </div>
         <div class="maze-card" 
@@ -1604,15 +1729,19 @@
                 
             </div>
             <div class="maze-details">
-                <div class="maze-title">accessible_cells_ratio</div>
-                <div class="maze-description">Grid size: 10x10</div>
+                <div class="maze-title">accessible_cells_ratio-g10-n10-a_dfs-h74681</div>
                 <div class="maze-tags">
                     <span class="maze-tag">dfs</span>
                     <span class="maze-tag">limited_cells</span>
                     <span class="maze-tag">ratio</span>
                 </div>
-                <button class="config-toggle">Show Configuration</button>
-                <div class="config-code"></div>
+                <div class="button-group">
+                    <button class="button show-constructor-btn">Show Constructor</button>
+                    <button class="button copy-constructor-btn">Copy Constructor</button>
+                    <button class="button show-json-btn">Show Config JSON</button>
+                    <button class="button copy-json-btn">Copy Config JSON</button>
+                </div>
+                <div class="config-code constructor-code"></div>
             </div>
         </div>
         <div class="maze-card" 
@@ -1653,14 +1782,18 @@
                 
             </div>
             <div class="maze-details">
-                <div class="maze-title">max_tree_depth</div>
-                <div class="maze-description">Grid size: 10x10</div>
+                <div class="maze-title">max_tree_depth-g10-n10-a_dfs-h63619</div>
                 <div class="maze-tags">
                     <span class="maze-tag">dfs</span>
                     <span class="maze-tag">limited_depth</span>
                 </div>
-                <button class="config-toggle">Show Configuration</button>
-                <div class="config-code"></div>
+                <div class="button-group">
+                    <button class="button show-constructor-btn">Show Constructor</button>
+                    <button class="button copy-constructor-btn">Copy Constructor</button>
+                    <button class="button show-json-btn">Show Config JSON</button>
+                    <button class="button copy-json-btn">Copy Config JSON</button>
+                </div>
+                <div class="config-code constructor-code"></div>
             </div>
         </div>
         <div class="maze-card" 
@@ -1701,15 +1834,19 @@
                 
             </div>
             <div class="maze-details">
-                <div class="maze-title">max_tree_depth_ratio</div>
-                <div class="maze-description">Grid size: 10x10</div>
+                <div class="maze-title">max_tree_depth_ratio-g10-n10-a_dfs-h82665</div>
                 <div class="maze-tags">
                     <span class="maze-tag">dfs</span>
                     <span class="maze-tag">limited_depth</span>
                     <span class="maze-tag">ratio</span>
                 </div>
-                <button class="config-toggle">Show Configuration</button>
-                <div class="config-code"></div>
+                <div class="button-group">
+                    <button class="button show-constructor-btn">Show Constructor</button>
+                    <button class="button copy-constructor-btn">Copy Constructor</button>
+                    <button class="button show-json-btn">Show Config JSON</button>
+                    <button class="button copy-json-btn">Copy Config JSON</button>
+                </div>
+                <div class="config-code constructor-code"></div>
             </div>
         </div>
         <div class="maze-card" 
@@ -1750,14 +1887,18 @@
                 
             </div>
             <div class="maze-details">
-                <div class="maze-title">start_coord</div>
-                <div class="maze-description">Grid size: 10x10</div>
+                <div class="maze-title">start_coord-g10-n10-a_dfs-h9478</div>
                 <div class="maze-tags">
                     <span class="maze-tag">dfs</span>
                     <span class="maze-tag">custom_start</span>
                 </div>
-                <button class="config-toggle">Show Configuration</button>
-                <div class="config-code"></div>
+                <div class="button-group">
+                    <button class="button show-constructor-btn">Show Constructor</button>
+                    <button class="button copy-constructor-btn">Copy Constructor</button>
+                    <button class="button show-json-btn">Show Config JSON</button>
+                    <button class="button copy-json-btn">Copy Config JSON</button>
+                </div>
+                <div class="config-code constructor-code"></div>
             </div>
         </div>
         <div class="maze-card" 
@@ -1798,158 +1939,174 @@
                 
             </div>
             <div class="maze-details">
-                <div class="maze-title">combined_constraints</div>
-                <div class="maze-description">Grid size: 15x15</div>
+                <div class="maze-title">combined_constraints-g15-n10-a_dfs-h57467</div>
                 <div class="maze-tags">
                     <span class="maze-tag">dfs</span>
                     <span class="maze-tag">combined_constraints</span>
                 </div>
-                <button class="config-toggle">Show Configuration</button>
-                <div class="config-code"></div>
+                <div class="button-group">
+                    <button class="button show-constructor-btn">Show Constructor</button>
+                    <button class="button copy-constructor-btn">Copy Constructor</button>
+                    <button class="button show-json-btn">Show Config JSON</button>
+                    <button class="button copy-json-btn">Copy Config JSON</button>
+                </div>
+                <div class="config-code constructor-code"></div>
             </div>
         </div>
         <div class="maze-card" 
-             data-name="deadend_startTrue_endFalse" 
+             data-name="deadend_s1_e0" 
              data-grid-n="8" 
              data-maze-ctor="gen_dfs" 
              data-tags="dfs,deadend_endpoints" 
-             data-fname="deadend_startTrue_endFalse-g8-n10-a_dfs-h93143"
-             data-config-path="plots/deadend_startTrue_endFalse-g8-n10-a_dfs-h93143/metadata.json">
+             data-fname="deadend_s1_e0-g8-n10-a_dfs-h15706"
+             data-config-path="plots/deadend_s1_e0-g8-n10-a_dfs-h15706/metadata.json">
             <div class="maze-image">
-                <img src="plots/deadend_startTrue_endFalse-g8-n10-a_dfs-h93143/plot-0.svg" alt="deadend_startTrue_endFalse" class="main-image">
+                <img src="plots/deadend_s1_e0-g8-n10-a_dfs-h15706/plot-0.svg" alt="deadend_s1_e0" class="main-image">
             </div>
             <div class="maze-carousel">
                 
                 <div class="maze-thumbnail active" data-index="0">
-                    <img src="plots/deadend_startTrue_endFalse-g8-n10-a_dfs-h93143/plot-0.svg" alt="Example 0" loading="lazy">
+                    <img src="plots/deadend_s1_e0-g8-n10-a_dfs-h15706/plot-0.svg" alt="Example 0" loading="lazy">
                 </div>
                 
                 <div class="maze-thumbnail " data-index="1">
-                    <img src="plots/deadend_startTrue_endFalse-g8-n10-a_dfs-h93143/plot-1.svg" alt="Example 1" loading="lazy">
+                    <img src="plots/deadend_s1_e0-g8-n10-a_dfs-h15706/plot-1.svg" alt="Example 1" loading="lazy">
                 </div>
                 
                 <div class="maze-thumbnail " data-index="2">
-                    <img src="plots/deadend_startTrue_endFalse-g8-n10-a_dfs-h93143/plot-2.svg" alt="Example 2" loading="lazy">
+                    <img src="plots/deadend_s1_e0-g8-n10-a_dfs-h15706/plot-2.svg" alt="Example 2" loading="lazy">
                 </div>
                 
                 <div class="maze-thumbnail " data-index="3">
-                    <img src="plots/deadend_startTrue_endFalse-g8-n10-a_dfs-h93143/plot-3.svg" alt="Example 3" loading="lazy">
+                    <img src="plots/deadend_s1_e0-g8-n10-a_dfs-h15706/plot-3.svg" alt="Example 3" loading="lazy">
                 </div>
                 
                 <div class="maze-thumbnail " data-index="4">
-                    <img src="plots/deadend_startTrue_endFalse-g8-n10-a_dfs-h93143/plot-4.svg" alt="Example 4" loading="lazy">
+                    <img src="plots/deadend_s1_e0-g8-n10-a_dfs-h15706/plot-4.svg" alt="Example 4" loading="lazy">
                 </div>
                 
                 <div class="maze-thumbnail " data-index="5">
-                    <img src="plots/deadend_startTrue_endFalse-g8-n10-a_dfs-h93143/plot-5.svg" alt="Example 5" loading="lazy">
+                    <img src="plots/deadend_s1_e0-g8-n10-a_dfs-h15706/plot-5.svg" alt="Example 5" loading="lazy">
                 </div>
                 
             </div>
             <div class="maze-details">
-                <div class="maze-title">deadend_startTrue_endFalse</div>
-                <div class="maze-description">Grid size: 8x8</div>
+                <div class="maze-title">deadend_s1_e0-g8-n10-a_dfs-h15706</div>
                 <div class="maze-tags">
                     <span class="maze-tag">dfs</span>
                     <span class="maze-tag">deadend_endpoints</span>
                 </div>
-                <button class="config-toggle">Show Configuration</button>
-                <div class="config-code"></div>
+                <div class="button-group">
+                    <button class="button show-constructor-btn">Show Constructor</button>
+                    <button class="button copy-constructor-btn">Copy Constructor</button>
+                    <button class="button show-json-btn">Show Config JSON</button>
+                    <button class="button copy-json-btn">Copy Config JSON</button>
+                </div>
+                <div class="config-code constructor-code"></div>
             </div>
         </div>
         <div class="maze-card" 
-             data-name="deadend_startFalse_endTrue" 
+             data-name="deadend_s0_e1" 
              data-grid-n="8" 
              data-maze-ctor="gen_dfs" 
              data-tags="dfs,deadend_endpoints" 
-             data-fname="deadend_startFalse_endTrue-g8-n10-a_dfs-h48449"
-             data-config-path="plots/deadend_startFalse_endTrue-g8-n10-a_dfs-h48449/metadata.json">
+             data-fname="deadend_s0_e1-g8-n10-a_dfs-h352"
+             data-config-path="plots/deadend_s0_e1-g8-n10-a_dfs-h352/metadata.json">
             <div class="maze-image">
-                <img src="plots/deadend_startFalse_endTrue-g8-n10-a_dfs-h48449/plot-0.svg" alt="deadend_startFalse_endTrue" class="main-image">
+                <img src="plots/deadend_s0_e1-g8-n10-a_dfs-h352/plot-0.svg" alt="deadend_s0_e1" class="main-image">
             </div>
             <div class="maze-carousel">
                 
                 <div class="maze-thumbnail active" data-index="0">
-                    <img src="plots/deadend_startFalse_endTrue-g8-n10-a_dfs-h48449/plot-0.svg" alt="Example 0" loading="lazy">
+                    <img src="plots/deadend_s0_e1-g8-n10-a_dfs-h352/plot-0.svg" alt="Example 0" loading="lazy">
                 </div>
                 
                 <div class="maze-thumbnail " data-index="1">
-                    <img src="plots/deadend_startFalse_endTrue-g8-n10-a_dfs-h48449/plot-1.svg" alt="Example 1" loading="lazy">
+                    <img src="plots/deadend_s0_e1-g8-n10-a_dfs-h352/plot-1.svg" alt="Example 1" loading="lazy">
                 </div>
                 
                 <div class="maze-thumbnail " data-index="2">
-                    <img src="plots/deadend_startFalse_endTrue-g8-n10-a_dfs-h48449/plot-2.svg" alt="Example 2" loading="lazy">
+                    <img src="plots/deadend_s0_e1-g8-n10-a_dfs-h352/plot-2.svg" alt="Example 2" loading="lazy">
                 </div>
                 
                 <div class="maze-thumbnail " data-index="3">
-                    <img src="plots/deadend_startFalse_endTrue-g8-n10-a_dfs-h48449/plot-3.svg" alt="Example 3" loading="lazy">
+                    <img src="plots/deadend_s0_e1-g8-n10-a_dfs-h352/plot-3.svg" alt="Example 3" loading="lazy">
                 </div>
                 
                 <div class="maze-thumbnail " data-index="4">
-                    <img src="plots/deadend_startFalse_endTrue-g8-n10-a_dfs-h48449/plot-4.svg" alt="Example 4" loading="lazy">
+                    <img src="plots/deadend_s0_e1-g8-n10-a_dfs-h352/plot-4.svg" alt="Example 4" loading="lazy">
                 </div>
                 
                 <div class="maze-thumbnail " data-index="5">
-                    <img src="plots/deadend_startFalse_endTrue-g8-n10-a_dfs-h48449/plot-5.svg" alt="Example 5" loading="lazy">
+                    <img src="plots/deadend_s0_e1-g8-n10-a_dfs-h352/plot-5.svg" alt="Example 5" loading="lazy">
                 </div>
                 
             </div>
             <div class="maze-details">
-                <div class="maze-title">deadend_startFalse_endTrue</div>
-                <div class="maze-description">Grid size: 8x8</div>
+                <div class="maze-title">deadend_s0_e1-g8-n10-a_dfs-h352</div>
                 <div class="maze-tags">
                     <span class="maze-tag">dfs</span>
                     <span class="maze-tag">deadend_endpoints</span>
                 </div>
-                <button class="config-toggle">Show Configuration</button>
-                <div class="config-code"></div>
+                <div class="button-group">
+                    <button class="button show-constructor-btn">Show Constructor</button>
+                    <button class="button copy-constructor-btn">Copy Constructor</button>
+                    <button class="button show-json-btn">Show Config JSON</button>
+                    <button class="button copy-json-btn">Copy Config JSON</button>
+                </div>
+                <div class="config-code constructor-code"></div>
             </div>
         </div>
         <div class="maze-card" 
-             data-name="deadend_startTrue_endTrue" 
+             data-name="deadend_s1_e1" 
              data-grid-n="8" 
              data-maze-ctor="gen_dfs" 
              data-tags="dfs,deadend_endpoints" 
-             data-fname="deadend_startTrue_endTrue-g8-n10-a_dfs-h19427"
-             data-config-path="plots/deadend_startTrue_endTrue-g8-n10-a_dfs-h19427/metadata.json">
+             data-fname="deadend_s1_e1-g8-n10-a_dfs-h50370"
+             data-config-path="plots/deadend_s1_e1-g8-n10-a_dfs-h50370/metadata.json">
             <div class="maze-image">
-                <img src="plots/deadend_startTrue_endTrue-g8-n10-a_dfs-h19427/plot-0.svg" alt="deadend_startTrue_endTrue" class="main-image">
+                <img src="plots/deadend_s1_e1-g8-n10-a_dfs-h50370/plot-0.svg" alt="deadend_s1_e1" class="main-image">
             </div>
             <div class="maze-carousel">
                 
                 <div class="maze-thumbnail active" data-index="0">
-                    <img src="plots/deadend_startTrue_endTrue-g8-n10-a_dfs-h19427/plot-0.svg" alt="Example 0" loading="lazy">
+                    <img src="plots/deadend_s1_e1-g8-n10-a_dfs-h50370/plot-0.svg" alt="Example 0" loading="lazy">
                 </div>
                 
                 <div class="maze-thumbnail " data-index="1">
-                    <img src="plots/deadend_startTrue_endTrue-g8-n10-a_dfs-h19427/plot-1.svg" alt="Example 1" loading="lazy">
+                    <img src="plots/deadend_s1_e1-g8-n10-a_dfs-h50370/plot-1.svg" alt="Example 1" loading="lazy">
                 </div>
                 
                 <div class="maze-thumbnail " data-index="2">
-                    <img src="plots/deadend_startTrue_endTrue-g8-n10-a_dfs-h19427/plot-2.svg" alt="Example 2" loading="lazy">
+                    <img src="plots/deadend_s1_e1-g8-n10-a_dfs-h50370/plot-2.svg" alt="Example 2" loading="lazy">
                 </div>
                 
                 <div class="maze-thumbnail " data-index="3">
-                    <img src="plots/deadend_startTrue_endTrue-g8-n10-a_dfs-h19427/plot-3.svg" alt="Example 3" loading="lazy">
+                    <img src="plots/deadend_s1_e1-g8-n10-a_dfs-h50370/plot-3.svg" alt="Example 3" loading="lazy">
                 </div>
                 
                 <div class="maze-thumbnail " data-index="4">
-                    <img src="plots/deadend_startTrue_endTrue-g8-n10-a_dfs-h19427/plot-4.svg" alt="Example 4" loading="lazy">
+                    <img src="plots/deadend_s1_e1-g8-n10-a_dfs-h50370/plot-4.svg" alt="Example 4" loading="lazy">
                 </div>
                 
                 <div class="maze-thumbnail " data-index="5">
-                    <img src="plots/deadend_startTrue_endTrue-g8-n10-a_dfs-h19427/plot-5.svg" alt="Example 5" loading="lazy">
+                    <img src="plots/deadend_s1_e1-g8-n10-a_dfs-h50370/plot-5.svg" alt="Example 5" loading="lazy">
                 </div>
                 
             </div>
             <div class="maze-details">
-                <div class="maze-title">deadend_startTrue_endTrue</div>
-                <div class="maze-description">Grid size: 8x8</div>
+                <div class="maze-title">deadend_s1_e1-g8-n10-a_dfs-h50370</div>
                 <div class="maze-tags">
                     <span class="maze-tag">dfs</span>
                     <span class="maze-tag">deadend_endpoints</span>
                 </div>
-                <button class="config-toggle">Show Configuration</button>
-                <div class="config-code"></div>
+                <div class="button-group">
+                    <button class="button show-constructor-btn">Show Constructor</button>
+                    <button class="button copy-constructor-btn">Copy Constructor</button>
+                    <button class="button show-json-btn">Show Config JSON</button>
+                    <button class="button copy-json-btn">Copy Config JSON</button>
+                </div>
+                <div class="config-code constructor-code"></div>
             </div>
         </div>
         <div class="maze-card" 
@@ -1990,15 +2147,19 @@
                 
             </div>
             <div class="maze-details">
-                <div class="maze-title">deadends</div>
-                <div class="maze-description">Grid size: 8x8</div>
+                <div class="maze-title">deadends-g8-n11-a_dfs_percolation-h68867</div>
                 <div class="maze-tags">
                     <span class="maze-tag">dfs</span>
                     <span class="maze-tag">percolation</span>
                     <span class="maze-tag">deadend_endpoints</span>
                 </div>
-                <button class="config-toggle">Show Configuration</button>
-                <div class="config-code"></div>
+                <div class="button-group">
+                    <button class="button show-constructor-btn">Show Constructor</button>
+                    <button class="button copy-constructor-btn">Copy Constructor</button>
+                    <button class="button show-json-btn">Show Config JSON</button>
+                    <button class="button copy-json-btn">Copy Config JSON</button>
+                </div>
+                <div class="config-code constructor-code"></div>
             </div>
         </div>
         <div class="no-results" style="display: none;">No mazes match your search criteria.</div>
@@ -2009,41 +2170,128 @@
     </footer>
 
     <script>
-        // Load configuration data lazily
-        document.querySelectorAll('.config-toggle').forEach(button => {
-            button.addEventListener('click', async function() {
+        // Load configuration data
+        document.querySelectorAll('.maze-card').forEach(card => {
+            const configPath = card.getAttribute('data-config-path');
+            
+            // Preload the configuration data
+            fetch(configPath)
+                .then(response => response.json())
+                .then(data => {
+                    // Store data in card's dataset for later use
+                    card.dataset.constructorName = data.maze_ctor;
+                    card.dataset.constructorParams = JSON.stringify(data.maze_ctor_kwargs, null, 2);
+                    card.dataset.configJson = JSON.stringify(data.config, null, 2);
+                    card.dataset.configLoaded = 'true';
+                })
+                .catch(error => {
+                    console.error('Error loading configuration:', error);
+                });
+        });
+
+        // Show Constructor button functionality
+        document.querySelectorAll('.show-constructor-btn').forEach(button => {
+            button.addEventListener('click', function() {
                 const card = this.closest('.maze-card');
-                const codeBlock = this.nextElementSibling;
+                const codeBlock = card.querySelector('.constructor-code');
                 
-                if (codeBlock.style.display === 'none' || codeBlock.style.display === '') {
-                    // If config hasn't been loaded yet
-                    if (!codeBlock.dataset.loaded) {
-                        const configPath = card.getAttribute('data-config-path');
-                        try {
-                            const response = await fetch(configPath);
-                            const data = await response.json();
-                            
-                            // Format the configuration data
-                            codeBlock.innerHTML = `<h4>Maze Constructor:</h4>
-<pre>${data.maze_ctor}</pre>
+                // Check if data is loaded
+                if (card.dataset.configLoaded) {
+                    if (codeBlock.style.display === 'none' || codeBlock.style.display === '') {
+                        codeBlock.innerHTML = `<h4>Maze Constructor:</h4>
+<pre>${card.dataset.constructorName}</pre>
 
 <h4>Constructor Parameters:</h4>
-<pre>${JSON.stringify(data.maze_ctor_kwargs, null, 2)}</pre>
-
-<h4>Maze Configuration:</h4>
-<pre>${JSON.stringify(data.config, null, 2)}</pre>`;
-                            
-                            codeBlock.dataset.loaded = 'true';
-                        } catch (error) {
-                            codeBlock.innerHTML = `<p>Error loading configuration: ${error.message}</p>`;
-                        }
+<pre>${card.dataset.constructorParams}</pre>`;
+                        
+                        codeBlock.style.display = 'block';
+                        this.textContent = 'Hide Constructor';
+                    } else {
+                        codeBlock.style.display = 'none';
+                        this.textContent = 'Show Constructor';
                     }
-                    
-                    codeBlock.style.display = 'block';
-                    this.textContent = 'Hide Configuration';
                 } else {
-                    codeBlock.style.display = 'none';
-                    this.textContent = 'Show Configuration';
+                    codeBlock.innerHTML = '<p>Loading configuration data...</p>';
+                    codeBlock.style.display = 'block';
+                }
+            });
+        });
+
+        // Copy Constructor button functionality
+        document.querySelectorAll('.copy-constructor-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const card = this.closest('.maze-card');
+                
+                if (card.dataset.configLoaded) {
+                    const textToCopy = `Constructor: ${card.dataset.constructorName}\n\nParameters:\n${card.dataset.constructorParams}`;
+                    
+                    navigator.clipboard.writeText(textToCopy)
+                        .then(() => {
+                            // Show temporary success message
+                            const originalText = this.textContent;
+                            this.textContent = 'Copied!';
+                            setTimeout(() => {
+                                this.textContent = originalText;
+                            }, 2000);
+                        })
+                        .catch(err => {
+                            console.error('Error copying text: ', err);
+                        });
+                }
+            });
+        });
+
+        // Show Config JSON button functionality
+        document.querySelectorAll('.show-json-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const card = this.closest('.maze-card');
+                
+                if (card.dataset.configLoaded) {
+                    const fname = card.getAttribute('data-fname');
+                    const jsonContent = card.dataset.configJson;
+                    
+                    // Open a new window with the JSON content
+                    const newWindow = window.open('', fname, 'width=800,height=600');
+                    newWindow.document.write(`
+                        <!DOCTYPE html>
+                        <html>
+                        <head>
+                            <title>${fname}</title>
+                            <style>
+                                body {
+                                    font-family: monospace;
+                                    padding: 20px;
+                                    white-space: pre-wrap;
+                                }
+                            </style>
+                        </head>
+                        <body>
+                            ${jsonContent}
+                        </body>
+                        </html>
+                    `);
+                }
+            });
+        });
+
+        // Copy Config JSON button functionality
+        document.querySelectorAll('.copy-json-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const card = this.closest('.maze-card');
+                
+                if (card.dataset.configLoaded) {
+                    navigator.clipboard.writeText(card.dataset.configJson)
+                        .then(() => {
+                            // Show temporary success message
+                            const originalText = this.textContent;
+                            this.textContent = 'Copied!';
+                            setTimeout(() => {
+                                this.textContent = originalText;
+                            }, 2000);
+                        })
+                        .catch(err => {
+                            console.error('Error copying text: ', err);
+                        });
                 }
             });
         });
@@ -2084,11 +2332,13 @@
                 const name = card.getAttribute('data-name').toLowerCase();
                 const gridN = card.getAttribute('data-grid-n');
                 const mazeCtor = card.getAttribute('data-maze-ctor');
+                const fname = card.getAttribute('data-fname').toLowerCase();
                 const tags = card.getAttribute('data-tags').split(',');
                 
                 const matchesSearch = name.includes(searchTerm) || 
                                      gridN.includes(searchTerm) ||
-                                     mazeCtor.includes(searchTerm);
+                                     mazeCtor.includes(searchTerm) ||
+                                     fname.includes(searchTerm);
                 
                 const matchesTags = activeTagFilters.length === 0 || 
                                   activeTagFilters.every(tag => tags.includes(tag));

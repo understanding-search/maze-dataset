@@ -112,6 +112,7 @@
             border: 2px solid transparent;
             border-radius: 4px;
             overflow: hidden;
+            flex: 0 0 80px; /* Fixed width and height for square thumbnails */
         }
         .maze-thumbnail.active {
             border-color: #007bff;
@@ -133,7 +134,13 @@
             border-radius: 10px;
             font-size: 12px;
         }
-        .config-toggle {
+        .button-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        .button {
             background-color: #007bff;
             color: white;
             border: none;
@@ -141,6 +148,12 @@
             border-radius: 4px;
             cursor: pointer;
             font-size: 14px;
+            flex: 1;
+            min-width: 120px;
+            text-align: center;
+        }
+        .button:hover {
+            background-color: #0056b3;
         }
         .config-code {
             display: none;
@@ -216,15 +229,19 @@
                 {% endfor %}
             </div>
             <div class="maze-details">
-                <div class="maze-title">{{ example.name }}</div>
-                <div class="maze-description">Grid size: {{ example.grid_n }}x{{ example.grid_n }}</div>
+                <div class="maze-title">{{ example.fname }}</div>
                 <div class="maze-tags">
                     {%- for tag in example.tags %}
                     <span class="maze-tag">{{ tag }}</span>
                     {%- endfor %}
                 </div>
-                <button class="config-toggle">Show Configuration</button>
-                <div class="config-code"></div>
+                <div class="button-group">
+                    <button class="button show-constructor-btn">Show Constructor</button>
+                    <button class="button copy-constructor-btn">Copy Constructor</button>
+                    <button class="button show-json-btn">Show Config JSON</button>
+                    <button class="button copy-json-btn">Copy Config JSON</button>
+                </div>
+                <div class="config-code constructor-code"></div>
             </div>
         </div>
         {%- endfor %}
@@ -236,41 +253,128 @@
     </footer>
 
     <script>
-        // Load configuration data lazily
-        document.querySelectorAll('.config-toggle').forEach(button => {
-            button.addEventListener('click', async function() {
+        // Load configuration data
+        document.querySelectorAll('.maze-card').forEach(card => {
+            const configPath = card.getAttribute('data-config-path');
+            
+            // Preload the configuration data
+            fetch(configPath)
+                .then(response => response.json())
+                .then(data => {
+                    // Store data in card's dataset for later use
+                    card.dataset.constructorName = data.maze_ctor;
+                    card.dataset.constructorParams = JSON.stringify(data.maze_ctor_kwargs, null, 2);
+                    card.dataset.configJson = JSON.stringify(data.config, null, 2);
+                    card.dataset.configLoaded = 'true';
+                })
+                .catch(error => {
+                    console.error('Error loading configuration:', error);
+                });
+        });
+
+        // Show Constructor button functionality
+        document.querySelectorAll('.show-constructor-btn').forEach(button => {
+            button.addEventListener('click', function() {
                 const card = this.closest('.maze-card');
-                const codeBlock = this.nextElementSibling;
+                const codeBlock = card.querySelector('.constructor-code');
                 
-                if (codeBlock.style.display === 'none' || codeBlock.style.display === '') {
-                    // If config hasn't been loaded yet
-                    if (!codeBlock.dataset.loaded) {
-                        const configPath = card.getAttribute('data-config-path');
-                        try {
-                            const response = await fetch(configPath);
-                            const data = await response.json();
-                            
-                            // Format the configuration data
-                            codeBlock.innerHTML = `<h4>Maze Constructor:</h4>
-<pre>${data.maze_ctor}</pre>
+                // Check if data is loaded
+                if (card.dataset.configLoaded) {
+                    if (codeBlock.style.display === 'none' || codeBlock.style.display === '') {
+                        codeBlock.innerHTML = `<h4>Maze Constructor:</h4>
+<pre>${card.dataset.constructorName}</pre>
 
 <h4>Constructor Parameters:</h4>
-<pre>${JSON.stringify(data.maze_ctor_kwargs, null, 2)}</pre>
-
-<h4>Maze Configuration:</h4>
-<pre>${JSON.stringify(data.config, null, 2)}</pre>`;
-                            
-                            codeBlock.dataset.loaded = 'true';
-                        } catch (error) {
-                            codeBlock.innerHTML = `<p>Error loading configuration: ${error.message}</p>`;
-                        }
+<pre>${card.dataset.constructorParams}</pre>`;
+                        
+                        codeBlock.style.display = 'block';
+                        this.textContent = 'Hide Constructor';
+                    } else {
+                        codeBlock.style.display = 'none';
+                        this.textContent = 'Show Constructor';
                     }
-                    
-                    codeBlock.style.display = 'block';
-                    this.textContent = 'Hide Configuration';
                 } else {
-                    codeBlock.style.display = 'none';
-                    this.textContent = 'Show Configuration';
+                    codeBlock.innerHTML = '<p>Loading configuration data...</p>';
+                    codeBlock.style.display = 'block';
+                }
+            });
+        });
+
+        // Copy Constructor button functionality
+        document.querySelectorAll('.copy-constructor-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const card = this.closest('.maze-card');
+                
+                if (card.dataset.configLoaded) {
+                    const textToCopy = `Constructor: ${card.dataset.constructorName}\n\nParameters:\n${card.dataset.constructorParams}`;
+                    
+                    navigator.clipboard.writeText(textToCopy)
+                        .then(() => {
+                            // Show temporary success message
+                            const originalText = this.textContent;
+                            this.textContent = 'Copied!';
+                            setTimeout(() => {
+                                this.textContent = originalText;
+                            }, 2000);
+                        })
+                        .catch(err => {
+                            console.error('Error copying text: ', err);
+                        });
+                }
+            });
+        });
+
+        // Show Config JSON button functionality
+        document.querySelectorAll('.show-json-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const card = this.closest('.maze-card');
+                
+                if (card.dataset.configLoaded) {
+                    const fname = card.getAttribute('data-fname');
+                    const jsonContent = card.dataset.configJson;
+                    
+                    // Open a new window with the JSON content
+                    const newWindow = window.open('', fname, 'width=800,height=600');
+                    newWindow.document.write(`
+                        <!DOCTYPE html>
+                        <html>
+                        <head>
+                            <title>${fname}</title>
+                            <style>
+                                body {
+                                    font-family: monospace;
+                                    padding: 20px;
+                                    white-space: pre-wrap;
+                                }
+                            </style>
+                        </head>
+                        <body>
+                            ${jsonContent}
+                        </body>
+                        </html>
+                    `);
+                }
+            });
+        });
+
+        // Copy Config JSON button functionality
+        document.querySelectorAll('.copy-json-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const card = this.closest('.maze-card');
+                
+                if (card.dataset.configLoaded) {
+                    navigator.clipboard.writeText(card.dataset.configJson)
+                        .then(() => {
+                            // Show temporary success message
+                            const originalText = this.textContent;
+                            this.textContent = 'Copied!';
+                            setTimeout(() => {
+                                this.textContent = originalText;
+                            }, 2000);
+                        })
+                        .catch(err => {
+                            console.error('Error copying text: ', err);
+                        });
                 }
             });
         });
@@ -311,11 +415,13 @@
                 const name = card.getAttribute('data-name').toLowerCase();
                 const gridN = card.getAttribute('data-grid-n');
                 const mazeCtor = card.getAttribute('data-maze-ctor');
+                const fname = card.getAttribute('data-fname').toLowerCase();
                 const tags = card.getAttribute('data-tags').split(',');
                 
                 const matchesSearch = name.includes(searchTerm) || 
                                      gridN.includes(searchTerm) ||
-                                     mazeCtor.includes(searchTerm);
+                                     mazeCtor.includes(searchTerm) ||
+                                     fname.includes(searchTerm);
                 
                 const matchesTags = activeTagFilters.length === 0 || 
                                   activeTagFilters.every(tag => tags.includes(tag));
