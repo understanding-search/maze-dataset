@@ -5,16 +5,16 @@ import numpy as np
 import pytest
 from zanj import ZANJ
 
-from maze_dataset.constants import CoordArray
-from maze_dataset.dataset.dataset import (
-	register_dataset_filter,
-	register_filter_namespace_for_dataset,
-)
-from maze_dataset.dataset.maze_dataset import (
+from maze_dataset import (
 	MazeDataset,
 	MazeDatasetConfig,
 	register_maze_filter,
 	set_serialize_minimal_threshold,
+)
+from maze_dataset.constants import CoordArray
+from maze_dataset.dataset.dataset import (
+	register_dataset_filter,
+	register_filter_namespace_for_dataset,
 )
 from maze_dataset.generation.generators import GENERATORS_MAP
 from maze_dataset.maze import SolvedMaze
@@ -94,7 +94,9 @@ def test_serialize_load():
 )
 def test_serialize_load_minimal(config):
 	d = MazeDataset.generate(config, gen_parallel=False)
-	assert MazeDataset.load(d._serialize_minimal()) == d
+	d_loaded = MazeDataset.load(d._serialize_minimal())
+	d_loaded.assert_equal(d)
+	assert d_loaded == d
 
 
 @pytest.mark.parametrize(

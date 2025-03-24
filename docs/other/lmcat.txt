@@ -1,8 +1,8 @@
 # Stats
-- 57 files
-- 14622 (15K) lines
-- 456664 (457K) chars
-- 50584 (51K) `whitespace-split` tokens
+- 58 files
+- 14657 (15K) lines
+- 459762 (460K) chars
+- 50891 (51K) `whitespace-split` tokens
 
 # File Tree
 
@@ -10,9 +10,8 @@
 maze-dataset                               
 ├── .github                                
 │   └── workflows                          
-│    ├── all-tok-checks.yml                [   52L     1,671C   148T]
-│    ├── build-paper.yml                   [   28L       783C    85T]
-│    ├── checks.yml                        [  100L     2,393C   237T]
+│    ├── all-tok-checks.yml                [   52L     1,670C   148T]
+│    ├── checks.yml                        [   98L     2,409C   243T]
 │    └── make-docs.yml                     [   47L     1,262C   141T]
 ├── maze_dataset                           
 │   ├── benchmark                          
@@ -21,11 +20,13 @@ maze-dataset
 │   │   ├── speed.py                       [  132L     3,053C   327T]
 │   │   └── sweep_fit.py                   [  407L    11,569C 1,369T]
 │   ├── dataset                            
-│   │   ├── __init__.py                    [   21L       502C    39T]
-│   │   ├── collected_dataset.py           [  231L     7,694C   811T]
+│   │   ├── __init__.py                    [   25L       615C    45T]
+│   │   ├── collected_dataset.py           [  241L     8,113C   848T]
 │   │   ├── configs.py                     [   68L     2,208C   210T]
-│   │   ├── dataset.py                     [  537L    17,376C 2,015T]
-│   │   ├── maze_dataset.py                [1,218L    38,591C 4,064T]
+│   │   ├── dataset.py                     [  553L    18,539C 2,133T]
+│   │   ├── filters.py                     [  295L     9,571C 1,100T]
+│   │   ├── maze_dataset.py                [  618L    19,757C 2,020T]
+│   │   ├── maze_dataset_config.py         [  392L    13,003C 1,384T]
 │   │   ├── rasterized.py                  [  330L     9,476C 1,001T]
 │   │   └── success_predict_math.py        [  106L     2,809C   460T]
 │   ├── generation                         
@@ -39,7 +40,7 @@ maze-dataset
 │   ├── plotting                           
 │   │   ├── __init__.py                    [   32L       989C   109T]
 │   │   ├── plot_dataset.py                [   64L     1,635C   200T]
-│   │   ├── plot_maze.py                   [  597L    16,699C 1,947T]
+│   │   ├── plot_maze.py                   [  597L    16,684C 1,944T]
 │   │   ├── plot_tokens.py                 [   90L     2,127C   280T]
 │   │   └── print_tokens.py                [  250L     6,431C   799T]
 │   ├── tokenization                       
@@ -57,7 +58,7 @@ maze-dataset
 │   │   ├── common.py                      [    7L       106C    11T]
 │   │   ├── maze_tokenizer.py              [   15L       307C    23T]
 │   │   └── maze_tokenizer_legacy.py       [  500L    15,213C 1,641T]
-│   ├── __init__.py                        [   67L     1,274C    98T]
+│   ├── __init__.py                        [   69L     1,412C   106T]
 │   ├── constants.py                       [  232L     7,193C   773T]
 │   ├── py.typed                           [    0L         0C     0T]
 │   ├── testing_utils.py                   [  178L     8,548C 1,369T]
@@ -75,7 +76,7 @@ maze-dataset
 │   └── profile_dataset_save_read.ipynb    [1,133L   269,709C 3,406T]
 ├── README.md                              [  114L     5,184C   521T]
 ├── makefile                               [1,754L    54,312C 6,356T]
-├── pyproject.toml                         [  405L    14,327C 1,654T]
+├── pyproject.toml                         [  345L    12,437C 1,418T]
 ```
 
 # File Contents
@@ -132,39 +133,8 @@ jobs:
         run: |
           N_TO_TEST=${{ github.event.inputs.n_to_test || '10000' }}
           PYTEST_PARALLEL=${{ github.event.inputs.pytest_parallel || '1' }}
-          make tokenizers-test-long NUM_TOKENIZERS_TO_TEST=$N_TO_TEST PYTEST_PARALLEL=$PYTEST_PARALLEL
+          make tokenizer-test-long NUM_TOKENIZERS_TO_TEST=$N_TO_TEST PYTEST_PARALLEL=$PYTEST_PARALLEL
 ``````{ end_of_file=".github/workflows/all-tok-checks.yml" }
-
-``````{ path=".github/workflows/build-paper.yml"  }
-name: build paper draft pdf
-on:
-  push:
-    paths:
-      - docs/paper/**
-      - .github/workflows/build-paper.yml
-
-jobs:
-  paper:
-    runs-on: ubuntu-latest
-    name: Paper Draft
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Build draft PDF
-        uses: openjournals/openjournals-draft-action@master
-        with:
-          journal: joss
-          # This should be the path to the paper within your repo.
-          paper-path: docs/paper/paper.md
-      - name: Upload
-        uses: actions/upload-artifact@v4
-        with:
-          name: paper
-          # This is the output path where Pandoc will write the compiled
-          # PDF. Note, this should be the same directory as the input
-          # paper.md
-          path: docs/paper/paper.pdf
-``````{ end_of_file=".github/workflows/build-paper.yml" }
 
 ``````{ path=".github/workflows/checks.yml"  }
 name: Checks
@@ -263,10 +233,8 @@ jobs:
       - name: run benchmarks tests
         run: make benchmark-test
       
-      - name: Test Tokenizer fst
-        run: |
-          NUM_TOKENIZERS_TO_TEST=1000
-          make tokenizer-fst-check
+      - name: Test Tokenizer fst # test a reduced number of tokenizers
+        run: make tokenizer-fst-check NUM_TOKENIZERS_TO_TEST=1000
 ``````{ end_of_file=".github/workflows/checks.yml" }
 
 ``````{ path=".github/workflows/make-docs.yml"  }
@@ -1424,15 +1392,19 @@ from maze_dataset.dataset.collected_dataset import (
 	MazeDatasetCollection,
 	MazeDatasetCollectionConfig,
 )
-from maze_dataset.dataset.maze_dataset import MazeDataset, MazeDatasetConfig
+from maze_dataset.dataset.maze_dataset import MazeDataset
+from maze_dataset.dataset.maze_dataset_config import MazeDatasetConfig
 
 __all__ = [
 	# submodules
 	"collected_dataset",
 	"configs",
 	"dataset",
+	"filters",
+	"maze_dataset_config",
 	"maze_dataset",
 	"rasterized",
+	"success_predict_math",
 	# dataset classes
 	"MazeDataset",
 	"MazeDatasetConfig",
@@ -1476,7 +1448,8 @@ from maze_dataset.maze import LatticeMaze
 class MazeDatasetCollectionConfig(GPTDatasetConfig):
 	"""maze dataset collection configuration, including tokenizers and shuffle"""
 
-	maze_dataset_configs: list[MazeDatasetConfig] = serializable_field(
+	# Attributes without a default cannot follow attributes with one  [misc]
+	maze_dataset_configs: list[MazeDatasetConfig] = serializable_field(  # type: ignore[misc]
 		serialization_fn=lambda configs: [config.serialize() for config in configs],
 		loading_fn=lambda data: [
 			MazeDatasetConfig.load(config) for config in data["maze_dataset_configs"]
@@ -1485,7 +1458,13 @@ class MazeDatasetCollectionConfig(GPTDatasetConfig):
 
 	def summary(self) -> dict:
 		"""return a summary of the config"""
-		return [c.summary() for c in self.maze_dataset_configs]
+		return dict(
+			n_mazes=self.n_mazes,
+			max_grid_n=self.max_grid_n,
+			max_grid_shape=self.max_grid_shape,
+			fname=self.to_fname(),
+			cfg_summaries=[c.summary() for c in self.maze_dataset_configs],
+		)
 
 	@property
 	def n_mazes(self) -> int:
@@ -1570,7 +1549,7 @@ class MazeDatasetCollection(GPTDataset):
 		# we add 1, since np.searchsorted returns the
 		# index of the last element that is strictly less than the target
 		# while we want the index of the last element less than or equal to the target
-		dataset_idx: int = np.searchsorted(self.dataset_cum_lengths, index + 1)
+		dataset_idx: int = int(np.searchsorted(self.dataset_cum_lengths, index + 1))
 		index_adjusted: int = index
 		if dataset_idx > 0:
 			# if the index is 0, `dataset_idx - 1` will be -1.
@@ -1659,16 +1638,19 @@ class MazeDatasetCollection(GPTDataset):
 		for dataset in self.maze_datasets:
 			dataset.update_self_config()
 
+		self.cfg.maze_dataset_configs = [dataset.cfg for dataset in self.maze_datasets]
 
-MazeDatasetCollectionConfig._dataset_class = MazeDatasetCollection
+
+MazeDatasetCollectionConfig._dataset_class = MazeDatasetCollection  # type: ignore[method-assign, assignment]
+
 register_loader_handler(
 	LoaderHandler(
-		check=lambda json_item, path=None, z=None: (  # noqa: ARG005
+		check=lambda json_item, path=None, z=None: (  # type: ignore[misc] # noqa: ARG005
 			isinstance(json_item, typing.Mapping)
 			and _FORMAT_KEY in json_item
 			and json_item[_FORMAT_KEY].startswith("MazeDatasetCollection")
 		),
-		load=lambda json_item, path=None, z=None: MazeDatasetCollection.load(json_item),  # noqa: ARG005
+		load=lambda json_item, path=None, z=None: MazeDatasetCollection.load(json_item),  # type: ignore[misc] # noqa: ARG005
 		uid="MazeDatasetCollection",
 		source_pckg="maze_dataset.generation.maze_dataset_collection",
 		desc="MazeDatasetCollection",
@@ -1773,6 +1755,9 @@ from muutils.json_serialize import (
 	serializable_dataclass,
 	serializable_field,
 )
+from muutils.json_serialize.util import (
+	JSONdict,
+)
 from muutils.misc import sanitize_fname, shorten_numerical_to_str, stable_hash
 from zanj import ZANJ
 
@@ -1792,8 +1777,8 @@ class FilterInfoMismatchError(ValueError):
 
 
 def _load_applied_filters(
-	filters: list[dict[typing.Literal["name", "args", "kwargs"], str | list | dict]],
-) -> list[dict[typing.Literal["name", "args", "kwargs"], str | list | dict]]:
+	filters: list[dict[typing.Literal["name", "args", "kwargs"], str | tuple | dict]],
+) -> list[dict[typing.Literal["name", "args", "kwargs"], str | tuple | dict]]:
 	try:
 		return [
 			dict(
@@ -1801,7 +1786,7 @@ def _load_applied_filters(
 				args=tuple(
 					filter_info["args"],
 				),  # muutils/zanj save tuples as lists, and this causes problems
-				kwargs=dict(filter_info["kwargs"]),
+				kwargs=dict(filter_info["kwargs"]),  # type: ignore[arg-type]
 			)
 			for filter_info in filters
 		]
@@ -1824,7 +1809,7 @@ class GPTDatasetConfig(SerializableDataclass):
 
 	seed: int | None = serializable_field(default=GLOBAL_SEED)
 	applied_filters: list[
-		dict[typing.Literal["name", "args", "kwargs"], str | list | dict]
+		dict[typing.Literal["name", "args", "kwargs"], str | list | tuple | dict]
 	] = serializable_field(
 		default_factory=list,
 		deserialize_fn=_load_applied_filters,
@@ -1859,9 +1844,8 @@ class GPTDatasetConfig(SerializableDataclass):
 			applied_filters=self.applied_filters,
 		)
 
-	@classmethod
 	@property
-	def _dataset_class(cls) -> type:
+	def _dataset_class(self) -> type:
 		raise NotImplementedError("this should be implemented by subclasses!")
 
 	def to_fname(self) -> str:
@@ -1872,7 +1856,8 @@ class GPTDatasetConfig(SerializableDataclass):
 			f"using fallblack to_fname() method for {self.__class__.__name__}, this should be implemented by subclasses!",
 		)
 		return sanitize_fname(
-			f"f{self.name}-n{shorten_numerical_to_str(len(self))}-h{self_json_hash}",
+			# TYPING: error: Argument 1 to "len" has incompatible type "GPTDatasetConfig"; expected "Sized"  [arg-type]
+			f"f{self.name}-n{shorten_numerical_to_str(len(self))}-h{self_json_hash}",  # type: ignore[arg-type]
 		)
 
 
@@ -1891,11 +1876,12 @@ def _dataset_config_serialize(self, *args, **kwargs) -> JSONitem:  # noqa: ANN00
 	)
 
 
-GPTDatasetConfig.load = _dataset_config_load
-GPTDatasetConfig.serialize = _dataset_config_serialize
+GPTDatasetConfig.load = _dataset_config_load  # type: ignore[method-assign]
+GPTDatasetConfig.serialize = _dataset_config_serialize  # type: ignore[method-assign,assignment]
+T_DatasetConfig = TypeVar("T_DatasetConfig", bound=GPTDatasetConfig)
 
 
-class GPTDataset:
+class GPTDataset(typing.Generic[T_DatasetConfig]):
 	"""wrapper for torch dataset with some extra functionality
 
 	(meaning the functionality should be inherited in downstream classes)
@@ -1965,12 +1951,12 @@ class GPTDataset:
 
 	_FILTER_NAMESPACE: type = "this isn't a filter namespace! you have to initialize this by registering with `register_filter_namespace_for_dataset`"  # type: ignore
 
-	cfg: GPTDatasetConfig
+	cfg: "T_DatasetConfig"
 
 	@classmethod
 	def from_config(  # noqa: C901, PLR0912
-		cls,
-		cfg: GPTDatasetConfig,
+		cls: "type[T_Dataset]",
+		cfg: "T_DatasetConfig",
 		do_generate: bool = True,
 		load_local: bool = True,
 		save_local: bool = True,
@@ -1981,7 +1967,7 @@ class GPTDataset:
 		allow_generation_metadata_filter_mismatch: bool = True,
 		verbose: bool = False,
 		**kwargs,
-	) -> "GPTDataset":
+	) -> "T_Dataset":
 		"""base class for gpt datasets
 
 		priority of loading:
@@ -1994,7 +1980,7 @@ class GPTDataset:
 
 		local_base_path = Path(local_base_path)
 		fname: Path = Path(f"{cfg.to_fname()}.zanj")
-		output: GPTDataset | None = None
+		output: T_Dataset | None = None
 		did_load_local: bool = False
 		if zanj is None:
 			zanj = ZANJ()
@@ -2079,33 +2065,39 @@ class GPTDataset:
 
 	# serialization & loading
 	@classmethod
-	def read(cls, file_path: str, zanj: ZANJ | None = None) -> "GPTDataset":
+	def read(
+		cls: "type[T_Dataset]", file_path: str | Path, zanj: ZANJ | None = None
+	) -> "T_Dataset":
 		"read dataset from a file with zanj"
 		if zanj is None:
 			zanj = ZANJ()
 		return zanj.read(file_path)
 
-	def serialize(self) -> JSONitem:
+	def serialize(self: "T_Dataset") -> JSONdict:
 		"(implement in subclass!) serialize to something we can save with zanj"
 		raise NotImplementedError
 
-	def data_hash(self) -> int:
+	def data_hash(self: "T_Dataset") -> int:
 		"(implement in subclass!) return a hash of the data"
 		raise NotImplementedError
 
 	@classmethod
-	def load(cls, data: JSONitem) -> "GPTDataset":
+	def load(cls: "type[T_Dataset]", data: JSONdict) -> "T_Dataset":
 		"(implement in subclass!) load a dataset from what we made with `.serialize()`"
 		raise NotImplementedError
 
 	# generating & downloading
 	@classmethod
-	def generate(cls, cfg: GPTDatasetConfig, **kwargs) -> "GPTDataset":
+	def generate(
+		cls: "type[T_Dataset]", cfg: "T_DatasetConfig", **kwargs
+	) -> "T_Dataset":
 		"(implement in subclass!) generative given the config"
 		raise NotImplementedError
 
 	@classmethod
-	def download(cls, cfg: GPTDatasetConfig, **kwargs) -> "GPTDataset":
+	def download(
+		cls: "type[T_Dataset]", cfg: "T_DatasetConfig", **kwargs
+	) -> "T_Dataset":
 		"(implement in subclass!) download the dataset given the config"
 		raise NotImplementedError
 
@@ -2117,16 +2109,20 @@ class GPTDataset:
 		"""
 		pass
 
+	def __len__(self) -> int:
+		"return the length of the dataset"
+		raise NotImplementedError("implement in subclass!")
+
 	class FilterBy:
 		"""thanks GPT-4"""
 
-		def __init__(self, dataset: "GPTDataset") -> None:
+		def __init__(self, dataset: "T_Dataset") -> None:
 			"mock class so we can call `my_dataset.filter_by.some_registered_filter()`"
-			self.dataset: GPTDataset = dataset
+			self.dataset: T_Dataset = dataset
 
-		def __getattr__(self, name: str) -> typing.Callable[..., "GPTDataset"]:
+		def __getattr__(self, name: str) -> typing.Callable[..., "T_Dataset"]:
 			"override getattr so we can call `my_dataset.filter_by.some_registered_filter()`"
-			filter_func: DatasetFilterProtocol = getattr(
+			filter_func: DatasetFilterFunc = getattr(
 				self.dataset._FILTER_NAMESPACE,
 				name,
 			)
@@ -2141,9 +2137,9 @@ class GPTDataset:
 		"can call `my_dataset.filter_by.some_registered_filter()` to filter the dataset"
 		return self.FilterBy(self)
 
-	def _apply_filters_from_config(self) -> "GPTDataset":
+	def _apply_filters_from_config(self: "T_Dataset") -> "T_Dataset":
 		"""apply filters to the dataset, as specified in the config. used in `from_config()`"""
-		output: GPTDataset = self
+		output: T_Dataset = self
 		# copy the list, and then clear it in the config. we do this because each time we apply a filter it will update config.applied_filters
 		applied_filters_old: list[
 			dict[typing.Literal["name", "args", "kwargs"], typing.Any]
@@ -2154,11 +2150,11 @@ class GPTDataset:
 			filter_name: str = filter_info["name"]
 			if filter_name not in output._FILTER_NAMESPACE.__dict__:
 				if filter_name.startswith("__custom__:"):
-					err_msg: str = f"the dataset {output.cfg.to_fname()} was filtering using a custom filter: '{filter_name}', which we don't know about. add it to MazeDatasetFilters!"
+					err_msg = f"the dataset {output.cfg.to_fname()} was filtering using a custom filter: '{filter_name}', which we don't know about. add it to MazeDatasetFilters!"
 					raise ValueError(
 						err_msg,
 					)
-				err_msg: str = f"the dataset {output.cfg.to_fname()} was filtering using an unknown filter: '{filter_name}'"
+				err_msg = f"the dataset {output.cfg.to_fname()} was filtering using an unknown filter: '{filter_name}'"
 				raise ValueError(
 					err_msg,
 				)
@@ -2172,7 +2168,10 @@ class GPTDataset:
 		# update the config, perform checks
 		# TODO: some funny business with manually specified filters here?
 		output.update_self_config()
-		_check_filter_equality(applied_filters_old, output.cfg.applied_filters)
+		_check_filter_equality(
+			filters_old=applied_filters_old,
+			filters_new=output.cfg.applied_filters,  # type: ignore[arg-type]
+		)
 		return output
 
 
@@ -2226,7 +2225,7 @@ def _check_filter_equality(
 				assert key in filterinfo_new["kwargs"], (
 					f"filter kwargs don't match: missing key '{key}'"
 				)
-				assert filterinfo_new["kwargs"][key] == filterinfo_old["kwargs"][key], (
+				assert filterinfo_new["kwargs"][key] == filterinfo_old["kwargs"][key], (  # type: ignore[index]
 					f"filter kwargs don't match: values for key '{key}' don't match"
 				)
 
@@ -2253,944 +2252,65 @@ def register_filter_namespace_for_dataset(
 	return decorator
 
 
-class DatasetFilterProtocol(typing.Protocol):
-	"protocol for typing hinting what a dataset filter should look like"
-
-	def __call__(  # noqa: D102
-		self,
-		dataset: GPTDataset,
-		**kwargs,
-	) -> GPTDataset: ...
-
-
-DatasetType = TypeVar("DatasetType", bound=GPTDataset)
+T_Dataset = TypeVar("T_Dataset", bound=GPTDataset)
+P_FilterKwargs = typing.ParamSpec("P_FilterKwargs")
+DatasetFilterFunc = Callable[typing.Concatenate[T_Dataset, P_FilterKwargs], T_Dataset]
 
 
 def register_dataset_filter(
-	method: DatasetFilterProtocol,
-) -> DatasetFilterProtocol:
+	method: DatasetFilterFunc,
+) -> DatasetFilterFunc:
 	"""register a dataset filter, copying the underlying dataset and updating the config
 
 	be sure to return a COPY, not the original?
+	# TODO: what the heck do we mean by the above? why the question mark? it should be a copy right?
 
 	method should be a staticmethod of a namespace class registered with `register_filter_namespace_for_dataset`
 	"""
 
 	@functools.wraps(method)
-	def wrapper(dataset: DatasetType, *args, **kwargs) -> DatasetType:
+	def wrapper(
+		# TYPING: error: ParamSpec "P_FilterKwargs" is unbound  [valid-type]
+		dataset: T_Dataset,
+		*args: P_FilterKwargs.args,  # type: ignore[valid-type]
+		**kwargs: P_FilterKwargs.kwargs,  # type: ignore[valid-type]
+	) -> T_Dataset:
 		new_dataset = method(dataset, *args, **kwargs)
 		# update the config
 		new_dataset.cfg.applied_filters.append(
-			dict(name=method.__name__, args=args, kwargs=kwargs),
+			dict(name=method.__name__, args=args, kwargs=kwargs),  # type: ignore[attr-defined]
 		)
 		new_dataset.update_self_config()
 		return new_dataset
 
-	return wrapper
+	# TYPING: error: Incompatible return value type (got "_Wrapped[[Any, KwArg(Any)], Any, [Never, VarArg(Any), KwArg(Any)], Never]", expected "DatasetFilterProtocol[Any]")  [return-value]
+	return wrapper  # type: ignore[return-value]
 
 ``````{ end_of_file="maze_dataset/dataset/dataset.py" }
 
-``````{ path="maze_dataset/dataset/maze_dataset.py"  }
-"""`MazeDatasetConfig` is where you decide what your dataset should look like, then pass it to `MazeDataset.from_config` to generate or load the dataset.
-
-see [demo_dataset notebook](../../notebooks/demo_dataset)
-
-"""
+``````{ path="maze_dataset/dataset/filters.py"  }
+"filtering `MazeDataset`s"
 
 import copy
 import functools
-import json
-import multiprocessing
 import typing
-import warnings
 from collections import Counter, defaultdict
-from pathlib import Path
-from typing import Callable, Literal, Optional, cast, overload
 
 import numpy as np
-import tqdm
-from jaxtyping import Float, Int
-from muutils.json_serialize import (
-	json_serialize,
-	serializable_dataclass,
-	serializable_field,
-)
-from muutils.json_serialize.util import (
-	_FORMAT_KEY,
-	JSONdict,
-	safe_getsource,
-	string_as_lines,
-)
-from muutils.misc import sanitize_fname, shorten_numerical_to_str, stable_hash
-from zanj import ZANJ
-from zanj.loading import LoaderHandler, load_item_recursive, register_loader_handler
 
-from maze_dataset.constants import Coord, CoordArray, CoordTup
+from maze_dataset.constants import CoordTup
 from maze_dataset.dataset.dataset import (
-	DatasetFilterProtocol,
-	GPTDataset,
-	GPTDatasetConfig,
+	DatasetFilterFunc,
 	register_dataset_filter,
 	register_filter_namespace_for_dataset,
 )
-from maze_dataset.dataset.success_predict_math import cfg_success_predict_fn
-from maze_dataset.generation.generators import _GENERATORS_PERCOLATED, GENERATORS_MAP
-from maze_dataset.maze import LatticeMaze, SolvedMaze
-
-# If `n_mazes>=SERIALIZE_MINIMAL_THRESHOLD`, then the MazeDataset will use `serialize_minimal`.
-# Setting to None means that `serialize_minimal` will never be used.
-# Set to -1 to make calls to `read` use `MazeDataset._load_legacy`. Used for profiling only.
-SERIALIZE_MINIMAL_THRESHOLD: int | None = 100
-
-
-_PercolationSuccessArray = Float[
-	np.ndarray,
-	"p/grid_n/deadends/endpoints_not_equal/generator_func=5",
-]
-
-
-class NoPercolationInConfigError(ValueError):
-	"""raised when trying to predict the success fraction of a config that doesn't have percolation"""
-
-	pass
-
-
-class SuccessChanceTooSmallError(ValueError):
-	"""raised when the success fraction is below the threshold in `MazeDatasetConfig.success_fraction_compensate`"""
-
-	pass
-
-
-def set_serialize_minimal_threshold(threshold: int | None) -> None:
-	"get the global SERIALIZE_MINIMAL_THRESHOLD"
-	global SERIALIZE_MINIMAL_THRESHOLD  # noqa: PLW0603
-	SERIALIZE_MINIMAL_THRESHOLD = threshold
-
-
-def _load_maze_ctor(maze_ctor_serialized: str | dict) -> Callable:
-	"get the maze constructor from `GENERATORS_MAP`"
-	if isinstance(maze_ctor_serialized, dict):
-		# this is both the new and old version of the serialization
-		return GENERATORS_MAP[maze_ctor_serialized["__name__"]]
-	elif isinstance(maze_ctor_serialized, str):
-		# this is a version I switched to for a while but now we are switching back
-		warnings.warn(
-			"you are loading an old model/config in `_load_maze_ctor()`!!! this should not be happening, please report: "
-			"https://github.com/understanding-search/maze-dataset/issues/new",
-		)
-		return GENERATORS_MAP[maze_ctor_serialized]
-	else:
-		err_msg: str = f"maze_ctor_serialized is of type {type(maze_ctor_serialized) = }, expected str or dict\n{maze_ctor_serialized = }"
-		raise TypeError(err_msg)
-
-
-EndpointKwargsType = dict[
-	typing.Literal[
-		"allowed_start",
-		"allowed_end",
-		"deadend_start",
-		"deadend_end",
-		"endpoints_not_equal",
-		"except_on_no_valid_endpoint",
-	],
-	bool | None | list[tuple[int, int]],
-]
-"type hint for `MazeDatasetConfig.endpoint_kwargs`"
-
-
-def _load_endpoint_kwargs(data: dict) -> EndpointKwargsType:
-	if data.get("endpoint_kwargs") is None:
-		return dict()
-
-	else:
-		return {
-			k: (
-				# bools and Nones are fine
-				v
-				if (isinstance(v, bool) or v is None)
-				# assume its a CoordList
-				else [tuple(x) for x in v]  # muutils/zanj saves tuples as lists
-			)
-			for k, v in data["endpoint_kwargs"].items()
-		}
-
-
-MAZEDATASETCONFIG_FNAME_HASH_LENGTH: int = 5
-
-
-@serializable_dataclass(kw_only=True, properties_to_serialize=["grid_shape"])
-class MazeDatasetConfig(GPTDatasetConfig):
-	"""config object which is passed to `MazeDataset.from_config` to generate or load a dataset"""
-
-	grid_n: int = serializable_field()
-
-	# not comparing n_mazes is done primarily to avoid conflicts which happen during `from_config` when we have applied filters
-	n_mazes: int = serializable_field(compare=False)
-
-	maze_ctor: Callable = serializable_field(
-		default=GENERATORS_MAP["gen_dfs"],
-		serialization_fn=lambda gen_func: {
-			"__name__": gen_func.__name__,
-			"__module__": gen_func.__module__,
-			"__doc__": string_as_lines(gen_func.__doc__),
-			"source_code": safe_getsource(gen_func),
-		},
-		loading_fn=lambda data: _load_maze_ctor(data["maze_ctor"]),
-		assert_type=False,  # TODO: check the type here once muutils supports checking Callable signatures
-	)
-
-	maze_ctor_kwargs: dict = serializable_field(
-		default_factory=dict,
-		serialization_fn=lambda kwargs: kwargs,
-		loading_fn=lambda data: (
-			dict()
-			if data.get("maze_ctor_kwargs", None)
-			is None  # this should handle the backwards compatibility
-			else data["maze_ctor_kwargs"]
-		),
-	)
-
-	endpoint_kwargs: EndpointKwargsType = serializable_field(
-		default_factory=dict,
-		serialization_fn=lambda kwargs: kwargs,
-		loading_fn=_load_endpoint_kwargs,
-		assert_type=False,
-	)
-
-	@property
-	def grid_shape(self) -> CoordTup:
-		"""return the shape of the grid as a tuple"""
-		return (self.grid_n, self.grid_n)
-
-	@property
-	def grid_shape_np(self) -> Coord:
-		"""return the shape of the grid as a numpy array"""
-		return np.array(self.grid_shape)
-
-	@property
-	def max_grid_n(self) -> int:
-		"""return the maximum of the grid shape"""
-		return max(self.grid_shape)
-
-	def stable_hash_cfg(self) -> int:
-		"""return a stable hash of the config"""
-		return stable_hash(
-			json.dumps(
-				self.serialize(),
-				sort_keys=True,
-				indent=None,
-			),
-		)
-
-	# TODO: include fname in serialized form, but exclude it when hashing so we dont infinitely loop?
-	def to_fname(self) -> str:
-		"""return a unique identifier (valid as a filename) for this config"""
-		n_mazes_str: str = shorten_numerical_to_str(self.n_mazes)
-		maze_ctor_name: str = self.maze_ctor.__name__.removeprefix("gen_")
-		hash_id: int = self.stable_hash_cfg() % 10**MAZEDATASETCONFIG_FNAME_HASH_LENGTH
-		return sanitize_fname(
-			f"{self.name}-g{self.grid_n}-n{n_mazes_str}-a_{maze_ctor_name}-h{hash_id}",
-		)
-
-	def summary(self) -> dict:
-		"""return a summary of the config"""
-		# do we run this to make sure it doesn't error?
-		super_summary: dict = super().summary()
-		assert super_summary
-		self_ser: dict = self.serialize()
-		return dict(
-			name=self.name,
-			fname=self.to_fname(),
-			sdc_hash=self.stable_hash_cfg(),
-			seed=self.seed,
-			seq_len_min=self.seq_len_min,
-			seq_len_max=self.seq_len_max,
-			applied_filters=self.applied_filters,
-			grid_n=self_ser["grid_n"],
-			n_mazes=self_ser["n_mazes"],
-			maze_ctor_name=self_ser["maze_ctor"]["__name__"],
-			maze_ctor_kwargs=self_ser["maze_ctor_kwargs"],
-			endpoint_kwargs=self_ser["endpoint_kwargs"],
-		)
-
-	def _to_ps_array(self) -> _PercolationSuccessArray:
-		"""Convert this config to a [p, grid_n, deadends, endpoints_not_equal, generator_func] vector.
-
-		used in predicting the success rate
-		"""
-		try:
-			assert self.maze_ctor.__name__ in _GENERATORS_PERCOLATED, (
-				f"generator not supported, must be a percolation generator\n{self.maze_ctor.__name__ = }, {_GENERATORS_PERCOLATED = }"
-			)
-			assert "p" in self.maze_ctor_kwargs, (
-				f"maze_ctor_kwargs must have a 'p' (percolation value) key: {self.maze_ctor_kwargs = }"
-			)
-			assert not self.endpoint_kwargs.get("except_on_no_valid_endpoint", True), (
-				f"except_on_no_valid_endpoint must be False, or else if any maze fails to generate, the whole dataset will fail: {self.endpoint_kwargs = }"
-			)
-		except AssertionError as e:
-			err_msg: str = f"invalid config for percolation success prediction: {self.summary() = }"
-			raise NoPercolationInConfigError(
-				err_msg,
-			) from e
-
-		endpoints_unique_flag: int = int(
-			self.endpoint_kwargs.get("endpoints_not_equal", True),
-		)
-
-		# adjustment for bknutson0
-		if not (
-			self.endpoint_kwargs.get("deadend_start", False)
-			and self.endpoint_kwargs.get("deadend_end", False)
-		):
-			# we didnt train on this, but if either endpoint is not required to be in a dead end
-			# then  requiring the endpoints to be unique does not really affect the success rate
-			# (except for very small percolation values, pure percolation generation)
-			endpoints_unique_flag: int = 0
-
-		return np.array(
-			[
-				float(self.maze_ctor_kwargs["p"]),
-				float(self.grid_n),
-				float(
-					int(
-						self.endpoint_kwargs.get("deadend_start", False)
-						or self.endpoint_kwargs.get("deadend_end", False),
-					),
-				),
-				float(endpoints_unique_flag),
-				float(_GENERATORS_PERCOLATED.index(self.maze_ctor.__name__)),
-			],
-			dtype=np.float64,
-		)
-
-	@classmethod
-	def _from_ps_array(
-		cls,
-		arr: _PercolationSuccessArray,
-		name: str = "predict",
-		n_mazes: int = 100,
-		**kwargs,
-	) -> "MazeDatasetConfig":
-		"""Reconstruct a config from an array [p, grid_n, deadends, endpoints_not_equal, generator_func] and other config parameters.
-
-		# Returns:
-		- `MazeDatasetConfig`
-			Config corresponding to `arr`
-		"""
-		return cls(
-			name=name,
-			grid_n=int(arr[1]),
-			n_mazes=n_mazes,
-			maze_ctor=_GENERATORS_PERCOLATED[int(arr[4])],
-			maze_ctor_kwargs={"p": float(arr[0])},
-			endpoint_kwargs=dict(
-				deadend_start=bool(arr[2]),
-				deadend_end=bool(arr[2]),
-				endpoints_not_equal=bool(arr[3]),
-				except_on_no_valid_endpoint=False,
-			),
-			**kwargs,
-		)
-
-	def success_fraction_estimate(
-		self,
-		except_if_all_success_expected: bool = False,
-	) -> float:
-		"""Estimate the success fraction of this config.
-
-		only valid when the generator is a percolation generator,
-		and endpoints are enforced to be dead ends
-
-		this estimate comes from `estimate_dataset_fractions.ipynb` and `maze_dataset.benchmarks.sweep_fit`
-
-		# Parameters:
-		- `except_if_all_success_expected : bool`
-			if `True`, don't raise an error if the success fraction is below the threshold.
-			will always return `1.0` if the config is not expected to fail
-
-		# Returns:
-		- `float`
-			estimated success fraction
-
-		# Raises:
-		- `NoPercolationInConfigError` : if the config is not expected to fail, and `except_if_all_success_expected` is `False`
-		"""
-		try:
-			return cfg_success_predict_fn(self)
-
-		except NoPercolationInConfigError as e:
-			if except_if_all_success_expected:
-				return 1.0
-			else:
-				raise e  # noqa: TRY201
-
-	def success_fraction_compensate(
-		self,
-		safety_margin: float = 1.2,
-		except_if_all_success_expected: bool = False,
-		epsilon: float = 1e-2,
-	) -> "MazeDatasetConfig":
-		"""return a new `MazeDatasetConfig` like this one with `n_mazes` adjusted to compensate for the success fraction
-
-		# Parameters:
-		- `safety_margin : float`
-			safety margin to apply to the success fraction estimate
-			(defaults to `1.2`, or 20% more mazes than estimated)
-		- `except_if_all_success_expected : bool`
-			if `True`, don't raise an error if the success fraction is below the threshold.
-			this is passed to `MazeDatasetConfig.success_fraction_estimate`.
-			if your config isn't expected to fail, passing this might mean you generate more mazes than needed
-			since `safety_margin` is still applied.
-			(defaults to `False`)
-		- `epsilon : float`
-			raise `SuccessChanceTooSmallError` if the success fraction is below this threshold
-			(defaults to `1e-2`)
-
-		# Returns:
-		- `MazeDatasetConfig`
-			new config with adjusted `n_mazes`
-
-		# Raises:
-		- `SuccessChanceTooSmallError` : if the computed success fraction is below `epsilon`
-		"""
-		# compute and check the success fraction
-		success_fraction: float = self.success_fraction_estimate(
-			except_if_all_success_expected=except_if_all_success_expected,
-		)
-		if success_fraction < epsilon:
-			err_msg: str = (
-				f"{success_fraction = } is below the threshold of {epsilon = }"
-			)
-			raise SuccessChanceTooSmallError(
-				err_msg,
-			)
-
-		# compute the new number of mazes
-		n_mazes: int = self.n_mazes
-		new_n_mazes: int = int((n_mazes * safety_margin) / success_fraction) + 1
-
-		# put it in a new config and return
-		cfg_dict: dict = self.serialize()
-		cfg_dict["n_mazes"] = new_n_mazes
-		return MazeDatasetConfig.load(cfg_dict)
-
-
-def _generate_maze_helper(index: int) -> Optional[SolvedMaze]:  # noqa: ARG001
-	"""Helper function for generating mazes in parallel.
-
-	> [!CAUTION]
-	> don't use this unless generating in parallel!
-	"""
-	# TODO: don't use this unless generating in parallel!
-	maze: LatticeMaze = _GLOBAL_WORKER_CONFIG.maze_ctor(
-		grid_shape=_GLOBAL_WORKER_CONFIG.grid_shape_np,
-		**_GLOBAL_WORKER_CONFIG.maze_ctor_kwargs,
-	)
-
-	endpoint_kwargs: EndpointKwargsType = _GLOBAL_WORKER_CONFIG.endpoint_kwargs.copy()
-
-	# Generate the solution
-	solution: Optional[CoordArray] = maze.generate_random_path(**endpoint_kwargs)
-
-	# Validate the solution
-	if (
-		solution is None
-		or len(solution) == 0
-		or not isinstance(solution, np.ndarray)
-		# magic value is fine here
-		or len(solution.shape) != 2  # noqa: PLR2004
-	):
-		return None  # Return None if the solution is invalid
-
-	return SolvedMaze.from_lattice_maze(
-		lattice_maze=maze,
-		solution=solution,
-	)
-
-
-def _maze_gen_init_worker(config: MazeDatasetConfig) -> None:
-	"""special worker helper
-
-	> [!CAUTION]
-	> this makes the generation depend both on whether parallelism is used, and on the number of processes. this is bad!
-
-	"""
-	# TODO: dont use globals here!
-	global _GLOBAL_WORKER_CONFIG  # noqa: PLW0603
-	_GLOBAL_WORKER_CONFIG = config
-
-	process_id: tuple[int] = multiprocessing.current_process()._identity
-	if len(process_id) == 0:
-		# no multiprocessing, seed was already set
-		pass
-	elif len(process_id) == 1:
-		# multiprocessing, adjust seed based on process id
-		# only set numpy seed, since we do not use other random gens
-		np.random.seed(_GLOBAL_WORKER_CONFIG.seed + process_id[0])
-	else:
-		err_msg = (
-			f"unexpected process id: {process_id = }\n{multiprocessing.Process() = }"
-		)
-		raise ValueError(
-			err_msg,
-		)
-
-
-class MazeDataset(GPTDataset):
-	"""a maze dataset class. This is a collection of solved mazes, and should be initialized via `MazeDataset.from_config`"""
-
-	def __init__(
-		self,
-		cfg: MazeDatasetConfig,
-		mazes: typing.Sequence[SolvedMaze],
-		generation_metadata_collected: dict | None = None,
-	) -> None:
-		"""initialize a maze dataset from a config and a list of solved mazes"""
-		super().__init__()
-		self.cfg: MazeDatasetConfig = cfg
-		self.mazes: list[SolvedMaze] = list(mazes)
-		self.generation_metadata_collected: dict | None = generation_metadata_collected
-
-	@classmethod
-	def from_config(
-		cls,
-		cfg: MazeDatasetConfig,
-		do_generate: bool = True,
-		load_local: bool = True,
-		save_local: bool = True,
-		zanj: ZANJ | None = None,
-		do_download: bool = True,
-		local_base_path: Path = Path("data/maze_dataset"),
-		except_on_config_mismatch: bool = True,
-		allow_generation_metadata_filter_mismatch: bool = True,
-		verbose: bool = False,
-		**kwargs,
-	) -> "MazeDataset":
-		"""create a maze dataset from a config
-
-		priority of loading:
-		1. load from local
-		2. download
-		3. generate
-
-		"""
-		return cast(
-			MazeDataset,
-			super().from_config(
-				cfg=cfg,
-				do_generate=do_generate,
-				load_local=load_local,
-				save_local=save_local,
-				zanj=zanj,
-				do_download=do_download,
-				local_base_path=local_base_path,
-				except_on_config_mismatch=except_on_config_mismatch,
-				allow_generation_metadata_filter_mismatch=allow_generation_metadata_filter_mismatch,
-				verbose=verbose,
-				**kwargs,
-			),
-		)
-
-	def data_hash(self) -> int:
-		"""return a hash of the data"""
-		return stable_hash(str(tuple([x.serialize() for x in self.mazes])))
-
-	def __getitem__(self, i: int) -> SolvedMaze:
-		"""get a maze by index"""
-		return self.mazes[i]
-
-	def __deepcopy__(self, memo) -> "MazeDataset":  # noqa: ANN001
-		"""deepcopy the dataset
-
-		FIX: this isnt actually a deepcopy I think?
-		"""
-		return MazeDataset.load(self._serialize_full())
-
-	# TYPING: get type hints on the tokenizer here
-	@overload
-	def as_tokens(
-		self,
-		maze_tokenizer,  # noqa: ANN001
-		limit: int | None = None,
-		join_tokens_individual_maze: Literal[False] = False,
-	) -> list[list[str]]: ...
-	@overload
-	def as_tokens(
-		self,
-		maze_tokenizer,  # noqa: ANN001
-		limit: int | None = None,
-		join_tokens_individual_maze: Literal[True] = True,
-	) -> list[str]: ...
-	def as_tokens(
-		self,
-		maze_tokenizer,  # TODO: MazeTokenizer
-		limit: int | None = None,
-		join_tokens_individual_maze: bool = False,
-	) -> list[list[str]] | list[str]:
-		"""return the dataset as tokens according to the passed `maze_tokenizer`
-
-		the `maze_tokenizer` should be either a `MazeTokenizer` or a `MazeTokenizerModular`
-
-		if `join_tokens_individual_maze` is True, then the tokens of each maze are
-		joined with a space, and the result is a list of strings.
-		i.e.:
-
-			>>> dataset.as_tokens(join_tokens_individual_maze=False)
-			[["a", "b", "c"], ["d", "e", "f"]]
-			>>> dataset.as_tokens(join_tokens_individual_maze=True)
-			["a b c", "d e f"]
-		"""
-		output: list[list[str]] = [
-			maze.as_tokens(maze_tokenizer) for maze in self.mazes[:limit]
-		]
-		if join_tokens_individual_maze:
-			return [" ".join(tokens) for tokens in output]
-		else:
-			return output
-
-	def __len__(self) -> int:
-		"""return the number of mazes in the dataset"""
-		return len(self.mazes)
-
-	def __eq__(self, other: object) -> bool:
-		"""compare two datasets"""
-		if not isinstance(other, MazeDataset):
-			raise NotImplementedError(
-				"can only compare with other MazeDataset objects",
-			)
-		# TODO: compare hashes of data instead of the data itself?
-		return self.cfg == other.cfg and self.mazes == other.mazes
-
-	@classmethod
-	def generate(
-		cls,
-		cfg: MazeDatasetConfig,
-		gen_parallel: bool = False,
-		pool_kwargs: dict | None = None,
-		verbose: bool = False,
-	) -> "MazeDataset":
-		"""Generate a maze dataset given a config and some generation parameters"""
-		# Copy the config to avoid modifying the original
-		cfg_cpy: MazeDatasetConfig = MazeDatasetConfig.load(
-			json.loads(json.dumps(cfg.serialize())),
-		)
-
-		if pool_kwargs is None:
-			pool_kwargs = dict()
-		maze_indexes: Int[np.ndarray, " maze_index"] = np.arange(cfg_cpy.n_mazes)  # type: ignore[assignment]
-
-		solved_mazes: list[SolvedMaze | None]
-		# Configure tqdm for progress bar
-		tqdm_kwargs: dict = dict(
-			total=cfg_cpy.n_mazes,
-			unit="maze",
-			desc="generating & solving mazes",
-			disable=not verbose,
-		)
-		# TODO: don't use the global unless generating in parallel!
-		if gen_parallel:
-			with multiprocessing.Pool(
-				**pool_kwargs,
-				initializer=_maze_gen_init_worker,
-				initargs=(cfg_cpy,),
-			) as pool:
-				solved_mazes = list(
-					tqdm.tqdm(
-						pool.imap(_generate_maze_helper, maze_indexes),
-						**tqdm_kwargs,
-					),
-				)
-
-		else:
-			_maze_gen_init_worker(cfg_cpy)
-			solved_mazes = list(
-				tqdm.tqdm(
-					map(
-						_generate_maze_helper,
-						maze_indexes.tolist(),
-					),
-					**tqdm_kwargs,
-				),
-			)
-
-		# Filter out None values explicitly after ensuring all results are collected
-		solved_mazes_: list[SolvedMaze] = [
-			maze for maze in solved_mazes if maze is not None
-		]
-		# solved_mazes_ = list(filter(lambda x: x is not None, solved_mazes))
-
-		# Update the config with the actual number of mazes
-		cfg_cpy.n_mazes = len(solved_mazes_)
-
-		dataset: MazeDataset = cls(
-			cfg=cfg_cpy,
-			mazes=solved_mazes_,
-		)
-
-		dataset.update_self_config()  # Call `update_self_config()` to ensure the dataset's config reflects changes
-
-		np.random.seed(cfg_cpy.seed)  # Reset the seed to the value in the config copy
-
-		return dataset
-
-	@classmethod
-	def download(cls, cfg: MazeDatasetConfig, **kwargs) -> "MazeDataset":
-		"(not implemented yet!) download a maze dataset from the internet"
-		raise NotImplementedError("not implemented yet")
-
-	@classmethod
-	def load(cls, data: JSONdict) -> "MazeDataset":
-		"""load from zanj/json"""
-		if data[_FORMAT_KEY] == "MazeDataset:minimal":
-			return cls._load_minimal(data)
-		elif data[_FORMAT_KEY] == "MazeDataset:minimal_soln_cat":
-			return cls._load_minimal_soln_cat(data)
-		elif data[_FORMAT_KEY] == "MazeDataset":
-			if (
-				SERIALIZE_MINIMAL_THRESHOLD == -1
-			):  # Allow access to `_load_legacy` for profiling
-				return cls._load_legacy(data)
-			return cls._load_full(data)
-		else:
-			err_msg: str = f"`_FORMAT_KEY` string {data[_FORMAT_KEY] = } is not a recognized `MazeDataset` format. ({_FORMAT_KEY = })"
-			raise KeyError(
-				err_msg,
-			)
-
-	@classmethod
-	def _load_full(cls, data: JSONdict) -> "MazeDataset":
-		assert data[_FORMAT_KEY] == "MazeDataset"
-		return cls(
-			cfg=MazeDatasetConfig.load(data["cfg"]),  # type: ignore[arg-type]
-			mazes=load_item_recursive(data["mazes"], tuple()),
-			generation_metadata_collected=data["generation_metadata_collected"],  # type: ignore[arg-type]
-		)
-
-	@classmethod
-	def _load_minimal(cls, data: JSONdict) -> "MazeDataset":
-		assert data[_FORMAT_KEY] == "MazeDataset:minimal"
-		return cls(
-			cfg=MazeDatasetConfig.load(data["cfg"]),  # type: ignore[arg-type]
-			generation_metadata_collected=data["generation_metadata_collected"],  # type: ignore[arg-type]
-			mazes=[
-				SolvedMaze(
-					clist,
-					soln[:slen, ...],
-				)
-				for clist, slen, soln in zip(
-					load_item_recursive(data["maze_connection_lists"], tuple()),
-					load_item_recursive(data["maze_solution_lengths"], tuple()),
-					load_item_recursive(data["maze_solutions"], tuple()),
-					strict=False,
-					# load_item_recursive(data["maze_endpoints"], tuple()),
-				)
-			],
-		)
-
-	@classmethod
-	def _load_minimal_soln_cat(cls, data: JSONdict) -> "MazeDataset":
-		assert data[_FORMAT_KEY] == "MazeDataset:minimal_soln_cat"
-
-		maze_solution_lengths = load_item_recursive(
-			data["maze_solution_lengths"],
-			tuple(),
-		)
-		maze_solutions_concat = load_item_recursive(
-			data["maze_solutions_concat"],
-			tuple(),
-		)
-		maze_solutions = np.split(
-			maze_solutions_concat,
-			np.cumsum(maze_solution_lengths)[:-1],
-			axis=0,
-		)
-
-		return cls(
-			cfg=load_item_recursive(data["cfg"], tuple()),
-			generation_metadata_collected=load_item_recursive(
-				data["generation_metadata_collected"],
-				tuple(),
-			),
-			mazes=[
-				SolvedMaze(
-					connection_list=clist,
-					solution=soln,
-				)
-				for clist, soln in zip(
-					load_item_recursive(data["maze_connection_lists"], tuple()),
-					# load_item_recursive(data["maze_endpoints"], tuple()),
-					maze_solutions,
-					strict=False,
-				)
-			],
-		)
-
-	@classmethod
-	def _load_legacy(cls, data: JSONdict) -> "MazeDataset":
-		"""Legacy `load` method from <0.5.2. Used exclusively for profiling comparison."""
-		assert data[_FORMAT_KEY] == "MazeDataset"
-		return cls(
-			**{
-				key: load_item_recursive(data[key], tuple())
-				for key in ["cfg", "mazes", "generation_metadata_collected"]
-			},
-		)
-
-	def serialize(self) -> JSONdict:
-		"""serialize to zanj/json"""
-		if (
-			SERIALIZE_MINIMAL_THRESHOLD is not None
-			and len(self) >= SERIALIZE_MINIMAL_THRESHOLD
-		):
-			return self._serialize_minimal()
-		return self._serialize_full()
-
-	def _serialize_full(self) -> JSONdict:
-		return {
-			_FORMAT_KEY: "MazeDataset",
-			"cfg": json_serialize(self.cfg),
-			"mazes": json_serialize(self.mazes),
-			"generation_metadata_collected": json_serialize(
-				self.generation_metadata_collected,
-			),
-		}
-
-	def _serialize_minimal(self) -> JSONdict:
-		"alternate serialization where metadata is collected and mazes are stored in concatenated form"
-		filtered_meta: MazeDataset
-		if self.generation_metadata_collected is None:
-			filtered_meta = self.filter_by.collect_generation_meta()
-		else:
-			filtered_meta = self
-
-		max_solution_len: int = max(m.solution.shape[0] for m in filtered_meta.mazes)
-		n_mazes: int = len(filtered_meta.mazes)
-		grid_n: int = filtered_meta.cfg.grid_n
-
-		maze_connection_lists: np.ndarray = np.empty(
-			(n_mazes, 2, grid_n, grid_n),
-			dtype=np.bool_,
-		)
-		# maze_endpoints: np.ndarray = np.empty((n_mazes, 2, 2), dtype=np.int8)
-		maze_solution_lengths: np.ndarray = np.empty((n_mazes,), dtype=np.int32)
-		maze_solutions: np.ndarray = np.empty(
-			(n_mazes, max_solution_len, 2),
-			dtype=np.int8,
-		)
-
-		for idx, maze in enumerate(filtered_meta.mazes):
-			maze_connection_lists[idx] = maze.connection_list
-			# maze_endpoints[idx] = np.array([maze.start_pos, maze.end_pos])
-			maze_solution_lengths[idx] = maze.solution.shape[0]
-			maze_solutions[idx, : maze.solution.shape[0]] = maze.solution
-
-		return {
-			_FORMAT_KEY: "MazeDataset:minimal",
-			"cfg": json_serialize(filtered_meta.cfg),
-			"generation_metadata_collected": json_serialize(
-				filtered_meta.generation_metadata_collected,
-			),
-			"maze_connection_lists": maze_connection_lists,  # type: ignore[dict-item]
-			# "maze_endpoints": maze_endpoints,
-			"maze_solution_lengths": maze_solution_lengths,  # type: ignore[dict-item]
-			"maze_solutions": maze_solutions,  # type: ignore[dict-item]
-		}
-
-	def _serialize_minimal_soln_cat(self) -> JSONdict:
-		"alternate serialization where metadata is collected, and mazes and their solutions are stored in concatenated form"
-		if self.generation_metadata_collected is None:
-			filtered_meta = self.filter_by.collect_generation_meta()
-		else:
-			filtered_meta = self
-
-		maze_solution_lengths: np.ndarray = np.array(
-			[m.solution.shape[0] for m in filtered_meta.mazes],
-			dtype=np.int32,
-		)
-		n_mazes: int = len(filtered_meta.mazes)
-		grid_n: int = filtered_meta.cfg.grid_n
-		total_solution_len: int = np.sum(maze_solution_lengths)
-
-		maze_connection_lists: np.ndarray = np.empty(
-			(n_mazes, 2, grid_n, grid_n),
-			dtype=np.bool_,
-		)
-		maze_endpoints: np.ndarray = np.empty((n_mazes, 2, 2), dtype=np.int8)
-		maze_solutions_concat: np.ndarray = np.empty(
-			(total_solution_len, 2),
-			dtype=np.int8,
-		)
-
-		solutions_running_idx: int = 0
-		for idx, maze in enumerate(filtered_meta.mazes):
-			maze_connection_lists[idx] = maze.connection_list
-			maze_endpoints[idx] = np.array([maze.start_pos, maze.end_pos])
-			soln_len: int = maze.solution.shape[0]
-			maze_solution_lengths[idx] = soln_len
-			maze_solutions_concat[
-				solutions_running_idx : solutions_running_idx + soln_len
-			] = maze.solution
-			solutions_running_idx += soln_len
-
-		return {
-			_FORMAT_KEY: "MazeDataset:minimal_soln_cat",
-			"cfg": json_serialize(filtered_meta.cfg),
-			"generation_metadata_collected": json_serialize(
-				filtered_meta.generation_metadata_collected,
-			),
-			"maze_connection_lists": maze_connection_lists,  # type: ignore[dict-item]
-			"maze_endpoints": maze_endpoints,  # type: ignore[dict-item]
-			"maze_solution_lengths": maze_solution_lengths,  # type: ignore[dict-item]
-			"maze_solutions_concat": maze_solutions_concat,  # type: ignore[dict-item]
-		}
-
-	def update_self_config(self) -> None:
-		"""update the config to match the current state of the dataset (number of mazes, such as after filtering)"""
-		self.cfg.n_mazes = len(self.mazes)
-
-	def custom_maze_filter(
-		self,
-		method: typing.Callable[[SolvedMaze], bool],
-		**kwargs,
-	) -> "MazeDataset":
-		"""filter the dataset using a custom method"""
-		output: MazeDataset = MazeDataset(
-			cfg=copy.deepcopy(self.cfg),
-			mazes=[m for m in self.mazes if method(m, **kwargs)],
-		)
-		output.cfg.applied_filters.append(
-			{
-				"name": f"__custom__:{method.__name__}",
-				"kwargs": kwargs,
-			},
-		)
-		output.update_self_config()
-		return output
-
-
-# register things with zanj
-MazeDatasetConfig._dataset_class = property(  # type: ignore[method-assign]
-	lambda self: MazeDataset,  # noqa: ARG005
-)
-register_loader_handler(
-	LoaderHandler(
-		check=lambda json_item, path=None, z=None: (  # noqa: ARG005
-			isinstance(json_item, typing.Mapping)
-			and _FORMAT_KEY in json_item
-			and json_item[_FORMAT_KEY].startswith("MazeDataset")
-		),
-		load=lambda json_item, path=None, z=None: MazeDataset.load(json_item),  # noqa: ARG005
-		uid="MazeDataset",
-		source_pckg="maze_dataset.generation.maze_dataset",
-		desc="MazeDataset",
-	),
-)
+from maze_dataset.dataset.maze_dataset import MazeDataset
+from maze_dataset.maze import SolvedMaze
 
 
 def register_maze_filter(
 	method: typing.Callable[[SolvedMaze, typing.Any], bool],
-) -> DatasetFilterProtocol:
+) -> DatasetFilterFunc:
 	"""register a maze filter, casting it to operate over the whole list of mazes
 
 	method should be a staticmethod of a namespace class registered with `register_filter_namespace_for_dataset`
@@ -3231,7 +2351,9 @@ class MazeDatasetFilters:
 	@staticmethod
 	def start_end_distance(maze: SolvedMaze, min_distance: int) -> bool:
 		"""filter out datasets where the start and end pos are less than `min_distance` apart on the manhattan distance (ignoring walls)"""
-		return np.linalg.norm(maze.start_pos - maze.end_pos, 1) >= min_distance
+		return bool(
+			(np.linalg.norm(maze.start_pos - maze.end_pos, 1) >= min_distance).all()
+		)
 
 	@register_dataset_filter
 	@staticmethod
@@ -3424,7 +2546,7 @@ class MazeDatasetFilters:
 						try:
 							value = np.array(value)  # noqa: PLW2901
 						except ValueError as convert_to_np_err:
-							err_msg: str = (
+							err_msg = (
 								f"Cannot collect generation meta for {key} as it is a list of type '{type(value[0]) = !s}'"
 								"\nexpected either a basic type (bool, int, float, str), a numpy coord, or a numpy array of coords"
 							)
@@ -3440,13 +2562,13 @@ class MazeDatasetFilters:
 						# assume its a list of coordinates
 						gen_meta_lists[key].update([tuple(v) for v in value])
 					else:
-						err_msg: str = (
+						err_msg = (
 							f"Cannot collect generation meta for {key} as it is an ndarray of shape {value.shape}\n"
 							"expected either a coord of shape (2,) or a list of coords of shape (n, 2)"
 						)
 						raise ValueError(err_msg)
 				else:
-					err_msg: str = (
+					err_msg = (
 						f"Cannot collect generation meta for {key} as it is of type '{type(value)!s}'\n"
 						"expected either a basic type (bool, int, float, str), a numpy coord, or a numpy array of coords"
 					)
@@ -3463,8 +2585,583 @@ class MazeDatasetFilters:
 
 		return new_dataset
 
+``````{ end_of_file="maze_dataset/dataset/filters.py" }
 
-# the code below is for doing some smarter collecting and type checking. Probably will delete.
+``````{ path="maze_dataset/dataset/maze_dataset.py"  }
+"""`MazeDatasetConfig` is where you decide what your dataset should look like, then pass it to `MazeDataset.from_config` to generate or load the dataset.
+
+see [demo_dataset notebook](../../notebooks/demo_dataset)
+
+"""
+
+import copy
+import json
+import multiprocessing
+import typing
+from pathlib import Path
+from typing import Literal, Optional, cast, overload
+
+import numpy as np
+import tqdm
+from jaxtyping import Int
+from muutils.json_serialize import (
+	json_serialize,
+)
+from muutils.json_serialize.util import (
+	_FORMAT_KEY,
+	JSONdict,
+)
+from muutils.misc import stable_hash
+from zanj import ZANJ
+from zanj.loading import LoaderHandler, load_item_recursive, register_loader_handler
+
+from maze_dataset.constants import CoordArray
+from maze_dataset.dataset.dataset import (
+	GPTDataset,
+)
+from maze_dataset.dataset.maze_dataset_config import (
+	SERIALIZE_MINIMAL_THRESHOLD,
+	EndpointKwargsType,
+	MazeDatasetConfig,
+)
+from maze_dataset.generation.seed import GLOBAL_SEED
+from maze_dataset.maze import LatticeMaze, SolvedMaze
+
+_GLOBAL_WORKER_CONFIG: MazeDatasetConfig
+
+
+def _generate_maze_helper(index: int) -> Optional[SolvedMaze]:  # noqa: ARG001
+	"""Helper function for generating mazes in parallel.
+
+	> [!CAUTION]
+	> don't use this unless generating in parallel!
+	"""
+	global _GLOBAL_WORKER_CONFIG  # noqa: PLW0602
+	# TODO: don't use this unless generating in parallel!
+	maze: LatticeMaze = _GLOBAL_WORKER_CONFIG.maze_ctor(
+		grid_shape=_GLOBAL_WORKER_CONFIG.grid_shape_np,
+		**_GLOBAL_WORKER_CONFIG.maze_ctor_kwargs,
+	)
+
+	endpoint_kwargs: EndpointKwargsType = _GLOBAL_WORKER_CONFIG.endpoint_kwargs.copy()
+
+	# Generate the solution
+	# mypy doesnt realize EndpointKwargsType has only string keys: `Keywords must be strings  [misc]`
+	# TYPING: error: No overload variant of "generate_random_path" of "LatticeMaze" matches argument type "dict[Literal['allowed_start', 'allowed_end', 'deadend_start', 'deadend_end', 'endpoints_not_equal', 'except_on_no_valid_endpoint'], bool | list[tuple[int, int]] | None]"  [call-overload]
+	solution: Optional[CoordArray] = maze.generate_random_path(**endpoint_kwargs)  # type: ignore[misc, call-overload]
+
+	# Validate the solution
+	if (
+		solution is None
+		or len(solution) == 0
+		or not isinstance(solution, np.ndarray)
+		# magic value is fine here
+		or len(solution.shape) != 2  # noqa: PLR2004
+	):
+		return None  # Return None if the solution is invalid
+
+	return SolvedMaze.from_lattice_maze(
+		lattice_maze=maze,
+		solution=solution,
+	)
+
+
+def _maze_gen_init_worker(config: MazeDatasetConfig) -> None:
+	"""special worker helper
+
+	> [!CAUTION]
+	> this makes the generation depend both on whether parallelism is used, and on the number of processes. this is bad!
+
+	"""
+	# TODO: dont use globals here!
+	global _GLOBAL_WORKER_CONFIG  # noqa: PLW0603
+	_GLOBAL_WORKER_CONFIG = config
+
+	process_id: tuple[int, ...] = multiprocessing.current_process()._identity
+	if len(process_id) == 0:
+		# no multiprocessing, seed was already set
+		pass
+	elif len(process_id) == 1:
+		# multiprocessing, adjust seed based on process id
+		# only set numpy seed, since we do not use other random gens
+		np.random.seed(
+			_GLOBAL_WORKER_CONFIG.seed
+			or GLOBAL_SEED  # if the seed is None, use the global seed
+			+ process_id[0]
+		)
+	else:
+		err_msg = (
+			f"unexpected process id: {process_id = }\n{multiprocessing.Process() = }"
+		)
+		raise ValueError(
+			err_msg,
+		)
+
+
+class MazeDataset(GPTDataset[MazeDatasetConfig]):
+	"""a maze dataset class. This is a collection of solved mazes, and should be initialized via `MazeDataset.from_config`"""
+
+	def __init__(
+		self,
+		cfg: MazeDatasetConfig,
+		mazes: typing.Sequence[SolvedMaze],
+		generation_metadata_collected: dict | None = None,
+	) -> None:
+		"""initialize a maze dataset from a config and a list of solved mazes"""
+		super().__init__()
+		self.cfg: MazeDatasetConfig = cfg
+		self.mazes: list[SolvedMaze] = list(mazes)
+		self.generation_metadata_collected: dict | None = generation_metadata_collected
+
+	# TYPING: error: Return type "MazeDataset" of "from_config" incompatible with return type "T_Dataset" in supertype "GPTDataset"  [override]
+	@classmethod
+	def from_config(  # type: ignore[override]
+		cls,
+		# TYPING: error: Argument 1 of "from_config" is incompatible with supertype "GPTDataset"; supertype defines the argument type as "T_DatasetConfig"  [override]
+		cfg: MazeDatasetConfig,  # type: ignore[override]
+		do_generate: bool = True,
+		load_local: bool = True,
+		save_local: bool = True,
+		zanj: ZANJ | None = None,
+		do_download: bool = True,
+		local_base_path: Path = Path("data/maze_dataset"),
+		except_on_config_mismatch: bool = True,
+		allow_generation_metadata_filter_mismatch: bool = True,
+		verbose: bool = False,
+		**kwargs,
+	) -> "MazeDataset":
+		"""create a maze dataset from a config
+
+		priority of loading:
+		1. load from local
+		2. download
+		3. generate
+
+		"""
+		return cast(
+			MazeDataset,
+			super().from_config(
+				cfg=cfg,
+				do_generate=do_generate,
+				load_local=load_local,
+				save_local=save_local,
+				zanj=zanj,
+				do_download=do_download,
+				local_base_path=local_base_path,
+				except_on_config_mismatch=except_on_config_mismatch,
+				allow_generation_metadata_filter_mismatch=allow_generation_metadata_filter_mismatch,
+				verbose=verbose,
+				**kwargs,
+			),
+		)
+
+	def data_hash(self) -> int:
+		"""return a hash of the data"""
+		return stable_hash(str(tuple([x.serialize() for x in self.mazes])))
+
+	def __getitem__(self, i: int) -> SolvedMaze:
+		"""get a maze by index"""
+		return self.mazes[i]
+
+	def __iter__(self) -> typing.Iterator[SolvedMaze]:
+		"""iterate over the mazes"""
+		return iter(self.mazes)
+
+	def __deepcopy__(self, memo) -> "MazeDataset":  # noqa: ANN001
+		"""deepcopy the dataset
+
+		FIX: this isnt actually a deepcopy I think?
+		"""
+		return MazeDataset.load(self._serialize_full())
+
+	# TYPING: get type hints on the tokenizer here
+	@overload
+	def as_tokens(
+		self,
+		maze_tokenizer,  # noqa: ANN001
+		limit: int | None = None,
+		join_tokens_individual_maze: Literal[False] = False,
+	) -> list[list[str]]: ...
+	@overload
+	def as_tokens(
+		self,
+		maze_tokenizer,  # noqa: ANN001
+		limit: int | None = None,
+		join_tokens_individual_maze: Literal[True] = True,
+	) -> list[str]: ...
+	def as_tokens(
+		self,
+		maze_tokenizer,  # TODO: MazeTokenizer
+		limit: int | None = None,
+		join_tokens_individual_maze: bool = False,
+	) -> list[list[str]] | list[str]:
+		"""return the dataset as tokens according to the passed `maze_tokenizer`
+
+		the `maze_tokenizer` should be either a `MazeTokenizer` or a `MazeTokenizerModular`
+
+		if `join_tokens_individual_maze` is True, then the tokens of each maze are
+		joined with a space, and the result is a list of strings.
+		i.e.:
+
+			>>> dataset.as_tokens(join_tokens_individual_maze=False)
+			[["a", "b", "c"], ["d", "e", "f"]]
+			>>> dataset.as_tokens(join_tokens_individual_maze=True)
+			["a b c", "d e f"]
+		"""
+		output: list[list[str]] = [
+			maze.as_tokens(maze_tokenizer) for maze in self.mazes[:limit]
+		]
+		if join_tokens_individual_maze:
+			return [" ".join(tokens) for tokens in output]
+		else:
+			return output
+
+	def __len__(self) -> int:
+		"""return the number of mazes in the dataset"""
+		return len(self.mazes)
+
+	def __eq__(self, other: object) -> bool:
+		"""compare two datasets"""
+		if not isinstance(other, MazeDataset):
+			raise NotImplementedError(
+				"can only compare with other MazeDataset objects",
+			)
+		# TODO: compare hashes of data instead of the data itself?
+		return self.cfg == other.cfg and self.mazes == other.mazes
+
+	@classmethod
+	def generate(
+		cls,
+		cfg: MazeDatasetConfig,
+		gen_parallel: bool = False,
+		pool_kwargs: dict | None = None,
+		verbose: bool = False,
+		# TODO: what to do when unexpected kwargs are passed?
+		**kwargs,  # noqa: ARG003
+	) -> "MazeDataset":
+		"""Generate a maze dataset given a config and some generation parameters"""
+		# Copy the config to avoid modifying the original
+		cfg_cpy: MazeDatasetConfig = MazeDatasetConfig.load(
+			json.loads(json.dumps(cfg.serialize())),
+		)
+
+		if pool_kwargs is None:
+			pool_kwargs = dict()
+		maze_indexes: Int[np.ndarray, " maze_index"] = np.arange(cfg_cpy.n_mazes)  # type: ignore[assignment]
+
+		solved_mazes: list[SolvedMaze | None]
+		# Configure tqdm for progress bar
+		tqdm_kwargs: dict = dict(
+			total=cfg_cpy.n_mazes,
+			unit="maze",
+			desc="generating & solving mazes",
+			disable=not verbose,
+		)
+		# TODO: don't use the global unless generating in parallel!
+		if gen_parallel:
+			with multiprocessing.Pool(
+				**pool_kwargs,
+				initializer=_maze_gen_init_worker,
+				initargs=(cfg_cpy,),
+			) as pool:
+				solved_mazes = list(
+					tqdm.tqdm(
+						pool.imap(_generate_maze_helper, maze_indexes),
+						**tqdm_kwargs,
+					),
+				)
+
+		else:
+			_maze_gen_init_worker(cfg_cpy)
+			solved_mazes = list(
+				tqdm.tqdm(
+					map(
+						# TYPING:  error: Argument 1 to "map" has incompatible type "Callable[[int], SolvedMaze | None]"; expected "Callable[[str], SolvedMaze | None]"  [arg-type]
+						# why does it think tolist() returns a string?
+						_generate_maze_helper,  # type: ignore[arg-type]
+						maze_indexes.tolist(),
+					),
+					**tqdm_kwargs,
+				),
+			)
+
+		# Filter out None values explicitly after ensuring all results are collected
+		solved_mazes_: list[SolvedMaze] = [
+			maze for maze in solved_mazes if maze is not None
+		]
+		# solved_mazes_ = list(filter(lambda x: x is not None, solved_mazes))
+
+		# Update the config with the actual number of mazes
+		cfg_cpy.n_mazes = len(solved_mazes_)
+
+		dataset: MazeDataset = cls(
+			cfg=cfg_cpy,
+			mazes=solved_mazes_,
+		)
+
+		dataset.update_self_config()  # Call `update_self_config()` to ensure the dataset's config reflects changes
+
+		np.random.seed(cfg_cpy.seed)  # Reset the seed to the value in the config copy
+
+		return dataset
+
+	@classmethod
+	def download(cls, cfg: MazeDatasetConfig, **kwargs) -> "MazeDataset":
+		"(not implemented yet!) download a maze dataset from the internet"
+		raise NotImplementedError("not implemented yet")
+
+	@classmethod
+	def load(cls: "type[MazeDataset]", data: JSONdict) -> "MazeDataset":
+		"""load from zanj/json"""
+		if data[_FORMAT_KEY] == "MazeDataset:minimal":
+			return cls._load_minimal(data)
+		elif data[_FORMAT_KEY] == "MazeDataset:minimal_soln_cat":
+			return cls._load_minimal_soln_cat(data)
+		elif data[_FORMAT_KEY] == "MazeDataset":
+			if (
+				SERIALIZE_MINIMAL_THRESHOLD == -1
+			):  # Allow access to `_load_legacy` for profiling
+				return cls._load_legacy(data)
+			return cls._load_full(data)
+		else:
+			err_msg: str = f"`_FORMAT_KEY` string {data[_FORMAT_KEY] = } is not a recognized `MazeDataset` format. ({_FORMAT_KEY = })"
+			raise KeyError(
+				err_msg,
+			)
+
+	@classmethod
+	def _load_full(cls, data: JSONdict) -> "MazeDataset":
+		assert data[_FORMAT_KEY] == "MazeDataset"
+		return cls(
+			cfg=MazeDatasetConfig.load(data["cfg"]),  # type: ignore[arg-type]
+			mazes=load_item_recursive(data["mazes"], tuple()),
+			generation_metadata_collected=data["generation_metadata_collected"],  # type: ignore[arg-type]
+		)
+
+	@classmethod
+	def _load_minimal(cls, data: JSONdict) -> "MazeDataset":
+		assert data[_FORMAT_KEY] == "MazeDataset:minimal"
+		return cls(
+			cfg=MazeDatasetConfig.load(data["cfg"]),  # type: ignore[arg-type]
+			generation_metadata_collected=data["generation_metadata_collected"],  # type: ignore[arg-type]
+			mazes=[
+				SolvedMaze(
+					clist,
+					soln[:slen, ...],
+				)
+				for clist, slen, soln in zip(
+					load_item_recursive(data["maze_connection_lists"], tuple()),
+					load_item_recursive(data["maze_solution_lengths"], tuple()),
+					load_item_recursive(data["maze_solutions"], tuple()),
+					strict=False,
+					# load_item_recursive(data["maze_endpoints"], tuple()),
+				)
+			],
+		)
+
+	@classmethod
+	def _load_minimal_soln_cat(cls, data: JSONdict) -> "MazeDataset":
+		assert data[_FORMAT_KEY] == "MazeDataset:minimal_soln_cat"
+
+		maze_solution_lengths = load_item_recursive(
+			data["maze_solution_lengths"],
+			tuple(),
+		)
+		maze_solutions_concat = load_item_recursive(
+			data["maze_solutions_concat"],
+			tuple(),
+		)
+		maze_solutions = np.split(
+			maze_solutions_concat,
+			np.cumsum(maze_solution_lengths)[:-1],
+			axis=0,
+		)
+
+		return cls(
+			cfg=load_item_recursive(data["cfg"], tuple()),
+			generation_metadata_collected=load_item_recursive(
+				data["generation_metadata_collected"],
+				tuple(),
+			),
+			mazes=[
+				SolvedMaze(
+					connection_list=clist,
+					solution=soln,
+				)
+				for clist, soln in zip(
+					load_item_recursive(data["maze_connection_lists"], tuple()),
+					# load_item_recursive(data["maze_endpoints"], tuple()),
+					maze_solutions,
+					strict=False,
+				)
+			],
+		)
+
+	@classmethod
+	def _load_legacy(cls, data: JSONdict) -> "MazeDataset":
+		"""Legacy `load` method from <0.5.2. Used exclusively for profiling comparison."""
+		assert data[_FORMAT_KEY] == "MazeDataset"
+		return cls(
+			**{
+				key: load_item_recursive(data[key], tuple())
+				for key in ["cfg", "mazes", "generation_metadata_collected"]
+			},
+		)
+
+	def serialize(self) -> JSONdict:
+		"""serialize to zanj/json"""
+		if (
+			SERIALIZE_MINIMAL_THRESHOLD is not None
+			and len(self) >= SERIALIZE_MINIMAL_THRESHOLD
+		):
+			return self._serialize_minimal()
+		return self._serialize_full()
+
+	def _serialize_full(self) -> JSONdict:
+		return {
+			_FORMAT_KEY: "MazeDataset",
+			"cfg": json_serialize(self.cfg),
+			"mazes": json_serialize(self.mazes),
+			"generation_metadata_collected": json_serialize(
+				self.generation_metadata_collected,
+			),
+		}
+
+	def _serialize_minimal(self) -> JSONdict:
+		"alternate serialization where metadata is collected and mazes are stored in concatenated form"
+		filtered_meta: MazeDataset
+		if self.generation_metadata_collected is None:
+			filtered_meta = self.filter_by.collect_generation_meta()
+		else:
+			filtered_meta = self
+
+		max_solution_len: int = max(m.solution.shape[0] for m in filtered_meta.mazes)
+		n_mazes: int = len(filtered_meta.mazes)
+		grid_n: int = filtered_meta.cfg.grid_n
+
+		maze_connection_lists: np.ndarray = np.empty(
+			(n_mazes, 2, grid_n, grid_n),
+			dtype=np.bool_,
+		)
+		# maze_endpoints: np.ndarray = np.empty((n_mazes, 2, 2), dtype=np.int8)
+		maze_solution_lengths: np.ndarray = np.empty((n_mazes,), dtype=np.int32)
+		maze_solutions: np.ndarray = np.empty(
+			(n_mazes, max_solution_len, 2),
+			dtype=np.int8,
+		)
+
+		for idx, maze in enumerate(filtered_meta.mazes):
+			maze_connection_lists[idx] = maze.connection_list
+			# maze_endpoints[idx] = np.array([maze.start_pos, maze.end_pos])
+			maze_solution_lengths[idx] = maze.solution.shape[0]
+			maze_solutions[idx, : maze.solution.shape[0]] = maze.solution
+
+		return {
+			_FORMAT_KEY: "MazeDataset:minimal",
+			"cfg": json_serialize(filtered_meta.cfg),
+			"generation_metadata_collected": json_serialize(
+				filtered_meta.generation_metadata_collected,
+			),
+			"maze_connection_lists": maze_connection_lists,  # type: ignore[dict-item]
+			# "maze_endpoints": maze_endpoints,
+			"maze_solution_lengths": maze_solution_lengths,  # type: ignore[dict-item]
+			"maze_solutions": maze_solutions,  # type: ignore[dict-item]
+		}
+
+	def _serialize_minimal_soln_cat(self: "MazeDataset") -> JSONdict:
+		"alternate serialization where metadata is collected, and mazes and their solutions are stored in concatenated form"
+		filtered_meta: MazeDataset
+		if self.generation_metadata_collected is None:
+			filtered_meta = self.filter_by.collect_generation_meta()
+		else:
+			filtered_meta = self
+
+		maze_solution_lengths: np.ndarray = np.array(
+			[m.solution.shape[0] for m in filtered_meta.mazes],
+			dtype=np.int32,
+		)
+		n_mazes: int = len(filtered_meta.mazes)
+		grid_n: int = filtered_meta.cfg.grid_n
+		total_solution_len: int = np.sum(maze_solution_lengths)
+
+		maze_connection_lists: np.ndarray = np.empty(
+			(n_mazes, 2, grid_n, grid_n),
+			dtype=np.bool_,
+		)
+		maze_endpoints: np.ndarray = np.empty((n_mazes, 2, 2), dtype=np.int8)
+		maze_solutions_concat: np.ndarray = np.empty(
+			(total_solution_len, 2),
+			dtype=np.int8,
+		)
+
+		solutions_running_idx: int = 0
+		for idx, maze in enumerate(filtered_meta.mazes):
+			maze_connection_lists[idx] = maze.connection_list
+			maze_endpoints[idx] = np.array([maze.start_pos, maze.end_pos])
+			soln_len: int = maze.solution.shape[0]
+			maze_solution_lengths[idx] = soln_len
+			maze_solutions_concat[
+				solutions_running_idx : solutions_running_idx + soln_len
+			] = maze.solution
+			solutions_running_idx += soln_len
+
+		return {
+			_FORMAT_KEY: "MazeDataset:minimal_soln_cat",
+			"cfg": json_serialize(filtered_meta.cfg),
+			"generation_metadata_collected": json_serialize(
+				filtered_meta.generation_metadata_collected,
+			),
+			"maze_connection_lists": maze_connection_lists,  # type: ignore[dict-item]
+			"maze_endpoints": maze_endpoints,  # type: ignore[dict-item]
+			"maze_solution_lengths": maze_solution_lengths,  # type: ignore[dict-item]
+			"maze_solutions_concat": maze_solutions_concat,  # type: ignore[dict-item]
+		}
+
+	def update_self_config(self) -> None:
+		"""update the config to match the current state of the dataset (number of mazes, such as after filtering)"""
+		self.cfg.n_mazes = len(self.mazes)
+
+	def custom_maze_filter(
+		self,
+		method: typing.Callable[[SolvedMaze], bool],
+		**kwargs,
+	) -> "MazeDataset":
+		"""filter the dataset using a custom method"""
+		output: MazeDataset = MazeDataset(
+			cfg=copy.deepcopy(self.cfg),
+			mazes=[m for m in self.mazes if method(m, **kwargs)],
+		)
+		output.cfg.applied_filters.append(
+			{
+				"name": f"__custom__:{method.__name__}",
+				"kwargs": kwargs,
+			},
+		)
+		output.update_self_config()
+		return output
+
+
+MazeDatasetConfig._dataset_class = property(  # type: ignore[method-assign, assignment]
+	lambda self: MazeDataset,  # noqa: ARG005
+)
+
+# register things with zanj
+register_loader_handler(
+	LoaderHandler(
+		check=lambda json_item, path=None, z=None: (  # type: ignore[misc] # noqa: ARG005
+			isinstance(json_item, typing.Mapping)
+			and _FORMAT_KEY in json_item
+			and json_item[_FORMAT_KEY].startswith("MazeDataset")
+		),
+		load=lambda json_item, path=None, z=None: MazeDataset.load(json_item),  # type: ignore[misc] # noqa: ARG005
+		uid="MazeDataset",
+		source_pckg="maze_dataset.generation.maze_dataset",
+		desc="MazeDataset",
+	),
+)
+
+
+# TODO: the code below is for doing some smarter collecting and type checking. Probably will delete.
 """
 collect either the type at the field, or the shape of the field if it is an array
 metadata_types: dict[str, set[type, tuple]] = dict()
@@ -3511,6 +3208,402 @@ for key, key_type in metadata_types.items():
 """
 
 ``````{ end_of_file="maze_dataset/dataset/maze_dataset.py" }
+
+``````{ path="maze_dataset/dataset/maze_dataset_config.py"  }
+"implements `MazeDatasetConfig` which is used to generate or load a dataset"
+
+import json
+import typing
+import warnings
+from typing import Callable
+
+import numpy as np
+from jaxtyping import Float
+from muutils.json_serialize import (
+	serializable_dataclass,
+	serializable_field,
+)
+from muutils.json_serialize.util import (
+	safe_getsource,
+	string_as_lines,
+)
+from muutils.misc import sanitize_fname, shorten_numerical_to_str, stable_hash
+
+from maze_dataset.constants import Coord, CoordTup
+from maze_dataset.dataset.dataset import (
+	GPTDatasetConfig,
+)
+from maze_dataset.dataset.success_predict_math import cfg_success_predict_fn
+from maze_dataset.generation.generators import _GENERATORS_PERCOLATED, GENERATORS_MAP
+
+SERIALIZE_MINIMAL_THRESHOLD: int | None = 100
+"""If `n_mazes>=SERIALIZE_MINIMAL_THRESHOLD`, then the MazeDataset will use `serialize_minimal`.
+Setting to None means that `serialize_minimal` will never be used.
+Set to -1 to make calls to `read` use `MazeDataset._load_legacy`. Used for profiling only."""
+
+MAZEDATASETCONFIG_FNAME_HASH_LENGTH: int = 5
+"length of the has, in characters, of the hash in the fname of a `MazeDatasetConfig`"
+
+_PercolationSuccessArray = Float[
+	np.ndarray,
+	"p/grid_n/deadends/endpoints_not_equal/generator_func=5",
+]
+
+
+class NoPercolationInConfigError(ValueError):
+	"""raised when trying to predict the success fraction of a config that doesn't have percolation"""
+
+	pass
+
+
+class SuccessChanceTooSmallError(ValueError):
+	"""raised when the success fraction is below the threshold in `MazeDatasetConfig.success_fraction_compensate`"""
+
+	pass
+
+
+def set_serialize_minimal_threshold(threshold: int | None) -> None:
+	"get the global SERIALIZE_MINIMAL_THRESHOLD"
+	global SERIALIZE_MINIMAL_THRESHOLD  # noqa: PLW0603
+	SERIALIZE_MINIMAL_THRESHOLD = threshold
+
+
+def _load_maze_ctor(maze_ctor_serialized: str | dict) -> Callable:
+	"get the maze constructor from `GENERATORS_MAP`"
+	if isinstance(maze_ctor_serialized, dict):
+		# this is both the new and old version of the serialization
+		return GENERATORS_MAP[maze_ctor_serialized["__name__"]]
+	elif isinstance(maze_ctor_serialized, str):
+		# this is a version I switched to for a while but now we are switching back
+		warnings.warn(
+			"you are loading an old model/config in `_load_maze_ctor()`!!! this should not be happening, please report: "
+			"https://github.com/understanding-search/maze-dataset/issues/new",
+		)
+		return GENERATORS_MAP[maze_ctor_serialized]
+	else:
+		err_msg: str = f"maze_ctor_serialized is of type {type(maze_ctor_serialized) = }, expected str or dict\n{maze_ctor_serialized = }"
+		raise TypeError(err_msg)
+
+
+EndpointKwargsType = dict[
+	typing.Literal[
+		"allowed_start",
+		"allowed_end",
+		"deadend_start",
+		"deadend_end",
+		"endpoints_not_equal",
+		"except_on_no_valid_endpoint",
+	],
+	bool | None | list[tuple[int, int]],
+]
+"type hint for `MazeDatasetConfig.endpoint_kwargs`"
+
+
+def _load_endpoint_kwargs(data: dict) -> EndpointKwargsType:
+	if data.get("endpoint_kwargs") is None:
+		return dict()
+
+	else:
+		return {
+			k: (
+				# bools and Nones are fine
+				v
+				if (isinstance(v, bool) or v is None)
+				# assume its a CoordList
+				else [tuple(x) for x in v]  # muutils/zanj saves tuples as lists
+			)
+			for k, v in data["endpoint_kwargs"].items()
+		}
+
+
+@serializable_dataclass(kw_only=True, properties_to_serialize=["grid_shape"])
+class _MazeDatasetConfig_base(GPTDatasetConfig):  # noqa: N801
+	"""base config -- we serialize, dump to json, and hash this to get the fname. all actual variables we want to be hashed are here"""
+
+	# NOTE: type: ignore[misc] is because it tells us non-default attributes aren't allowed after ones with defaults, but everything is kw_only
+
+	grid_n: int = serializable_field()  # type: ignore[misc]
+
+	# not comparing n_mazes is done primarily to avoid conflicts which happen during `from_config` when we have applied filters
+	n_mazes: int = serializable_field(compare=False)  # type: ignore[misc]
+
+	maze_ctor: Callable = serializable_field(
+		default=GENERATORS_MAP["gen_dfs"],
+		serialization_fn=lambda gen_func: {
+			"__name__": gen_func.__name__,
+			"__module__": gen_func.__module__,
+			"__doc__": string_as_lines(gen_func.__doc__),
+			"source_code": safe_getsource(gen_func),
+		},
+		loading_fn=lambda data: _load_maze_ctor(data["maze_ctor"]),
+		assert_type=False,  # TODO: check the type here once muutils supports checking Callable signatures
+	)
+
+	maze_ctor_kwargs: dict = serializable_field(
+		default_factory=dict,
+		serialization_fn=lambda kwargs: kwargs,
+		loading_fn=lambda data: (
+			dict()
+			if data.get("maze_ctor_kwargs", None)
+			is None  # this should handle the backwards compatibility
+			else data["maze_ctor_kwargs"]
+		),
+	)
+
+	endpoint_kwargs: EndpointKwargsType = serializable_field(
+		default_factory=dict,
+		serialization_fn=lambda kwargs: kwargs,
+		loading_fn=_load_endpoint_kwargs,
+		assert_type=False,
+	)
+
+	@property
+	def grid_shape(self) -> CoordTup:
+		"""return the shape of the grid as a tuple"""
+		return (self.grid_n, self.grid_n)
+
+	@property
+	def grid_shape_np(self) -> Coord:
+		"""return the shape of the grid as a numpy array"""
+		return np.array(self.grid_shape)
+
+	@property
+	def max_grid_n(self) -> int:
+		"""return the maximum of the grid shape"""
+		return max(self.grid_shape)
+
+	def _serialize_base(self) -> dict:
+		"""serialize the base config"""
+		return self.serialize()
+
+	def stable_hash_cfg(self) -> int:
+		"""return a stable hash of the config"""
+		return stable_hash(
+			json.dumps(
+				self._serialize_base(),
+				sort_keys=True,
+				indent=None,
+			),
+		)
+
+	# TODO: include fname in serialized form, but exclude it when hashing so we dont infinitely loop?
+	def to_fname(self) -> str:
+		"""return a unique identifier (valid as a filename) for this config"""
+		n_mazes_str: str = shorten_numerical_to_str(self.n_mazes)
+		maze_ctor_name: str = self.maze_ctor.__name__.removeprefix("gen_")
+		hash_id: int = self.stable_hash_cfg() % 10**MAZEDATASETCONFIG_FNAME_HASH_LENGTH
+		return sanitize_fname(
+			f"{self.name}-g{self.grid_n}-n{n_mazes_str}-a_{maze_ctor_name}-h{hash_id}",
+		)
+
+
+# NOTE: type: ignore[misc] is because it tells us non-default attributes aren't allowed after ones with defaults, but everything is kw_only
+@serializable_dataclass(kw_only=True)
+class MazeDatasetConfig(_MazeDatasetConfig_base):  # type: ignore[misc]
+	"""config object which is passed to `MazeDataset.from_config` to generate or load a dataset"""
+
+	@property
+	def config_version(self) -> str:
+		"""return the version of the config. added in maze_dataset v1.3.0, previous versions had no dataset config"""
+		return "1.0"
+
+	def _serialize_base(self) -> dict:
+		"""serialize the base config"""
+		return super().serialize()
+
+	def serialize(self) -> dict:
+		"serialize the MazeDatasetConfig with all fields and fname"
+		return {
+			**self._serialize_base(),
+			"fname": self.to_fname(),
+			"versions": {"config": self.config_version, "maze_dataset": "1.3.0"},
+		}
+
+	def summary(self) -> dict:
+		"""return a summary of the config"""
+		# do we run this to make sure it doesn't error?
+		super_summary: dict = super().summary()
+		assert super_summary
+		self_ser: dict = self.serialize()
+		return dict(
+			name=self.name,
+			fname=self.to_fname(),
+			sdc_hash=self.stable_hash_cfg(),
+			seed=self.seed,
+			seq_len_min=self.seq_len_min,
+			seq_len_max=self.seq_len_max,
+			applied_filters=self.applied_filters,
+			grid_n=self_ser["grid_n"],
+			n_mazes=self_ser["n_mazes"],
+			maze_ctor_name=self_ser["maze_ctor"]["__name__"],
+			maze_ctor_kwargs=self_ser["maze_ctor_kwargs"],
+			endpoint_kwargs=self_ser["endpoint_kwargs"],
+		)
+
+	def _to_ps_array(self) -> _PercolationSuccessArray:
+		"""Convert this config to a [p, grid_n, deadends, endpoints_not_equal, generator_func] vector.
+
+		used in predicting the success rate
+		"""
+		try:
+			assert self.maze_ctor.__name__ in _GENERATORS_PERCOLATED, (
+				f"generator not supported, must be a percolation generator\n{self.maze_ctor.__name__ = }, {_GENERATORS_PERCOLATED = }"
+			)
+			assert "p" in self.maze_ctor_kwargs, (
+				f"maze_ctor_kwargs must have a 'p' (percolation value) key: {self.maze_ctor_kwargs = }"
+			)
+			assert not self.endpoint_kwargs.get("except_on_no_valid_endpoint", True), (
+				f"except_on_no_valid_endpoint must be False, or else if any maze fails to generate, the whole dataset will fail: {self.endpoint_kwargs = }"
+			)
+		except AssertionError as e:
+			err_msg: str = f"invalid config for percolation success prediction: {self.summary() = }"
+			raise NoPercolationInConfigError(
+				err_msg,
+			) from e
+
+		endpoints_unique_flag: int = int(
+			# we are pretty sure it will be an int or bool here
+			self.endpoint_kwargs.get("endpoints_not_equal", True),  # type: ignore[arg-type]
+		)
+
+		# adjustment for bknutson0
+		if not (
+			self.endpoint_kwargs.get("deadend_start", False)
+			and self.endpoint_kwargs.get("deadend_end", False)
+		):
+			# we didnt train on this, but if either endpoint is not required to be in a dead end
+			# then  requiring the endpoints to be unique does not really affect the success rate
+			# (except for very small percolation values, pure percolation generation)
+			endpoints_unique_flag = 0
+
+		return np.array(
+			[
+				float(self.maze_ctor_kwargs["p"]),
+				float(self.grid_n),
+				float(
+					int(
+						self.endpoint_kwargs.get("deadend_start", False)  # type: ignore[arg-type]
+						or self.endpoint_kwargs.get("deadend_end", False),
+					),
+				),
+				float(endpoints_unique_flag),
+				float(_GENERATORS_PERCOLATED.index(self.maze_ctor.__name__)),
+			],
+			dtype=np.float64,
+		)
+
+	@classmethod
+	def _from_ps_array(
+		cls,
+		arr: _PercolationSuccessArray,
+		name: str = "predict",
+		n_mazes: int = 100,
+		**kwargs,
+	) -> "MazeDatasetConfig":
+		"""Reconstruct a config from an array [p, grid_n, deadends, endpoints_not_equal, generator_func] and other config parameters.
+
+		# Returns:
+		- `MazeDatasetConfig`
+			Config corresponding to `arr`
+		"""
+		return cls(
+			name=name,
+			grid_n=int(arr[1]),
+			n_mazes=n_mazes,
+			maze_ctor=GENERATORS_MAP[_GENERATORS_PERCOLATED[int(arr[4])]],
+			maze_ctor_kwargs={"p": float(arr[0])},
+			endpoint_kwargs=dict(
+				deadend_start=bool(arr[2]),
+				deadend_end=bool(arr[2]),
+				endpoints_not_equal=bool(arr[3]),
+				except_on_no_valid_endpoint=False,
+			),
+			**kwargs,
+		)
+
+	def success_fraction_estimate(
+		self,
+		except_if_all_success_expected: bool = False,
+	) -> float:
+		"""Estimate the success fraction of this config.
+
+		only valid when the generator is a percolation generator,
+		and endpoints are enforced to be dead ends
+
+		this estimate comes from `estimate_dataset_fractions.ipynb` and `maze_dataset.benchmarks.sweep_fit`
+
+		# Parameters:
+		- `except_if_all_success_expected : bool`
+			if `True`, don't raise an error if the success fraction is below the threshold.
+			will always return `1.0` if the config is not expected to fail
+
+		# Returns:
+		- `float`
+			estimated success fraction
+
+		# Raises:
+		- `NoPercolationInConfigError` : if the config is not expected to fail, and `except_if_all_success_expected` is `False`
+		"""
+		try:
+			return cfg_success_predict_fn(self)
+
+		except NoPercolationInConfigError as e:
+			if except_if_all_success_expected:
+				return 1.0
+			else:
+				raise e  # noqa: TRY201
+
+	def success_fraction_compensate(
+		self,
+		safety_margin: float = 1.2,
+		except_if_all_success_expected: bool = False,
+		epsilon: float = 1e-2,
+	) -> "MazeDatasetConfig":
+		"""return a new `MazeDatasetConfig` like this one with `n_mazes` adjusted to compensate for the success fraction
+
+		# Parameters:
+		- `safety_margin : float`
+			safety margin to apply to the success fraction estimate
+			(defaults to `1.2`, or 20% more mazes than estimated)
+		- `except_if_all_success_expected : bool`
+			if `True`, don't raise an error if the success fraction is below the threshold.
+			this is passed to `MazeDatasetConfig.success_fraction_estimate`.
+			if your config isn't expected to fail, passing this might mean you generate more mazes than needed
+			since `safety_margin` is still applied.
+			(defaults to `False`)
+		- `epsilon : float`
+			raise `SuccessChanceTooSmallError` if the success fraction is below this threshold
+			(defaults to `1e-2`)
+
+		# Returns:
+		- `MazeDatasetConfig`
+			new config with adjusted `n_mazes`
+
+		# Raises:
+		- `SuccessChanceTooSmallError` : if the computed success fraction is below `epsilon`
+		"""
+		# compute and check the success fraction
+		success_fraction: float = self.success_fraction_estimate(
+			except_if_all_success_expected=except_if_all_success_expected,
+		)
+		if success_fraction < epsilon:
+			err_msg: str = (
+				f"{success_fraction = } is below the threshold of {epsilon = }"
+			)
+			raise SuccessChanceTooSmallError(
+				err_msg,
+			)
+
+		# compute the new number of mazes
+		n_mazes: int = self.n_mazes
+		new_n_mazes: int = int((n_mazes * safety_margin) / success_fraction) + 1
+
+		# put it in a new config and return
+		cfg_dict: dict = self.serialize()
+		cfg_dict["n_mazes"] = new_n_mazes
+		return MazeDatasetConfig.load(cfg_dict)
+
+``````{ end_of_file="maze_dataset/dataset/maze_dataset_config.py" }
 
 ``````{ path="maze_dataset/dataset/rasterized.py"  }
 """a special `RasterizedMazeDataset` that returns 2 images, one for input and one for target, for each maze
@@ -6144,7 +6237,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from jaxtyping import Bool, Float
 
-from maze_dataset.constants import Coord, CoordArray, CoordList  # noqa: TC001
+from maze_dataset.constants import Coord, CoordArray, CoordList
 from maze_dataset.maze import (
 	LatticeMaze,
 	SolvedMaze,
@@ -10391,11 +10484,12 @@ from maze_dataset.dataset.collected_dataset import (
 	MazeDatasetCollection,
 	MazeDatasetCollectionConfig,
 )
+from maze_dataset.dataset.filters import register_maze_filter
 from maze_dataset.dataset.maze_dataset import (
 	MazeDataset,
 	MazeDatasetConfig,
-	set_serialize_minimal_threshold,
 )
+from maze_dataset.dataset.maze_dataset_config import set_serialize_minimal_threshold
 from maze_dataset.generation.generators import LatticeMazeGenerators
 from maze_dataset.maze.lattice_maze import LatticeMaze, SolvedMaze, TargetedLatticeMaze
 
@@ -10424,6 +10518,7 @@ __all__ = [
 	"LatticeMaze",
 	# other
 	"set_serialize_minimal_threshold",
+	"register_maze_filter",
 	"LatticeMazeGenerators",
 	# types
 	"Coord",
@@ -14332,27 +14427,22 @@ help: help-targets info
     # generate this exclude with `make typing-report`
     exclude = [
         # high priority
-		"maze_dataset/tokenization/modular/all_tokenizers.py", # 8
+		"tests/unit/maze_dataset/processing/test_collect_gen_metadata.py", # 3
+		"tests/unit/maze_dataset/generation/test_latticemaze.py", # 7
 		"maze_dataset/constants.py", # 9
-		"maze_dataset/dataset/dataset.py", # 16
 		"maze_dataset/utils.py", # 19
-		"maze_dataset/dataset/maze_dataset.py", # 45
 		# tokenization
-		"maze_dataset/tokenization/modular/maze_tokenizer_modular.py", # 12
+		"maze_dataset/tokenization/modular/all_tokenizers.py", # 8
 		"maze_dataset/tokenization/maze_tokenizer_legacy.py", # 19
 		"maze_dataset/token_utils.py", # 21
+		"maze_dataset/tokenization/modular/maze_tokenizer_modular.py", # 12
 		"maze_dataset/tokenization/modular/elements.py", # 97
 		# low priority
-		"maze_dataset/dataset/collected_dataset.py", # 10
 		"maze_dataset/plotting/plot_maze.py", # 11
-		# tests (low priority)
-		"tests/unit/maze_dataset/dataset/test_collected_dataset.py", # 3
-		"tests/unit/maze_dataset/processing/test_collect_gen_metadata.py", # 5
-		"tests/unit/maze_dataset/generation/test_latticemaze.py", # 7
-		"tests/all_tokenizers/test_all_tokenizers.py", # 13
+		"tests/all_tokenizers/test_all_tokenizers.py", # 12
+		"tests/unit/maze_dataset/generation/test_maze_dataset.py", # 16
 		"tests/unit/maze_dataset/tokenization/test_token_utils.py", # 16
-		"tests/unit/maze_dataset/generation/test_maze_dataset.py", # 24
-		"tests/unit/maze_dataset/tokenization/test_tokenizer.py", # 48
+		"tests/unit/maze_dataset/tokenization/test_tokenizer.py", # 45
 		"tests/unit/maze_dataset/processing/test_get_forking_path_points.py", # 58
 		# extra low priority (test temp, generated from notebooks)
 		"tests/_temp/*",
@@ -14411,7 +14501,8 @@ help: help-targets info
 			"SLF001", # fine to access private vars
 			"N802", # uppercase in func names is fine
 			# warning: The following rule may cause conflicts when used with the formatter: `COM812`. To avoid unexpected behavior, we recommend disabling this rule, either by removing it from the `select` or `extend-select` configuration, or adding it to the `ignore` configuration.
-			"COM812", 
+			"COM812",
+			"TC001", # don't force us to import things in type checking blocks 
 			# todos:
 			"TD001", # we allow tags besides "TODO"
 			"TD002", # dont care about author
@@ -14508,34 +14599,16 @@ help: help-targets info
         "benchmarks",
         # "resources/", # Templates, CSS, etc. this, or whatever is specified as DOCS_RESOURCES_DIR in makefile will always be preserved
     ]
-
-    # Increment level of markdown headings in generated documentation
-    # e.g. if 2, then h1 -> h3, h2 -> h4, etc.
     markdown_headings_increment = 2
-
-    # Warnings to ignore during documentation generation
     warnings_ignore = [
         "Error parsing type annotation FilterBy for maze_dataset",
         "Found 'coord_str_to_tuple' in maze_dataset.tokenization.__all__, but it does not resolve: Error importing maze_dataset.tokenization.coord_str_to_tuple",
     ]
 
-    # optional generation of notebooks as html pages
     [tool.makefile.docs.notebooks]
-        # Enable notebook processing in documentation
-		# disabled by default
         enabled = true
-        
-        # Source directory containing .ipynb files
         source_path = "notebooks"
-        
-        # Output path relative to docs directory [tool.makefile.docs.output_dir]
         output_path_relative = "notebooks"
-        
-        # Custom template for notebooks index page
-        # Available variables: notebook_url, notebooks (list of dicts with ipynb, html, desc)
-        # index_template = ...
-
-        # Descriptions for notebooks, shown in index
         [tool.makefile.docs.notebooks.descriptions]
             "demo_dataset" = "Creating and filtering a dataset, and various output formats"
 			"demo_generator" = "Exploring different maze generation algorithms and parameters"
@@ -14546,8 +14619,6 @@ help: help-targets info
 			"forking_points" = "Identifying and working with decision points in maze solutions"
 			"iterated_backfilling" = "Implementation of iterated backfilling as an algorithm for solving visual mazes"
 			"profile_dataset_save_read" = "Profiling and optimizing dataset serialization performance"
-            
-        
         
 
 # Custom export configurations
@@ -14571,58 +14642,22 @@ help: help-targets info
 
 # configures `make todo`
 [tool.makefile.inline-todo]
-	# Directory to search for TODOs
 	search_dir = "."
-	
-	# Output file location (relative to project root)
-    # If changed, update docs references
 	out_file_base = "docs/other/todo-inline"
-
-	# Number of context lines to include around each TODO
 	context_lines = 2
-
-	# File extensions to search
 	extensions = ["py", "md"]
-
-	# Tags to look for
 	tags = ["CRIT", "TODO", "FIXME", "HACK", "BUG", "DOC", "DOCS", "TYPING"]
-
-	# Patterns to exclude from search
 	exclude = [
 		"docs/**",
 		".venv/**",
 		"scripts/get_todos.py",
 	]
-    
-    # configuring the output
-	# ------------------------------
 	# branch to put in the url
 	branch = "main"
-
-	# repo url -- by default this will come from `[project.urls.{repository, github}]`
-	# but you can override it here
-	# repo_url = ...
-
-    
-	
-	# template for the markdown output
-	# this uses jinja2. see `TEMPLATE_MD` in makefile under `SCRIPT_GET_TODOS`
-	# template_md = ...
-
-	# this uses standard python string formatting
-	# available variables: file, file_lang, line_num, code_url, context
-	# template_issue = ...
-
-	# this template has some custom syntax for adding the data directly to the html file. see that file for more info
-	# template_html_source = "docs/resources/templates/todo-template.html"
-
     # Mapping of tags to GitHub issue labels
     [tool.makefile.inline-todo.tag_label_map]
         "BUG" = "bug"
         "TODO" = "enhancement"
 		"DOC" = "documentation"
-
-# ============================================================
-
 
 ``````{ end_of_file="pyproject.toml" }

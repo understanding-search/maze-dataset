@@ -1,4 +1,5 @@
 from functools import cached_property
+from pathlib import Path
 
 import numpy as np
 
@@ -36,7 +37,7 @@ class TestMazeDatasetCollection:
 			load_local=False,
 			do_download=False,
 			save_local=True,
-			local_base_path="data/",
+			local_base_path=Path("data/"),
 		)
 
 	def test_dataset_lengths(self):

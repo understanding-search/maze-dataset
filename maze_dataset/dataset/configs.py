@@ -16,6 +16,13 @@ _MAZE_DATASET_CONFIGS_SRC: dict[str, MazeDatasetConfig] = {
 			maze_ctor=LatticeMazeGenerators.gen_dfs,
 		),
 		MazeDatasetConfig(
+			name="test-perc",
+			grid_n=3,
+			n_mazes=5,
+			maze_ctor=LatticeMazeGenerators.gen_dfs_percolation,
+			maze_ctor_kwargs={"p": 0.7},
+		),
+		MazeDatasetConfig(
 			name="demo_small",
 			grid_n=3,
 			n_mazes=100,
