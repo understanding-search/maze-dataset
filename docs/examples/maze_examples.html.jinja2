@@ -262,10 +262,32 @@
                 .then(response => response.json())
                 .then(data => {
                     // Store data in card's dataset for later use
+                    card.dataset.name = data.name;
+                    card.dataset.gridN = data.grid_n;
                     card.dataset.constructorName = data.maze_ctor;
                     card.dataset.constructorParams = JSON.stringify(data.maze_ctor_kwargs, null, 2);
+                    card.dataset.endpointParams = data.endpoint_kwargs ? JSON.stringify(data.endpoint_kwargs, null, 2) : null;
                     card.dataset.configJson = JSON.stringify(data.config, null, 2);
                     card.dataset.configLoaded = 'true';
+                    
+                    // Format constructor code block
+                    let constructorCode = `MazeDatasetConfig(\n`;
+                    constructorCode += `    name="${data.name}", # you can set this to whatever you like\n`;
+                    constructorCode += `    grid_n=${data.grid_n},\n`;
+                    constructorCode += `    n_mazes=1, # the number of mazes you want\n`;
+                    constructorCode += `    maze_ctor=LatticeMazeGenerators.${data.maze_ctor},\n`;
+                    
+                    if (data.maze_ctor_kwargs && Object.keys(data.maze_ctor_kwargs).length > 0) {
+                        constructorCode += `    maze_ctor_kwargs=${JSON.stringify(data.maze_ctor_kwargs)},\n`;
+                    }
+                    
+                    if (data.endpoint_kwargs && Object.keys(data.endpoint_kwargs).length > 0) {
+                        constructorCode += `    endpoint_kwargs=${JSON.stringify(data.endpoint_kwargs)},\n`;
+                    }
+                    
+                    constructorCode += `)`;
+                    
+                    card.dataset.constructorCode = constructorCode;
                 })
                 .catch(error => {
                     console.error('Error loading configuration:', error);
@@ -281,11 +303,7 @@
                 // Check if data is loaded
                 if (card.dataset.configLoaded) {
                     if (codeBlock.style.display === 'none' || codeBlock.style.display === '') {
-                        codeBlock.innerHTML = `<h4>Maze Constructor:</h4>
-<pre>${card.dataset.constructorName}</pre>
-
-<h4>Constructor Parameters:</h4>
-<pre>${card.dataset.constructorParams}</pre>`;
+                        codeBlock.innerHTML = `<pre>${card.dataset.constructorCode}</pre>`;
                         
                         codeBlock.style.display = 'block';
                         this.textContent = 'Hide Constructor';
@@ -306,9 +324,7 @@
                 const card = this.closest('.maze-card');
                 
                 if (card.dataset.configLoaded) {
-                    const textToCopy = `Constructor: ${card.dataset.constructorName}\n\nParameters:\n${card.dataset.constructorParams}`;
-                    
-                    navigator.clipboard.writeText(textToCopy)
+                    navigator.clipboard.writeText(card.dataset.constructorCode)
                         .then(() => {
                             // Show temporary success message
                             const originalText = this.textContent;
