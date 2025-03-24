@@ -58,7 +58,7 @@ def _generate_maze_helper(index: int) -> Optional[SolvedMaze]:  # noqa: ARG001
 	# Generate the solution
 	# mypy doesnt realize EndpointKwargsType has only string keys: `Keywords must be strings  [misc]`
 	# TYPING: error: No overload variant of "generate_random_path" of "LatticeMaze" matches argument type "dict[Literal['allowed_start', 'allowed_end', 'deadend_start', 'deadend_end', 'endpoints_not_equal', 'except_on_no_valid_endpoint'], bool | list[tuple[int, int]] | None]"  [call-overload]
-	solution: Optional[CoordArray] = maze.generate_random_path(**endpoint_kwargs) # type: ignore[misc, call-overload]
+	solution: Optional[CoordArray] = maze.generate_random_path(**endpoint_kwargs)  # type: ignore[misc, call-overload]
 
 	# Validate the solution
 	if (
@@ -95,7 +95,8 @@ def _maze_gen_init_worker(config: MazeDatasetConfig) -> None:
 		# multiprocessing, adjust seed based on process id
 		# only set numpy seed, since we do not use other random gens
 		np.random.seed(
-			_GLOBAL_WORKER_CONFIG.seed or GLOBAL_SEED # if the seed is None, use the global seed
+			_GLOBAL_WORKER_CONFIG.seed
+			or GLOBAL_SEED  # if the seed is None, use the global seed
 			+ process_id[0]
 		)
 	else:
@@ -124,10 +125,10 @@ class MazeDataset(GPTDataset[MazeDatasetConfig]):
 
 	# TYPING: error: Return type "MazeDataset" of "from_config" incompatible with return type "T_Dataset" in supertype "GPTDataset"  [override]
 	@classmethod
-	def from_config( # type: ignore[override]	
+	def from_config(  # type: ignore[override]
 		cls,
 		# TYPING: error: Argument 1 of "from_config" is incompatible with supertype "GPTDataset"; supertype defines the argument type as "T_DatasetConfig"  [override]
-		cfg: MazeDatasetConfig, # type: ignore[override]
+		cfg: MazeDatasetConfig,  # type: ignore[override]
 		do_generate: bool = True,
 		load_local: bool = True,
 		save_local: bool = True,
@@ -245,8 +246,11 @@ class MazeDataset(GPTDataset[MazeDatasetConfig]):
 		gen_parallel: bool = False,
 		pool_kwargs: dict | None = None,
 		verbose: bool = False,
+		**kwargs,
 	) -> "MazeDataset":
 		"""Generate a maze dataset given a config and some generation parameters"""
+		assert not kwargs, f"unexpected kwargs: {kwargs = }"
+
 		# Copy the config to avoid modifying the original
 		cfg_cpy: MazeDatasetConfig = MazeDatasetConfig.load(
 			json.loads(json.dumps(cfg.serialize())),
@@ -283,7 +287,9 @@ class MazeDataset(GPTDataset[MazeDatasetConfig]):
 			solved_mazes = list(
 				tqdm.tqdm(
 					map(
-						_generate_maze_helper,
+						# TYPING:  error: Argument 1 to "map" has incompatible type "Callable[[int], SolvedMaze | None]"; expected "Callable[[str], SolvedMaze | None]"  [arg-type]
+						# why does it think tolist() returns a string?
+						_generate_maze_helper,  # type: ignore[arg-type]
 						maze_indexes.tolist(),
 					),
 					**tqdm_kwargs,
@@ -316,7 +322,7 @@ class MazeDataset(GPTDataset[MazeDatasetConfig]):
 		raise NotImplementedError("not implemented yet")
 
 	@classmethod
-	def load(cls, data: JSONdict) -> "MazeDataset":
+	def load(cls: "type[MazeDataset]", data: JSONdict) -> "MazeDataset":
 		"""load from zanj/json"""
 		if data[_FORMAT_KEY] == "MazeDataset:minimal":
 			return cls._load_minimal(data)
@@ -473,8 +479,9 @@ class MazeDataset(GPTDataset[MazeDatasetConfig]):
 			"maze_solutions": maze_solutions,  # type: ignore[dict-item]
 		}
 
-	def _serialize_minimal_soln_cat(self) -> JSONdict:
+	def _serialize_minimal_soln_cat(self: "MazeDataset") -> JSONdict:
 		"alternate serialization where metadata is collected, and mazes and their solutions are stored in concatenated form"
+		filtered_meta: MazeDataset
 		if self.generation_metadata_collected is None:
 			filtered_meta = self.filter_by.collect_generation_meta()
 		else:
@@ -545,18 +552,19 @@ class MazeDataset(GPTDataset[MazeDatasetConfig]):
 		return output
 
 
-# register things with zanj
-MazeDatasetConfig._dataset_class = property(  # type: ignore[method-assign]
+MazeDatasetConfig._dataset_class = property(  # type: ignore[method-assign, assignment]
 	lambda self: MazeDataset,  # noqa: ARG005
 )
+
+# register things with zanj
 register_loader_handler(
 	LoaderHandler(
-		check=lambda json_item, path=None, z=None: (  # noqa: ARG005
+		check=lambda json_item, path=None, z=None: (  # type: ignore[misc] # noqa: ARG005
 			isinstance(json_item, typing.Mapping)
 			and _FORMAT_KEY in json_item
 			and json_item[_FORMAT_KEY].startswith("MazeDataset")
 		),
-		load=lambda json_item, path=None, z=None: MazeDataset.load(json_item),  # noqa: ARG005
+		load=lambda json_item, path=None, z=None: MazeDataset.load(json_item),  # type: ignore[misc] # noqa: ARG005
 		uid="MazeDataset",
 		source_pckg="maze_dataset.generation.maze_dataset",
 		desc="MazeDataset",

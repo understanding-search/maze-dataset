@@ -21,6 +21,9 @@ from muutils.json_serialize import (
 	serializable_dataclass,
 	serializable_field,
 )
+from muutils.json_serialize.util import (
+	JSONdict,
+)
 from muutils.misc import sanitize_fname, shorten_numerical_to_str, stable_hash
 from zanj import ZANJ
 
@@ -141,6 +144,7 @@ def _dataset_config_serialize(self, *args, **kwargs) -> JSONitem:  # noqa: ANN00
 
 GPTDatasetConfig.load = _dataset_config_load  # type: ignore[method-assign]
 GPTDatasetConfig.serialize = _dataset_config_serialize  # type: ignore[method-assign,assignment]
+
 
 class GPTDataset(typing.Generic["T_DatasetConfig"]):
 	"""wrapper for torch dataset with some extra functionality
@@ -326,13 +330,15 @@ class GPTDataset(typing.Generic["T_DatasetConfig"]):
 
 	# serialization & loading
 	@classmethod
-	def read(cls: "type[T_Dataset]", file_path: str | Path, zanj: ZANJ | None = None) -> "T_Dataset":
+	def read(
+		cls: "type[T_Dataset]", file_path: str | Path, zanj: ZANJ | None = None
+	) -> "T_Dataset":
 		"read dataset from a file with zanj"
 		if zanj is None:
 			zanj = ZANJ()
 		return zanj.read(file_path)
 
-	def serialize(self: "T_Dataset") -> JSONitem:
+	def serialize(self: "T_Dataset") -> JSONdict:
 		"(implement in subclass!) serialize to something we can save with zanj"
 		raise NotImplementedError
 
@@ -341,18 +347,22 @@ class GPTDataset(typing.Generic["T_DatasetConfig"]):
 		raise NotImplementedError
 
 	@classmethod
-	def load(cls: "type[T_Dataset]", data: JSONitem) -> "T_Dataset":
+	def load(cls: "type[T_Dataset]", data: JSONdict) -> "T_Dataset":
 		"(implement in subclass!) load a dataset from what we made with `.serialize()`"
 		raise NotImplementedError
 
 	# generating & downloading
 	@classmethod
-	def generate(cls: "type[T_Dataset]", cfg: "T_DatasetConfig", **kwargs) -> "T_Dataset":
+	def generate(
+		cls: "type[T_Dataset]", cfg: "T_DatasetConfig", **kwargs
+	) -> "T_Dataset":
 		"(implement in subclass!) generative given the config"
 		raise NotImplementedError
 
 	@classmethod
-	def download(cls: "type[T_Dataset]", cfg: "T_DatasetConfig", **kwargs) -> "T_Dataset":
+	def download(
+		cls: "type[T_Dataset]", cfg: "T_DatasetConfig", **kwargs
+	) -> "T_Dataset":
 		"(implement in subclass!) download the dataset given the config"
 		raise NotImplementedError
 
@@ -512,6 +522,7 @@ T_Dataset = TypeVar("T_Dataset", bound=GPTDataset)
 P_FilterKwargs = typing.ParamSpec("P_FilterKwargs")
 DatasetFilterFunc = Callable[typing.Concatenate[T_Dataset, P_FilterKwargs], T_Dataset]
 
+
 def register_dataset_filter(
 	method: DatasetFilterFunc,
 ) -> DatasetFilterFunc:
@@ -526,7 +537,9 @@ def register_dataset_filter(
 	@functools.wraps(method)
 	def wrapper(
 		# TYPING: error: ParamSpec "P_FilterKwargs" is unbound  [valid-type]
-		dataset: T_Dataset, *args: P_FilterKwargs.args, **kwargs: P_FilterKwargs.kwargs # type: ignore[valid-type]
+		dataset: T_Dataset,
+		*args: P_FilterKwargs.args,  # type: ignore[valid-type]
+		**kwargs: P_FilterKwargs.kwargs,  # type: ignore[valid-type]
 	) -> T_Dataset:
 		new_dataset = method(dataset, *args, **kwargs)
 		# update the config
