@@ -202,7 +202,7 @@ def _get_configs_for_examples() -> list[dict]:
 	for deadend_start, deadend_end in [(True, False), (False, True), (True, True)]:
 		configs.append(
 			{
-				"name": f"deadend_start{deadend_start}_end{deadend_end}",
+				"name": f"deadend_s{int(deadend_start)}_e{int(deadend_end)}",
 				"grid_n": 8,
 				"maze_ctor": LatticeMazeGenerators.gen_dfs,
 				"maze_ctor_kwargs": {},

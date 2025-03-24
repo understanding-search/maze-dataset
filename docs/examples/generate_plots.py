@@ -92,6 +92,7 @@ def generate_maze_plots(config_src: dict[str, Any]) -> tuple[str, dict]:
 	metadata_json = config_src.copy()
 	metadata_json["maze_ctor"] = config_src["maze_ctor"].__name__
 	metadata_json["config"] = md_config.serialize()
+	metadata_json["fname"] = cfg_fname
 
 	# save the metadata
 	with open(this_cfg_path / "metadata.json", "w") as f:

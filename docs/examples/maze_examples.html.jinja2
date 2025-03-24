@@ -98,6 +98,29 @@
             margin-bottom: 10px;
             color: #555;
         }
+        .maze-carousel {
+            display: flex;
+            overflow-x: auto;
+            gap: 10px;
+            margin-bottom: 10px;
+            padding: 5px 0;
+        }
+        .maze-thumbnail {
+            width: 80px;
+            height: 80px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .maze-thumbnail.active {
+            border-color: #007bff;
+        }
+        .maze-thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
         .maze-tags {
             display: flex;
             flex-wrap: wrap;
@@ -127,35 +150,6 @@
             margin-top: 10px;
             white-space: pre-wrap;
             font-family: monospace;
-        }
-        .serialized-config-toggle {
-            background-color: #6c757d;
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 14px;
-            margin-left: 5px;
-        }
-        .serialized-config-code {
-            display: none;
-            background-color: #f5f5f5;
-            padding: 10px;
-            border-radius: 4px;
-            margin-top: 10px;
-            white-space: pre-wrap;
-            font-family: monospace;
-        }
-        .copy-button {
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 14px;
-            margin-top: 5px;
         }
         .no-results {
             grid-column: 1 / -1;
@@ -197,7 +191,7 @@
             <select id="sort-select">
                 <option value="name">Name</option>
                 <option value="grid_n">Grid Size</option>
-                <option value="algorithm">Algorithm</option>
+                <option value="maze_ctor">Generator</option>
             </select>
         </div>
     </div>
@@ -207,13 +201,22 @@
         <div class="maze-card" 
              data-name="{{ example.name }}" 
              data-grid-n="{{ example.grid_n }}" 
-             data-algorithm="{{ example.algorithm_name }}" 
-             data-tags="{{ example.tags|join(',') }}">
+             data-maze-ctor="{{ example.maze_ctor }}" 
+             data-tags="{{ example.tags|join(',') }}" 
+             data-fname="{{ example.fname }}"
+             data-config-path="plots/{{ example.fname }}/metadata.json">
             <div class="maze-image">
-                <img src="{{ example.svg_path }}" alt="{{ example.name }}">
+                <img src="plots/{{ example.fname }}/plot-0.svg" alt="{{ example.name }}" class="main-image">
+            </div>
+            <div class="maze-carousel">
+                {% for i in range(6) %}
+                <div class="maze-thumbnail {% if i == 0 %}active{% endif %}" data-index="{{ i }}">
+                    <img src="plots/{{ example.fname }}/plot-{{ i }}.svg" alt="Example {{ i }}" loading="lazy">
+                </div>
+                {% endfor %}
             </div>
             <div class="maze-details">
-                <div class="maze-title">{{ example.description }}</div>
+                <div class="maze-title">{{ example.name }}</div>
                 <div class="maze-description">Grid size: {{ example.grid_n }}x{{ example.grid_n }}</div>
                 <div class="maze-tags">
                     {%- for tag in example.tags %}
@@ -221,11 +224,7 @@
                     {%- endfor %}
                 </div>
                 <button class="config-toggle">Show Configuration</button>
-                <button class="serialized-config-toggle">Show Serialized Config</button>
-                <div class="config-code">{{ example.config_json }}</div>
-                <div class="serialized-config-code">{{ example.serialized_config }}</div>
-                <button class="copy-button">Copy Config</button>
-                <button class="copy-serialized-button">Copy Serialized</button>
+                <div class="config-code"></div>
             </div>
         </div>
         {%- endfor %}
@@ -237,11 +236,36 @@
     </footer>
 
     <script>
-        // Show/hide configuration
+        // Load configuration data lazily
         document.querySelectorAll('.config-toggle').forEach(button => {
-            button.addEventListener('click', function() {
-                const codeBlock = this.nextElementSibling.nextElementSibling;
+            button.addEventListener('click', async function() {
+                const card = this.closest('.maze-card');
+                const codeBlock = this.nextElementSibling;
+                
                 if (codeBlock.style.display === 'none' || codeBlock.style.display === '') {
+                    // If config hasn't been loaded yet
+                    if (!codeBlock.dataset.loaded) {
+                        const configPath = card.getAttribute('data-config-path');
+                        try {
+                            const response = await fetch(configPath);
+                            const data = await response.json();
+                            
+                            // Format the configuration data
+                            codeBlock.innerHTML = `<h4>Maze Constructor:</h4>
+<pre>${data.maze_ctor}</pre>
+
+<h4>Constructor Parameters:</h4>
+<pre>${JSON.stringify(data.maze_ctor_kwargs, null, 2)}</pre>
+
+<h4>Maze Configuration:</h4>
+<pre>${JSON.stringify(data.config, null, 2)}</pre>`;
+                            
+                            codeBlock.dataset.loaded = 'true';
+                        } catch (error) {
+                            codeBlock.innerHTML = `<p>Error loading configuration: ${error.message}</p>`;
+                        }
+                    }
+                    
                     codeBlock.style.display = 'block';
                     this.textContent = 'Hide Configuration';
                 } else {
@@ -251,69 +275,22 @@
             });
         });
 
-        // Show/hide serialized configuration
-        document.querySelectorAll('.serialized-config-toggle').forEach(button => {
-            button.addEventListener('click', function() {
-                const codeBlock = this.nextElementSibling.nextElementSibling;
-                if (codeBlock.style.display === 'none' || codeBlock.style.display === '') {
-                    codeBlock.style.display = 'block';
-                    this.textContent = 'Hide Serialized Config';
-                } else {
-                    codeBlock.style.display = 'none';
-                    this.textContent = 'Show Serialized Config';
-                }
-            });
-        });
-
-        // Copy configuration
-        document.querySelectorAll('.copy-button').forEach(button => {
-            button.addEventListener('click', function() {
-                const codeBlock = this.previousElementSibling.previousElementSibling;
+        // Image carousel functionality
+        document.querySelectorAll('.maze-thumbnail').forEach(thumbnail => {
+            thumbnail.addEventListener('click', function() {
+                const card = this.closest('.maze-card');
+                const imageIndex = this.getAttribute('data-index');
+                const mainImage = card.querySelector('.main-image');
+                const fname = card.getAttribute('data-fname');
                 
-                // Create a temporary textarea element
-                const textarea = document.createElement('textarea');
-                textarea.value = codeBlock.textContent;
-                document.body.appendChild(textarea);
+                // Update main image
+                mainImage.src = `plots/${fname}/plot-${imageIndex}.svg`;
                 
-                // Copy the text
-                textarea.select();
-                document.execCommand('copy');
-                
-                // Remove the textarea
-                document.body.removeChild(textarea);
-                
-                // Give feedback to the user
-                const originalText = this.textContent;
-                this.textContent = 'Copied!';
-                setTimeout(() => {
-                    this.textContent = originalText;
-                }, 2000);
-            });
-        });
-
-        // Copy serialized configuration
-        document.querySelectorAll('.copy-serialized-button').forEach(button => {
-            button.addEventListener('click', function() {
-                const codeBlock = this.previousElementSibling.previousElementSibling;
-                
-                // Create a temporary textarea element
-                const textarea = document.createElement('textarea');
-                textarea.value = codeBlock.textContent;
-                document.body.appendChild(textarea);
-                
-                // Copy the text
-                textarea.select();
-                document.execCommand('copy');
-                
-                // Remove the textarea
-                document.body.removeChild(textarea);
-                
-                // Give feedback to the user
-                const originalText = this.textContent;
-                this.textContent = 'Copied!';
-                setTimeout(() => {
-                    this.textContent = originalText;
-                }, 2000);
+                // Update active thumbnail
+                card.querySelectorAll('.maze-thumbnail').forEach(thumb => {
+                    thumb.classList.remove('active');
+                });
+                this.classList.add('active');
             });
         });
 
@@ -332,15 +309,13 @@
             
             mazeCards.forEach(card => {
                 const name = card.getAttribute('data-name').toLowerCase();
-                const description = card.querySelector('.maze-description').textContent.toLowerCase();
-                const config = card.querySelector('.config-code').textContent.toLowerCase();
-                const serializedConfig = card.querySelector('.serialized-config-code').textContent.toLowerCase();
+                const gridN = card.getAttribute('data-grid-n');
+                const mazeCtor = card.getAttribute('data-maze-ctor');
                 const tags = card.getAttribute('data-tags').split(',');
                 
                 const matchesSearch = name.includes(searchTerm) || 
-                                    description.includes(searchTerm) || 
-                                    config.includes(searchTerm) ||
-                                    serializedConfig.includes(searchTerm);
+                                     gridN.includes(searchTerm) ||
+                                     mazeCtor.includes(searchTerm);
                 
                 const matchesTags = activeTagFilters.length === 0 || 
                                   activeTagFilters.every(tag => tags.includes(tag));
@@ -366,8 +341,8 @@
                     return a.getAttribute('data-name').localeCompare(b.getAttribute('data-name'));
                 } else if (sortBy === 'grid_n') {
                     return parseInt(a.getAttribute('data-grid-n')) - parseInt(b.getAttribute('data-grid-n'));
-                } else if (sortBy === 'algorithm') {
-                    return a.getAttribute('data-algorithm').localeCompare(b.getAttribute('data-algorithm'));
+                } else if (sortBy === 'maze_ctor') {
+                    return a.getAttribute('data-maze-ctor').localeCompare(b.getAttribute('data-maze-ctor'));
                 }
                 return 0;
             });

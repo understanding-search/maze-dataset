@@ -98,6 +98,29 @@
             margin-bottom: 10px;
             color: #555;
         }
+        .maze-carousel {
+            display: flex;
+            overflow-x: auto;
+            gap: 10px;
+            margin-bottom: 10px;
+            padding: 5px 0;
+        }
+        .maze-thumbnail {
+            width: 80px;
+            height: 80px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .maze-thumbnail.active {
+            border-color: #007bff;
+        }
+        .maze-thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
         .maze-tags {
             display: flex;
             flex-wrap: wrap;
@@ -127,35 +150,6 @@
             margin-top: 10px;
             white-space: pre-wrap;
             font-family: monospace;
-        }
-        .serialized-config-toggle {
-            background-color: #6c757d;
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 14px;
-            margin-left: 5px;
-        }
-        .serialized-config-code {
-            display: none;
-            background-color: #f5f5f5;
-            padding: 10px;
-            border-radius: 4px;
-            margin-top: 10px;
-            white-space: pre-wrap;
-            font-family: monospace;
-        }
-        .copy-button {
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 14px;
-            margin-top: 5px;
         }
         .no-results {
             grid-column: 1 / -1;
@@ -210,7 +204,7 @@
             <select id="sort-select">
                 <option value="name">Name</option>
                 <option value="grid_n">Grid Size</option>
-                <option value="algorithm">Algorithm</option>
+                <option value="maze_ctor">Generator</option>
             </select>
         </div>
     </div>
@@ -219,36 +213,90 @@
         <div class="maze-card" 
              data-name="basic" 
              data-grid-n="5" 
-             data-algorithm="" 
-             data-tags="dfs,basic">
+             data-maze-ctor="gen_dfs" 
+             data-tags="dfs,basic" 
+             data-fname="basic-g5-n10-a_dfs-h74636"
+             data-config-path="plots/basic-g5-n10-a_dfs-h74636/metadata.json">
             <div class="maze-image">
-                <img src="" alt="basic">
+                <img src="plots/basic-g5-n10-a_dfs-h74636/plot-0.svg" alt="basic" class="main-image">
+            </div>
+            <div class="maze-carousel">
+                
+                <div class="maze-thumbnail active" data-index="0">
+                    <img src="plots/basic-g5-n10-a_dfs-h74636/plot-0.svg" alt="Example 0" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="1">
+                    <img src="plots/basic-g5-n10-a_dfs-h74636/plot-1.svg" alt="Example 1" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="2">
+                    <img src="plots/basic-g5-n10-a_dfs-h74636/plot-2.svg" alt="Example 2" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="3">
+                    <img src="plots/basic-g5-n10-a_dfs-h74636/plot-3.svg" alt="Example 3" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="4">
+                    <img src="plots/basic-g5-n10-a_dfs-h74636/plot-4.svg" alt="Example 4" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="5">
+                    <img src="plots/basic-g5-n10-a_dfs-h74636/plot-5.svg" alt="Example 5" loading="lazy">
+                </div>
+                
             </div>
             <div class="maze-details">
-                <div class="maze-title">Basic DFS maze (5x5)</div>
+                <div class="maze-title">basic</div>
                 <div class="maze-description">Grid size: 5x5</div>
                 <div class="maze-tags">
                     <span class="maze-tag">dfs</span>
                     <span class="maze-tag">basic</span>
                 </div>
                 <button class="config-toggle">Show Configuration</button>
-                <button class="serialized-config-toggle">Show Serialized Config</button>
                 <div class="config-code"></div>
-                <div class="serialized-config-code"></div>
-                <button class="copy-button">Copy Config</button>
-                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
         <div class="maze-card" 
              data-name="forkless" 
              data-grid-n="5" 
-             data-algorithm="" 
-             data-tags="dfs,no_forks,simple_path">
+             data-maze-ctor="gen_dfs" 
+             data-tags="dfs,no_forks,simple_path" 
+             data-fname="forkless-g5-n10-a_dfs-h97534"
+             data-config-path="plots/forkless-g5-n10-a_dfs-h97534/metadata.json">
             <div class="maze-image">
-                <img src="" alt="forkless">
+                <img src="plots/forkless-g5-n10-a_dfs-h97534/plot-0.svg" alt="forkless" class="main-image">
+            </div>
+            <div class="maze-carousel">
+                
+                <div class="maze-thumbnail active" data-index="0">
+                    <img src="plots/forkless-g5-n10-a_dfs-h97534/plot-0.svg" alt="Example 0" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="1">
+                    <img src="plots/forkless-g5-n10-a_dfs-h97534/plot-1.svg" alt="Example 1" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="2">
+                    <img src="plots/forkless-g5-n10-a_dfs-h97534/plot-2.svg" alt="Example 2" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="3">
+                    <img src="plots/forkless-g5-n10-a_dfs-h97534/plot-3.svg" alt="Example 3" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="4">
+                    <img src="plots/forkless-g5-n10-a_dfs-h97534/plot-4.svg" alt="Example 4" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="5">
+                    <img src="plots/forkless-g5-n10-a_dfs-h97534/plot-5.svg" alt="Example 5" loading="lazy">
+                </div>
+                
             </div>
             <div class="maze-details">
-                <div class="maze-title">DFS without forks (5x5)</div>
+                <div class="maze-title">forkless</div>
                 <div class="maze-description">Grid size: 5x5</div>
                 <div class="maze-tags">
                     <span class="maze-tag">dfs</span>
@@ -256,69 +304,144 @@
                     <span class="maze-tag">simple_path</span>
                 </div>
                 <button class="config-toggle">Show Configuration</button>
-                <button class="serialized-config-toggle">Show Serialized Config</button>
                 <div class="config-code"></div>
-                <div class="serialized-config-code"></div>
-                <button class="copy-button">Copy Config</button>
-                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
         <div class="maze-card" 
              data-name="basic" 
              data-grid-n="5" 
-             data-algorithm="" 
-             data-tags="wilson,uniform_random">
+             data-maze-ctor="gen_wilson" 
+             data-tags="wilson,uniform_random" 
+             data-fname="basic-g5-n10-a_wilson-h32576"
+             data-config-path="plots/basic-g5-n10-a_wilson-h32576/metadata.json">
             <div class="maze-image">
-                <img src="" alt="basic">
+                <img src="plots/basic-g5-n10-a_wilson-h32576/plot-0.svg" alt="basic" class="main-image">
+            </div>
+            <div class="maze-carousel">
+                
+                <div class="maze-thumbnail active" data-index="0">
+                    <img src="plots/basic-g5-n10-a_wilson-h32576/plot-0.svg" alt="Example 0" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="1">
+                    <img src="plots/basic-g5-n10-a_wilson-h32576/plot-1.svg" alt="Example 1" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="2">
+                    <img src="plots/basic-g5-n10-a_wilson-h32576/plot-2.svg" alt="Example 2" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="3">
+                    <img src="plots/basic-g5-n10-a_wilson-h32576/plot-3.svg" alt="Example 3" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="4">
+                    <img src="plots/basic-g5-n10-a_wilson-h32576/plot-4.svg" alt="Example 4" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="5">
+                    <img src="plots/basic-g5-n10-a_wilson-h32576/plot-5.svg" alt="Example 5" loading="lazy">
+                </div>
+                
             </div>
             <div class="maze-details">
-                <div class="maze-title">Wilson's algorithm (5x5) - unbiased random maze</div>
+                <div class="maze-title">basic</div>
                 <div class="maze-description">Grid size: 5x5</div>
                 <div class="maze-tags">
                     <span class="maze-tag">wilson</span>
                     <span class="maze-tag">uniform_random</span>
                 </div>
                 <button class="config-toggle">Show Configuration</button>
-                <button class="serialized-config-toggle">Show Serialized Config</button>
                 <div class="config-code"></div>
-                <div class="serialized-config-code"></div>
-                <button class="copy-button">Copy Config</button>
-                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
         <div class="maze-card" 
              data-name="p0.3" 
              data-grid-n="5" 
-             data-algorithm="" 
-             data-tags="percolation,p=0.3">
+             data-maze-ctor="gen_percolation" 
+             data-tags="percolation,p=0.3" 
+             data-fname="p0.3-g5-n12-a_percolation-h58892"
+             data-config-path="plots/p0.3-g5-n12-a_percolation-h58892/metadata.json">
             <div class="maze-image">
-                <img src="" alt="p0.3">
+                <img src="plots/p0.3-g5-n12-a_percolation-h58892/plot-0.svg" alt="p0.3" class="main-image">
+            </div>
+            <div class="maze-carousel">
+                
+                <div class="maze-thumbnail active" data-index="0">
+                    <img src="plots/p0.3-g5-n12-a_percolation-h58892/plot-0.svg" alt="Example 0" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="1">
+                    <img src="plots/p0.3-g5-n12-a_percolation-h58892/plot-1.svg" alt="Example 1" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="2">
+                    <img src="plots/p0.3-g5-n12-a_percolation-h58892/plot-2.svg" alt="Example 2" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="3">
+                    <img src="plots/p0.3-g5-n12-a_percolation-h58892/plot-3.svg" alt="Example 3" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="4">
+                    <img src="plots/p0.3-g5-n12-a_percolation-h58892/plot-4.svg" alt="Example 4" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="5">
+                    <img src="plots/p0.3-g5-n12-a_percolation-h58892/plot-5.svg" alt="Example 5" loading="lazy">
+                </div>
+                
             </div>
             <div class="maze-details">
-                <div class="maze-title">Pure percolation (p=0.3) (5x5)</div>
+                <div class="maze-title">p0.3</div>
                 <div class="maze-description">Grid size: 5x5</div>
                 <div class="maze-tags">
                     <span class="maze-tag">percolation</span>
                     <span class="maze-tag">p=0.3</span>
                 </div>
                 <button class="config-toggle">Show Configuration</button>
-                <button class="serialized-config-toggle">Show Serialized Config</button>
                 <div class="config-code"></div>
-                <div class="serialized-config-code"></div>
-                <button class="copy-button">Copy Config</button>
-                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
         <div class="maze-card" 
              data-name="p0.3" 
              data-grid-n="5" 
-             data-algorithm="" 
-             data-tags="dfs,percolation,p=0.3">
+             data-maze-ctor="gen_dfs_percolation" 
+             data-tags="dfs,percolation,p=0.3" 
+             data-fname="p0.3-g5-n10-a_dfs_percolation-h40286"
+             data-config-path="plots/p0.3-g5-n10-a_dfs_percolation-h40286/metadata.json">
             <div class="maze-image">
-                <img src="" alt="p0.3">
+                <img src="plots/p0.3-g5-n10-a_dfs_percolation-h40286/plot-0.svg" alt="p0.3" class="main-image">
+            </div>
+            <div class="maze-carousel">
+                
+                <div class="maze-thumbnail active" data-index="0">
+                    <img src="plots/p0.3-g5-n10-a_dfs_percolation-h40286/plot-0.svg" alt="Example 0" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="1">
+                    <img src="plots/p0.3-g5-n10-a_dfs_percolation-h40286/plot-1.svg" alt="Example 1" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="2">
+                    <img src="plots/p0.3-g5-n10-a_dfs_percolation-h40286/plot-2.svg" alt="Example 2" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="3">
+                    <img src="plots/p0.3-g5-n10-a_dfs_percolation-h40286/plot-3.svg" alt="Example 3" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="4">
+                    <img src="plots/p0.3-g5-n10-a_dfs_percolation-h40286/plot-4.svg" alt="Example 4" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="5">
+                    <img src="plots/p0.3-g5-n10-a_dfs_percolation-h40286/plot-5.svg" alt="Example 5" loading="lazy">
+                </div>
+                
             </div>
             <div class="maze-details">
-                <div class="maze-title">DFS with percolation (p=0.3) (5x5)</div>
+                <div class="maze-title">p0.3</div>
                 <div class="maze-description">Grid size: 5x5</div>
                 <div class="maze-tags">
                     <span class="maze-tag">dfs</span>
@@ -326,46 +449,96 @@
                     <span class="maze-tag">p=0.3</span>
                 </div>
                 <button class="config-toggle">Show Configuration</button>
-                <button class="serialized-config-toggle">Show Serialized Config</button>
                 <div class="config-code"></div>
-                <div class="serialized-config-code"></div>
-                <button class="copy-button">Copy Config</button>
-                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
         <div class="maze-card" 
              data-name="p0.5" 
              data-grid-n="5" 
-             data-algorithm="" 
-             data-tags="percolation,p=0.5">
+             data-maze-ctor="gen_percolation" 
+             data-tags="percolation,p=0.5" 
+             data-fname="p0.5-g5-n10-a_percolation-h39662"
+             data-config-path="plots/p0.5-g5-n10-a_percolation-h39662/metadata.json">
             <div class="maze-image">
-                <img src="" alt="p0.5">
+                <img src="plots/p0.5-g5-n10-a_percolation-h39662/plot-0.svg" alt="p0.5" class="main-image">
+            </div>
+            <div class="maze-carousel">
+                
+                <div class="maze-thumbnail active" data-index="0">
+                    <img src="plots/p0.5-g5-n10-a_percolation-h39662/plot-0.svg" alt="Example 0" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="1">
+                    <img src="plots/p0.5-g5-n10-a_percolation-h39662/plot-1.svg" alt="Example 1" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="2">
+                    <img src="plots/p0.5-g5-n10-a_percolation-h39662/plot-2.svg" alt="Example 2" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="3">
+                    <img src="plots/p0.5-g5-n10-a_percolation-h39662/plot-3.svg" alt="Example 3" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="4">
+                    <img src="plots/p0.5-g5-n10-a_percolation-h39662/plot-4.svg" alt="Example 4" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="5">
+                    <img src="plots/p0.5-g5-n10-a_percolation-h39662/plot-5.svg" alt="Example 5" loading="lazy">
+                </div>
+                
             </div>
             <div class="maze-details">
-                <div class="maze-title">Pure percolation (p=0.5) (5x5)</div>
+                <div class="maze-title">p0.5</div>
                 <div class="maze-description">Grid size: 5x5</div>
                 <div class="maze-tags">
                     <span class="maze-tag">percolation</span>
                     <span class="maze-tag">p=0.5</span>
                 </div>
                 <button class="config-toggle">Show Configuration</button>
-                <button class="serialized-config-toggle">Show Serialized Config</button>
                 <div class="config-code"></div>
-                <div class="serialized-config-code"></div>
-                <button class="copy-button">Copy Config</button>
-                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
         <div class="maze-card" 
              data-name="p0.5" 
              data-grid-n="5" 
-             data-algorithm="" 
-             data-tags="dfs,percolation,p=0.5">
+             data-maze-ctor="gen_dfs_percolation" 
+             data-tags="dfs,percolation,p=0.5" 
+             data-fname="p0.5-g5-n10-a_dfs_percolation-h46217"
+             data-config-path="plots/p0.5-g5-n10-a_dfs_percolation-h46217/metadata.json">
             <div class="maze-image">
-                <img src="" alt="p0.5">
+                <img src="plots/p0.5-g5-n10-a_dfs_percolation-h46217/plot-0.svg" alt="p0.5" class="main-image">
+            </div>
+            <div class="maze-carousel">
+                
+                <div class="maze-thumbnail active" data-index="0">
+                    <img src="plots/p0.5-g5-n10-a_dfs_percolation-h46217/plot-0.svg" alt="Example 0" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="1">
+                    <img src="plots/p0.5-g5-n10-a_dfs_percolation-h46217/plot-1.svg" alt="Example 1" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="2">
+                    <img src="plots/p0.5-g5-n10-a_dfs_percolation-h46217/plot-2.svg" alt="Example 2" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="3">
+                    <img src="plots/p0.5-g5-n10-a_dfs_percolation-h46217/plot-3.svg" alt="Example 3" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="4">
+                    <img src="plots/p0.5-g5-n10-a_dfs_percolation-h46217/plot-4.svg" alt="Example 4" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="5">
+                    <img src="plots/p0.5-g5-n10-a_dfs_percolation-h46217/plot-5.svg" alt="Example 5" loading="lazy">
+                </div>
+                
             </div>
             <div class="maze-details">
-                <div class="maze-title">DFS with percolation (p=0.5) (5x5)</div>
+                <div class="maze-title">p0.5</div>
                 <div class="maze-description">Grid size: 5x5</div>
                 <div class="maze-tags">
                     <span class="maze-tag">dfs</span>
@@ -373,46 +546,96 @@
                     <span class="maze-tag">p=0.5</span>
                 </div>
                 <button class="config-toggle">Show Configuration</button>
-                <button class="serialized-config-toggle">Show Serialized Config</button>
                 <div class="config-code"></div>
-                <div class="serialized-config-code"></div>
-                <button class="copy-button">Copy Config</button>
-                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
         <div class="maze-card" 
              data-name="p0.7" 
              data-grid-n="5" 
-             data-algorithm="" 
-             data-tags="percolation,p=0.7">
+             data-maze-ctor="gen_percolation" 
+             data-tags="percolation,p=0.7" 
+             data-fname="p0.7-g5-n10-a_percolation-h64356"
+             data-config-path="plots/p0.7-g5-n10-a_percolation-h64356/metadata.json">
             <div class="maze-image">
-                <img src="" alt="p0.7">
+                <img src="plots/p0.7-g5-n10-a_percolation-h64356/plot-0.svg" alt="p0.7" class="main-image">
+            </div>
+            <div class="maze-carousel">
+                
+                <div class="maze-thumbnail active" data-index="0">
+                    <img src="plots/p0.7-g5-n10-a_percolation-h64356/plot-0.svg" alt="Example 0" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="1">
+                    <img src="plots/p0.7-g5-n10-a_percolation-h64356/plot-1.svg" alt="Example 1" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="2">
+                    <img src="plots/p0.7-g5-n10-a_percolation-h64356/plot-2.svg" alt="Example 2" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="3">
+                    <img src="plots/p0.7-g5-n10-a_percolation-h64356/plot-3.svg" alt="Example 3" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="4">
+                    <img src="plots/p0.7-g5-n10-a_percolation-h64356/plot-4.svg" alt="Example 4" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="5">
+                    <img src="plots/p0.7-g5-n10-a_percolation-h64356/plot-5.svg" alt="Example 5" loading="lazy">
+                </div>
+                
             </div>
             <div class="maze-details">
-                <div class="maze-title">Pure percolation (p=0.7) (5x5)</div>
+                <div class="maze-title">p0.7</div>
                 <div class="maze-description">Grid size: 5x5</div>
                 <div class="maze-tags">
                     <span class="maze-tag">percolation</span>
                     <span class="maze-tag">p=0.7</span>
                 </div>
                 <button class="config-toggle">Show Configuration</button>
-                <button class="serialized-config-toggle">Show Serialized Config</button>
                 <div class="config-code"></div>
-                <div class="serialized-config-code"></div>
-                <button class="copy-button">Copy Config</button>
-                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
         <div class="maze-card" 
              data-name="p0.7" 
              data-grid-n="5" 
-             data-algorithm="" 
-             data-tags="dfs,percolation,p=0.7">
+             data-maze-ctor="gen_dfs_percolation" 
+             data-tags="dfs,percolation,p=0.7" 
+             data-fname="p0.7-g5-n10-a_dfs_percolation-h17557"
+             data-config-path="plots/p0.7-g5-n10-a_dfs_percolation-h17557/metadata.json">
             <div class="maze-image">
-                <img src="" alt="p0.7">
+                <img src="plots/p0.7-g5-n10-a_dfs_percolation-h17557/plot-0.svg" alt="p0.7" class="main-image">
+            </div>
+            <div class="maze-carousel">
+                
+                <div class="maze-thumbnail active" data-index="0">
+                    <img src="plots/p0.7-g5-n10-a_dfs_percolation-h17557/plot-0.svg" alt="Example 0" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="1">
+                    <img src="plots/p0.7-g5-n10-a_dfs_percolation-h17557/plot-1.svg" alt="Example 1" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="2">
+                    <img src="plots/p0.7-g5-n10-a_dfs_percolation-h17557/plot-2.svg" alt="Example 2" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="3">
+                    <img src="plots/p0.7-g5-n10-a_dfs_percolation-h17557/plot-3.svg" alt="Example 3" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="4">
+                    <img src="plots/p0.7-g5-n10-a_dfs_percolation-h17557/plot-4.svg" alt="Example 4" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="5">
+                    <img src="plots/p0.7-g5-n10-a_dfs_percolation-h17557/plot-5.svg" alt="Example 5" loading="lazy">
+                </div>
+                
             </div>
             <div class="maze-details">
-                <div class="maze-title">DFS with percolation (p=0.7) (5x5)</div>
+                <div class="maze-title">p0.7</div>
                 <div class="maze-description">Grid size: 5x5</div>
                 <div class="maze-tags">
                     <span class="maze-tag">dfs</span>
@@ -420,46 +643,96 @@
                     <span class="maze-tag">p=0.7</span>
                 </div>
                 <button class="config-toggle">Show Configuration</button>
-                <button class="serialized-config-toggle">Show Serialized Config</button>
                 <div class="config-code"></div>
-                <div class="serialized-config-code"></div>
-                <button class="copy-button">Copy Config</button>
-                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
         <div class="maze-card" 
              data-name="basic" 
              data-grid-n="8" 
-             data-algorithm="" 
-             data-tags="dfs,basic">
+             data-maze-ctor="gen_dfs" 
+             data-tags="dfs,basic" 
+             data-fname="basic-g8-n10-a_dfs-h29050"
+             data-config-path="plots/basic-g8-n10-a_dfs-h29050/metadata.json">
             <div class="maze-image">
-                <img src="" alt="basic">
+                <img src="plots/basic-g8-n10-a_dfs-h29050/plot-0.svg" alt="basic" class="main-image">
+            </div>
+            <div class="maze-carousel">
+                
+                <div class="maze-thumbnail active" data-index="0">
+                    <img src="plots/basic-g8-n10-a_dfs-h29050/plot-0.svg" alt="Example 0" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="1">
+                    <img src="plots/basic-g8-n10-a_dfs-h29050/plot-1.svg" alt="Example 1" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="2">
+                    <img src="plots/basic-g8-n10-a_dfs-h29050/plot-2.svg" alt="Example 2" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="3">
+                    <img src="plots/basic-g8-n10-a_dfs-h29050/plot-3.svg" alt="Example 3" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="4">
+                    <img src="plots/basic-g8-n10-a_dfs-h29050/plot-4.svg" alt="Example 4" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="5">
+                    <img src="plots/basic-g8-n10-a_dfs-h29050/plot-5.svg" alt="Example 5" loading="lazy">
+                </div>
+                
             </div>
             <div class="maze-details">
-                <div class="maze-title">Basic DFS maze (8x8)</div>
+                <div class="maze-title">basic</div>
                 <div class="maze-description">Grid size: 8x8</div>
                 <div class="maze-tags">
                     <span class="maze-tag">dfs</span>
                     <span class="maze-tag">basic</span>
                 </div>
                 <button class="config-toggle">Show Configuration</button>
-                <button class="serialized-config-toggle">Show Serialized Config</button>
                 <div class="config-code"></div>
-                <div class="serialized-config-code"></div>
-                <button class="copy-button">Copy Config</button>
-                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
         <div class="maze-card" 
              data-name="forkless" 
              data-grid-n="8" 
-             data-algorithm="" 
-             data-tags="dfs,no_forks,simple_path">
+             data-maze-ctor="gen_dfs" 
+             data-tags="dfs,no_forks,simple_path" 
+             data-fname="forkless-g8-n10-a_dfs-h61692"
+             data-config-path="plots/forkless-g8-n10-a_dfs-h61692/metadata.json">
             <div class="maze-image">
-                <img src="" alt="forkless">
+                <img src="plots/forkless-g8-n10-a_dfs-h61692/plot-0.svg" alt="forkless" class="main-image">
+            </div>
+            <div class="maze-carousel">
+                
+                <div class="maze-thumbnail active" data-index="0">
+                    <img src="plots/forkless-g8-n10-a_dfs-h61692/plot-0.svg" alt="Example 0" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="1">
+                    <img src="plots/forkless-g8-n10-a_dfs-h61692/plot-1.svg" alt="Example 1" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="2">
+                    <img src="plots/forkless-g8-n10-a_dfs-h61692/plot-2.svg" alt="Example 2" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="3">
+                    <img src="plots/forkless-g8-n10-a_dfs-h61692/plot-3.svg" alt="Example 3" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="4">
+                    <img src="plots/forkless-g8-n10-a_dfs-h61692/plot-4.svg" alt="Example 4" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="5">
+                    <img src="plots/forkless-g8-n10-a_dfs-h61692/plot-5.svg" alt="Example 5" loading="lazy">
+                </div>
+                
             </div>
             <div class="maze-details">
-                <div class="maze-title">DFS without forks (8x8)</div>
+                <div class="maze-title">forkless</div>
                 <div class="maze-description">Grid size: 8x8</div>
                 <div class="maze-tags">
                     <span class="maze-tag">dfs</span>
@@ -467,69 +740,144 @@
                     <span class="maze-tag">simple_path</span>
                 </div>
                 <button class="config-toggle">Show Configuration</button>
-                <button class="serialized-config-toggle">Show Serialized Config</button>
                 <div class="config-code"></div>
-                <div class="serialized-config-code"></div>
-                <button class="copy-button">Copy Config</button>
-                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
         <div class="maze-card" 
              data-name="basic" 
              data-grid-n="8" 
-             data-algorithm="" 
-             data-tags="wilson,uniform_random">
+             data-maze-ctor="gen_wilson" 
+             data-tags="wilson,uniform_random" 
+             data-fname="basic-g8-n10-a_wilson-h27146"
+             data-config-path="plots/basic-g8-n10-a_wilson-h27146/metadata.json">
             <div class="maze-image">
-                <img src="" alt="basic">
+                <img src="plots/basic-g8-n10-a_wilson-h27146/plot-0.svg" alt="basic" class="main-image">
+            </div>
+            <div class="maze-carousel">
+                
+                <div class="maze-thumbnail active" data-index="0">
+                    <img src="plots/basic-g8-n10-a_wilson-h27146/plot-0.svg" alt="Example 0" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="1">
+                    <img src="plots/basic-g8-n10-a_wilson-h27146/plot-1.svg" alt="Example 1" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="2">
+                    <img src="plots/basic-g8-n10-a_wilson-h27146/plot-2.svg" alt="Example 2" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="3">
+                    <img src="plots/basic-g8-n10-a_wilson-h27146/plot-3.svg" alt="Example 3" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="4">
+                    <img src="plots/basic-g8-n10-a_wilson-h27146/plot-4.svg" alt="Example 4" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="5">
+                    <img src="plots/basic-g8-n10-a_wilson-h27146/plot-5.svg" alt="Example 5" loading="lazy">
+                </div>
+                
             </div>
             <div class="maze-details">
-                <div class="maze-title">Wilson's algorithm (8x8) - unbiased random maze</div>
+                <div class="maze-title">basic</div>
                 <div class="maze-description">Grid size: 8x8</div>
                 <div class="maze-tags">
                     <span class="maze-tag">wilson</span>
                     <span class="maze-tag">uniform_random</span>
                 </div>
                 <button class="config-toggle">Show Configuration</button>
-                <button class="serialized-config-toggle">Show Serialized Config</button>
                 <div class="config-code"></div>
-                <div class="serialized-config-code"></div>
-                <button class="copy-button">Copy Config</button>
-                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
         <div class="maze-card" 
              data-name="p0.3" 
              data-grid-n="8" 
-             data-algorithm="" 
-             data-tags="percolation,p=0.3">
+             data-maze-ctor="gen_percolation" 
+             data-tags="percolation,p=0.3" 
+             data-fname="p0.3-g8-n12-a_percolation-h67259"
+             data-config-path="plots/p0.3-g8-n12-a_percolation-h67259/metadata.json">
             <div class="maze-image">
-                <img src="" alt="p0.3">
+                <img src="plots/p0.3-g8-n12-a_percolation-h67259/plot-0.svg" alt="p0.3" class="main-image">
+            </div>
+            <div class="maze-carousel">
+                
+                <div class="maze-thumbnail active" data-index="0">
+                    <img src="plots/p0.3-g8-n12-a_percolation-h67259/plot-0.svg" alt="Example 0" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="1">
+                    <img src="plots/p0.3-g8-n12-a_percolation-h67259/plot-1.svg" alt="Example 1" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="2">
+                    <img src="plots/p0.3-g8-n12-a_percolation-h67259/plot-2.svg" alt="Example 2" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="3">
+                    <img src="plots/p0.3-g8-n12-a_percolation-h67259/plot-3.svg" alt="Example 3" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="4">
+                    <img src="plots/p0.3-g8-n12-a_percolation-h67259/plot-4.svg" alt="Example 4" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="5">
+                    <img src="plots/p0.3-g8-n12-a_percolation-h67259/plot-5.svg" alt="Example 5" loading="lazy">
+                </div>
+                
             </div>
             <div class="maze-details">
-                <div class="maze-title">Pure percolation (p=0.3) (8x8)</div>
+                <div class="maze-title">p0.3</div>
                 <div class="maze-description">Grid size: 8x8</div>
                 <div class="maze-tags">
                     <span class="maze-tag">percolation</span>
                     <span class="maze-tag">p=0.3</span>
                 </div>
                 <button class="config-toggle">Show Configuration</button>
-                <button class="serialized-config-toggle">Show Serialized Config</button>
                 <div class="config-code"></div>
-                <div class="serialized-config-code"></div>
-                <button class="copy-button">Copy Config</button>
-                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
         <div class="maze-card" 
              data-name="p0.3" 
              data-grid-n="8" 
-             data-algorithm="" 
-             data-tags="dfs,percolation,p=0.3">
+             data-maze-ctor="gen_dfs_percolation" 
+             data-tags="dfs,percolation,p=0.3" 
+             data-fname="p0.3-g8-n10-a_dfs_percolation-h31742"
+             data-config-path="plots/p0.3-g8-n10-a_dfs_percolation-h31742/metadata.json">
             <div class="maze-image">
-                <img src="" alt="p0.3">
+                <img src="plots/p0.3-g8-n10-a_dfs_percolation-h31742/plot-0.svg" alt="p0.3" class="main-image">
+            </div>
+            <div class="maze-carousel">
+                
+                <div class="maze-thumbnail active" data-index="0">
+                    <img src="plots/p0.3-g8-n10-a_dfs_percolation-h31742/plot-0.svg" alt="Example 0" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="1">
+                    <img src="plots/p0.3-g8-n10-a_dfs_percolation-h31742/plot-1.svg" alt="Example 1" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="2">
+                    <img src="plots/p0.3-g8-n10-a_dfs_percolation-h31742/plot-2.svg" alt="Example 2" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="3">
+                    <img src="plots/p0.3-g8-n10-a_dfs_percolation-h31742/plot-3.svg" alt="Example 3" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="4">
+                    <img src="plots/p0.3-g8-n10-a_dfs_percolation-h31742/plot-4.svg" alt="Example 4" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="5">
+                    <img src="plots/p0.3-g8-n10-a_dfs_percolation-h31742/plot-5.svg" alt="Example 5" loading="lazy">
+                </div>
+                
             </div>
             <div class="maze-details">
-                <div class="maze-title">DFS with percolation (p=0.3) (8x8)</div>
+                <div class="maze-title">p0.3</div>
                 <div class="maze-description">Grid size: 8x8</div>
                 <div class="maze-tags">
                     <span class="maze-tag">dfs</span>
@@ -537,46 +885,96 @@
                     <span class="maze-tag">p=0.3</span>
                 </div>
                 <button class="config-toggle">Show Configuration</button>
-                <button class="serialized-config-toggle">Show Serialized Config</button>
                 <div class="config-code"></div>
-                <div class="serialized-config-code"></div>
-                <button class="copy-button">Copy Config</button>
-                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
         <div class="maze-card" 
              data-name="p0.5" 
              data-grid-n="8" 
-             data-algorithm="" 
-             data-tags="percolation,p=0.5">
+             data-maze-ctor="gen_percolation" 
+             data-tags="percolation,p=0.5" 
+             data-fname="p0.5-g8-n10-a_percolation-h36186"
+             data-config-path="plots/p0.5-g8-n10-a_percolation-h36186/metadata.json">
             <div class="maze-image">
-                <img src="" alt="p0.5">
+                <img src="plots/p0.5-g8-n10-a_percolation-h36186/plot-0.svg" alt="p0.5" class="main-image">
+            </div>
+            <div class="maze-carousel">
+                
+                <div class="maze-thumbnail active" data-index="0">
+                    <img src="plots/p0.5-g8-n10-a_percolation-h36186/plot-0.svg" alt="Example 0" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="1">
+                    <img src="plots/p0.5-g8-n10-a_percolation-h36186/plot-1.svg" alt="Example 1" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="2">
+                    <img src="plots/p0.5-g8-n10-a_percolation-h36186/plot-2.svg" alt="Example 2" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="3">
+                    <img src="plots/p0.5-g8-n10-a_percolation-h36186/plot-3.svg" alt="Example 3" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="4">
+                    <img src="plots/p0.5-g8-n10-a_percolation-h36186/plot-4.svg" alt="Example 4" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="5">
+                    <img src="plots/p0.5-g8-n10-a_percolation-h36186/plot-5.svg" alt="Example 5" loading="lazy">
+                </div>
+                
             </div>
             <div class="maze-details">
-                <div class="maze-title">Pure percolation (p=0.5) (8x8)</div>
+                <div class="maze-title">p0.5</div>
                 <div class="maze-description">Grid size: 8x8</div>
                 <div class="maze-tags">
                     <span class="maze-tag">percolation</span>
                     <span class="maze-tag">p=0.5</span>
                 </div>
                 <button class="config-toggle">Show Configuration</button>
-                <button class="serialized-config-toggle">Show Serialized Config</button>
                 <div class="config-code"></div>
-                <div class="serialized-config-code"></div>
-                <button class="copy-button">Copy Config</button>
-                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
         <div class="maze-card" 
              data-name="p0.5" 
              data-grid-n="8" 
-             data-algorithm="" 
-             data-tags="dfs,percolation,p=0.5">
+             data-maze-ctor="gen_dfs_percolation" 
+             data-tags="dfs,percolation,p=0.5" 
+             data-fname="p0.5-g8-n10-a_dfs_percolation-h70582"
+             data-config-path="plots/p0.5-g8-n10-a_dfs_percolation-h70582/metadata.json">
             <div class="maze-image">
-                <img src="" alt="p0.5">
+                <img src="plots/p0.5-g8-n10-a_dfs_percolation-h70582/plot-0.svg" alt="p0.5" class="main-image">
+            </div>
+            <div class="maze-carousel">
+                
+                <div class="maze-thumbnail active" data-index="0">
+                    <img src="plots/p0.5-g8-n10-a_dfs_percolation-h70582/plot-0.svg" alt="Example 0" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="1">
+                    <img src="plots/p0.5-g8-n10-a_dfs_percolation-h70582/plot-1.svg" alt="Example 1" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="2">
+                    <img src="plots/p0.5-g8-n10-a_dfs_percolation-h70582/plot-2.svg" alt="Example 2" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="3">
+                    <img src="plots/p0.5-g8-n10-a_dfs_percolation-h70582/plot-3.svg" alt="Example 3" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="4">
+                    <img src="plots/p0.5-g8-n10-a_dfs_percolation-h70582/plot-4.svg" alt="Example 4" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="5">
+                    <img src="plots/p0.5-g8-n10-a_dfs_percolation-h70582/plot-5.svg" alt="Example 5" loading="lazy">
+                </div>
+                
             </div>
             <div class="maze-details">
-                <div class="maze-title">DFS with percolation (p=0.5) (8x8)</div>
+                <div class="maze-title">p0.5</div>
                 <div class="maze-description">Grid size: 8x8</div>
                 <div class="maze-tags">
                     <span class="maze-tag">dfs</span>
@@ -584,46 +982,96 @@
                     <span class="maze-tag">p=0.5</span>
                 </div>
                 <button class="config-toggle">Show Configuration</button>
-                <button class="serialized-config-toggle">Show Serialized Config</button>
                 <div class="config-code"></div>
-                <div class="serialized-config-code"></div>
-                <button class="copy-button">Copy Config</button>
-                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
         <div class="maze-card" 
              data-name="p0.7" 
              data-grid-n="8" 
-             data-algorithm="" 
-             data-tags="percolation,p=0.7">
+             data-maze-ctor="gen_percolation" 
+             data-tags="percolation,p=0.7" 
+             data-fname="p0.7-g8-n10-a_percolation-h84837"
+             data-config-path="plots/p0.7-g8-n10-a_percolation-h84837/metadata.json">
             <div class="maze-image">
-                <img src="" alt="p0.7">
+                <img src="plots/p0.7-g8-n10-a_percolation-h84837/plot-0.svg" alt="p0.7" class="main-image">
+            </div>
+            <div class="maze-carousel">
+                
+                <div class="maze-thumbnail active" data-index="0">
+                    <img src="plots/p0.7-g8-n10-a_percolation-h84837/plot-0.svg" alt="Example 0" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="1">
+                    <img src="plots/p0.7-g8-n10-a_percolation-h84837/plot-1.svg" alt="Example 1" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="2">
+                    <img src="plots/p0.7-g8-n10-a_percolation-h84837/plot-2.svg" alt="Example 2" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="3">
+                    <img src="plots/p0.7-g8-n10-a_percolation-h84837/plot-3.svg" alt="Example 3" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="4">
+                    <img src="plots/p0.7-g8-n10-a_percolation-h84837/plot-4.svg" alt="Example 4" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="5">
+                    <img src="plots/p0.7-g8-n10-a_percolation-h84837/plot-5.svg" alt="Example 5" loading="lazy">
+                </div>
+                
             </div>
             <div class="maze-details">
-                <div class="maze-title">Pure percolation (p=0.7) (8x8)</div>
+                <div class="maze-title">p0.7</div>
                 <div class="maze-description">Grid size: 8x8</div>
                 <div class="maze-tags">
                     <span class="maze-tag">percolation</span>
                     <span class="maze-tag">p=0.7</span>
                 </div>
                 <button class="config-toggle">Show Configuration</button>
-                <button class="serialized-config-toggle">Show Serialized Config</button>
                 <div class="config-code"></div>
-                <div class="serialized-config-code"></div>
-                <button class="copy-button">Copy Config</button>
-                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
         <div class="maze-card" 
              data-name="p0.7" 
              data-grid-n="8" 
-             data-algorithm="" 
-             data-tags="dfs,percolation,p=0.7">
+             data-maze-ctor="gen_dfs_percolation" 
+             data-tags="dfs,percolation,p=0.7" 
+             data-fname="p0.7-g8-n10-a_dfs_percolation-h13842"
+             data-config-path="plots/p0.7-g8-n10-a_dfs_percolation-h13842/metadata.json">
             <div class="maze-image">
-                <img src="" alt="p0.7">
+                <img src="plots/p0.7-g8-n10-a_dfs_percolation-h13842/plot-0.svg" alt="p0.7" class="main-image">
+            </div>
+            <div class="maze-carousel">
+                
+                <div class="maze-thumbnail active" data-index="0">
+                    <img src="plots/p0.7-g8-n10-a_dfs_percolation-h13842/plot-0.svg" alt="Example 0" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="1">
+                    <img src="plots/p0.7-g8-n10-a_dfs_percolation-h13842/plot-1.svg" alt="Example 1" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="2">
+                    <img src="plots/p0.7-g8-n10-a_dfs_percolation-h13842/plot-2.svg" alt="Example 2" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="3">
+                    <img src="plots/p0.7-g8-n10-a_dfs_percolation-h13842/plot-3.svg" alt="Example 3" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="4">
+                    <img src="plots/p0.7-g8-n10-a_dfs_percolation-h13842/plot-4.svg" alt="Example 4" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="5">
+                    <img src="plots/p0.7-g8-n10-a_dfs_percolation-h13842/plot-5.svg" alt="Example 5" loading="lazy">
+                </div>
+                
             </div>
             <div class="maze-details">
-                <div class="maze-title">DFS with percolation (p=0.7) (8x8)</div>
+                <div class="maze-title">p0.7</div>
                 <div class="maze-description">Grid size: 8x8</div>
                 <div class="maze-tags">
                     <span class="maze-tag">dfs</span>
@@ -631,46 +1079,96 @@
                     <span class="maze-tag">p=0.7</span>
                 </div>
                 <button class="config-toggle">Show Configuration</button>
-                <button class="serialized-config-toggle">Show Serialized Config</button>
                 <div class="config-code"></div>
-                <div class="serialized-config-code"></div>
-                <button class="copy-button">Copy Config</button>
-                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
         <div class="maze-card" 
              data-name="basic" 
              data-grid-n="12" 
-             data-algorithm="" 
-             data-tags="dfs,basic">
+             data-maze-ctor="gen_dfs" 
+             data-tags="dfs,basic" 
+             data-fname="basic-g12-n10-a_dfs-h61706"
+             data-config-path="plots/basic-g12-n10-a_dfs-h61706/metadata.json">
             <div class="maze-image">
-                <img src="" alt="basic">
+                <img src="plots/basic-g12-n10-a_dfs-h61706/plot-0.svg" alt="basic" class="main-image">
+            </div>
+            <div class="maze-carousel">
+                
+                <div class="maze-thumbnail active" data-index="0">
+                    <img src="plots/basic-g12-n10-a_dfs-h61706/plot-0.svg" alt="Example 0" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="1">
+                    <img src="plots/basic-g12-n10-a_dfs-h61706/plot-1.svg" alt="Example 1" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="2">
+                    <img src="plots/basic-g12-n10-a_dfs-h61706/plot-2.svg" alt="Example 2" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="3">
+                    <img src="plots/basic-g12-n10-a_dfs-h61706/plot-3.svg" alt="Example 3" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="4">
+                    <img src="plots/basic-g12-n10-a_dfs-h61706/plot-4.svg" alt="Example 4" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="5">
+                    <img src="plots/basic-g12-n10-a_dfs-h61706/plot-5.svg" alt="Example 5" loading="lazy">
+                </div>
+                
             </div>
             <div class="maze-details">
-                <div class="maze-title">Basic DFS maze (12x12)</div>
+                <div class="maze-title">basic</div>
                 <div class="maze-description">Grid size: 12x12</div>
                 <div class="maze-tags">
                     <span class="maze-tag">dfs</span>
                     <span class="maze-tag">basic</span>
                 </div>
                 <button class="config-toggle">Show Configuration</button>
-                <button class="serialized-config-toggle">Show Serialized Config</button>
                 <div class="config-code"></div>
-                <div class="serialized-config-code"></div>
-                <button class="copy-button">Copy Config</button>
-                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
         <div class="maze-card" 
              data-name="forkless" 
              data-grid-n="12" 
-             data-algorithm="" 
-             data-tags="dfs,no_forks,simple_path">
+             data-maze-ctor="gen_dfs" 
+             data-tags="dfs,no_forks,simple_path" 
+             data-fname="forkless-g12-n10-a_dfs-h95251"
+             data-config-path="plots/forkless-g12-n10-a_dfs-h95251/metadata.json">
             <div class="maze-image">
-                <img src="" alt="forkless">
+                <img src="plots/forkless-g12-n10-a_dfs-h95251/plot-0.svg" alt="forkless" class="main-image">
+            </div>
+            <div class="maze-carousel">
+                
+                <div class="maze-thumbnail active" data-index="0">
+                    <img src="plots/forkless-g12-n10-a_dfs-h95251/plot-0.svg" alt="Example 0" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="1">
+                    <img src="plots/forkless-g12-n10-a_dfs-h95251/plot-1.svg" alt="Example 1" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="2">
+                    <img src="plots/forkless-g12-n10-a_dfs-h95251/plot-2.svg" alt="Example 2" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="3">
+                    <img src="plots/forkless-g12-n10-a_dfs-h95251/plot-3.svg" alt="Example 3" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="4">
+                    <img src="plots/forkless-g12-n10-a_dfs-h95251/plot-4.svg" alt="Example 4" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="5">
+                    <img src="plots/forkless-g12-n10-a_dfs-h95251/plot-5.svg" alt="Example 5" loading="lazy">
+                </div>
+                
             </div>
             <div class="maze-details">
-                <div class="maze-title">DFS without forks (12x12)</div>
+                <div class="maze-title">forkless</div>
                 <div class="maze-description">Grid size: 12x12</div>
                 <div class="maze-tags">
                     <span class="maze-tag">dfs</span>
@@ -678,69 +1176,144 @@
                     <span class="maze-tag">simple_path</span>
                 </div>
                 <button class="config-toggle">Show Configuration</button>
-                <button class="serialized-config-toggle">Show Serialized Config</button>
                 <div class="config-code"></div>
-                <div class="serialized-config-code"></div>
-                <button class="copy-button">Copy Config</button>
-                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
         <div class="maze-card" 
              data-name="basic" 
              data-grid-n="12" 
-             data-algorithm="" 
-             data-tags="wilson,uniform_random">
+             data-maze-ctor="gen_wilson" 
+             data-tags="wilson,uniform_random" 
+             data-fname="basic-g12-n10-a_wilson-h87798"
+             data-config-path="plots/basic-g12-n10-a_wilson-h87798/metadata.json">
             <div class="maze-image">
-                <img src="" alt="basic">
+                <img src="plots/basic-g12-n10-a_wilson-h87798/plot-0.svg" alt="basic" class="main-image">
+            </div>
+            <div class="maze-carousel">
+                
+                <div class="maze-thumbnail active" data-index="0">
+                    <img src="plots/basic-g12-n10-a_wilson-h87798/plot-0.svg" alt="Example 0" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="1">
+                    <img src="plots/basic-g12-n10-a_wilson-h87798/plot-1.svg" alt="Example 1" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="2">
+                    <img src="plots/basic-g12-n10-a_wilson-h87798/plot-2.svg" alt="Example 2" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="3">
+                    <img src="plots/basic-g12-n10-a_wilson-h87798/plot-3.svg" alt="Example 3" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="4">
+                    <img src="plots/basic-g12-n10-a_wilson-h87798/plot-4.svg" alt="Example 4" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="5">
+                    <img src="plots/basic-g12-n10-a_wilson-h87798/plot-5.svg" alt="Example 5" loading="lazy">
+                </div>
+                
             </div>
             <div class="maze-details">
-                <div class="maze-title">Wilson's algorithm (12x12) - unbiased random maze</div>
+                <div class="maze-title">basic</div>
                 <div class="maze-description">Grid size: 12x12</div>
                 <div class="maze-tags">
                     <span class="maze-tag">wilson</span>
                     <span class="maze-tag">uniform_random</span>
                 </div>
                 <button class="config-toggle">Show Configuration</button>
-                <button class="serialized-config-toggle">Show Serialized Config</button>
                 <div class="config-code"></div>
-                <div class="serialized-config-code"></div>
-                <button class="copy-button">Copy Config</button>
-                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
         <div class="maze-card" 
              data-name="p0.3" 
              data-grid-n="12" 
-             data-algorithm="" 
-             data-tags="percolation,p=0.3">
+             data-maze-ctor="gen_percolation" 
+             data-tags="percolation,p=0.3" 
+             data-fname="p0.3-g12-n12-a_percolation-h67733"
+             data-config-path="plots/p0.3-g12-n12-a_percolation-h67733/metadata.json">
             <div class="maze-image">
-                <img src="" alt="p0.3">
+                <img src="plots/p0.3-g12-n12-a_percolation-h67733/plot-0.svg" alt="p0.3" class="main-image">
+            </div>
+            <div class="maze-carousel">
+                
+                <div class="maze-thumbnail active" data-index="0">
+                    <img src="plots/p0.3-g12-n12-a_percolation-h67733/plot-0.svg" alt="Example 0" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="1">
+                    <img src="plots/p0.3-g12-n12-a_percolation-h67733/plot-1.svg" alt="Example 1" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="2">
+                    <img src="plots/p0.3-g12-n12-a_percolation-h67733/plot-2.svg" alt="Example 2" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="3">
+                    <img src="plots/p0.3-g12-n12-a_percolation-h67733/plot-3.svg" alt="Example 3" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="4">
+                    <img src="plots/p0.3-g12-n12-a_percolation-h67733/plot-4.svg" alt="Example 4" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="5">
+                    <img src="plots/p0.3-g12-n12-a_percolation-h67733/plot-5.svg" alt="Example 5" loading="lazy">
+                </div>
+                
             </div>
             <div class="maze-details">
-                <div class="maze-title">Pure percolation (p=0.3) (12x12)</div>
+                <div class="maze-title">p0.3</div>
                 <div class="maze-description">Grid size: 12x12</div>
                 <div class="maze-tags">
                     <span class="maze-tag">percolation</span>
                     <span class="maze-tag">p=0.3</span>
                 </div>
                 <button class="config-toggle">Show Configuration</button>
-                <button class="serialized-config-toggle">Show Serialized Config</button>
                 <div class="config-code"></div>
-                <div class="serialized-config-code"></div>
-                <button class="copy-button">Copy Config</button>
-                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
         <div class="maze-card" 
              data-name="p0.3" 
              data-grid-n="12" 
-             data-algorithm="" 
-             data-tags="dfs,percolation,p=0.3">
+             data-maze-ctor="gen_dfs_percolation" 
+             data-tags="dfs,percolation,p=0.3" 
+             data-fname="p0.3-g12-n10-a_dfs_percolation-h2807"
+             data-config-path="plots/p0.3-g12-n10-a_dfs_percolation-h2807/metadata.json">
             <div class="maze-image">
-                <img src="" alt="p0.3">
+                <img src="plots/p0.3-g12-n10-a_dfs_percolation-h2807/plot-0.svg" alt="p0.3" class="main-image">
+            </div>
+            <div class="maze-carousel">
+                
+                <div class="maze-thumbnail active" data-index="0">
+                    <img src="plots/p0.3-g12-n10-a_dfs_percolation-h2807/plot-0.svg" alt="Example 0" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="1">
+                    <img src="plots/p0.3-g12-n10-a_dfs_percolation-h2807/plot-1.svg" alt="Example 1" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="2">
+                    <img src="plots/p0.3-g12-n10-a_dfs_percolation-h2807/plot-2.svg" alt="Example 2" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="3">
+                    <img src="plots/p0.3-g12-n10-a_dfs_percolation-h2807/plot-3.svg" alt="Example 3" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="4">
+                    <img src="plots/p0.3-g12-n10-a_dfs_percolation-h2807/plot-4.svg" alt="Example 4" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="5">
+                    <img src="plots/p0.3-g12-n10-a_dfs_percolation-h2807/plot-5.svg" alt="Example 5" loading="lazy">
+                </div>
+                
             </div>
             <div class="maze-details">
-                <div class="maze-title">DFS with percolation (p=0.3) (12x12)</div>
+                <div class="maze-title">p0.3</div>
                 <div class="maze-description">Grid size: 12x12</div>
                 <div class="maze-tags">
                     <span class="maze-tag">dfs</span>
@@ -748,46 +1321,96 @@
                     <span class="maze-tag">p=0.3</span>
                 </div>
                 <button class="config-toggle">Show Configuration</button>
-                <button class="serialized-config-toggle">Show Serialized Config</button>
                 <div class="config-code"></div>
-                <div class="serialized-config-code"></div>
-                <button class="copy-button">Copy Config</button>
-                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
         <div class="maze-card" 
              data-name="p0.5" 
              data-grid-n="12" 
-             data-algorithm="" 
-             data-tags="percolation,p=0.5">
+             data-maze-ctor="gen_percolation" 
+             data-tags="percolation,p=0.5" 
+             data-fname="p0.5-g12-n10-a_percolation-h82864"
+             data-config-path="plots/p0.5-g12-n10-a_percolation-h82864/metadata.json">
             <div class="maze-image">
-                <img src="" alt="p0.5">
+                <img src="plots/p0.5-g12-n10-a_percolation-h82864/plot-0.svg" alt="p0.5" class="main-image">
+            </div>
+            <div class="maze-carousel">
+                
+                <div class="maze-thumbnail active" data-index="0">
+                    <img src="plots/p0.5-g12-n10-a_percolation-h82864/plot-0.svg" alt="Example 0" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="1">
+                    <img src="plots/p0.5-g12-n10-a_percolation-h82864/plot-1.svg" alt="Example 1" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="2">
+                    <img src="plots/p0.5-g12-n10-a_percolation-h82864/plot-2.svg" alt="Example 2" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="3">
+                    <img src="plots/p0.5-g12-n10-a_percolation-h82864/plot-3.svg" alt="Example 3" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="4">
+                    <img src="plots/p0.5-g12-n10-a_percolation-h82864/plot-4.svg" alt="Example 4" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="5">
+                    <img src="plots/p0.5-g12-n10-a_percolation-h82864/plot-5.svg" alt="Example 5" loading="lazy">
+                </div>
+                
             </div>
             <div class="maze-details">
-                <div class="maze-title">Pure percolation (p=0.5) (12x12)</div>
+                <div class="maze-title">p0.5</div>
                 <div class="maze-description">Grid size: 12x12</div>
                 <div class="maze-tags">
                     <span class="maze-tag">percolation</span>
                     <span class="maze-tag">p=0.5</span>
                 </div>
                 <button class="config-toggle">Show Configuration</button>
-                <button class="serialized-config-toggle">Show Serialized Config</button>
                 <div class="config-code"></div>
-                <div class="serialized-config-code"></div>
-                <button class="copy-button">Copy Config</button>
-                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
         <div class="maze-card" 
              data-name="p0.5" 
              data-grid-n="12" 
-             data-algorithm="" 
-             data-tags="dfs,percolation,p=0.5">
+             data-maze-ctor="gen_dfs_percolation" 
+             data-tags="dfs,percolation,p=0.5" 
+             data-fname="p0.5-g12-n10-a_dfs_percolation-h1870"
+             data-config-path="plots/p0.5-g12-n10-a_dfs_percolation-h1870/metadata.json">
             <div class="maze-image">
-                <img src="" alt="p0.5">
+                <img src="plots/p0.5-g12-n10-a_dfs_percolation-h1870/plot-0.svg" alt="p0.5" class="main-image">
+            </div>
+            <div class="maze-carousel">
+                
+                <div class="maze-thumbnail active" data-index="0">
+                    <img src="plots/p0.5-g12-n10-a_dfs_percolation-h1870/plot-0.svg" alt="Example 0" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="1">
+                    <img src="plots/p0.5-g12-n10-a_dfs_percolation-h1870/plot-1.svg" alt="Example 1" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="2">
+                    <img src="plots/p0.5-g12-n10-a_dfs_percolation-h1870/plot-2.svg" alt="Example 2" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="3">
+                    <img src="plots/p0.5-g12-n10-a_dfs_percolation-h1870/plot-3.svg" alt="Example 3" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="4">
+                    <img src="plots/p0.5-g12-n10-a_dfs_percolation-h1870/plot-4.svg" alt="Example 4" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="5">
+                    <img src="plots/p0.5-g12-n10-a_dfs_percolation-h1870/plot-5.svg" alt="Example 5" loading="lazy">
+                </div>
+                
             </div>
             <div class="maze-details">
-                <div class="maze-title">DFS with percolation (p=0.5) (12x12)</div>
+                <div class="maze-title">p0.5</div>
                 <div class="maze-description">Grid size: 12x12</div>
                 <div class="maze-tags">
                     <span class="maze-tag">dfs</span>
@@ -795,46 +1418,96 @@
                     <span class="maze-tag">p=0.5</span>
                 </div>
                 <button class="config-toggle">Show Configuration</button>
-                <button class="serialized-config-toggle">Show Serialized Config</button>
                 <div class="config-code"></div>
-                <div class="serialized-config-code"></div>
-                <button class="copy-button">Copy Config</button>
-                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
         <div class="maze-card" 
              data-name="p0.7" 
              data-grid-n="12" 
-             data-algorithm="" 
-             data-tags="percolation,p=0.7">
+             data-maze-ctor="gen_percolation" 
+             data-tags="percolation,p=0.7" 
+             data-fname="p0.7-g12-n10-a_percolation-h56477"
+             data-config-path="plots/p0.7-g12-n10-a_percolation-h56477/metadata.json">
             <div class="maze-image">
-                <img src="" alt="p0.7">
+                <img src="plots/p0.7-g12-n10-a_percolation-h56477/plot-0.svg" alt="p0.7" class="main-image">
+            </div>
+            <div class="maze-carousel">
+                
+                <div class="maze-thumbnail active" data-index="0">
+                    <img src="plots/p0.7-g12-n10-a_percolation-h56477/plot-0.svg" alt="Example 0" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="1">
+                    <img src="plots/p0.7-g12-n10-a_percolation-h56477/plot-1.svg" alt="Example 1" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="2">
+                    <img src="plots/p0.7-g12-n10-a_percolation-h56477/plot-2.svg" alt="Example 2" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="3">
+                    <img src="plots/p0.7-g12-n10-a_percolation-h56477/plot-3.svg" alt="Example 3" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="4">
+                    <img src="plots/p0.7-g12-n10-a_percolation-h56477/plot-4.svg" alt="Example 4" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="5">
+                    <img src="plots/p0.7-g12-n10-a_percolation-h56477/plot-5.svg" alt="Example 5" loading="lazy">
+                </div>
+                
             </div>
             <div class="maze-details">
-                <div class="maze-title">Pure percolation (p=0.7) (12x12)</div>
+                <div class="maze-title">p0.7</div>
                 <div class="maze-description">Grid size: 12x12</div>
                 <div class="maze-tags">
                     <span class="maze-tag">percolation</span>
                     <span class="maze-tag">p=0.7</span>
                 </div>
                 <button class="config-toggle">Show Configuration</button>
-                <button class="serialized-config-toggle">Show Serialized Config</button>
                 <div class="config-code"></div>
-                <div class="serialized-config-code"></div>
-                <button class="copy-button">Copy Config</button>
-                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
         <div class="maze-card" 
              data-name="p0.7" 
              data-grid-n="12" 
-             data-algorithm="" 
-             data-tags="dfs,percolation,p=0.7">
+             data-maze-ctor="gen_dfs_percolation" 
+             data-tags="dfs,percolation,p=0.7" 
+             data-fname="p0.7-g12-n10-a_dfs_percolation-h13964"
+             data-config-path="plots/p0.7-g12-n10-a_dfs_percolation-h13964/metadata.json">
             <div class="maze-image">
-                <img src="" alt="p0.7">
+                <img src="plots/p0.7-g12-n10-a_dfs_percolation-h13964/plot-0.svg" alt="p0.7" class="main-image">
+            </div>
+            <div class="maze-carousel">
+                
+                <div class="maze-thumbnail active" data-index="0">
+                    <img src="plots/p0.7-g12-n10-a_dfs_percolation-h13964/plot-0.svg" alt="Example 0" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="1">
+                    <img src="plots/p0.7-g12-n10-a_dfs_percolation-h13964/plot-1.svg" alt="Example 1" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="2">
+                    <img src="plots/p0.7-g12-n10-a_dfs_percolation-h13964/plot-2.svg" alt="Example 2" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="3">
+                    <img src="plots/p0.7-g12-n10-a_dfs_percolation-h13964/plot-3.svg" alt="Example 3" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="4">
+                    <img src="plots/p0.7-g12-n10-a_dfs_percolation-h13964/plot-4.svg" alt="Example 4" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="5">
+                    <img src="plots/p0.7-g12-n10-a_dfs_percolation-h13964/plot-5.svg" alt="Example 5" loading="lazy">
+                </div>
+                
             </div>
             <div class="maze-details">
-                <div class="maze-title">DFS with percolation (p=0.7) (12x12)</div>
+                <div class="maze-title">p0.7</div>
                 <div class="maze-description">Grid size: 12x12</div>
                 <div class="maze-tags">
                     <span class="maze-tag">dfs</span>
@@ -842,46 +1515,96 @@
                     <span class="maze-tag">p=0.7</span>
                 </div>
                 <button class="config-toggle">Show Configuration</button>
-                <button class="serialized-config-toggle">Show Serialized Config</button>
                 <div class="config-code"></div>
-                <div class="serialized-config-code"></div>
-                <button class="copy-button">Copy Config</button>
-                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
         <div class="maze-card" 
              data-name="accessible_cells" 
              data-grid-n="10" 
-             data-algorithm="" 
-             data-tags="dfs,limited_cells">
+             data-maze-ctor="gen_dfs" 
+             data-tags="dfs,limited_cells" 
+             data-fname="accessible_cells-g10-n10-a_dfs-h59176"
+             data-config-path="plots/accessible_cells-g10-n10-a_dfs-h59176/metadata.json">
             <div class="maze-image">
-                <img src="" alt="accessible_cells">
+                <img src="plots/accessible_cells-g10-n10-a_dfs-h59176/plot-0.svg" alt="accessible_cells" class="main-image">
+            </div>
+            <div class="maze-carousel">
+                
+                <div class="maze-thumbnail active" data-index="0">
+                    <img src="plots/accessible_cells-g10-n10-a_dfs-h59176/plot-0.svg" alt="Example 0" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="1">
+                    <img src="plots/accessible_cells-g10-n10-a_dfs-h59176/plot-1.svg" alt="Example 1" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="2">
+                    <img src="plots/accessible_cells-g10-n10-a_dfs-h59176/plot-2.svg" alt="Example 2" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="3">
+                    <img src="plots/accessible_cells-g10-n10-a_dfs-h59176/plot-3.svg" alt="Example 3" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="4">
+                    <img src="plots/accessible_cells-g10-n10-a_dfs-h59176/plot-4.svg" alt="Example 4" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="5">
+                    <img src="plots/accessible_cells-g10-n10-a_dfs-h59176/plot-5.svg" alt="Example 5" loading="lazy">
+                </div>
+                
             </div>
             <div class="maze-details">
-                <div class="maze-title">DFS with limited accessible cells (50)</div>
+                <div class="maze-title">accessible_cells</div>
                 <div class="maze-description">Grid size: 10x10</div>
                 <div class="maze-tags">
                     <span class="maze-tag">dfs</span>
                     <span class="maze-tag">limited_cells</span>
                 </div>
                 <button class="config-toggle">Show Configuration</button>
-                <button class="serialized-config-toggle">Show Serialized Config</button>
                 <div class="config-code"></div>
-                <div class="serialized-config-code"></div>
-                <button class="copy-button">Copy Config</button>
-                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
         <div class="maze-card" 
              data-name="accessible_cells_ratio" 
              data-grid-n="10" 
-             data-algorithm="" 
-             data-tags="dfs,limited_cells,ratio">
+             data-maze-ctor="gen_dfs" 
+             data-tags="dfs,limited_cells,ratio" 
+             data-fname="accessible_cells_ratio-g10-n10-a_dfs-h74681"
+             data-config-path="plots/accessible_cells_ratio-g10-n10-a_dfs-h74681/metadata.json">
             <div class="maze-image">
-                <img src="" alt="accessible_cells_ratio">
+                <img src="plots/accessible_cells_ratio-g10-n10-a_dfs-h74681/plot-0.svg" alt="accessible_cells_ratio" class="main-image">
+            </div>
+            <div class="maze-carousel">
+                
+                <div class="maze-thumbnail active" data-index="0">
+                    <img src="plots/accessible_cells_ratio-g10-n10-a_dfs-h74681/plot-0.svg" alt="Example 0" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="1">
+                    <img src="plots/accessible_cells_ratio-g10-n10-a_dfs-h74681/plot-1.svg" alt="Example 1" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="2">
+                    <img src="plots/accessible_cells_ratio-g10-n10-a_dfs-h74681/plot-2.svg" alt="Example 2" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="3">
+                    <img src="plots/accessible_cells_ratio-g10-n10-a_dfs-h74681/plot-3.svg" alt="Example 3" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="4">
+                    <img src="plots/accessible_cells_ratio-g10-n10-a_dfs-h74681/plot-4.svg" alt="Example 4" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="5">
+                    <img src="plots/accessible_cells_ratio-g10-n10-a_dfs-h74681/plot-5.svg" alt="Example 5" loading="lazy">
+                </div>
+                
             </div>
             <div class="maze-details">
-                <div class="maze-title">DFS with 60% accessible cells</div>
+                <div class="maze-title">accessible_cells_ratio</div>
                 <div class="maze-description">Grid size: 10x10</div>
                 <div class="maze-tags">
                     <span class="maze-tag">dfs</span>
@@ -889,46 +1612,96 @@
                     <span class="maze-tag">ratio</span>
                 </div>
                 <button class="config-toggle">Show Configuration</button>
-                <button class="serialized-config-toggle">Show Serialized Config</button>
                 <div class="config-code"></div>
-                <div class="serialized-config-code"></div>
-                <button class="copy-button">Copy Config</button>
-                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
         <div class="maze-card" 
              data-name="max_tree_depth" 
              data-grid-n="10" 
-             data-algorithm="" 
-             data-tags="dfs,limited_depth">
+             data-maze-ctor="gen_dfs" 
+             data-tags="dfs,limited_depth" 
+             data-fname="max_tree_depth-g10-n10-a_dfs-h63619"
+             data-config-path="plots/max_tree_depth-g10-n10-a_dfs-h63619/metadata.json">
             <div class="maze-image">
-                <img src="" alt="max_tree_depth">
+                <img src="plots/max_tree_depth-g10-n10-a_dfs-h63619/plot-0.svg" alt="max_tree_depth" class="main-image">
+            </div>
+            <div class="maze-carousel">
+                
+                <div class="maze-thumbnail active" data-index="0">
+                    <img src="plots/max_tree_depth-g10-n10-a_dfs-h63619/plot-0.svg" alt="Example 0" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="1">
+                    <img src="plots/max_tree_depth-g10-n10-a_dfs-h63619/plot-1.svg" alt="Example 1" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="2">
+                    <img src="plots/max_tree_depth-g10-n10-a_dfs-h63619/plot-2.svg" alt="Example 2" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="3">
+                    <img src="plots/max_tree_depth-g10-n10-a_dfs-h63619/plot-3.svg" alt="Example 3" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="4">
+                    <img src="plots/max_tree_depth-g10-n10-a_dfs-h63619/plot-4.svg" alt="Example 4" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="5">
+                    <img src="plots/max_tree_depth-g10-n10-a_dfs-h63619/plot-5.svg" alt="Example 5" loading="lazy">
+                </div>
+                
             </div>
             <div class="maze-details">
-                <div class="maze-title">DFS with max tree depth of 10</div>
+                <div class="maze-title">max_tree_depth</div>
                 <div class="maze-description">Grid size: 10x10</div>
                 <div class="maze-tags">
                     <span class="maze-tag">dfs</span>
                     <span class="maze-tag">limited_depth</span>
                 </div>
                 <button class="config-toggle">Show Configuration</button>
-                <button class="serialized-config-toggle">Show Serialized Config</button>
                 <div class="config-code"></div>
-                <div class="serialized-config-code"></div>
-                <button class="copy-button">Copy Config</button>
-                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
         <div class="maze-card" 
              data-name="max_tree_depth_ratio" 
              data-grid-n="10" 
-             data-algorithm="" 
-             data-tags="dfs,limited_depth,ratio">
+             data-maze-ctor="gen_dfs" 
+             data-tags="dfs,limited_depth,ratio" 
+             data-fname="max_tree_depth_ratio-g10-n10-a_dfs-h82665"
+             data-config-path="plots/max_tree_depth_ratio-g10-n10-a_dfs-h82665/metadata.json">
             <div class="maze-image">
-                <img src="" alt="max_tree_depth_ratio">
+                <img src="plots/max_tree_depth_ratio-g10-n10-a_dfs-h82665/plot-0.svg" alt="max_tree_depth_ratio" class="main-image">
+            </div>
+            <div class="maze-carousel">
+                
+                <div class="maze-thumbnail active" data-index="0">
+                    <img src="plots/max_tree_depth_ratio-g10-n10-a_dfs-h82665/plot-0.svg" alt="Example 0" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="1">
+                    <img src="plots/max_tree_depth_ratio-g10-n10-a_dfs-h82665/plot-1.svg" alt="Example 1" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="2">
+                    <img src="plots/max_tree_depth_ratio-g10-n10-a_dfs-h82665/plot-2.svg" alt="Example 2" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="3">
+                    <img src="plots/max_tree_depth_ratio-g10-n10-a_dfs-h82665/plot-3.svg" alt="Example 3" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="4">
+                    <img src="plots/max_tree_depth_ratio-g10-n10-a_dfs-h82665/plot-4.svg" alt="Example 4" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="5">
+                    <img src="plots/max_tree_depth_ratio-g10-n10-a_dfs-h82665/plot-5.svg" alt="Example 5" loading="lazy">
+                </div>
+                
             </div>
             <div class="maze-details">
-                <div class="maze-title">DFS with max tree depth 30% of grid size</div>
+                <div class="maze-title">max_tree_depth_ratio</div>
                 <div class="maze-description">Grid size: 10x10</div>
                 <div class="maze-tags">
                     <span class="maze-tag">dfs</span>
@@ -936,138 +1709,288 @@
                     <span class="maze-tag">ratio</span>
                 </div>
                 <button class="config-toggle">Show Configuration</button>
-                <button class="serialized-config-toggle">Show Serialized Config</button>
                 <div class="config-code"></div>
-                <div class="serialized-config-code"></div>
-                <button class="copy-button">Copy Config</button>
-                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
         <div class="maze-card" 
              data-name="start_coord" 
              data-grid-n="10" 
-             data-algorithm="" 
-             data-tags="dfs,custom_start">
+             data-maze-ctor="gen_dfs" 
+             data-tags="dfs,custom_start" 
+             data-fname="start_coord-g10-n10-a_dfs-h9478"
+             data-config-path="plots/start_coord-g10-n10-a_dfs-h9478/metadata.json">
             <div class="maze-image">
-                <img src="" alt="start_coord">
+                <img src="plots/start_coord-g10-n10-a_dfs-h9478/plot-0.svg" alt="start_coord" class="main-image">
+            </div>
+            <div class="maze-carousel">
+                
+                <div class="maze-thumbnail active" data-index="0">
+                    <img src="plots/start_coord-g10-n10-a_dfs-h9478/plot-0.svg" alt="Example 0" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="1">
+                    <img src="plots/start_coord-g10-n10-a_dfs-h9478/plot-1.svg" alt="Example 1" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="2">
+                    <img src="plots/start_coord-g10-n10-a_dfs-h9478/plot-2.svg" alt="Example 2" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="3">
+                    <img src="plots/start_coord-g10-n10-a_dfs-h9478/plot-3.svg" alt="Example 3" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="4">
+                    <img src="plots/start_coord-g10-n10-a_dfs-h9478/plot-4.svg" alt="Example 4" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="5">
+                    <img src="plots/start_coord-g10-n10-a_dfs-h9478/plot-5.svg" alt="Example 5" loading="lazy">
+                </div>
+                
             </div>
             <div class="maze-details">
-                <div class="maze-title">DFS starting from center of grid</div>
+                <div class="maze-title">start_coord</div>
                 <div class="maze-description">Grid size: 10x10</div>
                 <div class="maze-tags">
                     <span class="maze-tag">dfs</span>
                     <span class="maze-tag">custom_start</span>
                 </div>
                 <button class="config-toggle">Show Configuration</button>
-                <button class="serialized-config-toggle">Show Serialized Config</button>
                 <div class="config-code"></div>
-                <div class="serialized-config-code"></div>
-                <button class="copy-button">Copy Config</button>
-                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
         <div class="maze-card" 
              data-name="combined_constraints" 
              data-grid-n="15" 
-             data-algorithm="" 
-             data-tags="dfs,combined_constraints">
+             data-maze-ctor="gen_dfs" 
+             data-tags="dfs,combined_constraints" 
+             data-fname="combined_constraints-g15-n10-a_dfs-h57467"
+             data-config-path="plots/combined_constraints-g15-n10-a_dfs-h57467/metadata.json">
             <div class="maze-image">
-                <img src="" alt="combined_constraints">
+                <img src="plots/combined_constraints-g15-n10-a_dfs-h57467/plot-0.svg" alt="combined_constraints" class="main-image">
+            </div>
+            <div class="maze-carousel">
+                
+                <div class="maze-thumbnail active" data-index="0">
+                    <img src="plots/combined_constraints-g15-n10-a_dfs-h57467/plot-0.svg" alt="Example 0" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="1">
+                    <img src="plots/combined_constraints-g15-n10-a_dfs-h57467/plot-1.svg" alt="Example 1" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="2">
+                    <img src="plots/combined_constraints-g15-n10-a_dfs-h57467/plot-2.svg" alt="Example 2" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="3">
+                    <img src="plots/combined_constraints-g15-n10-a_dfs-h57467/plot-3.svg" alt="Example 3" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="4">
+                    <img src="plots/combined_constraints-g15-n10-a_dfs-h57467/plot-4.svg" alt="Example 4" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="5">
+                    <img src="plots/combined_constraints-g15-n10-a_dfs-h57467/plot-5.svg" alt="Example 5" loading="lazy">
+                </div>
+                
             </div>
             <div class="maze-details">
-                <div class="maze-title">DFS with multiple constraints</div>
+                <div class="maze-title">combined_constraints</div>
                 <div class="maze-description">Grid size: 15x15</div>
                 <div class="maze-tags">
                     <span class="maze-tag">dfs</span>
                     <span class="maze-tag">combined_constraints</span>
                 </div>
                 <button class="config-toggle">Show Configuration</button>
-                <button class="serialized-config-toggle">Show Serialized Config</button>
                 <div class="config-code"></div>
-                <div class="serialized-config-code"></div>
-                <button class="copy-button">Copy Config</button>
-                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
         <div class="maze-card" 
              data-name="deadend_startTrue_endFalse" 
              data-grid-n="8" 
-             data-algorithm="" 
-             data-tags="dfs,deadend_endpoints">
+             data-maze-ctor="gen_dfs" 
+             data-tags="dfs,deadend_endpoints" 
+             data-fname="deadend_startTrue_endFalse-g8-n10-a_dfs-h93143"
+             data-config-path="plots/deadend_startTrue_endFalse-g8-n10-a_dfs-h93143/metadata.json">
             <div class="maze-image">
-                <img src="" alt="deadend_startTrue_endFalse">
+                <img src="plots/deadend_startTrue_endFalse-g8-n10-a_dfs-h93143/plot-0.svg" alt="deadend_startTrue_endFalse" class="main-image">
+            </div>
+            <div class="maze-carousel">
+                
+                <div class="maze-thumbnail active" data-index="0">
+                    <img src="plots/deadend_startTrue_endFalse-g8-n10-a_dfs-h93143/plot-0.svg" alt="Example 0" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="1">
+                    <img src="plots/deadend_startTrue_endFalse-g8-n10-a_dfs-h93143/plot-1.svg" alt="Example 1" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="2">
+                    <img src="plots/deadend_startTrue_endFalse-g8-n10-a_dfs-h93143/plot-2.svg" alt="Example 2" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="3">
+                    <img src="plots/deadend_startTrue_endFalse-g8-n10-a_dfs-h93143/plot-3.svg" alt="Example 3" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="4">
+                    <img src="plots/deadend_startTrue_endFalse-g8-n10-a_dfs-h93143/plot-4.svg" alt="Example 4" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="5">
+                    <img src="plots/deadend_startTrue_endFalse-g8-n10-a_dfs-h93143/plot-5.svg" alt="Example 5" loading="lazy">
+                </div>
+                
             </div>
             <div class="maze-details">
-                <div class="maze-title">DFS with deadend start</div>
+                <div class="maze-title">deadend_startTrue_endFalse</div>
                 <div class="maze-description">Grid size: 8x8</div>
                 <div class="maze-tags">
                     <span class="maze-tag">dfs</span>
                     <span class="maze-tag">deadend_endpoints</span>
                 </div>
                 <button class="config-toggle">Show Configuration</button>
-                <button class="serialized-config-toggle">Show Serialized Config</button>
                 <div class="config-code"></div>
-                <div class="serialized-config-code"></div>
-                <button class="copy-button">Copy Config</button>
-                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
         <div class="maze-card" 
              data-name="deadend_startFalse_endTrue" 
              data-grid-n="8" 
-             data-algorithm="" 
-             data-tags="dfs,deadend_endpoints">
+             data-maze-ctor="gen_dfs" 
+             data-tags="dfs,deadend_endpoints" 
+             data-fname="deadend_startFalse_endTrue-g8-n10-a_dfs-h48449"
+             data-config-path="plots/deadend_startFalse_endTrue-g8-n10-a_dfs-h48449/metadata.json">
             <div class="maze-image">
-                <img src="" alt="deadend_startFalse_endTrue">
+                <img src="plots/deadend_startFalse_endTrue-g8-n10-a_dfs-h48449/plot-0.svg" alt="deadend_startFalse_endTrue" class="main-image">
+            </div>
+            <div class="maze-carousel">
+                
+                <div class="maze-thumbnail active" data-index="0">
+                    <img src="plots/deadend_startFalse_endTrue-g8-n10-a_dfs-h48449/plot-0.svg" alt="Example 0" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="1">
+                    <img src="plots/deadend_startFalse_endTrue-g8-n10-a_dfs-h48449/plot-1.svg" alt="Example 1" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="2">
+                    <img src="plots/deadend_startFalse_endTrue-g8-n10-a_dfs-h48449/plot-2.svg" alt="Example 2" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="3">
+                    <img src="plots/deadend_startFalse_endTrue-g8-n10-a_dfs-h48449/plot-3.svg" alt="Example 3" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="4">
+                    <img src="plots/deadend_startFalse_endTrue-g8-n10-a_dfs-h48449/plot-4.svg" alt="Example 4" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="5">
+                    <img src="plots/deadend_startFalse_endTrue-g8-n10-a_dfs-h48449/plot-5.svg" alt="Example 5" loading="lazy">
+                </div>
+                
             </div>
             <div class="maze-details">
-                <div class="maze-title">DFS with deadend end</div>
+                <div class="maze-title">deadend_startFalse_endTrue</div>
                 <div class="maze-description">Grid size: 8x8</div>
                 <div class="maze-tags">
                     <span class="maze-tag">dfs</span>
                     <span class="maze-tag">deadend_endpoints</span>
                 </div>
                 <button class="config-toggle">Show Configuration</button>
-                <button class="serialized-config-toggle">Show Serialized Config</button>
                 <div class="config-code"></div>
-                <div class="serialized-config-code"></div>
-                <button class="copy-button">Copy Config</button>
-                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
         <div class="maze-card" 
              data-name="deadend_startTrue_endTrue" 
              data-grid-n="8" 
-             data-algorithm="" 
-             data-tags="dfs,deadend_endpoints">
+             data-maze-ctor="gen_dfs" 
+             data-tags="dfs,deadend_endpoints" 
+             data-fname="deadend_startTrue_endTrue-g8-n10-a_dfs-h19427"
+             data-config-path="plots/deadend_startTrue_endTrue-g8-n10-a_dfs-h19427/metadata.json">
             <div class="maze-image">
-                <img src="" alt="deadend_startTrue_endTrue">
+                <img src="plots/deadend_startTrue_endTrue-g8-n10-a_dfs-h19427/plot-0.svg" alt="deadend_startTrue_endTrue" class="main-image">
+            </div>
+            <div class="maze-carousel">
+                
+                <div class="maze-thumbnail active" data-index="0">
+                    <img src="plots/deadend_startTrue_endTrue-g8-n10-a_dfs-h19427/plot-0.svg" alt="Example 0" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="1">
+                    <img src="plots/deadend_startTrue_endTrue-g8-n10-a_dfs-h19427/plot-1.svg" alt="Example 1" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="2">
+                    <img src="plots/deadend_startTrue_endTrue-g8-n10-a_dfs-h19427/plot-2.svg" alt="Example 2" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="3">
+                    <img src="plots/deadend_startTrue_endTrue-g8-n10-a_dfs-h19427/plot-3.svg" alt="Example 3" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="4">
+                    <img src="plots/deadend_startTrue_endTrue-g8-n10-a_dfs-h19427/plot-4.svg" alt="Example 4" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="5">
+                    <img src="plots/deadend_startTrue_endTrue-g8-n10-a_dfs-h19427/plot-5.svg" alt="Example 5" loading="lazy">
+                </div>
+                
             </div>
             <div class="maze-details">
-                <div class="maze-title">DFS with deadend start and deadend end</div>
+                <div class="maze-title">deadend_startTrue_endTrue</div>
                 <div class="maze-description">Grid size: 8x8</div>
                 <div class="maze-tags">
                     <span class="maze-tag">dfs</span>
                     <span class="maze-tag">deadend_endpoints</span>
                 </div>
                 <button class="config-toggle">Show Configuration</button>
-                <button class="serialized-config-toggle">Show Serialized Config</button>
                 <div class="config-code"></div>
-                <div class="serialized-config-code"></div>
-                <button class="copy-button">Copy Config</button>
-                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
         <div class="maze-card" 
              data-name="deadends" 
              data-grid-n="8" 
-             data-algorithm="" 
-             data-tags="dfs,percolation,deadend_endpoints">
+             data-maze-ctor="gen_dfs_percolation" 
+             data-tags="dfs,percolation,deadend_endpoints" 
+             data-fname="deadends-g8-n11-a_dfs_percolation-h68867"
+             data-config-path="plots/deadends-g8-n11-a_dfs_percolation-h68867/metadata.json">
             <div class="maze-image">
-                <img src="" alt="deadends">
+                <img src="plots/deadends-g8-n11-a_dfs_percolation-h68867/plot-0.svg" alt="deadends" class="main-image">
+            </div>
+            <div class="maze-carousel">
+                
+                <div class="maze-thumbnail active" data-index="0">
+                    <img src="plots/deadends-g8-n11-a_dfs_percolation-h68867/plot-0.svg" alt="Example 0" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="1">
+                    <img src="plots/deadends-g8-n11-a_dfs_percolation-h68867/plot-1.svg" alt="Example 1" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="2">
+                    <img src="plots/deadends-g8-n11-a_dfs_percolation-h68867/plot-2.svg" alt="Example 2" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="3">
+                    <img src="plots/deadends-g8-n11-a_dfs_percolation-h68867/plot-3.svg" alt="Example 3" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="4">
+                    <img src="plots/deadends-g8-n11-a_dfs_percolation-h68867/plot-4.svg" alt="Example 4" loading="lazy">
+                </div>
+                
+                <div class="maze-thumbnail " data-index="5">
+                    <img src="plots/deadends-g8-n11-a_dfs_percolation-h68867/plot-5.svg" alt="Example 5" loading="lazy">
+                </div>
+                
             </div>
             <div class="maze-details">
-                <div class="maze-title">DFS percolation with deadend endpoints</div>
+                <div class="maze-title">deadends</div>
                 <div class="maze-description">Grid size: 8x8</div>
                 <div class="maze-tags">
                     <span class="maze-tag">dfs</span>
@@ -1075,11 +1998,7 @@
                     <span class="maze-tag">deadend_endpoints</span>
                 </div>
                 <button class="config-toggle">Show Configuration</button>
-                <button class="serialized-config-toggle">Show Serialized Config</button>
                 <div class="config-code"></div>
-                <div class="serialized-config-code"></div>
-                <button class="copy-button">Copy Config</button>
-                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
         <div class="no-results" style="display: none;">No mazes match your search criteria.</div>
@@ -1090,11 +2009,36 @@
     </footer>
 
     <script>
-        // Show/hide configuration
+        // Load configuration data lazily
         document.querySelectorAll('.config-toggle').forEach(button => {
-            button.addEventListener('click', function() {
-                const codeBlock = this.nextElementSibling.nextElementSibling;
+            button.addEventListener('click', async function() {
+                const card = this.closest('.maze-card');
+                const codeBlock = this.nextElementSibling;
+                
                 if (codeBlock.style.display === 'none' || codeBlock.style.display === '') {
+                    // If config hasn't been loaded yet
+                    if (!codeBlock.dataset.loaded) {
+                        const configPath = card.getAttribute('data-config-path');
+                        try {
+                            const response = await fetch(configPath);
+                            const data = await response.json();
+                            
+                            // Format the configuration data
+                            codeBlock.innerHTML = `<h4>Maze Constructor:</h4>
+<pre>${data.maze_ctor}</pre>
+
+<h4>Constructor Parameters:</h4>
+<pre>${JSON.stringify(data.maze_ctor_kwargs, null, 2)}</pre>
+
+<h4>Maze Configuration:</h4>
+<pre>${JSON.stringify(data.config, null, 2)}</pre>`;
+                            
+                            codeBlock.dataset.loaded = 'true';
+                        } catch (error) {
+                            codeBlock.innerHTML = `<p>Error loading configuration: ${error.message}</p>`;
+                        }
+                    }
+                    
                     codeBlock.style.display = 'block';
                     this.textContent = 'Hide Configuration';
                 } else {
@@ -1104,69 +2048,22 @@
             });
         });
 
-        // Show/hide serialized configuration
-        document.querySelectorAll('.serialized-config-toggle').forEach(button => {
-            button.addEventListener('click', function() {
-                const codeBlock = this.nextElementSibling.nextElementSibling;
-                if (codeBlock.style.display === 'none' || codeBlock.style.display === '') {
-                    codeBlock.style.display = 'block';
-                    this.textContent = 'Hide Serialized Config';
-                } else {
-                    codeBlock.style.display = 'none';
-                    this.textContent = 'Show Serialized Config';
-                }
-            });
-        });
-
-        // Copy configuration
-        document.querySelectorAll('.copy-button').forEach(button => {
-            button.addEventListener('click', function() {
-                const codeBlock = this.previousElementSibling.previousElementSibling;
+        // Image carousel functionality
+        document.querySelectorAll('.maze-thumbnail').forEach(thumbnail => {
+            thumbnail.addEventListener('click', function() {
+                const card = this.closest('.maze-card');
+                const imageIndex = this.getAttribute('data-index');
+                const mainImage = card.querySelector('.main-image');
+                const fname = card.getAttribute('data-fname');
                 
-                // Create a temporary textarea element
-                const textarea = document.createElement('textarea');
-                textarea.value = codeBlock.textContent;
-                document.body.appendChild(textarea);
+                // Update main image
+                mainImage.src = `plots/${fname}/plot-${imageIndex}.svg`;
                 
-                // Copy the text
-                textarea.select();
-                document.execCommand('copy');
-                
-                // Remove the textarea
-                document.body.removeChild(textarea);
-                
-                // Give feedback to the user
-                const originalText = this.textContent;
-                this.textContent = 'Copied!';
-                setTimeout(() => {
-                    this.textContent = originalText;
-                }, 2000);
-            });
-        });
-
-        // Copy serialized configuration
-        document.querySelectorAll('.copy-serialized-button').forEach(button => {
-            button.addEventListener('click', function() {
-                const codeBlock = this.previousElementSibling.previousElementSibling;
-                
-                // Create a temporary textarea element
-                const textarea = document.createElement('textarea');
-                textarea.value = codeBlock.textContent;
-                document.body.appendChild(textarea);
-                
-                // Copy the text
-                textarea.select();
-                document.execCommand('copy');
-                
-                // Remove the textarea
-                document.body.removeChild(textarea);
-                
-                // Give feedback to the user
-                const originalText = this.textContent;
-                this.textContent = 'Copied!';
-                setTimeout(() => {
-                    this.textContent = originalText;
-                }, 2000);
+                // Update active thumbnail
+                card.querySelectorAll('.maze-thumbnail').forEach(thumb => {
+                    thumb.classList.remove('active');
+                });
+                this.classList.add('active');
             });
         });
 
@@ -1185,15 +2082,13 @@
             
             mazeCards.forEach(card => {
                 const name = card.getAttribute('data-name').toLowerCase();
-                const description = card.querySelector('.maze-description').textContent.toLowerCase();
-                const config = card.querySelector('.config-code').textContent.toLowerCase();
-                const serializedConfig = card.querySelector('.serialized-config-code').textContent.toLowerCase();
+                const gridN = card.getAttribute('data-grid-n');
+                const mazeCtor = card.getAttribute('data-maze-ctor');
                 const tags = card.getAttribute('data-tags').split(',');
                 
                 const matchesSearch = name.includes(searchTerm) || 
-                                    description.includes(searchTerm) || 
-                                    config.includes(searchTerm) ||
-                                    serializedConfig.includes(searchTerm);
+                                     gridN.includes(searchTerm) ||
+                                     mazeCtor.includes(searchTerm);
                 
                 const matchesTags = activeTagFilters.length === 0 || 
                                   activeTagFilters.every(tag => tags.includes(tag));
@@ -1219,8 +2114,8 @@
                     return a.getAttribute('data-name').localeCompare(b.getAttribute('data-name'));
                 } else if (sortBy === 'grid_n') {
                     return parseInt(a.getAttribute('data-grid-n')) - parseInt(b.getAttribute('data-grid-n'));
-                } else if (sortBy === 'algorithm') {
-                    return a.getAttribute('data-algorithm').localeCompare(b.getAttribute('data-algorithm'));
+                } else if (sortBy === 'maze_ctor') {
+                    return a.getAttribute('data-maze-ctor').localeCompare(b.getAttribute('data-maze-ctor'));
                 }
                 return 0;
             });
