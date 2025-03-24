@@ -1,5 +1,6 @@
 "implements `MazeDatasetConfig` which is used to generate or load a dataset"
 
+import importlib.metadata
 import json
 import typing
 import warnings
@@ -104,6 +105,9 @@ def _load_endpoint_kwargs(data: dict) -> EndpointKwargsType:
 		}
 
 
+def _whatever(x):
+	raise ValueError("!!!!!!!!")
+
 @serializable_dataclass(kw_only=True, properties_to_serialize=["grid_shape"])
 class _MazeDatasetConfig_base(GPTDatasetConfig):  # noqa: N801
 	"""base config -- we serialize, dump to json, and hash this to get the fname. all actual variables we want to be hashed are here"""
@@ -162,7 +166,12 @@ class _MazeDatasetConfig_base(GPTDatasetConfig):  # noqa: N801
 
 	def _serialize_base(self) -> dict:
 		"""serialize the base config"""
-		return self.serialize()
+		# HACK: making the hashes stable this way is messy :(
+		serialized: dict = _MazeDatasetConfig_base.serialize(self)
+		if "fname_loaded" in serialized:
+			del serialized["fname_loaded"]
+
+		return serialized
 
 	def stable_hash_cfg(self) -> int:
 		"""return a stable hash of the config"""
@@ -189,13 +198,14 @@ class _MazeDatasetConfig_base(GPTDatasetConfig):  # noqa: N801
 class MazeDatasetConfig(_MazeDatasetConfig_base):  # type: ignore[misc]
 	"""config object which is passed to `MazeDataset.from_config` to generate or load a dataset"""
 
-	_fname_loaded: str | None = serializable_field(
+	fname_loaded: str | None = serializable_field(
 		default=None,
-		init=False,
-		serialize=False,
+		compare=False,
 		serialization_fn=lambda _: None,
-		loading_fn=lambda data: data.get("fname", None),
+		# loading_fn=lambda data: data["fname"],
+		loading_fn=_whatever,
 	)
+
 
 	@property
 	def config_version(self) -> str:
@@ -204,14 +214,22 @@ class MazeDatasetConfig(_MazeDatasetConfig_base):  # type: ignore[misc]
 
 	def _serialize_base(self) -> dict:
 		"""serialize the base config"""
-		return super().serialize()
+		return super()._serialize_base()
+
+	@property
+	def versions(self) -> dict:
+		"""return the versions of the config and the maze_dataset"""
+		return dict(
+			config=self.config_version,
+			maze_dataset=importlib.metadata.version("maze_dataset"),
+		)
 
 	def serialize(self) -> dict:
 		"serialize the MazeDatasetConfig with all fields and fname"
 		return {
 			**self._serialize_base(),
 			"fname": self.to_fname(),
-			"versions": {"config": self.config_version, "maze_dataset": "1.3.0"},
+			"versions": self.versions,
 		}
 
 	def summary(self) -> dict:

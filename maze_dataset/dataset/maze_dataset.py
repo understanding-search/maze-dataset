@@ -8,9 +8,9 @@ import copy
 import json
 import multiprocessing
 import typing
+import warnings
 from pathlib import Path
 from typing import Literal, Optional, cast, overload
-import warnings
 
 import numpy as np
 import tqdm
