@@ -200,7 +200,6 @@ class _MazeDatasetConfig_base(GPTDatasetConfig):  # noqa: N801
 class MazeDatasetConfig(_MazeDatasetConfig_base):  # type: ignore[misc]
 	"""config object which is passed to `MazeDataset.from_config` to generate or load a dataset"""
 
-
 	@property
 	def config_version(self) -> str:
 		"""return the version of the config. added in maze_dataset v1.3.0, previous versions had no dataset config"""

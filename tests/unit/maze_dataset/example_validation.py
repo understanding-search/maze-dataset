@@ -5,7 +5,9 @@ from muutils.json_serialize.util import _FORMAT_KEY
 
 from maze_dataset import MazeDataset, MazeDatasetConfig
 
-DATASET_PATHS: list[str] = list([p.as_posix() for p in Path("docs/examples/datasets").rglob("*.zanj")])
+DATASET_PATHS: list[str] = [
+	p.as_posix() for p in Path("docs/examples/datasets").rglob("*.zanj")
+]
 
 
 def test_temp():
@@ -23,6 +25,7 @@ def test_temp():
 	print(f"{cfg.diff(cfg_load) = }")
 	print(f"{cfg_load._fname_loaded = }")
 	assert cfg == cfg_load
+
 
 @pytest.mark.parametrize("dataset_path_str", DATASET_PATHS)
 def test_validate_fname(dataset_path_str: str):
