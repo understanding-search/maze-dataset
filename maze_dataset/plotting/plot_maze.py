@@ -315,6 +315,12 @@ class MazePlot:
 			self.ax.set_xlabel("col")
 			self.ax.set_ylabel("row")
 			self.ax.set_title(title)
+		else:
+			self.ax.set_xticks([])
+			self.ax.set_yticks([])
+			self.ax.set_xlabel("")
+			self.ax.set_ylabel("")
+			self.ax.axis("off")
 
 		# plot paths
 		if self.true_path is not None:
