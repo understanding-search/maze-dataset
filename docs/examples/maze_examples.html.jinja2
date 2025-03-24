@@ -68,7 +68,6 @@
             transition: transform 0.3s ease;
         }
         .maze-card:hover {
-            transform: translateY(-5px);
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
         .maze-image {
@@ -130,6 +129,12 @@
         }
         .maze-thumbnail img[data-type="png"] {
             image-rendering: pixelated;
+        }
+        .maze-description {
+            margin-bottom: 10px;
+            color: #777;
+            font-size: 14px;
+            font-weight: normal;
         }
         .maze-tags {
             display: flex;
@@ -281,6 +286,7 @@
             </div>
             <div class="maze-details">
                 <div class="maze-title">{{ example.fname }}</div>
+                <div class="maze-description">{{ example.description }}</div>
                 <div class="maze-tags">
                     {%- for tag in example.tags %}
                     <span class="maze-tag">{{ tag }}</span>
