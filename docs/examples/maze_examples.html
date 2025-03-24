@@ -128,6 +128,25 @@
             white-space: pre-wrap;
             font-family: monospace;
         }
+        .serialized-config-toggle {
+            background-color: #6c757d;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-left: 5px;
+        }
+        .serialized-config-code {
+            display: none;
+            background-color: #f5f5f5;
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 10px;
+            white-space: pre-wrap;
+            font-family: monospace;
+        }
         .copy-button {
             background-color: #4CAF50;
             color: white;
@@ -213,18 +232,11 @@
                     <span class="maze-tag">basic</span>
                 </div>
                 <button class="config-toggle">Show Configuration</button>
-                <div class="config-code">{
-  "name": "dfs_basic_g5",
-  "grid_n": 5,
-  "maze_ctor_kwargs": {},
-  "description": "Basic DFS maze (5x5)",
-  "tags": [
-    "dfs",
-    "basic"
-  ],
-  "maze_ctor": "gen_dfs"
-}</div>
+                <button class="serialized-config-toggle">Show Serialized Config</button>
+                <div class="config-code"></div>
+                <div class="serialized-config-code"></div>
                 <button class="copy-button">Copy Config</button>
+                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
         <div class="maze-card" 
@@ -244,21 +256,11 @@
                     <span class="maze-tag">simple_path</span>
                 </div>
                 <button class="config-toggle">Show Configuration</button>
-                <div class="config-code">{
-  "name": "dfs_no_forks_g5",
-  "grid_n": 5,
-  "maze_ctor_kwargs": {
-    "do_forks": false
-  },
-  "description": "DFS without forks (5x5)",
-  "tags": [
-    "dfs",
-    "no_forks",
-    "simple_path"
-  ],
-  "maze_ctor": "gen_dfs"
-}</div>
+                <button class="serialized-config-toggle">Show Serialized Config</button>
+                <div class="config-code"></div>
+                <div class="serialized-config-code"></div>
                 <button class="copy-button">Copy Config</button>
+                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
         <div class="maze-card" 
@@ -277,18 +279,11 @@
                     <span class="maze-tag">uniform_random</span>
                 </div>
                 <button class="config-toggle">Show Configuration</button>
-                <div class="config-code">{
-  "name": "wilson_g5",
-  "grid_n": 5,
-  "maze_ctor_kwargs": {},
-  "description": "Wilson's algorithm (5x5) - unbiased random maze",
-  "tags": [
-    "wilson",
-    "uniform_random"
-  ],
-  "maze_ctor": "gen_wilson"
-}</div>
+                <button class="serialized-config-toggle">Show Serialized Config</button>
+                <div class="config-code"></div>
+                <div class="serialized-config-code"></div>
                 <button class="copy-button">Copy Config</button>
+                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
         <div class="maze-card" 
@@ -307,20 +302,11 @@
                     <span class="maze-tag">p=0.3</span>
                 </div>
                 <button class="config-toggle">Show Configuration</button>
-                <div class="config-code">{
-  "name": "percolation_p3_g5",
-  "grid_n": 5,
-  "maze_ctor_kwargs": {
-    "p": 0.3
-  },
-  "description": "Pure percolation (p=0.3) (5x5)",
-  "tags": [
-    "percolation",
-    "p=0.3"
-  ],
-  "maze_ctor": "gen_percolation"
-}</div>
+                <button class="serialized-config-toggle">Show Serialized Config</button>
+                <div class="config-code"></div>
+                <div class="serialized-config-code"></div>
                 <button class="copy-button">Copy Config</button>
+                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
         <div class="maze-card" 
@@ -340,21 +326,11 @@
                     <span class="maze-tag">p=0.3</span>
                 </div>
                 <button class="config-toggle">Show Configuration</button>
-                <div class="config-code">{
-  "name": "dfs_percolation_p3_g5",
-  "grid_n": 5,
-  "maze_ctor_kwargs": {
-    "p": 0.3
-  },
-  "description": "DFS with percolation (p=0.3) (5x5)",
-  "tags": [
-    "dfs",
-    "percolation",
-    "p=0.3"
-  ],
-  "maze_ctor": "gen_dfs_percolation"
-}</div>
+                <button class="serialized-config-toggle">Show Serialized Config</button>
+                <div class="config-code"></div>
+                <div class="serialized-config-code"></div>
                 <button class="copy-button">Copy Config</button>
+                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
         <div class="maze-card" 
@@ -373,20 +349,11 @@
                     <span class="maze-tag">p=0.5</span>
                 </div>
                 <button class="config-toggle">Show Configuration</button>
-                <div class="config-code">{
-  "name": "percolation_p5_g5",
-  "grid_n": 5,
-  "maze_ctor_kwargs": {
-    "p": 0.5
-  },
-  "description": "Pure percolation (p=0.5) (5x5)",
-  "tags": [
-    "percolation",
-    "p=0.5"
-  ],
-  "maze_ctor": "gen_percolation"
-}</div>
+                <button class="serialized-config-toggle">Show Serialized Config</button>
+                <div class="config-code"></div>
+                <div class="serialized-config-code"></div>
                 <button class="copy-button">Copy Config</button>
+                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
         <div class="maze-card" 
@@ -406,21 +373,11 @@
                     <span class="maze-tag">p=0.5</span>
                 </div>
                 <button class="config-toggle">Show Configuration</button>
-                <div class="config-code">{
-  "name": "dfs_percolation_p5_g5",
-  "grid_n": 5,
-  "maze_ctor_kwargs": {
-    "p": 0.5
-  },
-  "description": "DFS with percolation (p=0.5) (5x5)",
-  "tags": [
-    "dfs",
-    "percolation",
-    "p=0.5"
-  ],
-  "maze_ctor": "gen_dfs_percolation"
-}</div>
+                <button class="serialized-config-toggle">Show Serialized Config</button>
+                <div class="config-code"></div>
+                <div class="serialized-config-code"></div>
                 <button class="copy-button">Copy Config</button>
+                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
         <div class="maze-card" 
@@ -439,20 +396,11 @@
                     <span class="maze-tag">p=0.7</span>
                 </div>
                 <button class="config-toggle">Show Configuration</button>
-                <div class="config-code">{
-  "name": "percolation_p7_g5",
-  "grid_n": 5,
-  "maze_ctor_kwargs": {
-    "p": 0.7
-  },
-  "description": "Pure percolation (p=0.7) (5x5)",
-  "tags": [
-    "percolation",
-    "p=0.7"
-  ],
-  "maze_ctor": "gen_percolation"
-}</div>
+                <button class="serialized-config-toggle">Show Serialized Config</button>
+                <div class="config-code"></div>
+                <div class="serialized-config-code"></div>
                 <button class="copy-button">Copy Config</button>
+                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
         <div class="maze-card" 
@@ -472,21 +420,11 @@
                     <span class="maze-tag">p=0.7</span>
                 </div>
                 <button class="config-toggle">Show Configuration</button>
-                <div class="config-code">{
-  "name": "dfs_percolation_p7_g5",
-  "grid_n": 5,
-  "maze_ctor_kwargs": {
-    "p": 0.7
-  },
-  "description": "DFS with percolation (p=0.7) (5x5)",
-  "tags": [
-    "dfs",
-    "percolation",
-    "p=0.7"
-  ],
-  "maze_ctor": "gen_dfs_percolation"
-}</div>
+                <button class="serialized-config-toggle">Show Serialized Config</button>
+                <div class="config-code"></div>
+                <div class="serialized-config-code"></div>
                 <button class="copy-button">Copy Config</button>
+                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
         <div class="maze-card" 
@@ -505,18 +443,11 @@
                     <span class="maze-tag">basic</span>
                 </div>
                 <button class="config-toggle">Show Configuration</button>
-                <div class="config-code">{
-  "name": "dfs_basic_g8",
-  "grid_n": 8,
-  "maze_ctor_kwargs": {},
-  "description": "Basic DFS maze (8x8)",
-  "tags": [
-    "dfs",
-    "basic"
-  ],
-  "maze_ctor": "gen_dfs"
-}</div>
+                <button class="serialized-config-toggle">Show Serialized Config</button>
+                <div class="config-code"></div>
+                <div class="serialized-config-code"></div>
                 <button class="copy-button">Copy Config</button>
+                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
         <div class="maze-card" 
@@ -536,21 +467,11 @@
                     <span class="maze-tag">simple_path</span>
                 </div>
                 <button class="config-toggle">Show Configuration</button>
-                <div class="config-code">{
-  "name": "dfs_no_forks_g8",
-  "grid_n": 8,
-  "maze_ctor_kwargs": {
-    "do_forks": false
-  },
-  "description": "DFS without forks (8x8)",
-  "tags": [
-    "dfs",
-    "no_forks",
-    "simple_path"
-  ],
-  "maze_ctor": "gen_dfs"
-}</div>
+                <button class="serialized-config-toggle">Show Serialized Config</button>
+                <div class="config-code"></div>
+                <div class="serialized-config-code"></div>
                 <button class="copy-button">Copy Config</button>
+                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
         <div class="maze-card" 
@@ -569,18 +490,11 @@
                     <span class="maze-tag">uniform_random</span>
                 </div>
                 <button class="config-toggle">Show Configuration</button>
-                <div class="config-code">{
-  "name": "wilson_g8",
-  "grid_n": 8,
-  "maze_ctor_kwargs": {},
-  "description": "Wilson's algorithm (8x8) - unbiased random maze",
-  "tags": [
-    "wilson",
-    "uniform_random"
-  ],
-  "maze_ctor": "gen_wilson"
-}</div>
+                <button class="serialized-config-toggle">Show Serialized Config</button>
+                <div class="config-code"></div>
+                <div class="serialized-config-code"></div>
                 <button class="copy-button">Copy Config</button>
+                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
         <div class="maze-card" 
@@ -599,20 +513,11 @@
                     <span class="maze-tag">p=0.3</span>
                 </div>
                 <button class="config-toggle">Show Configuration</button>
-                <div class="config-code">{
-  "name": "percolation_p3_g8",
-  "grid_n": 8,
-  "maze_ctor_kwargs": {
-    "p": 0.3
-  },
-  "description": "Pure percolation (p=0.3) (8x8)",
-  "tags": [
-    "percolation",
-    "p=0.3"
-  ],
-  "maze_ctor": "gen_percolation"
-}</div>
+                <button class="serialized-config-toggle">Show Serialized Config</button>
+                <div class="config-code"></div>
+                <div class="serialized-config-code"></div>
                 <button class="copy-button">Copy Config</button>
+                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
         <div class="maze-card" 
@@ -632,21 +537,11 @@
                     <span class="maze-tag">p=0.3</span>
                 </div>
                 <button class="config-toggle">Show Configuration</button>
-                <div class="config-code">{
-  "name": "dfs_percolation_p3_g8",
-  "grid_n": 8,
-  "maze_ctor_kwargs": {
-    "p": 0.3
-  },
-  "description": "DFS with percolation (p=0.3) (8x8)",
-  "tags": [
-    "dfs",
-    "percolation",
-    "p=0.3"
-  ],
-  "maze_ctor": "gen_dfs_percolation"
-}</div>
+                <button class="serialized-config-toggle">Show Serialized Config</button>
+                <div class="config-code"></div>
+                <div class="serialized-config-code"></div>
                 <button class="copy-button">Copy Config</button>
+                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
         <div class="maze-card" 
@@ -665,20 +560,11 @@
                     <span class="maze-tag">p=0.5</span>
                 </div>
                 <button class="config-toggle">Show Configuration</button>
-                <div class="config-code">{
-  "name": "percolation_p5_g8",
-  "grid_n": 8,
-  "maze_ctor_kwargs": {
-    "p": 0.5
-  },
-  "description": "Pure percolation (p=0.5) (8x8)",
-  "tags": [
-    "percolation",
-    "p=0.5"
-  ],
-  "maze_ctor": "gen_percolation"
-}</div>
+                <button class="serialized-config-toggle">Show Serialized Config</button>
+                <div class="config-code"></div>
+                <div class="serialized-config-code"></div>
                 <button class="copy-button">Copy Config</button>
+                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
         <div class="maze-card" 
@@ -698,21 +584,11 @@
                     <span class="maze-tag">p=0.5</span>
                 </div>
                 <button class="config-toggle">Show Configuration</button>
-                <div class="config-code">{
-  "name": "dfs_percolation_p5_g8",
-  "grid_n": 8,
-  "maze_ctor_kwargs": {
-    "p": 0.5
-  },
-  "description": "DFS with percolation (p=0.5) (8x8)",
-  "tags": [
-    "dfs",
-    "percolation",
-    "p=0.5"
-  ],
-  "maze_ctor": "gen_dfs_percolation"
-}</div>
+                <button class="serialized-config-toggle">Show Serialized Config</button>
+                <div class="config-code"></div>
+                <div class="serialized-config-code"></div>
                 <button class="copy-button">Copy Config</button>
+                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
         <div class="maze-card" 
@@ -731,20 +607,11 @@
                     <span class="maze-tag">p=0.7</span>
                 </div>
                 <button class="config-toggle">Show Configuration</button>
-                <div class="config-code">{
-  "name": "percolation_p7_g8",
-  "grid_n": 8,
-  "maze_ctor_kwargs": {
-    "p": 0.7
-  },
-  "description": "Pure percolation (p=0.7) (8x8)",
-  "tags": [
-    "percolation",
-    "p=0.7"
-  ],
-  "maze_ctor": "gen_percolation"
-}</div>
+                <button class="serialized-config-toggle">Show Serialized Config</button>
+                <div class="config-code"></div>
+                <div class="serialized-config-code"></div>
                 <button class="copy-button">Copy Config</button>
+                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
         <div class="maze-card" 
@@ -764,21 +631,11 @@
                     <span class="maze-tag">p=0.7</span>
                 </div>
                 <button class="config-toggle">Show Configuration</button>
-                <div class="config-code">{
-  "name": "dfs_percolation_p7_g8",
-  "grid_n": 8,
-  "maze_ctor_kwargs": {
-    "p": 0.7
-  },
-  "description": "DFS with percolation (p=0.7) (8x8)",
-  "tags": [
-    "dfs",
-    "percolation",
-    "p=0.7"
-  ],
-  "maze_ctor": "gen_dfs_percolation"
-}</div>
+                <button class="serialized-config-toggle">Show Serialized Config</button>
+                <div class="config-code"></div>
+                <div class="serialized-config-code"></div>
                 <button class="copy-button">Copy Config</button>
+                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
         <div class="maze-card" 
@@ -797,18 +654,11 @@
                     <span class="maze-tag">basic</span>
                 </div>
                 <button class="config-toggle">Show Configuration</button>
-                <div class="config-code">{
-  "name": "dfs_basic_g12",
-  "grid_n": 12,
-  "maze_ctor_kwargs": {},
-  "description": "Basic DFS maze (12x12)",
-  "tags": [
-    "dfs",
-    "basic"
-  ],
-  "maze_ctor": "gen_dfs"
-}</div>
+                <button class="serialized-config-toggle">Show Serialized Config</button>
+                <div class="config-code"></div>
+                <div class="serialized-config-code"></div>
                 <button class="copy-button">Copy Config</button>
+                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
         <div class="maze-card" 
@@ -828,21 +678,11 @@
                     <span class="maze-tag">simple_path</span>
                 </div>
                 <button class="config-toggle">Show Configuration</button>
-                <div class="config-code">{
-  "name": "dfs_no_forks_g12",
-  "grid_n": 12,
-  "maze_ctor_kwargs": {
-    "do_forks": false
-  },
-  "description": "DFS without forks (12x12)",
-  "tags": [
-    "dfs",
-    "no_forks",
-    "simple_path"
-  ],
-  "maze_ctor": "gen_dfs"
-}</div>
+                <button class="serialized-config-toggle">Show Serialized Config</button>
+                <div class="config-code"></div>
+                <div class="serialized-config-code"></div>
                 <button class="copy-button">Copy Config</button>
+                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
         <div class="maze-card" 
@@ -861,18 +701,11 @@
                     <span class="maze-tag">uniform_random</span>
                 </div>
                 <button class="config-toggle">Show Configuration</button>
-                <div class="config-code">{
-  "name": "wilson_g12",
-  "grid_n": 12,
-  "maze_ctor_kwargs": {},
-  "description": "Wilson's algorithm (12x12) - unbiased random maze",
-  "tags": [
-    "wilson",
-    "uniform_random"
-  ],
-  "maze_ctor": "gen_wilson"
-}</div>
+                <button class="serialized-config-toggle">Show Serialized Config</button>
+                <div class="config-code"></div>
+                <div class="serialized-config-code"></div>
                 <button class="copy-button">Copy Config</button>
+                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
         <div class="maze-card" 
@@ -891,20 +724,11 @@
                     <span class="maze-tag">p=0.3</span>
                 </div>
                 <button class="config-toggle">Show Configuration</button>
-                <div class="config-code">{
-  "name": "percolation_p3_g12",
-  "grid_n": 12,
-  "maze_ctor_kwargs": {
-    "p": 0.3
-  },
-  "description": "Pure percolation (p=0.3) (12x12)",
-  "tags": [
-    "percolation",
-    "p=0.3"
-  ],
-  "maze_ctor": "gen_percolation"
-}</div>
+                <button class="serialized-config-toggle">Show Serialized Config</button>
+                <div class="config-code"></div>
+                <div class="serialized-config-code"></div>
                 <button class="copy-button">Copy Config</button>
+                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
         <div class="maze-card" 
@@ -924,21 +748,11 @@
                     <span class="maze-tag">p=0.3</span>
                 </div>
                 <button class="config-toggle">Show Configuration</button>
-                <div class="config-code">{
-  "name": "dfs_percolation_p3_g12",
-  "grid_n": 12,
-  "maze_ctor_kwargs": {
-    "p": 0.3
-  },
-  "description": "DFS with percolation (p=0.3) (12x12)",
-  "tags": [
-    "dfs",
-    "percolation",
-    "p=0.3"
-  ],
-  "maze_ctor": "gen_dfs_percolation"
-}</div>
+                <button class="serialized-config-toggle">Show Serialized Config</button>
+                <div class="config-code"></div>
+                <div class="serialized-config-code"></div>
                 <button class="copy-button">Copy Config</button>
+                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
         <div class="maze-card" 
@@ -957,20 +771,11 @@
                     <span class="maze-tag">p=0.5</span>
                 </div>
                 <button class="config-toggle">Show Configuration</button>
-                <div class="config-code">{
-  "name": "percolation_p5_g12",
-  "grid_n": 12,
-  "maze_ctor_kwargs": {
-    "p": 0.5
-  },
-  "description": "Pure percolation (p=0.5) (12x12)",
-  "tags": [
-    "percolation",
-    "p=0.5"
-  ],
-  "maze_ctor": "gen_percolation"
-}</div>
+                <button class="serialized-config-toggle">Show Serialized Config</button>
+                <div class="config-code"></div>
+                <div class="serialized-config-code"></div>
                 <button class="copy-button">Copy Config</button>
+                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
         <div class="maze-card" 
@@ -990,21 +795,11 @@
                     <span class="maze-tag">p=0.5</span>
                 </div>
                 <button class="config-toggle">Show Configuration</button>
-                <div class="config-code">{
-  "name": "dfs_percolation_p5_g12",
-  "grid_n": 12,
-  "maze_ctor_kwargs": {
-    "p": 0.5
-  },
-  "description": "DFS with percolation (p=0.5) (12x12)",
-  "tags": [
-    "dfs",
-    "percolation",
-    "p=0.5"
-  ],
-  "maze_ctor": "gen_dfs_percolation"
-}</div>
+                <button class="serialized-config-toggle">Show Serialized Config</button>
+                <div class="config-code"></div>
+                <div class="serialized-config-code"></div>
                 <button class="copy-button">Copy Config</button>
+                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
         <div class="maze-card" 
@@ -1023,20 +818,11 @@
                     <span class="maze-tag">p=0.7</span>
                 </div>
                 <button class="config-toggle">Show Configuration</button>
-                <div class="config-code">{
-  "name": "percolation_p7_g12",
-  "grid_n": 12,
-  "maze_ctor_kwargs": {
-    "p": 0.7
-  },
-  "description": "Pure percolation (p=0.7) (12x12)",
-  "tags": [
-    "percolation",
-    "p=0.7"
-  ],
-  "maze_ctor": "gen_percolation"
-}</div>
+                <button class="serialized-config-toggle">Show Serialized Config</button>
+                <div class="config-code"></div>
+                <div class="serialized-config-code"></div>
                 <button class="copy-button">Copy Config</button>
+                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
         <div class="maze-card" 
@@ -1056,21 +842,11 @@
                     <span class="maze-tag">p=0.7</span>
                 </div>
                 <button class="config-toggle">Show Configuration</button>
-                <div class="config-code">{
-  "name": "dfs_percolation_p7_g12",
-  "grid_n": 12,
-  "maze_ctor_kwargs": {
-    "p": 0.7
-  },
-  "description": "DFS with percolation (p=0.7) (12x12)",
-  "tags": [
-    "dfs",
-    "percolation",
-    "p=0.7"
-  ],
-  "maze_ctor": "gen_dfs_percolation"
-}</div>
+                <button class="serialized-config-toggle">Show Serialized Config</button>
+                <div class="config-code"></div>
+                <div class="serialized-config-code"></div>
                 <button class="copy-button">Copy Config</button>
+                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
         <div class="maze-card" 
@@ -1089,20 +865,11 @@
                     <span class="maze-tag">limited_cells</span>
                 </div>
                 <button class="config-toggle">Show Configuration</button>
-                <div class="config-code">{
-  "name": "dfs_accessible_cells",
-  "grid_n": 10,
-  "maze_ctor_kwargs": {
-    "accessible_cells": 50
-  },
-  "description": "DFS with limited accessible cells (50)",
-  "tags": [
-    "dfs",
-    "limited_cells"
-  ],
-  "maze_ctor": "gen_dfs"
-}</div>
+                <button class="serialized-config-toggle">Show Serialized Config</button>
+                <div class="config-code"></div>
+                <div class="serialized-config-code"></div>
                 <button class="copy-button">Copy Config</button>
+                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
         <div class="maze-card" 
@@ -1122,21 +889,11 @@
                     <span class="maze-tag">ratio</span>
                 </div>
                 <button class="config-toggle">Show Configuration</button>
-                <div class="config-code">{
-  "name": "dfs_accessible_cells_ratio",
-  "grid_n": 10,
-  "maze_ctor_kwargs": {
-    "accessible_cells": 0.6
-  },
-  "description": "DFS with 60% accessible cells",
-  "tags": [
-    "dfs",
-    "limited_cells",
-    "ratio"
-  ],
-  "maze_ctor": "gen_dfs"
-}</div>
+                <button class="serialized-config-toggle">Show Serialized Config</button>
+                <div class="config-code"></div>
+                <div class="serialized-config-code"></div>
                 <button class="copy-button">Copy Config</button>
+                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
         <div class="maze-card" 
@@ -1155,20 +912,11 @@
                     <span class="maze-tag">limited_depth</span>
                 </div>
                 <button class="config-toggle">Show Configuration</button>
-                <div class="config-code">{
-  "name": "dfs_max_tree_depth",
-  "grid_n": 10,
-  "maze_ctor_kwargs": {
-    "max_tree_depth": 10
-  },
-  "description": "DFS with max tree depth of 10",
-  "tags": [
-    "dfs",
-    "limited_depth"
-  ],
-  "maze_ctor": "gen_dfs"
-}</div>
+                <button class="serialized-config-toggle">Show Serialized Config</button>
+                <div class="config-code"></div>
+                <div class="serialized-config-code"></div>
                 <button class="copy-button">Copy Config</button>
+                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
         <div class="maze-card" 
@@ -1188,21 +936,11 @@
                     <span class="maze-tag">ratio</span>
                 </div>
                 <button class="config-toggle">Show Configuration</button>
-                <div class="config-code">{
-  "name": "dfs_max_tree_depth_ratio",
-  "grid_n": 10,
-  "maze_ctor_kwargs": {
-    "max_tree_depth": 0.3
-  },
-  "description": "DFS with max tree depth 30% of grid size",
-  "tags": [
-    "dfs",
-    "limited_depth",
-    "ratio"
-  ],
-  "maze_ctor": "gen_dfs"
-}</div>
+                <button class="serialized-config-toggle">Show Serialized Config</button>
+                <div class="config-code"></div>
+                <div class="serialized-config-code"></div>
                 <button class="copy-button">Copy Config</button>
+                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
         <div class="maze-card" 
@@ -1221,23 +959,11 @@
                     <span class="maze-tag">custom_start</span>
                 </div>
                 <button class="config-toggle">Show Configuration</button>
-                <div class="config-code">{
-  "name": "dfs_start_coord",
-  "grid_n": 10,
-  "maze_ctor_kwargs": {
-    "start_coord": [
-      5,
-      5
-    ]
-  },
-  "description": "DFS starting from center of grid",
-  "tags": [
-    "dfs",
-    "custom_start"
-  ],
-  "maze_ctor": "gen_dfs"
-}</div>
+                <button class="serialized-config-toggle">Show Serialized Config</button>
+                <div class="config-code"></div>
+                <div class="serialized-config-code"></div>
                 <button class="copy-button">Copy Config</button>
+                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
         <div class="maze-card" 
@@ -1256,25 +982,11 @@
                     <span class="maze-tag">combined_constraints</span>
                 </div>
                 <button class="config-toggle">Show Configuration</button>
-                <div class="config-code">{
-  "name": "dfs_combined_constraints",
-  "grid_n": 15,
-  "maze_ctor_kwargs": {
-    "accessible_cells": 100,
-    "max_tree_depth": 25,
-    "start_coord": [
-      7,
-      7
-    ]
-  },
-  "description": "DFS with multiple constraints",
-  "tags": [
-    "dfs",
-    "combined_constraints"
-  ],
-  "maze_ctor": "gen_dfs"
-}</div>
+                <button class="serialized-config-toggle">Show Serialized Config</button>
+                <div class="config-code"></div>
+                <div class="serialized-config-code"></div>
                 <button class="copy-button">Copy Config</button>
+                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
         <div class="maze-card" 
@@ -1293,23 +1005,11 @@
                     <span class="maze-tag">deadend_endpoints</span>
                 </div>
                 <button class="config-toggle">Show Configuration</button>
-                <div class="config-code">{
-  "name": "dfs_deadend_startTrue_endFalse",
-  "grid_n": 8,
-  "maze_ctor_kwargs": {},
-  "endpoint_kwargs": {
-    "deadend_start": true,
-    "deadend_end": false,
-    "endpoints_not_equal": true
-  },
-  "description": "DFS with deadend start",
-  "tags": [
-    "dfs",
-    "deadend_endpoints"
-  ],
-  "maze_ctor": "gen_dfs"
-}</div>
+                <button class="serialized-config-toggle">Show Serialized Config</button>
+                <div class="config-code"></div>
+                <div class="serialized-config-code"></div>
                 <button class="copy-button">Copy Config</button>
+                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
         <div class="maze-card" 
@@ -1328,23 +1028,11 @@
                     <span class="maze-tag">deadend_endpoints</span>
                 </div>
                 <button class="config-toggle">Show Configuration</button>
-                <div class="config-code">{
-  "name": "dfs_deadend_startFalse_endTrue",
-  "grid_n": 8,
-  "maze_ctor_kwargs": {},
-  "endpoint_kwargs": {
-    "deadend_start": false,
-    "deadend_end": true,
-    "endpoints_not_equal": true
-  },
-  "description": "DFS with deadend end",
-  "tags": [
-    "dfs",
-    "deadend_endpoints"
-  ],
-  "maze_ctor": "gen_dfs"
-}</div>
+                <button class="serialized-config-toggle">Show Serialized Config</button>
+                <div class="config-code"></div>
+                <div class="serialized-config-code"></div>
                 <button class="copy-button">Copy Config</button>
+                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
         <div class="maze-card" 
@@ -1363,23 +1051,11 @@
                     <span class="maze-tag">deadend_endpoints</span>
                 </div>
                 <button class="config-toggle">Show Configuration</button>
-                <div class="config-code">{
-  "name": "dfs_deadend_startTrue_endTrue",
-  "grid_n": 8,
-  "maze_ctor_kwargs": {},
-  "endpoint_kwargs": {
-    "deadend_start": true,
-    "deadend_end": true,
-    "endpoints_not_equal": true
-  },
-  "description": "DFS with deadend start and deadend end",
-  "tags": [
-    "dfs",
-    "deadend_endpoints"
-  ],
-  "maze_ctor": "gen_dfs"
-}</div>
+                <button class="serialized-config-toggle">Show Serialized Config</button>
+                <div class="config-code"></div>
+                <div class="serialized-config-code"></div>
                 <button class="copy-button">Copy Config</button>
+                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
         <div class="maze-card" 
@@ -1399,27 +1075,11 @@
                     <span class="maze-tag">deadend_endpoints</span>
                 </div>
                 <button class="config-toggle">Show Configuration</button>
-                <div class="config-code">{
-  "name": "dfs_percolation_deadends",
-  "grid_n": 8,
-  "maze_ctor_kwargs": {
-    "p": 0.3
-  },
-  "endpoint_kwargs": {
-    "deadend_start": true,
-    "deadend_end": true,
-    "endpoints_not_equal": true,
-    "except_on_no_valid_endpoint": false
-  },
-  "description": "DFS percolation with deadend endpoints",
-  "tags": [
-    "dfs",
-    "percolation",
-    "deadend_endpoints"
-  ],
-  "maze_ctor": "gen_dfs_percolation"
-}</div>
+                <button class="serialized-config-toggle">Show Serialized Config</button>
+                <div class="config-code"></div>
+                <div class="serialized-config-code"></div>
                 <button class="copy-button">Copy Config</button>
+                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
         <div class="no-results" style="display: none;">No mazes match your search criteria.</div>
@@ -1433,7 +1093,7 @@
         // Show/hide configuration
         document.querySelectorAll('.config-toggle').forEach(button => {
             button.addEventListener('click', function() {
-                const codeBlock = this.nextElementSibling;
+                const codeBlock = this.nextElementSibling.nextElementSibling;
                 if (codeBlock.style.display === 'none' || codeBlock.style.display === '') {
                     codeBlock.style.display = 'block';
                     this.textContent = 'Hide Configuration';
@@ -1444,10 +1104,50 @@
             });
         });
 
+        // Show/hide serialized configuration
+        document.querySelectorAll('.serialized-config-toggle').forEach(button => {
+            button.addEventListener('click', function() {
+                const codeBlock = this.nextElementSibling.nextElementSibling;
+                if (codeBlock.style.display === 'none' || codeBlock.style.display === '') {
+                    codeBlock.style.display = 'block';
+                    this.textContent = 'Hide Serialized Config';
+                } else {
+                    codeBlock.style.display = 'none';
+                    this.textContent = 'Show Serialized Config';
+                }
+            });
+        });
+
         // Copy configuration
         document.querySelectorAll('.copy-button').forEach(button => {
             button.addEventListener('click', function() {
-                const codeBlock = this.previousElementSibling;
+                const codeBlock = this.previousElementSibling.previousElementSibling;
+                
+                // Create a temporary textarea element
+                const textarea = document.createElement('textarea');
+                textarea.value = codeBlock.textContent;
+                document.body.appendChild(textarea);
+                
+                // Copy the text
+                textarea.select();
+                document.execCommand('copy');
+                
+                // Remove the textarea
+                document.body.removeChild(textarea);
+                
+                // Give feedback to the user
+                const originalText = this.textContent;
+                this.textContent = 'Copied!';
+                setTimeout(() => {
+                    this.textContent = originalText;
+                }, 2000);
+            });
+        });
+
+        // Copy serialized configuration
+        document.querySelectorAll('.copy-serialized-button').forEach(button => {
+            button.addEventListener('click', function() {
+                const codeBlock = this.previousElementSibling.previousElementSibling;
                 
                 // Create a temporary textarea element
                 const textarea = document.createElement('textarea');
@@ -1487,11 +1187,13 @@
                 const name = card.getAttribute('data-name').toLowerCase();
                 const description = card.querySelector('.maze-description').textContent.toLowerCase();
                 const config = card.querySelector('.config-code').textContent.toLowerCase();
+                const serializedConfig = card.querySelector('.serialized-config-code').textContent.toLowerCase();
                 const tags = card.getAttribute('data-tags').split(',');
                 
                 const matchesSearch = name.includes(searchTerm) || 
                                     description.includes(searchTerm) || 
-                                    config.includes(searchTerm);
+                                    config.includes(searchTerm) ||
+                                    serializedConfig.includes(searchTerm);
                 
                 const matchesTags = activeTagFilters.length === 0 || 
                                   activeTagFilters.every(tag => tags.includes(tag));

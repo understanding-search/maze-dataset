@@ -128,6 +128,25 @@
             white-space: pre-wrap;
             font-family: monospace;
         }
+        .serialized-config-toggle {
+            background-color: #6c757d;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-left: 5px;
+        }
+        .serialized-config-code {
+            display: none;
+            background-color: #f5f5f5;
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 10px;
+            white-space: pre-wrap;
+            font-family: monospace;
+        }
         .copy-button {
             background-color: #4CAF50;
             color: white;
@@ -202,8 +221,11 @@
                     {%- endfor %}
                 </div>
                 <button class="config-toggle">Show Configuration</button>
+                <button class="serialized-config-toggle">Show Serialized Config</button>
                 <div class="config-code">{{ example.config_json }}</div>
+                <div class="serialized-config-code">{{ example.serialized_config }}</div>
                 <button class="copy-button">Copy Config</button>
+                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
         {%- endfor %}
@@ -218,7 +240,7 @@
         // Show/hide configuration
         document.querySelectorAll('.config-toggle').forEach(button => {
             button.addEventListener('click', function() {
-                const codeBlock = this.nextElementSibling;
+                const codeBlock = this.nextElementSibling.nextElementSibling;
                 if (codeBlock.style.display === 'none' || codeBlock.style.display === '') {
                     codeBlock.style.display = 'block';
                     this.textContent = 'Hide Configuration';
@@ -229,10 +251,50 @@
             });
         });
 
+        // Show/hide serialized configuration
+        document.querySelectorAll('.serialized-config-toggle').forEach(button => {
+            button.addEventListener('click', function() {
+                const codeBlock = this.nextElementSibling.nextElementSibling;
+                if (codeBlock.style.display === 'none' || codeBlock.style.display === '') {
+                    codeBlock.style.display = 'block';
+                    this.textContent = 'Hide Serialized Config';
+                } else {
+                    codeBlock.style.display = 'none';
+                    this.textContent = 'Show Serialized Config';
+                }
+            });
+        });
+
         // Copy configuration
         document.querySelectorAll('.copy-button').forEach(button => {
             button.addEventListener('click', function() {
-                const codeBlock = this.previousElementSibling;
+                const codeBlock = this.previousElementSibling.previousElementSibling;
+                
+                // Create a temporary textarea element
+                const textarea = document.createElement('textarea');
+                textarea.value = codeBlock.textContent;
+                document.body.appendChild(textarea);
+                
+                // Copy the text
+                textarea.select();
+                document.execCommand('copy');
+                
+                // Remove the textarea
+                document.body.removeChild(textarea);
+                
+                // Give feedback to the user
+                const originalText = this.textContent;
+                this.textContent = 'Copied!';
+                setTimeout(() => {
+                    this.textContent = originalText;
+                }, 2000);
+            });
+        });
+
+        // Copy serialized configuration
+        document.querySelectorAll('.copy-serialized-button').forEach(button => {
+            button.addEventListener('click', function() {
+                const codeBlock = this.previousElementSibling.previousElementSibling;
                 
                 // Create a temporary textarea element
                 const textarea = document.createElement('textarea');
@@ -272,11 +334,13 @@
                 const name = card.getAttribute('data-name').toLowerCase();
                 const description = card.querySelector('.maze-description').textContent.toLowerCase();
                 const config = card.querySelector('.config-code').textContent.toLowerCase();
+                const serializedConfig = card.querySelector('.serialized-config-code').textContent.toLowerCase();
                 const tags = card.getAttribute('data-tags').split(',');
                 
                 const matchesSearch = name.includes(searchTerm) || 
                                     description.includes(searchTerm) || 
-                                    config.includes(searchTerm);
+                                    config.includes(searchTerm) ||
+                                    serializedConfig.includes(searchTerm);
                 
                 const matchesTags = activeTagFilters.length === 0 || 
                                   activeTagFilters.every(tag => tags.includes(tag));

@@ -178,7 +178,7 @@ def generate_maze_configs() -> List[Dict[str, Any]]:
     
     return configs
 
-def generate_maze_svg(config: Dict[str, Any], seed: Optional[int] = None) -> Tuple[str, str]:
+def generate_maze_svg(config_src: Dict[str, Any], seed: Optional[int] = None) -> Tuple[str, MazeDatasetConfig]:
     """Generate a maze from the given configuration and save it as an SVG file.
     
     # Parameters:
@@ -189,18 +189,18 @@ def generate_maze_svg(config: Dict[str, Any], seed: Optional[int] = None) -> Tup
         (defaults to `None`)
     
     # Returns:
-     - `Tuple[str, str]`
-        Path to the SVG file and the JSON string of the configuration
+     - `Tuple[str, str, str]`
+        Path to the SVG file, the JSON string of the configuration, and the serialized config
     """
     if seed is not None:
         np.random.seed(seed)
         
     # Extract maze config parameters
-    name = config["name"]
-    grid_n = config["grid_n"]
-    maze_ctor = config["maze_ctor"]
-    maze_ctor_kwargs = config["maze_ctor_kwargs"]
-    endpoint_kwargs = config.get("endpoint_kwargs", {})
+    name = config_src["name"]
+    grid_n = config_src["grid_n"]
+    maze_ctor = config_src["maze_ctor"]
+    maze_ctor_kwargs = config_src["maze_ctor_kwargs"]
+    endpoint_kwargs = config_src.get("endpoint_kwargs", {})
     
     # Create a MazeDatasetConfig
     maze_config = MazeDatasetConfig(
@@ -211,7 +211,7 @@ def generate_maze_svg(config: Dict[str, Any], seed: Optional[int] = None) -> Tup
         maze_ctor_kwargs=maze_ctor_kwargs,
         endpoint_kwargs=endpoint_kwargs
     )
-    
+       
     # Generate the maze directly
     maze: LatticeMaze = maze_ctor(
         grid_shape=np.array([grid_n, grid_n]),
@@ -235,16 +235,16 @@ def generate_maze_svg(config: Dict[str, Any], seed: Optional[int] = None) -> Tup
     plt.close(fig)
     
     # Prepare JSON configuration
-    config_json = {k: v for k, v in config.items() if k not in ["maze_ctor"]}
-    config_json["maze_ctor"] = config["maze_ctor"].__name__
-    config_json_str = json.dumps(config_json, indent=2)
+    metadata_json = {k: v for k, v in config_src.items() if k not in ["maze_ctor"]}
+    metadata_json["maze_ctor"] = config_src["maze_ctor"].__name__
+    metadata_json["config"] = maze_config.serialize()
     
     # Create a corresponding config file
     config_path = SVG_DIR / f"{name}.json"
     with open(config_path, 'w') as f:
-        f.write(config_json_str)
+        f.write(json.dumps(metadata_json, indent=2))
     
-    return str(svg_path.relative_to(EXAMPLES_DIR)), config_json_str
+    return svg_path.relative_to(EXAMPLES_DIR).as_posix(), metadata_json
 
 def setup_jinja_env() -> jinja2.Environment:
     """Set up the Jinja2 environment.
@@ -312,22 +312,22 @@ def main() -> None:
     maze_examples = []
     all_tags: Set[str] = set()
     
-    for i, config in enumerate(configs):
-        print(f"Generating maze {i+1}/{len(configs)}: {config['name']}")
-        svg_path, config_json = generate_maze_svg(config, seed=i)  # Use index as seed for reproducibility
+    for i, metadata in enumerate(configs):
+        print(f"Generating maze {i+1}/{len(configs)}: {metadata['name']}")
+        svg_path, metadata = generate_maze_svg(metadata, seed=i)  # Use index as seed for reproducibility
         
         # Update the set of all tags
-        all_tags.update(config["tags"])
+        all_tags.update(metadata["tags"])
         
         # Prepare the example data for the template
         maze_examples.append({
-            "name": config["name"],
-            "grid_n": config["grid_n"],
-            "algorithm_name": config["maze_ctor"].__name__,
-            "description": config["description"],
-            "tags": config["tags"],
+            "name": metadata["name"],
+            "grid_n": metadata["grid_n"],
+            "algorithm_name": metadata["maze_ctor"],
+            "description": metadata["description"],
+            "tags": metadata["tags"],
             "svg_path": svg_path,
-            "config_json": config_json
+            "config": metadata
         })
     
     # Set up Jinja2 and generate HTML
