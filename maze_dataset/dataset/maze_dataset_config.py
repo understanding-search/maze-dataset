@@ -153,7 +153,7 @@ class _MazeDatasetConfig_base(GPTDatasetConfig):  # noqa: N801
 		default=None,
 		compare=False,
 		serialization_fn=lambda _: None,
-		loading_fn=lambda data: data["fname"],
+		loading_fn=lambda data: data.get("fname", None),
 	)
 
 	@property
