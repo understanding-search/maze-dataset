@@ -436,8 +436,8 @@ class LatticeMazeGenerators:
 			"Kruskal's algorithm is only implemented for 2D lattices."
 		)
 		# Convert grid_shape to a tuple of ints
-		grid_shape = tuple(int(x) for x in grid_shape)
-		n_rows, n_cols = grid_shape
+		grid_shape_: CoordTup = tuple(int(x) for x in grid_shape)  # type: ignore[assignment]
+		n_rows, n_cols = grid_shape_
 
 		# Initialize union-find data structure.
 		parent: dict[tuple[int, int], tuple[int, int]] = {}
@@ -493,11 +493,11 @@ class LatticeMazeGenerators:
 					connection_list[1, cell1[0], cell1[1]] = True
 
 		if start_coord is None:
-			start_coord = tuple(np.random.randint(0, n) for n in grid_shape)
+			start_coord = tuple(np.random.randint(0, n) for n in grid_shape_)  # type: ignore[assignment]
 
 		generation_meta: dict = dict(
 			func_name="gen_kruskal",
-			grid_shape=grid_shape,
+			grid_shape=grid_shape_,
 			start_coord=start_coord,
 			algorithm="kruskal",
 			fully_connected=True,
@@ -542,8 +542,8 @@ class LatticeMazeGenerators:
 			"Recursive division algorithm is only implemented for 2D lattices."
 		)
 		# Convert grid_shape to a tuple of ints.
-		grid_shape = tuple(int(x) for x in grid_shape)
-		n_rows, n_cols = grid_shape
+		grid_shape_: CoordTup = tuple(int(x) for x in grid_shape)  # type: ignore[assignment]
+		n_rows, n_cols = grid_shape_
 
 		# Initialize connection_list as a fully connected grid.
 		# For horizontal connections: for each cell (i,j) with i in [0, n_rows-2], set connection to True.
@@ -591,11 +591,11 @@ class LatticeMazeGenerators:
 		divide(0, 0, n_cols, n_rows)
 
 		if start_coord is None:
-			start_coord = tuple(np.random.randint(0, n) for n in grid_shape)
+			start_coord = tuple(np.random.randint(0, n) for n in grid_shape_)  # type: ignore[assignment]
 
 		generation_meta: dict = dict(
 			func_name="gen_recursive_division",
-			grid_shape=grid_shape,
+			grid_shape=grid_shape_,
 			start_coord=start_coord,
 			algorithm="recursive_division",
 			fully_connected=True,

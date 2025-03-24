@@ -1,7 +1,7 @@
 "`MAZE_DATASET_CONFIGS` contains some default configs for tests and demos"
 
 import copy
-from typing import Iterator, Mapping
+from typing import Callable, Iterator, Mapping
 
 from maze_dataset.dataset.maze_dataset import MazeDatasetConfig
 from maze_dataset.generation.generators import LatticeMazeGenerators
@@ -91,7 +91,7 @@ def _get_configs_for_examples() -> list[dict]:
 	percolation_probs: list[float] = [0.3, 0.5, 0.7]
 
 	# Core algorithms with basic configurations
-	basic_algorithms: dict[str, tuple[callable, dict]] = {
+	basic_algorithms: dict[str, tuple[Callable, dict]] = {
 		"dfs": (LatticeMazeGenerators.gen_dfs, {}),
 		"wilson": (LatticeMazeGenerators.gen_wilson, {}),
 		"kruskal": (LatticeMazeGenerators.gen_kruskal, {}),

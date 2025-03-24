@@ -30,11 +30,19 @@ plt.rcParams["svg.fonttype"] = "none"  # preserve text as text
 
 # Define the examples directory
 EXAMPLES_DIR: Path = Path("docs/examples")
+"where everything is happening"
+
 PLOTS_DIR: Path = EXAMPLES_DIR / "plots"
+"where to put the plots"
+
 HTML_PATH: Path = EXAMPLES_DIR / "maze_examples.html"
-TEMPLATE_FILE: Path = "maze_examples.html.jinja2"
+"where to write html"
+
+TEMPLATE_FILE: str = "maze_examples.html.jinja2"
+"template file for the html, relative to `EXAMPLES_DIR`"
 
 N_EXAMPLES_GENERATE: int = 6
+"number of examples to generate for each configuration"
 
 
 def generate_maze_plots(config_src: dict[str, Any]) -> tuple[str, dict]:
