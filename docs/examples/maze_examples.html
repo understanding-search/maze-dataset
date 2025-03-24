@@ -14,7 +14,7 @@
             max-width: 1200px;
             margin: 0 auto;
         }
-        h1, h2 {
+        h1 {
             border-bottom: 2px solid #eee;
             padding-bottom: 10px;
             margin-bottom: 20px;
@@ -55,20 +55,7 @@
             border: 1px solid #ddd;
             border-radius: 4px;
         }
-        .maze-category {
-            margin-bottom: 30px;
-            border: 1px solid #eee;
-            border-radius: 5px;
-            padding: 20px;
-            background-color: #fafafa;
-        }
-        .category-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-        .maze-examples {
+        .maze-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 20px;
@@ -79,7 +66,6 @@
             overflow: hidden;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
             transition: transform 0.3s ease;
-            background-color: white;
         }
         .maze-card:hover {
             transform: translateY(-5px);
@@ -94,24 +80,11 @@
             background-color: #f9f9f9;
             padding: 10px;
             box-sizing: border-box;
-            position: relative;
         }
         .maze-image img {
             max-width: 100%;
             max-height: 100%;
             object-fit: contain;
-        }
-        .maze-image .toggle-view {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 4px;
-            cursor: pointer;
-            z-index: 2;
         }
         .maze-details {
             padding: 15px;
@@ -191,41 +164,6 @@
             background-color: #f9f9f9;
             border-radius: 5px;
         }
-        .view-select {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 10px;
-        }
-        .view-select button {
-            background-color: #e0e0e0;
-            color: #333;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        .view-select button.active {
-            background-color: #007bff;
-            color: white;
-        }
-        .example-number {
-            font-size: 14px;
-            color: #777;
-            margin-bottom: 5px;
-        }
-        .representation-label {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            background-color: rgba(0, 0, 0, 0.5);
-            color: white;
-            padding: 3px 6px;
-            border-radius: 3px;
-            font-size: 12px;
-        }
-        .hidden {
-            display: none;
-        }
         footer {
             margin-top: 40px;
             text-align: center;
@@ -268,14 +206,6 @@
         </div>
         
         <div class="filter-section">
-            <h3>Default View</h3>
-            <div class="view-select">
-                <button id="default-pixels" class="active">Pixels</button>
-                <button id="default-mazeplot">MazePlot</button>
-            </div>
-        </div>
-        
-        <div class="filter-section">
             <h3>Sort By</h3>
             <select id="sort-select">
                 <option value="name">Name</option>
@@ -285,3449 +215,873 @@
         </div>
     </div>
     
-    <div id="maze-categories">
-        
-        
-        <div class="maze-category" 
-             data-name="dfs_basic_g5" 
+    <div class="maze-grid" id="maze-grid">
+        <div class="maze-card" 
+             data-name="basic" 
              data-grid-n="5" 
-             data-algorithm="gen_dfs" 
+             data-algorithm="" 
              data-tags="dfs,basic">
-            <div class="category-header">
-                <h2>Basic DFS maze (5x5)</h2>
+            <div class="maze-image">
+                <img src="" alt="basic">
             </div>
-            
-            <div class="maze-examples">
-                
-                
-                
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                
-                
-                
-                
-                
-                
-                    
-                
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                
-                    
-                
-                
-                
-                
-                
-                
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                
-                
-                
+            <div class="maze-details">
+                <div class="maze-title">Basic DFS maze (5x5)</div>
+                <div class="maze-description">Grid size: 5x5</div>
+                <div class="maze-tags">
+                    <span class="maze-tag">dfs</span>
+                    <span class="maze-tag">basic</span>
+                </div>
+                <button class="config-toggle">Show Configuration</button>
+                <button class="serialized-config-toggle">Show Serialized Config</button>
+                <div class="config-code"></div>
+                <div class="serialized-config-code"></div>
+                <button class="copy-button">Copy Config</button>
+                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
-        
-        
-        <div class="maze-category" 
-             data-name="dfs_no_forks_g5" 
+        <div class="maze-card" 
+             data-name="forkless" 
              data-grid-n="5" 
-             data-algorithm="gen_dfs" 
+             data-algorithm="" 
              data-tags="dfs,no_forks,simple_path">
-            <div class="category-header">
-                <h2>DFS without forks (5x5)</h2>
+            <div class="maze-image">
+                <img src="" alt="forkless">
             </div>
-            
-            <div class="maze-examples">
-                
-                
-                
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                
-                
-                
-                
-                
-                
-                    
-                
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                
-                    
-                
-                
-                
-                
-                
-                
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                
-                
-                
+            <div class="maze-details">
+                <div class="maze-title">DFS without forks (5x5)</div>
+                <div class="maze-description">Grid size: 5x5</div>
+                <div class="maze-tags">
+                    <span class="maze-tag">dfs</span>
+                    <span class="maze-tag">no_forks</span>
+                    <span class="maze-tag">simple_path</span>
+                </div>
+                <button class="config-toggle">Show Configuration</button>
+                <button class="serialized-config-toggle">Show Serialized Config</button>
+                <div class="config-code"></div>
+                <div class="serialized-config-code"></div>
+                <button class="copy-button">Copy Config</button>
+                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
-        
-        
-        <div class="maze-category" 
-             data-name="wilson_g5" 
+        <div class="maze-card" 
+             data-name="basic" 
              data-grid-n="5" 
-             data-algorithm="gen_wilson" 
+             data-algorithm="" 
              data-tags="wilson,uniform_random">
-            <div class="category-header">
-                <h2>Wilson's algorithm (5x5) - unbiased random maze</h2>
+            <div class="maze-image">
+                <img src="" alt="basic">
             </div>
-            
-            <div class="maze-examples">
-                
-                
-                
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                
-                
-                
-                
-                
-                
-                    
-                
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                
-                    
-                
-                
-                
-                
-                
-                
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                
-                
-                
+            <div class="maze-details">
+                <div class="maze-title">Wilson's algorithm (5x5) - unbiased random maze</div>
+                <div class="maze-description">Grid size: 5x5</div>
+                <div class="maze-tags">
+                    <span class="maze-tag">wilson</span>
+                    <span class="maze-tag">uniform_random</span>
+                </div>
+                <button class="config-toggle">Show Configuration</button>
+                <button class="serialized-config-toggle">Show Serialized Config</button>
+                <div class="config-code"></div>
+                <div class="serialized-config-code"></div>
+                <button class="copy-button">Copy Config</button>
+                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
-        
-        
-        <div class="maze-category" 
-             data-name="percolation_p3_g5" 
+        <div class="maze-card" 
+             data-name="p0.3" 
              data-grid-n="5" 
-             data-algorithm="gen_percolation" 
+             data-algorithm="" 
              data-tags="percolation,p=0.3">
-            <div class="category-header">
-                <h2>Pure percolation (p=0.3) (5x5)</h2>
+            <div class="maze-image">
+                <img src="" alt="p0.3">
             </div>
-            
-            <div class="maze-examples">
-                
-                
-                
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                
-                
-                
-                
-                
-                
-                    
-                
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                
-                    
-                
-                
-                
-                
-                
-                
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                
-                
-                
+            <div class="maze-details">
+                <div class="maze-title">Pure percolation (p=0.3) (5x5)</div>
+                <div class="maze-description">Grid size: 5x5</div>
+                <div class="maze-tags">
+                    <span class="maze-tag">percolation</span>
+                    <span class="maze-tag">p=0.3</span>
+                </div>
+                <button class="config-toggle">Show Configuration</button>
+                <button class="serialized-config-toggle">Show Serialized Config</button>
+                <div class="config-code"></div>
+                <div class="serialized-config-code"></div>
+                <button class="copy-button">Copy Config</button>
+                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
-        
-        
-        <div class="maze-category" 
-             data-name="dfs_percolation_p3_g5" 
+        <div class="maze-card" 
+             data-name="p0.3" 
              data-grid-n="5" 
-             data-algorithm="gen_dfs_percolation" 
+             data-algorithm="" 
              data-tags="dfs,percolation,p=0.3">
-            <div class="category-header">
-                <h2>DFS with percolation (p=0.3) (5x5)</h2>
+            <div class="maze-image">
+                <img src="" alt="p0.3">
             </div>
-            
-            <div class="maze-examples">
-                
-                
-                
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                
-                
-                
-                
-                
-                
-                    
-                
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                
-                    
-                
-                
-                
-                
-                
-                
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                
-                
-                
+            <div class="maze-details">
+                <div class="maze-title">DFS with percolation (p=0.3) (5x5)</div>
+                <div class="maze-description">Grid size: 5x5</div>
+                <div class="maze-tags">
+                    <span class="maze-tag">dfs</span>
+                    <span class="maze-tag">percolation</span>
+                    <span class="maze-tag">p=0.3</span>
+                </div>
+                <button class="config-toggle">Show Configuration</button>
+                <button class="serialized-config-toggle">Show Serialized Config</button>
+                <div class="config-code"></div>
+                <div class="serialized-config-code"></div>
+                <button class="copy-button">Copy Config</button>
+                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
-        
-        
-        <div class="maze-category" 
-             data-name="percolation_p5_g5" 
+        <div class="maze-card" 
+             data-name="p0.5" 
              data-grid-n="5" 
-             data-algorithm="gen_percolation" 
+             data-algorithm="" 
              data-tags="percolation,p=0.5">
-            <div class="category-header">
-                <h2>Pure percolation (p=0.5) (5x5)</h2>
+            <div class="maze-image">
+                <img src="" alt="p0.5">
             </div>
-            
-            <div class="maze-examples">
-                
-                
-                
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                
-                
-                
-                
-                
-                
-                    
-                
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                
-                    
-                
-                
-                
-                
-                
-                
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                
-                
-                
+            <div class="maze-details">
+                <div class="maze-title">Pure percolation (p=0.5) (5x5)</div>
+                <div class="maze-description">Grid size: 5x5</div>
+                <div class="maze-tags">
+                    <span class="maze-tag">percolation</span>
+                    <span class="maze-tag">p=0.5</span>
+                </div>
+                <button class="config-toggle">Show Configuration</button>
+                <button class="serialized-config-toggle">Show Serialized Config</button>
+                <div class="config-code"></div>
+                <div class="serialized-config-code"></div>
+                <button class="copy-button">Copy Config</button>
+                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
-        
-        
-        <div class="maze-category" 
-             data-name="dfs_percolation_p5_g5" 
+        <div class="maze-card" 
+             data-name="p0.5" 
              data-grid-n="5" 
-             data-algorithm="gen_dfs_percolation" 
+             data-algorithm="" 
              data-tags="dfs,percolation,p=0.5">
-            <div class="category-header">
-                <h2>DFS with percolation (p=0.5) (5x5)</h2>
+            <div class="maze-image">
+                <img src="" alt="p0.5">
             </div>
-            
-            <div class="maze-examples">
-                
-                
-                
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                
-                
-                
-                
-                
-                
-                    
-                
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                
-                    
-                
-                
-                
-                
-                
-                
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                
-                
-                
+            <div class="maze-details">
+                <div class="maze-title">DFS with percolation (p=0.5) (5x5)</div>
+                <div class="maze-description">Grid size: 5x5</div>
+                <div class="maze-tags">
+                    <span class="maze-tag">dfs</span>
+                    <span class="maze-tag">percolation</span>
+                    <span class="maze-tag">p=0.5</span>
+                </div>
+                <button class="config-toggle">Show Configuration</button>
+                <button class="serialized-config-toggle">Show Serialized Config</button>
+                <div class="config-code"></div>
+                <div class="serialized-config-code"></div>
+                <button class="copy-button">Copy Config</button>
+                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
-        
-        
-        <div class="maze-category" 
-             data-name="percolation_p7_g5" 
+        <div class="maze-card" 
+             data-name="p0.7" 
              data-grid-n="5" 
-             data-algorithm="gen_percolation" 
+             data-algorithm="" 
              data-tags="percolation,p=0.7">
-            <div class="category-header">
-                <h2>Pure percolation (p=0.7) (5x5)</h2>
+            <div class="maze-image">
+                <img src="" alt="p0.7">
             </div>
-            
-            <div class="maze-examples">
-                
-                
-                
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                
-                
-                
-                
-                
-                
-                    
-                
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                
-                    
-                
-                
-                
-                
-                
-                
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                
-                
-                
+            <div class="maze-details">
+                <div class="maze-title">Pure percolation (p=0.7) (5x5)</div>
+                <div class="maze-description">Grid size: 5x5</div>
+                <div class="maze-tags">
+                    <span class="maze-tag">percolation</span>
+                    <span class="maze-tag">p=0.7</span>
+                </div>
+                <button class="config-toggle">Show Configuration</button>
+                <button class="serialized-config-toggle">Show Serialized Config</button>
+                <div class="config-code"></div>
+                <div class="serialized-config-code"></div>
+                <button class="copy-button">Copy Config</button>
+                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
-        
-        
-        <div class="maze-category" 
-             data-name="dfs_percolation_p7_g5" 
+        <div class="maze-card" 
+             data-name="p0.7" 
              data-grid-n="5" 
-             data-algorithm="gen_dfs_percolation" 
+             data-algorithm="" 
              data-tags="dfs,percolation,p=0.7">
-            <div class="category-header">
-                <h2>DFS with percolation (p=0.7) (5x5)</h2>
+            <div class="maze-image">
+                <img src="" alt="p0.7">
             </div>
-            
-            <div class="maze-examples">
-                
-                
-                
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                
-                
-                
-                
-                
-                
-                    
-                
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                
-                    
-                
-                
-                
-                
-                
-                
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                
-                
-                
+            <div class="maze-details">
+                <div class="maze-title">DFS with percolation (p=0.7) (5x5)</div>
+                <div class="maze-description">Grid size: 5x5</div>
+                <div class="maze-tags">
+                    <span class="maze-tag">dfs</span>
+                    <span class="maze-tag">percolation</span>
+                    <span class="maze-tag">p=0.7</span>
+                </div>
+                <button class="config-toggle">Show Configuration</button>
+                <button class="serialized-config-toggle">Show Serialized Config</button>
+                <div class="config-code"></div>
+                <div class="serialized-config-code"></div>
+                <button class="copy-button">Copy Config</button>
+                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
-        
-        
-        <div class="maze-category" 
-             data-name="dfs_basic_g8" 
+        <div class="maze-card" 
+             data-name="basic" 
              data-grid-n="8" 
-             data-algorithm="gen_dfs" 
+             data-algorithm="" 
              data-tags="dfs,basic">
-            <div class="category-header">
-                <h2>Basic DFS maze (8x8)</h2>
+            <div class="maze-image">
+                <img src="" alt="basic">
             </div>
-            
-            <div class="maze-examples">
-                
-                
-                
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                
-                
-                
-                
-                
-                
-                    
-                
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                
-                    
-                
-                
-                
-                
-                
-                
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                
-                
-                
+            <div class="maze-details">
+                <div class="maze-title">Basic DFS maze (8x8)</div>
+                <div class="maze-description">Grid size: 8x8</div>
+                <div class="maze-tags">
+                    <span class="maze-tag">dfs</span>
+                    <span class="maze-tag">basic</span>
+                </div>
+                <button class="config-toggle">Show Configuration</button>
+                <button class="serialized-config-toggle">Show Serialized Config</button>
+                <div class="config-code"></div>
+                <div class="serialized-config-code"></div>
+                <button class="copy-button">Copy Config</button>
+                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
-        
-        
-        <div class="maze-category" 
-             data-name="dfs_no_forks_g8" 
+        <div class="maze-card" 
+             data-name="forkless" 
              data-grid-n="8" 
-             data-algorithm="gen_dfs" 
+             data-algorithm="" 
              data-tags="dfs,no_forks,simple_path">
-            <div class="category-header">
-                <h2>DFS without forks (8x8)</h2>
+            <div class="maze-image">
+                <img src="" alt="forkless">
             </div>
-            
-            <div class="maze-examples">
-                
-                
-                
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                
-                
-                
-                
-                
-                
-                    
-                
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                
-                    
-                
-                
-                
-                
-                
-                
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                
-                
-                
+            <div class="maze-details">
+                <div class="maze-title">DFS without forks (8x8)</div>
+                <div class="maze-description">Grid size: 8x8</div>
+                <div class="maze-tags">
+                    <span class="maze-tag">dfs</span>
+                    <span class="maze-tag">no_forks</span>
+                    <span class="maze-tag">simple_path</span>
+                </div>
+                <button class="config-toggle">Show Configuration</button>
+                <button class="serialized-config-toggle">Show Serialized Config</button>
+                <div class="config-code"></div>
+                <div class="serialized-config-code"></div>
+                <button class="copy-button">Copy Config</button>
+                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
-        
-        
-        <div class="maze-category" 
-             data-name="wilson_g8" 
+        <div class="maze-card" 
+             data-name="basic" 
              data-grid-n="8" 
-             data-algorithm="gen_wilson" 
+             data-algorithm="" 
              data-tags="wilson,uniform_random">
-            <div class="category-header">
-                <h2>Wilson's algorithm (8x8) - unbiased random maze</h2>
+            <div class="maze-image">
+                <img src="" alt="basic">
             </div>
-            
-            <div class="maze-examples">
-                
-                
-                
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                
-                
-                
-                
-                
-                
-                    
-                
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                
-                    
-                
-                
-                
-                
-                
-                
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                
-                
-                
+            <div class="maze-details">
+                <div class="maze-title">Wilson's algorithm (8x8) - unbiased random maze</div>
+                <div class="maze-description">Grid size: 8x8</div>
+                <div class="maze-tags">
+                    <span class="maze-tag">wilson</span>
+                    <span class="maze-tag">uniform_random</span>
+                </div>
+                <button class="config-toggle">Show Configuration</button>
+                <button class="serialized-config-toggle">Show Serialized Config</button>
+                <div class="config-code"></div>
+                <div class="serialized-config-code"></div>
+                <button class="copy-button">Copy Config</button>
+                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
-        
-        
-        <div class="maze-category" 
-             data-name="percolation_p3_g8" 
+        <div class="maze-card" 
+             data-name="p0.3" 
              data-grid-n="8" 
-             data-algorithm="gen_percolation" 
+             data-algorithm="" 
              data-tags="percolation,p=0.3">
-            <div class="category-header">
-                <h2>Pure percolation (p=0.3) (8x8)</h2>
+            <div class="maze-image">
+                <img src="" alt="p0.3">
             </div>
-            
-            <div class="maze-examples">
-                
-                
-                
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                
-                
-                
-                
-                
-                
-                    
-                
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                
-                    
-                
-                
-                
-                
-                
-                
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                
-                
-                
+            <div class="maze-details">
+                <div class="maze-title">Pure percolation (p=0.3) (8x8)</div>
+                <div class="maze-description">Grid size: 8x8</div>
+                <div class="maze-tags">
+                    <span class="maze-tag">percolation</span>
+                    <span class="maze-tag">p=0.3</span>
+                </div>
+                <button class="config-toggle">Show Configuration</button>
+                <button class="serialized-config-toggle">Show Serialized Config</button>
+                <div class="config-code"></div>
+                <div class="serialized-config-code"></div>
+                <button class="copy-button">Copy Config</button>
+                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
-        
-        
-        <div class="maze-category" 
-             data-name="dfs_percolation_p3_g8" 
+        <div class="maze-card" 
+             data-name="p0.3" 
              data-grid-n="8" 
-             data-algorithm="gen_dfs_percolation" 
+             data-algorithm="" 
              data-tags="dfs,percolation,p=0.3">
-            <div class="category-header">
-                <h2>DFS with percolation (p=0.3) (8x8)</h2>
+            <div class="maze-image">
+                <img src="" alt="p0.3">
             </div>
-            
-            <div class="maze-examples">
-                
-                
-                
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                
-                
-                
-                
-                
-                
-                    
-                
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                
-                    
-                
-                
-                
-                
-                
-                
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                
-                
-                
+            <div class="maze-details">
+                <div class="maze-title">DFS with percolation (p=0.3) (8x8)</div>
+                <div class="maze-description">Grid size: 8x8</div>
+                <div class="maze-tags">
+                    <span class="maze-tag">dfs</span>
+                    <span class="maze-tag">percolation</span>
+                    <span class="maze-tag">p=0.3</span>
+                </div>
+                <button class="config-toggle">Show Configuration</button>
+                <button class="serialized-config-toggle">Show Serialized Config</button>
+                <div class="config-code"></div>
+                <div class="serialized-config-code"></div>
+                <button class="copy-button">Copy Config</button>
+                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
-        
-        
-        <div class="maze-category" 
-             data-name="percolation_p5_g8" 
+        <div class="maze-card" 
+             data-name="p0.5" 
              data-grid-n="8" 
-             data-algorithm="gen_percolation" 
+             data-algorithm="" 
              data-tags="percolation,p=0.5">
-            <div class="category-header">
-                <h2>Pure percolation (p=0.5) (8x8)</h2>
+            <div class="maze-image">
+                <img src="" alt="p0.5">
             </div>
-            
-            <div class="maze-examples">
-                
-                
-                
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                
-                
-                
-                
-                
-                
-                    
-                
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                
-                    
-                
-                
-                
-                
-                
-                
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                
-                
-                
+            <div class="maze-details">
+                <div class="maze-title">Pure percolation (p=0.5) (8x8)</div>
+                <div class="maze-description">Grid size: 8x8</div>
+                <div class="maze-tags">
+                    <span class="maze-tag">percolation</span>
+                    <span class="maze-tag">p=0.5</span>
+                </div>
+                <button class="config-toggle">Show Configuration</button>
+                <button class="serialized-config-toggle">Show Serialized Config</button>
+                <div class="config-code"></div>
+                <div class="serialized-config-code"></div>
+                <button class="copy-button">Copy Config</button>
+                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
-        
-        
-        <div class="maze-category" 
-             data-name="dfs_percolation_p5_g8" 
+        <div class="maze-card" 
+             data-name="p0.5" 
              data-grid-n="8" 
-             data-algorithm="gen_dfs_percolation" 
+             data-algorithm="" 
              data-tags="dfs,percolation,p=0.5">
-            <div class="category-header">
-                <h2>DFS with percolation (p=0.5) (8x8)</h2>
+            <div class="maze-image">
+                <img src="" alt="p0.5">
             </div>
-            
-            <div class="maze-examples">
-                
-                
-                
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                
-                
-                
-                
-                
-                
-                    
-                
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                
-                    
-                
-                
-                
-                
-                
-                
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                
-                
-                
+            <div class="maze-details">
+                <div class="maze-title">DFS with percolation (p=0.5) (8x8)</div>
+                <div class="maze-description">Grid size: 8x8</div>
+                <div class="maze-tags">
+                    <span class="maze-tag">dfs</span>
+                    <span class="maze-tag">percolation</span>
+                    <span class="maze-tag">p=0.5</span>
+                </div>
+                <button class="config-toggle">Show Configuration</button>
+                <button class="serialized-config-toggle">Show Serialized Config</button>
+                <div class="config-code"></div>
+                <div class="serialized-config-code"></div>
+                <button class="copy-button">Copy Config</button>
+                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
-        
-        
-        <div class="maze-category" 
-             data-name="percolation_p7_g8" 
+        <div class="maze-card" 
+             data-name="p0.7" 
              data-grid-n="8" 
-             data-algorithm="gen_percolation" 
+             data-algorithm="" 
              data-tags="percolation,p=0.7">
-            <div class="category-header">
-                <h2>Pure percolation (p=0.7) (8x8)</h2>
+            <div class="maze-image">
+                <img src="" alt="p0.7">
             </div>
-            
-            <div class="maze-examples">
-                
-                
-                
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                
-                
-                
-                
-                
-                
-                    
-                
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                
-                    
-                
-                
-                
-                
-                
-                
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                
-                
-                
+            <div class="maze-details">
+                <div class="maze-title">Pure percolation (p=0.7) (8x8)</div>
+                <div class="maze-description">Grid size: 8x8</div>
+                <div class="maze-tags">
+                    <span class="maze-tag">percolation</span>
+                    <span class="maze-tag">p=0.7</span>
+                </div>
+                <button class="config-toggle">Show Configuration</button>
+                <button class="serialized-config-toggle">Show Serialized Config</button>
+                <div class="config-code"></div>
+                <div class="serialized-config-code"></div>
+                <button class="copy-button">Copy Config</button>
+                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
-        
-        
-        <div class="maze-category" 
-             data-name="dfs_percolation_p7_g8" 
+        <div class="maze-card" 
+             data-name="p0.7" 
              data-grid-n="8" 
-             data-algorithm="gen_dfs_percolation" 
+             data-algorithm="" 
              data-tags="dfs,percolation,p=0.7">
-            <div class="category-header">
-                <h2>DFS with percolation (p=0.7) (8x8)</h2>
+            <div class="maze-image">
+                <img src="" alt="p0.7">
             </div>
-            
-            <div class="maze-examples">
-                
-                
-                
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                
-                
-                
-                
-                
-                
-                    
-                
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                
-                    
-                
-                
-                
-                
-                
-                
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                
-                
-                
+            <div class="maze-details">
+                <div class="maze-title">DFS with percolation (p=0.7) (8x8)</div>
+                <div class="maze-description">Grid size: 8x8</div>
+                <div class="maze-tags">
+                    <span class="maze-tag">dfs</span>
+                    <span class="maze-tag">percolation</span>
+                    <span class="maze-tag">p=0.7</span>
+                </div>
+                <button class="config-toggle">Show Configuration</button>
+                <button class="serialized-config-toggle">Show Serialized Config</button>
+                <div class="config-code"></div>
+                <div class="serialized-config-code"></div>
+                <button class="copy-button">Copy Config</button>
+                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
-        
-        
-        <div class="maze-category" 
-             data-name="dfs_basic_g12" 
+        <div class="maze-card" 
+             data-name="basic" 
              data-grid-n="12" 
-             data-algorithm="gen_dfs" 
+             data-algorithm="" 
              data-tags="dfs,basic">
-            <div class="category-header">
-                <h2>Basic DFS maze (12x12)</h2>
+            <div class="maze-image">
+                <img src="" alt="basic">
             </div>
-            
-            <div class="maze-examples">
-                
-                
-                
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                
-                
-                
-                
-                
-                
-                    
-                
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                
-                    
-                
-                
-                
-                
-                
-                
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                
-                
-                
+            <div class="maze-details">
+                <div class="maze-title">Basic DFS maze (12x12)</div>
+                <div class="maze-description">Grid size: 12x12</div>
+                <div class="maze-tags">
+                    <span class="maze-tag">dfs</span>
+                    <span class="maze-tag">basic</span>
+                </div>
+                <button class="config-toggle">Show Configuration</button>
+                <button class="serialized-config-toggle">Show Serialized Config</button>
+                <div class="config-code"></div>
+                <div class="serialized-config-code"></div>
+                <button class="copy-button">Copy Config</button>
+                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
-        
-        
-        <div class="maze-category" 
-             data-name="dfs_no_forks_g12" 
+        <div class="maze-card" 
+             data-name="forkless" 
              data-grid-n="12" 
-             data-algorithm="gen_dfs" 
+             data-algorithm="" 
              data-tags="dfs,no_forks,simple_path">
-            <div class="category-header">
-                <h2>DFS without forks (12x12)</h2>
+            <div class="maze-image">
+                <img src="" alt="forkless">
             </div>
-            
-            <div class="maze-examples">
-                
-                
-                
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                
-                
-                
-                
-                
-                
-                    
-                
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                
-                    
-                
-                
-                
-                
-                
-                
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                
-                
-                
+            <div class="maze-details">
+                <div class="maze-title">DFS without forks (12x12)</div>
+                <div class="maze-description">Grid size: 12x12</div>
+                <div class="maze-tags">
+                    <span class="maze-tag">dfs</span>
+                    <span class="maze-tag">no_forks</span>
+                    <span class="maze-tag">simple_path</span>
+                </div>
+                <button class="config-toggle">Show Configuration</button>
+                <button class="serialized-config-toggle">Show Serialized Config</button>
+                <div class="config-code"></div>
+                <div class="serialized-config-code"></div>
+                <button class="copy-button">Copy Config</button>
+                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
-        
-        
-        <div class="maze-category" 
-             data-name="wilson_g12" 
+        <div class="maze-card" 
+             data-name="basic" 
              data-grid-n="12" 
-             data-algorithm="gen_wilson" 
+             data-algorithm="" 
              data-tags="wilson,uniform_random">
-            <div class="category-header">
-                <h2>Wilson's algorithm (12x12) - unbiased random maze</h2>
+            <div class="maze-image">
+                <img src="" alt="basic">
             </div>
-            
-            <div class="maze-examples">
-                
-                
-                
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                
-                
-                
-                
-                
-                
-                    
-                
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                
-                    
-                
-                
-                
-                
-                
-                
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                
-                
-                
+            <div class="maze-details">
+                <div class="maze-title">Wilson's algorithm (12x12) - unbiased random maze</div>
+                <div class="maze-description">Grid size: 12x12</div>
+                <div class="maze-tags">
+                    <span class="maze-tag">wilson</span>
+                    <span class="maze-tag">uniform_random</span>
+                </div>
+                <button class="config-toggle">Show Configuration</button>
+                <button class="serialized-config-toggle">Show Serialized Config</button>
+                <div class="config-code"></div>
+                <div class="serialized-config-code"></div>
+                <button class="copy-button">Copy Config</button>
+                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
-        
-        
-        <div class="maze-category" 
-             data-name="percolation_p3_g12" 
+        <div class="maze-card" 
+             data-name="p0.3" 
              data-grid-n="12" 
-             data-algorithm="gen_percolation" 
+             data-algorithm="" 
              data-tags="percolation,p=0.3">
-            <div class="category-header">
-                <h2>Pure percolation (p=0.3) (12x12)</h2>
+            <div class="maze-image">
+                <img src="" alt="p0.3">
             </div>
-            
-            <div class="maze-examples">
-                
-                
-                
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                
-                
-                
-                
-                
-                
-                    
-                
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                
-                    
-                
-                
-                
-                
-                
-                
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                
-                
-                
+            <div class="maze-details">
+                <div class="maze-title">Pure percolation (p=0.3) (12x12)</div>
+                <div class="maze-description">Grid size: 12x12</div>
+                <div class="maze-tags">
+                    <span class="maze-tag">percolation</span>
+                    <span class="maze-tag">p=0.3</span>
+                </div>
+                <button class="config-toggle">Show Configuration</button>
+                <button class="serialized-config-toggle">Show Serialized Config</button>
+                <div class="config-code"></div>
+                <div class="serialized-config-code"></div>
+                <button class="copy-button">Copy Config</button>
+                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
-        
-        
-        <div class="maze-category" 
-             data-name="dfs_percolation_p3_g12" 
+        <div class="maze-card" 
+             data-name="p0.3" 
              data-grid-n="12" 
-             data-algorithm="gen_dfs_percolation" 
+             data-algorithm="" 
              data-tags="dfs,percolation,p=0.3">
-            <div class="category-header">
-                <h2>DFS with percolation (p=0.3) (12x12)</h2>
+            <div class="maze-image">
+                <img src="" alt="p0.3">
             </div>
-            
-            <div class="maze-examples">
-                
-                
-                
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                
-                
-                
-                
-                
-                
-                    
-                
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                
-                    
-                
-                
-                
-                
-                
-                
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                
-                
-                
+            <div class="maze-details">
+                <div class="maze-title">DFS with percolation (p=0.3) (12x12)</div>
+                <div class="maze-description">Grid size: 12x12</div>
+                <div class="maze-tags">
+                    <span class="maze-tag">dfs</span>
+                    <span class="maze-tag">percolation</span>
+                    <span class="maze-tag">p=0.3</span>
+                </div>
+                <button class="config-toggle">Show Configuration</button>
+                <button class="serialized-config-toggle">Show Serialized Config</button>
+                <div class="config-code"></div>
+                <div class="serialized-config-code"></div>
+                <button class="copy-button">Copy Config</button>
+                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
-        
-        
-        <div class="maze-category" 
-             data-name="percolation_p5_g12" 
+        <div class="maze-card" 
+             data-name="p0.5" 
              data-grid-n="12" 
-             data-algorithm="gen_percolation" 
+             data-algorithm="" 
              data-tags="percolation,p=0.5">
-            <div class="category-header">
-                <h2>Pure percolation (p=0.5) (12x12)</h2>
+            <div class="maze-image">
+                <img src="" alt="p0.5">
             </div>
-            
-            <div class="maze-examples">
-                
-                
-                
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                
-                
-                
-                
-                
-                
-                    
-                
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                
-                    
-                
-                
-                
-                
-                
-                
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                
-                
-                
+            <div class="maze-details">
+                <div class="maze-title">Pure percolation (p=0.5) (12x12)</div>
+                <div class="maze-description">Grid size: 12x12</div>
+                <div class="maze-tags">
+                    <span class="maze-tag">percolation</span>
+                    <span class="maze-tag">p=0.5</span>
+                </div>
+                <button class="config-toggle">Show Configuration</button>
+                <button class="serialized-config-toggle">Show Serialized Config</button>
+                <div class="config-code"></div>
+                <div class="serialized-config-code"></div>
+                <button class="copy-button">Copy Config</button>
+                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
-        
-        
-        <div class="maze-category" 
-             data-name="dfs_percolation_p5_g12" 
+        <div class="maze-card" 
+             data-name="p0.5" 
              data-grid-n="12" 
-             data-algorithm="gen_dfs_percolation" 
+             data-algorithm="" 
              data-tags="dfs,percolation,p=0.5">
-            <div class="category-header">
-                <h2>DFS with percolation (p=0.5) (12x12)</h2>
+            <div class="maze-image">
+                <img src="" alt="p0.5">
             </div>
-            
-            <div class="maze-examples">
-                
-                
-                
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                
-                
-                
-                
-                
-                
-                    
-                
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                
-                    
-                
-                
-                
-                
-                
-                
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                
-                
-                
+            <div class="maze-details">
+                <div class="maze-title">DFS with percolation (p=0.5) (12x12)</div>
+                <div class="maze-description">Grid size: 12x12</div>
+                <div class="maze-tags">
+                    <span class="maze-tag">dfs</span>
+                    <span class="maze-tag">percolation</span>
+                    <span class="maze-tag">p=0.5</span>
+                </div>
+                <button class="config-toggle">Show Configuration</button>
+                <button class="serialized-config-toggle">Show Serialized Config</button>
+                <div class="config-code"></div>
+                <div class="serialized-config-code"></div>
+                <button class="copy-button">Copy Config</button>
+                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
-        
-        
-        <div class="maze-category" 
-             data-name="percolation_p7_g12" 
+        <div class="maze-card" 
+             data-name="p0.7" 
              data-grid-n="12" 
-             data-algorithm="gen_percolation" 
+             data-algorithm="" 
              data-tags="percolation,p=0.7">
-            <div class="category-header">
-                <h2>Pure percolation (p=0.7) (12x12)</h2>
+            <div class="maze-image">
+                <img src="" alt="p0.7">
             </div>
-            
-            <div class="maze-examples">
-                
-                
-                
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                
-                
-                
-                
-                
-                
-                    
-                
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                
-                    
-                
-                
-                
-                
-                
-                
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                
-                
-                
+            <div class="maze-details">
+                <div class="maze-title">Pure percolation (p=0.7) (12x12)</div>
+                <div class="maze-description">Grid size: 12x12</div>
+                <div class="maze-tags">
+                    <span class="maze-tag">percolation</span>
+                    <span class="maze-tag">p=0.7</span>
+                </div>
+                <button class="config-toggle">Show Configuration</button>
+                <button class="serialized-config-toggle">Show Serialized Config</button>
+                <div class="config-code"></div>
+                <div class="serialized-config-code"></div>
+                <button class="copy-button">Copy Config</button>
+                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
-        
-        
-        <div class="maze-category" 
-             data-name="dfs_percolation_p7_g12" 
+        <div class="maze-card" 
+             data-name="p0.7" 
              data-grid-n="12" 
-             data-algorithm="gen_dfs_percolation" 
+             data-algorithm="" 
              data-tags="dfs,percolation,p=0.7">
-            <div class="category-header">
-                <h2>DFS with percolation (p=0.7) (12x12)</h2>
+            <div class="maze-image">
+                <img src="" alt="p0.7">
             </div>
-            
-            <div class="maze-examples">
-                
-                
-                
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                
-                
-                
-                
-                
-                
-                    
-                
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                
-                    
-                
-                
-                
-                
-                
-                
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                
-                
-                
+            <div class="maze-details">
+                <div class="maze-title">DFS with percolation (p=0.7) (12x12)</div>
+                <div class="maze-description">Grid size: 12x12</div>
+                <div class="maze-tags">
+                    <span class="maze-tag">dfs</span>
+                    <span class="maze-tag">percolation</span>
+                    <span class="maze-tag">p=0.7</span>
+                </div>
+                <button class="config-toggle">Show Configuration</button>
+                <button class="serialized-config-toggle">Show Serialized Config</button>
+                <div class="config-code"></div>
+                <div class="serialized-config-code"></div>
+                <button class="copy-button">Copy Config</button>
+                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
-        
-        
-        <div class="maze-category" 
-             data-name="dfs_accessible_cells" 
+        <div class="maze-card" 
+             data-name="accessible_cells" 
              data-grid-n="10" 
-             data-algorithm="gen_dfs" 
+             data-algorithm="" 
              data-tags="dfs,limited_cells">
-            <div class="category-header">
-                <h2>DFS with limited accessible cells (50)</h2>
+            <div class="maze-image">
+                <img src="" alt="accessible_cells">
             </div>
-            
-            <div class="maze-examples">
-                
-                
-                
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                
-                
-                
-                
-                
-                
-                    
-                
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                
-                    
-                
-                
-                
-                
-                
-                
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                
-                
-                
+            <div class="maze-details">
+                <div class="maze-title">DFS with limited accessible cells (50)</div>
+                <div class="maze-description">Grid size: 10x10</div>
+                <div class="maze-tags">
+                    <span class="maze-tag">dfs</span>
+                    <span class="maze-tag">limited_cells</span>
+                </div>
+                <button class="config-toggle">Show Configuration</button>
+                <button class="serialized-config-toggle">Show Serialized Config</button>
+                <div class="config-code"></div>
+                <div class="serialized-config-code"></div>
+                <button class="copy-button">Copy Config</button>
+                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
-        
-        
-        <div class="maze-category" 
-             data-name="dfs_accessible_cells_ratio" 
+        <div class="maze-card" 
+             data-name="accessible_cells_ratio" 
              data-grid-n="10" 
-             data-algorithm="gen_dfs" 
+             data-algorithm="" 
              data-tags="dfs,limited_cells,ratio">
-            <div class="category-header">
-                <h2>DFS with 60% accessible cells</h2>
+            <div class="maze-image">
+                <img src="" alt="accessible_cells_ratio">
             </div>
-            
-            <div class="maze-examples">
-                
-                
-                
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                
-                
-                
-                
-                
-                
-                    
-                
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                
-                    
-                
-                
-                
-                
-                
-                
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                
-                
-                
+            <div class="maze-details">
+                <div class="maze-title">DFS with 60% accessible cells</div>
+                <div class="maze-description">Grid size: 10x10</div>
+                <div class="maze-tags">
+                    <span class="maze-tag">dfs</span>
+                    <span class="maze-tag">limited_cells</span>
+                    <span class="maze-tag">ratio</span>
+                </div>
+                <button class="config-toggle">Show Configuration</button>
+                <button class="serialized-config-toggle">Show Serialized Config</button>
+                <div class="config-code"></div>
+                <div class="serialized-config-code"></div>
+                <button class="copy-button">Copy Config</button>
+                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
-        
-        
-        <div class="maze-category" 
-             data-name="dfs_max_tree_depth" 
+        <div class="maze-card" 
+             data-name="max_tree_depth" 
              data-grid-n="10" 
-             data-algorithm="gen_dfs" 
+             data-algorithm="" 
              data-tags="dfs,limited_depth">
-            <div class="category-header">
-                <h2>DFS with max tree depth of 10</h2>
+            <div class="maze-image">
+                <img src="" alt="max_tree_depth">
             </div>
-            
-            <div class="maze-examples">
-                
-                
-                
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                
-                
-                
-                
-                
-                
-                    
-                
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                
-                    
-                
-                
-                
-                
-                
-                
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                
-                
-                
+            <div class="maze-details">
+                <div class="maze-title">DFS with max tree depth of 10</div>
+                <div class="maze-description">Grid size: 10x10</div>
+                <div class="maze-tags">
+                    <span class="maze-tag">dfs</span>
+                    <span class="maze-tag">limited_depth</span>
+                </div>
+                <button class="config-toggle">Show Configuration</button>
+                <button class="serialized-config-toggle">Show Serialized Config</button>
+                <div class="config-code"></div>
+                <div class="serialized-config-code"></div>
+                <button class="copy-button">Copy Config</button>
+                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
-        
-        
-        <div class="maze-category" 
-             data-name="dfs_max_tree_depth_ratio" 
+        <div class="maze-card" 
+             data-name="max_tree_depth_ratio" 
              data-grid-n="10" 
-             data-algorithm="gen_dfs" 
+             data-algorithm="" 
              data-tags="dfs,limited_depth,ratio">
-            <div class="category-header">
-                <h2>DFS with max tree depth 30% of grid size</h2>
+            <div class="maze-image">
+                <img src="" alt="max_tree_depth_ratio">
             </div>
-            
-            <div class="maze-examples">
-                
-                
-                
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                
-                
-                
-                
-                
-                
-                    
-                
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                
-                    
-                
-                
-                
-                
-                
-                
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                
-                
-                
+            <div class="maze-details">
+                <div class="maze-title">DFS with max tree depth 30% of grid size</div>
+                <div class="maze-description">Grid size: 10x10</div>
+                <div class="maze-tags">
+                    <span class="maze-tag">dfs</span>
+                    <span class="maze-tag">limited_depth</span>
+                    <span class="maze-tag">ratio</span>
+                </div>
+                <button class="config-toggle">Show Configuration</button>
+                <button class="serialized-config-toggle">Show Serialized Config</button>
+                <div class="config-code"></div>
+                <div class="serialized-config-code"></div>
+                <button class="copy-button">Copy Config</button>
+                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
-        
-        
-        <div class="maze-category" 
-             data-name="dfs_start_coord" 
+        <div class="maze-card" 
+             data-name="start_coord" 
              data-grid-n="10" 
-             data-algorithm="gen_dfs" 
+             data-algorithm="" 
              data-tags="dfs,custom_start">
-            <div class="category-header">
-                <h2>DFS starting from center of grid</h2>
+            <div class="maze-image">
+                <img src="" alt="start_coord">
             </div>
-            
-            <div class="maze-examples">
-                
-                
-                
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                
-                
-                
-                
-                
-                
-                    
-                
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                
-                    
-                
-                
-                
-                
-                
-                
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                
-                
-                
+            <div class="maze-details">
+                <div class="maze-title">DFS starting from center of grid</div>
+                <div class="maze-description">Grid size: 10x10</div>
+                <div class="maze-tags">
+                    <span class="maze-tag">dfs</span>
+                    <span class="maze-tag">custom_start</span>
+                </div>
+                <button class="config-toggle">Show Configuration</button>
+                <button class="serialized-config-toggle">Show Serialized Config</button>
+                <div class="config-code"></div>
+                <div class="serialized-config-code"></div>
+                <button class="copy-button">Copy Config</button>
+                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
-        
-        
-        <div class="maze-category" 
-             data-name="dfs_combined_constraints" 
+        <div class="maze-card" 
+             data-name="combined_constraints" 
              data-grid-n="15" 
-             data-algorithm="gen_dfs" 
+             data-algorithm="" 
              data-tags="dfs,combined_constraints">
-            <div class="category-header">
-                <h2>DFS with multiple constraints</h2>
+            <div class="maze-image">
+                <img src="" alt="combined_constraints">
             </div>
-            
-            <div class="maze-examples">
-                
-                
-                
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                
-                
-                
-                
-                
-                
-                    
-                
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                
-                    
-                
-                
-                
-                
-                
-                
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                
-                
-                
+            <div class="maze-details">
+                <div class="maze-title">DFS with multiple constraints</div>
+                <div class="maze-description">Grid size: 15x15</div>
+                <div class="maze-tags">
+                    <span class="maze-tag">dfs</span>
+                    <span class="maze-tag">combined_constraints</span>
+                </div>
+                <button class="config-toggle">Show Configuration</button>
+                <button class="serialized-config-toggle">Show Serialized Config</button>
+                <div class="config-code"></div>
+                <div class="serialized-config-code"></div>
+                <button class="copy-button">Copy Config</button>
+                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
-        
-        
-        <div class="maze-category" 
-             data-name="dfs_deadend_startTrue_endFalse" 
+        <div class="maze-card" 
+             data-name="deadend_startTrue_endFalse" 
              data-grid-n="8" 
-             data-algorithm="gen_dfs" 
+             data-algorithm="" 
              data-tags="dfs,deadend_endpoints">
-            <div class="category-header">
-                <h2>DFS with deadend start</h2>
+            <div class="maze-image">
+                <img src="" alt="deadend_startTrue_endFalse">
             </div>
-            
-            <div class="maze-examples">
-                
-                
-                
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                
-                
-                
-                
-                
-                
-                    
-                
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                
-                    
-                
-                
-                
-                
-                
-                
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                
-                
-                
+            <div class="maze-details">
+                <div class="maze-title">DFS with deadend start</div>
+                <div class="maze-description">Grid size: 8x8</div>
+                <div class="maze-tags">
+                    <span class="maze-tag">dfs</span>
+                    <span class="maze-tag">deadend_endpoints</span>
+                </div>
+                <button class="config-toggle">Show Configuration</button>
+                <button class="serialized-config-toggle">Show Serialized Config</button>
+                <div class="config-code"></div>
+                <div class="serialized-config-code"></div>
+                <button class="copy-button">Copy Config</button>
+                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
-        
-        
-        <div class="maze-category" 
-             data-name="dfs_deadend_startFalse_endTrue" 
+        <div class="maze-card" 
+             data-name="deadend_startFalse_endTrue" 
              data-grid-n="8" 
-             data-algorithm="gen_dfs" 
+             data-algorithm="" 
              data-tags="dfs,deadend_endpoints">
-            <div class="category-header">
-                <h2>DFS with deadend end</h2>
+            <div class="maze-image">
+                <img src="" alt="deadend_startFalse_endTrue">
             </div>
-            
-            <div class="maze-examples">
-                
-                
-                
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                
-                
-                
-                
-                
-                
-                    
-                
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                
-                    
-                
-                
-                
-                
-                
-                
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                
-                
-                
+            <div class="maze-details">
+                <div class="maze-title">DFS with deadend end</div>
+                <div class="maze-description">Grid size: 8x8</div>
+                <div class="maze-tags">
+                    <span class="maze-tag">dfs</span>
+                    <span class="maze-tag">deadend_endpoints</span>
+                </div>
+                <button class="config-toggle">Show Configuration</button>
+                <button class="serialized-config-toggle">Show Serialized Config</button>
+                <div class="config-code"></div>
+                <div class="serialized-config-code"></div>
+                <button class="copy-button">Copy Config</button>
+                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
-        
-        
-        <div class="maze-category" 
-             data-name="dfs_deadend_startTrue_endTrue" 
+        <div class="maze-card" 
+             data-name="deadend_startTrue_endTrue" 
              data-grid-n="8" 
-             data-algorithm="gen_dfs" 
+             data-algorithm="" 
              data-tags="dfs,deadend_endpoints">
-            <div class="category-header">
-                <h2>DFS with deadend start and deadend end</h2>
+            <div class="maze-image">
+                <img src="" alt="deadend_startTrue_endTrue">
             </div>
-            
-            <div class="maze-examples">
-                
-                
-                
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                
-                
-                
-                
-                
-                
-                    
-                
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                
-                    
-                
-                
-                
-                
-                
-                
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                
-                
-                
+            <div class="maze-details">
+                <div class="maze-title">DFS with deadend start and deadend end</div>
+                <div class="maze-description">Grid size: 8x8</div>
+                <div class="maze-tags">
+                    <span class="maze-tag">dfs</span>
+                    <span class="maze-tag">deadend_endpoints</span>
+                </div>
+                <button class="config-toggle">Show Configuration</button>
+                <button class="serialized-config-toggle">Show Serialized Config</button>
+                <div class="config-code"></div>
+                <div class="serialized-config-code"></div>
+                <button class="copy-button">Copy Config</button>
+                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
-        
-        
-        <div class="maze-category" 
-             data-name="dfs_percolation_deadends" 
+        <div class="maze-card" 
+             data-name="deadends" 
              data-grid-n="8" 
-             data-algorithm="gen_dfs_percolation" 
+             data-algorithm="" 
              data-tags="dfs,percolation,deadend_endpoints">
-            <div class="category-header">
-                <h2>DFS percolation with deadend endpoints</h2>
+            <div class="maze-image">
+                <img src="" alt="deadends">
             </div>
-            
-            <div class="maze-examples">
-                
-                
-                
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                
-                
-                
-                
-                
-                
-                    
-                
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                
-                    
-                
-                
-                
-                
-                
-                
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                    
-                        
-                            
-                        
-                    
-                
-                
-                
-                
+            <div class="maze-details">
+                <div class="maze-title">DFS percolation with deadend endpoints</div>
+                <div class="maze-description">Grid size: 8x8</div>
+                <div class="maze-tags">
+                    <span class="maze-tag">dfs</span>
+                    <span class="maze-tag">percolation</span>
+                    <span class="maze-tag">deadend_endpoints</span>
+                </div>
+                <button class="config-toggle">Show Configuration</button>
+                <button class="serialized-config-toggle">Show Serialized Config</button>
+                <div class="config-code"></div>
+                <div class="serialized-config-code"></div>
+                <button class="copy-button">Copy Config</button>
+                <button class="copy-serialized-button">Copy Serialized</button>
             </div>
         </div>
-        
         <div class="no-results" style="display: none;">No mazes match your search criteria.</div>
     </div>
 
@@ -3736,74 +1090,6 @@
     </footer>
 
     <script>
-        // View toggling
-        document.querySelectorAll('.toggle-view').forEach(button => {
-            button.addEventListener('click', function() {
-                const card = this.closest('.maze-card');
-                const pixelsView = card.querySelector('.pixels-view');
-                const mazeplotView = card.querySelector('.mazeplot-view');
-                const pixelsLabel = card.querySelector('.pixels-label');
-                const mazeplotLabel = card.querySelector('.mazeplot-label');
-                
-                if (pixelsView.classList.contains('hidden')) {
-                    // Switch to pixels view
-                    pixelsView.classList.remove('hidden');
-                    mazeplotView.classList.add('hidden');
-                    pixelsLabel.classList.remove('hidden');
-                    mazeplotLabel.classList.add('hidden');
-                    this.textContent = 'Switch to MazePlot';
-                } else {
-                    // Switch to mazeplot view
-                    pixelsView.classList.add('hidden');
-                    mazeplotView.classList.remove('hidden');
-                    pixelsLabel.classList.add('hidden');
-                    mazeplotLabel.classList.remove('hidden');
-                    this.textContent = 'Switch to Pixels';
-                }
-            });
-        });
-        
-        // Default view selection
-        document.getElementById('default-pixels').addEventListener('click', function() {
-            this.classList.add('active');
-            document.getElementById('default-mazeplot').classList.remove('active');
-            
-            document.querySelectorAll('.maze-card').forEach(card => {
-                const pixelsView = card.querySelector('.pixels-view');
-                const mazeplotView = card.querySelector('.mazeplot-view');
-                const pixelsLabel = card.querySelector('.pixels-label');
-                const mazeplotLabel = card.querySelector('.mazeplot-label');
-                const toggleButton = card.querySelector('.toggle-view');
-                
-                // Show pixels view
-                pixelsView.classList.remove('hidden');
-                mazeplotView.classList.add('hidden');
-                pixelsLabel.classList.remove('hidden');
-                mazeplotLabel.classList.add('hidden');
-                toggleButton.textContent = 'Switch to MazePlot';
-            });
-        });
-        
-        document.getElementById('default-mazeplot').addEventListener('click', function() {
-            this.classList.add('active');
-            document.getElementById('default-pixels').classList.remove('active');
-            
-            document.querySelectorAll('.maze-card').forEach(card => {
-                const pixelsView = card.querySelector('.pixels-view');
-                const mazeplotView = card.querySelector('.mazeplot-view');
-                const pixelsLabel = card.querySelector('.pixels-label');
-                const mazeplotLabel = card.querySelector('.mazeplot-label');
-                const toggleButton = card.querySelector('.toggle-view');
-                
-                // Show mazeplot view
-                pixelsView.classList.add('hidden');
-                mazeplotView.classList.remove('hidden');
-                pixelsLabel.classList.add('hidden');
-                mazeplotLabel.classList.remove('hidden');
-                toggleButton.textContent = 'Switch to Pixels';
-            });
-        });
-
         // Show/hide configuration
         document.querySelectorAll('.config-toggle').forEach(button => {
             button.addEventListener('click', function() {
@@ -3836,7 +1122,25 @@
         document.querySelectorAll('.copy-button').forEach(button => {
             button.addEventListener('click', function() {
                 const codeBlock = this.previousElementSibling.previousElementSibling;
-                copyToClipboard(codeBlock.textContent, this);
+                
+                // Create a temporary textarea element
+                const textarea = document.createElement('textarea');
+                textarea.value = codeBlock.textContent;
+                document.body.appendChild(textarea);
+                
+                // Copy the text
+                textarea.select();
+                document.execCommand('copy');
+                
+                // Remove the textarea
+                document.body.removeChild(textarea);
+                
+                // Give feedback to the user
+                const originalText = this.textContent;
+                this.textContent = 'Copied!';
+                setTimeout(() => {
+                    this.textContent = originalText;
+                }, 2000);
             });
         });
 
@@ -3844,36 +1148,32 @@
         document.querySelectorAll('.copy-serialized-button').forEach(button => {
             button.addEventListener('click', function() {
                 const codeBlock = this.previousElementSibling.previousElementSibling;
-                copyToClipboard(codeBlock.textContent, this);
+                
+                // Create a temporary textarea element
+                const textarea = document.createElement('textarea');
+                textarea.value = codeBlock.textContent;
+                document.body.appendChild(textarea);
+                
+                // Copy the text
+                textarea.select();
+                document.execCommand('copy');
+                
+                // Remove the textarea
+                document.body.removeChild(textarea);
+                
+                // Give feedback to the user
+                const originalText = this.textContent;
+                this.textContent = 'Copied!';
+                setTimeout(() => {
+                    this.textContent = originalText;
+                }, 2000);
             });
         });
-        
-        // Helper function to copy text to clipboard
-        function copyToClipboard(text, button) {
-            // Create a temporary textarea element
-            const textarea = document.createElement('textarea');
-            textarea.value = text;
-            document.body.appendChild(textarea);
-            
-            // Copy the text
-            textarea.select();
-            document.execCommand('copy');
-            
-            // Remove the textarea
-            document.body.removeChild(textarea);
-            
-            // Give feedback to the user
-            const originalText = button.textContent;
-            button.textContent = 'Copied!';
-            setTimeout(() => {
-                button.textContent = originalText;
-            }, 2000);
-        }
 
         // Filter functionality
         const searchInput = document.getElementById('search-input');
         const sortSelect = document.getElementById('sort-select');
-        const mazeCategories = document.querySelectorAll('.maze-category');
+        const mazeCards = document.querySelectorAll('.maze-card');
         const tagFilters = document.querySelectorAll('.tag-filter');
         const noResults = document.querySelector('.no-results');
         
@@ -3883,22 +1183,26 @@
             const searchTerm = searchInput.value.toLowerCase();
             let visibleCount = 0;
             
-            mazeCategories.forEach(category => {
-                const name = category.getAttribute('data-name').toLowerCase();
-                const description = category.querySelector('.category-header').textContent.toLowerCase();
-                const tags = category.getAttribute('data-tags').split(',');
+            mazeCards.forEach(card => {
+                const name = card.getAttribute('data-name').toLowerCase();
+                const description = card.querySelector('.maze-description').textContent.toLowerCase();
+                const config = card.querySelector('.config-code').textContent.toLowerCase();
+                const serializedConfig = card.querySelector('.serialized-config-code').textContent.toLowerCase();
+                const tags = card.getAttribute('data-tags').split(',');
                 
                 const matchesSearch = name.includes(searchTerm) || 
-                                    description.includes(searchTerm);
+                                    description.includes(searchTerm) || 
+                                    config.includes(searchTerm) ||
+                                    serializedConfig.includes(searchTerm);
                 
                 const matchesTags = activeTagFilters.length === 0 || 
                                   activeTagFilters.every(tag => tags.includes(tag));
                 
                 if (matchesSearch && matchesTags) {
-                    category.style.display = 'block';
+                    card.style.display = 'block';
                     visibleCount++;
                 } else {
-                    category.style.display = 'none';
+                    card.style.display = 'none';
                 }
             });
             
@@ -3907,10 +1211,10 @@
         
         function sortMazes() {
             const sortBy = sortSelect.value;
-            const mazeCategoriesContainer = document.getElementById('maze-categories');
-            const categoriesArray = Array.from(mazeCategories);
+            const mazeGrid = document.getElementById('maze-grid');
+            const mazeArray = Array.from(mazeCards);
             
-            categoriesArray.sort((a, b) => {
+            mazeArray.sort((a, b) => {
                 if (sortBy === 'name') {
                     return a.getAttribute('data-name').localeCompare(b.getAttribute('data-name'));
                 } else if (sortBy === 'grid_n') {
@@ -3921,20 +1225,9 @@
                 return 0;
             });
             
-            // Remove and reattach in sorted order, but keep the noResults element at the end
-            const noResultsElement = document.querySelector('.no-results');
-            if (noResultsElement) {
-                mazeCategoriesContainer.removeChild(noResultsElement);
-            }
-            
-            categoriesArray.forEach(category => {
-                mazeCategoriesContainer.removeChild(category);
-                mazeCategoriesContainer.appendChild(category);
+            mazeArray.forEach(card => {
+                mazeGrid.appendChild(card);
             });
-            
-            if (noResultsElement) {
-                mazeCategoriesContainer.appendChild(noResultsElement);
-            }
         }
         
         searchInput.addEventListener('input', filterMazes);
@@ -3960,13 +1253,6 @@
         
         // Initial sort
         sortMazes();
-        
-        // Set initial view based on default selection
-        if (document.getElementById('default-mazeplot').classList.contains('active')) {
-            document.getElementById('default-mazeplot').click();
-        } else {
-            document.getElementById('default-pixels').click();
-        }
     </script>
 </body>
 </html>

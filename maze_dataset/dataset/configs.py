@@ -84,7 +84,7 @@ def _get_configs_for_examples() -> list[dict]:
 		# DFS with different options
 		configs.append(
 			{
-				"name": f"dfs_basic_g{grid_n}",
+				"name": "basic",
 				"grid_n": grid_n,
 				"maze_ctor": LatticeMazeGenerators.gen_dfs,
 				"maze_ctor_kwargs": {},
@@ -95,7 +95,7 @@ def _get_configs_for_examples() -> list[dict]:
 
 		configs.append(
 			{
-				"name": f"dfs_no_forks_g{grid_n}",
+				"name": "forkless",
 				"grid_n": grid_n,
 				"maze_ctor": LatticeMazeGenerators.gen_dfs,
 				"maze_ctor_kwargs": {"do_forks": False},
@@ -107,7 +107,7 @@ def _get_configs_for_examples() -> list[dict]:
 		# Wilson's algorithm
 		configs.append(
 			{
-				"name": f"wilson_g{grid_n}",
+				"name": f"basic",
 				"grid_n": grid_n,
 				"maze_ctor": LatticeMazeGenerators.gen_wilson,
 				"maze_ctor_kwargs": {},
@@ -120,7 +120,7 @@ def _get_configs_for_examples() -> list[dict]:
 		for p in [0.3, 0.5, 0.7]:
 			configs.append(
 				{
-					"name": f"percolation_p{int(p * 10)}_g{grid_n}",
+					"name": f"p{p}",
 					"grid_n": grid_n,
 					"maze_ctor": LatticeMazeGenerators.gen_percolation,
 					"maze_ctor_kwargs": {"p": p},
@@ -131,7 +131,7 @@ def _get_configs_for_examples() -> list[dict]:
 
 			configs.append(
 				{
-					"name": f"dfs_percolation_p{int(p * 10)}_g{grid_n}",
+					"name": f"p{p}",
 					"grid_n": grid_n,
 					"maze_ctor": LatticeMazeGenerators.gen_dfs_percolation,
 					"maze_ctor_kwargs": {"p": p},
@@ -144,7 +144,7 @@ def _get_configs_for_examples() -> list[dict]:
 	configs.extend(
 		[
 			{
-				"name": "dfs_accessible_cells",
+				"name": "accessible_cells",
 				"grid_n": 10,
 				"maze_ctor": LatticeMazeGenerators.gen_dfs,
 				"maze_ctor_kwargs": {"accessible_cells": 50},
@@ -152,7 +152,7 @@ def _get_configs_for_examples() -> list[dict]:
 				"tags": ["dfs", "limited_cells"],
 			},
 			{
-				"name": "dfs_accessible_cells_ratio",
+				"name": "accessible_cells_ratio",
 				"grid_n": 10,
 				"maze_ctor": LatticeMazeGenerators.gen_dfs,
 				"maze_ctor_kwargs": {"accessible_cells": 0.6},
@@ -160,7 +160,7 @@ def _get_configs_for_examples() -> list[dict]:
 				"tags": ["dfs", "limited_cells", "ratio"],
 			},
 			{
-				"name": "dfs_max_tree_depth",
+				"name": "max_tree_depth",
 				"grid_n": 10,
 				"maze_ctor": LatticeMazeGenerators.gen_dfs,
 				"maze_ctor_kwargs": {"max_tree_depth": 10},
@@ -168,7 +168,7 @@ def _get_configs_for_examples() -> list[dict]:
 				"tags": ["dfs", "limited_depth"],
 			},
 			{
-				"name": "dfs_max_tree_depth_ratio",
+				"name": "max_tree_depth_ratio",
 				"grid_n": 10,
 				"maze_ctor": LatticeMazeGenerators.gen_dfs,
 				"maze_ctor_kwargs": {"max_tree_depth": 0.3},
@@ -176,21 +176,21 @@ def _get_configs_for_examples() -> list[dict]:
 				"tags": ["dfs", "limited_depth", "ratio"],
 			},
 			{
-				"name": "dfs_start_coord",
+				"name": "start_coord",
 				"grid_n": 10,
 				"maze_ctor": LatticeMazeGenerators.gen_dfs,
-				"maze_ctor_kwargs": {"start_coord": (5, 5)},
+				"maze_ctor_kwargs": {"start_coord": [5, 5]},
 				"description": "DFS starting from center of grid",
 				"tags": ["dfs", "custom_start"],
 			},
 			{
-				"name": "dfs_combined_constraints",
+				"name": "combined_constraints",
 				"grid_n": 15,
 				"maze_ctor": LatticeMazeGenerators.gen_dfs,
 				"maze_ctor_kwargs": {
 					"accessible_cells": 100,
 					"max_tree_depth": 25,
-					"start_coord": (7, 7),
+					"start_coord": [7, 7],
 				},
 				"description": "DFS with multiple constraints",
 				"tags": ["dfs", "combined_constraints"],
@@ -202,7 +202,7 @@ def _get_configs_for_examples() -> list[dict]:
 	for deadend_start, deadend_end in [(True, False), (False, True), (True, True)]:
 		configs.append(
 			{
-				"name": f"dfs_deadend_start{deadend_start}_end{deadend_end}",
+				"name": f"deadend_start{deadend_start}_end{deadend_end}",
 				"grid_n": 8,
 				"maze_ctor": LatticeMazeGenerators.gen_dfs,
 				"maze_ctor_kwargs": {},
@@ -219,7 +219,7 @@ def _get_configs_for_examples() -> list[dict]:
 	# Add some percolation examples with deadend endpoints
 	configs.append(
 		{
-			"name": "dfs_percolation_deadends",
+			"name": "deadends",
 			"grid_n": 8,
 			"maze_ctor": LatticeMazeGenerators.gen_dfs_percolation,
 			"maze_ctor_kwargs": {"p": 0.3},

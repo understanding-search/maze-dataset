@@ -9,185 +9,130 @@ configuration details.
 
 import json
 import os
-import pathlib
-from typing import Any, Dict, List, Optional, Tuple, Set
+from pathlib import Path
+from typing import Any, Callable
 
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.figure import Figure
 import jinja2
+from PIL import Image
+from tqdm import tqdm
 
 from maze_dataset import LatticeMaze, MazeDatasetConfig
+from maze_dataset.dataset.configs import _get_configs_for_examples
+from maze_dataset.dataset.maze_dataset import MazeDataset
 from maze_dataset.generation import LatticeMazeGenerators
 from maze_dataset.plotting import MazePlot
 
+
+plt.rcParams["svg.fonttype"] = "none"  # preserve text as text
+
 # Define the examples directory
-EXAMPLES_DIR = pathlib.Path("docs/examples")
-SVG_DIR = EXAMPLES_DIR / "svg"
-HTML_PATH = EXAMPLES_DIR / "maze_examples.html"
-TEMPLATE_DIR = EXAMPLES_DIR
-TEMPLATE_FILE = "maze_examples.html.jinja2"
+EXAMPLES_DIR: Path = Path("docs/examples")
+PLOTS_DIR: Path = EXAMPLES_DIR / "plots"
+HTML_PATH: Path = EXAMPLES_DIR / "maze_examples.html"
+TEMPLATE_FILE: Path = "maze_examples.html.jinja2"
 
+N_EXAMPLES_GENERATE: int = 6
 
-def generate_maze_svg(
-	config_src: Dict[str, Any], seed: Optional[int] = None
-) -> Tuple[str, MazeDatasetConfig]:
-	"""Generate a maze from the given configuration and save it as an SVG file.
-
-	# Parameters:
-	 - `config : Dict[str, Any]`
-	    Maze configuration dictionary
-	 - `seed : Optional[int]`
-	    Random seed for reproducibility
-	    (defaults to `None`)
-
-	# Returns:
-	 - `Tuple[str, str, str]`
-	    Path to the SVG file, the JSON string of the configuration, and the serialized config
+def generate_maze_plots(config_src: dict[str, Any]) -> tuple[str, dict]:
+	"""Generate mazes from the given configuration and plots and metadata for it
+	
+	returns (config fname, metadata)
 	"""
-	if seed is not None:
-		np.random.seed(seed)
-
 	# Extract maze config parameters
-	name = config_src["name"]
-	grid_n = config_src["grid_n"]
-	maze_ctor = config_src["maze_ctor"]
-	maze_ctor_kwargs = config_src["maze_ctor_kwargs"]
-	endpoint_kwargs = config_src.get("endpoint_kwargs", {})
+	name: str = config_src["name"]
+	grid_n: int = config_src["grid_n"]
+	maze_ctor: Callable = config_src["maze_ctor"]
+	maze_ctor_kwargs: dict = config_src["maze_ctor_kwargs"]
+	endpoint_kwargs: dict = config_src.get("endpoint_kwargs", {})
+	# so we don't error out
+	endpoint_kwargs["except_on_no_valid_endpoint"] = False
 
 	# Create a MazeDatasetConfig
-	maze_config = MazeDatasetConfig(
+	md_config: MazeDatasetConfig = MazeDatasetConfig(
 		name=name,
 		grid_n=grid_n,
-		n_mazes=1,
+		n_mazes=N_EXAMPLES_GENERATE,
 		maze_ctor=maze_ctor,
 		maze_ctor_kwargs=maze_ctor_kwargs,
 		endpoint_kwargs=endpoint_kwargs,
 	)
+	md_config = md_config.success_fraction_compensate(safety_margin=1.5, except_if_all_success_expected=False)
+	
+	# get the fname and the path
+	cfg_fname: str = md_config.to_fname()
+	this_cfg_path: Path = PLOTS_DIR / cfg_fname
+	this_cfg_path.mkdir(exist_ok=True)
 
 	# Generate the maze directly
-	maze: LatticeMaze = maze_ctor(
-		grid_shape=np.array([grid_n, grid_n]), **maze_ctor_kwargs
-	)
+	dataset: MazeDataset = MazeDataset.from_config(
+		cfg=md_config,
+		do_generate=True,
+		load_local=False,
+		save_local=False,
+		verbose=False,
+    )
 
-	# Generate a solution if endpoint_kwargs are provided
-	if endpoint_kwargs:
-		solution = maze.generate_random_path(**endpoint_kwargs)
-		if solution is not None:
-			from maze_dataset import SolvedMaze
-
-			maze = SolvedMaze.from_lattice_maze(maze, solution)
-
-	# Create the plot
-	maze_plot = MazePlot(maze)
-	fig: Figure = maze_plot.plot().fig
-
-	# Save as SVG
-	svg_path = SVG_DIR / f"{name}.svg"
-	fig.savefig(svg_path, format="svg", bbox_inches="tight")
-	plt.close(fig)
+	# create and save the plots
+	for i, maze in enumerate(dataset):
+		Image.fromarray(maze.as_pixels()).save(this_cfg_path / f"pixels-{i}.png")
+		fig: Figure = MazePlot(maze).plot(plain=True).fig
+		fig.tight_layout()
+		fig.savefig(this_cfg_path / f"plot-{i}.svg")
+		plt.close(fig)
+		if i > N_EXAMPLES_GENERATE:
+			break
 
 	# Prepare JSON configuration
-	metadata_json = {k: v for k, v in config_src.items() if k not in ["maze_ctor"]}
+	metadata_json = config_src.copy()
 	metadata_json["maze_ctor"] = config_src["maze_ctor"].__name__
-	metadata_json["config"] = maze_config.serialize()
+	metadata_json["config"] = md_config.serialize()
 
-	# Create a corresponding config file
-	config_path = SVG_DIR / f"{name}.json"
-	with open(config_path, "w") as f:
+	# save the metadata
+	with open(this_cfg_path / "metadata.json", "w") as f:
 		f.write(json.dumps(metadata_json, indent=2))
 
-	return svg_path.relative_to(EXAMPLES_DIR).as_posix(), metadata_json
-
-
-def setup_jinja_env() -> jinja2.Environment:
-	"""Set up the Jinja2 environment.
-
-	# Returns:
-	 - `jinja2.Environment`
-	    Configured Jinja2 environment
-	"""
-	# Ensure the template directory exists
-	TEMPLATE_DIR.mkdir(exist_ok=True)
-
-	# Set up Jinja2 environment
-	return jinja2.Environment(
-		loader=jinja2.FileSystemLoader(TEMPLATE_DIR),
-		autoescape=jinja2.select_autoescape(["html", "xml"]),
-	)
-
-
-def generate_html_from_template(
-	env: jinja2.Environment, maze_examples: List[Dict[str, Any]], all_tags: Set[str]
-) -> None:
-	"""Generate an HTML file using a Jinja2 template.
-
-	# Parameters:
-	 - `env : jinja2.Environment`
-	    Jinja2 environment
-	 - `maze_examples : List[Dict[str, Any]]`
-	    List of maze example data
-	 - `all_tags : Set[str]`
-	    Set of all unique tags
-	"""
-	template = env.get_template(TEMPLATE_FILE)
-
-	# Prepare the context for the template
-	context = {"maze_examples": maze_examples, "all_tags": sorted(all_tags)}
-
-	# Render the template and write to file
-	with open(HTML_PATH, "w") as f:
-		f.write(template.render(**context))
+	return cfg_fname, metadata_json
 
 
 def main() -> None:
 	"""Main function to generate maze examples."""
 	print(f"Generating maze examples in {EXAMPLES_DIR}")
 
-	# Make sure directories exist
-	EXAMPLES_DIR.mkdir(exist_ok=True)
-	SVG_DIR.mkdir(exist_ok=True)
-	TEMPLATE_DIR.mkdir(exist_ok=True)
+	# setup
+	PLOTS_DIR.mkdir(exist_ok=True)
+	configs_sources: list[dict] = _get_configs_for_examples()
+	print(f"Found {len(configs_sources)} maze configurations")
 
-	# Copy the template file from the repository or create it if it doesn't exist
-	template_path = TEMPLATE_DIR / TEMPLATE_FILE
-	if not template_path.exists():
-		print(f"Creating template file at {template_path}")
-		# You would need to have the template content here or copy it from somewhere
+	# Generate plots
+	maze_examples: list[dict] = []
+	all_tags: set[str] = set()
 
-	# Get configurations
-	configs = generate_maze_configs()
-	print(f"Found {len(configs)} maze configurations")
-
-	# Generate maze examples
-	maze_examples = []
-	all_tags: Set[str] = set()
-
-	for i, metadata in enumerate(configs):
-		print(f"Generating maze {i + 1}/{len(configs)}: {metadata['name']}")
-		svg_path, metadata = generate_maze_svg(
-			metadata, seed=i
-		)  # Use index as seed for reproducibility
+	for i, cfg_src in tqdm(enumerate(configs_sources), desc="Generating maze examples", total=len(configs_sources)):		
+		fname, metadata = generate_maze_plots(cfg_src)
 
 		# Update the set of all tags
 		all_tags.update(metadata["tags"])
 
 		# Prepare the example data for the template
-		maze_examples.append(
-			{
-				"name": metadata["name"],
-				"grid_n": metadata["grid_n"],
-				"algorithm_name": metadata["maze_ctor"],
-				"description": metadata["description"],
-				"tags": metadata["tags"],
-				"svg_path": svg_path,
-				"config": metadata,
-			}
-		)
+		maze_examples.append(metadata)
 
 	# Set up Jinja2 and generate HTML
-	jinja_env = setup_jinja_env()
-	generate_html_from_template(jinja_env, maze_examples, all_tags)
+	jinja_env: jinja2.Environment = jinja2.Environment(
+		loader=jinja2.FileSystemLoader(EXAMPLES_DIR),
+		autoescape=jinja2.select_autoescape(["html", "xml"]),
+	)
+
+	# render the html
+	template: jinja2.Template = jinja_env.get_template(TEMPLATE_FILE)
+	with open(HTML_PATH, "w") as f:
+		f.write(template.render(
+			maze_examples=maze_examples,
+			all_tags=sorted(all_tags),
+		))
+
 	print(f"Generated HTML at {HTML_PATH}")
 
 
