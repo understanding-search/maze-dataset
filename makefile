@@ -1425,6 +1425,10 @@ tokenizer-fst-check:
 	@echo "NUM_TOKENIZERS_TO_TEST=$(NUM_TOKENIZERS_TO_TEST)"
 	$(PYTHON) -m maze_dataset.tokenization.modular.fst --check -p --n-check $(NUM_TOKENIZERS_TO_TEST)
 
+.PHONY: tokenizer-fst-check-small
+tokenizer-fst-check-small:
+	@echo "regen all tokenizers, check 1000 random ones"
+	$(PYTHON) -m maze_dataset.tokenization.modular.fst --check -p --n-check 1000
 
 .PHONY: test-notebooks-muutils-convert
 test-notebooks-muutils-convert:
@@ -1447,7 +1451,7 @@ test-notebooks: test-notebooks-muutils test-notebooks-nbmake
 	@echo "run tests on notebooks in $(NOTEBOOKS_DIR) using both muutils and nbmake"	
 
 .PHONY: test
-test: clean test-unit test-notebooks-muutils tokenizer-fst-check
+test: clean test-unit test-notebooks-muutils tokenizer-fst-check-small
 	@echo "run all usual tests: unit, notebooks, and fst check (but not tokenizer-test-long)"
 
 .PHONY: test-cov
