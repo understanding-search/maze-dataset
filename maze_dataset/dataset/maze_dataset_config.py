@@ -1,5 +1,6 @@
 "implements `MazeDatasetConfig` which is used to generate or load a dataset"
 
+import hashlib
 import importlib.metadata
 import json
 import typing
@@ -16,7 +17,7 @@ from muutils.json_serialize.util import (
 	safe_getsource,
 	string_as_lines,
 )
-from muutils.misc import sanitize_fname, shorten_numerical_to_str, stable_hash
+from muutils.misc import sanitize_fname, shorten_numerical_to_str
 
 from maze_dataset.constants import Coord, CoordTup
 from maze_dataset.dataset.dataset import (
@@ -193,12 +194,16 @@ class _MazeDatasetConfig_base(GPTDatasetConfig):  # noqa: N801
 
 	def stable_hash_cfg(self) -> int:
 		"""return a stable hash of the config"""
-		return stable_hash(
-			json.dumps(
-				self._serialize_base(),
-				sort_keys=True,
-				indent=None,
-			),
+		stable_str_repr: str = json.dumps(
+			self._serialize_base(),
+			sort_keys=True,
+			indent=None,
+		)
+		return int.from_bytes(
+			hashlib.md5(  # noqa: S324
+				bytes(stable_str_repr, "ascii")
+			).digest(),
+			"big",
 		)
 
 	def to_fname(self) -> str:
