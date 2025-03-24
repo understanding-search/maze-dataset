@@ -172,8 +172,19 @@ class _MazeDatasetConfig_base(GPTDatasetConfig):  # noqa: N801
 		return max(self.grid_shape)
 
 	def _serialize_base(self) -> dict:
-		"""serialize the base config"""
-		return _MazeDatasetConfig_base.serialize(self)
+		"""serialize the base config for user in `stable_hash_cfg()` and `to_fname()`
+
+		- note that the _fname_loaded will always be `None` to avoid infinite recursion
+		- note that we **do not** include information about metadata collection here,
+		since otherwise loading a dataset that we minified by collecting the metadata would be impossible
+		"""
+		serialized: dict = _MazeDatasetConfig_base.serialize(self)
+		serialized["applied_filters"] = [
+			x
+			for x in serialized["applied_filters"]
+			if x.get("name", None) != "collect_generation_meta"
+		]
+		return serialized
 
 	def stable_hash_cfg(self) -> int:
 		"""return a stable hash of the config"""

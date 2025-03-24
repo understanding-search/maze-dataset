@@ -432,6 +432,7 @@ class MazeDataset(GPTDataset[MazeDatasetConfig]):
 		return {
 			_FORMAT_KEY: "MazeDataset",
 			"cfg": json_serialize(self.cfg),
+			"fname": self.cfg.to_fname(),
 			"mazes": json_serialize(self.mazes),
 			"generation_metadata_collected": json_serialize(
 				self.generation_metadata_collected,
@@ -470,6 +471,7 @@ class MazeDataset(GPTDataset[MazeDatasetConfig]):
 		return {
 			_FORMAT_KEY: "MazeDataset:minimal",
 			"cfg": json_serialize(filtered_meta.cfg),
+			"fname": filtered_meta.cfg.to_fname(),
 			"generation_metadata_collected": json_serialize(
 				filtered_meta.generation_metadata_collected,
 			),
@@ -519,6 +521,7 @@ class MazeDataset(GPTDataset[MazeDatasetConfig]):
 		return {
 			_FORMAT_KEY: "MazeDataset:minimal_soln_cat",
 			"cfg": json_serialize(filtered_meta.cfg),
+			"fname": filtered_meta.cfg.to_fname(),
 			"generation_metadata_collected": json_serialize(
 				filtered_meta.generation_metadata_collected,
 			),
