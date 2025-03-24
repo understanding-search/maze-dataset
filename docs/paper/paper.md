@@ -33,11 +33,11 @@ bibliography: refs.bib
     
 # Summary
 
-Understanding how machine learning models respond to distributional shifts and different input representations is a key research challenge. 
-Mazes serve as an excellent testbed for this problem due to the degree of control we have over quantifiable distributional shifts.
-To enable systematic investigations of model behavior on maze tasks, we present `maze-dataset`, a comprehensive library for generating, processing, visualizing, and tokenizing datasets consisting of maze-solving tasks. 
+Understanding how machine learning models respond to distributional shifts is a key research challenge. 
+Mazes serve as an excellent testbed for this problem due to varied generation algorithms offering a nuanced platform to simulate both subtle and pronounced distributional shifts. 
+To enable systematic investigations of model behavior on out-of-distribution maze data, we present `maze-dataset`, a comprehensive library for generating, processing, and visualizing datasets consisting of maze-solving tasks. 
 With this library, researchers can easily create datasets and have extensive control over the generation algorithm used, the parameters fed to the algorithm of choice, and the filters that generated mazes must satisfy. 
-Furthermore, this library supports multiple output formats, including rasterized and a large number of text-based formats, catering to convolutional neural networks and autoregressive transformer models. 
+Furthermore, this library supports multiple output formats, including rasterized and text-based formats, catering to convolutional neural networks and autoregressive transformer models. 
 These formats, along with tools for visualizing and converting between them, ensure versatility and adaptability in research applications.
 
 # Introduction
@@ -51,7 +51,7 @@ We introduce [`maze-dataset`](https://github.com/understanding-search/maze-datas
 This package offers flexible configuration options for maze dataset generation, allowing users to select from a range of algorithms and adjust corresponding parameters (Section [Generation](#generation)). 
 Furthermore, this package supports various output formats tailored to different ML architectures (Section [Visual Output Formats](#visual-output-formats), Section [Tokenized Output Formats](#tokenized-output-formats)). 
 
-TODO: links to docs, not just github
+
 
 ![Example mazes from various algorithms. Left to right: randomized depth-first search (RDFS), RDFS without forks, constrained RDFS, Wilson's [@wilson], RDFS with percolation (p=0.1), RDFS with percolation (p=0.4), random stack RDFS.](figures/demo-dataset.pdf){width=90%}
 

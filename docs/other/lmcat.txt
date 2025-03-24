@@ -1,8 +1,8 @@
 # Stats
-- 58 files
-- 14744 (15K) lines
-- 462743 (463K) chars
-- 51217 (51K) `whitespace-split` tokens
+- 59 files
+- 14818 (15K) lines
+- 464486 (464K) chars
+- 51412 (51K) `whitespace-split` tokens
 
 # File Tree
 
@@ -11,6 +11,7 @@ maze-dataset
 ├── .github                                
 │   └── workflows                          
 │    ├── all-tok-checks.yml                [   52L     1,670C   148T]
+│    ├── build-paper.yml                   [   28L       785C    85T]
 │    ├── checks.yml                        [   94L     2,164C   224T]
 │    └── make-docs.yml                     [   47L     1,262C   141T]
 ├── maze_dataset                           
@@ -75,8 +76,8 @@ maze-dataset
 │   ├── iterated_backfilling.ipynb         [  207L    30,509C   547T]
 │   └── profile_dataset_save_read.ipynb    [1,133L   269,709C 3,406T]
 ├── README.md                              [  114L     5,184C   521T]
-├── makefile                               [1,773L    55,139C 6,422T]
-├── pyproject.toml                         [  346L    12,373C 1,419T]
+├── makefile                               [1,849L    57,761C 6,636T]
+├── pyproject.toml                         [  348L    12,398C 1,421T]
 ```
 
 # File Contents
@@ -135,6 +136,37 @@ jobs:
           PYTEST_PARALLEL=${{ github.event.inputs.pytest_parallel || '1' }}
           make tokenizer-test-long NUM_TOKENIZERS_TO_TEST=$N_TO_TEST PYTEST_PARALLEL=$PYTEST_PARALLEL
 ``````{ end_of_file=".github/workflows/all-tok-checks.yml" }
+
+``````{ path=".github/workflows/build-paper.yml"  }
+name: build paper draft pdf
+on:
+  push:
+    paths:
+      - docs/paper/**
+      - .github/workflows/build-paper.yml
+
+jobs:
+  paper:
+    runs-on: ubuntu-latest
+    name: Paper Draft
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Build draft PDF
+        uses: openjournals/openjournals-draft-action@master
+        with:
+          journal: joss
+          # This should be the path to the paper within your repo.
+          paper-path: docs/paper/paper.md
+      - name: Upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: paper
+          # This is the output path where Pandoc will write the compiled
+          # PDF. Note, this should be the same directory as the input
+          # paper.md
+          path: docs/paper/paper.pdf  
+``````{ end_of_file=".github/workflows/build-paper.yml" }
 
 ``````{ path=".github/workflows/checks.yml"  }
 name: Checks
@@ -14198,6 +14230,11 @@ tokenizer-fst-check:
 	@echo "regen all tokenizers, check their names are in the fst"
 	...
 
+.PHONY: tokenizer-fst-check-small
+tokenizer-fst-check-small:
+	@echo "regen all tokenizers, check 1000 random ones"
+	...
+
 .PHONY: test-notebooks-muutils-convert
 test-notebooks-muutils-convert:
 	@echo "convert notebooks in $(NOTEBOOKS_DIR) using muutils.nbutils.convert_ipynb_to_script.py"
@@ -14219,7 +14256,7 @@ test-notebooks: test-notebooks-muutils test-notebooks-nbmake
 	...
 
 .PHONY: test
-test: clean test-unit test-notebooks-muutils tokenizer-fst-check
+test: clean test-unit test-notebooks-muutils tokenizer-fst-check-small
 	@echo "run all usual tests: unit, notebooks, and fst check (but not tokenizer-test-long)"
 	...
 
@@ -14395,6 +14432,41 @@ info-long: info
 .PHONY: help
 help: help-targets info
 	@echo -n ""
+	...
+
+.PHONY: paper-setup
+paper-setup: $(PAPER_PATH_INARA)/README.md
+	@echo "set up inara and packages for compiling the paper"
+	...
+
+.PHONY: paper-clean-dev
+paper-clean-dev:
+	@echo "clean up ephemeral files related to the paper"
+	...
+
+.PHONY: paper-clean
+paper-clean:
+	@echo "clean up paper files"
+	...
+
+.PHONY: paper-tex
+paper-tex:
+	@echo "compile the paper to tex"
+	...
+
+.PHONY: paper-pdf
+paper-pdf: paper-tex
+	@echo "compile the paper to pdf"
+	...
+
+.PHONY: paper-html
+paper-html:
+	@echo "compile the paper to html"
+	...
+
+.PHONY: paper
+paper: paper-clean paper-pdf paper-html
+	@echo "paper compiled to tex, pdf and html"
 	...
 
 ``````{ end_of_file="makefile" }
@@ -14681,8 +14753,10 @@ help: help-targets info
     # These paths are relative to output_dir
     no_clean = [
         ".nojekyll",
-        "assets/",
+        "assets",
         "benchmarks",
+		"paper",
+		"resources",
 		"examples",
         # "resources/", # Templates, CSS, etc. this, or whatever is specified as DOCS_RESOURCES_DIR in makefile will always be preserved
     ]
