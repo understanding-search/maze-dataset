@@ -10,6 +10,7 @@ import multiprocessing
 import typing
 from pathlib import Path
 from typing import Literal, Optional, cast, overload
+import warnings
 
 import numpy as np
 import tqdm
@@ -529,7 +530,11 @@ class MazeDataset(GPTDataset[MazeDatasetConfig]):
 
 	def update_self_config(self) -> None:
 		"""update the config to match the current state of the dataset (number of mazes, such as after filtering)"""
-		self.cfg.n_mazes = len(self.mazes)
+		if self.cfg.n_mazes != len(self.mazes):
+			warnings.warn(
+				f"updating config n_mazes from {self.cfg.n_mazes} to {len(self.mazes)}",
+			)
+			self.cfg.n_mazes = len(self.mazes)
 
 	def custom_maze_filter(
 		self,

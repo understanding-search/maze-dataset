@@ -1584,6 +1584,17 @@ benchmark-success: benchmark-success-test
 benchmark-test: benchmark-speed-test benchmark-success-test
 	@echo "run all benchmarks tests"
 
+.PHONY: example-clean
+example-clean:
+	@echo "clean up generated examples"
+	rm -rf docs/examples/datasets
+
+.PHONY: example-gen
+example-gen:
+	@echo "generate examples"
+	$(PYTHON) docs/examples/generate_examples.py
+
+
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ########  ##     ## #### ##       ########
@@ -1675,10 +1686,11 @@ clean:
 	rm -rf $(TESTS_TEMP_DIR)
 	$(PYTHON) -Bc "import pathlib; [p.unlink() for path in ['$(PACKAGE_NAME)', '$(TESTS_DIR)', '$(DOCS_DIR)'] for pattern in ['*.py[co]', '__pycache__/*'] for p in pathlib.Path(path).rglob(pattern)]"
 
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 .PHONY: clean-all
-clean-all: clean docs-clean dep-clean
+clean-all: clean docs-clean dep-clean example-clean
 	@echo "clean up all temporary files, dep files, venv, and generated docs"
-
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ##     ## ######## ##       ########
 ##     ## ##       ##       ##     ##

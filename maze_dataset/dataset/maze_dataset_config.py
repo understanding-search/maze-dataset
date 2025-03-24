@@ -174,7 +174,6 @@ class _MazeDatasetConfig_base(GPTDatasetConfig):  # noqa: N801
 			),
 		)
 
-	# TODO: include fname in serialized form, but exclude it when hashing so we dont infinitely loop?
 	def to_fname(self) -> str:
 		"""return a unique identifier (valid as a filename) for this config"""
 		n_mazes_str: str = shorten_numerical_to_str(self.n_mazes)
@@ -186,9 +185,17 @@ class _MazeDatasetConfig_base(GPTDatasetConfig):  # noqa: N801
 
 
 # NOTE: type: ignore[misc] is because it tells us non-default attributes aren't allowed after ones with defaults, but everything is kw_only
-@serializable_dataclass(kw_only=True)
+@serializable_dataclass(kw_only=True, methods_no_override=["serialize"])
 class MazeDatasetConfig(_MazeDatasetConfig_base):  # type: ignore[misc]
 	"""config object which is passed to `MazeDataset.from_config` to generate or load a dataset"""
+
+	_fname_loaded: str | None = serializable_field(
+		default=None,
+		init=False,
+		serialize=False,
+		serialization_fn=lambda _: None,
+		loading_fn=lambda data: data.get("fname", None),
+	)
 
 	@property
 	def config_version(self) -> str:

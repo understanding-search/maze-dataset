@@ -281,6 +281,7 @@
         ".nojekyll",
         "assets/",
         "benchmarks",
+		"examples",
         # "resources/", # Templates, CSS, etc. this, or whatever is specified as DOCS_RESOURCES_DIR in makefile will always be preserved
     ]
     markdown_headings_increment = 2
