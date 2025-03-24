@@ -129,7 +129,12 @@ class _MazeDatasetConfig_base(GPTDatasetConfig):  # noqa: N801
 			# https://github.com/understanding-search/maze-dataset/actions/runs/14028046497/job/39270080746?pr=53
 			# https://github.com/understanding-search/maze-dataset/actions/runs/14028046497/job/39270080742?pr=53
 			# https://www.diffchecker.com/tqIMSevy/
-			"__doc__": [line.strip() for line in string_as_lines(gen_func.__doc__)],
+			# update: we also need to filter for empty lines. B)
+			"__doc__": [
+				line.strip()
+				for line in string_as_lines(gen_func.__doc__)
+				if line.strip()
+			],
 			"source_code": safe_getsource(gen_func),
 		},
 		loading_fn=lambda data: _load_maze_ctor(data["maze_ctor"]),
