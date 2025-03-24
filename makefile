@@ -1425,6 +1425,10 @@ tokenizer-fst-check:
 	@echo "NUM_TOKENIZERS_TO_TEST=$(NUM_TOKENIZERS_TO_TEST)"
 	$(PYTHON) -m maze_dataset.tokenization.modular.fst --check -p --n-check $(NUM_TOKENIZERS_TO_TEST)
 
+.PHONY: tokenizer-fst-check-small
+tokenizer-fst-check-small:
+	@echo "regen all tokenizers, check 1000 random ones"
+	$(PYTHON) -m maze_dataset.tokenization.modular.fst --check -p --n-check 1000
 
 .PHONY: test-notebooks-muutils-convert
 test-notebooks-muutils-convert:
@@ -1447,7 +1451,7 @@ test-notebooks: test-notebooks-muutils test-notebooks-nbmake
 	@echo "run tests on notebooks in $(NOTEBOOKS_DIR) using both muutils and nbmake"	
 
 .PHONY: test
-test: clean test-unit test-notebooks-muutils tokenizer-fst-check
+test: clean test-unit test-notebooks-muutils tokenizer-fst-check-small
 	@echo "run all usual tests: unit, notebooks, and fst check (but not tokenizer-test-long)"
 
 .PHONY: test-cov
@@ -1577,12 +1581,30 @@ benchmark-success-test:
 .PHONY: benchmark-success
 benchmark-success: benchmark-success-test
 	@echo "run success benchmarks"
-	$(PYTHON) docs/benchmarks/percolation_benchmarks.py small -p 12
-	$(PYTHON) docs/benchmarks/percolation_benchmarks.py medium -p 12
+	$(PYTHON) docs/benchmarks/percolation_benchmarks.py test -p 12 --save-dir docs/benchmarks/percolation_fractions/test
+	$(PYTHON) docs/benchmarks/percolation_benchmarks.py small -p 12 --save-dir docs/benchmarks/percolation_fractions/small
+	$(PYTHON) docs/benchmarks/percolation_benchmarks.py medium -p 12 --save-dir docs/benchmarks/percolation_fractions/medium
+	
 
 .PHONY: benchmark-test
 benchmark-test: benchmark-speed-test benchmark-success-test
 	@echo "run all benchmarks tests"
+
+.PHONY: example-clean
+example-clean:
+	@echo "clean up generated examples"
+	rm -rf docs/examples/datasets
+
+.PHONY: example-gen
+example-gen:
+	@echo "generate examples"
+	$(PYTHON) docs/examples/generate_examples.py
+
+
+.PHONY: regenerate-when-cfg-hashes-changed
+regenerate-when-cfg-hashes-changed: example-clean example-gen benchmark-success
+	@echo "regenerate everything we need to when the process by which we hash configs might have changed -- like if you add a new attribute"
+
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -1675,10 +1697,11 @@ clean:
 	rm -rf $(TESTS_TEMP_DIR)
 	$(PYTHON) -Bc "import pathlib; [p.unlink() for path in ['$(PACKAGE_NAME)', '$(TESTS_DIR)', '$(DOCS_DIR)'] for pattern in ['*.py[co]', '__pycache__/*'] for p in pathlib.Path(path).rglob(pattern)]"
 
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 .PHONY: clean-all
-clean-all: clean docs-clean dep-clean
+clean-all: clean docs-clean dep-clean example-clean
 	@echo "clean up all temporary files, dep files, venv, and generated docs"
-
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ##     ## ######## ##       ########
 ##     ## ##       ##       ##     ##

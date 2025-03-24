@@ -5,7 +5,7 @@
 [![PyPI](https://img.shields.io/pypi/v/maze-dataset)](https://pypi.org/project/maze-dataset/)
 ![PyPI - Downloads](https://img.shields.io/pypi/dm/maze-dataset)
 [![Checks](https://github.com/understanding-search/maze-dataset/actions/workflows/checks.yml/badge.svg)](https://github.com/understanding-search/maze-dataset/actions/workflows/checks.yml)
-[![Coverage](data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI5OSIgaGVpZ2h0PSIyMCI+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImIiIHgyPSIwIiB5Mj0iMTAwJSI+CiAgICAgICAgPHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjYmJiIiBzdG9wLW9wYWNpdHk9Ii4xIi8+CiAgICAgICAgPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLW9wYWNpdHk9Ii4xIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogICAgPG1hc2sgaWQ9ImEiPgogICAgICAgIDxyZWN0IHdpZHRoPSI5OSIgaGVpZ2h0PSIyMCIgcng9IjMiIGZpbGw9IiNmZmYiLz4KICAgIDwvbWFzaz4KICAgIDxnIG1hc2s9InVybCgjYSkiPgogICAgICAgIDxwYXRoIGZpbGw9IiM1NTUiIGQ9Ik0wIDBoNjN2MjBIMHoiLz4KICAgICAgICA8cGF0aCBmaWxsPSIjZGZiMzE3IiBkPSJNNjMgMGgzNnYyMEg2M3oiLz4KICAgICAgICA8cGF0aCBmaWxsPSJ1cmwoI2IpIiBkPSJNMCAwaDk5djIwSDB6Ii8+CiAgICA8L2c+CiAgICA8ZyBmaWxsPSIjZmZmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iRGVqYVZ1IFNhbnMsVmVyZGFuYSxHZW5ldmEsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMSI+CiAgICAgICAgPHRleHQgeD0iMzEuNSIgeT0iMTUiIGZpbGw9IiMwMTAxMDEiIGZpbGwtb3BhY2l0eT0iLjMiPmNvdmVyYWdlPC90ZXh0PgogICAgICAgIDx0ZXh0IHg9IjMxLjUiIHk9IjE0Ij5jb3ZlcmFnZTwvdGV4dD4KICAgICAgICA8dGV4dCB4PSI4MCIgeT0iMTUiIGZpbGw9IiMwMTAxMDEiIGZpbGwtb3BhY2l0eT0iLjMiPjY2JTwvdGV4dD4KICAgICAgICA8dGV4dCB4PSI4MCIgeT0iMTQiPjY2JTwvdGV4dD4KICAgIDwvZz4KPC9zdmc+Cg==)](docs/coverage/coverage.txt)
+[![Coverage](data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI5OSIgaGVpZ2h0PSIyMCI+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImIiIHgyPSIwIiB5Mj0iMTAwJSI+CiAgICAgICAgPHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjYmJiIiBzdG9wLW9wYWNpdHk9Ii4xIi8+CiAgICAgICAgPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLW9wYWNpdHk9Ii4xIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogICAgPG1hc2sgaWQ9ImEiPgogICAgICAgIDxyZWN0IHdpZHRoPSI5OSIgaGVpZ2h0PSIyMCIgcng9IjMiIGZpbGw9IiNmZmYiLz4KICAgIDwvbWFzaz4KICAgIDxnIG1hc2s9InVybCgjYSkiPgogICAgICAgIDxwYXRoIGZpbGw9IiM1NTUiIGQ9Ik0wIDBoNjN2MjBIMHoiLz4KICAgICAgICA8cGF0aCBmaWxsPSIjZGZiMzE3IiBkPSJNNjMgMGgzNnYyMEg2M3oiLz4KICAgICAgICA8cGF0aCBmaWxsPSJ1cmwoI2IpIiBkPSJNMCAwaDk5djIwSDB6Ii8+CiAgICA8L2c+CiAgICA8ZyBmaWxsPSIjZmZmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iRGVqYVZ1IFNhbnMsVmVyZGFuYSxHZW5ldmEsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMSI+CiAgICAgICAgPHRleHQgeD0iMzEuNSIgeT0iMTUiIGZpbGw9IiMwMTAxMDEiIGZpbGwtb3BhY2l0eT0iLjMiPmNvdmVyYWdlPC90ZXh0PgogICAgICAgIDx0ZXh0IHg9IjMxLjUiIHk9IjE0Ij5jb3ZlcmFnZTwvdGV4dD4KICAgICAgICA8dGV4dCB4PSI4MCIgeT0iMTUiIGZpbGw9IiMwMTAxMDEiIGZpbGwtb3BhY2l0eT0iLjMiPjY3JTwvdGV4dD4KICAgICAgICA8dGV4dCB4PSI4MCIgeT0iMTQiPjY3JTwvdGV4dD4KICAgIDwvZz4KPC9zdmc+Cg==)](docs/coverage/coverage.txt)
 ![code size, bytes](https://img.shields.io/github/languages/code-size/understanding-search/maze-dataset)
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/t/understanding-search/maze-dataset)
 ![GitHub closed pull requests](https://img.shields.io/github/issues-pr-closed/understanding-search/maze-dataset)
@@ -142,6 +142,7 @@ we use this [makefile template](https://github.com/mivanit/python-project-makefi
  - [`TargetedLatticeMaze`](#TargetedLatticeMaze)
  - [`LatticeMaze`](#LatticeMaze)
  - [`set_serialize_minimal_threshold`](#set_serialize_minimal_threshold)
+ - [`register_maze_filter`](#register_maze_filter)
  - [`LatticeMazeGenerators`](#LatticeMazeGenerators)
  - [`Coord`](#Coord)
  - [`CoordTup`](#CoordTup)
@@ -165,7 +166,7 @@ we use this [makefile template](https://github.com/mivanit/python-project-makefi
 [![PyPI](https://img.shields.io/pypi/v/maze-dataset)](https://pypi.org/project/maze-dataset/)
 ![PyPI - Downloads](https://img.shields.io/pypi/dm/maze-dataset)
 [![Checks](https://github.com/understanding-search/maze-dataset/actions/workflows/checks.yml/badge.svg)](https://github.com/understanding-search/maze-dataset/actions/workflows/checks.yml)
-[![Coverage](data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI5OSIgaGVpZ2h0PSIyMCI+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImIiIHgyPSIwIiB5Mj0iMTAwJSI+CiAgICAgICAgPHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjYmJiIiBzdG9wLW9wYWNpdHk9Ii4xIi8+CiAgICAgICAgPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLW9wYWNpdHk9Ii4xIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogICAgPG1hc2sgaWQ9ImEiPgogICAgICAgIDxyZWN0IHdpZHRoPSI5OSIgaGVpZ2h0PSIyMCIgcng9IjMiIGZpbGw9IiNmZmYiLz4KICAgIDwvbWFzaz4KICAgIDxnIG1hc2s9InVybCgjYSkiPgogICAgICAgIDxwYXRoIGZpbGw9IiM1NTUiIGQ9Ik0wIDBoNjN2MjBIMHoiLz4KICAgICAgICA8cGF0aCBmaWxsPSIjZGZiMzE3IiBkPSJNNjMgMGgzNnYyMEg2M3oiLz4KICAgICAgICA8cGF0aCBmaWxsPSJ1cmwoI2IpIiBkPSJNMCAwaDk5djIwSDB6Ii8+CiAgICA8L2c+CiAgICA8ZyBmaWxsPSIjZmZmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iRGVqYVZ1IFNhbnMsVmVyZGFuYSxHZW5ldmEsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMSI+CiAgICAgICAgPHRleHQgeD0iMzEuNSIgeT0iMTUiIGZpbGw9IiMwMTAxMDEiIGZpbGwtb3BhY2l0eT0iLjMiPmNvdmVyYWdlPC90ZXh0PgogICAgICAgIDx0ZXh0IHg9IjMxLjUiIHk9IjE0Ij5jb3ZlcmFnZTwvdGV4dD4KICAgICAgICA8dGV4dCB4PSI4MCIgeT0iMTUiIGZpbGw9IiMwMTAxMDEiIGZpbGwtb3BhY2l0eT0iLjMiPjY2JTwvdGV4dD4KICAgICAgICA8dGV4dCB4PSI4MCIgeT0iMTQiPjY2JTwvdGV4dD4KICAgIDwvZz4KPC9zdmc+Cg==)](docs/coverage/coverage.txt)
+[![Coverage](data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI5OSIgaGVpZ2h0PSIyMCI+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImIiIHgyPSIwIiB5Mj0iMTAwJSI+CiAgICAgICAgPHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjYmJiIiBzdG9wLW9wYWNpdHk9Ii4xIi8+CiAgICAgICAgPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLW9wYWNpdHk9Ii4xIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogICAgPG1hc2sgaWQ9ImEiPgogICAgICAgIDxyZWN0IHdpZHRoPSI5OSIgaGVpZ2h0PSIyMCIgcng9IjMiIGZpbGw9IiNmZmYiLz4KICAgIDwvbWFzaz4KICAgIDxnIG1hc2s9InVybCgjYSkiPgogICAgICAgIDxwYXRoIGZpbGw9IiM1NTUiIGQ9Ik0wIDBoNjN2MjBIMHoiLz4KICAgICAgICA8cGF0aCBmaWxsPSIjZGZiMzE3IiBkPSJNNjMgMGgzNnYyMEg2M3oiLz4KICAgICAgICA8cGF0aCBmaWxsPSJ1cmwoI2IpIiBkPSJNMCAwaDk5djIwSDB6Ii8+CiAgICA8L2c+CiAgICA8ZyBmaWxsPSIjZmZmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iRGVqYVZ1IFNhbnMsVmVyZGFuYSxHZW5ldmEsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMSI+CiAgICAgICAgPHRleHQgeD0iMzEuNSIgeT0iMTUiIGZpbGw9IiMwMTAxMDEiIGZpbGwtb3BhY2l0eT0iLjMiPmNvdmVyYWdlPC90ZXh0PgogICAgICAgIDx0ZXh0IHg9IjMxLjUiIHk9IjE0Ij5jb3ZlcmFnZTwvdGV4dD4KICAgICAgICA8dGV4dCB4PSI4MCIgeT0iMTUiIGZpbGw9IiMwMTAxMDEiIGZpbGwtb3BhY2l0eT0iLjMiPjY3JTwvdGV4dD4KICAgICAgICA8dGV4dCB4PSI4MCIgeT0iMTQiPjY3JTwvdGV4dD4KICAgIDwvZz4KPC9zdmc+Cg==)](docs/coverage/coverage.txt)
 ![code size, bytes](https://img.shields.io/github/languages/code-size/understanding-search/maze-dataset)
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/t/understanding-search/maze-dataset)
 ![GitHub closed pull requests](https://img.shields.io/github/issues-pr-closed/understanding-search/maze-dataset)
@@ -279,7 +280,7 @@ we use this [makefile template](https://github.com/mivanit/python-project-makefi
 
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset.py#L0-L66)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset.py#L0-L68)
 
 
 
@@ -477,9 +478,9 @@ validate the types of all the fields on a `SerializableDataclass`. calls `Serial
 - [`update_from_nested_dict`](#SolvedMaze.update_from_nested_dict)
 
 
-### `class MazeDatasetConfig(maze_dataset.dataset.dataset.GPTDatasetConfig):` { #MazeDatasetConfig }
+### `class MazeDatasetConfig(maze_dataset.dataset.maze_dataset_config._MazeDatasetConfig_base):` { #MazeDatasetConfig }
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset.py#L128-L383)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset.py#L234-L443)
 
 
 config object which is passed to `<a href="#MazeDataset.from_config">MazeDataset.from_config</a>` to generate or load a dataset
@@ -493,125 +494,45 @@ config object which is passed to `<a href="#MazeDataset.from_config">MazeDataset
     seq_len_min: int = 1,
     seq_len_max: int = 512,
     seed: int | None = 42,
-    applied_filters: list[dict[typing.Literal['name', 'args', 'kwargs'], str | list | dict]] = <factory>,
+    applied_filters: list[dict[typing.Literal['name', 'args', 'kwargs'], str | list | tuple | dict]] = <factory>,
     grid_n: int,
     n_mazes: int,
     maze_ctor: Callable = <function LatticeMazeGenerators.gen_dfs>,
     maze_ctor_kwargs: dict = <factory>,
-    endpoint_kwargs: dict[typing.Literal['allowed_start', 'allowed_end', 'deadend_start', 'deadend_end', 'endpoints_not_equal', 'except_on_no_valid_endpoint'], bool | None | list[tuple[int, int]]] = <factory>
+    endpoint_kwargs: dict[typing.Literal['allowed_start', 'allowed_end', 'deadend_start', 'deadend_end', 'endpoints_not_equal', 'except_on_no_valid_endpoint'], bool | None | list[tuple[int, int]]] = <factory>,
+    _fname_loaded: str | None = None
 )
 ```
 
 
 
 
-- `grid_n: int `
+- `config_version: str `
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset.py#L238-L241)
 
 
+return the version of the config. added in maze_dataset v1.3.0, previous versions had no dataset config
 
 
-- `n_mazes: int `
+- `versions: dict `
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset.py#L243-L249)
 
 
+return the versions of the config and the maze_dataset
 
 
-### `def maze_ctor` { #MazeDatasetConfig.maze_ctor }
+### `def serialize` { #MazeDatasetConfig.serialize }
 ```python
-(
-    grid_shape: jaxtyping.Int8[ndarray, 'row_col=2'] | tuple[int, int],
-    lattice_dim: int = 2,
-    accessible_cells: float | None = None,
-    max_tree_depth: float | None = None,
-    do_forks: bool = True,
-    randomized_stack: bool = False,
-    start_coord: jaxtyping.Int8[ndarray, 'row_col=2'] | None = None
-) -> maze_dataset.maze.lattice_maze.LatticeMaze
+(self) -> dict
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset.py#L56-L203)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset.py#L251-L259)
 
 
-generate a lattice maze using depth first search, iterative
-
-### Arguments
-- `grid_shape: Coord`: the shape of the grid
-- `lattice_dim: int`: the dimension of the lattice
-        (default: `2`)
-- `accessible_cells: int | float |None`: the number of accessible cells in the maze. If `None`, defaults to the total number of cells in the grid. if a float, asserts it is <= 1 and treats it as a proportion of **total cells**
-        (default: `None`)
-- `max_tree_depth: int | float | None`: the maximum depth of the tree. If `None`, defaults to `2 * accessible_cells`. if a float, asserts it is <= 1 and treats it as a proportion of the **sum of the grid shape**
-        (default: `None`)
-- `do_forks: bool`: whether to allow forks in the maze. If `False`, the maze will be have no forks and will be a simple hallway.
-- `start_coord: Coord | None`: the starting coordinate of the generation algorithm. If `None`, defaults to a random coordinate.
-
-### algorithm
-1. Choose the initial cell, mark it as visited and push it to the stack
-2. While the stack is not empty
-        1. Pop a cell from the stack and make it a current cell
-        2. If the current cell has any neighbours which have not been visited
-                1. Push the current cell to the stack
-                2. Choose one of the unvisited neighbours
-                3. Remove the wall between the current cell and the chosen cell
-                4. Mark the chosen cell as visited and push it to the stack
-
-
-- `maze_ctor_kwargs: dict `
-
-
-
-
-- `endpoint_kwargs: dict[typing.Literal['allowed_start', 'allowed_end', 'deadend_start', 'deadend_end', 'endpoints_not_equal', 'except_on_no_valid_endpoint'], bool | None | list[tuple[int, int]]] `
-
-
-
-
-- `grid_shape: tuple[int, int] `
-
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset.py#L167-L170)
-
-
-return the shape of the grid as a tuple
-
-
-- `grid_shape_np: jaxtyping.Int8[ndarray, 'row_col=2'] `
-
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset.py#L172-L175)
-
-
-return the shape of the grid as a numpy array
-
-
-- `max_grid_n: int `
-
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset.py#L177-L180)
-
-
-return the maximum of the grid shape
-
-
-### `def stable_hash_cfg` { #MazeDatasetConfig.stable_hash_cfg }
-```python
-(self) -> int
-```
-
-
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset.py#L182-L190)
-
-
-return a stable hash of the config
-
-
-### `def to_fname` { #MazeDatasetConfig.to_fname }
-```python
-(self) -> str
-```
-
-
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset.py#L193-L200)
-
-
-return a unique identifier (valid as a filename) for this config
+serialize the MazeDatasetConfig with all fields and fname
 
 
 ### `def summary` { #MazeDatasetConfig.summary }
@@ -620,7 +541,7 @@ return a unique identifier (valid as a filename) for this config
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset.py#L202-L221)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset.py#L261-L280)
 
 
 return a summary of the config
@@ -632,7 +553,7 @@ return a summary of the config
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset.py#L303-L333)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset.py#L363-L393)
 
 
 Estimate the success fraction of this config.
@@ -662,11 +583,11 @@ this estimate comes from `estimate_dataset_fractions.ipynb` and `maze_dataset.be
     safety_margin: float = 1.2,
     except_if_all_success_expected: bool = False,
     epsilon: float = 0.01
-) -> maze_dataset.dataset.maze_dataset.MazeDatasetConfig
+) -> maze_dataset.dataset.maze_dataset_config.MazeDatasetConfig
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset.py#L335-L383)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset.py#L395-L443)
 
 
 return a new `MazeDatasetConfig` like this one with `n_mazes` adjusted to compensate for the success fraction
@@ -691,18 +612,6 @@ return a new `MazeDatasetConfig` like this one with `n_mazes` adjusted to compen
 
 ### Raises:
 - `SuccessChanceTooSmallError` : if the computed success fraction is below `epsilon`
-
-
-### `def serialize` { #MazeDatasetConfig.serialize }
-```python
-(self) -> dict[str, typing.Any]
-```
-
-
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset.py#L713-L769)
-
-
-returns the class as a dict, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def load` { #MazeDatasetConfig.load }
@@ -734,6 +643,17 @@ validate the types of all the fields on a `SerializableDataclass`. calls `Serial
 
 ### Inherited Members                                
 
+- [`grid_n`](#MazeDatasetConfig.grid_n)
+- [`n_mazes`](#MazeDatasetConfig.n_mazes)
+- [`maze_ctor`](#MazeDatasetConfig.maze_ctor)
+- [`maze_ctor_kwargs`](#MazeDatasetConfig.maze_ctor_kwargs)
+- [`endpoint_kwargs`](#MazeDatasetConfig.endpoint_kwargs)
+- [`grid_shape`](#MazeDatasetConfig.grid_shape)
+- [`grid_shape_np`](#MazeDatasetConfig.grid_shape_np)
+- [`max_grid_n`](#MazeDatasetConfig.max_grid_n)
+- [`stable_hash_cfg`](#MazeDatasetConfig.stable_hash_cfg)
+- [`to_fname`](#MazeDatasetConfig.to_fname)
+
 - [`name`](#MazeDatasetConfig.name)
 - [`seq_len_min`](#MazeDatasetConfig.seq_len_min)
 - [`seq_len_max`](#MazeDatasetConfig.seq_len_max)
@@ -745,9 +665,9 @@ validate the types of all the fields on a `SerializableDataclass`. calls `Serial
 - [`update_from_nested_dict`](#MazeDatasetConfig.update_from_nested_dict)
 
 
-### `class MazeDataset(maze_dataset.dataset.dataset.GPTDataset):` { #MazeDataset }
+### `class MazeDataset(maze_dataset.dataset.dataset.GPTDataset[maze_dataset.dataset.maze_dataset_config.MazeDatasetConfig]):` { #MazeDataset }
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset.py#L447-L876)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset.py#L112-L565)
 
 
 a maze dataset class. This is a collection of solved mazes, and should be initialized via `<a href="#MazeDataset.from_config">MazeDataset.from_config</a>`
@@ -756,19 +676,19 @@ a maze dataset class. This is a collection of solved mazes, and should be initia
 ### `MazeDataset` { #MazeDataset.__init__ }
 ```python
 (
-    cfg: maze_dataset.dataset.maze_dataset.MazeDatasetConfig,
+    cfg: maze_dataset.dataset.maze_dataset_config.MazeDatasetConfig,
     mazes: Sequence[maze_dataset.maze.lattice_maze.SolvedMaze],
     generation_metadata_collected: dict | None = None
 )
 ```
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset.py#L450-L460)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset.py#L115-L125)
 
 
 initialize a maze dataset from a config and a list of solved mazes
 
 
-- `cfg: maze_dataset.dataset.maze_dataset.MazeDatasetConfig `
+- `cfg: maze_dataset.dataset.maze_dataset_config.MazeDatasetConfig `
 
 
 
@@ -787,7 +707,7 @@ initialize a maze dataset from a config and a list of solved mazes
 ```python
 (
     cls,
-    cfg: maze_dataset.dataset.maze_dataset.MazeDatasetConfig,
+    cfg: maze_dataset.dataset.maze_dataset_config.MazeDatasetConfig,
     do_generate: bool = True,
     load_local: bool = True,
     save_local: bool = True,
@@ -802,7 +722,7 @@ initialize a maze dataset from a config and a list of solved mazes
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset.py#L462-L500)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset.py#L128-L167)
 
 
 create a maze dataset from a config
@@ -819,7 +739,7 @@ priority of loading:
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset.py#L502-L504)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset.py#L169-L171)
 
 
 return a hash of the data
@@ -836,7 +756,7 @@ return a hash of the data
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset.py#L532-L557)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset.py#L203-L228)
 
 
 return the dataset as tokens according to the passed `maze_tokenizer`
@@ -853,19 +773,32 @@ i.e.:
         ["a b c", "d e f"]
 
 
+### `def assert_equal` { #MazeDataset.assert_equal }
+```python
+(self, other: maze_dataset.dataset.maze_dataset.MazeDataset) -> None
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset.py#L243-L247)
+
+
+assert that two datasets are equal
+
+
 ### `def generate` { #MazeDataset.generate }
 ```python
 (
     cls,
-    cfg: maze_dataset.dataset.maze_dataset.MazeDatasetConfig,
+    cfg: maze_dataset.dataset.maze_dataset_config.MazeDatasetConfig,
     gen_parallel: bool = False,
     pool_kwargs: dict | None = None,
-    verbose: bool = False
+    verbose: bool = False,
+    **kwargs
 ) -> maze_dataset.dataset.maze_dataset.MazeDataset
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset.py#L572-L642)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset.py#L249-L323)
 
 
 Generate a maze dataset given a config and some generation parameters
@@ -875,13 +808,13 @@ Generate a maze dataset given a config and some generation parameters
 ```python
 (
     cls,
-    cfg: maze_dataset.dataset.maze_dataset.MazeDatasetConfig,
+    cfg: maze_dataset.dataset.maze_dataset_config.MazeDatasetConfig,
     **kwargs
 ) -> maze_dataset.dataset.maze_dataset.MazeDataset
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset.py#L644-L647)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset.py#L325-L328)
 
 
 (not implemented yet!) download a maze dataset from the internet
@@ -890,13 +823,13 @@ Generate a maze dataset given a config and some generation parameters
 ### `def load` { #MazeDataset.load }
 ```python
 (
-    cls,
+    cls: type[maze_dataset.dataset.maze_dataset.MazeDataset],
     data: Dict[str, Union[bool, int, float, str, NoneType, List[Union[bool, int, float, str, NoneType, List[Any], Dict[str, Any]]], Dict[str, Union[bool, int, float, str, NoneType, List[Any], Dict[str, Any]]]]]
 ) -> maze_dataset.dataset.maze_dataset.MazeDataset
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset.py#L649-L666)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset.py#L330-L347)
 
 
 load from zanj/json
@@ -910,7 +843,7 @@ load from zanj/json
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset.py#L747-L754)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset.py#L428-L435)
 
 
 serialize to zanj/json
@@ -922,7 +855,7 @@ serialize to zanj/json
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset.py#L855-L857)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset.py#L540-L546)
 
 
 update the config to match the current state of the dataset (number of mazes, such as after filtering)
@@ -938,7 +871,7 @@ update the config to match the current state of the dataset (number of mazes, su
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset.py#L859-L876)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset.py#L548-L565)
 
 
 filter the dataset using a custom method
@@ -952,9 +885,9 @@ filter the dataset using a custom method
 - [`filter_by`](#MazeDataset.filter_by)
 
 
-### `class MazeDatasetCollection(maze_dataset.dataset.dataset.GPTDataset):` { #MazeDatasetCollection }
+### `class MazeDatasetCollection(typing.Generic[~T_DatasetConfig]):` { #MazeDatasetCollection }
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset.py#L76-L215)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset.py#L83-L224)
 
 
 a collection of maze datasets
@@ -969,7 +902,7 @@ a collection of maze datasets
 )
 ```
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset.py#L79-L97)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset.py#L86-L104)
 
 
 initialize the dataset collection from a `MazeDatasetCollectionConfig` and a list of `MazeDataset`s
@@ -992,7 +925,7 @@ initialize the dataset collection from a `MazeDatasetCollectionConfig` and a lis
 
 - `dataset_lengths: list[int] `
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset.py#L99-L102)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset.py#L106-L109)
 
 
 return the lengths of each dataset in the collection
@@ -1000,7 +933,7 @@ return the lengths of each dataset in the collection
 
 - `dataset_cum_lengths: jaxtyping.Int[ndarray, 'indices'] `
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset.py#L104-L107)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset.py#L111-L114)
 
 
 return the cumulative lengths of each dataset in the collection
@@ -1008,7 +941,7 @@ return the cumulative lengths of each dataset in the collection
 
 - `mazes: list[maze_dataset.maze.lattice_maze.LatticeMaze] `
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset.py#L109-L116)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset.py#L116-L123)
 
 
 single list of all mazes in the collection
@@ -1024,7 +957,7 @@ single list of all mazes in the collection
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset.py#L136-L147)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset.py#L143-L154)
 
 
 generate a dataset collection from a config
@@ -1040,7 +973,7 @@ generate a dataset collection from a config
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset.py#L149-L160)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset.py#L156-L167)
 
 
 (not implemented!) download a dataset collection from a config
@@ -1054,7 +987,7 @@ generate a dataset collection from a config
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset.py#L162-L171)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset.py#L169-L178)
 
 
 serialize the dataset collection
@@ -1069,7 +1002,7 @@ serialize the dataset collection
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset.py#L173-L182)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset.py#L180-L189)
 
 
 load the dataset collection from the representation created by `serialize`
@@ -1086,7 +1019,7 @@ load the dataset collection from the representation created by `serialize`
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset.py#L185-L208)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset.py#L192-L215)
 
 
 return the dataset as tokens
@@ -1106,7 +1039,7 @@ i.e.:
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset.py#L210-L215)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset.py#L217-L224)
 
 
 update the config to match the number of mazes, and update the underlying configs of each dataset
@@ -1124,7 +1057,7 @@ update the config to match the number of mazes, and update the underlying config
 
 ### `class MazeDatasetCollectionConfig(maze_dataset.dataset.dataset.GPTDatasetConfig):` { #MazeDatasetCollectionConfig }
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset.py#L30-L73)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset.py#L30-L80)
 
 
 maze dataset collection configuration, including tokenizers and shuffle
@@ -1138,15 +1071,15 @@ maze dataset collection configuration, including tokenizers and shuffle
     seq_len_min: int = 1,
     seq_len_max: int = 512,
     seed: int | None = 42,
-    applied_filters: list[dict[typing.Literal['name', 'args', 'kwargs'], str | list | dict]] = <factory>,
-    maze_dataset_configs: list[maze_dataset.dataset.maze_dataset.MazeDatasetConfig]
+    applied_filters: list[dict[typing.Literal['name', 'args', 'kwargs'], str | list | tuple | dict]] = <factory>,
+    maze_dataset_configs: list[maze_dataset.dataset.maze_dataset_config.MazeDatasetConfig]
 )
 ```
 
 
 
 
-- `maze_dataset_configs: list[maze_dataset.dataset.maze_dataset.MazeDatasetConfig] `
+- `maze_dataset_configs: list[maze_dataset.dataset.maze_dataset_config.MazeDatasetConfig] `
 
 
 
@@ -1157,7 +1090,7 @@ maze dataset collection configuration, including tokenizers and shuffle
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset.py#L41-L43)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset.py#L42-L50)
 
 
 return a summary of the config
@@ -1165,7 +1098,7 @@ return a summary of the config
 
 - `n_mazes: int `
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset.py#L45-L48)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset.py#L52-L55)
 
 
 return the total number of mazes in the collection across all dataset
@@ -1173,7 +1106,7 @@ return the total number of mazes in the collection across all dataset
 
 - `max_grid_n: int `
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset.py#L50-L53)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset.py#L57-L60)
 
 
 return the maximum grid size of the mazes in the collection
@@ -1181,7 +1114,7 @@ return the maximum grid size of the mazes in the collection
 
 - `max_grid_shape: tuple[int, int] `
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset.py#L55-L58)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset.py#L62-L65)
 
 
 return the maximum grid shape of the mazes in the collection
@@ -1189,7 +1122,7 @@ return the maximum grid shape of the mazes in the collection
 
 - `max_grid_shape_np: jaxtyping.Int8[ndarray, 'row_col=2'] `
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset.py#L60-L63)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset.py#L67-L70)
 
 
 return the maximum grid shape of the mazes in the collection as a numpy array
@@ -1201,7 +1134,7 @@ return the maximum grid shape of the mazes in the collection as a numpy array
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset.py#L65-L67)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset.py#L72-L74)
 
 
 return a stable hash of the config
@@ -1213,7 +1146,7 @@ return a stable hash of the config
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset.py#L69-L73)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset.py#L76-L80)
 
 
 convert config to a filename
@@ -1885,10 +1818,28 @@ validate the types of all the fields on a `SerializableDataclass`. calls `Serial
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset.py#L71-L74)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset.py#L55-L58)
 
 
 get the global SERIALIZE_MINIMAL_THRESHOLD
+
+
+### `def register_maze_filter` { #register_maze_filter }
+```python
+(
+    method: Callable[[maze_dataset.maze.lattice_maze.SolvedMaze, Any], bool]
+) -> Callable[Concatenate[~T_Dataset, ~P_FilterKwargs], ~T_Dataset]
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset.py#L20-L46)
+
+
+register a maze filter, casting it to operate over the whole list of mazes
+
+method should be a staticmethod of a namespace class registered with `register_filter_namespace_for_dataset`
+
+this is a more restricted version of `register_dataset_filter` that removes the need for boilerplate for operating over the arrays
 
 
 ### `class LatticeMazeGenerators:` { #LatticeMazeGenerators }
@@ -2139,14 +2090,14 @@ Benchmarking of how successful maze generation is for various values of percolat
 
 
 
-- `AnalysisFunc = typing.Callable[[maze_dataset.dataset.maze_dataset.MazeDatasetConfig], ~SweepReturnType]`
+- `AnalysisFunc = typing.Callable[[maze_dataset.dataset.maze_dataset_config.MazeDatasetConfig], ~SweepReturnType]`
 
 
 
 
 ### `def dataset_success_fraction` { #dataset_success_fraction }
 ```python
-(cfg: maze_dataset.dataset.maze_dataset.MazeDatasetConfig) -> float
+(cfg: maze_dataset.dataset.maze_dataset_config.MazeDatasetConfig) -> float
 ```
 
 
@@ -2158,7 +2109,7 @@ empirical success fraction of maze generation
 for use as an `analyze_func` in `sweep()`
 
 
-- `ANALYSIS_FUNCS: dict[str, typing.Callable[[maze_dataset.dataset.maze_dataset.MazeDatasetConfig], ~SweepReturnType]] = {'dataset_success_fraction': <function dataset_success_fraction>}`
+- `ANALYSIS_FUNCS: dict[str, typing.Callable[[maze_dataset.dataset.maze_dataset_config.MazeDatasetConfig], ~SweepReturnType]] = {'dataset_success_fraction': <function dataset_success_fraction>}`
 
 
 
@@ -2166,10 +2117,10 @@ for use as an `analyze_func` in `sweep()`
 ### `def sweep` { #sweep }
 ```python
 (
-    cfg_base: maze_dataset.dataset.maze_dataset.MazeDatasetConfig,
+    cfg_base: maze_dataset.dataset.maze_dataset_config.MazeDatasetConfig,
     param_values: list[~ParamType],
     param_key: str,
-    analyze_func: Callable[[maze_dataset.dataset.maze_dataset.MazeDatasetConfig], ~SweepReturnType]
+    analyze_func: Callable[[maze_dataset.dataset.maze_dataset_config.MazeDatasetConfig], ~SweepReturnType]
 ) -> list[~SweepReturnType]
 ```
 
@@ -2205,18 +2156,18 @@ result of a parameter sweep
 ### `SweepResult` { #SweepResult.__init__ }
 ```python
 (
-    configs: list[maze_dataset.dataset.maze_dataset.MazeDatasetConfig],
+    configs: list[maze_dataset.dataset.maze_dataset_config.MazeDatasetConfig],
     param_values: list[~ParamType],
     result_values: dict[str, typing.Sequence[~SweepReturnType]],
     param_key: str,
-    analyze_func: Callable[[maze_dataset.dataset.maze_dataset.MazeDatasetConfig], ~SweepReturnType]
+    analyze_func: Callable[[maze_dataset.dataset.maze_dataset_config.MazeDatasetConfig], ~SweepReturnType]
 )
 ```
 
 
 
 
-- `configs: list[maze_dataset.dataset.maze_dataset.MazeDatasetConfig] `
+- `configs: list[maze_dataset.dataset.maze_dataset_config.MazeDatasetConfig] `
 
 
 
@@ -2236,7 +2187,7 @@ result of a parameter sweep
 
 
 
-- `analyze_func: Callable[[maze_dataset.dataset.maze_dataset.MazeDatasetConfig], ~SweepReturnType] `
+- `analyze_func: Callable[[maze_dataset.dataset.maze_dataset_config.MazeDatasetConfig], ~SweepReturnType] `
 
 
 
@@ -2285,7 +2236,9 @@ read from a file with zanj
 
 ### `def configs_by_name` { #SweepResult.configs_by_name }
 ```python
-(self) -> dict[str, maze_dataset.dataset.maze_dataset.MazeDatasetConfig]
+(
+    self
+) -> dict[str, maze_dataset.dataset.maze_dataset_config.MazeDatasetConfig]
 ```
 
 
@@ -2297,7 +2250,9 @@ return configs by name
 
 ### `def configs_by_key` { #SweepResult.configs_by_key }
 ```python
-(self) -> dict[str, maze_dataset.dataset.maze_dataset.MazeDatasetConfig]
+(
+    self
+) -> dict[str, maze_dataset.dataset.maze_dataset_config.MazeDatasetConfig]
 ```
 
 
@@ -2363,10 +2318,10 @@ get a subset of this `Result` where the configs has `key` satisfying `val_check`
 ```python
 (
     cls,
-    configs: list[maze_dataset.dataset.maze_dataset.MazeDatasetConfig],
+    configs: list[maze_dataset.dataset.maze_dataset_config.MazeDatasetConfig],
     param_values: list[~ParamType],
     param_key: str,
-    analyze_func: Callable[[maze_dataset.dataset.maze_dataset.MazeDatasetConfig], ~SweepReturnType],
+    analyze_func: Callable[[maze_dataset.dataset.maze_dataset_config.MazeDatasetConfig], ~SweepReturnType],
     parallel: bool | int = False,
     **kwargs
 ) -> maze_dataset.benchmark.config_sweep.SweepResult
@@ -2460,7 +2415,7 @@ run the full analysis of how percolation affects maze generation success
 ```python
 (
     results: maze_dataset.benchmark.config_sweep.SweepResult,
-    predict_fn: Optional[Callable[[maze_dataset.dataset.maze_dataset.MazeDatasetConfig], float]] = None,
+    predict_fn: Optional[Callable[[maze_dataset.dataset.maze_dataset_config.MazeDatasetConfig], float]] = None,
     prediction_density: int = 50,
     save_dir: pathlib.Path | None = None,
     show: bool = True,
@@ -2719,8 +2674,11 @@ map of cardinal directions to appropriate tokens
 - [`collected_dataset`](#collected_dataset)
 - [`configs`](#configs)
 - [`dataset`](#dataset)
+- [`filters`](#filters)
+- [`maze_dataset_config`](#maze_dataset_config)
 - [`maze_dataset`](#maze_dataset)
 - [`rasterized`](#rasterized)
+- [`success_predict_math`](#success_predict_math)
 
 ## API Documentation
 
@@ -2738,13 +2696,13 @@ map of cardinal directions to appropriate tokens
 
 `MazeDatasetConfig`s are used to create a `MazeDataset` via `<a href="#MazeDataset.from_config">MazeDataset.from_config</a>(cfg)`
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset.py#L0-L20)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset.py#L0-L24)
 
 
 
-### `class MazeDataset(maze_dataset.dataset.dataset.GPTDataset):` { #MazeDataset }
+### `class MazeDataset(maze_dataset.dataset.dataset.GPTDataset[maze_dataset.dataset.maze_dataset_config.MazeDatasetConfig]):` { #MazeDataset }
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset.py#L447-L876)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset.py#L112-L565)
 
 
 a maze dataset class. This is a collection of solved mazes, and should be initialized via `<a href="#MazeDataset.from_config">MazeDataset.from_config</a>`
@@ -2753,19 +2711,19 @@ a maze dataset class. This is a collection of solved mazes, and should be initia
 ### `MazeDataset` { #MazeDataset.__init__ }
 ```python
 (
-    cfg: maze_dataset.dataset.maze_dataset.MazeDatasetConfig,
+    cfg: maze_dataset.dataset.maze_dataset_config.MazeDatasetConfig,
     mazes: Sequence[maze_dataset.maze.lattice_maze.SolvedMaze],
     generation_metadata_collected: dict | None = None
 )
 ```
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset.py#L450-L460)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset.py#L115-L125)
 
 
 initialize a maze dataset from a config and a list of solved mazes
 
 
-- `cfg: maze_dataset.dataset.maze_dataset.MazeDatasetConfig `
+- `cfg: maze_dataset.dataset.maze_dataset_config.MazeDatasetConfig `
 
 
 
@@ -2784,7 +2742,7 @@ initialize a maze dataset from a config and a list of solved mazes
 ```python
 (
     cls,
-    cfg: maze_dataset.dataset.maze_dataset.MazeDatasetConfig,
+    cfg: maze_dataset.dataset.maze_dataset_config.MazeDatasetConfig,
     do_generate: bool = True,
     load_local: bool = True,
     save_local: bool = True,
@@ -2799,7 +2757,7 @@ initialize a maze dataset from a config and a list of solved mazes
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset.py#L462-L500)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset.py#L128-L167)
 
 
 create a maze dataset from a config
@@ -2816,7 +2774,7 @@ priority of loading:
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset.py#L502-L504)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset.py#L169-L171)
 
 
 return a hash of the data
@@ -2833,7 +2791,7 @@ return a hash of the data
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset.py#L532-L557)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset.py#L203-L228)
 
 
 return the dataset as tokens according to the passed `maze_tokenizer`
@@ -2850,19 +2808,32 @@ i.e.:
         ["a b c", "d e f"]
 
 
+### `def assert_equal` { #MazeDataset.assert_equal }
+```python
+(self, other: maze_dataset.dataset.maze_dataset.MazeDataset) -> None
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset.py#L243-L247)
+
+
+assert that two datasets are equal
+
+
 ### `def generate` { #MazeDataset.generate }
 ```python
 (
     cls,
-    cfg: maze_dataset.dataset.maze_dataset.MazeDatasetConfig,
+    cfg: maze_dataset.dataset.maze_dataset_config.MazeDatasetConfig,
     gen_parallel: bool = False,
     pool_kwargs: dict | None = None,
-    verbose: bool = False
+    verbose: bool = False,
+    **kwargs
 ) -> maze_dataset.dataset.maze_dataset.MazeDataset
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset.py#L572-L642)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset.py#L249-L323)
 
 
 Generate a maze dataset given a config and some generation parameters
@@ -2872,13 +2843,13 @@ Generate a maze dataset given a config and some generation parameters
 ```python
 (
     cls,
-    cfg: maze_dataset.dataset.maze_dataset.MazeDatasetConfig,
+    cfg: maze_dataset.dataset.maze_dataset_config.MazeDatasetConfig,
     **kwargs
 ) -> maze_dataset.dataset.maze_dataset.MazeDataset
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset.py#L644-L647)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset.py#L325-L328)
 
 
 (not implemented yet!) download a maze dataset from the internet
@@ -2887,13 +2858,13 @@ Generate a maze dataset given a config and some generation parameters
 ### `def load` { #MazeDataset.load }
 ```python
 (
-    cls,
+    cls: type[maze_dataset.dataset.maze_dataset.MazeDataset],
     data: Dict[str, Union[bool, int, float, str, NoneType, List[Union[bool, int, float, str, NoneType, List[Any], Dict[str, Any]]], Dict[str, Union[bool, int, float, str, NoneType, List[Any], Dict[str, Any]]]]]
 ) -> maze_dataset.dataset.maze_dataset.MazeDataset
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset.py#L649-L666)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset.py#L330-L347)
 
 
 load from zanj/json
@@ -2907,7 +2878,7 @@ load from zanj/json
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset.py#L747-L754)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset.py#L428-L435)
 
 
 serialize to zanj/json
@@ -2919,7 +2890,7 @@ serialize to zanj/json
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset.py#L855-L857)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset.py#L540-L546)
 
 
 update the config to match the current state of the dataset (number of mazes, such as after filtering)
@@ -2935,7 +2906,7 @@ update the config to match the current state of the dataset (number of mazes, su
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset.py#L859-L876)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset.py#L548-L565)
 
 
 filter the dataset using a custom method
@@ -2949,9 +2920,9 @@ filter the dataset using a custom method
 - [`filter_by`](#MazeDataset.filter_by)
 
 
-### `class MazeDatasetConfig(maze_dataset.dataset.dataset.GPTDatasetConfig):` { #MazeDatasetConfig }
+### `class MazeDatasetConfig(maze_dataset.dataset.maze_dataset_config._MazeDatasetConfig_base):` { #MazeDatasetConfig }
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset.py#L128-L383)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset.py#L234-L443)
 
 
 config object which is passed to `<a href="#MazeDataset.from_config">MazeDataset.from_config</a>` to generate or load a dataset
@@ -2965,125 +2936,45 @@ config object which is passed to `<a href="#MazeDataset.from_config">MazeDataset
     seq_len_min: int = 1,
     seq_len_max: int = 512,
     seed: int | None = 42,
-    applied_filters: list[dict[typing.Literal['name', 'args', 'kwargs'], str | list | dict]] = <factory>,
+    applied_filters: list[dict[typing.Literal['name', 'args', 'kwargs'], str | list | tuple | dict]] = <factory>,
     grid_n: int,
     n_mazes: int,
     maze_ctor: Callable = <function LatticeMazeGenerators.gen_dfs>,
     maze_ctor_kwargs: dict = <factory>,
-    endpoint_kwargs: dict[typing.Literal['allowed_start', 'allowed_end', 'deadend_start', 'deadend_end', 'endpoints_not_equal', 'except_on_no_valid_endpoint'], bool | None | list[tuple[int, int]]] = <factory>
+    endpoint_kwargs: dict[typing.Literal['allowed_start', 'allowed_end', 'deadend_start', 'deadend_end', 'endpoints_not_equal', 'except_on_no_valid_endpoint'], bool | None | list[tuple[int, int]]] = <factory>,
+    _fname_loaded: str | None = None
 )
 ```
 
 
 
 
-- `grid_n: int `
+- `config_version: str `
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset.py#L238-L241)
 
 
+return the version of the config. added in maze_dataset v1.3.0, previous versions had no dataset config
 
 
-- `n_mazes: int `
+- `versions: dict `
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset.py#L243-L249)
 
 
+return the versions of the config and the maze_dataset
 
 
-### `def maze_ctor` { #MazeDatasetConfig.maze_ctor }
+### `def serialize` { #MazeDatasetConfig.serialize }
 ```python
-(
-    grid_shape: jaxtyping.Int8[ndarray, 'row_col=2'] | tuple[int, int],
-    lattice_dim: int = 2,
-    accessible_cells: float | None = None,
-    max_tree_depth: float | None = None,
-    do_forks: bool = True,
-    randomized_stack: bool = False,
-    start_coord: jaxtyping.Int8[ndarray, 'row_col=2'] | None = None
-) -> maze_dataset.maze.lattice_maze.LatticeMaze
+(self) -> dict
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset.py#L56-L203)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset.py#L251-L259)
 
 
-generate a lattice maze using depth first search, iterative
-
-### Arguments
-- `grid_shape: Coord`: the shape of the grid
-- `lattice_dim: int`: the dimension of the lattice
-        (default: `2`)
-- `accessible_cells: int | float |None`: the number of accessible cells in the maze. If `None`, defaults to the total number of cells in the grid. if a float, asserts it is <= 1 and treats it as a proportion of **total cells**
-        (default: `None`)
-- `max_tree_depth: int | float | None`: the maximum depth of the tree. If `None`, defaults to `2 * accessible_cells`. if a float, asserts it is <= 1 and treats it as a proportion of the **sum of the grid shape**
-        (default: `None`)
-- `do_forks: bool`: whether to allow forks in the maze. If `False`, the maze will be have no forks and will be a simple hallway.
-- `start_coord: Coord | None`: the starting coordinate of the generation algorithm. If `None`, defaults to a random coordinate.
-
-### algorithm
-1. Choose the initial cell, mark it as visited and push it to the stack
-2. While the stack is not empty
-        1. Pop a cell from the stack and make it a current cell
-        2. If the current cell has any neighbours which have not been visited
-                1. Push the current cell to the stack
-                2. Choose one of the unvisited neighbours
-                3. Remove the wall between the current cell and the chosen cell
-                4. Mark the chosen cell as visited and push it to the stack
-
-
-- `maze_ctor_kwargs: dict `
-
-
-
-
-- `endpoint_kwargs: dict[typing.Literal['allowed_start', 'allowed_end', 'deadend_start', 'deadend_end', 'endpoints_not_equal', 'except_on_no_valid_endpoint'], bool | None | list[tuple[int, int]]] `
-
-
-
-
-- `grid_shape: tuple[int, int] `
-
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset.py#L167-L170)
-
-
-return the shape of the grid as a tuple
-
-
-- `grid_shape_np: jaxtyping.Int8[ndarray, 'row_col=2'] `
-
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset.py#L172-L175)
-
-
-return the shape of the grid as a numpy array
-
-
-- `max_grid_n: int `
-
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset.py#L177-L180)
-
-
-return the maximum of the grid shape
-
-
-### `def stable_hash_cfg` { #MazeDatasetConfig.stable_hash_cfg }
-```python
-(self) -> int
-```
-
-
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset.py#L182-L190)
-
-
-return a stable hash of the config
-
-
-### `def to_fname` { #MazeDatasetConfig.to_fname }
-```python
-(self) -> str
-```
-
-
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset.py#L193-L200)
-
-
-return a unique identifier (valid as a filename) for this config
+serialize the MazeDatasetConfig with all fields and fname
 
 
 ### `def summary` { #MazeDatasetConfig.summary }
@@ -3092,7 +2983,7 @@ return a unique identifier (valid as a filename) for this config
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset.py#L202-L221)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset.py#L261-L280)
 
 
 return a summary of the config
@@ -3104,7 +2995,7 @@ return a summary of the config
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset.py#L303-L333)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset.py#L363-L393)
 
 
 Estimate the success fraction of this config.
@@ -3134,11 +3025,11 @@ this estimate comes from `estimate_dataset_fractions.ipynb` and `maze_dataset.be
     safety_margin: float = 1.2,
     except_if_all_success_expected: bool = False,
     epsilon: float = 0.01
-) -> maze_dataset.dataset.maze_dataset.MazeDatasetConfig
+) -> maze_dataset.dataset.maze_dataset_config.MazeDatasetConfig
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset.py#L335-L383)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset.py#L395-L443)
 
 
 return a new `MazeDatasetConfig` like this one with `n_mazes` adjusted to compensate for the success fraction
@@ -3163,18 +3054,6 @@ return a new `MazeDatasetConfig` like this one with `n_mazes` adjusted to compen
 
 ### Raises:
 - `SuccessChanceTooSmallError` : if the computed success fraction is below `epsilon`
-
-
-### `def serialize` { #MazeDatasetConfig.serialize }
-```python
-(self) -> dict[str, typing.Any]
-```
-
-
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset.py#L713-L769)
-
-
-returns the class as a dict, implemented by using `@serializable_dataclass` decorator
 
 
 ### `def load` { #MazeDatasetConfig.load }
@@ -3206,6 +3085,17 @@ validate the types of all the fields on a `SerializableDataclass`. calls `Serial
 
 ### Inherited Members                                
 
+- [`grid_n`](#MazeDatasetConfig.grid_n)
+- [`n_mazes`](#MazeDatasetConfig.n_mazes)
+- [`maze_ctor`](#MazeDatasetConfig.maze_ctor)
+- [`maze_ctor_kwargs`](#MazeDatasetConfig.maze_ctor_kwargs)
+- [`endpoint_kwargs`](#MazeDatasetConfig.endpoint_kwargs)
+- [`grid_shape`](#MazeDatasetConfig.grid_shape)
+- [`grid_shape_np`](#MazeDatasetConfig.grid_shape_np)
+- [`max_grid_n`](#MazeDatasetConfig.max_grid_n)
+- [`stable_hash_cfg`](#MazeDatasetConfig.stable_hash_cfg)
+- [`to_fname`](#MazeDatasetConfig.to_fname)
+
 - [`name`](#MazeDatasetConfig.name)
 - [`seq_len_min`](#MazeDatasetConfig.seq_len_min)
 - [`seq_len_max`](#MazeDatasetConfig.seq_len_max)
@@ -3217,9 +3107,9 @@ validate the types of all the fields on a `SerializableDataclass`. calls `Serial
 - [`update_from_nested_dict`](#MazeDatasetConfig.update_from_nested_dict)
 
 
-### `class MazeDatasetCollection(maze_dataset.dataset.dataset.GPTDataset):` { #MazeDatasetCollection }
+### `class MazeDatasetCollection(typing.Generic[~T_DatasetConfig]):` { #MazeDatasetCollection }
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset.py#L76-L215)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset.py#L83-L224)
 
 
 a collection of maze datasets
@@ -3234,7 +3124,7 @@ a collection of maze datasets
 )
 ```
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset.py#L79-L97)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset.py#L86-L104)
 
 
 initialize the dataset collection from a `MazeDatasetCollectionConfig` and a list of `MazeDataset`s
@@ -3257,7 +3147,7 @@ initialize the dataset collection from a `MazeDatasetCollectionConfig` and a lis
 
 - `dataset_lengths: list[int] `
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset.py#L99-L102)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset.py#L106-L109)
 
 
 return the lengths of each dataset in the collection
@@ -3265,7 +3155,7 @@ return the lengths of each dataset in the collection
 
 - `dataset_cum_lengths: jaxtyping.Int[ndarray, 'indices'] `
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset.py#L104-L107)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset.py#L111-L114)
 
 
 return the cumulative lengths of each dataset in the collection
@@ -3273,7 +3163,7 @@ return the cumulative lengths of each dataset in the collection
 
 - `mazes: list[maze_dataset.maze.lattice_maze.LatticeMaze] `
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset.py#L109-L116)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset.py#L116-L123)
 
 
 single list of all mazes in the collection
@@ -3289,7 +3179,7 @@ single list of all mazes in the collection
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset.py#L136-L147)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset.py#L143-L154)
 
 
 generate a dataset collection from a config
@@ -3305,7 +3195,7 @@ generate a dataset collection from a config
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset.py#L149-L160)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset.py#L156-L167)
 
 
 (not implemented!) download a dataset collection from a config
@@ -3319,7 +3209,7 @@ generate a dataset collection from a config
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset.py#L162-L171)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset.py#L169-L178)
 
 
 serialize the dataset collection
@@ -3334,7 +3224,7 @@ serialize the dataset collection
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset.py#L173-L182)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset.py#L180-L189)
 
 
 load the dataset collection from the representation created by `serialize`
@@ -3351,7 +3241,7 @@ load the dataset collection from the representation created by `serialize`
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset.py#L185-L208)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset.py#L192-L215)
 
 
 return the dataset as tokens
@@ -3371,7 +3261,7 @@ i.e.:
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset.py#L210-L215)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset.py#L217-L224)
 
 
 update the config to match the number of mazes, and update the underlying configs of each dataset
@@ -3389,7 +3279,7 @@ update the config to match the number of mazes, and update the underlying config
 
 ### `class MazeDatasetCollectionConfig(maze_dataset.dataset.dataset.GPTDatasetConfig):` { #MazeDatasetCollectionConfig }
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset.py#L30-L73)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset.py#L30-L80)
 
 
 maze dataset collection configuration, including tokenizers and shuffle
@@ -3403,15 +3293,15 @@ maze dataset collection configuration, including tokenizers and shuffle
     seq_len_min: int = 1,
     seq_len_max: int = 512,
     seed: int | None = 42,
-    applied_filters: list[dict[typing.Literal['name', 'args', 'kwargs'], str | list | dict]] = <factory>,
-    maze_dataset_configs: list[maze_dataset.dataset.maze_dataset.MazeDatasetConfig]
+    applied_filters: list[dict[typing.Literal['name', 'args', 'kwargs'], str | list | tuple | dict]] = <factory>,
+    maze_dataset_configs: list[maze_dataset.dataset.maze_dataset_config.MazeDatasetConfig]
 )
 ```
 
 
 
 
-- `maze_dataset_configs: list[maze_dataset.dataset.maze_dataset.MazeDatasetConfig] `
+- `maze_dataset_configs: list[maze_dataset.dataset.maze_dataset_config.MazeDatasetConfig] `
 
 
 
@@ -3422,7 +3312,7 @@ maze dataset collection configuration, including tokenizers and shuffle
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset.py#L41-L43)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset.py#L42-L50)
 
 
 return a summary of the config
@@ -3430,7 +3320,7 @@ return a summary of the config
 
 - `n_mazes: int `
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset.py#L45-L48)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset.py#L52-L55)
 
 
 return the total number of mazes in the collection across all dataset
@@ -3438,7 +3328,7 @@ return the total number of mazes in the collection across all dataset
 
 - `max_grid_n: int `
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset.py#L50-L53)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset.py#L57-L60)
 
 
 return the maximum grid size of the mazes in the collection
@@ -3446,7 +3336,7 @@ return the maximum grid size of the mazes in the collection
 
 - `max_grid_shape: tuple[int, int] `
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset.py#L55-L58)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset.py#L62-L65)
 
 
 return the maximum grid shape of the mazes in the collection
@@ -3454,7 +3344,7 @@ return the maximum grid shape of the mazes in the collection
 
 - `max_grid_shape_np: jaxtyping.Int8[ndarray, 'row_col=2'] `
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset.py#L60-L63)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset.py#L67-L70)
 
 
 return the maximum grid shape of the mazes in the collection as a numpy array
@@ -3466,7 +3356,7 @@ return the maximum grid shape of the mazes in the collection as a numpy array
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset.py#L65-L67)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset.py#L72-L74)
 
 
 return a stable hash of the config
@@ -3478,7 +3368,7 @@ return a stable hash of the config
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset.py#L69-L73)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset.py#L76-L80)
 
 
 convert config to a filename
@@ -3565,13 +3455,13 @@ collecting different maze datasets into a single dataset, for greater variety in
 > [!CAUTION]
 > `MazeDatasetCollection` is not thoroughly tested and is not guaranteed to work.
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/collected_dataset.py#L0-L230)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/collected_dataset.py#L0-L240)
 
 
 
 ### `class MazeDatasetCollectionConfig(maze_dataset.dataset.dataset.GPTDatasetConfig):` { #MazeDatasetCollectionConfig }
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/collected_dataset.py#L30-L73)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/collected_dataset.py#L30-L80)
 
 
 maze dataset collection configuration, including tokenizers and shuffle
@@ -3585,15 +3475,15 @@ maze dataset collection configuration, including tokenizers and shuffle
     seq_len_min: int = 1,
     seq_len_max: int = 512,
     seed: int | None = 42,
-    applied_filters: list[dict[typing.Literal['name', 'args', 'kwargs'], str | list | dict]] = <factory>,
-    maze_dataset_configs: list[maze_dataset.dataset.maze_dataset.MazeDatasetConfig]
+    applied_filters: list[dict[typing.Literal['name', 'args', 'kwargs'], str | list | tuple | dict]] = <factory>,
+    maze_dataset_configs: list[maze_dataset.dataset.maze_dataset_config.MazeDatasetConfig]
 )
 ```
 
 
 
 
-- `maze_dataset_configs: list[maze_dataset.dataset.maze_dataset.MazeDatasetConfig] `
+- `maze_dataset_configs: list[maze_dataset.dataset.maze_dataset_config.MazeDatasetConfig] `
 
 
 
@@ -3604,7 +3494,7 @@ maze dataset collection configuration, including tokenizers and shuffle
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/collected_dataset.py#L41-L43)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/collected_dataset.py#L42-L50)
 
 
 return a summary of the config
@@ -3612,7 +3502,7 @@ return a summary of the config
 
 - `n_mazes: int `
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/collected_dataset.py#L45-L48)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/collected_dataset.py#L52-L55)
 
 
 return the total number of mazes in the collection across all dataset
@@ -3620,7 +3510,7 @@ return the total number of mazes in the collection across all dataset
 
 - `max_grid_n: int `
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/collected_dataset.py#L50-L53)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/collected_dataset.py#L57-L60)
 
 
 return the maximum grid size of the mazes in the collection
@@ -3628,7 +3518,7 @@ return the maximum grid size of the mazes in the collection
 
 - `max_grid_shape: tuple[int, int] `
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/collected_dataset.py#L55-L58)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/collected_dataset.py#L62-L65)
 
 
 return the maximum grid shape of the mazes in the collection
@@ -3636,7 +3526,7 @@ return the maximum grid shape of the mazes in the collection
 
 - `max_grid_shape_np: jaxtyping.Int8[ndarray, 'row_col=2'] `
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/collected_dataset.py#L60-L63)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/collected_dataset.py#L67-L70)
 
 
 return the maximum grid shape of the mazes in the collection as a numpy array
@@ -3648,7 +3538,7 @@ return the maximum grid shape of the mazes in the collection as a numpy array
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/collected_dataset.py#L65-L67)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/collected_dataset.py#L72-L74)
 
 
 return a stable hash of the config
@@ -3660,7 +3550,7 @@ return a stable hash of the config
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/collected_dataset.py#L69-L73)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/collected_dataset.py#L76-L80)
 
 
 convert config to a filename
@@ -3718,9 +3608,9 @@ validate the types of all the fields on a `SerializableDataclass`. calls `Serial
 - [`update_from_nested_dict`](#MazeDatasetCollectionConfig.update_from_nested_dict)
 
 
-### `class MazeDatasetCollection(maze_dataset.dataset.dataset.GPTDataset):` { #MazeDatasetCollection }
+### `class MazeDatasetCollection(typing.Generic[~T_DatasetConfig]):` { #MazeDatasetCollection }
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/collected_dataset.py#L76-L215)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/collected_dataset.py#L83-L224)
 
 
 a collection of maze datasets
@@ -3735,7 +3625,7 @@ a collection of maze datasets
 )
 ```
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/collected_dataset.py#L79-L97)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/collected_dataset.py#L86-L104)
 
 
 initialize the dataset collection from a `MazeDatasetCollectionConfig` and a list of `MazeDataset`s
@@ -3758,7 +3648,7 @@ initialize the dataset collection from a `MazeDatasetCollectionConfig` and a lis
 
 - `dataset_lengths: list[int] `
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/collected_dataset.py#L99-L102)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/collected_dataset.py#L106-L109)
 
 
 return the lengths of each dataset in the collection
@@ -3766,7 +3656,7 @@ return the lengths of each dataset in the collection
 
 - `dataset_cum_lengths: jaxtyping.Int[ndarray, 'indices'] `
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/collected_dataset.py#L104-L107)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/collected_dataset.py#L111-L114)
 
 
 return the cumulative lengths of each dataset in the collection
@@ -3774,7 +3664,7 @@ return the cumulative lengths of each dataset in the collection
 
 - `mazes: list[maze_dataset.maze.lattice_maze.LatticeMaze] `
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/collected_dataset.py#L109-L116)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/collected_dataset.py#L116-L123)
 
 
 single list of all mazes in the collection
@@ -3790,7 +3680,7 @@ single list of all mazes in the collection
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/collected_dataset.py#L136-L147)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/collected_dataset.py#L143-L154)
 
 
 generate a dataset collection from a config
@@ -3806,7 +3696,7 @@ generate a dataset collection from a config
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/collected_dataset.py#L149-L160)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/collected_dataset.py#L156-L167)
 
 
 (not implemented!) download a dataset collection from a config
@@ -3820,7 +3710,7 @@ generate a dataset collection from a config
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/collected_dataset.py#L162-L171)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/collected_dataset.py#L169-L178)
 
 
 serialize the dataset collection
@@ -3835,7 +3725,7 @@ serialize the dataset collection
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/collected_dataset.py#L173-L182)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/collected_dataset.py#L180-L189)
 
 
 load the dataset collection from the representation created by `serialize`
@@ -3852,7 +3742,7 @@ load the dataset collection from the representation created by `serialize`
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/collected_dataset.py#L185-L208)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/collected_dataset.py#L192-L215)
 
 
 return the dataset as tokens
@@ -3872,7 +3762,7 @@ i.e.:
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/collected_dataset.py#L210-L215)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/collected_dataset.py#L217-L224)
 
 
 update the config to match the number of mazes, and update the underlying configs of each dataset
@@ -3910,7 +3800,7 @@ update the config to match the number of mazes, and update the underlying config
 
 `MAZE_DATASET_CONFIGS` contains some default configs for tests and demos
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/configs.py#L0-L67)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/configs.py#L0-L74)
 
 
 
@@ -3940,7 +3830,8 @@ they implement some basic functionality, saving/loading, the `from_config` pipel
  - [`GPTDatasetConfig`](#GPTDatasetConfig)
  - [`GPTDataset`](#GPTDataset)
  - [`register_filter_namespace_for_dataset`](#register_filter_namespace_for_dataset)
- - [`DatasetFilterProtocol`](#DatasetFilterProtocol)
+ - [`P_FilterKwargs`](#P_FilterKwargs)
+ - [`DatasetFilterFunc`](#DatasetFilterFunc)
  - [`register_dataset_filter`](#register_dataset_filter)
 
 
@@ -3957,7 +3848,7 @@ they implement some basic functionality, saving/loading, the `from_config` pipel
 > [!NOTE]
 > these should probably be moved into a different package, so don't rely on them being here
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/dataset.py#L0-L536)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/dataset.py#L0-L552)
 
 
 
@@ -3967,7 +3858,7 @@ they implement some basic functionality, saving/loading, the `from_config` pipel
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/dataset.py#L30-L33)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/dataset.py#L33-L36)
 
 
 set reproducibility in stdlib random and numpy (but not torch)
@@ -3975,7 +3866,7 @@ set reproducibility in stdlib random and numpy (but not torch)
 
 ### `class FilterInfoMismatchError(builtins.ValueError):` { #FilterInfoMismatchError }
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/dataset.py#L36-L39)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/dataset.py#L39-L42)
 
 
 raised when the filter info in a dataset config does not match the filter info in the dataset
@@ -3992,7 +3883,7 @@ raised when the filter info in a dataset config does not match the filter info i
 
 ### `class GPTDatasetConfig(muutils.json_serialize.serializable_dataclass.SerializableDataclass):` { #GPTDatasetConfig }
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/dataset.py#L61-L124)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/dataset.py#L64-L127)
 
 
 base GPTDatasetConfig class
@@ -4006,7 +3897,7 @@ base GPTDatasetConfig class
     seq_len_min: int = 1,
     seq_len_max: int = 512,
     seed: int | None = 42,
-    applied_filters: list[dict[typing.Literal['name', 'args', 'kwargs'], str | list | dict]] = <factory>
+    applied_filters: list[dict[typing.Literal['name', 'args', 'kwargs'], str | list | tuple | dict]] = <factory>
 )
 ```
 
@@ -4033,7 +3924,7 @@ base GPTDatasetConfig class
 
 
 
-- `applied_filters: list[dict[typing.Literal['name', 'args', 'kwargs'], str | list | dict]] `
+- `applied_filters: list[dict[typing.Literal['name', 'args', 'kwargs'], str | list | tuple | dict]] `
 
 
 
@@ -4044,7 +3935,7 @@ base GPTDatasetConfig class
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/dataset.py#L97-L108)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/dataset.py#L100-L111)
 
 
 return a summary of the config
@@ -4056,7 +3947,7 @@ return a summary of the config
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/dataset.py#L115-L124)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/dataset.py#L117-L127)
 
 
 convert config to a filename
@@ -4072,7 +3963,7 @@ convert config to a filename
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/dataset.py#L135-L139)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/dataset.py#L138-L142)
 
 
 returns the class as a dict, implemented by using `@serializable_dataclass` decorator
@@ -4084,7 +3975,7 @@ returns the class as a dict, implemented by using `@serializable_dataclass` deco
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/dataset.py#L127-L131)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/dataset.py#L130-L134)
 
 
 takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
@@ -4112,9 +4003,9 @@ validate the types of all the fields on a `SerializableDataclass`. calls `Serial
 - [`update_from_nested_dict`](#GPTDatasetConfig.update_from_nested_dict)
 
 
-### `class GPTDataset:` { #GPTDataset }
+### `class GPTDataset(typing.Generic[~T_DatasetConfig]):` { #GPTDataset }
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/dataset.py#L146-L424)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/dataset.py#L150-L441)
 
 
 wrapper for torch dataset with some extra functionality
@@ -4183,7 +4074,7 @@ the following methods should be implemented in subclasses:
         apply filters to the dataset, as specified in the config. used in `from_config()` but only when generating
 
 
-- `cfg: maze_dataset.dataset.dataset.GPTDatasetConfig `
+- `cfg: ~T_DatasetConfig `
 
 
 
@@ -4191,8 +4082,8 @@ the following methods should be implemented in subclasses:
 ### `def from_config` { #GPTDataset.from_config }
 ```python
 (
-    cls,
-    cfg: maze_dataset.dataset.dataset.GPTDatasetConfig,
+    cls: type[~T_Dataset],
+    cfg: ~T_DatasetConfig,
     do_generate: bool = True,
     load_local: bool = True,
     save_local: bool = True,
@@ -4203,11 +4094,11 @@ the following methods should be implemented in subclasses:
     allow_generation_metadata_filter_mismatch: bool = True,
     verbose: bool = False,
     **kwargs
-) -> maze_dataset.dataset.dataset.GPTDataset
+) -> ~T_Dataset
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/dataset.py#L218-L320)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/dataset.py#L222-L324)
 
 
 base class for gpt datasets
@@ -4228,7 +4119,7 @@ priority of loading:
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/dataset.py#L322-L326)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/dataset.py#L326-L330)
 
 
 save dataset to a file with zanj
@@ -4237,14 +4128,14 @@ save dataset to a file with zanj
 ### `def read` { #GPTDataset.read }
 ```python
 (
-    cls,
-    file_path: str,
+    cls: type[~T_Dataset],
+    file_path: str | pathlib.Path,
     zanj: zanj.zanj.ZANJ | None = None
-) -> maze_dataset.dataset.dataset.GPTDataset
+) -> ~T_Dataset
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/dataset.py#L329-L334)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/dataset.py#L333-L340)
 
 
 read dataset from a file with zanj
@@ -4253,12 +4144,12 @@ read dataset from a file with zanj
 ### `def serialize` { #GPTDataset.serialize }
 ```python
 (
-    self
-) -> Union[bool, int, float, str, NoneType, List[Union[bool, int, float, str, NoneType, List[Any], Dict[str, Any]]], Dict[str, Union[bool, int, float, str, NoneType, List[Any], Dict[str, Any]]]]
+    self: ~T_Dataset
+) -> Dict[str, Union[bool, int, float, str, NoneType, List[Union[bool, int, float, str, NoneType, List[Any], Dict[str, Any]]], Dict[str, Union[bool, int, float, str, NoneType, List[Any], Dict[str, Any]]]]]
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/dataset.py#L336-L338)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/dataset.py#L342-L344)
 
 
 (implement in subclass!) serialize to something we can save with zanj
@@ -4266,11 +4157,11 @@ read dataset from a file with zanj
 
 ### `def data_hash` { #GPTDataset.data_hash }
 ```python
-(self) -> int
+(self: ~T_Dataset) -> int
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/dataset.py#L340-L342)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/dataset.py#L346-L348)
 
 
 (implement in subclass!) return a hash of the data
@@ -4279,13 +4170,13 @@ read dataset from a file with zanj
 ### `def load` { #GPTDataset.load }
 ```python
 (
-    cls,
-    data: Union[bool, int, float, str, NoneType, List[Union[bool, int, float, str, NoneType, List[Any], Dict[str, Any]]], Dict[str, Union[bool, int, float, str, NoneType, List[Any], Dict[str, Any]]]]
-) -> maze_dataset.dataset.dataset.GPTDataset
+    cls: type[~T_Dataset],
+    data: Dict[str, Union[bool, int, float, str, NoneType, List[Union[bool, int, float, str, NoneType, List[Any], Dict[str, Any]]], Dict[str, Union[bool, int, float, str, NoneType, List[Any], Dict[str, Any]]]]]
+) -> ~T_Dataset
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/dataset.py#L344-L347)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/dataset.py#L350-L353)
 
 
 (implement in subclass!) load a dataset from what we made with `.serialize()`
@@ -4293,15 +4184,11 @@ read dataset from a file with zanj
 
 ### `def generate` { #GPTDataset.generate }
 ```python
-(
-    cls,
-    cfg: maze_dataset.dataset.dataset.GPTDatasetConfig,
-    **kwargs
-) -> maze_dataset.dataset.dataset.GPTDataset
+(cls: type[~T_Dataset], cfg: ~T_DatasetConfig, **kwargs) -> ~T_Dataset
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/dataset.py#L350-L353)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/dataset.py#L356-L361)
 
 
 (implement in subclass!) generative given the config
@@ -4309,15 +4196,11 @@ read dataset from a file with zanj
 
 ### `def download` { #GPTDataset.download }
 ```python
-(
-    cls,
-    cfg: maze_dataset.dataset.dataset.GPTDatasetConfig,
-    **kwargs
-) -> maze_dataset.dataset.dataset.GPTDataset
+(cls: type[~T_Dataset], cfg: ~T_DatasetConfig, **kwargs) -> ~T_Dataset
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/dataset.py#L355-L358)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/dataset.py#L363-L368)
 
 
 (implement in subclass!) download the dataset given the config
@@ -4329,7 +4212,7 @@ read dataset from a file with zanj
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/dataset.py#L361-L366)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/dataset.py#L371-L376)
 
 
 (implement in subclass!) update the config of the dataset to match the actual data, if needed
@@ -4339,7 +4222,7 @@ for example, adjust number of mazes after filtering
 
 - `filter_by: maze_dataset.dataset.dataset.GPTDataset.FilterBy `
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/dataset.py#L387-L390)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/dataset.py#L401-L404)
 
 
 can call `my_dataset.filter_by.some_registered_filter()` to filter the dataset
@@ -4347,7 +4230,7 @@ can call `my_dataset.filter_by.some_registered_filter()` to filter the dataset
 
 ### `class GPTDataset.FilterBy:` { #GPTDataset.FilterBy }
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/dataset.py#L368-L385)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/dataset.py#L382-L399)
 
 
 thanks GPT-4
@@ -4355,16 +4238,16 @@ thanks GPT-4
 
 ### `GPTDataset.FilterBy` { #GPTDataset.FilterBy.__init__ }
 ```python
-(dataset: maze_dataset.dataset.dataset.GPTDataset)
+(dataset: ~T_Dataset)
 ```
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/dataset.py#L371-L373)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/dataset.py#L385-L387)
 
 
 mock class so we can call `my_dataset.filter_by.some_registered_filter()`
 
 
-- `dataset: maze_dataset.dataset.dataset.GPTDataset `
+- `dataset: ~T_Dataset `
 
 
 
@@ -4377,26 +4260,18 @@ mock class so we can call `my_dataset.filter_by.some_registered_filter()`
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/dataset.py#L490-L501)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/dataset.py#L507-L518)
 
 
 register the namespace class with the given dataset class
 
 
-### `class DatasetFilterProtocol(typing.Protocol):` { #DatasetFilterProtocol }
-
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/dataset.py#L504-L511)
+- `P_FilterKwargs = ~P_FilterKwargs`
 
 
-protocol for typing hinting what a dataset filter should look like
 
 
-### `DatasetFilterProtocol` { #DatasetFilterProtocol.__init__ }
-```python
-(*args, **kwargs)
-```
-
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/dataset.py#L1766-L1792)
+- `DatasetFilterFunc = typing.Callable[typing.Concatenate[~T_Dataset, ~P_FilterKwargs], ~T_Dataset]`
 
 
 
@@ -4404,19 +4279,225 @@ protocol for typing hinting what a dataset filter should look like
 ### `def register_dataset_filter` { #register_dataset_filter }
 ```python
 (
-    method: maze_dataset.dataset.dataset.DatasetFilterProtocol
-) -> maze_dataset.dataset.dataset.DatasetFilterProtocol
+    method: Callable[Concatenate[~T_Dataset, ~P_FilterKwargs], ~T_Dataset]
+) -> Callable[Concatenate[~T_Dataset, ~P_FilterKwargs], ~T_Dataset]
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/dataset.py#L517-L537)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/dataset.py#L526-L553)
 
 
 register a dataset filter, copying the underlying dataset and updating the config
 
 be sure to return a COPY, not the original?
+### TODO: what the heck do we mean by the above? why the question mark? it should be a copy right?
 
 method should be a staticmethod of a namespace class registered with `register_filter_namespace_for_dataset`
+
+
+
+
+> docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.3.0
+
+
+## Contents
+filtering `MazeDataset`s
+
+
+## API Documentation
+
+ - [`register_maze_filter`](#register_maze_filter)
+ - [`MazeDatasetFilters`](#MazeDatasetFilters)
+
+
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/filters.py)
+
+# `maze_dataset.dataset.filters` { #maze_dataset.dataset.filters }
+
+filtering `MazeDataset`s
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/filters.py#L0-L294)
+
+
+
+### `def register_maze_filter` { #register_maze_filter }
+```python
+(
+    method: Callable[[maze_dataset.maze.lattice_maze.SolvedMaze, Any], bool]
+) -> Callable[Concatenate[~T_Dataset, ~P_FilterKwargs], ~T_Dataset]
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/filters.py#L20-L46)
+
+
+register a maze filter, casting it to operate over the whole list of mazes
+
+method should be a staticmethod of a namespace class registered with `register_filter_namespace_for_dataset`
+
+this is a more restricted version of `register_dataset_filter` that removes the need for boilerplate for operating over the arrays
+
+
+### `class MazeDatasetFilters:` { #MazeDatasetFilters }
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/filters.py#L49-L295)
+
+
+namespace for filters for `MazeDataset`s
+
+
+### `def path_length` { #MazeDatasetFilters.path_length }
+```python
+(maze: maze_dataset.maze.lattice_maze.SolvedMaze, min_length: int) -> bool
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/filters.py#L53-L57)
+
+
+filter out mazes with a solution length less than `min_length`
+
+
+### `def start_end_distance` { #MazeDatasetFilters.start_end_distance }
+```python
+(
+    maze: maze_dataset.maze.lattice_maze.SolvedMaze,
+    min_distance: int
+) -> bool
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/filters.py#L59-L65)
+
+
+filter out datasets where the start and end pos are less than `min_distance` apart on the manhattan distance (ignoring walls)
+
+
+### `def cut_percentile_shortest` { #MazeDatasetFilters.cut_percentile_shortest }
+```python
+(
+    dataset: maze_dataset.dataset.maze_dataset.MazeDataset,
+    percentile: float = 10.0
+) -> maze_dataset.dataset.maze_dataset.MazeDataset
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/filters.py#L67-L85)
+
+
+cut the shortest `percentile` of mazes from the dataset
+
+`percentile` is 1-100, not 0-1, as this is what `np.percentile` expects
+
+
+### `def truncate_count` { #MazeDatasetFilters.truncate_count }
+```python
+(
+    dataset: maze_dataset.dataset.maze_dataset.MazeDataset,
+    max_count: int
+) -> maze_dataset.dataset.maze_dataset.MazeDataset
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/filters.py#L87-L98)
+
+
+truncate the dataset to be at most `max_count` mazes
+
+
+### `def remove_duplicates` { #MazeDatasetFilters.remove_duplicates }
+```python
+(
+    dataset: maze_dataset.dataset.maze_dataset.MazeDataset,
+    minimum_difference_connection_list: int | None = 1,
+    minimum_difference_solution: int | None = 1,
+    _max_dataset_len_threshold: int = 1000
+) -> maze_dataset.dataset.maze_dataset.MazeDataset
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/filters.py#L100-L163)
+
+
+remove duplicates from a dataset, keeping the **LAST** unique maze
+
+set minimum either minimum difference to `None` to disable checking
+
+if you want to avoid mazes which have more overlap, set the minimum difference to be greater
+
+Gotchas:
+- if two mazes are of different sizes, they will never be considered duplicates
+- if two solutions are of different lengths, they will never be considered duplicates
+
+TODO: check for overlap?
+
+
+### `def remove_duplicates_fast` { #MazeDatasetFilters.remove_duplicates_fast }
+```python
+(
+    dataset: maze_dataset.dataset.maze_dataset.MazeDataset
+) -> maze_dataset.dataset.maze_dataset.MazeDataset
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/filters.py#L165-L176)
+
+
+remove duplicates from a dataset
+
+
+### `def strip_generation_meta` { #MazeDatasetFilters.strip_generation_meta }
+```python
+(
+    dataset: maze_dataset.dataset.maze_dataset.MazeDataset
+) -> maze_dataset.dataset.maze_dataset.MazeDataset
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/filters.py#L178-L186)
+
+
+strip the generation meta from the dataset
+
+
+### `def collect_generation_meta` { #MazeDatasetFilters.collect_generation_meta }
+```python
+(
+    dataset: maze_dataset.dataset.maze_dataset.MazeDataset,
+    clear_in_mazes: bool = True,
+    inplace: bool = True,
+    allow_fail: bool = False
+) -> maze_dataset.dataset.maze_dataset.MazeDataset
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/filters.py#L188-L295)
+
+
+collect the generation metadata from each maze into a dataset-level metadata (saves space)
+
+### Parameters:
+- `dataset : MazeDataset`
+- `clear_in_mazes : bool`
+        whether to clear the generation meta in the mazes after collecting it, keep it there if `False`
+        (defaults to `True`)
+- `inplace : bool`
+        whether to modify the dataset in place or return a new one
+        (defaults to `True`)
+- `allow_fail : bool`
+        whether to allow the collection to fail if the generation meta is not present in a maze
+        (defaults to `False`)
+
+### Returns:
+- `MazeDataset`
+        the dataset with the generation metadata collected
+
+### Raises:
+- `ValueError` : if the generation meta is not present in a maze and `allow_fail` is `False`
+- `ValueError` : if we have other problems converting the generation metadata
+- `TypeError` : if the generation meta on a maze is of an unexpected type
 
 
 
@@ -4432,16 +4513,7 @@ see [demo_dataset notebook](../../notebooks/demo_dataset)
 
 ## API Documentation
 
- - [`SERIALIZE_MINIMAL_THRESHOLD`](#SERIALIZE_MINIMAL_THRESHOLD)
- - [`NoPercolationInConfigError`](#NoPercolationInConfigError)
- - [`SuccessChanceTooSmallError`](#SuccessChanceTooSmallError)
- - [`set_serialize_minimal_threshold`](#set_serialize_minimal_threshold)
- - [`EndpointKwargsType`](#EndpointKwargsType)
- - [`MAZEDATASETCONFIG_FNAME_HASH_LENGTH`](#MAZEDATASETCONFIG_FNAME_HASH_LENGTH)
- - [`MazeDatasetConfig`](#MazeDatasetConfig)
  - [`MazeDataset`](#MazeDataset)
- - [`register_maze_filter`](#register_maze_filter)
- - [`MazeDatasetFilters`](#MazeDatasetFilters)
 
 
 
@@ -4454,18 +4526,279 @@ see [demo_dataset notebook](../../notebooks/demo_dataset)
 
 see [demo_dataset notebook](../../notebooks/demo_dataset)
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/maze_dataset.py#L0-L1217)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/maze_dataset.py#L0-L631)
+
+
+
+### `class MazeDataset(maze_dataset.dataset.dataset.GPTDataset[maze_dataset.dataset.maze_dataset_config.MazeDatasetConfig]):` { #MazeDataset }
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/maze_dataset.py#L112-L565)
+
+
+a maze dataset class. This is a collection of solved mazes, and should be initialized via `<a href="#MazeDataset.from_config">MazeDataset.from_config</a>`
+
+
+### `MazeDataset` { #MazeDataset.__init__ }
+```python
+(
+    cfg: maze_dataset.dataset.maze_dataset_config.MazeDatasetConfig,
+    mazes: Sequence[maze_dataset.maze.lattice_maze.SolvedMaze],
+    generation_metadata_collected: dict | None = None
+)
+```
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/maze_dataset.py#L115-L125)
+
+
+initialize a maze dataset from a config and a list of solved mazes
+
+
+- `cfg: maze_dataset.dataset.maze_dataset_config.MazeDatasetConfig `
+
+
+
+
+- `mazes: list[maze_dataset.maze.lattice_maze.SolvedMaze] `
+
+
+
+
+- `generation_metadata_collected: dict | None `
+
+
+
+
+### `def from_config` { #MazeDataset.from_config }
+```python
+(
+    cls,
+    cfg: maze_dataset.dataset.maze_dataset_config.MazeDatasetConfig,
+    do_generate: bool = True,
+    load_local: bool = True,
+    save_local: bool = True,
+    zanj: zanj.zanj.ZANJ | None = None,
+    do_download: bool = True,
+    local_base_path: pathlib.Path = PosixPath('data/maze_dataset'),
+    except_on_config_mismatch: bool = True,
+    allow_generation_metadata_filter_mismatch: bool = True,
+    verbose: bool = False,
+    **kwargs
+) -> maze_dataset.dataset.maze_dataset.MazeDataset
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/maze_dataset.py#L128-L167)
+
+
+create a maze dataset from a config
+
+priority of loading:
+1. load from local
+2. download
+3. generate
+
+
+### `def data_hash` { #MazeDataset.data_hash }
+```python
+(self) -> int
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/maze_dataset.py#L169-L171)
+
+
+return a hash of the data
+
+
+### `def as_tokens` { #MazeDataset.as_tokens }
+```python
+(
+    self,
+    maze_tokenizer,
+    limit: int | None = None,
+    join_tokens_individual_maze: bool = False
+) -> list[list[str]] | list[str]
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/maze_dataset.py#L203-L228)
+
+
+return the dataset as tokens according to the passed `maze_tokenizer`
+
+the `maze_tokenizer` should be either a `MazeTokenizer` or a `MazeTokenizerModular`
+
+if `join_tokens_individual_maze` is True, then the tokens of each maze are
+joined with a space, and the result is a list of strings.
+i.e.:
+
+        >>> dataset.as_tokens(join_tokens_individual_maze=False)
+        [["a", "b", "c"], ["d", "e", "f"]]
+        >>> dataset.as_tokens(join_tokens_individual_maze=True)
+        ["a b c", "d e f"]
+
+
+### `def assert_equal` { #MazeDataset.assert_equal }
+```python
+(self, other: maze_dataset.dataset.maze_dataset.MazeDataset) -> None
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/maze_dataset.py#L243-L247)
+
+
+assert that two datasets are equal
+
+
+### `def generate` { #MazeDataset.generate }
+```python
+(
+    cls,
+    cfg: maze_dataset.dataset.maze_dataset_config.MazeDatasetConfig,
+    gen_parallel: bool = False,
+    pool_kwargs: dict | None = None,
+    verbose: bool = False,
+    **kwargs
+) -> maze_dataset.dataset.maze_dataset.MazeDataset
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/maze_dataset.py#L249-L323)
+
+
+Generate a maze dataset given a config and some generation parameters
+
+
+### `def download` { #MazeDataset.download }
+```python
+(
+    cls,
+    cfg: maze_dataset.dataset.maze_dataset_config.MazeDatasetConfig,
+    **kwargs
+) -> maze_dataset.dataset.maze_dataset.MazeDataset
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/maze_dataset.py#L325-L328)
+
+
+(not implemented yet!) download a maze dataset from the internet
+
+
+### `def load` { #MazeDataset.load }
+```python
+(
+    cls: type[maze_dataset.dataset.maze_dataset.MazeDataset],
+    data: Dict[str, Union[bool, int, float, str, NoneType, List[Union[bool, int, float, str, NoneType, List[Any], Dict[str, Any]]], Dict[str, Union[bool, int, float, str, NoneType, List[Any], Dict[str, Any]]]]]
+) -> maze_dataset.dataset.maze_dataset.MazeDataset
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/maze_dataset.py#L330-L347)
+
+
+load from zanj/json
+
+
+### `def serialize` { #MazeDataset.serialize }
+```python
+(
+    self
+) -> Dict[str, Union[bool, int, float, str, NoneType, List[Union[bool, int, float, str, NoneType, List[Any], Dict[str, Any]]], Dict[str, Union[bool, int, float, str, NoneType, List[Any], Dict[str, Any]]]]]
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/maze_dataset.py#L428-L435)
+
+
+serialize to zanj/json
+
+
+### `def update_self_config` { #MazeDataset.update_self_config }
+```python
+(self) -> None
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/maze_dataset.py#L540-L546)
+
+
+update the config to match the current state of the dataset (number of mazes, such as after filtering)
+
+
+### `def custom_maze_filter` { #MazeDataset.custom_maze_filter }
+```python
+(
+    self,
+    method: Callable[[maze_dataset.maze.lattice_maze.SolvedMaze], bool],
+    **kwargs
+) -> maze_dataset.dataset.maze_dataset.MazeDataset
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/maze_dataset.py#L548-L565)
+
+
+filter the dataset using a custom method
+
+
+### Inherited Members                                
+
+- [`save`](#MazeDataset.save)
+- [`read`](#MazeDataset.read)
+- [`FilterBy`](#MazeDataset.FilterBy)
+- [`filter_by`](#MazeDataset.filter_by)
+
+
+
+
+> docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.3.0
+
+
+## Contents
+implements `MazeDatasetConfig` which is used to generate or load a dataset
+
+
+## API Documentation
+
+ - [`SERIALIZE_MINIMAL_THRESHOLD`](#SERIALIZE_MINIMAL_THRESHOLD)
+ - [`MAZEDATASETCONFIG_FNAME_HASH_LENGTH`](#MAZEDATASETCONFIG_FNAME_HASH_LENGTH)
+ - [`NoPercolationInConfigError`](#NoPercolationInConfigError)
+ - [`SuccessChanceTooSmallError`](#SuccessChanceTooSmallError)
+ - [`set_serialize_minimal_threshold`](#set_serialize_minimal_threshold)
+ - [`EndpointKwargsType`](#EndpointKwargsType)
+ - [`MazeDatasetConfig`](#MazeDatasetConfig)
+
+
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/maze_dataset_config.py)
+
+# `maze_dataset.dataset.maze_dataset_config` { #maze_dataset.dataset.maze_dataset_config }
+
+implements `MazeDatasetConfig` which is used to generate or load a dataset
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/maze_dataset_config.py#L0-L442)
 
 
 
 - `SERIALIZE_MINIMAL_THRESHOLD: int | None = 100`
 
 
+If `n_mazes>=SERIALIZE_MINIMAL_THRESHOLD`, then the MazeDataset will use `serialize_minimal`.
+Setting to None means that `serialize_minimal` will never be used.
+Set to -1 to make calls to `read` use `MazeDataset._load_legacy`. Used for profiling only.
+
+
+- `MAZEDATASETCONFIG_FNAME_HASH_LENGTH: int = 5`
+
+
+length of the has, in characters, of the hash in the fname of a `MazeDatasetConfig`
 
 
 ### `class NoPercolationInConfigError(builtins.ValueError):` { #NoPercolationInConfigError }
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/maze_dataset.py#L59-L62)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/maze_dataset_config.py#L43-L46)
 
 
 raised when trying to predict the success fraction of a config that doesn't have percolation
@@ -4482,7 +4815,7 @@ raised when trying to predict the success fraction of a config that doesn't have
 
 ### `class SuccessChanceTooSmallError(builtins.ValueError):` { #SuccessChanceTooSmallError }
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/maze_dataset.py#L65-L68)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/maze_dataset_config.py#L49-L52)
 
 
 raised when the success fraction is below the threshold in `<a href="#MazeDatasetConfig.success_fraction_compensate">MazeDatasetConfig.success_fraction_compensate</a>`
@@ -4503,7 +4836,7 @@ raised when the success fraction is below the threshold in `<a href="#MazeDatase
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/maze_dataset.py#L71-L74)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/maze_dataset_config.py#L55-L58)
 
 
 get the global SERIALIZE_MINIMAL_THRESHOLD
@@ -4515,17 +4848,12 @@ get the global SERIALIZE_MINIMAL_THRESHOLD
 type hint for `<a href="#MazeDatasetConfig.endpoint_kwargs">MazeDatasetConfig.endpoint_kwargs</a>`
 
 
-- `MAZEDATASETCONFIG_FNAME_HASH_LENGTH: int = 5`
+### `class MazeDatasetConfig(_MazeDatasetConfig_base):` { #MazeDatasetConfig }
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/maze_dataset_config.py#L234-L443)
 
 
-
-
-### `class MazeDatasetConfig(maze_dataset.dataset.dataset.GPTDatasetConfig):` { #MazeDatasetConfig }
-
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/maze_dataset.py#L128-L383)
-
-
-config object which is passed to `<a href="#MazeDataset.from_config">MazeDataset.from_config</a>` to generate or load a dataset
+config object which is passed to `MazeDataset.from_config` to generate or load a dataset
 
 
 ### `MazeDatasetConfig` { #MazeDatasetConfig.__init__ }
@@ -4536,125 +4864,45 @@ config object which is passed to `<a href="#MazeDataset.from_config">MazeDataset
     seq_len_min: int = 1,
     seq_len_max: int = 512,
     seed: int | None = 42,
-    applied_filters: list[dict[typing.Literal['name', 'args', 'kwargs'], str | list | dict]] = <factory>,
+    applied_filters: list[dict[typing.Literal['name', 'args', 'kwargs'], str | list | tuple | dict]] = <factory>,
     grid_n: int,
     n_mazes: int,
     maze_ctor: Callable = <function LatticeMazeGenerators.gen_dfs>,
     maze_ctor_kwargs: dict = <factory>,
-    endpoint_kwargs: dict[typing.Literal['allowed_start', 'allowed_end', 'deadend_start', 'deadend_end', 'endpoints_not_equal', 'except_on_no_valid_endpoint'], bool | None | list[tuple[int, int]]] = <factory>
+    endpoint_kwargs: dict[typing.Literal['allowed_start', 'allowed_end', 'deadend_start', 'deadend_end', 'endpoints_not_equal', 'except_on_no_valid_endpoint'], bool | None | list[tuple[int, int]]] = <factory>,
+    _fname_loaded: str | None = None
 )
 ```
 
 
 
 
-- `grid_n: int `
+- `config_version: str `
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/maze_dataset_config.py#L238-L241)
 
 
+return the version of the config. added in maze_dataset v1.3.0, previous versions had no dataset config
 
 
-- `n_mazes: int `
+- `versions: dict `
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/maze_dataset_config.py#L243-L249)
 
 
+return the versions of the config and the maze_dataset
 
 
-### `def maze_ctor` { #MazeDatasetConfig.maze_ctor }
+### `def serialize` { #MazeDatasetConfig.serialize }
 ```python
-(
-    grid_shape: jaxtyping.Int8[ndarray, 'row_col=2'] | tuple[int, int],
-    lattice_dim: int = 2,
-    accessible_cells: float | None = None,
-    max_tree_depth: float | None = None,
-    do_forks: bool = True,
-    randomized_stack: bool = False,
-    start_coord: jaxtyping.Int8[ndarray, 'row_col=2'] | None = None
-) -> maze_dataset.maze.lattice_maze.LatticeMaze
+(self) -> dict
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/maze_dataset.py#L56-L203)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/maze_dataset_config.py#L251-L259)
 
 
-generate a lattice maze using depth first search, iterative
-
-### Arguments
-- `grid_shape: Coord`: the shape of the grid
-- `lattice_dim: int`: the dimension of the lattice
-        (default: `2`)
-- `accessible_cells: int | float |None`: the number of accessible cells in the maze. If `None`, defaults to the total number of cells in the grid. if a float, asserts it is <= 1 and treats it as a proportion of **total cells**
-        (default: `None`)
-- `max_tree_depth: int | float | None`: the maximum depth of the tree. If `None`, defaults to `2 * accessible_cells`. if a float, asserts it is <= 1 and treats it as a proportion of the **sum of the grid shape**
-        (default: `None`)
-- `do_forks: bool`: whether to allow forks in the maze. If `False`, the maze will be have no forks and will be a simple hallway.
-- `start_coord: Coord | None`: the starting coordinate of the generation algorithm. If `None`, defaults to a random coordinate.
-
-### algorithm
-1. Choose the initial cell, mark it as visited and push it to the stack
-2. While the stack is not empty
-        1. Pop a cell from the stack and make it a current cell
-        2. If the current cell has any neighbours which have not been visited
-                1. Push the current cell to the stack
-                2. Choose one of the unvisited neighbours
-                3. Remove the wall between the current cell and the chosen cell
-                4. Mark the chosen cell as visited and push it to the stack
-
-
-- `maze_ctor_kwargs: dict `
-
-
-
-
-- `endpoint_kwargs: dict[typing.Literal['allowed_start', 'allowed_end', 'deadend_start', 'deadend_end', 'endpoints_not_equal', 'except_on_no_valid_endpoint'], bool | None | list[tuple[int, int]]] `
-
-
-
-
-- `grid_shape: tuple[int, int] `
-
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/maze_dataset.py#L167-L170)
-
-
-return the shape of the grid as a tuple
-
-
-- `grid_shape_np: jaxtyping.Int8[ndarray, 'row_col=2'] `
-
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/maze_dataset.py#L172-L175)
-
-
-return the shape of the grid as a numpy array
-
-
-- `max_grid_n: int `
-
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/maze_dataset.py#L177-L180)
-
-
-return the maximum of the grid shape
-
-
-### `def stable_hash_cfg` { #MazeDatasetConfig.stable_hash_cfg }
-```python
-(self) -> int
-```
-
-
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/maze_dataset.py#L182-L190)
-
-
-return a stable hash of the config
-
-
-### `def to_fname` { #MazeDatasetConfig.to_fname }
-```python
-(self) -> str
-```
-
-
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/maze_dataset.py#L193-L200)
-
-
-return a unique identifier (valid as a filename) for this config
+serialize the MazeDatasetConfig with all fields and fname
 
 
 ### `def summary` { #MazeDatasetConfig.summary }
@@ -4663,7 +4911,7 @@ return a unique identifier (valid as a filename) for this config
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/maze_dataset.py#L202-L221)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/maze_dataset_config.py#L261-L280)
 
 
 return a summary of the config
@@ -4675,7 +4923,7 @@ return a summary of the config
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/maze_dataset.py#L303-L333)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/maze_dataset_config.py#L363-L393)
 
 
 Estimate the success fraction of this config.
@@ -4705,11 +4953,11 @@ this estimate comes from `estimate_dataset_fractions.ipynb` and `maze_dataset.be
     safety_margin: float = 1.2,
     except_if_all_success_expected: bool = False,
     epsilon: float = 0.01
-) -> maze_dataset.dataset.maze_dataset.MazeDatasetConfig
+) -> maze_dataset.dataset.maze_dataset_config.MazeDatasetConfig
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/maze_dataset.py#L335-L383)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/maze_dataset_config.py#L395-L443)
 
 
 return a new `MazeDatasetConfig` like this one with `n_mazes` adjusted to compensate for the success fraction
@@ -4736,25 +4984,13 @@ return a new `MazeDatasetConfig` like this one with `n_mazes` adjusted to compen
 - `SuccessChanceTooSmallError` : if the computed success fraction is below `epsilon`
 
 
-### `def serialize` { #MazeDatasetConfig.serialize }
-```python
-(self) -> dict[str, typing.Any]
-```
-
-
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/maze_dataset.py#L713-L769)
-
-
-returns the class as a dict, implemented by using `@serializable_dataclass` decorator
-
-
 ### `def load` { #MazeDatasetConfig.load }
 ```python
 (cls, data: Union[dict[str, Any], ~T]) -> Type[~T]
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/maze_dataset.py#L776-L862)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/maze_dataset_config.py#L776-L862)
 
 
 takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
@@ -4769,13 +5005,24 @@ takes in an appropriately structured dict and returns an instance of the class, 
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/maze_dataset.py#L282-L291)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/maze_dataset_config.py#L282-L291)
 
 
 validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
 
 
 ### Inherited Members                                
+
+- [`grid_n`](#MazeDatasetConfig.grid_n)
+- [`n_mazes`](#MazeDatasetConfig.n_mazes)
+- [`maze_ctor`](#MazeDatasetConfig.maze_ctor)
+- [`maze_ctor_kwargs`](#MazeDatasetConfig.maze_ctor_kwargs)
+- [`endpoint_kwargs`](#MazeDatasetConfig.endpoint_kwargs)
+- [`grid_shape`](#MazeDatasetConfig.grid_shape)
+- [`grid_shape_np`](#MazeDatasetConfig.grid_shape_np)
+- [`max_grid_n`](#MazeDatasetConfig.max_grid_n)
+- [`stable_hash_cfg`](#MazeDatasetConfig.stable_hash_cfg)
+- [`to_fname`](#MazeDatasetConfig.to_fname)
 
 - [`name`](#MazeDatasetConfig.name)
 - [`seq_len_min`](#MazeDatasetConfig.seq_len_min)
@@ -4786,391 +5033,6 @@ validate the types of all the fields on a `SerializableDataclass`. calls `Serial
 - [`validate_field_type`](#MazeDatasetConfig.validate_field_type)
 - [`diff`](#MazeDatasetConfig.diff)
 - [`update_from_nested_dict`](#MazeDatasetConfig.update_from_nested_dict)
-
-
-### `class MazeDataset(maze_dataset.dataset.dataset.GPTDataset):` { #MazeDataset }
-
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/maze_dataset.py#L447-L876)
-
-
-a maze dataset class. This is a collection of solved mazes, and should be initialized via `<a href="#MazeDataset.from_config">MazeDataset.from_config</a>`
-
-
-### `MazeDataset` { #MazeDataset.__init__ }
-```python
-(
-    cfg: maze_dataset.dataset.maze_dataset.MazeDatasetConfig,
-    mazes: Sequence[maze_dataset.maze.lattice_maze.SolvedMaze],
-    generation_metadata_collected: dict | None = None
-)
-```
-
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/maze_dataset.py#L450-L460)
-
-
-initialize a maze dataset from a config and a list of solved mazes
-
-
-- `cfg: maze_dataset.dataset.maze_dataset.MazeDatasetConfig `
-
-
-
-
-- `mazes: list[maze_dataset.maze.lattice_maze.SolvedMaze] `
-
-
-
-
-- `generation_metadata_collected: dict | None `
-
-
-
-
-### `def from_config` { #MazeDataset.from_config }
-```python
-(
-    cls,
-    cfg: maze_dataset.dataset.maze_dataset.MazeDatasetConfig,
-    do_generate: bool = True,
-    load_local: bool = True,
-    save_local: bool = True,
-    zanj: zanj.zanj.ZANJ | None = None,
-    do_download: bool = True,
-    local_base_path: pathlib.Path = PosixPath('data/maze_dataset'),
-    except_on_config_mismatch: bool = True,
-    allow_generation_metadata_filter_mismatch: bool = True,
-    verbose: bool = False,
-    **kwargs
-) -> maze_dataset.dataset.maze_dataset.MazeDataset
-```
-
-
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/maze_dataset.py#L462-L500)
-
-
-create a maze dataset from a config
-
-priority of loading:
-1. load from local
-2. download
-3. generate
-
-
-### `def data_hash` { #MazeDataset.data_hash }
-```python
-(self) -> int
-```
-
-
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/maze_dataset.py#L502-L504)
-
-
-return a hash of the data
-
-
-### `def as_tokens` { #MazeDataset.as_tokens }
-```python
-(
-    self,
-    maze_tokenizer,
-    limit: int | None = None,
-    join_tokens_individual_maze: bool = False
-) -> list[list[str]] | list[str]
-```
-
-
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/maze_dataset.py#L532-L557)
-
-
-return the dataset as tokens according to the passed `maze_tokenizer`
-
-the `maze_tokenizer` should be either a `MazeTokenizer` or a `MazeTokenizerModular`
-
-if `join_tokens_individual_maze` is True, then the tokens of each maze are
-joined with a space, and the result is a list of strings.
-i.e.:
-
-        >>> dataset.as_tokens(join_tokens_individual_maze=False)
-        [["a", "b", "c"], ["d", "e", "f"]]
-        >>> dataset.as_tokens(join_tokens_individual_maze=True)
-        ["a b c", "d e f"]
-
-
-### `def generate` { #MazeDataset.generate }
-```python
-(
-    cls,
-    cfg: maze_dataset.dataset.maze_dataset.MazeDatasetConfig,
-    gen_parallel: bool = False,
-    pool_kwargs: dict | None = None,
-    verbose: bool = False
-) -> maze_dataset.dataset.maze_dataset.MazeDataset
-```
-
-
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/maze_dataset.py#L572-L642)
-
-
-Generate a maze dataset given a config and some generation parameters
-
-
-### `def download` { #MazeDataset.download }
-```python
-(
-    cls,
-    cfg: maze_dataset.dataset.maze_dataset.MazeDatasetConfig,
-    **kwargs
-) -> maze_dataset.dataset.maze_dataset.MazeDataset
-```
-
-
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/maze_dataset.py#L644-L647)
-
-
-(not implemented yet!) download a maze dataset from the internet
-
-
-### `def load` { #MazeDataset.load }
-```python
-(
-    cls,
-    data: Dict[str, Union[bool, int, float, str, NoneType, List[Union[bool, int, float, str, NoneType, List[Any], Dict[str, Any]]], Dict[str, Union[bool, int, float, str, NoneType, List[Any], Dict[str, Any]]]]]
-) -> maze_dataset.dataset.maze_dataset.MazeDataset
-```
-
-
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/maze_dataset.py#L649-L666)
-
-
-load from zanj/json
-
-
-### `def serialize` { #MazeDataset.serialize }
-```python
-(
-    self
-) -> Dict[str, Union[bool, int, float, str, NoneType, List[Union[bool, int, float, str, NoneType, List[Any], Dict[str, Any]]], Dict[str, Union[bool, int, float, str, NoneType, List[Any], Dict[str, Any]]]]]
-```
-
-
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/maze_dataset.py#L747-L754)
-
-
-serialize to zanj/json
-
-
-### `def update_self_config` { #MazeDataset.update_self_config }
-```python
-(self) -> None
-```
-
-
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/maze_dataset.py#L855-L857)
-
-
-update the config to match the current state of the dataset (number of mazes, such as after filtering)
-
-
-### `def custom_maze_filter` { #MazeDataset.custom_maze_filter }
-```python
-(
-    self,
-    method: Callable[[maze_dataset.maze.lattice_maze.SolvedMaze], bool],
-    **kwargs
-) -> maze_dataset.dataset.maze_dataset.MazeDataset
-```
-
-
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/maze_dataset.py#L859-L876)
-
-
-filter the dataset using a custom method
-
-
-### Inherited Members                                
-
-- [`save`](#MazeDataset.save)
-- [`read`](#MazeDataset.read)
-- [`FilterBy`](#MazeDataset.FilterBy)
-- [`filter_by`](#MazeDataset.filter_by)
-
-
-### `def register_maze_filter` { #register_maze_filter }
-```python
-(
-    method: Callable[[maze_dataset.maze.lattice_maze.SolvedMaze, Any], bool]
-) -> maze_dataset.dataset.dataset.DatasetFilterProtocol
-```
-
-
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/maze_dataset.py#L898-L924)
-
-
-register a maze filter, casting it to operate over the whole list of mazes
-
-method should be a staticmethod of a namespace class registered with `register_filter_namespace_for_dataset`
-
-this is a more restricted version of `register_dataset_filter` that removes the need for boilerplate for operating over the arrays
-
-
-### `class MazeDatasetFilters:` { #MazeDatasetFilters }
-
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/maze_dataset.py#L927-L1171)
-
-
-namespace for filters for `MazeDataset`s
-
-
-### `def path_length` { #MazeDatasetFilters.path_length }
-```python
-(maze: maze_dataset.maze.lattice_maze.SolvedMaze, min_length: int) -> bool
-```
-
-
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/maze_dataset.py#L931-L935)
-
-
-filter out mazes with a solution length less than `min_length`
-
-
-### `def start_end_distance` { #MazeDatasetFilters.start_end_distance }
-```python
-(
-    maze: maze_dataset.maze.lattice_maze.SolvedMaze,
-    min_distance: int
-) -> bool
-```
-
-
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/maze_dataset.py#L937-L941)
-
-
-filter out datasets where the start and end pos are less than `min_distance` apart on the manhattan distance (ignoring walls)
-
-
-### `def cut_percentile_shortest` { #MazeDatasetFilters.cut_percentile_shortest }
-```python
-(
-    dataset: maze_dataset.dataset.maze_dataset.MazeDataset,
-    percentile: float = 10.0
-) -> maze_dataset.dataset.maze_dataset.MazeDataset
-```
-
-
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/maze_dataset.py#L943-L961)
-
-
-cut the shortest `percentile` of mazes from the dataset
-
-`percentile` is 1-100, not 0-1, as this is what `np.percentile` expects
-
-
-### `def truncate_count` { #MazeDatasetFilters.truncate_count }
-```python
-(
-    dataset: maze_dataset.dataset.maze_dataset.MazeDataset,
-    max_count: int
-) -> maze_dataset.dataset.maze_dataset.MazeDataset
-```
-
-
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/maze_dataset.py#L963-L974)
-
-
-truncate the dataset to be at most `max_count` mazes
-
-
-### `def remove_duplicates` { #MazeDatasetFilters.remove_duplicates }
-```python
-(
-    dataset: maze_dataset.dataset.maze_dataset.MazeDataset,
-    minimum_difference_connection_list: int | None = 1,
-    minimum_difference_solution: int | None = 1,
-    _max_dataset_len_threshold: int = 1000
-) -> maze_dataset.dataset.maze_dataset.MazeDataset
-```
-
-
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/maze_dataset.py#L976-L1039)
-
-
-remove duplicates from a dataset, keeping the **LAST** unique maze
-
-set minimum either minimum difference to `None` to disable checking
-
-if you want to avoid mazes which have more overlap, set the minimum difference to be greater
-
-Gotchas:
-- if two mazes are of different sizes, they will never be considered duplicates
-- if two solutions are of different lengths, they will never be considered duplicates
-
-TODO: check for overlap?
-
-
-### `def remove_duplicates_fast` { #MazeDatasetFilters.remove_duplicates_fast }
-```python
-(
-    dataset: maze_dataset.dataset.maze_dataset.MazeDataset
-) -> maze_dataset.dataset.maze_dataset.MazeDataset
-```
-
-
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/maze_dataset.py#L1041-L1052)
-
-
-remove duplicates from a dataset
-
-
-### `def strip_generation_meta` { #MazeDatasetFilters.strip_generation_meta }
-```python
-(
-    dataset: maze_dataset.dataset.maze_dataset.MazeDataset
-) -> maze_dataset.dataset.maze_dataset.MazeDataset
-```
-
-
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/maze_dataset.py#L1054-L1062)
-
-
-strip the generation meta from the dataset
-
-
-### `def collect_generation_meta` { #MazeDatasetFilters.collect_generation_meta }
-```python
-(
-    dataset: maze_dataset.dataset.maze_dataset.MazeDataset,
-    clear_in_mazes: bool = True,
-    inplace: bool = True,
-    allow_fail: bool = False
-) -> maze_dataset.dataset.maze_dataset.MazeDataset
-```
-
-
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/maze_dataset.py#L1064-L1171)
-
-
-collect the generation metadata from each maze into a dataset-level metadata (saves space)
-
-### Parameters:
-- `dataset : MazeDataset`
-- `clear_in_mazes : bool`
-        whether to clear the generation meta in the mazes after collecting it, keep it there if `False`
-        (defaults to `True`)
-- `inplace : bool`
-        whether to modify the dataset in place or return a new one
-        (defaults to `True`)
-- `allow_fail : bool`
-        whether to allow the collection to fail if the generation meta is not present in a maze
-        (defaults to `False`)
-
-### Returns:
-- `MazeDataset`
-        the dataset with the generation metadata collected
-
-### Raises:
-- `ValueError` : if the generation meta is not present in a maze and `allow_fail` is `False`
-- `ValueError` : if we have other problems converting the generation metadata
-- `TypeError` : if the generation meta on a maze is of an unexpected type
 
 
 
@@ -5266,7 +5128,7 @@ has extra options for matching the format in https://github.com/aks2203/easy-to-
         (default: `False`)
 
 
-### `class RasterizedMazeDatasetConfig(maze_dataset.dataset.maze_dataset.MazeDatasetConfig):` { #RasterizedMazeDatasetConfig }
+### `class RasterizedMazeDatasetConfig(maze_dataset.dataset.maze_dataset_config.MazeDatasetConfig):` { #RasterizedMazeDatasetConfig }
 
 [View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/rasterized.py#L121-L132)
 
@@ -5289,12 +5151,13 @@ adds options which we then pass to `process_maze_rasterized_input_target`
     seq_len_min: int = 1,
     seq_len_max: int = 512,
     seed: int | None = 42,
-    applied_filters: list[dict[typing.Literal['name', 'args', 'kwargs'], str | list | dict]] = <factory>,
+    applied_filters: list[dict[typing.Literal['name', 'args', 'kwargs'], str | list | tuple | dict]] = <factory>,
     grid_n: int,
     n_mazes: int,
     maze_ctor: Callable = <function LatticeMazeGenerators.gen_dfs>,
     maze_ctor_kwargs: dict = <factory>,
-    endpoint_kwargs: dict[typing.Literal['allowed_start', 'allowed_end', 'deadend_start', 'deadend_end', 'endpoints_not_equal', 'except_on_no_valid_endpoint'], bool | None | list[tuple[int, int]]] = <factory>
+    endpoint_kwargs: dict[typing.Literal['allowed_start', 'allowed_end', 'deadend_start', 'deadend_end', 'endpoints_not_equal', 'except_on_no_valid_endpoint'], bool | None | list[tuple[int, int]]] = <factory>,
+    _fname_loaded: str | None = None
 )
 ```
 
@@ -5325,7 +5188,7 @@ adds options which we then pass to `process_maze_rasterized_input_target`
 [View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/rasterized.py#L713-L769)
 
 
-returns the class as a dict, implemented by using `@serializable_dataclass` decorator
+serialize the MazeDatasetConfig with all fields and fname
 
 
 ### `def load` { #RasterizedMazeDatasetConfig.load }
@@ -5357,6 +5220,12 @@ validate the types of all the fields on a `SerializableDataclass`. calls `Serial
 
 ### Inherited Members                                
 
+- [`config_version`](#RasterizedMazeDatasetConfig.config_version)
+- [`versions`](#RasterizedMazeDatasetConfig.versions)
+- [`summary`](#RasterizedMazeDatasetConfig.summary)
+- [`success_fraction_estimate`](#RasterizedMazeDatasetConfig.success_fraction_estimate)
+- [`success_fraction_compensate`](#RasterizedMazeDatasetConfig.success_fraction_compensate)
+
 - [`grid_n`](#RasterizedMazeDatasetConfig.grid_n)
 - [`n_mazes`](#RasterizedMazeDatasetConfig.n_mazes)
 - [`maze_ctor`](#RasterizedMazeDatasetConfig.maze_ctor)
@@ -5367,9 +5236,6 @@ validate the types of all the fields on a `SerializableDataclass`. calls `Serial
 - [`max_grid_n`](#RasterizedMazeDatasetConfig.max_grid_n)
 - [`stable_hash_cfg`](#RasterizedMazeDatasetConfig.stable_hash_cfg)
 - [`to_fname`](#RasterizedMazeDatasetConfig.to_fname)
-- [`summary`](#RasterizedMazeDatasetConfig.summary)
-- [`success_fraction_estimate`](#RasterizedMazeDatasetConfig.success_fraction_estimate)
-- [`success_fraction_compensate`](#RasterizedMazeDatasetConfig.success_fraction_compensate)
 
 - [`name`](#RasterizedMazeDatasetConfig.name)
 - [`seq_len_min`](#RasterizedMazeDatasetConfig.seq_len_min)
@@ -5382,7 +5248,7 @@ validate the types of all the fields on a `SerializableDataclass`. calls `Serial
 - [`update_from_nested_dict`](#RasterizedMazeDatasetConfig.update_from_nested_dict)
 
 
-### `class RasterizedMazeDataset(maze_dataset.dataset.maze_dataset.MazeDataset):` { #RasterizedMazeDataset }
+### `class RasterizedMazeDataset(maze_dataset.dataset.dataset.GPTDataset[maze_dataset.dataset.maze_dataset_config.MazeDatasetConfig]):` { #RasterizedMazeDataset }
 
 [View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/rasterized.py#L135-L273)
 
@@ -5414,7 +5280,7 @@ get a batch of mazes as a tensor, from a list of indices
 ```python
 (
     cls,
-    cfg: maze_dataset.dataset.rasterized.RasterizedMazeDatasetConfig | maze_dataset.dataset.maze_dataset.MazeDatasetConfig,
+    cfg: maze_dataset.dataset.rasterized.RasterizedMazeDatasetConfig | maze_dataset.dataset.maze_dataset_config.MazeDatasetConfig,
     do_generate: bool = True,
     load_local: bool = True,
     save_local: bool = True,
@@ -5491,6 +5357,7 @@ plot the first `count` mazes in the dataset
 - [`generation_metadata_collected`](#RasterizedMazeDataset.generation_metadata_collected)
 - [`data_hash`](#RasterizedMazeDataset.data_hash)
 - [`as_tokens`](#RasterizedMazeDataset.as_tokens)
+- [`assert_equal`](#RasterizedMazeDataset.assert_equal)
 - [`generate`](#RasterizedMazeDataset.generate)
 - [`download`](#RasterizedMazeDataset.download)
 - [`load`](#RasterizedMazeDataset.load)
@@ -5542,6 +5409,146 @@ output is of structure:
 
 
 ## Contents
+math for getting the `MazeDatasetConfig.success_fraction_estimate()` function to work
+
+Desmos link: https://www.desmos.com/calculator/qllvhwftvy
+
+
+## API Documentation
+
+ - [`sigmoid`](#sigmoid)
+ - [`sigmoid_shifted`](#sigmoid_shifted)
+ - [`g_poly`](#g_poly)
+ - [`f_poly`](#f_poly)
+ - [`h_func`](#h_func)
+ - [`A_scaling`](#A_scaling)
+ - [`soft_step`](#soft_step)
+ - [`cfg_success_predict_fn`](#cfg_success_predict_fn)
+
+
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/success_predict_math.py)
+
+# `maze_dataset.dataset.success_predict_math` { #maze_dataset.dataset.success_predict_math }
+
+math for getting the `MazeDatasetConfig.success_fraction_estimate()` function to work
+
+Desmos link: https://www.desmos.com/calculator/qllvhwftvy
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/success_predict_math.py#L0-L105)
+
+
+
+### `def sigmoid` { #sigmoid }
+```python
+(x: float) -> float
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/success_predict_math.py#L10-L12)
+
+
+$\sigma(x) = \frac{1}{1 + e^{-x}}$
+
+
+### `def sigmoid_shifted` { #sigmoid_shifted }
+```python
+(x: float) -> float
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/success_predict_math.py#L31-L33)
+
+
+\sigma_s(x)= \frac{1}{1 + e^{-10^3 \cdot (x-0.5)}}
+
+
+### `def g_poly` { #g_poly }
+```python
+(q: float, a: float) -> float
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/success_predict_math.py#L36-L38)
+
+
+$g(q,a) = 1 - (|2q-1|)^{a}$
+
+
+### `def f_poly` { #f_poly }
+```python
+(q: float, a: float) -> float
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/success_predict_math.py#L41-L43)
+
+
+$f(q,a) = q \cdot g(q,a)$
+
+
+### `def h_func` { #h_func }
+```python
+(q: float, a: float) -> float
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/success_predict_math.py#L46-L50)
+
+
+$h(q,a,b) = f(q,a) \cdot (1-\sigma_s(q)) + (1-f(1-q,a)) \cdot \sigma_s(q)$
+
+
+### `def A_scaling` { #A_scaling }
+```python
+(q: float, a: float, w: float) -> float
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/success_predict_math.py#L53-L55)
+
+
+$A(q) = w \cdot g(q, a)$
+
+
+### `def soft_step` { #soft_step }
+```python
+(
+    x: float | numpy.floating | jaxtyping.Float[ndarray, 'n'],
+    p: float | numpy.floating,
+    alpha: float | numpy.floating = 5,
+    w: float | numpy.floating = 50
+) -> float
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/success_predict_math.py#L58-L72)
+
+
+when p is close to 0.5 acts like the identity wrt x, but when p is close to 0 or 1, pushes x to 0 or 1 (whichever is closest)
+
+https://www.desmos.com/calculator/qllvhwftvy
+
+
+### `def cfg_success_predict_fn` { #cfg_success_predict_fn }
+```python
+(cfg) -> float
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/dataset/success_predict_math.py#L76-L106)
+
+
+learned by pysr, see `estimate_dataset_fractions.ipynb` and `maze_dataset.benchmark.config_fit`
+
+
+
+
+> docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.3.0
+
+
+## Contents
 generation functions have signature `(grid_shape: Coord, **kwargs) -> LatticeMaze` and are methods in `LatticeMazeGenerators`
 
 `DEFAULT_GENERATORS` is a list of generator name, generator kwargs pairs used in tests and demos
@@ -5550,6 +5557,7 @@ generation functions have signature `(grid_shape: Coord, **kwargs) -> LatticeMaz
 
 - [`default_generators`](#default_generators)
 - [`generators`](#generators)
+- [`seed`](#seed)
 
 ## API Documentation
 
@@ -5569,7 +5577,7 @@ generation functions have signature `(grid_shape: Coord, **kwargs) -> LatticeMaz
 
 `DEFAULT_GENERATORS` is a list of generator name, generator kwargs pairs used in tests and demos
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/generation.py#L0-L22)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/generation.py#L0-L23)
 
 
 
@@ -5727,7 +5735,7 @@ dfs and then percolation (adds cycles)
 helper function to get a maze already with a solution
 
 
-- `numpy_rng = Generator(PCG64) at 0x7031ECEE5B60`
+- `numpy_rng = Generator(PCG64) at 0x739D17165B60`
 
 
 
@@ -5793,7 +5801,7 @@ generation functions have signature `(grid_shape: Coord, **kwargs) -> LatticeMaz
 
 
 
-- `numpy_rng = Generator(PCG64) at 0x7031ECEE5B60`
+- `numpy_rng = Generator(PCG64) at 0x739D17165B60`
 
 
 
@@ -5966,6 +5974,37 @@ mapping of generator names to generator functions, useful for loading `MazeDatas
 
 
 helper function to get a maze already with a solution
+
+
+
+
+> docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.3.0
+
+
+## Contents
+global default seed
+
+
+## API Documentation
+
+ - [`GLOBAL_SEED`](#GLOBAL_SEED)
+
+
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/generation/seed.py)
+
+# `maze_dataset.generation.seed` { #maze_dataset.generation.seed }
+
+global default seed
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/generation/seed.py#L0-L2)
+
+
+
+- `GLOBAL_SEED: int = 42`
+
+
 
 
 
@@ -9171,7 +9210,7 @@ Do not import into any module outside of the tests directory
 
 
 
-- `CFG: Final[maze_dataset.dataset.maze_dataset.MazeDatasetConfig] = MazeDatasetConfig(name='test', seq_len_min=1, seq_len_max=512, seed=42, applied_filters=[], grid_n=5, n_mazes=5, maze_ctor=<function LatticeMazeGenerators.gen_dfs>, maze_ctor_kwargs={}, endpoint_kwargs={})`
+- `CFG: Final[maze_dataset.dataset.maze_dataset_config.MazeDatasetConfig] = MazeDatasetConfig(name='test', seq_len_min=1, seq_len_max=512, seed=42, applied_filters=[], grid_n=5, n_mazes=5, maze_ctor=<function LatticeMazeGenerators.gen_dfs>, maze_ctor_kwargs={}, endpoint_kwargs={}, _fname_loaded=None)`
 
 
 
@@ -9988,12 +10027,13 @@ turning a maze into text
 
 ## Submodules
 
+- [`modular`](#modular)
+- [`common`](#common)
+- [`maze_tokenizer_legacy`](#maze_tokenizer_legacy)
 - [`maze_tokenizer`](#maze_tokenizer)
 
 ## API Documentation
 
- - [`all_tokenizers`](#all_tokenizers)
- - [`save_hashes`](#save_hashes)
  - [`MazeTokenizer`](#MazeTokenizer)
  - [`TokenizationMode`](#TokenizationMode)
  - [`MazeTokenizerModular`](#MazeTokenizerModular)
@@ -10023,17 +10063,7 @@ turning a maze into text
 - legacy `TokenizationMode` enum and `MazeTokenizer` class for supporting existing code
 - a whole lot of helper classes and functions
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization.py#L0-L56)
-
-
-
-- `all_tokenizers `
-
-
-
-
-- `save_hashes `
-
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization.py#L0-L57)
 
 
 
@@ -13319,6 +13349,49 @@ get tokens up to the path start token
 
 
 ## Contents
+common code for various tokenizers
+
+
+## API Documentation
+
+ - [`TokenError`](#TokenError)
+
+
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/common.py)
+
+# `maze_dataset.tokenization.common` { #maze_dataset.tokenization.common }
+
+common code for various tokenizers
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/common.py#L0-L6)
+
+
+
+### `class TokenError(builtins.ValueError):` { #TokenError }
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/common.py#L4-L7)
+
+
+error for tokenization
+
+
+### Inherited Members                                
+
+- [`ValueError`](#TokenError.__init__)
+
+- [`with_traceback`](#TokenError.with_traceback)
+- [`add_note`](#TokenError.add_note)
+- [`args`](#TokenError.args)
+
+
+
+
+> docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.3.0
+
+
+## Contents
 preserving legacy imports
 
 
@@ -14086,6 +14159,3762 @@ validate the types of all the fields on a `SerializableDataclass`. calls `Serial
 - [`validate_field_type`](#MazeTokenizerModular.validate_field_type)
 - [`diff`](#MazeTokenizerModular.diff)
 - [`update_from_nested_dict`](#MazeTokenizerModular.update_from_nested_dict)
+
+
+
+
+> docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.3.0
+
+
+## Contents
+legacy tokenizer which uses a `TokenizationMode` enum and a `MazeTokenizer` class
+
+> [!CAUTION]
+> `MazeTokenizerModular` is the new standard for tokenization. This class is no longer recommended
+> for use, but will remain for compatibility with existing code.
+
+
+## API Documentation
+
+ - [`TokenizationMode`](#TokenizationMode)
+ - [`is_UT`](#is_UT)
+ - [`get_tokens_up_to_path_start`](#get_tokens_up_to_path_start)
+ - [`MazeTokenizer`](#MazeTokenizer)
+
+
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/maze_tokenizer_legacy.py)
+
+# `maze_dataset.tokenization.maze_tokenizer_legacy` { #maze_dataset.tokenization.maze_tokenizer_legacy }
+
+legacy tokenizer which uses a `TokenizationMode` enum and a `MazeTokenizer` class
+
+> [!CAUTION]
+> `MazeTokenizerModular` is the new standard for tokenization. This class is no longer recommended
+> for use, but will remain for compatibility with existing code.
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/maze_tokenizer_legacy.py#L0-L499)
+
+
+
+### `class TokenizationMode(enum.Enum):` { #TokenizationMode }
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/maze_tokenizer_legacy.py#L46-L72)
+
+
+legacy tokenization modes
+
+> [!CAUTION]
+> Legacy mode of tokenization. will still be around in future releases, but is no longer recommended for use.
+> Use `MazeTokenizerModular` instead.
+
+### Abbreviations:
+- `AOTP`: Ajacency list, Origin, Target, Path
+- `UT`: Unique Token (for each coordiate)
+- `CTT`: Coordinate Tuple Tokens (each coordinate is tokenized as a tuple of integers)
+
+### Modes:
+- `AOTP_UT_rasterized`: the "classic" mode: assigning tokens to each coordinate is done via rasterization
+        example: for a 3x3 maze, token order is `(0,0), (0,1), (0,2), (1,0), (1,1), (1,2), (2,0), (2,1), (2,2)`
+- `AOTP_UT_uniform`: new mode, where a 3x3 tokenization scheme and 5x5 tokenizations scheme are compatible
+        uses `corner_first_ndindex` function to order the tokens
+- `AOTP_CTT_indexed`: each coordinate is a tuple of integers
+
+
+- `AOTP_UT_rasterized = <TokenizationMode.AOTP_UT_rasterized: 'AOTP_UT_rasterized'>`
+
+
+
+
+- `AOTP_UT_uniform = <TokenizationMode.AOTP_UT_uniform: 'AOTP_UT_uniform'>`
+
+
+
+
+- `AOTP_CTT_indexed = <TokenizationMode.AOTP_CTT_indexed: 'AOTP_CTT_indexed'>`
+
+
+
+
+### `def to_legacy_tokenizer` { #TokenizationMode.to_legacy_tokenizer }
+```python
+(
+    self,
+    max_grid_size: int | None = None
+) -> maze_dataset.tokenization.maze_tokenizer_legacy.MazeTokenizer
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/maze_tokenizer_legacy.py#L70-L72)
+
+
+convert the mode to a legacy `MazeTokenizer` object given a `max_grid_size`
+
+
+### Inherited Members                                
+
+- [`name`](#TokenizationMode.name)
+- [`value`](#TokenizationMode.value)
+
+
+### `def is_UT` { #is_UT }
+```python
+(
+    tokenization_mode: maze_dataset.tokenization.maze_tokenizer_legacy.TokenizationMode
+) -> bool
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/maze_tokenizer_legacy.py#L84-L89)
+
+
+returns true if a tokenization mode is a UT mode: UT = Unique Token (for each coordinate)
+
+
+### `def get_tokens_up_to_path_start` { #get_tokens_up_to_path_start }
+```python
+(
+    tokens: list[str],
+    include_start_coord: bool = True,
+    tokenization_mode: maze_dataset.tokenization.maze_tokenizer_legacy.TokenizationMode = <TokenizationMode.AOTP_UT_uniform: 'AOTP_UT_uniform'>
+) -> list[str]
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/maze_tokenizer_legacy.py#L92-L126)
+
+
+get tokens up to the path start token
+
+### Parameters:
+- `tokens : list[str]`
+- `include_start_coord : bool`
+        (defaults to `True`)
+- `tokenization_mode : TokenizationMode`
+        (defaults to `<a href="#TokenizationMode.AOTP_UT_uniform">TokenizationMode.AOTP_UT_uniform</a>`)
+
+### Returns:
+- `list[str]` subsequence of `tokens` up to the path start token
+
+### Raises:
+- `ValueError` : if `tokenization_mode` is invalid
+
+
+### `class MazeTokenizer(muutils.json_serialize.serializable_dataclass.SerializableDataclass):` { #MazeTokenizer }
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/maze_tokenizer_legacy.py#L139-L500)
+
+
+LEGACY Tokenizer for mazes
+
+> [!CAUTION]
+> `MazeTokenizerModular` is the new standard for tokenization. This class is no longer recommended
+> for use, but will remain for compatibility with existing code.
+
+### Parameters:
+- `tokenization_mode: TokenizationMode`
+        mode of tokenization. required.
+- `max_grid_size: int | None`
+        maximum grid size. required for actually turning text tokens to numerical tokens, but not for moving between coordinates/mazes and text
+
+### Properties
+- `name: str`
+        auto-generated name of the tokenizer from mode and size
+
+#### Conditional Properties
+
+- `node_strings_map: Mapping[CoordTup, str]`
+        map from node to string. This returns a `muutils.kappa.Kappa` object which you can use like a dictionary. returns `None` if not a `UT` mode
+
+these all return `None` if `max_grid_size` is `None`.
+Prepend `_` to the name to get a guaranteed type, and cause an exception if `max_grid_size` is `None`
+
+- `token_arr: list[str]`
+        list of tokens, in order of their indices in the vocabulary
+- `tokenizer_map: Mapping[str, int]`
+        map from token to index
+- `vocab_size: int`
+        size of the vocabulary
+- `padding_token_index: int`
+        index of the padding token
+
+### Methods
+- `coords_to_strings(coords: list[CoordTup]) -> list[str]`
+        convert a list of coordinates to a list of tokens. Optionally except, skip, or ignore non-coordinates
+- `strings_to_coords(strings: list[str]) -> list[CoordTup]`
+        convert a list of tokens to a list of coordinates. Optionally except, skip, or ignore non-coordinates
+
+
+### `MazeTokenizer` { #MazeTokenizer.__init__ }
+```python
+(
+    *,
+    tokenization_mode: maze_dataset.tokenization.maze_tokenizer_legacy.TokenizationMode = <TokenizationMode.AOTP_UT_uniform: 'AOTP_UT_uniform'>,
+    max_grid_size: int | None = None
+)
+```
+
+
+
+
+- `tokenization_mode: maze_dataset.tokenization.maze_tokenizer_legacy.TokenizationMode = <TokenizationMode.AOTP_UT_uniform: 'AOTP_UT_uniform'>`
+
+
+
+
+- `max_grid_size: int | None = None`
+
+
+
+
+- `name: str `
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/maze_tokenizer_legacy.py#L199-L205)
+
+
+auto-generated name of the tokenizer from mode and size
+
+
+- `node_strings_map: Optional[Mapping[tuple[int, int], list[str]]] `
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/maze_tokenizer_legacy.py#L221-L230)
+
+
+map a coordinate to a token
+
+
+- `token_arr: list[str] | None `
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/maze_tokenizer_legacy.py#L274-L279)
+
+
+get the token array if the max_grid_size is specified
+
+
+- `tokenizer_map: dict[str, int] | None `
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/maze_tokenizer_legacy.py#L286-L291)
+
+
+get the tokenizer map if the max_grid_size is specified
+
+
+- `vocab_size: int | None `
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/maze_tokenizer_legacy.py#L297-L302)
+
+
+get the size of the vocabulary if the max_grid_size is specified
+
+
+- `n_tokens: int | None `
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/maze_tokenizer_legacy.py#L309-L314)
+
+
+get the number of tokens if the max_grid_size is specified
+
+
+- `padding_token_index: int | None `
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/maze_tokenizer_legacy.py#L320-L325)
+
+
+get the index of the padding token if it exists
+
+
+### `def coords_to_strings` { #MazeTokenizer.coords_to_strings }
+```python
+(
+    self,
+    coords: list[tuple[int, int]],
+    when_noncoord: Literal['except', 'skip', 'include'] = 'skip'
+) -> list[str]
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/maze_tokenizer_legacy.py#L342-L369)
+
+
+map a list of coordinate tuples (and maybe other tokens) to strings
+
+wraps `<a href="../token_utils.html#coords_to_strings">maze_dataset.token_utils.coords_to_strings</a>` with either
+`_coord_to_strings_UT` or `_coord_to_strings_indexed` depending on the tokenization mode
+
+
+### `def strings_to_coords` { #MazeTokenizer.strings_to_coords }
+```python
+(
+    cls,
+    text: str | list[str],
+    when_noncoord: Literal['except', 'skip', 'include'] = 'skip'
+) -> list[str | tuple[int, int]]
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/maze_tokenizer_legacy.py#L389-L396)
+
+
+wrapper for `<a href="../token_utils.html#strings_to_coords">maze_dataset.token_utils.strings_to_coords</a>`
+
+
+### `def encode` { #MazeTokenizer.encode }
+```python
+(self, text: str | list[str]) -> list[int]
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/maze_tokenizer_legacy.py#L398-L408)
+
+
+encode a string or list of strings into a list of tokens
+
+
+### `def decode` { #MazeTokenizer.decode }
+```python
+(
+    self,
+    tokens: Sequence[int],
+    joined_tokens: bool = False
+) -> list[str] | str
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/maze_tokenizer_legacy.py#L410-L426)
+
+
+decode a list of tokens into a string or list of strings
+
+
+- `coordinate_tokens_coords: dict[tuple[int, int], int] `
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/maze_tokenizer_legacy.py#L431-L453)
+
+
+map of coordiante tuples to their token ids, only valid for UT
+
+
+- `coordinate_tokens_ids: dict[str, int] `
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/maze_tokenizer_legacy.py#L455-L466)
+
+
+map of coordinate tokens to their token ids, only valid for UT
+
+
+### `def summary` { #MazeTokenizer.summary }
+```python
+(self) -> dict
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/maze_tokenizer_legacy.py#L471-L477)
+
+
+returns a summary of the tokenization mode
+
+
+### `def is_AOTP` { #MazeTokenizer.is_AOTP }
+```python
+(self) -> bool
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/maze_tokenizer_legacy.py#L479-L485)
+
+
+returns true if a tokenization mode is Adjacency list, Origin, Target, Path
+
+
+### `def is_UT` { #MazeTokenizer.is_UT }
+```python
+(self) -> bool
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/maze_tokenizer_legacy.py#L487-L489)
+
+
+returns true if a tokenization mode is a UT mode: UT = Unique Token (for each coordinate)
+
+
+### `def clear_cache` { #MazeTokenizer.clear_cache }
+```python
+(self) -> None
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/maze_tokenizer_legacy.py#L491-L500)
+
+
+clears all cached properties
+
+
+### `def serialize` { #MazeTokenizer.serialize }
+```python
+(self) -> dict[str, typing.Any]
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/maze_tokenizer_legacy.py#L713-L769)
+
+
+returns the class as a dict, implemented by using `@serializable_dataclass` decorator
+
+
+### `def load` { #MazeTokenizer.load }
+```python
+(cls, data: Union[dict[str, Any], ~T]) -> Type[~T]
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/maze_tokenizer_legacy.py#L776-L862)
+
+
+takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
+
+
+### `def validate_fields_types` { #MazeTokenizer.validate_fields_types }
+```python
+(
+    self: muutils.json_serialize.serializable_dataclass.SerializableDataclass,
+    on_typecheck_error: muutils.errormode.ErrorMode = ErrorMode.Except
+) -> bool
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/maze_tokenizer_legacy.py#L282-L291)
+
+
+validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
+
+
+### Inherited Members                                
+
+- [`validate_field_type`](#MazeTokenizer.validate_field_type)
+- [`diff`](#MazeTokenizer.diff)
+- [`update_from_nested_dict`](#MazeTokenizer.update_from_nested_dict)
+
+
+
+
+> docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.3.0
+
+
+## Contents
+implements `ModularMazeTokenizer` and related code
+
+## Submodules
+
+- [`all_tokenizers`](#all_tokenizers)
+- [`element_base`](#element_base)
+- [`elements`](#elements)
+- [`fst_load`](#fst_load)
+- [`fst`](#fst)
+- [`hashing`](#hashing)
+- [`maze_tokenizer_modular`](#maze_tokenizer_modular)
+- [`save_hashes`](#save_hashes)
+
+
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular.py)
+
+# `maze_dataset.tokenization.modular` { #maze_dataset.tokenization.modular }
+
+implements `ModularMazeTokenizer` and related code
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular.py#L0-L12)
+
+
+
+
+
+> docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.3.0
+
+
+## Contents
+Contains `get_all_tokenizers()` and supporting limited-use functions.
+
+# `get_all_tokenizers()`
+returns a comprehensive collection of all valid `MazeTokenizerModular` objects.
+This is an overwhelming majority subset of the set of all possible `MazeTokenizerModular` objects.
+Other tokenizers not contained in `get_all_tokenizers()` may be possible to construct, but they are untested and not guaranteed to work.
+This collection is in a separate module since it is expensive to compute and will grow more expensive as features are added to `MazeTokenizerModular`.
+
+## Use Cases
+In general, uses for this module are limited to development of the library and specific research studying many tokenization behaviors.
+- Unit testing:
+  - Tokenizers to use in unit tests are sampled from `get_all_tokenizers()`
+- Large-scale tokenizer research:
+  - Specific research training models on many tokenization behaviors can use `get_all_tokenizers()` as the maximally inclusive collection
+  - `get_all_tokenizers()` may be subsequently filtered using `MazeTokenizerModular.has_element`
+For other uses, it's likely that the computational expense can be avoided by using
+- `maze_tokenizer.get_all_tokenizer_hashes()` for membership checks
+- `utils.all_instances` for generating smaller subsets of `MazeTokenizerModular` or `_TokenizerElement` objects
+
+# `EVERY_TEST_TOKENIZERS`
+A collection of the tokenizers which should always be included in unit tests when test fuzzing is used.
+This collection should be expanded as specific tokenizers become canonical or popular.
+
+
+## API Documentation
+
+ - [`MAZE_TOKENIZER_MODULAR_DEFAULT_VALIDATION_FUNCS`](#MAZE_TOKENIZER_MODULAR_DEFAULT_VALIDATION_FUNCS)
+ - [`DOWNLOAD_URL`](#DOWNLOAD_URL)
+ - [`get_all_tokenizers`](#get_all_tokenizers)
+ - [`get_all_tokenizers_names`](#get_all_tokenizers_names)
+ - [`EVERY_TEST_TOKENIZERS`](#EVERY_TEST_TOKENIZERS)
+ - [`all_tokenizers_set`](#all_tokenizers_set)
+ - [`sample_all_tokenizers`](#sample_all_tokenizers)
+ - [`sample_tokenizers_for_test`](#sample_tokenizers_for_test)
+ - [`save_hashes`](#save_hashes)
+
+
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/all_tokenizers.py)
+
+# `maze_dataset.tokenization.modular.all_tokenizers` { #maze_dataset.tokenization.modular.all_tokenizers }
+
+Contains `get_all_tokenizers()` and supporting limited-use functions.
+
+### `get_all_tokenizers()`
+returns a comprehensive collection of all valid `MazeTokenizerModular` objects.
+This is an overwhelming majority subset of the set of all possible `MazeTokenizerModular` objects.
+Other tokenizers not contained in `get_all_tokenizers()` may be possible to construct, but they are untested and not guaranteed to work.
+This collection is in a separate module since it is expensive to compute and will grow more expensive as features are added to `MazeTokenizerModular`.
+
+#### Use Cases
+In general, uses for this module are limited to development of the library and specific research studying many tokenization behaviors.
+- Unit testing:
+  - Tokenizers to use in unit tests are sampled from `get_all_tokenizers()`
+- Large-scale tokenizer research:
+  - Specific research training models on many tokenization behaviors can use `get_all_tokenizers()` as the maximally inclusive collection
+  - `get_all_tokenizers()` may be subsequently filtered using `MazeTokenizerModular.has_element`
+For other uses, it's likely that the computational expense can be avoided by using
+- `maze_tokenizer.get_all_tokenizer_hashes()` for membership checks
+- `utils.all_instances` for generating smaller subsets of `MazeTokenizerModular` or `_TokenizerElement` objects
+
+### `EVERY_TEST_TOKENIZERS`
+A collection of the tokenizers which should always be included in unit tests when test fuzzing is used.
+This collection should be expanded as specific tokenizers become canonical or popular.
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/all_tokenizers.py#L0-L218)
+
+
+
+- `MAZE_TOKENIZER_MODULAR_DEFAULT_VALIDATION_FUNCS: frozendict.frozendict[type[~FiniteValued], typing.Callable[[~FiniteValued], bool]] = frozendict.frozendict({<class 'maze_dataset.tokenization.modular.element_base._TokenizerElement'>: <function <lambda>>, tuple[maze_dataset.tokenization.modular.elements.StepTokenizers._StepTokenizer] | tuple[maze_dataset.tokenization.modular.elements.StepTokenizers._StepTokenizer, maze_dataset.tokenization.modular.elements.StepTokenizers._StepTokenizer] | tuple[maze_dataset.tokenization.modular.elements.StepTokenizers._StepTokenizer, maze_dataset.tokenization.modular.elements.StepTokenizers._StepTokenizer, maze_dataset.tokenization.modular.elements.StepTokenizers._StepTokenizer] | tuple[maze_dataset.tokenization.modular.elements.StepTokenizers._StepTokenizer, maze_dataset.tokenization.modular.elements.StepTokenizers._StepTokenizer, maze_dataset.tokenization.modular.elements.StepTokenizers._StepTokenizer, maze_dataset.tokenization.modular.elements.StepTokenizers._StepTokenizer]: <function <lambda>>})`
+
+
+
+
+- `DOWNLOAD_URL: str = 'https://raw.githubusercontent.com/understanding-search/maze-dataset/main/maze_dataset/tokenization/MazeTokenizerModular_hashes.npz'`
+
+
+
+
+### `def get_all_tokenizers` { #get_all_tokenizers }
+```python
+(
+    
+) -> list[maze_dataset.tokenization.modular.maze_tokenizer_modular.MazeTokenizerModular]
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/all_tokenizers.py#L77-L88)
+
+
+Computes a complete list of all valid tokenizers.
+
+Warning: This is an expensive function.
+
+
+### `def get_all_tokenizers_names` { #get_all_tokenizers_names }
+```python
+() -> list[str]
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/all_tokenizers.py#L91-L94)
+
+
+computes the sorted list of names of all tokenizers
+
+
+- `EVERY_TEST_TOKENIZERS: list[maze_dataset.tokenization.modular.maze_tokenizer_modular.MazeTokenizerModular] = [MazeTokenizerModular(prompt_sequencer=PromptSequencers.AOTP(coord_tokenizer=CoordTokenizers.UT(), adj_list_tokenizer=AdjListTokenizers.AdjListCoord(pre=False, post=True, shuffle_d0=True, edge_grouping=EdgeGroupings.Ungrouped(connection_token_ordinal=1), edge_subset=EdgeSubsets.ConnectionEdges(walls=False), edge_permuter=EdgePermuters.RandomCoords()), target_tokenizer=TargetTokenizers.Unlabeled(post=False), path_tokenizer=PathTokenizers.StepSequence(step_size=StepSizes.Singles(), step_tokenizers=(StepTokenizers.Coord(),), pre=False, intra=False, post=False))), MazeTokenizerModular(prompt_sequencer=PromptSequencers.AOTP(coord_tokenizer=CoordTokenizers.CTT(pre=True, intra=True, post=True), adj_list_tokenizer=AdjListTokenizers.AdjListCoord(pre=False, post=True, shuffle_d0=True, edge_grouping=EdgeGroupings.Ungrouped(connection_token_ordinal=1), edge_subset=EdgeSubsets.ConnectionEdges(walls=False), edge_permuter=EdgePermuters.RandomCoords()), target_tokenizer=TargetTokenizers.Unlabeled(post=False), path_tokenizer=PathTokenizers.StepSequence(step_size=StepSizes.Singles(), step_tokenizers=(StepTokenizers.Coord(),), pre=False, intra=False, post=False)))]`
+
+
+
+
+### `def all_tokenizers_set` { #all_tokenizers_set }
+```python
+(
+    
+) -> set[maze_dataset.tokenization.modular.maze_tokenizer_modular.MazeTokenizerModular]
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/all_tokenizers.py#L106-L109)
+
+
+Casts `get_all_tokenizers()` to a set.
+
+
+### `def sample_all_tokenizers` { #sample_all_tokenizers }
+```python
+(
+    n: int
+) -> list[maze_dataset.tokenization.modular.maze_tokenizer_modular.MazeTokenizerModular]
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/all_tokenizers.py#L118-L120)
+
+
+Samples `n` tokenizers from `get_all_tokenizers()`.
+
+
+### `def sample_tokenizers_for_test` { #sample_tokenizers_for_test }
+```python
+(
+    n: int | None
+) -> list[maze_dataset.tokenization.modular.maze_tokenizer_modular.MazeTokenizerModular]
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/all_tokenizers.py#L123-L141)
+
+
+Returns a sample of size `n` of unique elements from `get_all_tokenizers()`,
+
+always including every element in `EVERY_TEST_TOKENIZERS`.
+
+
+### `def save_hashes` { #save_hashes }
+```python
+(
+    path: pathlib.Path | None = None,
+    verbose: bool = False,
+    parallelize: bool | int = False
+) -> jaxtyping.UInt32[ndarray, 'n_tokens']
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/all_tokenizers.py#L144-L219)
+
+
+Computes, sorts, and saves the hashes of every member of `get_all_tokenizers()`.
+
+
+
+
+> docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.3.0
+
+
+## Contents
+provides the base `_TokenizerElement` class and related functionality for modular maze tokenization
+
+see the code in `maze_dataset.tokenization.modular.elements` for examples of subclasses of `_TokenizerElement`
+
+
+## API Documentation
+
+ - [`mark_as_unsupported`](#mark_as_unsupported)
+
+
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/element_base.py)
+
+# `maze_dataset.tokenization.modular.element_base` { #maze_dataset.tokenization.modular.element_base }
+
+provides the base `_TokenizerElement` class and related functionality for modular maze tokenization
+
+see the code in `<a href="elements.html">maze_dataset.tokenization.modular.elements</a>` for examples of subclasses of `_TokenizerElement`
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/element_base.py#L0-L313)
+
+
+
+### `def mark_as_unsupported` { #mark_as_unsupported }
+```python
+(is_valid: Callable[[~T, bool], bool]) -> Callable[[~T], ~T]
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/element_base.py#L269-L285)
+
+
+mark a _TokenizerElement as unsupported.
+
+Classes marked with this decorator won't show up in `get_all_tokenizers()` and thus wont be tested.
+The classes marked in release 1.0.0 did work reliably before being marked, but they can't be instantiated since the decorator adds an abstract method.
+The decorator exists to prune the space of tokenizers returned by `all_instances` both for testing and usage.
+Previously, the space was too large, resulting in impractical runtimes.
+These decorators could be removed in future releases to expand the space of possible tokenizers.
+
+
+
+
+> docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.3.0
+
+
+## Contents
+implements subclasses of `_TokenizerElement` to be used in `MazeTokenizerModular`
+
+
+## API Documentation
+
+ - [`CoordTokenizers`](#CoordTokenizers)
+ - [`EdgeGroupings`](#EdgeGroupings)
+ - [`EdgePermuters`](#EdgePermuters)
+ - [`EdgeSubsets`](#EdgeSubsets)
+ - [`AdjListTokenizers`](#AdjListTokenizers)
+ - [`TargetTokenizers`](#TargetTokenizers)
+ - [`StepSizes`](#StepSizes)
+ - [`StepTokenizers`](#StepTokenizers)
+ - [`PathTokenizers`](#PathTokenizers)
+ - [`PromptSequencers`](#PromptSequencers)
+
+
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py)
+
+# `maze_dataset.tokenization.modular.elements` { #maze_dataset.tokenization.modular.elements }
+
+implements subclasses of `_TokenizerElement` to be used in `MazeTokenizerModular`
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L0-L1293)
+
+
+
+### `class CoordTokenizers(maze_dataset.tokenization.modular.element_base.__TokenizerElementNamespace):` { #CoordTokenizers }
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L47-L99)
+
+
+Namespace for `_CoordTokenizer` subclass hierarchy used by `MazeTokenizerModular`.
+
+
+- `key = 'coord_tokenizer'`
+
+
+
+
+### `class CoordTokenizers.UT(CoordTokenizers._CoordTokenizer):` { #CoordTokenizers.UT }
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L68-L74)
+
+
+Unique token coordinate tokenizer.
+
+
+### `CoordTokenizers.UT` { #CoordTokenizers.UT.__init__ }
+```python
+(
+    *,
+    _type_: Literal["<class 'maze_dataset.tokenization.modular.elements.CoordTokenizers.UT'>"] = "<class 'maze_dataset.tokenization.modular.elements.CoordTokenizers.UT'>"
+)
+```
+
+
+
+
+### `def to_tokens` { #CoordTokenizers.UT.to_tokens }
+```python
+(
+    self,
+    coord: jaxtyping.Int8[ndarray, 'row_col=2'] | tuple[int, int]
+) -> list[str]
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L73-L74)
+
+
+Converts a maze element into a list of tokens.
+
+Not all `_TokenizerElement` subclasses produce tokens, so this is not an abstract method.
+Those subclasses which do produce tokens should override this method.
+
+
+### `def serialize` { #CoordTokenizers.UT.serialize }
+```python
+(self) -> dict[str, typing.Any]
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L713-L769)
+
+
+returns the class as a dict, implemented by using `@serializable_dataclass` decorator
+
+
+### `def load` { #CoordTokenizers.UT.load }
+```python
+(cls, data: Union[dict[str, Any], ~T]) -> Type[~T]
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L776-L862)
+
+
+takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
+
+
+### `def validate_fields_types` { #CoordTokenizers.UT.validate_fields_types }
+```python
+(
+    self: muutils.json_serialize.serializable_dataclass.SerializableDataclass,
+    on_typecheck_error: muutils.errormode.ErrorMode = ErrorMode.Except
+) -> bool
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L282-L291)
+
+
+validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
+
+
+### Inherited Members                                
+
+- [`attribute_key`](#CoordTokenizers.UT.attribute_key)
+- [`is_valid`](#CoordTokenizers.UT.is_valid)
+
+- [`name`](#CoordTokenizers.UT.name)
+- [`tokenizer_elements`](#CoordTokenizers.UT.tokenizer_elements)
+- [`tokenizer_element_tree`](#CoordTokenizers.UT.tokenizer_element_tree)
+- [`tokenizer_element_dict`](#CoordTokenizers.UT.tokenizer_element_dict)
+
+- [`validate_field_type`](#CoordTokenizers.UT.validate_field_type)
+- [`diff`](#CoordTokenizers.UT.diff)
+- [`update_from_nested_dict`](#CoordTokenizers.UT.update_from_nested_dict)
+
+
+### `class CoordTokenizers.CTT(CoordTokenizers._CoordTokenizer):` { #CoordTokenizers.CTT }
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L76-L99)
+
+
+Coordinate tuple tokenizer
+
+### Parameters
+- `pre`: Whether all coords include an integral preceding delimiter token
+- `intra`: Whether all coords include a delimiter token between coordinates
+- `post`: Whether all coords include an integral following delimiter token
+
+
+### `CoordTokenizers.CTT` { #CoordTokenizers.CTT.__init__ }
+```python
+(
+    *,
+    _type_: Literal["<class 'maze_dataset.tokenization.modular.elements.CoordTokenizers.CTT'>"] = "<class 'maze_dataset.tokenization.modular.elements.CoordTokenizers.CTT'>",
+    pre: bool = True,
+    intra: bool = True,
+    post: bool = True
+)
+```
+
+
+
+
+- `pre: bool = True`
+
+
+
+
+- `intra: bool = True`
+
+
+
+
+- `post: bool = True`
+
+
+
+
+### `def to_tokens` { #CoordTokenizers.CTT.to_tokens }
+```python
+(
+    self,
+    coord: jaxtyping.Int8[ndarray, 'row_col=2'] | tuple[int, int]
+) -> list[str]
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L92-L99)
+
+
+Converts a maze element into a list of tokens.
+
+Not all `_TokenizerElement` subclasses produce tokens, so this is not an abstract method.
+Those subclasses which do produce tokens should override this method.
+
+
+### `def serialize` { #CoordTokenizers.CTT.serialize }
+```python
+(self) -> dict[str, typing.Any]
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L713-L769)
+
+
+returns the class as a dict, implemented by using `@serializable_dataclass` decorator
+
+
+### `def load` { #CoordTokenizers.CTT.load }
+```python
+(cls, data: Union[dict[str, Any], ~T]) -> Type[~T]
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L776-L862)
+
+
+takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
+
+
+### `def validate_fields_types` { #CoordTokenizers.CTT.validate_fields_types }
+```python
+(
+    self: muutils.json_serialize.serializable_dataclass.SerializableDataclass,
+    on_typecheck_error: muutils.errormode.ErrorMode = ErrorMode.Except
+) -> bool
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L282-L291)
+
+
+validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
+
+
+### Inherited Members                                
+
+- [`attribute_key`](#CoordTokenizers.CTT.attribute_key)
+- [`is_valid`](#CoordTokenizers.CTT.is_valid)
+
+- [`name`](#CoordTokenizers.CTT.name)
+- [`tokenizer_elements`](#CoordTokenizers.CTT.tokenizer_elements)
+- [`tokenizer_element_tree`](#CoordTokenizers.CTT.tokenizer_element_tree)
+- [`tokenizer_element_dict`](#CoordTokenizers.CTT.tokenizer_element_dict)
+
+- [`validate_field_type`](#CoordTokenizers.CTT.validate_field_type)
+- [`diff`](#CoordTokenizers.CTT.diff)
+- [`update_from_nested_dict`](#CoordTokenizers.CTT.update_from_nested_dict)
+
+
+### `class EdgeGroupings(maze_dataset.tokenization.modular.element_base.__TokenizerElementNamespace):` { #EdgeGroupings }
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L102-L210)
+
+
+Namespace for `_EdgeGrouping` subclass hierarchy used by `_AdjListTokenizer`.
+
+
+- `key = 'edge_grouping'`
+
+
+
+
+### `class EdgeGroupings.Ungrouped(EdgeGroupings._EdgeGrouping):` { #EdgeGroupings.Ungrouped }
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L145-L167)
+
+
+No grouping occurs, each edge is tokenized individually.
+
+### Parameters
+- `connection_token_ordinal`: At which index in the edge tokenization the connector (or wall) token appears.
+Edge tokenizations contain 3 parts: a leading coord, a connector (or wall) token, and either a second coord or cardinal direction tokenization.
+
+
+### `EdgeGroupings.Ungrouped` { #EdgeGroupings.Ungrouped.__init__ }
+```python
+(
+    *,
+    _type_: Literal["<class 'maze_dataset.tokenization.modular.elements.EdgeGroupings.Ungrouped'>"] = "<class 'maze_dataset.tokenization.modular.elements.EdgeGroupings.Ungrouped'>",
+    connection_token_ordinal: Literal[0, 1, 2] = 1
+)
+```
+
+
+
+
+- `connection_token_ordinal: Literal[0, 1, 2] = 1`
+
+
+
+
+### `def serialize` { #EdgeGroupings.Ungrouped.serialize }
+```python
+(self) -> dict[str, typing.Any]
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L713-L769)
+
+
+returns the class as a dict, implemented by using `@serializable_dataclass` decorator
+
+
+### `def load` { #EdgeGroupings.Ungrouped.load }
+```python
+(cls, data: Union[dict[str, Any], ~T]) -> Type[~T]
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L776-L862)
+
+
+takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
+
+
+### `def validate_fields_types` { #EdgeGroupings.Ungrouped.validate_fields_types }
+```python
+(
+    self: muutils.json_serialize.serializable_dataclass.SerializableDataclass,
+    on_typecheck_error: muutils.errormode.ErrorMode = ErrorMode.Except
+) -> bool
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L282-L291)
+
+
+validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
+
+
+### Inherited Members                                
+
+- [`attribute_key`](#EdgeGroupings.Ungrouped.attribute_key)
+- [`is_valid`](#EdgeGroupings.Ungrouped.is_valid)
+
+- [`name`](#EdgeGroupings.Ungrouped.name)
+- [`tokenizer_elements`](#EdgeGroupings.Ungrouped.tokenizer_elements)
+- [`tokenizer_element_tree`](#EdgeGroupings.Ungrouped.tokenizer_element_tree)
+- [`tokenizer_element_dict`](#EdgeGroupings.Ungrouped.tokenizer_element_dict)
+- [`to_tokens`](#EdgeGroupings.Ungrouped.to_tokens)
+
+- [`validate_field_type`](#EdgeGroupings.Ungrouped.validate_field_type)
+- [`diff`](#EdgeGroupings.Ungrouped.diff)
+- [`update_from_nested_dict`](#EdgeGroupings.Ungrouped.update_from_nested_dict)
+
+
+### `class EdgeGroupings.ByLeadingCoord(EdgeGroupings._EdgeGrouping):` { #EdgeGroupings.ByLeadingCoord }
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L169-L210)
+
+
+All edges with the same leading coord are grouped together.
+
+### Parameters
+- `intra`: Whether all edge groupings include a delimiter token between individual edge representations.
+Note that each edge representation will already always include a connector token (`VOCAB.CONNECTOR`, or possibly `)
+- `shuffle_group`: Whether the sequence of edges within the group should be shuffled or appear in a fixed order.
+If false, the fixed order is lexicographical by (row, col).
+In effect, lexicographical sorting sorts edges by their cardinal direction in the sequence NORTH, WEST, EAST, SOUTH, where the directions indicate the position of the trailing coord relative to the leading coord.
+- `connection_token_ordinal`: At which index in token sequence representing a single edge the connector (or wall) token appears.
+Edge tokenizations contain 2 parts: a connector (or wall) token and a coord or cardinal tokenization.
+
+
+### `EdgeGroupings.ByLeadingCoord` { #EdgeGroupings.ByLeadingCoord.__init__ }
+```python
+(
+    *,
+    _type_: Literal["<class 'maze_dataset.tokenization.modular.elements.EdgeGroupings.ByLeadingCoord'>"] = "<class 'maze_dataset.tokenization.modular.elements.EdgeGroupings.ByLeadingCoord'>",
+    intra: bool = True,
+    shuffle_group: bool = True,
+    connection_token_ordinal: Literal[0, 1] = 0
+)
+```
+
+
+
+
+- `intra: bool = True`
+
+
+
+
+- `shuffle_group: bool = True`
+
+
+
+
+- `connection_token_ordinal: Literal[0, 1] = 0`
+
+
+
+
+### `def is_valid` { #EdgeGroupings.ByLeadingCoord.is_valid }
+```python
+(self, do_except: bool = False) -> bool
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L256-L265)
+
+
+Default implementation of `is_valid` for `mark_as_unsupported`-decorated classes
+
+
+### `def serialize` { #EdgeGroupings.ByLeadingCoord.serialize }
+```python
+(self) -> dict[str, typing.Any]
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L713-L769)
+
+
+returns the class as a dict, implemented by using `@serializable_dataclass` decorator
+
+
+### `def load` { #EdgeGroupings.ByLeadingCoord.load }
+```python
+(cls, data: Union[dict[str, Any], ~T]) -> Type[~T]
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L776-L862)
+
+
+takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
+
+
+### `def validate_fields_types` { #EdgeGroupings.ByLeadingCoord.validate_fields_types }
+```python
+(
+    self: muutils.json_serialize.serializable_dataclass.SerializableDataclass,
+    on_typecheck_error: muutils.errormode.ErrorMode = ErrorMode.Except
+) -> bool
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L282-L291)
+
+
+validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
+
+
+### Inherited Members                                
+
+- [`attribute_key`](#EdgeGroupings.ByLeadingCoord.attribute_key)
+
+- [`name`](#EdgeGroupings.ByLeadingCoord.name)
+- [`tokenizer_elements`](#EdgeGroupings.ByLeadingCoord.tokenizer_elements)
+- [`tokenizer_element_tree`](#EdgeGroupings.ByLeadingCoord.tokenizer_element_tree)
+- [`tokenizer_element_dict`](#EdgeGroupings.ByLeadingCoord.tokenizer_element_dict)
+- [`to_tokens`](#EdgeGroupings.ByLeadingCoord.to_tokens)
+
+- [`validate_field_type`](#EdgeGroupings.ByLeadingCoord.validate_field_type)
+- [`diff`](#EdgeGroupings.ByLeadingCoord.diff)
+- [`update_from_nested_dict`](#EdgeGroupings.ByLeadingCoord.update_from_nested_dict)
+
+
+### `class EdgePermuters(maze_dataset.tokenization.modular.element_base.__TokenizerElementNamespace):` { #EdgePermuters }
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L213-L284)
+
+
+Namespace for `_EdgePermuter` subclass hierarchy used by `_AdjListTokenizer`.
+
+
+- `key = 'edge_permuter'`
+
+
+
+
+### `class EdgePermuters.SortedCoords(EdgePermuters._EdgePermuter):` { #EdgePermuters.SortedCoords }
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L247-L263)
+
+
+returns a sorted representation. useful for checking consistency
+
+
+### `EdgePermuters.SortedCoords` { #EdgePermuters.SortedCoords.__init__ }
+```python
+(
+    *,
+    _type_: Literal["<class 'maze_dataset.tokenization.modular.elements.EdgePermuters.SortedCoords'>"] = "<class 'maze_dataset.tokenization.modular.elements.EdgePermuters.SortedCoords'>"
+)
+```
+
+
+
+
+### `def serialize` { #EdgePermuters.SortedCoords.serialize }
+```python
+(self) -> dict[str, typing.Any]
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L713-L769)
+
+
+returns the class as a dict, implemented by using `@serializable_dataclass` decorator
+
+
+### `def load` { #EdgePermuters.SortedCoords.load }
+```python
+(cls, data: Union[dict[str, Any], ~T]) -> Type[~T]
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L776-L862)
+
+
+takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
+
+
+### `def validate_fields_types` { #EdgePermuters.SortedCoords.validate_fields_types }
+```python
+(
+    self: muutils.json_serialize.serializable_dataclass.SerializableDataclass,
+    on_typecheck_error: muutils.errormode.ErrorMode = ErrorMode.Except
+) -> bool
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L282-L291)
+
+
+validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
+
+
+### Inherited Members                                
+
+- [`attribute_key`](#EdgePermuters.SortedCoords.attribute_key)
+- [`is_valid`](#EdgePermuters.SortedCoords.is_valid)
+
+- [`name`](#EdgePermuters.SortedCoords.name)
+- [`tokenizer_elements`](#EdgePermuters.SortedCoords.tokenizer_elements)
+- [`tokenizer_element_tree`](#EdgePermuters.SortedCoords.tokenizer_element_tree)
+- [`tokenizer_element_dict`](#EdgePermuters.SortedCoords.tokenizer_element_dict)
+- [`to_tokens`](#EdgePermuters.SortedCoords.to_tokens)
+
+- [`validate_field_type`](#EdgePermuters.SortedCoords.validate_field_type)
+- [`diff`](#EdgePermuters.SortedCoords.diff)
+- [`update_from_nested_dict`](#EdgePermuters.SortedCoords.update_from_nested_dict)
+
+
+### `class EdgePermuters.RandomCoords(EdgePermuters._EdgePermuter):` { #EdgePermuters.RandomCoords }
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L265-L272)
+
+
+Permutes each edge randomly.
+
+
+### `EdgePermuters.RandomCoords` { #EdgePermuters.RandomCoords.__init__ }
+```python
+(
+    *,
+    _type_: Literal["<class 'maze_dataset.tokenization.modular.elements.EdgePermuters.RandomCoords'>"] = "<class 'maze_dataset.tokenization.modular.elements.EdgePermuters.RandomCoords'>"
+)
+```
+
+
+
+
+### `def serialize` { #EdgePermuters.RandomCoords.serialize }
+```python
+(self) -> dict[str, typing.Any]
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L713-L769)
+
+
+returns the class as a dict, implemented by using `@serializable_dataclass` decorator
+
+
+### `def load` { #EdgePermuters.RandomCoords.load }
+```python
+(cls, data: Union[dict[str, Any], ~T]) -> Type[~T]
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L776-L862)
+
+
+takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
+
+
+### `def validate_fields_types` { #EdgePermuters.RandomCoords.validate_fields_types }
+```python
+(
+    self: muutils.json_serialize.serializable_dataclass.SerializableDataclass,
+    on_typecheck_error: muutils.errormode.ErrorMode = ErrorMode.Except
+) -> bool
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L282-L291)
+
+
+validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
+
+
+### Inherited Members                                
+
+- [`attribute_key`](#EdgePermuters.RandomCoords.attribute_key)
+- [`is_valid`](#EdgePermuters.RandomCoords.is_valid)
+
+- [`name`](#EdgePermuters.RandomCoords.name)
+- [`tokenizer_elements`](#EdgePermuters.RandomCoords.tokenizer_elements)
+- [`tokenizer_element_tree`](#EdgePermuters.RandomCoords.tokenizer_element_tree)
+- [`tokenizer_element_dict`](#EdgePermuters.RandomCoords.tokenizer_element_dict)
+- [`to_tokens`](#EdgePermuters.RandomCoords.to_tokens)
+
+- [`validate_field_type`](#EdgePermuters.RandomCoords.validate_field_type)
+- [`diff`](#EdgePermuters.RandomCoords.diff)
+- [`update_from_nested_dict`](#EdgePermuters.RandomCoords.update_from_nested_dict)
+
+
+### `class EdgePermuters.BothCoords(EdgePermuters._EdgePermuter):` { #EdgePermuters.BothCoords }
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L274-L284)
+
+
+Includes both possible permutations of every edge in the output.
+
+Since input ConnectionList has only 1 instance of each edge,
+a call to `BothCoords._permute` will modify `lattice_edges` in-place, doubling `shape[0]`.
+
+
+### `EdgePermuters.BothCoords` { #EdgePermuters.BothCoords.__init__ }
+```python
+(
+    *,
+    _type_: Literal["<class 'maze_dataset.tokenization.modular.elements.EdgePermuters.BothCoords'>"] = "<class 'maze_dataset.tokenization.modular.elements.EdgePermuters.BothCoords'>"
+)
+```
+
+
+
+
+### `def serialize` { #EdgePermuters.BothCoords.serialize }
+```python
+(self) -> dict[str, typing.Any]
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L713-L769)
+
+
+returns the class as a dict, implemented by using `@serializable_dataclass` decorator
+
+
+### `def load` { #EdgePermuters.BothCoords.load }
+```python
+(cls, data: Union[dict[str, Any], ~T]) -> Type[~T]
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L776-L862)
+
+
+takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
+
+
+### `def validate_fields_types` { #EdgePermuters.BothCoords.validate_fields_types }
+```python
+(
+    self: muutils.json_serialize.serializable_dataclass.SerializableDataclass,
+    on_typecheck_error: muutils.errormode.ErrorMode = ErrorMode.Except
+) -> bool
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L282-L291)
+
+
+validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
+
+
+### Inherited Members                                
+
+- [`attribute_key`](#EdgePermuters.BothCoords.attribute_key)
+- [`is_valid`](#EdgePermuters.BothCoords.is_valid)
+
+- [`name`](#EdgePermuters.BothCoords.name)
+- [`tokenizer_elements`](#EdgePermuters.BothCoords.tokenizer_elements)
+- [`tokenizer_element_tree`](#EdgePermuters.BothCoords.tokenizer_element_tree)
+- [`tokenizer_element_dict`](#EdgePermuters.BothCoords.tokenizer_element_dict)
+- [`to_tokens`](#EdgePermuters.BothCoords.to_tokens)
+
+- [`validate_field_type`](#EdgePermuters.BothCoords.validate_field_type)
+- [`diff`](#EdgePermuters.BothCoords.diff)
+- [`update_from_nested_dict`](#EdgePermuters.BothCoords.update_from_nested_dict)
+
+
+### `class EdgeSubsets(maze_dataset.tokenization.modular.element_base.__TokenizerElementNamespace):` { #EdgeSubsets }
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L287-L341)
+
+
+Namespace for `_EdgeSubset` subclass hierarchy used by `_AdjListTokenizer`.
+
+
+- `key = 'edge_subset'`
+
+
+
+
+### `class EdgeSubsets.AllLatticeEdges(EdgeSubsets._EdgeSubset):` { #EdgeSubsets.AllLatticeEdges }
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L308-L316)
+
+
+All 2n**2-2n edges of the lattice are tokenized.
+
+If a wall exists on that edge, the edge is tokenized in the same manner, using `VOCAB.ADJLIST_WALL` in place of `VOCAB.CONNECTOR`.
+
+
+### `EdgeSubsets.AllLatticeEdges` { #EdgeSubsets.AllLatticeEdges.__init__ }
+```python
+(
+    *,
+    _type_: Literal["<class 'maze_dataset.tokenization.modular.elements.EdgeSubsets.AllLatticeEdges'>"] = "<class 'maze_dataset.tokenization.modular.elements.EdgeSubsets.AllLatticeEdges'>"
+)
+```
+
+
+
+
+### `def serialize` { #EdgeSubsets.AllLatticeEdges.serialize }
+```python
+(self) -> dict[str, typing.Any]
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L713-L769)
+
+
+returns the class as a dict, implemented by using `@serializable_dataclass` decorator
+
+
+### `def load` { #EdgeSubsets.AllLatticeEdges.load }
+```python
+(cls, data: Union[dict[str, Any], ~T]) -> Type[~T]
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L776-L862)
+
+
+takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
+
+
+### `def validate_fields_types` { #EdgeSubsets.AllLatticeEdges.validate_fields_types }
+```python
+(
+    self: muutils.json_serialize.serializable_dataclass.SerializableDataclass,
+    on_typecheck_error: muutils.errormode.ErrorMode = ErrorMode.Except
+) -> bool
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L282-L291)
+
+
+validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
+
+
+### Inherited Members                                
+
+- [`attribute_key`](#EdgeSubsets.AllLatticeEdges.attribute_key)
+- [`is_valid`](#EdgeSubsets.AllLatticeEdges.is_valid)
+
+- [`name`](#EdgeSubsets.AllLatticeEdges.name)
+- [`tokenizer_elements`](#EdgeSubsets.AllLatticeEdges.tokenizer_elements)
+- [`tokenizer_element_tree`](#EdgeSubsets.AllLatticeEdges.tokenizer_element_tree)
+- [`tokenizer_element_dict`](#EdgeSubsets.AllLatticeEdges.tokenizer_element_dict)
+- [`to_tokens`](#EdgeSubsets.AllLatticeEdges.to_tokens)
+
+- [`validate_field_type`](#EdgeSubsets.AllLatticeEdges.validate_field_type)
+- [`diff`](#EdgeSubsets.AllLatticeEdges.diff)
+- [`update_from_nested_dict`](#EdgeSubsets.AllLatticeEdges.update_from_nested_dict)
+
+
+### `class EdgeSubsets.ConnectionEdges(EdgeSubsets._EdgeSubset):` { #EdgeSubsets.ConnectionEdges }
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L318-L341)
+
+
+Only edges which contain a connection are tokenized.
+
+Alternatively, only edges which contain a wall are tokenized.
+
+### Parameters
+- `walls`: Whether wall edges or connection edges are tokenized.
+If true, `VOCAB.ADJLIST_WALL` is used in place of `VOCAB.CONNECTOR`.
+
+
+### `EdgeSubsets.ConnectionEdges` { #EdgeSubsets.ConnectionEdges.__init__ }
+```python
+(
+    *,
+    _type_: Literal["<class 'maze_dataset.tokenization.modular.elements.EdgeSubsets.ConnectionEdges'>"] = "<class 'maze_dataset.tokenization.modular.elements.EdgeSubsets.ConnectionEdges'>",
+    walls: bool = False
+)
+```
+
+
+
+
+- `walls: bool = False`
+
+
+
+
+### `def serialize` { #EdgeSubsets.ConnectionEdges.serialize }
+```python
+(self) -> dict[str, typing.Any]
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L713-L769)
+
+
+returns the class as a dict, implemented by using `@serializable_dataclass` decorator
+
+
+### `def load` { #EdgeSubsets.ConnectionEdges.load }
+```python
+(cls, data: Union[dict[str, Any], ~T]) -> Type[~T]
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L776-L862)
+
+
+takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
+
+
+### `def validate_fields_types` { #EdgeSubsets.ConnectionEdges.validate_fields_types }
+```python
+(
+    self: muutils.json_serialize.serializable_dataclass.SerializableDataclass,
+    on_typecheck_error: muutils.errormode.ErrorMode = ErrorMode.Except
+) -> bool
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L282-L291)
+
+
+validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
+
+
+### Inherited Members                                
+
+- [`attribute_key`](#EdgeSubsets.ConnectionEdges.attribute_key)
+- [`is_valid`](#EdgeSubsets.ConnectionEdges.is_valid)
+
+- [`name`](#EdgeSubsets.ConnectionEdges.name)
+- [`tokenizer_elements`](#EdgeSubsets.ConnectionEdges.tokenizer_elements)
+- [`tokenizer_element_tree`](#EdgeSubsets.ConnectionEdges.tokenizer_element_tree)
+- [`tokenizer_element_dict`](#EdgeSubsets.ConnectionEdges.tokenizer_element_dict)
+- [`to_tokens`](#EdgeSubsets.ConnectionEdges.to_tokens)
+
+- [`validate_field_type`](#EdgeSubsets.ConnectionEdges.validate_field_type)
+- [`diff`](#EdgeSubsets.ConnectionEdges.diff)
+- [`update_from_nested_dict`](#EdgeSubsets.ConnectionEdges.update_from_nested_dict)
+
+
+### `class AdjListTokenizers(maze_dataset.tokenization.modular.element_base.__TokenizerElementNamespace):` { #AdjListTokenizers }
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L355-L605)
+
+
+Namespace for `_AdjListTokenizer` subclass hierarchy used by `MazeTokenizerModular`.
+
+
+- `key = 'adj_list_tokenizer'`
+
+
+
+
+### `class AdjListTokenizers.AdjListCoord(AdjListTokenizers._AdjListTokenizer):` { #AdjListTokenizers.AdjListCoord }
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L547-L573)
+
+
+Represents an edge group as tokens for the leading coord followed by coord tokens for the other group members.
+
+
+### `AdjListTokenizers.AdjListCoord` { #AdjListTokenizers.AdjListCoord.__init__ }
+```python
+(
+    *,
+    pre: bool = False,
+    post: bool = True,
+    shuffle_d0: bool = True,
+    edge_grouping: maze_dataset.tokenization.modular.elements.EdgeGroupings._EdgeGrouping = EdgeGroupings.Ungrouped(connection_token_ordinal=1),
+    edge_subset: maze_dataset.tokenization.modular.elements.EdgeSubsets._EdgeSubset = EdgeSubsets.ConnectionEdges(walls=False),
+    edge_permuter: maze_dataset.tokenization.modular.elements.EdgePermuters._EdgePermuter = EdgePermuters.RandomCoords(),
+    _type_: Literal["<class 'maze_dataset.tokenization.modular.elements.AdjListTokenizers.AdjListCoord'>"] = "<class 'maze_dataset.tokenization.modular.elements.AdjListTokenizers.AdjListCoord'>"
+)
+```
+
+
+
+
+- `edge_permuter: maze_dataset.tokenization.modular.elements.EdgePermuters._EdgePermuter = EdgePermuters.RandomCoords()`
+
+
+
+
+### `def serialize` { #AdjListTokenizers.AdjListCoord.serialize }
+```python
+(self) -> dict[str, typing.Any]
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L713-L769)
+
+
+returns the class as a dict, implemented by using `@serializable_dataclass` decorator
+
+
+### `def load` { #AdjListTokenizers.AdjListCoord.load }
+```python
+(cls, data: Union[dict[str, Any], ~T]) -> Type[~T]
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L776-L862)
+
+
+takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
+
+
+### `def validate_fields_types` { #AdjListTokenizers.AdjListCoord.validate_fields_types }
+```python
+(
+    self: muutils.json_serialize.serializable_dataclass.SerializableDataclass,
+    on_typecheck_error: muutils.errormode.ErrorMode = ErrorMode.Except
+) -> bool
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L282-L291)
+
+
+validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
+
+
+### Inherited Members                                
+
+- [`pre`](#AdjListTokenizers.AdjListCoord.pre)
+- [`post`](#AdjListTokenizers.AdjListCoord.post)
+- [`shuffle_d0`](#AdjListTokenizers.AdjListCoord.shuffle_d0)
+- [`edge_grouping`](#AdjListTokenizers.AdjListCoord.edge_grouping)
+- [`edge_subset`](#AdjListTokenizers.AdjListCoord.edge_subset)
+- [`attribute_key`](#AdjListTokenizers.AdjListCoord.attribute_key)
+- [`is_valid`](#AdjListTokenizers.AdjListCoord.is_valid)
+- [`to_tokens`](#AdjListTokenizers.AdjListCoord.to_tokens)
+
+- [`name`](#AdjListTokenizers.AdjListCoord.name)
+- [`tokenizer_elements`](#AdjListTokenizers.AdjListCoord.tokenizer_elements)
+- [`tokenizer_element_tree`](#AdjListTokenizers.AdjListCoord.tokenizer_element_tree)
+- [`tokenizer_element_dict`](#AdjListTokenizers.AdjListCoord.tokenizer_element_dict)
+
+- [`validate_field_type`](#AdjListTokenizers.AdjListCoord.validate_field_type)
+- [`diff`](#AdjListTokenizers.AdjListCoord.diff)
+- [`update_from_nested_dict`](#AdjListTokenizers.AdjListCoord.update_from_nested_dict)
+
+
+### `class AdjListTokenizers.AdjListCardinal(AdjListTokenizers._AdjListTokenizer):` { #AdjListTokenizers.AdjListCardinal }
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L575-L605)
+
+
+Represents an edge group as coord tokens for the leading coord and cardinal tokens relative to the leading coord for the other group members.
+
+### Parameters
+- `coord_first`: Whether the leading coord token(s) should come before or after the sequence of cardinal tokens.
+
+
+### `AdjListTokenizers.AdjListCardinal` { #AdjListTokenizers.AdjListCardinal.__init__ }
+```python
+(
+    *,
+    pre: bool = False,
+    post: bool = True,
+    shuffle_d0: bool = True,
+    edge_grouping: maze_dataset.tokenization.modular.elements.EdgeGroupings._EdgeGrouping = EdgeGroupings.Ungrouped(connection_token_ordinal=1),
+    edge_subset: maze_dataset.tokenization.modular.elements.EdgeSubsets._EdgeSubset = EdgeSubsets.ConnectionEdges(walls=False),
+    edge_permuter: maze_dataset.tokenization.modular.elements.EdgePermuters._EdgePermuter = EdgePermuters.BothCoords(),
+    _type_: Literal["<class 'maze_dataset.tokenization.modular.elements.AdjListTokenizers.AdjListCardinal'>"] = "<class 'maze_dataset.tokenization.modular.elements.AdjListTokenizers.AdjListCardinal'>"
+)
+```
+
+
+
+
+- `edge_permuter: maze_dataset.tokenization.modular.elements.EdgePermuters._EdgePermuter = EdgePermuters.BothCoords()`
+
+
+
+
+### `def serialize` { #AdjListTokenizers.AdjListCardinal.serialize }
+```python
+(self) -> dict[str, typing.Any]
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L713-L769)
+
+
+returns the class as a dict, implemented by using `@serializable_dataclass` decorator
+
+
+### `def load` { #AdjListTokenizers.AdjListCardinal.load }
+```python
+(cls, data: Union[dict[str, Any], ~T]) -> Type[~T]
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L776-L862)
+
+
+takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
+
+
+### `def validate_fields_types` { #AdjListTokenizers.AdjListCardinal.validate_fields_types }
+```python
+(
+    self: muutils.json_serialize.serializable_dataclass.SerializableDataclass,
+    on_typecheck_error: muutils.errormode.ErrorMode = ErrorMode.Except
+) -> bool
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L282-L291)
+
+
+validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
+
+
+### Inherited Members                                
+
+- [`pre`](#AdjListTokenizers.AdjListCardinal.pre)
+- [`post`](#AdjListTokenizers.AdjListCardinal.post)
+- [`shuffle_d0`](#AdjListTokenizers.AdjListCardinal.shuffle_d0)
+- [`edge_grouping`](#AdjListTokenizers.AdjListCardinal.edge_grouping)
+- [`edge_subset`](#AdjListTokenizers.AdjListCardinal.edge_subset)
+- [`attribute_key`](#AdjListTokenizers.AdjListCardinal.attribute_key)
+- [`is_valid`](#AdjListTokenizers.AdjListCardinal.is_valid)
+- [`to_tokens`](#AdjListTokenizers.AdjListCardinal.to_tokens)
+
+- [`name`](#AdjListTokenizers.AdjListCardinal.name)
+- [`tokenizer_elements`](#AdjListTokenizers.AdjListCardinal.tokenizer_elements)
+- [`tokenizer_element_tree`](#AdjListTokenizers.AdjListCardinal.tokenizer_element_tree)
+- [`tokenizer_element_dict`](#AdjListTokenizers.AdjListCardinal.tokenizer_element_dict)
+
+- [`validate_field_type`](#AdjListTokenizers.AdjListCardinal.validate_field_type)
+- [`diff`](#AdjListTokenizers.AdjListCardinal.diff)
+- [`update_from_nested_dict`](#AdjListTokenizers.AdjListCardinal.update_from_nested_dict)
+
+
+### `class TargetTokenizers(maze_dataset.tokenization.modular.element_base.__TokenizerElementNamespace):` { #TargetTokenizers }
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L608-L664)
+
+
+Namespace for `_TargetTokenizer` subclass hierarchy used by `MazeTokenizerModular`.
+
+
+- `key = 'target_tokenizer'`
+
+
+
+
+### `class TargetTokenizers.Unlabeled(TargetTokenizers._TargetTokenizer):` { #TargetTokenizers.Unlabeled }
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L630-L664)
+
+
+Targets are simply listed as coord tokens.
+
+- `post`: Whether all coords include an integral following delimiter token
+
+
+### `TargetTokenizers.Unlabeled` { #TargetTokenizers.Unlabeled.__init__ }
+```python
+(
+    *,
+    _type_: Literal["<class 'maze_dataset.tokenization.modular.elements.TargetTokenizers.Unlabeled'>"] = "<class 'maze_dataset.tokenization.modular.elements.TargetTokenizers.Unlabeled'>",
+    post: bool = False
+)
+```
+
+
+
+
+- `post: bool = False`
+
+
+
+
+### `def to_tokens` { #TargetTokenizers.Unlabeled.to_tokens }
+```python
+(
+    self,
+    targets: Sequence[jaxtyping.Int8[ndarray, 'row_col=2']],
+    coord_tokenizer: maze_dataset.tokenization.modular.elements.CoordTokenizers._CoordTokenizer
+) -> list[str]
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L640-L659)
+
+
+Returns tokens representing the target.
+
+
+### `def is_valid` { #TargetTokenizers.Unlabeled.is_valid }
+```python
+(self, do_except: bool = False) -> bool
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L662-L664)
+
+
+Returns if `self` contains data members capable of producing an overall valid `MazeTokenizerModular`.
+
+Some `_TokenizerElement` instances may be created which are not useful despite obeying data member type hints.
+`is_valid` allows for more precise detection of invalid `_TokenizerElement`s beyond type hinting alone.
+If type hints are sufficient to constrain the possible instances of some subclass, then this method may simply `return True` for that subclass.
+
+### Types of Invalidity
+In nontrivial implementations of this method, each conditional clause should contain a comment classifying the reason for invalidity and one of the types below.
+Invalidity types, in ascending order of invalidity:
+- Uninteresting: These tokenizers might be used to train functional models, but the schemes are not interesting to study.
+E.g., `_TokenizerElement`s which are strictly worse than some alternative.
+- Duplicate: These tokenizers have identical tokenization behavior as some other valid tokenizers.
+- Untrainable: Training functional models using these tokenizers would be (nearly) impossible.
+- Erroneous: These tokenizers might raise exceptions during use.
+
+### Development
+`is_invalid` is implemented to always return `True` in some abstract classes where all currently possible subclass instances are valid.
+When adding new subclasses or data members, the developer should check if any such blanket statement of validity still holds and update it as neccesary.
+
+#### Nesting
+In general, when implementing this method, there is no need to recursively call `is_valid` on nested `_TokenizerElement`s contained in the class.
+In other words, failures of `is_valid` need not bubble up to the top of the nested `_TokenizerElement` tree.
+`MazeTokenizerModular.is_valid` calls `is_valid` on each of its `_TokenizerElement`s individually, so failure at any level will be detected.
+
+#### Types of Invalidity
+If it's judged to be useful, the types of invalidity could be implemented with an Enum or similar rather than only living in comments.
+This could be used to create more or less stringent filters on the valid `_TokenizerElement` instances.
+
+
+### `def serialize` { #TargetTokenizers.Unlabeled.serialize }
+```python
+(self) -> dict[str, typing.Any]
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L713-L769)
+
+
+returns the class as a dict, implemented by using `@serializable_dataclass` decorator
+
+
+### `def load` { #TargetTokenizers.Unlabeled.load }
+```python
+(cls, data: Union[dict[str, Any], ~T]) -> Type[~T]
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L776-L862)
+
+
+takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
+
+
+### `def validate_fields_types` { #TargetTokenizers.Unlabeled.validate_fields_types }
+```python
+(
+    self: muutils.json_serialize.serializable_dataclass.SerializableDataclass,
+    on_typecheck_error: muutils.errormode.ErrorMode = ErrorMode.Except
+) -> bool
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L282-L291)
+
+
+validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
+
+
+### Inherited Members                                
+
+- [`attribute_key`](#TargetTokenizers.Unlabeled.attribute_key)
+
+- [`name`](#TargetTokenizers.Unlabeled.name)
+- [`tokenizer_elements`](#TargetTokenizers.Unlabeled.tokenizer_elements)
+- [`tokenizer_element_tree`](#TargetTokenizers.Unlabeled.tokenizer_element_tree)
+- [`tokenizer_element_dict`](#TargetTokenizers.Unlabeled.tokenizer_element_dict)
+
+- [`validate_field_type`](#TargetTokenizers.Unlabeled.validate_field_type)
+- [`diff`](#TargetTokenizers.Unlabeled.diff)
+- [`update_from_nested_dict`](#TargetTokenizers.Unlabeled.update_from_nested_dict)
+
+
+### `class StepSizes(maze_dataset.tokenization.modular.element_base.__TokenizerElementNamespace):` { #StepSizes }
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L667-L762)
+
+
+Namespace for `_StepSize` subclass hierarchy used by `MazeTokenizerModular`.
+
+
+- `key = 'step_size'`
+
+
+
+
+### `class StepSizes.Singles(StepSizes._StepSize):` { #StepSizes.Singles }
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L700-L709)
+
+
+Every coord in `maze.solution` is represented.
+
+Legacy tokenizers all use this behavior.
+
+
+### `StepSizes.Singles` { #StepSizes.Singles.__init__ }
+```python
+(
+    *,
+    _type_: Literal["<class 'maze_dataset.tokenization.modular.elements.StepSizes.Singles'>"] = "<class 'maze_dataset.tokenization.modular.elements.StepSizes.Singles'>"
+)
+```
+
+
+
+
+### `def serialize` { #StepSizes.Singles.serialize }
+```python
+(self) -> dict[str, typing.Any]
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L713-L769)
+
+
+returns the class as a dict, implemented by using `@serializable_dataclass` decorator
+
+
+### `def load` { #StepSizes.Singles.load }
+```python
+(cls, data: Union[dict[str, Any], ~T]) -> Type[~T]
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L776-L862)
+
+
+takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
+
+
+### `def validate_fields_types` { #StepSizes.Singles.validate_fields_types }
+```python
+(
+    self: muutils.json_serialize.serializable_dataclass.SerializableDataclass,
+    on_typecheck_error: muutils.errormode.ErrorMode = ErrorMode.Except
+) -> bool
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L282-L291)
+
+
+validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
+
+
+### Inherited Members                                
+
+- [`attribute_key`](#StepSizes.Singles.attribute_key)
+- [`step_start_end_indices`](#StepSizes.Singles.step_start_end_indices)
+- [`is_valid`](#StepSizes.Singles.is_valid)
+
+- [`name`](#StepSizes.Singles.name)
+- [`tokenizer_elements`](#StepSizes.Singles.tokenizer_elements)
+- [`tokenizer_element_tree`](#StepSizes.Singles.tokenizer_element_tree)
+- [`tokenizer_element_dict`](#StepSizes.Singles.tokenizer_element_dict)
+- [`to_tokens`](#StepSizes.Singles.to_tokens)
+
+- [`validate_field_type`](#StepSizes.Singles.validate_field_type)
+- [`diff`](#StepSizes.Singles.diff)
+- [`update_from_nested_dict`](#StepSizes.Singles.update_from_nested_dict)
+
+
+### `class StepSizes.Straightaways(StepSizes._StepSize):` { #StepSizes.Straightaways }
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L711-L729)
+
+
+Only coords where the path turns are represented in the path.
+
+I.e., the path is represented as a sequence of straightaways,
+specified by the coords at the turns.
+
+
+### `StepSizes.Straightaways` { #StepSizes.Straightaways.__init__ }
+```python
+(
+    *,
+    _type_: Literal["<class 'maze_dataset.tokenization.modular.elements.StepSizes.Straightaways'>"] = "<class 'maze_dataset.tokenization.modular.elements.StepSizes.Straightaways'>"
+)
+```
+
+
+
+
+### `def is_valid` { #StepSizes.Straightaways.is_valid }
+```python
+(self, do_except: bool = False) -> bool
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L256-L265)
+
+
+Default implementation of `is_valid` for `mark_as_unsupported`-decorated classes
+
+
+### `def serialize` { #StepSizes.Straightaways.serialize }
+```python
+(self) -> dict[str, typing.Any]
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L713-L769)
+
+
+returns the class as a dict, implemented by using `@serializable_dataclass` decorator
+
+
+### `def load` { #StepSizes.Straightaways.load }
+```python
+(cls, data: Union[dict[str, Any], ~T]) -> Type[~T]
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L776-L862)
+
+
+takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
+
+
+### `def validate_fields_types` { #StepSizes.Straightaways.validate_fields_types }
+```python
+(
+    self: muutils.json_serialize.serializable_dataclass.SerializableDataclass,
+    on_typecheck_error: muutils.errormode.ErrorMode = ErrorMode.Except
+) -> bool
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L282-L291)
+
+
+validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
+
+
+### Inherited Members                                
+
+- [`attribute_key`](#StepSizes.Straightaways.attribute_key)
+- [`step_start_end_indices`](#StepSizes.Straightaways.step_start_end_indices)
+
+- [`name`](#StepSizes.Straightaways.name)
+- [`tokenizer_elements`](#StepSizes.Straightaways.tokenizer_elements)
+- [`tokenizer_element_tree`](#StepSizes.Straightaways.tokenizer_element_tree)
+- [`tokenizer_element_dict`](#StepSizes.Straightaways.tokenizer_element_dict)
+- [`to_tokens`](#StepSizes.Straightaways.to_tokens)
+
+- [`validate_field_type`](#StepSizes.Straightaways.validate_field_type)
+- [`diff`](#StepSizes.Straightaways.diff)
+- [`update_from_nested_dict`](#StepSizes.Straightaways.update_from_nested_dict)
+
+
+### `class StepSizes.Forks(StepSizes._StepSize):` { #StepSizes.Forks }
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L731-L741)
+
+
+Only coords at forks, where the path has >=2 options for the next step are included.
+
+Excludes the option of backtracking.
+The starting and ending coords are always included.
+
+
+### `StepSizes.Forks` { #StepSizes.Forks.__init__ }
+```python
+(
+    *,
+    _type_: Literal["<class 'maze_dataset.tokenization.modular.elements.StepSizes.Forks'>"] = "<class 'maze_dataset.tokenization.modular.elements.StepSizes.Forks'>"
+)
+```
+
+
+
+
+### `def serialize` { #StepSizes.Forks.serialize }
+```python
+(self) -> dict[str, typing.Any]
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L713-L769)
+
+
+returns the class as a dict, implemented by using `@serializable_dataclass` decorator
+
+
+### `def load` { #StepSizes.Forks.load }
+```python
+(cls, data: Union[dict[str, Any], ~T]) -> Type[~T]
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L776-L862)
+
+
+takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
+
+
+### `def validate_fields_types` { #StepSizes.Forks.validate_fields_types }
+```python
+(
+    self: muutils.json_serialize.serializable_dataclass.SerializableDataclass,
+    on_typecheck_error: muutils.errormode.ErrorMode = ErrorMode.Except
+) -> bool
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L282-L291)
+
+
+validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
+
+
+### Inherited Members                                
+
+- [`attribute_key`](#StepSizes.Forks.attribute_key)
+- [`step_start_end_indices`](#StepSizes.Forks.step_start_end_indices)
+- [`is_valid`](#StepSizes.Forks.is_valid)
+
+- [`name`](#StepSizes.Forks.name)
+- [`tokenizer_elements`](#StepSizes.Forks.tokenizer_elements)
+- [`tokenizer_element_tree`](#StepSizes.Forks.tokenizer_element_tree)
+- [`tokenizer_element_dict`](#StepSizes.Forks.tokenizer_element_dict)
+- [`to_tokens`](#StepSizes.Forks.to_tokens)
+
+- [`validate_field_type`](#StepSizes.Forks.validate_field_type)
+- [`diff`](#StepSizes.Forks.diff)
+- [`update_from_nested_dict`](#StepSizes.Forks.update_from_nested_dict)
+
+
+### `class StepSizes.ForksAndStraightaways(StepSizes._StepSize):` { #StepSizes.ForksAndStraightaways }
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L743-L762)
+
+
+Includes the union of the coords included by `Forks` and `Straightaways`.
+
+See documentation for those classes for details.
+
+
+### `StepSizes.ForksAndStraightaways` { #StepSizes.ForksAndStraightaways.__init__ }
+```python
+(
+    *,
+    _type_: Literal["<class 'maze_dataset.tokenization.modular.elements.StepSizes.ForksAndStraightaways'>"] = "<class 'maze_dataset.tokenization.modular.elements.StepSizes.ForksAndStraightaways'>"
+)
+```
+
+
+
+
+### `def is_valid` { #StepSizes.ForksAndStraightaways.is_valid }
+```python
+(self, do_except: bool = False) -> bool
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L256-L265)
+
+
+Default implementation of `is_valid` for `mark_as_unsupported`-decorated classes
+
+
+### `def serialize` { #StepSizes.ForksAndStraightaways.serialize }
+```python
+(self) -> dict[str, typing.Any]
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L713-L769)
+
+
+returns the class as a dict, implemented by using `@serializable_dataclass` decorator
+
+
+### `def load` { #StepSizes.ForksAndStraightaways.load }
+```python
+(cls, data: Union[dict[str, Any], ~T]) -> Type[~T]
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L776-L862)
+
+
+takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
+
+
+### `def validate_fields_types` { #StepSizes.ForksAndStraightaways.validate_fields_types }
+```python
+(
+    self: muutils.json_serialize.serializable_dataclass.SerializableDataclass,
+    on_typecheck_error: muutils.errormode.ErrorMode = ErrorMode.Except
+) -> bool
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L282-L291)
+
+
+validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
+
+
+### Inherited Members                                
+
+- [`attribute_key`](#StepSizes.ForksAndStraightaways.attribute_key)
+- [`step_start_end_indices`](#StepSizes.ForksAndStraightaways.step_start_end_indices)
+
+- [`name`](#StepSizes.ForksAndStraightaways.name)
+- [`tokenizer_elements`](#StepSizes.ForksAndStraightaways.tokenizer_elements)
+- [`tokenizer_element_tree`](#StepSizes.ForksAndStraightaways.tokenizer_element_tree)
+- [`tokenizer_element_dict`](#StepSizes.ForksAndStraightaways.tokenizer_element_dict)
+- [`to_tokens`](#StepSizes.ForksAndStraightaways.to_tokens)
+
+- [`validate_field_type`](#StepSizes.ForksAndStraightaways.validate_field_type)
+- [`diff`](#StepSizes.ForksAndStraightaways.diff)
+- [`update_from_nested_dict`](#StepSizes.ForksAndStraightaways.update_from_nested_dict)
+
+
+### `class StepTokenizers(maze_dataset.tokenization.modular.element_base.__TokenizerElementNamespace):` { #StepTokenizers }
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L765-L900)
+
+
+Namespace for `_StepTokenizer` subclass hierarchy used by `MazeTokenizerModular`.
+
+
+- `key = 'step_tokenizers'`
+
+
+
+
+- `StepTokenizerPermutation: type = tuple[maze_dataset.tokenization.modular.elements.StepTokenizers._StepTokenizer] | tuple[maze_dataset.tokenization.modular.elements.StepTokenizers._StepTokenizer, maze_dataset.tokenization.modular.elements.StepTokenizers._StepTokenizer] | tuple[maze_dataset.tokenization.modular.elements.StepTokenizers._StepTokenizer, maze_dataset.tokenization.modular.elements.StepTokenizers._StepTokenizer, maze_dataset.tokenization.modular.elements.StepTokenizers._StepTokenizer] | tuple[maze_dataset.tokenization.modular.elements.StepTokenizers._StepTokenizer, maze_dataset.tokenization.modular.elements.StepTokenizers._StepTokenizer, maze_dataset.tokenization.modular.elements.StepTokenizers._StepTokenizer, maze_dataset.tokenization.modular.elements.StepTokenizers._StepTokenizer]`
+
+
+
+
+### `class StepTokenizers.Coord(StepTokenizers._StepTokenizer):` { #StepTokenizers.Coord }
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L801-L813)
+
+
+A direct tokenization of the end position coord represents the step.
+
+
+### `StepTokenizers.Coord` { #StepTokenizers.Coord.__init__ }
+```python
+(
+    *,
+    _type_: Literal["<class 'maze_dataset.tokenization.modular.elements.StepTokenizers.Coord'>"] = "<class 'maze_dataset.tokenization.modular.elements.StepTokenizers.Coord'>"
+)
+```
+
+
+
+
+### `def to_tokens` { #StepTokenizers.Coord.to_tokens }
+```python
+(
+    self,
+    maze: maze_dataset.maze.lattice_maze.SolvedMaze,
+    start_index: int,
+    end_index: int,
+    coord_tokenizer: maze_dataset.tokenization.modular.elements.CoordTokenizers._CoordTokenizer
+) -> list[str]
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L806-L813)
+
+
+Tokenizes a single step in the solution.
+
+### Parameters
+- `maze`: Maze to be tokenized
+- `start_index`: The index of the Coord in `maze.solution` at which the current step starts
+- `end_index`: The index of the Coord in `maze.solution` at which the current step ends
+
+
+### `def serialize` { #StepTokenizers.Coord.serialize }
+```python
+(self) -> dict[str, typing.Any]
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L713-L769)
+
+
+returns the class as a dict, implemented by using `@serializable_dataclass` decorator
+
+
+### `def load` { #StepTokenizers.Coord.load }
+```python
+(cls, data: Union[dict[str, Any], ~T]) -> Type[~T]
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L776-L862)
+
+
+takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
+
+
+### `def validate_fields_types` { #StepTokenizers.Coord.validate_fields_types }
+```python
+(
+    self: muutils.json_serialize.serializable_dataclass.SerializableDataclass,
+    on_typecheck_error: muutils.errormode.ErrorMode = ErrorMode.Except
+) -> bool
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L282-L291)
+
+
+validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
+
+
+### Inherited Members                                
+
+- [`attribute_key`](#StepTokenizers.Coord.attribute_key)
+- [`is_valid`](#StepTokenizers.Coord.is_valid)
+
+- [`name`](#StepTokenizers.Coord.name)
+- [`tokenizer_elements`](#StepTokenizers.Coord.tokenizer_elements)
+- [`tokenizer_element_tree`](#StepTokenizers.Coord.tokenizer_element_tree)
+- [`tokenizer_element_dict`](#StepTokenizers.Coord.tokenizer_element_dict)
+
+- [`validate_field_type`](#StepTokenizers.Coord.validate_field_type)
+- [`diff`](#StepTokenizers.Coord.diff)
+- [`update_from_nested_dict`](#StepTokenizers.Coord.update_from_nested_dict)
+
+
+### `class StepTokenizers.Cardinal(StepTokenizers._StepTokenizer):` { #StepTokenizers.Cardinal }
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L815-L832)
+
+
+A step is tokenized with a cardinal direction token.
+
+It is the direction of the step from the starting position along the solution.
+
+
+### `StepTokenizers.Cardinal` { #StepTokenizers.Cardinal.__init__ }
+```python
+(
+    *,
+    _type_: Literal["<class 'maze_dataset.tokenization.modular.elements.StepTokenizers.Cardinal'>"] = "<class 'maze_dataset.tokenization.modular.elements.StepTokenizers.Cardinal'>"
+)
+```
+
+
+
+
+### `def to_tokens` { #StepTokenizers.Cardinal.to_tokens }
+```python
+(
+    self,
+    maze: maze_dataset.maze.lattice_maze.SolvedMaze,
+    start_index: int,
+    end_index: int,
+    **kwargs
+) -> list[str]
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L823-L832)
+
+
+Tokenizes a single step in the solution.
+
+### Parameters
+- `maze`: Maze to be tokenized
+- `start_index`: The index of the Coord in `maze.solution` at which the current step starts
+- `end_index`: The index of the Coord in `maze.solution` at which the current step ends
+
+
+### `def serialize` { #StepTokenizers.Cardinal.serialize }
+```python
+(self) -> dict[str, typing.Any]
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L713-L769)
+
+
+returns the class as a dict, implemented by using `@serializable_dataclass` decorator
+
+
+### `def load` { #StepTokenizers.Cardinal.load }
+```python
+(cls, data: Union[dict[str, Any], ~T]) -> Type[~T]
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L776-L862)
+
+
+takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
+
+
+### `def validate_fields_types` { #StepTokenizers.Cardinal.validate_fields_types }
+```python
+(
+    self: muutils.json_serialize.serializable_dataclass.SerializableDataclass,
+    on_typecheck_error: muutils.errormode.ErrorMode = ErrorMode.Except
+) -> bool
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L282-L291)
+
+
+validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
+
+
+### Inherited Members                                
+
+- [`attribute_key`](#StepTokenizers.Cardinal.attribute_key)
+- [`is_valid`](#StepTokenizers.Cardinal.is_valid)
+
+- [`name`](#StepTokenizers.Cardinal.name)
+- [`tokenizer_elements`](#StepTokenizers.Cardinal.tokenizer_elements)
+- [`tokenizer_element_tree`](#StepTokenizers.Cardinal.tokenizer_element_tree)
+- [`tokenizer_element_dict`](#StepTokenizers.Cardinal.tokenizer_element_dict)
+
+- [`validate_field_type`](#StepTokenizers.Cardinal.validate_field_type)
+- [`diff`](#StepTokenizers.Cardinal.diff)
+- [`update_from_nested_dict`](#StepTokenizers.Cardinal.update_from_nested_dict)
+
+
+### `class StepTokenizers.Relative(StepTokenizers._StepTokenizer):` { #StepTokenizers.Relative }
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L834-L868)
+
+
+Tokenizes a solution step using relative first-person directions (right, left, forward, etc.).
+
+To simplify the indeterminacy, at the start of a solution the "agent" solving the maze is assumed to be facing NORTH.
+Similarly to `Cardinal`, the direction is that of the step from the starting position.
+
+
+### `StepTokenizers.Relative` { #StepTokenizers.Relative.__init__ }
+```python
+(
+    *,
+    _type_: Literal["<class 'maze_dataset.tokenization.modular.elements.StepTokenizers.Relative'>"] = "<class 'maze_dataset.tokenization.modular.elements.StepTokenizers.Relative'>"
+)
+```
+
+
+
+
+### `def to_tokens` { #StepTokenizers.Relative.to_tokens }
+```python
+(
+    self,
+    maze: maze_dataset.maze.lattice_maze.SolvedMaze,
+    start_index: int,
+    end_index: int,
+    **kwargs
+) -> list[str]
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L843-L868)
+
+
+Tokenizes a single step in the solution.
+
+### Parameters
+- `maze`: Maze to be tokenized
+- `start_index`: The index of the Coord in `maze.solution` at which the current step starts
+- `end_index`: The index of the Coord in `maze.solution` at which the current step ends
+
+
+### `def serialize` { #StepTokenizers.Relative.serialize }
+```python
+(self) -> dict[str, typing.Any]
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L713-L769)
+
+
+returns the class as a dict, implemented by using `@serializable_dataclass` decorator
+
+
+### `def load` { #StepTokenizers.Relative.load }
+```python
+(cls, data: Union[dict[str, Any], ~T]) -> Type[~T]
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L776-L862)
+
+
+takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
+
+
+### `def validate_fields_types` { #StepTokenizers.Relative.validate_fields_types }
+```python
+(
+    self: muutils.json_serialize.serializable_dataclass.SerializableDataclass,
+    on_typecheck_error: muutils.errormode.ErrorMode = ErrorMode.Except
+) -> bool
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L282-L291)
+
+
+validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
+
+
+### Inherited Members                                
+
+- [`attribute_key`](#StepTokenizers.Relative.attribute_key)
+- [`is_valid`](#StepTokenizers.Relative.is_valid)
+
+- [`name`](#StepTokenizers.Relative.name)
+- [`tokenizer_elements`](#StepTokenizers.Relative.tokenizer_elements)
+- [`tokenizer_element_tree`](#StepTokenizers.Relative.tokenizer_element_tree)
+- [`tokenizer_element_dict`](#StepTokenizers.Relative.tokenizer_element_dict)
+
+- [`validate_field_type`](#StepTokenizers.Relative.validate_field_type)
+- [`diff`](#StepTokenizers.Relative.diff)
+- [`update_from_nested_dict`](#StepTokenizers.Relative.update_from_nested_dict)
+
+
+### `class StepTokenizers.Distance(StepTokenizers._StepTokenizer):` { #StepTokenizers.Distance }
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L870-L888)
+
+
+A count of the number of individual steps from the starting point to the end point.
+
+Contains no information about directionality, only the distance traveled in the step.
+`Distance` must be combined with at least one other `_StepTokenizer` in a `StepTokenizerPermutation`.
+This constraint is enforced in `_PathTokenizer.is_valid`.
+
+
+### `StepTokenizers.Distance` { #StepTokenizers.Distance.__init__ }
+```python
+(
+    *,
+    _type_: Literal["<class 'maze_dataset.tokenization.modular.elements.StepTokenizers.Distance'>"] = "<class 'maze_dataset.tokenization.modular.elements.StepTokenizers.Distance'>"
+)
+```
+
+
+
+
+### `def to_tokens` { #StepTokenizers.Distance.to_tokens }
+```python
+(
+    self,
+    maze: maze_dataset.maze.lattice_maze.SolvedMaze,
+    start_index: int,
+    end_index: int,
+    **kwargs
+) -> list[str]
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L880-L888)
+
+
+Tokenizes a single step in the solution.
+
+### Parameters
+- `maze`: Maze to be tokenized
+- `start_index`: The index of the Coord in `maze.solution` at which the current step starts
+- `end_index`: The index of the Coord in `maze.solution` at which the current step ends
+
+
+### `def serialize` { #StepTokenizers.Distance.serialize }
+```python
+(self) -> dict[str, typing.Any]
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L713-L769)
+
+
+returns the class as a dict, implemented by using `@serializable_dataclass` decorator
+
+
+### `def load` { #StepTokenizers.Distance.load }
+```python
+(cls, data: Union[dict[str, Any], ~T]) -> Type[~T]
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L776-L862)
+
+
+takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
+
+
+### `def validate_fields_types` { #StepTokenizers.Distance.validate_fields_types }
+```python
+(
+    self: muutils.json_serialize.serializable_dataclass.SerializableDataclass,
+    on_typecheck_error: muutils.errormode.ErrorMode = ErrorMode.Except
+) -> bool
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L282-L291)
+
+
+validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
+
+
+### Inherited Members                                
+
+- [`attribute_key`](#StepTokenizers.Distance.attribute_key)
+- [`is_valid`](#StepTokenizers.Distance.is_valid)
+
+- [`name`](#StepTokenizers.Distance.name)
+- [`tokenizer_elements`](#StepTokenizers.Distance.tokenizer_elements)
+- [`tokenizer_element_tree`](#StepTokenizers.Distance.tokenizer_element_tree)
+- [`tokenizer_element_dict`](#StepTokenizers.Distance.tokenizer_element_dict)
+
+- [`validate_field_type`](#StepTokenizers.Distance.validate_field_type)
+- [`diff`](#StepTokenizers.Distance.diff)
+- [`update_from_nested_dict`](#StepTokenizers.Distance.update_from_nested_dict)
+
+
+### `class PathTokenizers(maze_dataset.tokenization.modular.element_base.__TokenizerElementNamespace):` { #PathTokenizers }
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L903-L1049)
+
+
+Namespace for `_PathTokenizer` subclass hierarchy used by `MazeTokenizerModular`.
+
+
+- `key = 'path_tokenizer'`
+
+
+
+
+### `class PathTokenizers.StepSequence(PathTokenizers._PathTokenizer, abc.ABC):` { #PathTokenizers.StepSequence }
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L925-L1049)
+
+
+Any `PathTokenizer` where the tokenization may be assembled from token subsequences, each of which represents a step along the path.
+
+Allows for a sequence of leading and trailing tokens which don't fit the step pattern.
+
+### Parameters
+- `step_size`: Selects the size of a single step in the sequence
+- `step_tokenizers`: Selects the combination and permutation of tokens
+- `pre`: Whether all steps include an integral preceding delimiter token
+- `intra`: Whether all steps include a delimiter token after each individual `_StepTokenizer` tokenization.
+- `post`: Whether all steps include an integral following delimiter token
+
+
+### `PathTokenizers.StepSequence` { #PathTokenizers.StepSequence.__init__ }
+```python
+(
+    *,
+    _type_: Literal["<class 'maze_dataset.tokenization.modular.elements.PathTokenizers.StepSequence'>"] = "<class 'maze_dataset.tokenization.modular.elements.PathTokenizers.StepSequence'>",
+    step_size: maze_dataset.tokenization.modular.elements.StepSizes._StepSize = StepSizes.Singles(),
+    step_tokenizers: tuple[maze_dataset.tokenization.modular.elements.StepTokenizers._StepTokenizer] | tuple[maze_dataset.tokenization.modular.elements.StepTokenizers._StepTokenizer, maze_dataset.tokenization.modular.elements.StepTokenizers._StepTokenizer] | tuple[maze_dataset.tokenization.modular.elements.StepTokenizers._StepTokenizer, maze_dataset.tokenization.modular.elements.StepTokenizers._StepTokenizer, maze_dataset.tokenization.modular.elements.StepTokenizers._StepTokenizer] | tuple[maze_dataset.tokenization.modular.elements.StepTokenizers._StepTokenizer, maze_dataset.tokenization.modular.elements.StepTokenizers._StepTokenizer, maze_dataset.tokenization.modular.elements.StepTokenizers._StepTokenizer, maze_dataset.tokenization.modular.elements.StepTokenizers._StepTokenizer] = (StepTokenizers.Coord(),),
+    pre: bool = False,
+    intra: bool = False,
+    post: bool = False
+)
+```
+
+
+
+
+- `step_size: maze_dataset.tokenization.modular.elements.StepSizes._StepSize = StepSizes.Singles()`
+
+
+
+
+- `step_tokenizers: tuple[maze_dataset.tokenization.modular.elements.StepTokenizers._StepTokenizer] | tuple[maze_dataset.tokenization.modular.elements.StepTokenizers._StepTokenizer, maze_dataset.tokenization.modular.elements.StepTokenizers._StepTokenizer] | tuple[maze_dataset.tokenization.modular.elements.StepTokenizers._StepTokenizer, maze_dataset.tokenization.modular.elements.StepTokenizers._StepTokenizer, maze_dataset.tokenization.modular.elements.StepTokenizers._StepTokenizer] | tuple[maze_dataset.tokenization.modular.elements.StepTokenizers._StepTokenizer, maze_dataset.tokenization.modular.elements.StepTokenizers._StepTokenizer, maze_dataset.tokenization.modular.elements.StepTokenizers._StepTokenizer, maze_dataset.tokenization.modular.elements.StepTokenizers._StepTokenizer] = (StepTokenizers.Coord(),)`
+
+
+
+
+- `pre: bool = False`
+
+
+
+
+- `intra: bool = False`
+
+
+
+
+- `post: bool = False`
+
+
+
+
+### `def to_tokens` { #PathTokenizers.StepSequence.to_tokens }
+```python
+(
+    self,
+    maze: maze_dataset.maze.lattice_maze.SolvedMaze,
+    coord_tokenizer: maze_dataset.tokenization.modular.elements.CoordTokenizers._CoordTokenizer
+) -> list[str]
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L953-L967)
+
+
+Returns tokens representing the solution path.
+
+
+### `def is_valid` { #PathTokenizers.StepSequence.is_valid }
+```python
+(self, do_except: bool = False) -> bool
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L1027-L1049)
+
+
+Returns if `self` contains data members capable of producing an overall valid `MazeTokenizerModular`.
+
+Some `_TokenizerElement` instances may be created which are not useful despite obeying data member type hints.
+`is_valid` allows for more precise detection of invalid `_TokenizerElement`s beyond type hinting alone.
+If type hints are sufficient to constrain the possible instances of some subclass, then this method may simply `return True` for that subclass.
+
+### Types of Invalidity
+In nontrivial implementations of this method, each conditional clause should contain a comment classifying the reason for invalidity and one of the types below.
+Invalidity types, in ascending order of invalidity:
+- Uninteresting: These tokenizers might be used to train functional models, but the schemes are not interesting to study.
+E.g., `_TokenizerElement`s which are strictly worse than some alternative.
+- Duplicate: These tokenizers have identical tokenization behavior as some other valid tokenizers.
+- Untrainable: Training functional models using these tokenizers would be (nearly) impossible.
+- Erroneous: These tokenizers might raise exceptions during use.
+
+### Development
+`is_invalid` is implemented to always return `True` in some abstract classes where all currently possible subclass instances are valid.
+When adding new subclasses or data members, the developer should check if any such blanket statement of validity still holds and update it as neccesary.
+
+#### Nesting
+In general, when implementing this method, there is no need to recursively call `is_valid` on nested `_TokenizerElement`s contained in the class.
+In other words, failures of `is_valid` need not bubble up to the top of the nested `_TokenizerElement` tree.
+`MazeTokenizerModular.is_valid` calls `is_valid` on each of its `_TokenizerElement`s individually, so failure at any level will be detected.
+
+#### Types of Invalidity
+If it's judged to be useful, the types of invalidity could be implemented with an Enum or similar rather than only living in comments.
+This could be used to create more or less stringent filters on the valid `_TokenizerElement` instances.
+
+
+### `def serialize` { #PathTokenizers.StepSequence.serialize }
+```python
+(self) -> dict[str, typing.Any]
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L713-L769)
+
+
+returns the class as a dict, implemented by using `@serializable_dataclass` decorator
+
+
+### `def load` { #PathTokenizers.StepSequence.load }
+```python
+(cls, data: Union[dict[str, Any], ~T]) -> Type[~T]
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L776-L862)
+
+
+takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
+
+
+### `def validate_fields_types` { #PathTokenizers.StepSequence.validate_fields_types }
+```python
+(
+    self: muutils.json_serialize.serializable_dataclass.SerializableDataclass,
+    on_typecheck_error: muutils.errormode.ErrorMode = ErrorMode.Except
+) -> bool
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L282-L291)
+
+
+validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
+
+
+### Inherited Members                                
+
+- [`attribute_key`](#PathTokenizers.StepSequence.attribute_key)
+
+- [`name`](#PathTokenizers.StepSequence.name)
+- [`tokenizer_elements`](#PathTokenizers.StepSequence.tokenizer_elements)
+- [`tokenizer_element_tree`](#PathTokenizers.StepSequence.tokenizer_element_tree)
+- [`tokenizer_element_dict`](#PathTokenizers.StepSequence.tokenizer_element_dict)
+
+- [`validate_field_type`](#PathTokenizers.StepSequence.validate_field_type)
+- [`diff`](#PathTokenizers.StepSequence.diff)
+- [`update_from_nested_dict`](#PathTokenizers.StepSequence.update_from_nested_dict)
+
+
+### `class PromptSequencers(maze_dataset.tokenization.modular.element_base.__TokenizerElementNamespace):` { #PromptSequencers }
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L1052-L1294)
+
+
+Namespace for `_PromptSequencer` subclass hierarchy used by `MazeTokenizerModular`.
+
+
+- `key = 'prompt_sequencer'`
+
+
+
+
+### `class PromptSequencers.AOTP(PromptSequencers._PromptSequencer):` { #PromptSequencers.AOTP }
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L1215-L1256)
+
+
+Sequences a prompt as [adjacency list, origin, target, path].
+
+### Parameters
+- `target_tokenizer`: Tokenizer element which tokenizes the target(s) of a `TargetedLatticeMaze`.
+Uses `coord_tokenizer` to tokenize coords if that is part of the design of that `TargetTokenizer`.
+- `path_tokenizer`: Tokenizer element which tokenizes the solution path of a `SolvedMaze`.
+Uses `coord_tokenizer` to tokenize coords if that is part of the design of that `PathTokenizer`.
+
+
+### `PromptSequencers.AOTP` { #PromptSequencers.AOTP.__init__ }
+```python
+(
+    *,
+    coord_tokenizer: maze_dataset.tokenization.modular.elements.CoordTokenizers._CoordTokenizer = CoordTokenizers.UT(),
+    adj_list_tokenizer: maze_dataset.tokenization.modular.elements.AdjListTokenizers._AdjListTokenizer = AdjListTokenizers.AdjListCoord(pre=False, post=True, shuffle_d0=True, edge_grouping=EdgeGroupings.Ungrouped(connection_token_ordinal=1), edge_subset=EdgeSubsets.ConnectionEdges(walls=False), edge_permuter=EdgePermuters.RandomCoords()),
+    _type_: Literal["<class 'maze_dataset.tokenization.modular.elements.PromptSequencers.AOTP'>"] = "<class 'maze_dataset.tokenization.modular.elements.PromptSequencers.AOTP'>",
+    target_tokenizer: maze_dataset.tokenization.modular.elements.TargetTokenizers._TargetTokenizer = TargetTokenizers.Unlabeled(post=False),
+    path_tokenizer: maze_dataset.tokenization.modular.elements.PathTokenizers._PathTokenizer = PathTokenizers.StepSequence(step_size=StepSizes.Singles(), step_tokenizers=(StepTokenizers.Coord(),), pre=False, intra=False, post=False)
+)
+```
+
+
+
+
+- `target_tokenizer: maze_dataset.tokenization.modular.elements.TargetTokenizers._TargetTokenizer = TargetTokenizers.Unlabeled(post=False)`
+
+
+
+
+- `path_tokenizer: maze_dataset.tokenization.modular.elements.PathTokenizers._PathTokenizer = PathTokenizers.StepSequence(step_size=StepSizes.Singles(), step_tokenizers=(StepTokenizers.Coord(),), pre=False, intra=False, post=False)`
+
+
+
+
+### `def serialize` { #PromptSequencers.AOTP.serialize }
+```python
+(self) -> dict[str, typing.Any]
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L713-L769)
+
+
+returns the class as a dict, implemented by using `@serializable_dataclass` decorator
+
+
+### `def load` { #PromptSequencers.AOTP.load }
+```python
+(cls, data: Union[dict[str, Any], ~T]) -> Type[~T]
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L776-L862)
+
+
+takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
+
+
+### `def validate_fields_types` { #PromptSequencers.AOTP.validate_fields_types }
+```python
+(
+    self: muutils.json_serialize.serializable_dataclass.SerializableDataclass,
+    on_typecheck_error: muutils.errormode.ErrorMode = ErrorMode.Except
+) -> bool
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L282-L291)
+
+
+validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
+
+
+### Inherited Members                                
+
+- [`coord_tokenizer`](#PromptSequencers.AOTP.coord_tokenizer)
+- [`adj_list_tokenizer`](#PromptSequencers.AOTP.adj_list_tokenizer)
+- [`attribute_key`](#PromptSequencers.AOTP.attribute_key)
+- [`to_tokens`](#PromptSequencers.AOTP.to_tokens)
+- [`is_valid`](#PromptSequencers.AOTP.is_valid)
+
+- [`name`](#PromptSequencers.AOTP.name)
+- [`tokenizer_elements`](#PromptSequencers.AOTP.tokenizer_elements)
+- [`tokenizer_element_tree`](#PromptSequencers.AOTP.tokenizer_element_tree)
+- [`tokenizer_element_dict`](#PromptSequencers.AOTP.tokenizer_element_dict)
+
+- [`validate_field_type`](#PromptSequencers.AOTP.validate_field_type)
+- [`diff`](#PromptSequencers.AOTP.diff)
+- [`update_from_nested_dict`](#PromptSequencers.AOTP.update_from_nested_dict)
+
+
+### `class PromptSequencers.AOP(PromptSequencers._PromptSequencer):` { #PromptSequencers.AOP }
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L1258-L1294)
+
+
+Sequences a prompt as [adjacency list, origin, path].
+
+Still includes "<TARGET_START>" and "<TARGET_END>" tokens, but no representation of the target itself.
+
+### Parameters
+- `path_tokenizer`: Tokenizer element which tokenizes the solution path of a `SolvedMaze`.
+Uses `coord_tokenizer` to tokenize coords if that is part of the design of that `PathTokenizer`.
+
+
+### `PromptSequencers.AOP` { #PromptSequencers.AOP.__init__ }
+```python
+(
+    *,
+    coord_tokenizer: maze_dataset.tokenization.modular.elements.CoordTokenizers._CoordTokenizer = CoordTokenizers.UT(),
+    adj_list_tokenizer: maze_dataset.tokenization.modular.elements.AdjListTokenizers._AdjListTokenizer = AdjListTokenizers.AdjListCoord(pre=False, post=True, shuffle_d0=True, edge_grouping=EdgeGroupings.Ungrouped(connection_token_ordinal=1), edge_subset=EdgeSubsets.ConnectionEdges(walls=False), edge_permuter=EdgePermuters.RandomCoords()),
+    _type_: Literal["<class 'maze_dataset.tokenization.modular.elements.PromptSequencers.AOP'>"] = "<class 'maze_dataset.tokenization.modular.elements.PromptSequencers.AOP'>",
+    path_tokenizer: maze_dataset.tokenization.modular.elements.PathTokenizers._PathTokenizer = PathTokenizers.StepSequence(step_size=StepSizes.Singles(), step_tokenizers=(StepTokenizers.Coord(),), pre=False, intra=False, post=False)
+)
+```
+
+
+
+
+- `path_tokenizer: maze_dataset.tokenization.modular.elements.PathTokenizers._PathTokenizer = PathTokenizers.StepSequence(step_size=StepSizes.Singles(), step_tokenizers=(StepTokenizers.Coord(),), pre=False, intra=False, post=False)`
+
+
+
+
+### `def serialize` { #PromptSequencers.AOP.serialize }
+```python
+(self) -> dict[str, typing.Any]
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L713-L769)
+
+
+returns the class as a dict, implemented by using `@serializable_dataclass` decorator
+
+
+### `def load` { #PromptSequencers.AOP.load }
+```python
+(cls, data: Union[dict[str, Any], ~T]) -> Type[~T]
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L776-L862)
+
+
+takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
+
+
+### `def validate_fields_types` { #PromptSequencers.AOP.validate_fields_types }
+```python
+(
+    self: muutils.json_serialize.serializable_dataclass.SerializableDataclass,
+    on_typecheck_error: muutils.errormode.ErrorMode = ErrorMode.Except
+) -> bool
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/elements.py#L282-L291)
+
+
+validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
+
+
+### Inherited Members                                
+
+- [`coord_tokenizer`](#PromptSequencers.AOP.coord_tokenizer)
+- [`adj_list_tokenizer`](#PromptSequencers.AOP.adj_list_tokenizer)
+- [`attribute_key`](#PromptSequencers.AOP.attribute_key)
+- [`to_tokens`](#PromptSequencers.AOP.to_tokens)
+- [`is_valid`](#PromptSequencers.AOP.is_valid)
+
+- [`name`](#PromptSequencers.AOP.name)
+- [`tokenizer_elements`](#PromptSequencers.AOP.tokenizer_elements)
+- [`tokenizer_element_tree`](#PromptSequencers.AOP.tokenizer_element_tree)
+- [`tokenizer_element_dict`](#PromptSequencers.AOP.tokenizer_element_dict)
+
+- [`validate_field_type`](#PromptSequencers.AOP.validate_field_type)
+- [`diff`](#PromptSequencers.AOP.diff)
+- [`update_from_nested_dict`](#PromptSequencers.AOP.update_from_nested_dict)
+
+
+
+
+> docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.3.0
+
+
+## Contents
+to check if a tokenizer is one of our "approved" ones, we store this in a fst set using `rust_fst`
+
+this file handles the creation of this fst file, which we ship to the user
+
+this file relies on importing `get_all_tokenizers` and thus `MazeTokenizerModular`.
+as such, loading this file for validating a tokenizer is the separate `maze_dataset.tokenization.modular.fst_load`
+module, since we need to be able to import that from `maze_dataset.tokenization.modular.maze_tokenizer_modular` and
+we cannot circularly import
+
+
+## API Documentation
+
+ - [`save_all_tokenizers_fst`](#save_all_tokenizers_fst)
+ - [`check_tokenizers_fst`](#check_tokenizers_fst)
+
+
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/fst.py)
+
+# `maze_dataset.tokenization.modular.fst` { #maze_dataset.tokenization.modular.fst }
+
+to check if a tokenizer is one of our "approved" ones, we store this in a fst set using `rust_fst`
+
+this file handles the creation of this fst file, which we ship to the user
+
+this file relies on importing `get_all_tokenizers` and thus `MazeTokenizerModular`.
+as such, loading this file for validating a tokenizer is the separate `<a href="fst_load.html">maze_dataset.tokenization.modular.fst_load</a>`
+module, since we need to be able to import that from `<a href="maze_tokenizer_modular.html">maze_dataset.tokenization.modular.maze_tokenizer_modular</a>` and
+we cannot circularly import
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/fst.py#L0-L199)
+
+
+
+### `def save_all_tokenizers_fst` { #save_all_tokenizers_fst }
+```python
+(verbose: bool = True, parallel: bool | int = False) -> rust_fst.set.Set
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/fst.py#L33-L78)
+
+
+get all the tokenizers, save an fst file at `MMT_FST_PATH` and return the set
+
+
+### `def check_tokenizers_fst` { #check_tokenizers_fst }
+```python
+(
+    verbose: bool = True,
+    parallel: bool | int = False,
+    n_check: int | None = None
+) -> rust_fst.set.Set
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/fst.py#L81-L145)
+
+
+regen all tokenizers, check they are in the pre-existing fst set
+
+
+
+
+> docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.3.0
+
+
+## Contents
+to check if a tokenizer is one of our "approved" ones, look in an fst set we made with `rust_fst`
+
+this file handles the creation of this fst file, which we ship to the user
+
+this file relies on importing `get_all_tokenizers` and thus `MazeTokenizerModular`.
+as such, loading this file for validating a tokenizer is the separate `maze_dataset.tokenization.modular.fst_load`
+module, since we need to be able to import that from `maze_dataset.tokenization.modular.maze_tokenizer_modular` and
+we cannot circularly import
+
+thanks to https://github.com/rozbb for suggesting doing this instead of storing a whole bunch of hashes like we were doing before
+
+
+## API Documentation
+
+ - [`MMT_FST_PATH`](#MMT_FST_PATH)
+ - [`get_tokenizers_fst`](#get_tokenizers_fst)
+ - [`check_tokenizer_in_fst`](#check_tokenizer_in_fst)
+
+
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/fst_load.py)
+
+# `maze_dataset.tokenization.modular.fst_load` { #maze_dataset.tokenization.modular.fst_load }
+
+to check if a tokenizer is one of our "approved" ones, look in an fst set we made with `rust_fst`
+
+this file handles the creation of this fst file, which we ship to the user
+
+this file relies on importing `get_all_tokenizers` and thus `MazeTokenizerModular`.
+as such, loading this file for validating a tokenizer is the separate `<a href="">maze_dataset.tokenization.modular.fst_load</a>`
+module, since we need to be able to import that from `<a href="maze_tokenizer_modular.html">maze_dataset.tokenization.modular.maze_tokenizer_modular</a>` and
+we cannot circularly import
+
+thanks to https://github.com/rozbb for suggesting doing this instead of storing a whole bunch of hashes like we were doing before
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/fst_load.py#L0-L53)
+
+
+
+- `MMT_FST_PATH: pathlib.Path = PosixPath('/home/miv/projects/mazes/maze-dataset/maze_dataset/tokenization/modular/MazeTokenizerModular_tested.fst')`
+
+
+
+
+### `def get_tokenizers_fst` { #get_tokenizers_fst }
+```python
+() -> rust_fst.set.Set
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/fst_load.py#L22-L25)
+
+
+(cached) load the tokenizers fst set from `MMT_FST_PATH`
+
+
+### `def check_tokenizer_in_fst` { #check_tokenizer_in_fst }
+```python
+(tokenizer_name: str, do_except: bool = False) -> bool
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/fst_load.py#L28-L54)
+
+
+check if a tokenizer is in the fst set
+
+prints nearest matches if `do_except` is `True` and the tokenizer is not found
+
+
+
+
+> docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.3.0
+
+
+## Contents
+legacy system for checking a `ModularMazeTokenizer` is valid -- compare its hash to a table of known hashes
+
+this has been superseded by the fst system
+
+
+## API Documentation
+
+ - [`AllTokenizersHashBitLength`](#AllTokenizersHashBitLength)
+ - [`AllTokenizersHashDtype`](#AllTokenizersHashDtype)
+ - [`AllTokenizersHashesArray`](#AllTokenizersHashesArray)
+ - [`set_tokenizer_hashes_path`](#set_tokenizer_hashes_path)
+ - [`get_all_tokenizer_hashes`](#get_all_tokenizer_hashes)
+
+
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/hashing.py)
+
+# `maze_dataset.tokenization.modular.hashing` { #maze_dataset.tokenization.modular.hashing }
+
+legacy system for checking a `ModularMazeTokenizer` is valid -- compare its hash to a table of known hashes
+
+this has been superseded by the fst system
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/hashing.py#L0-L94)
+
+
+
+- `AllTokenizersHashBitLength = 32`
+
+
+bit length of the hashes of all tokenizers, must match `AllTokenizersHashDtype` and `AllTokenizersHashesArray`
+
+
+- `AllTokenizersHashDtype = <class 'numpy.uint32'>`
+
+
+numpy data type of the hashes of all tokenizers, must match `AllTokenizersHashBitLength` and `AllTokenizersHashesArray`
+
+
+- `AllTokenizersHashesArray = <class 'jaxtyping.UInt32[ndarray, 'n_tokens']'>`
+
+
+jaxtyping type of the hashes of all tokenizers, must match `AllTokenizersHashBitLength` and `AllTokenizersHashDtype`
+
+
+### `def set_tokenizer_hashes_path` { #set_tokenizer_hashes_path }
+```python
+(path: pathlib.Path) -> None
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/hashing.py#L39-L63)
+
+
+set path to tokenizer hashes, and reload the hashes if needed
+
+the hashes are expected to be stored in and read from `_TOKENIZER_HASHES_PATH`,
+which by default is `Path(__file__).parent / "MazeTokenizerModular_hashes.npz"` or in this file's directory.
+
+However, this might not always work, so we provide a way to change this.
+
+
+### `def get_all_tokenizer_hashes` { #get_all_tokenizer_hashes }
+```python
+() -> jaxtyping.UInt32[ndarray, 'n_tokens']
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/hashing.py#L82-L95)
+
+
+returns all the tokenizer hashes in an `AllTokenizersHashesDtype` array, setting global variable if needed
+
+
+
+
+> docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.3.0
+
+
+## Contents
+implements the actual `MazeTokenizerModular` class
+
+
+## API Documentation
+
+ - [`MazeTokenizerModular`](#MazeTokenizerModular)
+
+
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/maze_tokenizer_modular.py)
+
+# `maze_dataset.tokenization.modular.maze_tokenizer_modular` { #maze_dataset.tokenization.modular.maze_tokenizer_modular }
+
+implements the actual `MazeTokenizerModular` class
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/maze_tokenizer_modular.py#L0-L348)
+
+
+
+### `class MazeTokenizerModular(muutils.json_serialize.serializable_dataclass.SerializableDataclass):` { #MazeTokenizerModular }
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/maze_tokenizer_modular.py#L50-L349)
+
+
+Tokenizer for mazes
+
+### Parameters
+- `prompt_sequencer`: Tokenizer element which assembles token regions (adjacency list, origin, target, path) into a complete prompt.
+
+### Development
+- To ensure backwards compatibility, the default constructor must always return a tokenizer equivalent to the legacy `TokenizationMode.AOTP_UT_Uniform`.
+- Furthermore, the mapping reflected in `from_legacy` must also be maintained.
+- Updates to `MazeTokenizerModular` or the `_TokenizerElement` hierarchy must maintain that behavior.
+
+
+### `MazeTokenizerModular` { #MazeTokenizerModular.__init__ }
+```python
+(
+    *,
+    prompt_sequencer: maze_dataset.tokenization.modular.elements.PromptSequencers._PromptSequencer = PromptSequencers.AOTP(coord_tokenizer=CoordTokenizers.UT(), adj_list_tokenizer=AdjListTokenizers.AdjListCoord(pre=False, post=True, shuffle_d0=True, edge_grouping=EdgeGroupings.Ungrouped(connection_token_ordinal=1), edge_subset=EdgeSubsets.ConnectionEdges(walls=False), edge_permuter=EdgePermuters.RandomCoords()), target_tokenizer=TargetTokenizers.Unlabeled(post=False), path_tokenizer=PathTokenizers.StepSequence(step_size=StepSizes.Singles(), step_tokenizers=(StepTokenizers.Coord(),), pre=False, intra=False, post=False))
+)
+```
+
+
+
+
+- `prompt_sequencer: maze_dataset.tokenization.modular.elements.PromptSequencers._PromptSequencer = PromptSequencers.AOTP(coord_tokenizer=CoordTokenizers.UT(), adj_list_tokenizer=AdjListTokenizers.AdjListCoord(pre=False, post=True, shuffle_d0=True, edge_grouping=EdgeGroupings.Ungrouped(connection_token_ordinal=1), edge_subset=EdgeSubsets.ConnectionEdges(walls=False), edge_permuter=EdgePermuters.RandomCoords()), target_tokenizer=TargetTokenizers.Unlabeled(post=False), path_tokenizer=PathTokenizers.StepSequence(step_size=StepSizes.Singles(), step_tokenizers=(StepTokenizers.Coord(),), pre=False, intra=False, post=False))`
+
+
+
+
+### `def hash_int` { #MazeTokenizerModular.hash_int }
+```python
+(self) -> int
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/maze_tokenizer_modular.py#L72-L74)
+
+
+return integer hash using blake2b
+
+
+### `def hash_b64` { #MazeTokenizerModular.hash_b64 }
+```python
+(self, n_bytes: int = 8) -> str
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/maze_tokenizer_modular.py#L80-L91)
+
+
+filename-safe base64 encoding of the hash
+
+
+- `tokenizer_elements: list[maze_dataset.tokenization.modular.element_base._TokenizerElement] `
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/maze_tokenizer_modular.py#L95-L98)
+
+
+returns a list of all the elements of this tokenizer
+
+
+### `def tokenizer_element_tree` { #MazeTokenizerModular.tokenizer_element_tree }
+```python
+(self, abstract: bool = False) -> str
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/maze_tokenizer_modular.py#L100-L114)
+
+
+Returns a string representation of the tree of tokenizer elements contained in `self`.
+
+### Parameters
+- `abstract: bool`: Whether to print the name of the abstract base class or the concrete class for each `_TokenizerElement` instance.
+
+
+- `tokenizer_element_tree_concrete: str `
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/maze_tokenizer_modular.py#L116-L119)
+
+
+Property wrapper for `tokenizer_element_tree` so that it can be used in `properties_to_serialize`.
+
+
+### `def tokenizer_element_dict` { #MazeTokenizerModular.tokenizer_element_dict }
+```python
+(self) -> dict
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/maze_tokenizer_modular.py#L121-L123)
+
+
+Nested dictionary of the internal `TokenizerElement`s.
+
+
+- `name: str `
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/maze_tokenizer_modular.py#L125-L128)
+
+
+Serializes MazeTokenizer into a key for encoding in zanj
+
+
+### `def summary` { #MazeTokenizerModular.summary }
+```python
+(self) -> dict[str, str]
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/maze_tokenizer_modular.py#L130-L135)
+
+
+Single-level dictionary of the internal `TokenizerElement`s.
+
+
+### `def has_element` { #MazeTokenizerModular.has_element }
+```python
+(
+    self,
+    *elements: Sequence[type[maze_dataset.tokenization.modular.element_base._TokenizerElement] | maze_dataset.tokenization.modular.element_base._TokenizerElement]
+) -> bool
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/maze_tokenizer_modular.py#L158-L174)
+
+
+Returns True if the `MazeTokenizerModular` instance contains ALL of the items specified in `elements`.
+
+Querying with a partial subset of `_TokenizerElement` fields is not currently supported.
+To do such a query, assemble multiple calls to `has_elements`.
+
+### Parameters
+- `elements`: Singleton or iterable of `_TokenizerElement` instances or classes.
+If an instance is provided, then comparison is done via instance equality.
+If a class is provided, then comparison isdone via `isinstance`. I.e., any instance of that class is accepted.
+
+
+### `def is_valid` { #MazeTokenizerModular.is_valid }
+```python
+(self, do_except: bool = False) -> bool
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/maze_tokenizer_modular.py#L176-L181)
+
+
+Returns `True` if `self` is a valid tokenizer.
+
+Evaluates the validity of all of `self.tokenizer_elements` according to each one's method.
+
+
+### `def is_legacy_equivalent` { #MazeTokenizerModular.is_legacy_equivalent }
+```python
+(self) -> bool
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/maze_tokenizer_modular.py#L183-L188)
+
+
+Returns if `self` has identical stringification behavior as any legacy `MazeTokenizer`.
+
+
+### `def is_tested_tokenizer` { #MazeTokenizerModular.is_tested_tokenizer }
+```python
+(self, do_except: bool = False) -> bool
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/maze_tokenizer_modular.py#L190-L204)
+
+
+Returns if the tokenizer is returned by `all_tokenizers.get_all_tokenizers`, the set of tested and reliable tokenizers.
+
+uses an fst on the `name` attributes of all the tokenizers
+
+if `do_assert` is `True`, raises an `AssertionError` if the tokenizer is not tested.
+
+
+### `def is_AOTP` { #MazeTokenizerModular.is_AOTP }
+```python
+(self) -> bool
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/maze_tokenizer_modular.py#L206-L208)
+
+
+is this tokenizer an AOTP tokenizer? AOTP = Adjacency list, Origin, Target, Path
+
+
+### `def is_UT` { #MazeTokenizerModular.is_UT }
+```python
+(self) -> bool
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/maze_tokenizer_modular.py#L210-L212)
+
+
+is this tokenizer a UT tokenizer? UT = Unique Token (for each coord)
+
+
+### `def from_legacy` { #MazeTokenizerModular.from_legacy }
+```python
+(
+    cls,
+    legacy_maze_tokenizer: maze_dataset.tokenization.maze_tokenizer_legacy.MazeTokenizer | maze_dataset.tokenization.maze_tokenizer_legacy.TokenizationMode
+) -> maze_dataset.tokenization.modular.maze_tokenizer_modular.MazeTokenizerModular
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/maze_tokenizer_modular.py#L217-L233)
+
+
+Maps a legacy `MazeTokenizer` or `TokenizationMode` to its equivalent `MazeTokenizerModular` instance.
+
+
+### `def from_tokens` { #MazeTokenizerModular.from_tokens }
+```python
+(
+    cls,
+    tokens: str | list[str]
+) -> maze_dataset.tokenization.modular.maze_tokenizer_modular.MazeTokenizerModular
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/maze_tokenizer_modular.py#L237-L245)
+
+
+Infers most `MazeTokenizerModular` parameters from a full sequence of tokens.
+
+
+- `token_arr: list[str] | None `
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/maze_tokenizer_modular.py#L247-L250)
+
+
+map from index to token
+
+
+- `tokenizer_map: dict[str, int] `
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/maze_tokenizer_modular.py#L252-L255)
+
+
+map from token to index
+
+
+- `vocab_size: int `
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/maze_tokenizer_modular.py#L257-L260)
+
+
+Number of tokens in the static vocab
+
+
+- `n_tokens: int `
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/maze_tokenizer_modular.py#L262-L266)
+
+
+get the number of tokens in the vocabulary (deprecated)
+
+
+- `padding_token_index: int `
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/maze_tokenizer_modular.py#L268-L271)
+
+
+get the index of the padding token
+
+
+### `def to_tokens` { #MazeTokenizerModular.to_tokens }
+```python
+(self, maze: maze_dataset.maze.lattice_maze.LatticeMaze) -> list[str]
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/maze_tokenizer_modular.py#L276-L281)
+
+
+Converts maze into a list of tokens.
+
+
+### `def coords_to_strings` { #MazeTokenizerModular.coords_to_strings }
+```python
+(
+    self,
+    coords: list[tuple[int, int] | jaxtyping.Int8[ndarray, 'row_col=2']]
+) -> list[str]
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/maze_tokenizer_modular.py#L283-L289)
+
+
+calls self.prompt_sequencer.coord_tokenizer.to_tokens(c) for each c in coords
+
+
+### `def strings_to_coords` { #MazeTokenizerModular.strings_to_coords }
+```python
+(
+    cls,
+    text: str | list[str],
+    when_noncoord: Literal['except', 'skip', 'include'] = 'skip'
+) -> list[str | tuple[int, int]]
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/maze_tokenizer_modular.py#L311-L322)
+
+
+wrapper for <a href="../../token_utils.html#strings_to_coords">maze_dataset.token_utils.strings_to_coords</a>
+
+
+### `def encode` { #MazeTokenizerModular.encode }
+```python
+(text: str | list[str]) -> list[int]
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/maze_tokenizer_modular.py#L324-L333)
+
+
+encode a string or list of strings into a list of tokens
+
+
+### `def decode` { #MazeTokenizerModular.decode }
+```python
+(token_ids: Sequence[int], joined_tokens: bool = False) -> list[str] | str
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/maze_tokenizer_modular.py#L335-L349)
+
+
+decode a list of tokens into a string or list of strings
+
+
+### `def serialize` { #MazeTokenizerModular.serialize }
+```python
+(self) -> dict[str, typing.Any]
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/maze_tokenizer_modular.py#L713-L769)
+
+
+returns the class as a dict, implemented by using `@serializable_dataclass` decorator
+
+
+### `def load` { #MazeTokenizerModular.load }
+```python
+(cls, data: Union[dict[str, Any], ~T]) -> Type[~T]
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/maze_tokenizer_modular.py#L776-L862)
+
+
+takes in an appropriately structured dict and returns an instance of the class, implemented by using `@serializable_dataclass` decorator
+
+
+### `def validate_fields_types` { #MazeTokenizerModular.validate_fields_types }
+```python
+(
+    self: muutils.json_serialize.serializable_dataclass.SerializableDataclass,
+    on_typecheck_error: muutils.errormode.ErrorMode = ErrorMode.Except
+) -> bool
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/maze_tokenizer_modular.py#L282-L291)
+
+
+validate the types of all the fields on a `SerializableDataclass`. calls `SerializableDataclass__validate_field_type` for each field
+
+
+### Inherited Members                                
+
+- [`validate_field_type`](#MazeTokenizerModular.validate_field_type)
+- [`diff`](#MazeTokenizerModular.diff)
+- [`update_from_nested_dict`](#MazeTokenizerModular.update_from_nested_dict)
+
+
+
+
+> docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.3.0
+
+
+## Contents
+generate and save the hashes of all supported tokenizers
+
+> [!CAUTION]
+> using hashes to validate validate a `MazeTokenizerModular` is deprecated in favor of using fst
+
+calls `maze_dataset.tokenization.all_tokenizers.save_hashes()`
+
+Usage:
+
+To save to the default location (inside package, `maze_dataset/tokenization/MazeTokenizerModular_hashes.npy`):
+```bash
+python -m maze_dataset.tokenization.save_hashes
+```
+
+to save to a custom location:
+```bash
+python -m maze_dataset.tokenization.save_hashes /path/to/save/to.npy
+```
+
+to check hashes shipped with the package:
+```bash
+python -m maze_dataset.tokenization.save_hashes --check
+```
+
+
+
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/save_hashes.py)
+
+# `maze_dataset.tokenization.modular.save_hashes` { #maze_dataset.tokenization.modular.save_hashes }
+
+generate and save the hashes of all supported tokenizers
+
+> [!CAUTION]
+> using hashes to validate validate a `MazeTokenizerModular` is deprecated in favor of using fst
+
+calls `maze_dataset.tokenization.all_tokenizers.save_hashes()`
+
+Usage:
+
+To save to the default location (inside package, `maze_dataset/tokenization/MazeTokenizerModular_hashes.npy`):
+```bash
+python -m maze_dataset.tokenization.save_hashes
+```
+
+to save to a custom location:
+```bash
+python -m maze_dataset.tokenization.save_hashes /path/to/save/to.npy
+```
+
+to check hashes shipped with the package:
+```bash
+python -m maze_dataset.tokenization.save_hashes --check
+```
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization/modular/save_hashes.py#L0-L123)
+
 
 
 

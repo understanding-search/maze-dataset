@@ -15,6 +15,7 @@ __all__ = [
 	# submodules
 	"default_generators",
 	"generators",
+	"seed",
 	# imports
 	"LatticeMazeGenerators",
 	"GENERATORS_MAP",

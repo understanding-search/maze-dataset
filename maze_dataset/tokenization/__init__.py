@@ -31,9 +31,10 @@ from maze_dataset.tokenization.modular.maze_tokenizer_modular import (
 # we don't sort alphabetically on purpose, we sort by the type
 __all__ = [
 	# submodules
-	"all_tokenizers",
+	"modular",
+	"common",
+	"maze_tokenizer_legacy",
 	"maze_tokenizer",
-	"save_hashes",
 	# legacy tokenizer
 	"MazeTokenizer",
 	"TokenizationMode",

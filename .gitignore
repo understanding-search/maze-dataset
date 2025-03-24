@@ -11,6 +11,9 @@ notebooks/tests/**
 # pysr outputs
 notebooks/outputs/**
 outputs/**
+# paper:
+docs/paper/inara*
+docs/paper/output/**
 
 # paper related
 docs/paper/inara*
