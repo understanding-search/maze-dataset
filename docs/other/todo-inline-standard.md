@@ -172,9 +172,9 @@
 ## [`maze_dataset/dataset/collected_dataset.py`](/maze_dataset/dataset/collected_dataset.py)
 
 - remove duplication with MazeDatasetConfig().as_tokens() somehow?  
-  local link: [`/maze_dataset/dataset/collected_dataset.py:184`](/maze_dataset/dataset/collected_dataset.py#L184) 
-  | view on GitHub: [maze_dataset/dataset/collected_dataset.py#L184](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/collected_dataset.py#L184)
-  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=remove%20duplication%20with%20MazeDatasetConfig%28%29.as_tokens%28%29%20somehow%3F&body=%23%20source%0A%0A%5B%60maze_dataset%2Fdataset%2Fcollected_dataset.py%23L184%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Fdataset%2Fcollected_dataset.py%23L184%29%0A%0A%23%20context%0A%60%60%60python%0A%09%09%29%0A%0A%09%23%20TODO%3A%20remove%20duplication%20with%20MazeDatasetConfig%28%29.as_tokens%28%29%20somehow%3F%0A%09def%20as_tokens%28%0A%09%09self%2C%0A%60%60%60&labels=enhancement)
+  local link: [`/maze_dataset/dataset/collected_dataset.py:191`](/maze_dataset/dataset/collected_dataset.py#L191) 
+  | view on GitHub: [maze_dataset/dataset/collected_dataset.py#L191](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/collected_dataset.py#L191)
+  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=remove%20duplication%20with%20MazeDatasetConfig%28%29.as_tokens%28%29%20somehow%3F&body=%23%20source%0A%0A%5B%60maze_dataset%2Fdataset%2Fcollected_dataset.py%23L191%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Fdataset%2Fcollected_dataset.py%23L191%29%0A%0A%23%20context%0A%60%60%60python%0A%09%09%29%0A%0A%09%23%20TODO%3A%20remove%20duplication%20with%20MazeDatasetConfig%28%29.as_tokens%28%29%20somehow%3F%0A%09def%20as_tokens%28%0A%09%09self%2C%0A%60%60%60&labels=enhancement)
 
   ```python
   	)
@@ -186,9 +186,9 @@
 
 
 - MazeTokenizer  
-  local link: [`/maze_dataset/dataset/collected_dataset.py:187`](/maze_dataset/dataset/collected_dataset.py#L187) 
-  | view on GitHub: [maze_dataset/dataset/collected_dataset.py#L187](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/collected_dataset.py#L187)
-  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=MazeTokenizer&body=%23%20source%0A%0A%5B%60maze_dataset%2Fdataset%2Fcollected_dataset.py%23L187%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Fdataset%2Fcollected_dataset.py%23L187%29%0A%0A%23%20context%0A%60%60%60python%0A%09def%20as_tokens%28%0A%09%09self%2C%0A%09%09%23%20TODO%3A%20MazeTokenizer%0A%09%09maze_tokenizer%2C%20%20%23%20noqa%3A%20ANN001%0A%09%09limit%3A%20int%20%7C%20None%20%3D%20None%2C%0A%60%60%60&labels=enhancement)
+  local link: [`/maze_dataset/dataset/collected_dataset.py:194`](/maze_dataset/dataset/collected_dataset.py#L194) 
+  | view on GitHub: [maze_dataset/dataset/collected_dataset.py#L194](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/collected_dataset.py#L194)
+  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=MazeTokenizer&body=%23%20source%0A%0A%5B%60maze_dataset%2Fdataset%2Fcollected_dataset.py%23L194%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Fdataset%2Fcollected_dataset.py%23L194%29%0A%0A%23%20context%0A%60%60%60python%0A%09def%20as_tokens%28%0A%09%09self%2C%0A%09%09%23%20TODO%3A%20MazeTokenizer%0A%09%09maze_tokenizer%2C%20%20%23%20noqa%3A%20ANN001%0A%09%09limit%3A%20int%20%7C%20None%20%3D%20None%2C%0A%60%60%60&labels=enhancement)
 
   ```python
   def as_tokens(
@@ -200,9 +200,9 @@
 
 
 - why cant we set this directly? its not frozen, and it seems to work in a regular MazeDataset  
-  local link: [`/maze_dataset/dataset/collected_dataset.py:212`](/maze_dataset/dataset/collected_dataset.py#L212) 
-  | view on GitHub: [maze_dataset/dataset/collected_dataset.py#L212](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/collected_dataset.py#L212)
-  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=why%20cant%20we%20set%20this%20directly%3F%20its%20not%20frozen%2C%20and%20it%20seems%20to%20work%20in%20a%20regular%20MazeDataset&body=%23%20source%0A%0A%5B%60maze_dataset%2Fdataset%2Fcollected_dataset.py%23L212%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Fdataset%2Fcollected_dataset.py%23L212%29%0A%0A%23%20context%0A%60%60%60python%0A%09def%20update_self_config%28self%29%20-%3E%20None%3A%0A%09%09%22update%20the%20config%20to%20match%20the%20number%20of%20mazes%2C%20and%20update%20the%20underlying%20configs%20of%20each%20dataset%22%0A%09%09%23%20TODO%3A%20why%20cant%20we%20set%20this%20directly%3F%20its%20not%20frozen%2C%20and%20it%20seems%20to%20work%20in%20a%20regular%20MazeDataset%0A%09%09self.cfg.__dict__%5B%22n_mazes%22%5D%20%3D%20len%28self%29%0A%09%09for%20dataset%20in%20self.maze_datasets%3A%0A%60%60%60&labels=enhancement)
+  local link: [`/maze_dataset/dataset/collected_dataset.py:219`](/maze_dataset/dataset/collected_dataset.py#L219) 
+  | view on GitHub: [maze_dataset/dataset/collected_dataset.py#L219](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/collected_dataset.py#L219)
+  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=why%20cant%20we%20set%20this%20directly%3F%20its%20not%20frozen%2C%20and%20it%20seems%20to%20work%20in%20a%20regular%20MazeDataset&body=%23%20source%0A%0A%5B%60maze_dataset%2Fdataset%2Fcollected_dataset.py%23L219%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Fdataset%2Fcollected_dataset.py%23L219%29%0A%0A%23%20context%0A%60%60%60python%0A%09def%20update_self_config%28self%29%20-%3E%20None%3A%0A%09%09%22update%20the%20config%20to%20match%20the%20number%20of%20mazes%2C%20and%20update%20the%20underlying%20configs%20of%20each%20dataset%22%0A%09%09%23%20TODO%3A%20why%20cant%20we%20set%20this%20directly%3F%20its%20not%20frozen%2C%20and%20it%20seems%20to%20work%20in%20a%20regular%20MazeDataset%0A%09%09self.cfg.__dict__%5B%22n_mazes%22%5D%20%3D%20len%28self%29%0A%09%09for%20dataset%20in%20self.maze_datasets%3A%0A%60%60%60&labels=enhancement)
 
   ```python
   def update_self_config(self) -> None:
@@ -218,9 +218,9 @@
 ## [`maze_dataset/dataset/dataset.py`](/maze_dataset/dataset/dataset.py)
 
 - get rid of all these things as part of migration to tokenizer-free dataset config  
-  local link: [`/maze_dataset/dataset/dataset.py:67`](/maze_dataset/dataset/dataset.py#L67) 
-  | view on GitHub: [maze_dataset/dataset/dataset.py#L67](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/dataset.py#L67)
-  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=get%20rid%20of%20all%20these%20things%20as%20part%20of%20migration%20to%20tokenizer-free%20dataset%20config&body=%23%20source%0A%0A%5B%60maze_dataset%2Fdataset%2Fdataset.py%23L67%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Fdataset%2Fdataset.py%23L67%29%0A%0A%23%20context%0A%60%60%60python%0A%09name%3A%20str%0A%0A%09%23%20TODO%3A%20get%20rid%20of%20all%20these%20things%20as%20part%20of%20migration%20to%20tokenizer-free%20dataset%20config%0A%09%23%20--------------------------------------------------%0A%09seq_len_min%3A%20int%20%3D%20serializable_field%28default%3D1%29%0A%60%60%60&labels=enhancement)
+  local link: [`/maze_dataset/dataset/dataset.py:70`](/maze_dataset/dataset/dataset.py#L70) 
+  | view on GitHub: [maze_dataset/dataset/dataset.py#L70](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/dataset.py#L70)
+  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=get%20rid%20of%20all%20these%20things%20as%20part%20of%20migration%20to%20tokenizer-free%20dataset%20config&body=%23%20source%0A%0A%5B%60maze_dataset%2Fdataset%2Fdataset.py%23L70%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Fdataset%2Fdataset.py%23L70%29%0A%0A%23%20context%0A%60%60%60python%0A%09name%3A%20str%0A%0A%09%23%20TODO%3A%20get%20rid%20of%20all%20these%20things%20as%20part%20of%20migration%20to%20tokenizer-free%20dataset%20config%0A%09%23%20--------------------------------------------------%0A%09seq_len_min%3A%20int%20%3D%20serializable_field%28default%3D1%29%0A%60%60%60&labels=enhancement)
 
   ```python
   name: str
@@ -232,9 +232,9 @@
 
 
 - check the type here once muutils supports checking Callable signatures  
-  local link: [`/maze_dataset/dataset/dataset.py:79`](/maze_dataset/dataset/dataset.py#L79) 
-  | view on GitHub: [maze_dataset/dataset/dataset.py#L79](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/dataset.py#L79)
-  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=check%20the%20type%20here%20once%20muutils%20supports%20checking%20Callable%20signatures&body=%23%20source%0A%0A%5B%60maze_dataset%2Fdataset%2Fdataset.py%23L79%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Fdataset%2Fdataset.py%23L79%29%0A%0A%23%20context%0A%60%60%60python%0A%09%09default_factory%3Dlist%2C%0A%09%09deserialize_fn%3D_load_applied_filters%2C%0A%09%09assert_type%3DFalse%2C%20%20%23%20TODO%3A%20check%20the%20type%20here%20once%20muutils%20supports%20checking%20Callable%20signatures%0A%09%29%0A%60%60%60&labels=enhancement)
+  local link: [`/maze_dataset/dataset/dataset.py:82`](/maze_dataset/dataset/dataset.py#L82) 
+  | view on GitHub: [maze_dataset/dataset/dataset.py#L82](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/dataset.py#L82)
+  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=check%20the%20type%20here%20once%20muutils%20supports%20checking%20Callable%20signatures&body=%23%20source%0A%0A%5B%60maze_dataset%2Fdataset%2Fdataset.py%23L82%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Fdataset%2Fdataset.py%23L82%29%0A%0A%23%20context%0A%60%60%60python%0A%09%09default_factory%3Dlist%2C%0A%09%09deserialize_fn%3D_load_applied_filters%2C%0A%09%09assert_type%3DFalse%2C%20%20%23%20TODO%3A%20check%20the%20type%20here%20once%20muutils%20supports%20checking%20Callable%20signatures%0A%09%29%0A%60%60%60&labels=enhancement)
 
   ```python
   	default_factory=list,
@@ -245,9 +245,9 @@
 
 
 - something here is broken  
-  local link: [`/maze_dataset/dataset/dataset.py:89`](/maze_dataset/dataset/dataset.py#L89) 
-  | view on GitHub: [maze_dataset/dataset/dataset.py#L89](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/dataset.py#L89)
-  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=something%20here%20is%20broken&body=%23%20source%0A%0A%5B%60maze_dataset%2Fdataset%2Fdataset.py%23L89%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Fdataset%2Fdataset.py%23L89%29%0A%0A%23%20context%0A%60%60%60python%0A%09%09%09self.seed%20%3D%20np.random.randint%282%2A%2A31%29%0A%0A%09%09%23%20TODO%3A%20something%20here%20is%20broken%0A%09%09if%20self.seed%20%21%3D%20GLOBAL_SEED%3A%0A%09%09%09warnings.warn%28%0A%60%60%60&labels=enhancement)
+  local link: [`/maze_dataset/dataset/dataset.py:92`](/maze_dataset/dataset/dataset.py#L92) 
+  | view on GitHub: [maze_dataset/dataset/dataset.py#L92](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/dataset.py#L92)
+  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=something%20here%20is%20broken&body=%23%20source%0A%0A%5B%60maze_dataset%2Fdataset%2Fdataset.py%23L92%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Fdataset%2Fdataset.py%23L92%29%0A%0A%23%20context%0A%60%60%60python%0A%09%09%09self.seed%20%3D%20np.random.randint%282%2A%2A31%29%0A%0A%09%09%23%20TODO%3A%20something%20here%20is%20broken%0A%09%09if%20self.seed%20%21%3D%20GLOBAL_SEED%3A%0A%09%09%09warnings.warn%28%0A%60%60%60&labels=enhancement)
 
   ```python
   	self.seed = np.random.randint(2**31)
@@ -259,121 +259,39 @@
 
 
 - some funny business with manually specified filters here?  
-  local link: [`/maze_dataset/dataset/dataset.py:421`](/maze_dataset/dataset/dataset.py#L421) 
-  | view on GitHub: [maze_dataset/dataset/dataset.py#L421](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/dataset.py#L421)
-  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=some%20funny%20business%20with%20manually%20specified%20filters%20here%3F&body=%23%20source%0A%0A%5B%60maze_dataset%2Fdataset%2Fdataset.py%23L421%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Fdataset%2Fdataset.py%23L421%29%0A%0A%23%20context%0A%60%60%60python%0A%09%09%23%20update%20the%20config%2C%20perform%20checks%0A%09%09%23%20TODO%3A%20some%20funny%20business%20with%20manually%20specified%20filters%20here%3F%0A%09%09output.update_self_config%28%29%0A%09%09_check_filter_equality%28applied_filters_old%2C%20output.cfg.applied_filters%29%0A%60%60%60&labels=enhancement)
+  local link: [`/maze_dataset/dataset/dataset.py:435`](/maze_dataset/dataset/dataset.py#L435) 
+  | view on GitHub: [maze_dataset/dataset/dataset.py#L435](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/dataset.py#L435)
+  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=some%20funny%20business%20with%20manually%20specified%20filters%20here%3F&body=%23%20source%0A%0A%5B%60maze_dataset%2Fdataset%2Fdataset.py%23L435%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Fdataset%2Fdataset.py%23L435%29%0A%0A%23%20context%0A%60%60%60python%0A%09%09%23%20update%20the%20config%2C%20perform%20checks%0A%09%09%23%20TODO%3A%20some%20funny%20business%20with%20manually%20specified%20filters%20here%3F%0A%09%09output.update_self_config%28%29%0A%09%09_check_filter_equality%28%0A%60%60%60&labels=enhancement)
 
   ```python
   # update the config, perform checks
   # TODO: some funny business with manually specified filters here?
   output.update_self_config()
-  _check_filter_equality(applied_filters_old, output.cfg.applied_filters)
+  _check_filter_equality(
   ```
 
 
-
-
-## [`maze_dataset/dataset/maze_dataset.py`](/maze_dataset/dataset/maze_dataset.py)
-
-- check the type here once muutils supports checking Callable signatures  
-  local link: [`/maze_dataset/dataset/maze_dataset.py:146`](/maze_dataset/dataset/maze_dataset.py#L146) 
-  | view on GitHub: [maze_dataset/dataset/maze_dataset.py#L146](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/maze_dataset.py#L146)
-  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=check%20the%20type%20here%20once%20muutils%20supports%20checking%20Callable%20signatures&body=%23%20source%0A%0A%5B%60maze_dataset%2Fdataset%2Fmaze_dataset.py%23L146%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Fdataset%2Fmaze_dataset.py%23L146%29%0A%0A%23%20context%0A%60%60%60python%0A%09%09%7D%2C%0A%09%09loading_fn%3Dlambda%20data%3A%20_load_maze_ctor%28data%5B%22maze_ctor%22%5D%29%2C%0A%09%09assert_type%3DFalse%2C%20%20%23%20TODO%3A%20check%20the%20type%20here%20once%20muutils%20supports%20checking%20Callable%20signatures%0A%09%29%0A%60%60%60&labels=enhancement)
+- what the heck do we mean by the above? why the question mark? it should be a copy right?  
+  local link: [`/maze_dataset/dataset/dataset.py:532`](/maze_dataset/dataset/dataset.py#L532) 
+  | view on GitHub: [maze_dataset/dataset/dataset.py#L532](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/dataset.py#L532)
+  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=what%20the%20heck%20do%20we%20mean%20by%20the%20above%3F%20why%20the%20question%20mark%3F%20it%20should%20be%20a%20copy%20right%3F&body=%23%20source%0A%0A%5B%60maze_dataset%2Fdataset%2Fdataset.py%23L532%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Fdataset%2Fdataset.py%23L532%29%0A%0A%23%20context%0A%60%60%60python%0A%09be%20sure%20to%20return%20a%20COPY%2C%20not%20the%20original%3F%0A%09%23%20TODO%3A%20what%20the%20heck%20do%20we%20mean%20by%20the%20above%3F%20why%20the%20question%20mark%3F%20it%20should%20be%20a%20copy%20right%3F%0A%0A%09method%20should%20be%20a%20staticmethod%20of%20a%20namespace%20class%20registered%20with%20%60register_filter_namespace_for_dataset%60%0A%60%60%60&labels=enhancement)
 
   ```python
-  	},
-  	loading_fn=lambda data: _load_maze_ctor(data["maze_ctor"]),
-  	assert_type=False,  # TODO: check the type here once muutils supports checking Callable signatures
-  )
+  be sure to return a COPY, not the original?
+  # TODO: what the heck do we mean by the above? why the question mark? it should be a copy right?
+
+  method should be a staticmethod of a namespace class registered with `register_filter_namespace_for_dataset`
   ```
 
 
-- include fname in serialized form, but exclude it when hashing so we dont infinitely loop?  
-  local link: [`/maze_dataset/dataset/maze_dataset.py:192`](/maze_dataset/dataset/maze_dataset.py#L192) 
-  | view on GitHub: [maze_dataset/dataset/maze_dataset.py#L192](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/maze_dataset.py#L192)
-  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=include%20fname%20in%20serialized%20form%2C%20but%20exclude%20it%20when%20hashing%20so%20we%20dont%20infinitely%20loop%3F&body=%23%20source%0A%0A%5B%60maze_dataset%2Fdataset%2Fmaze_dataset.py%23L192%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Fdataset%2Fmaze_dataset.py%23L192%29%0A%0A%23%20context%0A%60%60%60python%0A%09%09%29%0A%0A%09%23%20TODO%3A%20include%20fname%20in%20serialized%20form%2C%20but%20exclude%20it%20when%20hashing%20so%20we%20dont%20infinitely%20loop%3F%0A%09def%20to_fname%28self%29%20-%3E%20str%3A%0A%09%09%22%22%22return%20a%20unique%20identifier%20%28valid%20as%20a%20filename%29%20for%20this%20config%22%22%22%0A%60%60%60&labels=enhancement)
-
-  ```python
-  	)
-
-  # TODO: include fname in serialized form, but exclude it when hashing so we dont infinitely loop?
-  def to_fname(self) -> str:
-  	"""return a unique identifier (valid as a filename) for this config"""
-  ```
 
 
-- don't use this unless generating in parallel!  
-  local link: [`/maze_dataset/dataset/maze_dataset.py:392`](/maze_dataset/dataset/maze_dataset.py#L392) 
-  | view on GitHub: [maze_dataset/dataset/maze_dataset.py#L392](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/maze_dataset.py#L392)
-  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=don%27t%20use%20this%20unless%20generating%20in%20parallel%21&body=%23%20source%0A%0A%5B%60maze_dataset%2Fdataset%2Fmaze_dataset.py%23L392%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Fdataset%2Fmaze_dataset.py%23L392%29%0A%0A%23%20context%0A%60%60%60python%0A%09%3E%20don%27t%20use%20this%20unless%20generating%20in%20parallel%21%0A%09%22%22%22%0A%09%23%20TODO%3A%20don%27t%20use%20this%20unless%20generating%20in%20parallel%21%0A%09maze%3A%20LatticeMaze%20%3D%20_GLOBAL_WORKER_CONFIG.maze_ctor%28%0A%09%09grid_shape%3D_GLOBAL_WORKER_CONFIG.grid_shape_np%2C%0A%60%60%60&labels=enhancement)
-
-  ```python
-  > don't use this unless generating in parallel!
-  """
-  # TODO: don't use this unless generating in parallel!
-  maze: LatticeMaze = _GLOBAL_WORKER_CONFIG.maze_ctor(
-  	grid_shape=_GLOBAL_WORKER_CONFIG.grid_shape_np,
-  ```
-
-
-- dont use globals here!  
-  local link: [`/maze_dataset/dataset/maze_dataset.py:426`](/maze_dataset/dataset/maze_dataset.py#L426) 
-  | view on GitHub: [maze_dataset/dataset/maze_dataset.py#L426](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/maze_dataset.py#L426)
-  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=dont%20use%20globals%20here%21&body=%23%20source%0A%0A%5B%60maze_dataset%2Fdataset%2Fmaze_dataset.py%23L426%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Fdataset%2Fmaze_dataset.py%23L426%29%0A%0A%23%20context%0A%60%60%60python%0A%09%22%22%22%0A%09%23%20TODO%3A%20dont%20use%20globals%20here%21%0A%09global%20_GLOBAL_WORKER_CONFIG%20%20%23%20noqa%3A%20PLW0603%0A%09_GLOBAL_WORKER_CONFIG%20%3D%20config%0A%60%60%60&labels=enhancement)
-
-  ```python
-  """
-  # TODO: dont use globals here!
-  global _GLOBAL_WORKER_CONFIG  # noqa: PLW0603
-  _GLOBAL_WORKER_CONFIG = config
-  ```
-
-
-- MazeTokenizer  
-  local link: [`/maze_dataset/dataset/maze_dataset.py:534`](/maze_dataset/dataset/maze_dataset.py#L534) 
-  | view on GitHub: [maze_dataset/dataset/maze_dataset.py#L534](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/maze_dataset.py#L534)
-  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=MazeTokenizer&body=%23%20source%0A%0A%5B%60maze_dataset%2Fdataset%2Fmaze_dataset.py%23L534%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Fdataset%2Fmaze_dataset.py%23L534%29%0A%0A%23%20context%0A%60%60%60python%0A%09def%20as_tokens%28%0A%09%09self%2C%0A%09%09maze_tokenizer%2C%20%20%23%20TODO%3A%20MazeTokenizer%0A%09%09limit%3A%20int%20%7C%20None%20%3D%20None%2C%0A%09%09join_tokens_individual_maze%3A%20bool%20%3D%20False%2C%0A%60%60%60&labels=enhancement)
-
-  ```python
-  def as_tokens(
-  	self,
-  	maze_tokenizer,  # TODO: MazeTokenizer
-  	limit: int | None = None,
-  	join_tokens_individual_maze: bool = False,
-  ```
-
-
-- compare hashes of data instead of the data itself?  
-  local link: [`/maze_dataset/dataset/maze_dataset.py:569`](/maze_dataset/dataset/maze_dataset.py#L569) 
-  | view on GitHub: [maze_dataset/dataset/maze_dataset.py#L569](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/maze_dataset.py#L569)
-  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=compare%20hashes%20of%20data%20instead%20of%20the%20data%20itself%3F&body=%23%20source%0A%0A%5B%60maze_dataset%2Fdataset%2Fmaze_dataset.py%23L569%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Fdataset%2Fmaze_dataset.py%23L569%29%0A%0A%23%20context%0A%60%60%60python%0A%09%09%09%09%22can%20only%20compare%20with%20other%20MazeDataset%20objects%22%2C%0A%09%09%09%29%0A%09%09%23%20TODO%3A%20compare%20hashes%20of%20data%20instead%20of%20the%20data%20itself%3F%0A%09%09return%20self.cfg%20%3D%3D%20other.cfg%20and%20self.mazes%20%3D%3D%20other.mazes%0A%60%60%60&labels=enhancement)
-
-  ```python
-  		"can only compare with other MazeDataset objects",
-  	)
-  # TODO: compare hashes of data instead of the data itself?
-  return self.cfg == other.cfg and self.mazes == other.mazes
-  ```
-
-
-- don't use the global unless generating in parallel!  
-  local link: [`/maze_dataset/dataset/maze_dataset.py:598`](/maze_dataset/dataset/maze_dataset.py#L598) 
-  | view on GitHub: [maze_dataset/dataset/maze_dataset.py#L598](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/maze_dataset.py#L598)
-  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=don%27t%20use%20the%20global%20unless%20generating%20in%20parallel%21&body=%23%20source%0A%0A%5B%60maze_dataset%2Fdataset%2Fmaze_dataset.py%23L598%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Fdataset%2Fmaze_dataset.py%23L598%29%0A%0A%23%20context%0A%60%60%60python%0A%09%09%09disable%3Dnot%20verbose%2C%0A%09%09%29%0A%09%09%23%20TODO%3A%20don%27t%20use%20the%20global%20unless%20generating%20in%20parallel%21%0A%09%09if%20gen_parallel%3A%0A%09%09%09with%20multiprocessing.Pool%28%0A%60%60%60&labels=enhancement)
-
-  ```python
-  	disable=not verbose,
-  )
-  # TODO: don't use the global unless generating in parallel!
-  if gen_parallel:
-  	with multiprocessing.Pool(
-  ```
-
+## [`maze_dataset/dataset/filters.py`](/maze_dataset/dataset/filters.py)
 
 - check for overlap?  
-  local link: [`/maze_dataset/dataset/maze_dataset.py:994`](/maze_dataset/dataset/maze_dataset.py#L994) 
-  | view on GitHub: [maze_dataset/dataset/maze_dataset.py#L994](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/maze_dataset.py#L994)
-  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=check%20for%20overlap%3F&body=%23%20source%0A%0A%5B%60maze_dataset%2Fdataset%2Fmaze_dataset.py%23L994%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Fdataset%2Fmaze_dataset.py%23L994%29%0A%0A%23%20context%0A%60%60%60python%0A%09%09-%20if%20two%20solutions%20are%20of%20different%20lengths%2C%20they%20will%20never%20be%20considered%20duplicates%0A%0A%09%09TODO%3A%20check%20for%20overlap%3F%0A%09%09%22%22%22%0A%09%09if%20len%28dataset%29%20%3E%20_max_dataset_len_threshold%3A%0A%60%60%60&labels=enhancement)
+  local link: [`/maze_dataset/dataset/filters.py:118`](/maze_dataset/dataset/filters.py#L118) 
+  | view on GitHub: [maze_dataset/dataset/filters.py#L118](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/filters.py#L118)
+  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=check%20for%20overlap%3F&body=%23%20source%0A%0A%5B%60maze_dataset%2Fdataset%2Ffilters.py%23L118%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Fdataset%2Ffilters.py%23L118%29%0A%0A%23%20context%0A%60%60%60python%0A%09%09-%20if%20two%20solutions%20are%20of%20different%20lengths%2C%20they%20will%20never%20be%20considered%20duplicates%0A%0A%09%09TODO%3A%20check%20for%20overlap%3F%0A%09%09%22%22%22%0A%09%09if%20len%28dataset%29%20%3E%20_max_dataset_len_threshold%3A%0A%60%60%60&labels=enhancement)
 
   ```python
   - if two solutions are of different lengths, they will never be considered duplicates
@@ -385,9 +303,9 @@
 
 
 - `for` loop variable `value` overwritten by assignment target (Ruff PLW2901)  
-  local link: [`/maze_dataset/dataset/maze_dataset.py:1130`](/maze_dataset/dataset/maze_dataset.py#L1130) 
-  | view on GitHub: [maze_dataset/dataset/maze_dataset.py#L1130](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/maze_dataset.py#L1130)
-  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=%60for%60%20loop%20variable%20%60value%60%20overwritten%20by%20assignment%20target%20%28Ruff%20PLW2901%29&body=%23%20source%0A%0A%5B%60maze_dataset%2Fdataset%2Fmaze_dataset.py%23L1130%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Fdataset%2Fmaze_dataset.py%23L1130%29%0A%0A%23%20context%0A%60%60%60python%0A%09%09%09%09elif%20isinstance%28value%2C%20%28list%2C%20np.ndarray%29%29%3A%20%20%23%20noqa%3A%20UP038%0A%09%09%09%09%09if%20isinstance%28value%2C%20list%29%3A%0A%09%09%09%09%09%09%23%20TODO%3A%20%60for%60%20loop%20variable%20%60value%60%20overwritten%20by%20assignment%20target%20%28Ruff%20PLW2901%29%0A%09%09%09%09%09%09try%3A%0A%09%09%09%09%09%09%09value%20%3D%20np.array%28value%29%20%20%23%20noqa%3A%20PLW2901%0A%60%60%60&labels=enhancement)
+  local link: [`/maze_dataset/dataset/filters.py:254`](/maze_dataset/dataset/filters.py#L254) 
+  | view on GitHub: [maze_dataset/dataset/filters.py#L254](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/filters.py#L254)
+  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=%60for%60%20loop%20variable%20%60value%60%20overwritten%20by%20assignment%20target%20%28Ruff%20PLW2901%29&body=%23%20source%0A%0A%5B%60maze_dataset%2Fdataset%2Ffilters.py%23L254%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Fdataset%2Ffilters.py%23L254%29%0A%0A%23%20context%0A%60%60%60python%0A%09%09%09%09elif%20isinstance%28value%2C%20%28list%2C%20np.ndarray%29%29%3A%20%20%23%20noqa%3A%20UP038%0A%09%09%09%09%09if%20isinstance%28value%2C%20list%29%3A%0A%09%09%09%09%09%09%23%20TODO%3A%20%60for%60%20loop%20variable%20%60value%60%20overwritten%20by%20assignment%20target%20%28Ruff%20PLW2901%29%0A%09%09%09%09%09%09try%3A%0A%09%09%09%09%09%09%09value%20%3D%20np.array%28value%29%20%20%23%20noqa%3A%20PLW2901%0A%60%60%60&labels=enhancement)
 
   ```python
   elif isinstance(value, (list, np.ndarray)):  # noqa: UP038
@@ -398,10 +316,108 @@
   ```
 
 
+
+
+## [`maze_dataset/dataset/maze_dataset.py`](/maze_dataset/dataset/maze_dataset.py)
+
+- don't use this unless generating in parallel!  
+  local link: [`/maze_dataset/dataset/maze_dataset.py:51`](/maze_dataset/dataset/maze_dataset.py#L51) 
+  | view on GitHub: [maze_dataset/dataset/maze_dataset.py#L51](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/maze_dataset.py#L51)
+  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=don%27t%20use%20this%20unless%20generating%20in%20parallel%21&body=%23%20source%0A%0A%5B%60maze_dataset%2Fdataset%2Fmaze_dataset.py%23L51%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Fdataset%2Fmaze_dataset.py%23L51%29%0A%0A%23%20context%0A%60%60%60python%0A%09%22%22%22%0A%09global%20_GLOBAL_WORKER_CONFIG%20%20%23%20noqa%3A%20PLW0602%0A%09%23%20TODO%3A%20don%27t%20use%20this%20unless%20generating%20in%20parallel%21%0A%09maze%3A%20LatticeMaze%20%3D%20_GLOBAL_WORKER_CONFIG.maze_ctor%28%0A%09%09grid_shape%3D_GLOBAL_WORKER_CONFIG.grid_shape_np%2C%0A%60%60%60&labels=enhancement)
+
+  ```python
+  """
+  global _GLOBAL_WORKER_CONFIG  # noqa: PLW0602
+  # TODO: don't use this unless generating in parallel!
+  maze: LatticeMaze = _GLOBAL_WORKER_CONFIG.maze_ctor(
+  	grid_shape=_GLOBAL_WORKER_CONFIG.grid_shape_np,
+  ```
+
+
+- dont use globals here!  
+  local link: [`/maze_dataset/dataset/maze_dataset.py:87`](/maze_dataset/dataset/maze_dataset.py#L87) 
+  | view on GitHub: [maze_dataset/dataset/maze_dataset.py#L87](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/maze_dataset.py#L87)
+  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=dont%20use%20globals%20here%21&body=%23%20source%0A%0A%5B%60maze_dataset%2Fdataset%2Fmaze_dataset.py%23L87%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Fdataset%2Fmaze_dataset.py%23L87%29%0A%0A%23%20context%0A%60%60%60python%0A%09%22%22%22%0A%09%23%20TODO%3A%20dont%20use%20globals%20here%21%0A%09global%20_GLOBAL_WORKER_CONFIG%20%20%23%20noqa%3A%20PLW0603%0A%09_GLOBAL_WORKER_CONFIG%20%3D%20config%0A%60%60%60&labels=enhancement)
+
+  ```python
+  """
+  # TODO: dont use globals here!
+  global _GLOBAL_WORKER_CONFIG  # noqa: PLW0603
+  _GLOBAL_WORKER_CONFIG = config
+  ```
+
+
+- MazeTokenizer  
+  local link: [`/maze_dataset/dataset/maze_dataset.py:205`](/maze_dataset/dataset/maze_dataset.py#L205) 
+  | view on GitHub: [maze_dataset/dataset/maze_dataset.py#L205](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/maze_dataset.py#L205)
+  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=MazeTokenizer&body=%23%20source%0A%0A%5B%60maze_dataset%2Fdataset%2Fmaze_dataset.py%23L205%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Fdataset%2Fmaze_dataset.py%23L205%29%0A%0A%23%20context%0A%60%60%60python%0A%09def%20as_tokens%28%0A%09%09self%2C%0A%09%09maze_tokenizer%2C%20%20%23%20TODO%3A%20MazeTokenizer%0A%09%09limit%3A%20int%20%7C%20None%20%3D%20None%2C%0A%09%09join_tokens_individual_maze%3A%20bool%20%3D%20False%2C%0A%60%60%60&labels=enhancement)
+
+  ```python
+  def as_tokens(
+  	self,
+  	maze_tokenizer,  # TODO: MazeTokenizer
+  	limit: int | None = None,
+  	join_tokens_individual_maze: bool = False,
+  ```
+
+
+- compare hashes of data instead of the data itself?  
+  local link: [`/maze_dataset/dataset/maze_dataset.py:240`](/maze_dataset/dataset/maze_dataset.py#L240) 
+  | view on GitHub: [maze_dataset/dataset/maze_dataset.py#L240](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/maze_dataset.py#L240)
+  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=compare%20hashes%20of%20data%20instead%20of%20the%20data%20itself%3F&body=%23%20source%0A%0A%5B%60maze_dataset%2Fdataset%2Fmaze_dataset.py%23L240%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Fdataset%2Fmaze_dataset.py%23L240%29%0A%0A%23%20context%0A%60%60%60python%0A%09%09%09%09%22can%20only%20compare%20with%20other%20MazeDataset%20objects%22%2C%0A%09%09%09%29%0A%09%09%23%20TODO%3A%20compare%20hashes%20of%20data%20instead%20of%20the%20data%20itself%3F%0A%09%09return%20self.cfg%20%3D%3D%20other.cfg%20and%20self.mazes%20%3D%3D%20other.mazes%0A%60%60%60&labels=enhancement)
+
+  ```python
+  		"can only compare with other MazeDataset objects",
+  	)
+  # TODO: compare hashes of data instead of the data itself?
+  return self.cfg == other.cfg and self.mazes == other.mazes
+  ```
+
+
+- what to do when unexpected kwargs are passed?  
+  local link: [`/maze_dataset/dataset/maze_dataset.py:256`](/maze_dataset/dataset/maze_dataset.py#L256) 
+  | view on GitHub: [maze_dataset/dataset/maze_dataset.py#L256](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/maze_dataset.py#L256)
+  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=what%20to%20do%20when%20unexpected%20kwargs%20are%20passed%3F&body=%23%20source%0A%0A%5B%60maze_dataset%2Fdataset%2Fmaze_dataset.py%23L256%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Fdataset%2Fmaze_dataset.py%23L256%29%0A%0A%23%20context%0A%60%60%60python%0A%09%09pool_kwargs%3A%20dict%20%7C%20None%20%3D%20None%2C%0A%09%09verbose%3A%20bool%20%3D%20False%2C%0A%09%09%23%20TODO%3A%20what%20to%20do%20when%20unexpected%20kwargs%20are%20passed%3F%0A%09%09%2A%2Akwargs%2C%20%20%23%20noqa%3A%20ARG003%0A%09%29%20-%3E%20%22MazeDataset%22%3A%0A%60%60%60&labels=enhancement)
+
+  ```python
+  	pool_kwargs: dict | None = None,
+  	verbose: bool = False,
+  	# TODO: what to do when unexpected kwargs are passed?
+  	**kwargs,  # noqa: ARG003
+  ) -> "MazeDataset":
+  ```
+
+
+- don't use the global unless generating in parallel!  
+  local link: [`/maze_dataset/dataset/maze_dataset.py:277`](/maze_dataset/dataset/maze_dataset.py#L277) 
+  | view on GitHub: [maze_dataset/dataset/maze_dataset.py#L277](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/maze_dataset.py#L277)
+  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=don%27t%20use%20the%20global%20unless%20generating%20in%20parallel%21&body=%23%20source%0A%0A%5B%60maze_dataset%2Fdataset%2Fmaze_dataset.py%23L277%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Fdataset%2Fmaze_dataset.py%23L277%29%0A%0A%23%20context%0A%60%60%60python%0A%09%09%09disable%3Dnot%20verbose%2C%0A%09%09%29%0A%09%09%23%20TODO%3A%20don%27t%20use%20the%20global%20unless%20generating%20in%20parallel%21%0A%09%09if%20gen_parallel%3A%0A%09%09%09with%20multiprocessing.Pool%28%0A%60%60%60&labels=enhancement)
+
+  ```python
+  	disable=not verbose,
+  )
+  # TODO: don't use the global unless generating in parallel!
+  if gen_parallel:
+  	with multiprocessing.Pool(
+  ```
+
+
+- the code below is for doing some smarter collecting and type checking. Probably will delete.  
+  local link: [`/maze_dataset/dataset/maze_dataset.py:588`](/maze_dataset/dataset/maze_dataset.py#L588) 
+  | view on GitHub: [maze_dataset/dataset/maze_dataset.py#L588](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/maze_dataset.py#L588)
+  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=the%20code%20below%20is%20for%20doing%20some%20smarter%20collecting%20and%20type%20checking.%20Probably%20will%20delete.&body=%23%20source%0A%0A%5B%60maze_dataset%2Fdataset%2Fmaze_dataset.py%23L588%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Fdataset%2Fmaze_dataset.py%23L588%29%0A%0A%23%20context%0A%60%60%60python%0A%23%20TODO%3A%20the%20code%20below%20is%20for%20doing%20some%20smarter%20collecting%20and%20type%20checking.%20Probably%20will%20delete.%0A%22%22%22%0Acollect%20either%20the%20type%20at%20the%20field%2C%20or%20the%20shape%20of%20the%20field%20if%20it%20is%20an%20array%0A%60%60%60&labels=enhancement)
+
+  ```python
+  # TODO: the code below is for doing some smarter collecting and type checking. Probably will delete.
+  """
+  collect either the type at the field, or the shape of the field if it is an array
+  ```
+
+
 - throw except here?  
-  local link: [`/maze_dataset/dataset/maze_dataset.py:1205`](/maze_dataset/dataset/maze_dataset.py#L1205) 
-  | view on GitHub: [maze_dataset/dataset/maze_dataset.py#L1205](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/maze_dataset.py#L1205)
-  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=throw%20except%20here%3F&body=%23%20source%0A%0A%5B%60maze_dataset%2Fdataset%2Fmaze_dataset.py%23L1205%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Fdataset%2Fmaze_dataset.py%23L1205%29%0A%0A%23%20context%0A%60%60%60python%0A%09%09else%3A%0A%09%09%09%23%20its%20a%20list%20of%20something%20else%2C%20do%20a%20counter%20on%20those%0A%09%09%09%23%20TODO%3A%20throw%20except%20here%3F%0A%09%09%09metadata_actions%5Bkey%5D%20%3D%20Counter%0A%60%60%60&labels=enhancement)
+  local link: [`/maze_dataset/dataset/maze_dataset.py:619`](/maze_dataset/dataset/maze_dataset.py#L619) 
+  | view on GitHub: [maze_dataset/dataset/maze_dataset.py#L619](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/maze_dataset.py#L619)
+  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=throw%20except%20here%3F&body=%23%20source%0A%0A%5B%60maze_dataset%2Fdataset%2Fmaze_dataset.py%23L619%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Fdataset%2Fmaze_dataset.py%23L619%29%0A%0A%23%20context%0A%60%60%60python%0A%09%09else%3A%0A%09%09%09%23%20its%20a%20list%20of%20something%20else%2C%20do%20a%20counter%20on%20those%0A%09%09%09%23%20TODO%3A%20throw%20except%20here%3F%0A%09%09%09metadata_actions%5Bkey%5D%20%3D%20Counter%0A%60%60%60&labels=enhancement)
 
   ```python
   else:
@@ -412,9 +428,9 @@
 
 
 - throw except here?  
-  local link: [`/maze_dataset/dataset/maze_dataset.py:1216`](/maze_dataset/dataset/maze_dataset.py#L1216) 
-  | view on GitHub: [maze_dataset/dataset/maze_dataset.py#L1216](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/maze_dataset.py#L1216)
-  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=throw%20except%20here%3F&body=%23%20source%0A%0A%5B%60maze_dataset%2Fdataset%2Fmaze_dataset.py%23L1216%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Fdataset%2Fmaze_dataset.py%23L1216%29%0A%0A%23%20context%0A%60%60%60python%0A%09else%3A%0A%09%09%23%20counter%20for%20everything%20else%0A%09%09%23%20TODO%3A%20throw%20except%20here%3F%0A%09%09metadata_actions%5Bkey%5D%20%3D%20Counter%0A%22%22%22%0A%60%60%60&labels=enhancement)
+  local link: [`/maze_dataset/dataset/maze_dataset.py:630`](/maze_dataset/dataset/maze_dataset.py#L630) 
+  | view on GitHub: [maze_dataset/dataset/maze_dataset.py#L630](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/maze_dataset.py#L630)
+  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=throw%20except%20here%3F&body=%23%20source%0A%0A%5B%60maze_dataset%2Fdataset%2Fmaze_dataset.py%23L630%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Fdataset%2Fmaze_dataset.py%23L630%29%0A%0A%23%20context%0A%60%60%60python%0A%09else%3A%0A%09%09%23%20counter%20for%20everything%20else%0A%09%09%23%20TODO%3A%20throw%20except%20here%3F%0A%09%09metadata_actions%5Bkey%5D%20%3D%20Counter%0A%22%22%22%0A%60%60%60&labels=enhancement)
 
   ```python
   	else:
@@ -422,6 +438,23 @@
   		# TODO: throw except here?
   		metadata_actions[key] = Counter
   """
+  ```
+
+
+
+
+## [`maze_dataset/dataset/maze_dataset_config.py`](/maze_dataset/dataset/maze_dataset_config.py)
+
+- check the type here once muutils supports checking Callable signatures  
+  local link: [`/maze_dataset/dataset/maze_dataset_config.py:141`](/maze_dataset/dataset/maze_dataset_config.py#L141) 
+  | view on GitHub: [maze_dataset/dataset/maze_dataset_config.py#L141](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/maze_dataset_config.py#L141)
+  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=check%20the%20type%20here%20once%20muutils%20supports%20checking%20Callable%20signatures&body=%23%20source%0A%0A%5B%60maze_dataset%2Fdataset%2Fmaze_dataset_config.py%23L141%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Fdataset%2Fmaze_dataset_config.py%23L141%29%0A%0A%23%20context%0A%60%60%60python%0A%09%09%7D%2C%0A%09%09loading_fn%3Dlambda%20data%3A%20_load_maze_ctor%28data%5B%22maze_ctor%22%5D%29%2C%0A%09%09assert_type%3DFalse%2C%20%20%23%20TODO%3A%20check%20the%20type%20here%20once%20muutils%20supports%20checking%20Callable%20signatures%0A%09%29%0A%60%60%60&labels=enhancement)
+
+  ```python
+  	},
+  	loading_fn=lambda data: _load_maze_ctor(data["maze_ctor"]),
+  	assert_type=False,  # TODO: check the type here once muutils supports checking Callable signatures
+  )
   ```
 
 
@@ -734,12 +767,12 @@
 
 
 
-## [`tests/unit/maze_dataset/dataset/test_collected_dataset.py`](/tests/unit/maze_dataset/dataset/test_collected_dataset.py)
+## [`tests/unit/dataset/test_collected_dataset.py`](/tests/unit/dataset/test_collected_dataset.py)
 
 - test downloading after we implement downloading datasets  
-  local link: [`/tests/unit/maze_dataset/dataset/test_collected_dataset.py:82`](/tests/unit/maze_dataset/dataset/test_collected_dataset.py#L82) 
-  | view on GitHub: [tests/unit/maze_dataset/dataset/test_collected_dataset.py#L82](https://github.com/understanding-search/maze-dataset/blob/main/tests/unit/maze_dataset/dataset/test_collected_dataset.py#L82)
-  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=test%20downloading%20after%20we%20implement%20downloading%20datasets&body=%23%20source%0A%0A%5B%60tests%2Funit%2Fmaze_dataset%2Fdataset%2Ftest_collected_dataset.py%23L82%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Ftests%2Funit%2Fmaze_dataset%2Fdataset%2Ftest_collected_dataset.py%23L82%29%0A%0A%23%20context%0A%60%60%60python%0A%09def%20test_download%28self%29%3A%0A%09%09%23%20TODO%3A%20test%20downloading%20after%20we%20implement%20downloading%20datasets%0A%09%09pass%0A%60%60%60&labels=enhancement)
+  local link: [`/tests/unit/dataset/test_collected_dataset.py:83`](/tests/unit/dataset/test_collected_dataset.py#L83) 
+  | view on GitHub: [tests/unit/dataset/test_collected_dataset.py#L83](https://github.com/understanding-search/maze-dataset/blob/main/tests/unit/dataset/test_collected_dataset.py#L83)
+  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=test%20downloading%20after%20we%20implement%20downloading%20datasets&body=%23%20source%0A%0A%5B%60tests%2Funit%2Fdataset%2Ftest_collected_dataset.py%23L83%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Ftests%2Funit%2Fdataset%2Ftest_collected_dataset.py%23L83%29%0A%0A%23%20context%0A%60%60%60python%0A%09def%20test_download%28self%29%3A%0A%09%09%23%20TODO%3A%20test%20downloading%20after%20we%20implement%20downloading%20datasets%0A%09%09pass%0A%60%60%60&labels=enhancement)
 
   ```python
   def test_download(self):
@@ -750,12 +783,12 @@
 
 
 
-## [`tests/unit/maze_dataset/generation/test_coord_str_tuple.py`](/tests/unit/maze_dataset/generation/test_coord_str_tuple.py)
+## [`tests/unit/generation/test_coord_str_tuple.py`](/tests/unit/generation/test_coord_str_tuple.py)
 
 - test for negative coords  
-  local link: [`/tests/unit/maze_dataset/generation/test_coord_str_tuple.py:23`](/tests/unit/maze_dataset/generation/test_coord_str_tuple.py#L23) 
-  | view on GitHub: [tests/unit/maze_dataset/generation/test_coord_str_tuple.py#L23](https://github.com/understanding-search/maze-dataset/blob/main/tests/unit/maze_dataset/generation/test_coord_str_tuple.py#L23)
-  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=test%20for%20negative%20coords&body=%23%20source%0A%0A%5B%60tests%2Funit%2Fmaze_dataset%2Fgeneration%2Ftest_coord_str_tuple.py%23L23%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Ftests%2Funit%2Fmaze_dataset%2Fgeneration%2Ftest_coord_str_tuple.py%23L23%29%0A%0A%23%20context%0A%60%60%60python%0A%23%20TODO%3A%20test%20for%20negative%20coords%0A%60%60%60&labels=enhancement)
+  local link: [`/tests/unit/generation/test_coord_str_tuple.py:23`](/tests/unit/generation/test_coord_str_tuple.py#L23) 
+  | view on GitHub: [tests/unit/generation/test_coord_str_tuple.py#L23](https://github.com/understanding-search/maze-dataset/blob/main/tests/unit/generation/test_coord_str_tuple.py#L23)
+  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=test%20for%20negative%20coords&body=%23%20source%0A%0A%5B%60tests%2Funit%2Fgeneration%2Ftest_coord_str_tuple.py%23L23%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Ftests%2Funit%2Fgeneration%2Ftest_coord_str_tuple.py%23L23%29%0A%0A%23%20context%0A%60%60%60python%0A%23%20TODO%3A%20test%20for%20negative%20coords%0A%60%60%60&labels=enhancement)
 
   ```python
   # TODO: test for negative coords
@@ -763,9 +796,9 @@
 
 
 - resolve testing duplication in test_token_utils.py  
-  local link: [`/tests/unit/maze_dataset/generation/test_coord_str_tuple.py:66`](/tests/unit/maze_dataset/generation/test_coord_str_tuple.py#L66) 
-  | view on GitHub: [tests/unit/maze_dataset/generation/test_coord_str_tuple.py#L66](https://github.com/understanding-search/maze-dataset/blob/main/tests/unit/maze_dataset/generation/test_coord_str_tuple.py#L66)
-  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=resolve%20testing%20duplication%20in%20test_token_utils.py&body=%23%20source%0A%0A%5B%60tests%2Funit%2Fmaze_dataset%2Fgeneration%2Ftest_coord_str_tuple.py%23L66%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Ftests%2Funit%2Fmaze_dataset%2Fgeneration%2Ftest_coord_str_tuple.py%23L66%29%0A%0A%23%20context%0A%60%60%60python%0Adef%20test_coords_to_strings%28%29%3A%0A%09%23%20TODO%3A%20resolve%20testing%20duplication%20in%20test_token_utils.py%0A%09assert%20coords_to_strings%28%0A%09%09%5B%281%2C%202%29%2C%20%22%3CADJLIST_START%3E%22%2C%20%285%2C%206%29%5D%2C%0A%60%60%60&labels=enhancement)
+  local link: [`/tests/unit/generation/test_coord_str_tuple.py:66`](/tests/unit/generation/test_coord_str_tuple.py#L66) 
+  | view on GitHub: [tests/unit/generation/test_coord_str_tuple.py#L66](https://github.com/understanding-search/maze-dataset/blob/main/tests/unit/generation/test_coord_str_tuple.py#L66)
+  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=resolve%20testing%20duplication%20in%20test_token_utils.py&body=%23%20source%0A%0A%5B%60tests%2Funit%2Fgeneration%2Ftest_coord_str_tuple.py%23L66%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Ftests%2Funit%2Fgeneration%2Ftest_coord_str_tuple.py%23L66%29%0A%0A%23%20context%0A%60%60%60python%0Adef%20test_coords_to_strings%28%29%3A%0A%09%23%20TODO%3A%20resolve%20testing%20duplication%20in%20test_token_utils.py%0A%09assert%20coords_to_strings%28%0A%09%09%5B%281%2C%202%29%2C%20%22%3CADJLIST_START%3E%22%2C%20%285%2C%206%29%5D%2C%0A%60%60%60&labels=enhancement)
 
   ```python
   def test_coords_to_strings():
@@ -777,12 +810,12 @@
 
 
 
-## [`tests/unit/maze_dataset/generation/test_maze_dataset.py`](/tests/unit/maze_dataset/generation/test_maze_dataset.py)
+## [`tests/unit/generation/test_maze_dataset.py`](/tests/unit/generation/test_maze_dataset.py)
 
 - dataset.data_hash doesn't work right now  
-  local link: [`/tests/unit/maze_dataset/generation/test_maze_dataset.py:67`](/tests/unit/maze_dataset/generation/test_maze_dataset.py#L67) 
-  | view on GitHub: [tests/unit/maze_dataset/generation/test_maze_dataset.py#L67](https://github.com/understanding-search/maze-dataset/blob/main/tests/unit/maze_dataset/generation/test_maze_dataset.py#L67)
-  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=dataset.data_hash%20doesn%27t%20work%20right%20now&body=%23%20source%0A%0A%5B%60tests%2Funit%2Fmaze_dataset%2Fgeneration%2Ftest_maze_dataset.py%23L67%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Ftests%2Funit%2Fmaze_dataset%2Fgeneration%2Ftest_maze_dataset.py%23L67%29%0A%0A%23%20context%0A%60%60%60python%0Adef%20test_data_hash_wip%28%29%3A%0A%09dataset%20%3D%20MazeDataset.generate%28TEST_CONFIGS%5B0%5D%29%0A%09%23%20TODO%3A%20dataset.data_hash%20doesn%27t%20work%20right%20now%0A%09assert%20dataset%0A%60%60%60&labels=enhancement)
+  local link: [`/tests/unit/generation/test_maze_dataset.py:67`](/tests/unit/generation/test_maze_dataset.py#L67) 
+  | view on GitHub: [tests/unit/generation/test_maze_dataset.py#L67](https://github.com/understanding-search/maze-dataset/blob/main/tests/unit/generation/test_maze_dataset.py#L67)
+  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=dataset.data_hash%20doesn%27t%20work%20right%20now&body=%23%20source%0A%0A%5B%60tests%2Funit%2Fgeneration%2Ftest_maze_dataset.py%23L67%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Ftests%2Funit%2Fgeneration%2Ftest_maze_dataset.py%23L67%29%0A%0A%23%20context%0A%60%60%60python%0Adef%20test_data_hash_wip%28%29%3A%0A%09dataset%20%3D%20MazeDataset.generate%28TEST_CONFIGS%5B0%5D%29%0A%09%23%20TODO%3A%20dataset.data_hash%20doesn%27t%20work%20right%20now%0A%09assert%20dataset%0A%60%60%60&labels=enhancement)
 
   ```python
   def test_data_hash_wip():
@@ -793,9 +826,9 @@
 
 
 - PERF401 Use `list.extend` to create a transformed list  
-  local link: [`/tests/unit/maze_dataset/generation/test_maze_dataset.py:316`](/tests/unit/maze_dataset/generation/test_maze_dataset.py#L316) 
-  | view on GitHub: [tests/unit/maze_dataset/generation/test_maze_dataset.py#L316](https://github.com/understanding-search/maze-dataset/blob/main/tests/unit/maze_dataset/generation/test_maze_dataset.py#L316)
-  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=PERF401%20Use%20%60list.extend%60%20to%20create%20a%20transformed%20list&body=%23%20source%0A%0A%5B%60tests%2Funit%2Fmaze_dataset%2Fgeneration%2Ftest_maze_dataset.py%23L316%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Ftests%2Funit%2Fmaze_dataset%2Fgeneration%2Ftest_maze_dataset.py%23L316%29%0A%0A%23%20context%0A%60%60%60python%0A%09mazes%3A%20list%5BSolvedMaze%5D%20%3D%20list%28%29%0A%09for%20maze_ascii%20in%20ascii_rep%3A%0A%09%09%23%20TODO%3A%20PERF401%20Use%20%60list.extend%60%20to%20create%20a%20transformed%20list%0A%09%09mazes.append%28SolvedMaze.from_ascii%28maze_ascii.strip%28%29%29%29%0A%60%60%60&labels=enhancement)
+  local link: [`/tests/unit/generation/test_maze_dataset.py:318`](/tests/unit/generation/test_maze_dataset.py#L318) 
+  | view on GitHub: [tests/unit/generation/test_maze_dataset.py#L318](https://github.com/understanding-search/maze-dataset/blob/main/tests/unit/generation/test_maze_dataset.py#L318)
+  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=PERF401%20Use%20%60list.extend%60%20to%20create%20a%20transformed%20list&body=%23%20source%0A%0A%5B%60tests%2Funit%2Fgeneration%2Ftest_maze_dataset.py%23L318%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Ftests%2Funit%2Fgeneration%2Ftest_maze_dataset.py%23L318%29%0A%0A%23%20context%0A%60%60%60python%0A%09mazes%3A%20list%5BSolvedMaze%5D%20%3D%20list%28%29%0A%09for%20maze_ascii%20in%20ascii_rep%3A%0A%09%09%23%20TODO%3A%20PERF401%20Use%20%60list.extend%60%20to%20create%20a%20transformed%20list%0A%09%09mazes.append%28SolvedMaze.from_ascii%28maze_ascii.strip%28%29%29%29%0A%60%60%60&labels=enhancement)
 
   ```python
   mazes: list[SolvedMaze] = list()
@@ -807,12 +840,12 @@
 
 
 
-## [`tests/unit/maze_dataset/tokenization/test_maze_tokenization.py`](/tests/unit/maze_dataset/tokenization/test_maze_tokenization.py)
+## [`tests/unit/tokenization/test_maze_tokenization.py`](/tests/unit/tokenization/test_maze_tokenization.py)
 
 - can't test that these match because order in adjacency list is random  
-  local link: [`/tests/unit/maze_dataset/tokenization/test_maze_tokenization.py:36`](/tests/unit/maze_dataset/tokenization/test_maze_tokenization.py#L36) 
-  | view on GitHub: [tests/unit/maze_dataset/tokenization/test_maze_tokenization.py#L36](https://github.com/understanding-search/maze-dataset/blob/main/tests/unit/maze_dataset/tokenization/test_maze_tokenization.py#L36)
-  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=can%27t%20test%20that%20these%20match%20because%20order%20in%20adjacency%20list%20is%20random&body=%23%20source%0A%0A%5B%60tests%2Funit%2Fmaze_dataset%2Ftokenization%2Ftest_maze_tokenization.py%23L36%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Ftests%2Funit%2Fmaze_dataset%2Ftokenization%2Ftest_maze_tokenization.py%23L36%29%0A%0A%23%20context%0A%60%60%60python%0A%09%23%20%29%0A%0A%09%23%20TODO%3A%20can%27t%20test%20that%20these%20match%20because%20order%20in%20adjacency%20list%20is%20random%0A%0A%09dataset_tokenized_individual%3A%20list%5Blist%5Bstr%5D%5D%20%3D%20%5B%0A%60%60%60&labels=enhancement)
+  local link: [`/tests/unit/tokenization/test_maze_tokenization.py:36`](/tests/unit/tokenization/test_maze_tokenization.py#L36) 
+  | view on GitHub: [tests/unit/tokenization/test_maze_tokenization.py#L36](https://github.com/understanding-search/maze-dataset/blob/main/tests/unit/tokenization/test_maze_tokenization.py#L36)
+  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=can%27t%20test%20that%20these%20match%20because%20order%20in%20adjacency%20list%20is%20random&body=%23%20source%0A%0A%5B%60tests%2Funit%2Ftokenization%2Ftest_maze_tokenization.py%23L36%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Ftests%2Funit%2Ftokenization%2Ftest_maze_tokenization.py%23L36%29%0A%0A%23%20context%0A%60%60%60python%0A%09%23%20%29%0A%0A%09%23%20TODO%3A%20can%27t%20test%20that%20these%20match%20because%20order%20in%20adjacency%20list%20is%20random%0A%0A%09dataset_tokenized_individual%3A%20list%5Blist%5Bstr%5D%5D%20%3D%20%5B%0A%60%60%60&labels=enhancement)
 
   ```python
   # )
@@ -936,9 +969,9 @@
 ## [`maze_dataset/dataset/configs.py`](/maze_dataset/dataset/configs.py)
 
 - error: Return type "list[str]" of "keys" incompatible with return type "KeysView[str]" in supertype "Mapping"  [override]  
-  local link: [`/maze_dataset/dataset/configs.py:51`](/maze_dataset/dataset/configs.py#L51) 
-  | view on GitHub: [maze_dataset/dataset/configs.py#L51](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/configs.py#L51)
-  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=error%3A%20Return%20type%20%22list%5Bstr%5D%22%20of%20%22keys%22%20incompatible%20with%20return%20type%20%22KeysView%5Bstr%5D%22%20in%20supertype%20%22Mapping%22%20%20%5Boverride%5D&body=%23%20source%0A%0A%5B%60maze_dataset%2Fdataset%2Fconfigs.py%23L51%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Fdataset%2Fconfigs.py%23L51%29%0A%0A%23%20context%0A%60%60%60python%0A%09%09return%20iter%28self._configs%29%0A%0A%09%23%20TYPING%3A%20error%3A%20Return%20type%20%22list%5Bstr%5D%22%20of%20%22keys%22%20incompatible%20with%20return%20type%20%22KeysView%5Bstr%5D%22%20in%20supertype%20%22Mapping%22%20%20%5Boverride%5D%0A%09def%20keys%28self%29%20-%3E%20list%5Bstr%5D%3A%20%20%23%20type%3A%20ignore%5Boverride%5D%0A%09%09%22return%20the%20keys%22%0A%60%60%60&labels=TYPING)
+  local link: [`/maze_dataset/dataset/configs.py:58`](/maze_dataset/dataset/configs.py#L58) 
+  | view on GitHub: [maze_dataset/dataset/configs.py#L58](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/configs.py#L58)
+  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=error%3A%20Return%20type%20%22list%5Bstr%5D%22%20of%20%22keys%22%20incompatible%20with%20return%20type%20%22KeysView%5Bstr%5D%22%20in%20supertype%20%22Mapping%22%20%20%5Boverride%5D&body=%23%20source%0A%0A%5B%60maze_dataset%2Fdataset%2Fconfigs.py%23L58%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Fdataset%2Fconfigs.py%23L58%29%0A%0A%23%20context%0A%60%60%60python%0A%09%09return%20iter%28self._configs%29%0A%0A%09%23%20TYPING%3A%20error%3A%20Return%20type%20%22list%5Bstr%5D%22%20of%20%22keys%22%20incompatible%20with%20return%20type%20%22KeysView%5Bstr%5D%22%20in%20supertype%20%22Mapping%22%20%20%5Boverride%5D%0A%09def%20keys%28self%29%20-%3E%20list%5Bstr%5D%3A%20%20%23%20type%3A%20ignore%5Boverride%5D%0A%09%09%22return%20the%20keys%22%0A%60%60%60&labels=TYPING)
 
   ```python
   	return iter(self._configs)
@@ -950,9 +983,9 @@
 
 
 - error: Return type "list[tuple[str, MazeDatasetConfig]]" of "items" incompatible with return type "ItemsView[str, MazeDatasetConfig]" in supertype "Mapping"  [override]  
-  local link: [`/maze_dataset/dataset/configs.py:56`](/maze_dataset/dataset/configs.py#L56) 
-  | view on GitHub: [maze_dataset/dataset/configs.py#L56](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/configs.py#L56)
-  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=error%3A%20Return%20type%20%22list%5Btuple%5Bstr%2C%20MazeDatasetConfig%5D%5D%22%20of%20%22items%22%20incompatible%20with%20return%20type%20%22ItemsView%5Bstr%2C%20MazeDatasetConfig%5D%22%20in%20supertype%20%22Mapping%22%20%20%5Boverride%5D&body=%23%20source%0A%0A%5B%60maze_dataset%2Fdataset%2Fconfigs.py%23L56%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Fdataset%2Fconfigs.py%23L56%29%0A%0A%23%20context%0A%60%60%60python%0A%09%09return%20list%28self._configs.keys%28%29%29%0A%0A%09%23%20TYPING%3A%20error%3A%20Return%20type%20%22list%5Btuple%5Bstr%2C%20MazeDatasetConfig%5D%5D%22%20of%20%22items%22%20incompatible%20with%20return%20type%20%22ItemsView%5Bstr%2C%20MazeDatasetConfig%5D%22%20in%20supertype%20%22Mapping%22%20%20%5Boverride%5D%0A%09def%20items%28self%29%20-%3E%20list%5Btuple%5Bstr%2C%20MazeDatasetConfig%5D%5D%3A%20%20%23%20type%3A%20ignore%5Boverride%5D%0A%09%09%22return%20the%20items%22%0A%60%60%60&labels=TYPING)
+  local link: [`/maze_dataset/dataset/configs.py:63`](/maze_dataset/dataset/configs.py#L63) 
+  | view on GitHub: [maze_dataset/dataset/configs.py#L63](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/configs.py#L63)
+  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=error%3A%20Return%20type%20%22list%5Btuple%5Bstr%2C%20MazeDatasetConfig%5D%5D%22%20of%20%22items%22%20incompatible%20with%20return%20type%20%22ItemsView%5Bstr%2C%20MazeDatasetConfig%5D%22%20in%20supertype%20%22Mapping%22%20%20%5Boverride%5D&body=%23%20source%0A%0A%5B%60maze_dataset%2Fdataset%2Fconfigs.py%23L63%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Fdataset%2Fconfigs.py%23L63%29%0A%0A%23%20context%0A%60%60%60python%0A%09%09return%20list%28self._configs.keys%28%29%29%0A%0A%09%23%20TYPING%3A%20error%3A%20Return%20type%20%22list%5Btuple%5Bstr%2C%20MazeDatasetConfig%5D%5D%22%20of%20%22items%22%20incompatible%20with%20return%20type%20%22ItemsView%5Bstr%2C%20MazeDatasetConfig%5D%22%20in%20supertype%20%22Mapping%22%20%20%5Boverride%5D%0A%09def%20items%28self%29%20-%3E%20list%5Btuple%5Bstr%2C%20MazeDatasetConfig%5D%5D%3A%20%20%23%20type%3A%20ignore%5Boverride%5D%0A%09%09%22return%20the%20items%22%0A%60%60%60&labels=TYPING)
 
   ```python
   	return list(self._configs.keys())
@@ -964,9 +997,9 @@
 
 
 - error: Return type "list[MazeDatasetConfig]" of "values" incompatible with return type "ValuesView[MazeDatasetConfig]" in supertype "Mapping"  [override]  
-  local link: [`/maze_dataset/dataset/configs.py:61`](/maze_dataset/dataset/configs.py#L61) 
-  | view on GitHub: [maze_dataset/dataset/configs.py#L61](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/configs.py#L61)
-  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=error%3A%20Return%20type%20%22list%5BMazeDatasetConfig%5D%22%20of%20%22values%22%20incompatible%20with%20return%20type%20%22ValuesView%5BMazeDatasetConfig%5D%22%20in%20supertype%20%22Mapping%22%20%20%5Boverride%5D&body=%23%20source%0A%0A%5B%60maze_dataset%2Fdataset%2Fconfigs.py%23L61%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Fdataset%2Fconfigs.py%23L61%29%0A%0A%23%20context%0A%60%60%60python%0A%09%09return%20%5B%28k%2C%20copy.deepcopy%28v%29%29%20for%20k%2C%20v%20in%20self._configs.items%28%29%5D%0A%0A%09%23%20TYPING%3A%20error%3A%20Return%20type%20%22list%5BMazeDatasetConfig%5D%22%20of%20%22values%22%20incompatible%20with%20return%20type%20%22ValuesView%5BMazeDatasetConfig%5D%22%20in%20supertype%20%22Mapping%22%20%20%5Boverride%5D%0A%09def%20values%28self%29%20-%3E%20list%5BMazeDatasetConfig%5D%3A%20%20%23%20type%3A%20ignore%5Boverride%5D%0A%09%09return%20%5Bcopy.deepcopy%28v%29%20for%20v%20in%20self._configs.values%28%29%5D%0A%60%60%60&labels=TYPING)
+  local link: [`/maze_dataset/dataset/configs.py:68`](/maze_dataset/dataset/configs.py#L68) 
+  | view on GitHub: [maze_dataset/dataset/configs.py#L68](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/configs.py#L68)
+  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=error%3A%20Return%20type%20%22list%5BMazeDatasetConfig%5D%22%20of%20%22values%22%20incompatible%20with%20return%20type%20%22ValuesView%5BMazeDatasetConfig%5D%22%20in%20supertype%20%22Mapping%22%20%20%5Boverride%5D&body=%23%20source%0A%0A%5B%60maze_dataset%2Fdataset%2Fconfigs.py%23L68%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Fdataset%2Fconfigs.py%23L68%29%0A%0A%23%20context%0A%60%60%60python%0A%09%09return%20%5B%28k%2C%20copy.deepcopy%28v%29%29%20for%20k%2C%20v%20in%20self._configs.items%28%29%5D%0A%0A%09%23%20TYPING%3A%20error%3A%20Return%20type%20%22list%5BMazeDatasetConfig%5D%22%20of%20%22values%22%20incompatible%20with%20return%20type%20%22ValuesView%5BMazeDatasetConfig%5D%22%20in%20supertype%20%22Mapping%22%20%20%5Boverride%5D%0A%09def%20values%28self%29%20-%3E%20list%5BMazeDatasetConfig%5D%3A%20%20%23%20type%3A%20ignore%5Boverride%5D%0A%09%09return%20%5Bcopy.deepcopy%28v%29%20for%20v%20in%20self._configs.values%28%29%5D%0A%60%60%60&labels=TYPING)
 
   ```python
   	return [(k, copy.deepcopy(v)) for k, v in self._configs.items()]
@@ -979,12 +1012,98 @@
 
 
 
+## [`maze_dataset/dataset/dataset.py`](/maze_dataset/dataset/dataset.py)
+
+- error: Argument 1 to "len" has incompatible type "GPTDatasetConfig"; expected "Sized"  [arg-type]  
+  local link: [`/maze_dataset/dataset/dataset.py:125`](/maze_dataset/dataset/dataset.py#L125) 
+  | view on GitHub: [maze_dataset/dataset/dataset.py#L125](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/dataset.py#L125)
+  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=error%3A%20Argument%201%20to%20%22len%22%20has%20incompatible%20type%20%22GPTDatasetConfig%22%3B%20expected%20%22Sized%22%20%20%5Barg-type%5D&body=%23%20source%0A%0A%5B%60maze_dataset%2Fdataset%2Fdataset.py%23L125%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Fdataset%2Fdataset.py%23L125%29%0A%0A%23%20context%0A%60%60%60python%0A%09%09%29%0A%09%09return%20sanitize_fname%28%0A%09%09%09%23%20TYPING%3A%20error%3A%20Argument%201%20to%20%22len%22%20has%20incompatible%20type%20%22GPTDatasetConfig%22%3B%20expected%20%22Sized%22%20%20%5Barg-type%5D%0A%09%09%09f%22f%7Bself.name%7D-n%7Bshorten_numerical_to_str%28len%28self%29%29%7D-h%7Bself_json_hash%7D%22%2C%20%20%23%20type%3A%20ignore%5Barg-type%5D%0A%09%09%29%0A%60%60%60&labels=TYPING)
+
+  ```python
+  )
+  return sanitize_fname(
+  	# TYPING: error: Argument 1 to "len" has incompatible type "GPTDatasetConfig"; expected "Sized"  [arg-type]
+  	f"f{self.name}-n{shorten_numerical_to_str(len(self))}-h{self_json_hash}",  # type: ignore[arg-type]
+  )
+  ```
+
+
+- error: ParamSpec "P_FilterKwargs" is unbound  [valid-type]  
+  local link: [`/maze_dataset/dataset/dataset.py:539`](/maze_dataset/dataset/dataset.py#L539) 
+  | view on GitHub: [maze_dataset/dataset/dataset.py#L539](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/dataset.py#L539)
+  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=error%3A%20ParamSpec%20%22P_FilterKwargs%22%20is%20unbound%20%20%5Bvalid-type%5D&body=%23%20source%0A%0A%5B%60maze_dataset%2Fdataset%2Fdataset.py%23L539%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Fdataset%2Fdataset.py%23L539%29%0A%0A%23%20context%0A%60%60%60python%0A%09%40functools.wraps%28method%29%0A%09def%20wrapper%28%0A%09%09%23%20TYPING%3A%20error%3A%20ParamSpec%20%22P_FilterKwargs%22%20is%20unbound%20%20%5Bvalid-type%5D%0A%09%09dataset%3A%20T_Dataset%2C%0A%09%09%2Aargs%3A%20P_FilterKwargs.args%2C%20%20%23%20type%3A%20ignore%5Bvalid-type%5D%0A%60%60%60&labels=TYPING)
+
+  ```python
+  @functools.wraps(method)
+  def wrapper(
+  	# TYPING: error: ParamSpec "P_FilterKwargs" is unbound  [valid-type]
+  	dataset: T_Dataset,
+  	*args: P_FilterKwargs.args,  # type: ignore[valid-type]
+  ```
+
+
+- error: Incompatible return value type (got "_Wrapped[[Any, KwArg(Any)], Any, [Never, VarArg(Any), KwArg(Any)], Never]", expected "DatasetFilterProtocol[Any]")  [return-value]  
+  local link: [`/maze_dataset/dataset/dataset.py:552`](/maze_dataset/dataset/dataset.py#L552) 
+  | view on GitHub: [maze_dataset/dataset/dataset.py#L552](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/dataset.py#L552)
+  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=error%3A%20Incompatible%20return%20value%20type%20%28got%20%22_Wrapped%5B%5BAny%2C%20KwArg%28Any%29%5D%2C%20Any%2C%20%5BNever%2C%20VarArg%28Any%29%2C%20KwArg%28Any%29%5D%2C%20Never%5D%22%2C%20expected%20%22DatasetFilterProtocol%5BAny%5D%22%29%20%20%5Breturn-value%5D&body=%23%20source%0A%0A%5B%60maze_dataset%2Fdataset%2Fdataset.py%23L552%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Fdataset%2Fdataset.py%23L552%29%0A%0A%23%20context%0A%60%60%60python%0A%09%09return%20new_dataset%0A%0A%09%23%20TYPING%3A%20error%3A%20Incompatible%20return%20value%20type%20%28got%20%22_Wrapped%5B%5BAny%2C%20KwArg%28Any%29%5D%2C%20Any%2C%20%5BNever%2C%20VarArg%28Any%29%2C%20KwArg%28Any%29%5D%2C%20Never%5D%22%2C%20expected%20%22DatasetFilterProtocol%5BAny%5D%22%29%20%20%5Breturn-value%5D%0A%09return%20wrapper%20%20%23%20type%3A%20ignore%5Breturn-value%5D%0A%60%60%60&labels=TYPING)
+
+  ```python
+  	return new_dataset
+
+  # TYPING: error: Incompatible return value type (got "_Wrapped[[Any, KwArg(Any)], Any, [Never, VarArg(Any), KwArg(Any)], Never]", expected "DatasetFilterProtocol[Any]")  [return-value]
+  return wrapper  # type: ignore[return-value]
+  ```
+
+
+
+
 ## [`maze_dataset/dataset/maze_dataset.py`](/maze_dataset/dataset/maze_dataset.py)
 
+- error: No overload variant of "generate_random_path" of "LatticeMaze" matches argument type "dict[Literal['allowed_start', 'allowed_end', 'deadend_start', 'deadend_end', 'endpoints_not_equal', 'except_on_no_valid_endpoint'], bool | list[tuple[int, int]] | None]"  [call-overload]  
+  local link: [`/maze_dataset/dataset/maze_dataset.py:61`](/maze_dataset/dataset/maze_dataset.py#L61) 
+  | view on GitHub: [maze_dataset/dataset/maze_dataset.py#L61](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/maze_dataset.py#L61)
+  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=error%3A%20No%20overload%20variant%20of%20%22generate_random_path%22%20of%20%22LatticeMaze%22%20matches%20argument%20type%20%22dict%5BLiteral%5B%27allowed_start%27%2C%20%27allowed_end%27%2C%20%27deadend_start%27%2C%20%27deadend_end%27%2C%20%27endpoints_not_equal%27%2C%20%27except_on_no_valid_endpoint%27%5D%2C%20bool%20%7C%20list%5Btuple%5Bint%2C%20int%5D%5D%20%7C%20None%5D%22%20%20%5Bcall-overload%5D&body=%23%20source%0A%0A%5B%60maze_dataset%2Fdataset%2Fmaze_dataset.py%23L61%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Fdataset%2Fmaze_dataset.py%23L61%29%0A%0A%23%20context%0A%60%60%60python%0A%09%23%20Generate%20the%20solution%0A%09%23%20mypy%20doesnt%20realize%20EndpointKwargsType%20has%20only%20string%20keys%3A%20%60Keywords%20must%20be%20strings%20%20%5Bmisc%5D%60%0A%09%23%20TYPING%3A%20error%3A%20No%20overload%20variant%20of%20%22generate_random_path%22%20of%20%22LatticeMaze%22%20matches%20argument%20type%20%22dict%5BLiteral%5B%27allowed_start%27%2C%20%27allowed_end%27%2C%20%27deadend_start%27%2C%20%27deadend_end%27%2C%20%27endpoints_not_equal%27%2C%20%27except_on_no_valid_endpoint%27%5D%2C%20bool%20%7C%20list%5Btuple%5Bint%2C%20int%5D%5D%20%7C%20None%5D%22%20%20%5Bcall-overload%5D%0A%09solution%3A%20Optional%5BCoordArray%5D%20%3D%20maze.generate_random_path%28%2A%2Aendpoint_kwargs%29%20%20%23%20type%3A%20ignore%5Bmisc%2C%20call-overload%5D%0A%60%60%60&labels=TYPING)
+
+  ```python
+  # Generate the solution
+  # mypy doesnt realize EndpointKwargsType has only string keys: `Keywords must be strings  [misc]`
+  # TYPING: error: No overload variant of "generate_random_path" of "LatticeMaze" matches argument type "dict[Literal['allowed_start', 'allowed_end', 'deadend_start', 'deadend_end', 'endpoints_not_equal', 'except_on_no_valid_endpoint'], bool | list[tuple[int, int]] | None]"  [call-overload]
+  solution: Optional[CoordArray] = maze.generate_random_path(**endpoint_kwargs)  # type: ignore[misc, call-overload]
+  ```
+
+
+- error: Return type "MazeDataset" of "from_config" incompatible with return type "T_Dataset" in supertype "GPTDataset"  [override]  
+  local link: [`/maze_dataset/dataset/maze_dataset.py:127`](/maze_dataset/dataset/maze_dataset.py#L127) 
+  | view on GitHub: [maze_dataset/dataset/maze_dataset.py#L127](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/maze_dataset.py#L127)
+  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=error%3A%20Return%20type%20%22MazeDataset%22%20of%20%22from_config%22%20incompatible%20with%20return%20type%20%22T_Dataset%22%20in%20supertype%20%22GPTDataset%22%20%20%5Boverride%5D&body=%23%20source%0A%0A%5B%60maze_dataset%2Fdataset%2Fmaze_dataset.py%23L127%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Fdataset%2Fmaze_dataset.py%23L127%29%0A%0A%23%20context%0A%60%60%60python%0A%09%09self.generation_metadata_collected%3A%20dict%20%7C%20None%20%3D%20generation_metadata_collected%0A%0A%09%23%20TYPING%3A%20error%3A%20Return%20type%20%22MazeDataset%22%20of%20%22from_config%22%20incompatible%20with%20return%20type%20%22T_Dataset%22%20in%20supertype%20%22GPTDataset%22%20%20%5Boverride%5D%0A%09%40classmethod%0A%09def%20from_config%28%20%20%23%20type%3A%20ignore%5Boverride%5D%0A%60%60%60&labels=TYPING)
+
+  ```python
+  	self.generation_metadata_collected: dict | None = generation_metadata_collected
+
+  # TYPING: error: Return type "MazeDataset" of "from_config" incompatible with return type "T_Dataset" in supertype "GPTDataset"  [override]
+  @classmethod
+  def from_config(  # type: ignore[override]
+  ```
+
+
+- error: Argument 1 of "from_config" is incompatible with supertype "GPTDataset"; supertype defines the argument type as "T_DatasetConfig"  [override]  
+  local link: [`/maze_dataset/dataset/maze_dataset.py:131`](/maze_dataset/dataset/maze_dataset.py#L131) 
+  | view on GitHub: [maze_dataset/dataset/maze_dataset.py#L131](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/maze_dataset.py#L131)
+  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=error%3A%20Argument%201%20of%20%22from_config%22%20is%20incompatible%20with%20supertype%20%22GPTDataset%22%3B%20supertype%20defines%20the%20argument%20type%20as%20%22T_DatasetConfig%22%20%20%5Boverride%5D&body=%23%20source%0A%0A%5B%60maze_dataset%2Fdataset%2Fmaze_dataset.py%23L131%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Fdataset%2Fmaze_dataset.py%23L131%29%0A%0A%23%20context%0A%60%60%60python%0A%09def%20from_config%28%20%20%23%20type%3A%20ignore%5Boverride%5D%0A%09%09cls%2C%0A%09%09%23%20TYPING%3A%20error%3A%20Argument%201%20of%20%22from_config%22%20is%20incompatible%20with%20supertype%20%22GPTDataset%22%3B%20supertype%20defines%20the%20argument%20type%20as%20%22T_DatasetConfig%22%20%20%5Boverride%5D%0A%09%09cfg%3A%20MazeDatasetConfig%2C%20%20%23%20type%3A%20ignore%5Boverride%5D%0A%09%09do_generate%3A%20bool%20%3D%20True%2C%0A%60%60%60&labels=TYPING)
+
+  ```python
+  def from_config(  # type: ignore[override]
+  	cls,
+  	# TYPING: error: Argument 1 of "from_config" is incompatible with supertype "GPTDataset"; supertype defines the argument type as "T_DatasetConfig"  [override]
+  	cfg: MazeDatasetConfig,  # type: ignore[override]
+  	do_generate: bool = True,
+  ```
+
+
 - get type hints on the tokenizer here  
-  local link: [`/maze_dataset/dataset/maze_dataset.py:517`](/maze_dataset/dataset/maze_dataset.py#L517) 
-  | view on GitHub: [maze_dataset/dataset/maze_dataset.py#L517](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/maze_dataset.py#L517)
-  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=get%20type%20hints%20on%20the%20tokenizer%20here&body=%23%20source%0A%0A%5B%60maze_dataset%2Fdataset%2Fmaze_dataset.py%23L517%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Fdataset%2Fmaze_dataset.py%23L517%29%0A%0A%23%20context%0A%60%60%60python%0A%09%09return%20MazeDataset.load%28self._serialize_full%28%29%29%0A%0A%09%23%20TYPING%3A%20get%20type%20hints%20on%20the%20tokenizer%20here%0A%09%40overload%0A%09def%20as_tokens%28%0A%60%60%60&labels=TYPING)
+  local link: [`/maze_dataset/dataset/maze_dataset.py:188`](/maze_dataset/dataset/maze_dataset.py#L188) 
+  | view on GitHub: [maze_dataset/dataset/maze_dataset.py#L188](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/maze_dataset.py#L188)
+  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=get%20type%20hints%20on%20the%20tokenizer%20here&body=%23%20source%0A%0A%5B%60maze_dataset%2Fdataset%2Fmaze_dataset.py%23L188%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Fdataset%2Fmaze_dataset.py%23L188%29%0A%0A%23%20context%0A%60%60%60python%0A%09%09return%20MazeDataset.load%28self._serialize_full%28%29%29%0A%0A%09%23%20TYPING%3A%20get%20type%20hints%20on%20the%20tokenizer%20here%0A%09%40overload%0A%09def%20as_tokens%28%0A%60%60%60&labels=TYPING)
 
   ```python
   	return MazeDataset.load(self._serialize_full())
@@ -992,6 +1111,20 @@
   # TYPING: get type hints on the tokenizer here
   @overload
   def as_tokens(
+  ```
+
+
+- error: Argument 1 to "map" has incompatible type "Callable[[int], SolvedMaze | None]"; expected "Callable[[str], SolvedMaze | None]"  [arg-type]  
+  local link: [`/maze_dataset/dataset/maze_dataset.py:296`](/maze_dataset/dataset/maze_dataset.py#L296) 
+  | view on GitHub: [maze_dataset/dataset/maze_dataset.py#L296](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/dataset/maze_dataset.py#L296)
+  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=error%3A%20Argument%201%20to%20%22map%22%20has%20incompatible%20type%20%22Callable%5B%5Bint%5D%2C%20SolvedMaze%20%7C%20None%5D%22%3B%20expected%20%22Callable%5B%5Bstr%5D%2C%20SolvedMaze%20%7C%20None%5D%22%20%20%5Barg-type%5D&body=%23%20source%0A%0A%5B%60maze_dataset%2Fdataset%2Fmaze_dataset.py%23L296%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Fdataset%2Fmaze_dataset.py%23L296%29%0A%0A%23%20context%0A%60%60%60python%0A%09%09%09%09tqdm.tqdm%28%0A%09%09%09%09%09map%28%0A%09%09%09%09%09%09%23%20TYPING%3A%20%20error%3A%20Argument%201%20to%20%22map%22%20has%20incompatible%20type%20%22Callable%5B%5Bint%5D%2C%20SolvedMaze%20%7C%20None%5D%22%3B%20expected%20%22Callable%5B%5Bstr%5D%2C%20SolvedMaze%20%7C%20None%5D%22%20%20%5Barg-type%5D%0A%09%09%09%09%09%09%23%20why%20does%20it%20think%20tolist%28%29%20returns%20a%20string%3F%0A%09%09%09%09%09%09_generate_maze_helper%2C%20%20%23%20type%3A%20ignore%5Barg-type%5D%0A%60%60%60&labels=TYPING)
+
+  ```python
+  tqdm.tqdm(
+  	map(
+  		# TYPING:  error: Argument 1 to "map" has incompatible type "Callable[[int], SolvedMaze | None]"; expected "Callable[[str], SolvedMaze | None]"  [arg-type]
+  		# why does it think tolist() returns a string?
+  		_generate_maze_helper,  # type: ignore[arg-type]
   ```
 
 
@@ -1258,12 +1391,12 @@
 
 
 
-## [`tests/unit/maze_dataset/utils.py`](/tests/unit/maze_dataset/utils.py)
+## [`tests/unit/utils.py`](/tests/unit/utils.py)
 
 - error: Argument 2 to "dataclass_set_equals" has incompatible type "Iterable[FiniteValued]"; expected "Iterable[IsDataclass]"  [arg-type]  
-  local link: [`/tests/unit/maze_dataset/utils.py:289`](/tests/unit/maze_dataset/utils.py#L289) 
-  | view on GitHub: [tests/unit/maze_dataset/utils.py#L289](https://github.com/understanding-search/maze-dataset/blob/main/tests/unit/maze_dataset/utils.py#L289)
-  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=error%3A%20Argument%202%20to%20%22dataclass_set_equals%22%20has%20incompatible%20type%20%22Iterable%5BFiniteValued%5D%22%3B%20expected%20%22Iterable%5BIsDataclass%5D%22%20%20%5Barg-type%5D&body=%23%20source%0A%0A%5B%60tests%2Funit%2Fmaze_dataset%2Futils.py%23L289%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Ftests%2Funit%2Fmaze_dataset%2Futils.py%23L289%29%0A%0A%23%20context%0A%60%60%60python%0A%09%09%09list%28all_instances%28type_%2C%20validation_funcs%29%29%0A%09elif%20hasattr%28type_%2C%20%22__dataclass_fields__%22%29%3A%0A%09%09%23%20TYPING%3A%20error%3A%20Argument%202%20to%20%22dataclass_set_equals%22%20has%20incompatible%20type%20%22Iterable%5BFiniteValued%5D%22%3B%20expected%20%22Iterable%5BIsDataclass%5D%22%20%20%5Barg-type%5D%0A%09%09assert%20dataclass_set_equals%28all_instances%28type_%2C%20validation_funcs%29%2C%20result%29%20%20%23%20type%3A%20ignore%5Barg-type%5D%0A%09else%3A%20%20%23%20General%20case%2C%20due%20to%20nesting%2C%20results%20might%20contain%20some%20dataclasses%20and%20some%20other%20types%0A%60%60%60&labels=TYPING)
+  local link: [`/tests/unit/utils.py:289`](/tests/unit/utils.py#L289) 
+  | view on GitHub: [tests/unit/utils.py#L289](https://github.com/understanding-search/maze-dataset/blob/main/tests/unit/utils.py#L289)
+  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=error%3A%20Argument%202%20to%20%22dataclass_set_equals%22%20has%20incompatible%20type%20%22Iterable%5BFiniteValued%5D%22%3B%20expected%20%22Iterable%5BIsDataclass%5D%22%20%20%5Barg-type%5D&body=%23%20source%0A%0A%5B%60tests%2Funit%2Futils.py%23L289%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Ftests%2Funit%2Futils.py%23L289%29%0A%0A%23%20context%0A%60%60%60python%0A%09%09%09list%28all_instances%28type_%2C%20validation_funcs%29%29%0A%09elif%20hasattr%28type_%2C%20%22__dataclass_fields__%22%29%3A%0A%09%09%23%20TYPING%3A%20error%3A%20Argument%202%20to%20%22dataclass_set_equals%22%20has%20incompatible%20type%20%22Iterable%5BFiniteValued%5D%22%3B%20expected%20%22Iterable%5BIsDataclass%5D%22%20%20%5Barg-type%5D%0A%09%09assert%20dataclass_set_equals%28all_instances%28type_%2C%20validation_funcs%29%2C%20result%29%20%20%23%20type%3A%20ignore%5Barg-type%5D%0A%09else%3A%20%20%23%20General%20case%2C%20due%20to%20nesting%2C%20results%20might%20contain%20some%20dataclasses%20and%20some%20other%20types%0A%60%60%60&labels=TYPING)
 
   ```python
   		list(all_instances(type_, validation_funcs))
@@ -1275,9 +1408,9 @@
 
 
 - error: Argument 1 to "filter" has incompatible type "Callable[[Any], bool]"; expected "Callable[[FiniteValued], TypeGuard[IsDataclass]]"  [arg-type]  
-  local link: [`/tests/unit/maze_dataset/utils.py:294`](/tests/unit/maze_dataset/utils.py#L294) 
-  | view on GitHub: [tests/unit/maze_dataset/utils.py#L294](https://github.com/understanding-search/maze-dataset/blob/main/tests/unit/maze_dataset/utils.py#L294)
-  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=error%3A%20Argument%201%20to%20%22filter%22%20has%20incompatible%20type%20%22Callable%5B%5BAny%5D%2C%20bool%5D%22%3B%20expected%20%22Callable%5B%5BFiniteValued%5D%2C%20TypeGuard%5BIsDataclass%5D%5D%22%20%20%5Barg-type%5D&body=%23%20source%0A%0A%5B%60tests%2Funit%2Fmaze_dataset%2Futils.py%23L294%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Ftests%2Funit%2Fmaze_dataset%2Futils.py%23L294%29%0A%0A%23%20context%0A%60%60%60python%0A%09%09out%20%3D%20list%28all_instances%28type_%2C%20validation_funcs%29%29%0A%09%09assert%20dataclass_set_equals%28%0A%09%09%09%23%20TYPING%3A%20error%3A%20Argument%201%20to%20%22filter%22%20has%20incompatible%20type%20%22Callable%5B%5BAny%5D%2C%20bool%5D%22%3B%20expected%20%22Callable%5B%5BFiniteValued%5D%2C%20TypeGuard%5BIsDataclass%5D%5D%22%20%20%5Barg-type%5D%0A%09%09%09filter%28lambda%20x%3A%20isinstance%28x%2C%20IsDataclass%29%2C%20out%29%2C%20%20%23%20type%3A%20ignore%5Barg-type%5D%0A%09%09%09filter%28lambda%20x%3A%20isinstance%28x%2C%20IsDataclass%29%2C%20result%29%2C%20%20%23%20type%3A%20ignore%5Barg-type%5D%0A%60%60%60&labels=TYPING)
+  local link: [`/tests/unit/utils.py:294`](/tests/unit/utils.py#L294) 
+  | view on GitHub: [tests/unit/utils.py#L294](https://github.com/understanding-search/maze-dataset/blob/main/tests/unit/utils.py#L294)
+  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=error%3A%20Argument%201%20to%20%22filter%22%20has%20incompatible%20type%20%22Callable%5B%5BAny%5D%2C%20bool%5D%22%3B%20expected%20%22Callable%5B%5BFiniteValued%5D%2C%20TypeGuard%5BIsDataclass%5D%5D%22%20%20%5Barg-type%5D&body=%23%20source%0A%0A%5B%60tests%2Funit%2Futils.py%23L294%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Ftests%2Funit%2Futils.py%23L294%29%0A%0A%23%20context%0A%60%60%60python%0A%09%09out%20%3D%20list%28all_instances%28type_%2C%20validation_funcs%29%29%0A%09%09assert%20dataclass_set_equals%28%0A%09%09%09%23%20TYPING%3A%20error%3A%20Argument%201%20to%20%22filter%22%20has%20incompatible%20type%20%22Callable%5B%5BAny%5D%2C%20bool%5D%22%3B%20expected%20%22Callable%5B%5BFiniteValued%5D%2C%20TypeGuard%5BIsDataclass%5D%5D%22%20%20%5Barg-type%5D%0A%09%09%09filter%28lambda%20x%3A%20isinstance%28x%2C%20IsDataclass%29%2C%20out%29%2C%20%20%23%20type%3A%20ignore%5Barg-type%5D%0A%09%09%09filter%28lambda%20x%3A%20isinstance%28x%2C%20IsDataclass%29%2C%20result%29%2C%20%20%23%20type%3A%20ignore%5Barg-type%5D%0A%60%60%60&labels=TYPING)
 
   ```python
   out = list(all_instances(type_, validation_funcs))

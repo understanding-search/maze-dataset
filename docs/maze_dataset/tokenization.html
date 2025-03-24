@@ -64,17 +64,14 @@
 
             <h2>Submodules</h2>
             <ul>
+                    <li><a href="tokenization/modular.html">modular</a></li>
+                    <li><a href="tokenization/common.html">common</a></li>
+                    <li><a href="tokenization/maze_tokenizer_legacy.html">maze_tokenizer_legacy</a></li>
                     <li><a href="tokenization/maze_tokenizer.html">maze_tokenizer</a></li>
             </ul>
 
             <h2>API Documentation</h2>
                 <ul class="memberlist">
-            <li>
-                    <a class="variable" href="#all_tokenizers">all_tokenizers</a>
-            </li>
-            <li>
-                    <a class="variable" href="#save_hashes">save_hashes</a>
-            </li>
             <li>
                     <a class="class" href="#MazeTokenizer">MazeTokenizer</a>
                             <ul class="memberlist">
@@ -953,7 +950,7 @@
                         <div class="source-button-container">
             <label class="pdoc-button view-source-button" for="mod-tokenization-view-source"><span>View Source</span></label>
             <div class="github-button-wrapper">
-                <a class="pdoc-button github-link-button" href="https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization.py#L0-L56" target="_blank">
+                <a class="pdoc-button github-link-button" href="https://github.com/understanding-search/maze-dataset/blob/1.3.0maze_dataset/tokenization.py#L0-L57" target="_blank">
                     <span>View on GitHub</span>
                 </a>
             </div>
@@ -993,57 +990,36 @@
 </span><span id="L-31"><a href="#L-31"><span class="linenos">31</span></a><span class="c1"># we don&#39;t sort alphabetically on purpose, we sort by the type</span>
 </span><span id="L-32"><a href="#L-32"><span class="linenos">32</span></a><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
 </span><span id="L-33"><a href="#L-33"><span class="linenos">33</span></a>	<span class="c1"># submodules</span>
-</span><span id="L-34"><a href="#L-34"><span class="linenos">34</span></a>	<span class="s2">&quot;all_tokenizers&quot;</span><span class="p">,</span>
-</span><span id="L-35"><a href="#L-35"><span class="linenos">35</span></a>	<span class="s2">&quot;maze_tokenizer&quot;</span><span class="p">,</span>
-</span><span id="L-36"><a href="#L-36"><span class="linenos">36</span></a>	<span class="s2">&quot;save_hashes&quot;</span><span class="p">,</span>
-</span><span id="L-37"><a href="#L-37"><span class="linenos">37</span></a>	<span class="c1"># legacy tokenizer</span>
-</span><span id="L-38"><a href="#L-38"><span class="linenos">38</span></a>	<span class="s2">&quot;MazeTokenizer&quot;</span><span class="p">,</span>
-</span><span id="L-39"><a href="#L-39"><span class="linenos">39</span></a>	<span class="s2">&quot;TokenizationMode&quot;</span><span class="p">,</span>
-</span><span id="L-40"><a href="#L-40"><span class="linenos">40</span></a>	<span class="c1"># MMT</span>
-</span><span id="L-41"><a href="#L-41"><span class="linenos">41</span></a>	<span class="s2">&quot;MazeTokenizerModular&quot;</span><span class="p">,</span>
-</span><span id="L-42"><a href="#L-42"><span class="linenos">42</span></a>	<span class="c1"># element base</span>
-</span><span id="L-43"><a href="#L-43"><span class="linenos">43</span></a>	<span class="s2">&quot;_TokenizerElement&quot;</span><span class="p">,</span>
-</span><span id="L-44"><a href="#L-44"><span class="linenos">44</span></a>	<span class="c1"># elements</span>
-</span><span id="L-45"><a href="#L-45"><span class="linenos">45</span></a>	<span class="s2">&quot;PromptSequencers&quot;</span><span class="p">,</span>
-</span><span id="L-46"><a href="#L-46"><span class="linenos">46</span></a>	<span class="s2">&quot;CoordTokenizers&quot;</span><span class="p">,</span>
-</span><span id="L-47"><a href="#L-47"><span class="linenos">47</span></a>	<span class="s2">&quot;AdjListTokenizers&quot;</span><span class="p">,</span>
-</span><span id="L-48"><a href="#L-48"><span class="linenos">48</span></a>	<span class="s2">&quot;EdgeGroupings&quot;</span><span class="p">,</span>
-</span><span id="L-49"><a href="#L-49"><span class="linenos">49</span></a>	<span class="s2">&quot;EdgePermuters&quot;</span><span class="p">,</span>
-</span><span id="L-50"><a href="#L-50"><span class="linenos">50</span></a>	<span class="s2">&quot;EdgeSubsets&quot;</span><span class="p">,</span>
-</span><span id="L-51"><a href="#L-51"><span class="linenos">51</span></a>	<span class="s2">&quot;TargetTokenizers&quot;</span><span class="p">,</span>
-</span><span id="L-52"><a href="#L-52"><span class="linenos">52</span></a>	<span class="s2">&quot;StepSizes&quot;</span><span class="p">,</span>
-</span><span id="L-53"><a href="#L-53"><span class="linenos">53</span></a>	<span class="s2">&quot;StepTokenizers&quot;</span><span class="p">,</span>
-</span><span id="L-54"><a href="#L-54"><span class="linenos">54</span></a>	<span class="s2">&quot;PathTokenizers&quot;</span><span class="p">,</span>
-</span><span id="L-55"><a href="#L-55"><span class="linenos">55</span></a>	<span class="c1"># helpers</span>
-</span><span id="L-56"><a href="#L-56"><span class="linenos">56</span></a>	<span class="s2">&quot;get_tokens_up_to_path_start&quot;</span><span class="p">,</span>
-</span><span id="L-57"><a href="#L-57"><span class="linenos">57</span></a><span class="p">]</span>
+</span><span id="L-34"><a href="#L-34"><span class="linenos">34</span></a>	<span class="s2">&quot;modular&quot;</span><span class="p">,</span>
+</span><span id="L-35"><a href="#L-35"><span class="linenos">35</span></a>	<span class="s2">&quot;common&quot;</span><span class="p">,</span>
+</span><span id="L-36"><a href="#L-36"><span class="linenos">36</span></a>	<span class="s2">&quot;maze_tokenizer_legacy&quot;</span><span class="p">,</span>
+</span><span id="L-37"><a href="#L-37"><span class="linenos">37</span></a>	<span class="s2">&quot;maze_tokenizer&quot;</span><span class="p">,</span>
+</span><span id="L-38"><a href="#L-38"><span class="linenos">38</span></a>	<span class="c1"># legacy tokenizer</span>
+</span><span id="L-39"><a href="#L-39"><span class="linenos">39</span></a>	<span class="s2">&quot;MazeTokenizer&quot;</span><span class="p">,</span>
+</span><span id="L-40"><a href="#L-40"><span class="linenos">40</span></a>	<span class="s2">&quot;TokenizationMode&quot;</span><span class="p">,</span>
+</span><span id="L-41"><a href="#L-41"><span class="linenos">41</span></a>	<span class="c1"># MMT</span>
+</span><span id="L-42"><a href="#L-42"><span class="linenos">42</span></a>	<span class="s2">&quot;MazeTokenizerModular&quot;</span><span class="p">,</span>
+</span><span id="L-43"><a href="#L-43"><span class="linenos">43</span></a>	<span class="c1"># element base</span>
+</span><span id="L-44"><a href="#L-44"><span class="linenos">44</span></a>	<span class="s2">&quot;_TokenizerElement&quot;</span><span class="p">,</span>
+</span><span id="L-45"><a href="#L-45"><span class="linenos">45</span></a>	<span class="c1"># elements</span>
+</span><span id="L-46"><a href="#L-46"><span class="linenos">46</span></a>	<span class="s2">&quot;PromptSequencers&quot;</span><span class="p">,</span>
+</span><span id="L-47"><a href="#L-47"><span class="linenos">47</span></a>	<span class="s2">&quot;CoordTokenizers&quot;</span><span class="p">,</span>
+</span><span id="L-48"><a href="#L-48"><span class="linenos">48</span></a>	<span class="s2">&quot;AdjListTokenizers&quot;</span><span class="p">,</span>
+</span><span id="L-49"><a href="#L-49"><span class="linenos">49</span></a>	<span class="s2">&quot;EdgeGroupings&quot;</span><span class="p">,</span>
+</span><span id="L-50"><a href="#L-50"><span class="linenos">50</span></a>	<span class="s2">&quot;EdgePermuters&quot;</span><span class="p">,</span>
+</span><span id="L-51"><a href="#L-51"><span class="linenos">51</span></a>	<span class="s2">&quot;EdgeSubsets&quot;</span><span class="p">,</span>
+</span><span id="L-52"><a href="#L-52"><span class="linenos">52</span></a>	<span class="s2">&quot;TargetTokenizers&quot;</span><span class="p">,</span>
+</span><span id="L-53"><a href="#L-53"><span class="linenos">53</span></a>	<span class="s2">&quot;StepSizes&quot;</span><span class="p">,</span>
+</span><span id="L-54"><a href="#L-54"><span class="linenos">54</span></a>	<span class="s2">&quot;StepTokenizers&quot;</span><span class="p">,</span>
+</span><span id="L-55"><a href="#L-55"><span class="linenos">55</span></a>	<span class="s2">&quot;PathTokenizers&quot;</span><span class="p">,</span>
+</span><span id="L-56"><a href="#L-56"><span class="linenos">56</span></a>	<span class="c1"># helpers</span>
+</span><span id="L-57"><a href="#L-57"><span class="linenos">57</span></a>	<span class="s2">&quot;get_tokens_up_to_path_start&quot;</span><span class="p">,</span>
+</span><span id="L-58"><a href="#L-58"><span class="linenos">58</span></a><span class="p">]</span>
 </span></pre></div>
 
 
                 <br/>
             </section>
-                <section id="all_tokenizers">
-                    <div class="attr variable">
-            <span class="name">all_tokenizers</span>
-
-        
-    </div>
-    <a class="headerlink" href="#all_tokenizers"></a>
-    
-    
-
-                </section>
-                <section id="save_hashes">
-                    <div class="attr variable">
-            <span class="name">save_hashes</span>
-
-        
-    </div>
-    <a class="headerlink" href="#save_hashes"></a>
-    
-    
-
-                </section>
                 <section id="MazeTokenizer">
                             <input id="MazeTokenizer-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
 <div class="attr class">
@@ -4913,7 +4889,7 @@ This could be used to create more or less stringent filters on the valid <code><
 <div class="attr class">
             
     <span class="def">class</span>
-    <span class="name">PromptSequencers</span><wbr>(<span class="base">maze_dataset.tokenization.modular.element_base.__TokenizerElementNamespace</span>):
+    <span class="name">PromptSequencers</span><wbr>(<span class="base"><a href="tokenization/modular/element_base.html#__TokenizerElementNamespace">maze_dataset.tokenization.modular.element_base.__TokenizerElementNamespace</a></span>):
 
                 <div class="source-button-container">
             <label class="pdoc-button view-source-button" for="PromptSequencers-view-source"><span>View Source</span></label>
@@ -5195,7 +5171,7 @@ This could be used to create more or less stringent filters on the valid <code><
                     <div class="decorator">@serializable_dataclass(frozen=True, kw_only=True)</div>
 
     <span class="def">class</span>
-    <span class="name">PromptSequencers.AOTP</span><wbr>(<span class="base">maze_dataset.tokenization.modular.elements.PromptSequencers._PromptSequencer</span>):
+    <span class="name">PromptSequencers.AOTP</span><wbr>(<span class="base"><a href="tokenization/modular/elements.html#PromptSequencers._PromptSequencer">maze_dataset.tokenization.modular.elements.PromptSequencers._PromptSequencer</a></span>):
 
                 <div class="source-button-container">
             <label class="pdoc-button view-source-button" for="PromptSequencers.AOTP-view-source"><span>View Source</span></label>
@@ -5539,12 +5515,12 @@ Uses <code><a href="#PromptSequencers.AOTP.coord_tokenizer">coord_tokenizer</a><
                             <div class="inherited">
                                 <h5>Inherited Members</h5>
                                 <dl>
-                                    <div><dt>maze_dataset.tokenization.modular.elements.PromptSequencers._PromptSequencer</dt>
-                                <dd id="PromptSequencers.AOTP.coord_tokenizer" class="variable">coord_tokenizer</dd>
-                <dd id="PromptSequencers.AOTP.adj_list_tokenizer" class="variable">adj_list_tokenizer</dd>
-                <dd id="PromptSequencers.AOTP.attribute_key" class="function">attribute_key</dd>
-                <dd id="PromptSequencers.AOTP.to_tokens" class="function">to_tokens</dd>
-                <dd id="PromptSequencers.AOTP.is_valid" class="function">is_valid</dd>
+                                    <div><dt><a href="tokenization/modular/elements.html#PromptSequencers._PromptSequencer">maze_dataset.tokenization.modular.elements.PromptSequencers._PromptSequencer</a></dt>
+                                <dd id="PromptSequencers.AOTP.coord_tokenizer" class="variable"><a href="tokenization/modular/elements.html#PromptSequencers._PromptSequencer.coord_tokenizer">coord_tokenizer</a></dd>
+                <dd id="PromptSequencers.AOTP.adj_list_tokenizer" class="variable"><a href="tokenization/modular/elements.html#PromptSequencers._PromptSequencer.adj_list_tokenizer">adj_list_tokenizer</a></dd>
+                <dd id="PromptSequencers.AOTP.attribute_key" class="function"><a href="tokenization/modular/elements.html#PromptSequencers._PromptSequencer.attribute_key">attribute_key</a></dd>
+                <dd id="PromptSequencers.AOTP.to_tokens" class="function"><a href="tokenization/modular/elements.html#PromptSequencers._PromptSequencer.to_tokens">to_tokens</a></dd>
+                <dd id="PromptSequencers.AOTP.is_valid" class="function"><a href="tokenization/modular/elements.html#PromptSequencers._PromptSequencer.is_valid">is_valid</a></dd>
 
             </div>
             <div><dt><a href="#_TokenizerElement">_TokenizerElement</a></dt>
@@ -5569,7 +5545,7 @@ Uses <code><a href="#PromptSequencers.AOTP.coord_tokenizer">coord_tokenizer</a><
                     <div class="decorator">@serializable_dataclass(frozen=True, kw_only=True)</div>
 
     <span class="def">class</span>
-    <span class="name">PromptSequencers.AOP</span><wbr>(<span class="base">maze_dataset.tokenization.modular.elements.PromptSequencers._PromptSequencer</span>):
+    <span class="name">PromptSequencers.AOP</span><wbr>(<span class="base"><a href="tokenization/modular/elements.html#PromptSequencers._PromptSequencer">maze_dataset.tokenization.modular.elements.PromptSequencers._PromptSequencer</a></span>):
 
                 <div class="source-button-container">
             <label class="pdoc-button view-source-button" for="PromptSequencers.AOP-view-source"><span>View Source</span></label>
@@ -5896,12 +5872,12 @@ Uses <code><a href="#PromptSequencers.AOP.coord_tokenizer">coord_tokenizer</a></
                             <div class="inherited">
                                 <h5>Inherited Members</h5>
                                 <dl>
-                                    <div><dt>maze_dataset.tokenization.modular.elements.PromptSequencers._PromptSequencer</dt>
-                                <dd id="PromptSequencers.AOP.coord_tokenizer" class="variable">coord_tokenizer</dd>
-                <dd id="PromptSequencers.AOP.adj_list_tokenizer" class="variable">adj_list_tokenizer</dd>
-                <dd id="PromptSequencers.AOP.attribute_key" class="function">attribute_key</dd>
-                <dd id="PromptSequencers.AOP.to_tokens" class="function">to_tokens</dd>
-                <dd id="PromptSequencers.AOP.is_valid" class="function">is_valid</dd>
+                                    <div><dt><a href="tokenization/modular/elements.html#PromptSequencers._PromptSequencer">maze_dataset.tokenization.modular.elements.PromptSequencers._PromptSequencer</a></dt>
+                                <dd id="PromptSequencers.AOP.coord_tokenizer" class="variable"><a href="tokenization/modular/elements.html#PromptSequencers._PromptSequencer.coord_tokenizer">coord_tokenizer</a></dd>
+                <dd id="PromptSequencers.AOP.adj_list_tokenizer" class="variable"><a href="tokenization/modular/elements.html#PromptSequencers._PromptSequencer.adj_list_tokenizer">adj_list_tokenizer</a></dd>
+                <dd id="PromptSequencers.AOP.attribute_key" class="function"><a href="tokenization/modular/elements.html#PromptSequencers._PromptSequencer.attribute_key">attribute_key</a></dd>
+                <dd id="PromptSequencers.AOP.to_tokens" class="function"><a href="tokenization/modular/elements.html#PromptSequencers._PromptSequencer.to_tokens">to_tokens</a></dd>
+                <dd id="PromptSequencers.AOP.is_valid" class="function"><a href="tokenization/modular/elements.html#PromptSequencers._PromptSequencer.is_valid">is_valid</a></dd>
 
             </div>
             <div><dt><a href="#_TokenizerElement">_TokenizerElement</a></dt>
@@ -5925,7 +5901,7 @@ Uses <code><a href="#PromptSequencers.AOP.coord_tokenizer">coord_tokenizer</a></
 <div class="attr class">
             
     <span class="def">class</span>
-    <span class="name">CoordTokenizers</span><wbr>(<span class="base">maze_dataset.tokenization.modular.element_base.__TokenizerElementNamespace</span>):
+    <span class="name">CoordTokenizers</span><wbr>(<span class="base"><a href="tokenization/modular/element_base.html#__TokenizerElementNamespace">maze_dataset.tokenization.modular.element_base.__TokenizerElementNamespace</a></span>):
 
                 <div class="source-button-container">
             <label class="pdoc-button view-source-button" for="CoordTokenizers-view-source"><span>View Source</span></label>
@@ -6017,7 +5993,7 @@ Uses <code><a href="#PromptSequencers.AOP.coord_tokenizer">coord_tokenizer</a></
                     <div class="decorator">@serializable_dataclass(frozen=True, kw_only=True)</div>
 
     <span class="def">class</span>
-    <span class="name">CoordTokenizers.UT</span><wbr>(<span class="base">maze_dataset.tokenization.modular.elements.CoordTokenizers._CoordTokenizer</span>):
+    <span class="name">CoordTokenizers.UT</span><wbr>(<span class="base"><a href="tokenization/modular/elements.html#CoordTokenizers._CoordTokenizer">maze_dataset.tokenization.modular.elements.CoordTokenizers._CoordTokenizer</a></span>):
 
                 <div class="source-button-container">
             <label class="pdoc-button view-source-button" for="CoordTokenizers.UT-view-source"><span>View Source</span></label>
@@ -6323,9 +6299,9 @@ Those subclasses which do produce tokens should override this method.</p>
                             <div class="inherited">
                                 <h5>Inherited Members</h5>
                                 <dl>
-                                    <div><dt>maze_dataset.tokenization.modular.elements.CoordTokenizers._CoordTokenizer</dt>
-                                <dd id="CoordTokenizers.UT.attribute_key" class="function">attribute_key</dd>
-                <dd id="CoordTokenizers.UT.is_valid" class="function">is_valid</dd>
+                                    <div><dt><a href="tokenization/modular/elements.html#CoordTokenizers._CoordTokenizer">maze_dataset.tokenization.modular.elements.CoordTokenizers._CoordTokenizer</a></dt>
+                                <dd id="CoordTokenizers.UT.attribute_key" class="function"><a href="tokenization/modular/elements.html#CoordTokenizers._CoordTokenizer.attribute_key">attribute_key</a></dd>
+                <dd id="CoordTokenizers.UT.is_valid" class="function"><a href="tokenization/modular/elements.html#CoordTokenizers._CoordTokenizer.is_valid">is_valid</a></dd>
 
             </div>
             <div><dt><a href="#_TokenizerElement">_TokenizerElement</a></dt>
@@ -6350,7 +6326,7 @@ Those subclasses which do produce tokens should override this method.</p>
                     <div class="decorator">@serializable_dataclass(frozen=True, kw_only=True)</div>
 
     <span class="def">class</span>
-    <span class="name">CoordTokenizers.CTT</span><wbr>(<span class="base">maze_dataset.tokenization.modular.elements.CoordTokenizers._CoordTokenizer</span>):
+    <span class="name">CoordTokenizers.CTT</span><wbr>(<span class="base"><a href="tokenization/modular/elements.html#CoordTokenizers._CoordTokenizer">maze_dataset.tokenization.modular.elements.CoordTokenizers._CoordTokenizer</a></span>):
 
                 <div class="source-button-container">
             <label class="pdoc-button view-source-button" for="CoordTokenizers.CTT-view-source"><span>View Source</span></label>
@@ -6723,9 +6699,9 @@ Those subclasses which do produce tokens should override this method.</p>
                             <div class="inherited">
                                 <h5>Inherited Members</h5>
                                 <dl>
-                                    <div><dt>maze_dataset.tokenization.modular.elements.CoordTokenizers._CoordTokenizer</dt>
-                                <dd id="CoordTokenizers.CTT.attribute_key" class="function">attribute_key</dd>
-                <dd id="CoordTokenizers.CTT.is_valid" class="function">is_valid</dd>
+                                    <div><dt><a href="tokenization/modular/elements.html#CoordTokenizers._CoordTokenizer">maze_dataset.tokenization.modular.elements.CoordTokenizers._CoordTokenizer</a></dt>
+                                <dd id="CoordTokenizers.CTT.attribute_key" class="function"><a href="tokenization/modular/elements.html#CoordTokenizers._CoordTokenizer.attribute_key">attribute_key</a></dd>
+                <dd id="CoordTokenizers.CTT.is_valid" class="function"><a href="tokenization/modular/elements.html#CoordTokenizers._CoordTokenizer.is_valid">is_valid</a></dd>
 
             </div>
             <div><dt><a href="#_TokenizerElement">_TokenizerElement</a></dt>
@@ -6749,7 +6725,7 @@ Those subclasses which do produce tokens should override this method.</p>
 <div class="attr class">
             
     <span class="def">class</span>
-    <span class="name">AdjListTokenizers</span><wbr>(<span class="base">maze_dataset.tokenization.modular.element_base.__TokenizerElementNamespace</span>):
+    <span class="name">AdjListTokenizers</span><wbr>(<span class="base"><a href="tokenization/modular/element_base.html#__TokenizerElementNamespace">maze_dataset.tokenization.modular.element_base.__TokenizerElementNamespace</a></span>):
 
                 <div class="source-button-container">
             <label class="pdoc-button view-source-button" for="AdjListTokenizers-view-source"><span>View Source</span></label>
@@ -7039,7 +7015,7 @@ Those subclasses which do produce tokens should override this method.</p>
                     <div class="decorator">@serializable_dataclass(frozen=True, kw_only=True)</div>
 
     <span class="def">class</span>
-    <span class="name">AdjListTokenizers.AdjListCoord</span><wbr>(<span class="base">maze_dataset.tokenization.modular.elements.AdjListTokenizers._AdjListTokenizer</span>):
+    <span class="name">AdjListTokenizers.AdjListCoord</span><wbr>(<span class="base"><a href="tokenization/modular/elements.html#AdjListTokenizers._AdjListTokenizer">maze_dataset.tokenization.modular.elements.AdjListTokenizers._AdjListTokenizer</a></span>):
 
                 <div class="source-button-container">
             <label class="pdoc-button view-source-button" for="AdjListTokenizers.AdjListCoord-view-source"><span>View Source</span></label>
@@ -7346,15 +7322,15 @@ Those subclasses which do produce tokens should override this method.</p>
                             <div class="inherited">
                                 <h5>Inherited Members</h5>
                                 <dl>
-                                    <div><dt>maze_dataset.tokenization.modular.elements.AdjListTokenizers._AdjListTokenizer</dt>
-                                <dd id="AdjListTokenizers.AdjListCoord.pre" class="variable">pre</dd>
-                <dd id="AdjListTokenizers.AdjListCoord.post" class="variable">post</dd>
-                <dd id="AdjListTokenizers.AdjListCoord.shuffle_d0" class="variable">shuffle_d0</dd>
-                <dd id="AdjListTokenizers.AdjListCoord.edge_grouping" class="variable">edge_grouping</dd>
-                <dd id="AdjListTokenizers.AdjListCoord.edge_subset" class="variable">edge_subset</dd>
-                <dd id="AdjListTokenizers.AdjListCoord.attribute_key" class="function">attribute_key</dd>
-                <dd id="AdjListTokenizers.AdjListCoord.is_valid" class="function">is_valid</dd>
-                <dd id="AdjListTokenizers.AdjListCoord.to_tokens" class="function">to_tokens</dd>
+                                    <div><dt><a href="tokenization/modular/elements.html#AdjListTokenizers._AdjListTokenizer">maze_dataset.tokenization.modular.elements.AdjListTokenizers._AdjListTokenizer</a></dt>
+                                <dd id="AdjListTokenizers.AdjListCoord.pre" class="variable"><a href="tokenization/modular/elements.html#AdjListTokenizers._AdjListTokenizer.pre">pre</a></dd>
+                <dd id="AdjListTokenizers.AdjListCoord.post" class="variable"><a href="tokenization/modular/elements.html#AdjListTokenizers._AdjListTokenizer.post">post</a></dd>
+                <dd id="AdjListTokenizers.AdjListCoord.shuffle_d0" class="variable"><a href="tokenization/modular/elements.html#AdjListTokenizers._AdjListTokenizer.shuffle_d0">shuffle_d0</a></dd>
+                <dd id="AdjListTokenizers.AdjListCoord.edge_grouping" class="variable"><a href="tokenization/modular/elements.html#AdjListTokenizers._AdjListTokenizer.edge_grouping">edge_grouping</a></dd>
+                <dd id="AdjListTokenizers.AdjListCoord.edge_subset" class="variable"><a href="tokenization/modular/elements.html#AdjListTokenizers._AdjListTokenizer.edge_subset">edge_subset</a></dd>
+                <dd id="AdjListTokenizers.AdjListCoord.attribute_key" class="function"><a href="tokenization/modular/elements.html#AdjListTokenizers._AdjListTokenizer.attribute_key">attribute_key</a></dd>
+                <dd id="AdjListTokenizers.AdjListCoord.is_valid" class="function"><a href="tokenization/modular/elements.html#AdjListTokenizers._AdjListTokenizer.is_valid">is_valid</a></dd>
+                <dd id="AdjListTokenizers.AdjListCoord.to_tokens" class="function"><a href="tokenization/modular/elements.html#AdjListTokenizers._AdjListTokenizer.to_tokens">to_tokens</a></dd>
 
             </div>
             <div><dt><a href="#_TokenizerElement">_TokenizerElement</a></dt>
@@ -7379,7 +7355,7 @@ Those subclasses which do produce tokens should override this method.</p>
                     <div class="decorator">@serializable_dataclass(frozen=True, kw_only=True)</div>
 
     <span class="def">class</span>
-    <span class="name">AdjListTokenizers.AdjListCardinal</span><wbr>(<span class="base">maze_dataset.tokenization.modular.elements.AdjListTokenizers._AdjListTokenizer</span>):
+    <span class="name">AdjListTokenizers.AdjListCardinal</span><wbr>(<span class="base"><a href="tokenization/modular/elements.html#AdjListTokenizers._AdjListTokenizer">maze_dataset.tokenization.modular.elements.AdjListTokenizers._AdjListTokenizer</a></span>):
 
                 <div class="source-button-container">
             <label class="pdoc-button view-source-button" for="AdjListTokenizers.AdjListCardinal-view-source"><span>View Source</span></label>
@@ -7696,15 +7672,15 @@ Those subclasses which do produce tokens should override this method.</p>
                             <div class="inherited">
                                 <h5>Inherited Members</h5>
                                 <dl>
-                                    <div><dt>maze_dataset.tokenization.modular.elements.AdjListTokenizers._AdjListTokenizer</dt>
-                                <dd id="AdjListTokenizers.AdjListCardinal.pre" class="variable">pre</dd>
-                <dd id="AdjListTokenizers.AdjListCardinal.post" class="variable">post</dd>
-                <dd id="AdjListTokenizers.AdjListCardinal.shuffle_d0" class="variable">shuffle_d0</dd>
-                <dd id="AdjListTokenizers.AdjListCardinal.edge_grouping" class="variable">edge_grouping</dd>
-                <dd id="AdjListTokenizers.AdjListCardinal.edge_subset" class="variable">edge_subset</dd>
-                <dd id="AdjListTokenizers.AdjListCardinal.attribute_key" class="function">attribute_key</dd>
-                <dd id="AdjListTokenizers.AdjListCardinal.is_valid" class="function">is_valid</dd>
-                <dd id="AdjListTokenizers.AdjListCardinal.to_tokens" class="function">to_tokens</dd>
+                                    <div><dt><a href="tokenization/modular/elements.html#AdjListTokenizers._AdjListTokenizer">maze_dataset.tokenization.modular.elements.AdjListTokenizers._AdjListTokenizer</a></dt>
+                                <dd id="AdjListTokenizers.AdjListCardinal.pre" class="variable"><a href="tokenization/modular/elements.html#AdjListTokenizers._AdjListTokenizer.pre">pre</a></dd>
+                <dd id="AdjListTokenizers.AdjListCardinal.post" class="variable"><a href="tokenization/modular/elements.html#AdjListTokenizers._AdjListTokenizer.post">post</a></dd>
+                <dd id="AdjListTokenizers.AdjListCardinal.shuffle_d0" class="variable"><a href="tokenization/modular/elements.html#AdjListTokenizers._AdjListTokenizer.shuffle_d0">shuffle_d0</a></dd>
+                <dd id="AdjListTokenizers.AdjListCardinal.edge_grouping" class="variable"><a href="tokenization/modular/elements.html#AdjListTokenizers._AdjListTokenizer.edge_grouping">edge_grouping</a></dd>
+                <dd id="AdjListTokenizers.AdjListCardinal.edge_subset" class="variable"><a href="tokenization/modular/elements.html#AdjListTokenizers._AdjListTokenizer.edge_subset">edge_subset</a></dd>
+                <dd id="AdjListTokenizers.AdjListCardinal.attribute_key" class="function"><a href="tokenization/modular/elements.html#AdjListTokenizers._AdjListTokenizer.attribute_key">attribute_key</a></dd>
+                <dd id="AdjListTokenizers.AdjListCardinal.is_valid" class="function"><a href="tokenization/modular/elements.html#AdjListTokenizers._AdjListTokenizer.is_valid">is_valid</a></dd>
+                <dd id="AdjListTokenizers.AdjListCardinal.to_tokens" class="function"><a href="tokenization/modular/elements.html#AdjListTokenizers._AdjListTokenizer.to_tokens">to_tokens</a></dd>
 
             </div>
             <div><dt><a href="#_TokenizerElement">_TokenizerElement</a></dt>
@@ -7728,7 +7704,7 @@ Those subclasses which do produce tokens should override this method.</p>
 <div class="attr class">
             
     <span class="def">class</span>
-    <span class="name">EdgeGroupings</span><wbr>(<span class="base">maze_dataset.tokenization.modular.element_base.__TokenizerElementNamespace</span>):
+    <span class="name">EdgeGroupings</span><wbr>(<span class="base"><a href="tokenization/modular/element_base.html#__TokenizerElementNamespace">maze_dataset.tokenization.modular.element_base.__TokenizerElementNamespace</a></span>):
 
                 <div class="source-button-container">
             <label class="pdoc-button view-source-button" for="EdgeGroupings-view-source"><span>View Source</span></label>
@@ -7876,7 +7852,7 @@ Those subclasses which do produce tokens should override this method.</p>
                     <div class="decorator">@serializable_dataclass(frozen=True, kw_only=True)</div>
 
     <span class="def">class</span>
-    <span class="name">EdgeGroupings.Ungrouped</span><wbr>(<span class="base">maze_dataset.tokenization.modular.elements.EdgeGroupings._EdgeGrouping</span>):
+    <span class="name">EdgeGroupings.Ungrouped</span><wbr>(<span class="base"><a href="tokenization/modular/elements.html#EdgeGroupings._EdgeGrouping">maze_dataset.tokenization.modular.elements.EdgeGroupings._EdgeGrouping</a></span>):
 
                 <div class="source-button-container">
             <label class="pdoc-button view-source-button" for="EdgeGroupings.Ungrouped-view-source"><span>View Source</span></label>
@@ -8186,9 +8162,9 @@ Edge tokenizations contain 3 parts: a leading coord, a connector (or wall) token
                             <div class="inherited">
                                 <h5>Inherited Members</h5>
                                 <dl>
-                                    <div><dt>maze_dataset.tokenization.modular.elements.EdgeGroupings._EdgeGrouping</dt>
-                                <dd id="EdgeGroupings.Ungrouped.attribute_key" class="function">attribute_key</dd>
-                <dd id="EdgeGroupings.Ungrouped.is_valid" class="function">is_valid</dd>
+                                    <div><dt><a href="tokenization/modular/elements.html#EdgeGroupings._EdgeGrouping">maze_dataset.tokenization.modular.elements.EdgeGroupings._EdgeGrouping</a></dt>
+                                <dd id="EdgeGroupings.Ungrouped.attribute_key" class="function"><a href="tokenization/modular/elements.html#EdgeGroupings._EdgeGrouping.attribute_key">attribute_key</a></dd>
+                <dd id="EdgeGroupings.Ungrouped.is_valid" class="function"><a href="tokenization/modular/elements.html#EdgeGroupings._EdgeGrouping.is_valid">is_valid</a></dd>
 
             </div>
             <div><dt><a href="#_TokenizerElement">_TokenizerElement</a></dt>
@@ -8215,7 +8191,7 @@ Edge tokenizations contain 3 parts: a leading coord, a connector (or wall) token
         <div class="decorator">@mark_as_unsupported(_unsupported_is_invalid)</div>
 
     <span class="def">class</span>
-    <span class="name">EdgeGroupings.ByLeadingCoord</span><wbr>(<span class="base">maze_dataset.tokenization.modular.elements.EdgeGroupings._EdgeGrouping</span>):
+    <span class="name">EdgeGroupings.ByLeadingCoord</span><wbr>(<span class="base"><a href="tokenization/modular/elements.html#EdgeGroupings._EdgeGrouping">maze_dataset.tokenization.modular.elements.EdgeGroupings._EdgeGrouping</a></span>):
 
                 <div class="source-button-container">
             <label class="pdoc-button view-source-button" for="EdgeGroupings.ByLeadingCoord-view-source"><span>View Source</span></label>
@@ -8609,8 +8585,8 @@ Edge tokenizations contain 2 parts: a connector (or wall) token and a coord or c
                             <div class="inherited">
                                 <h5>Inherited Members</h5>
                                 <dl>
-                                    <div><dt>maze_dataset.tokenization.modular.elements.EdgeGroupings._EdgeGrouping</dt>
-                                <dd id="EdgeGroupings.ByLeadingCoord.attribute_key" class="function">attribute_key</dd>
+                                    <div><dt><a href="tokenization/modular/elements.html#EdgeGroupings._EdgeGrouping">maze_dataset.tokenization.modular.elements.EdgeGroupings._EdgeGrouping</a></dt>
+                                <dd id="EdgeGroupings.ByLeadingCoord.attribute_key" class="function"><a href="tokenization/modular/elements.html#EdgeGroupings._EdgeGrouping.attribute_key">attribute_key</a></dd>
 
             </div>
             <div><dt><a href="#_TokenizerElement">_TokenizerElement</a></dt>
@@ -8635,7 +8611,7 @@ Edge tokenizations contain 2 parts: a connector (or wall) token and a coord or c
 <div class="attr class">
             
     <span class="def">class</span>
-    <span class="name">EdgePermuters</span><wbr>(<span class="base">maze_dataset.tokenization.modular.element_base.__TokenizerElementNamespace</span>):
+    <span class="name">EdgePermuters</span><wbr>(<span class="base"><a href="tokenization/modular/element_base.html#__TokenizerElementNamespace">maze_dataset.tokenization.modular.element_base.__TokenizerElementNamespace</a></span>):
 
                 <div class="source-button-container">
             <label class="pdoc-button view-source-button" for="EdgePermuters-view-source"><span>View Source</span></label>
@@ -8746,7 +8722,7 @@ Edge tokenizations contain 2 parts: a connector (or wall) token and a coord or c
                     <div class="decorator">@serializable_dataclass(frozen=True, kw_only=True)</div>
 
     <span class="def">class</span>
-    <span class="name">EdgePermuters.SortedCoords</span><wbr>(<span class="base">maze_dataset.tokenization.modular.elements.EdgePermuters._EdgePermuter</span>):
+    <span class="name">EdgePermuters.SortedCoords</span><wbr>(<span class="base"><a href="tokenization/modular/elements.html#EdgePermuters._EdgePermuter">maze_dataset.tokenization.modular.elements.EdgePermuters._EdgePermuter</a></span>):
 
                 <div class="source-button-container">
             <label class="pdoc-button view-source-button" for="EdgePermuters.SortedCoords-view-source"><span>View Source</span></label>
@@ -9031,9 +9007,9 @@ Edge tokenizations contain 2 parts: a connector (or wall) token and a coord or c
                             <div class="inherited">
                                 <h5>Inherited Members</h5>
                                 <dl>
-                                    <div><dt>maze_dataset.tokenization.modular.elements.EdgePermuters._EdgePermuter</dt>
-                                <dd id="EdgePermuters.SortedCoords.attribute_key" class="function">attribute_key</dd>
-                <dd id="EdgePermuters.SortedCoords.is_valid" class="function">is_valid</dd>
+                                    <div><dt><a href="tokenization/modular/elements.html#EdgePermuters._EdgePermuter">maze_dataset.tokenization.modular.elements.EdgePermuters._EdgePermuter</a></dt>
+                                <dd id="EdgePermuters.SortedCoords.attribute_key" class="function"><a href="tokenization/modular/elements.html#EdgePermuters._EdgePermuter.attribute_key">attribute_key</a></dd>
+                <dd id="EdgePermuters.SortedCoords.is_valid" class="function"><a href="tokenization/modular/elements.html#EdgePermuters._EdgePermuter.is_valid">is_valid</a></dd>
 
             </div>
             <div><dt><a href="#_TokenizerElement">_TokenizerElement</a></dt>
@@ -9059,7 +9035,7 @@ Edge tokenizations contain 2 parts: a connector (or wall) token and a coord or c
                     <div class="decorator">@serializable_dataclass(frozen=True, kw_only=True)</div>
 
     <span class="def">class</span>
-    <span class="name">EdgePermuters.RandomCoords</span><wbr>(<span class="base">maze_dataset.tokenization.modular.elements.EdgePermuters._EdgePermuter</span>):
+    <span class="name">EdgePermuters.RandomCoords</span><wbr>(<span class="base"><a href="tokenization/modular/elements.html#EdgePermuters._EdgePermuter">maze_dataset.tokenization.modular.elements.EdgePermuters._EdgePermuter</a></span>):
 
                 <div class="source-button-container">
             <label class="pdoc-button view-source-button" for="EdgePermuters.RandomCoords-view-source"><span>View Source</span></label>
@@ -9335,9 +9311,9 @@ Edge tokenizations contain 2 parts: a connector (or wall) token and a coord or c
                             <div class="inherited">
                                 <h5>Inherited Members</h5>
                                 <dl>
-                                    <div><dt>maze_dataset.tokenization.modular.elements.EdgePermuters._EdgePermuter</dt>
-                                <dd id="EdgePermuters.RandomCoords.attribute_key" class="function">attribute_key</dd>
-                <dd id="EdgePermuters.RandomCoords.is_valid" class="function">is_valid</dd>
+                                    <div><dt><a href="tokenization/modular/elements.html#EdgePermuters._EdgePermuter">maze_dataset.tokenization.modular.elements.EdgePermuters._EdgePermuter</a></dt>
+                                <dd id="EdgePermuters.RandomCoords.attribute_key" class="function"><a href="tokenization/modular/elements.html#EdgePermuters._EdgePermuter.attribute_key">attribute_key</a></dd>
+                <dd id="EdgePermuters.RandomCoords.is_valid" class="function"><a href="tokenization/modular/elements.html#EdgePermuters._EdgePermuter.is_valid">is_valid</a></dd>
 
             </div>
             <div><dt><a href="#_TokenizerElement">_TokenizerElement</a></dt>
@@ -9363,7 +9339,7 @@ Edge tokenizations contain 2 parts: a connector (or wall) token and a coord or c
                     <div class="decorator">@serializable_dataclass(frozen=True, kw_only=True)</div>
 
     <span class="def">class</span>
-    <span class="name">EdgePermuters.BothCoords</span><wbr>(<span class="base">maze_dataset.tokenization.modular.elements.EdgePermuters._EdgePermuter</span>):
+    <span class="name">EdgePermuters.BothCoords</span><wbr>(<span class="base"><a href="tokenization/modular/elements.html#EdgePermuters._EdgePermuter">maze_dataset.tokenization.modular.elements.EdgePermuters._EdgePermuter</a></span>):
 
                 <div class="source-button-container">
             <label class="pdoc-button view-source-button" for="EdgePermuters.BothCoords-view-source"><span>View Source</span></label>
@@ -9645,9 +9621,9 @@ a call to <code>BothCoords._permute</code> will modify <code>lattice_edges</code
                             <div class="inherited">
                                 <h5>Inherited Members</h5>
                                 <dl>
-                                    <div><dt>maze_dataset.tokenization.modular.elements.EdgePermuters._EdgePermuter</dt>
-                                <dd id="EdgePermuters.BothCoords.attribute_key" class="function">attribute_key</dd>
-                <dd id="EdgePermuters.BothCoords.is_valid" class="function">is_valid</dd>
+                                    <div><dt><a href="tokenization/modular/elements.html#EdgePermuters._EdgePermuter">maze_dataset.tokenization.modular.elements.EdgePermuters._EdgePermuter</a></dt>
+                                <dd id="EdgePermuters.BothCoords.attribute_key" class="function"><a href="tokenization/modular/elements.html#EdgePermuters._EdgePermuter.attribute_key">attribute_key</a></dd>
+                <dd id="EdgePermuters.BothCoords.is_valid" class="function"><a href="tokenization/modular/elements.html#EdgePermuters._EdgePermuter.is_valid">is_valid</a></dd>
 
             </div>
             <div><dt><a href="#_TokenizerElement">_TokenizerElement</a></dt>
@@ -9672,7 +9648,7 @@ a call to <code>BothCoords._permute</code> will modify <code>lattice_edges</code
 <div class="attr class">
             
     <span class="def">class</span>
-    <span class="name">EdgeSubsets</span><wbr>(<span class="base">maze_dataset.tokenization.modular.element_base.__TokenizerElementNamespace</span>):
+    <span class="name">EdgeSubsets</span><wbr>(<span class="base"><a href="tokenization/modular/element_base.html#__TokenizerElementNamespace">maze_dataset.tokenization.modular.element_base.__TokenizerElementNamespace</a></span>):
 
                 <div class="source-button-container">
             <label class="pdoc-button view-source-button" for="EdgeSubsets-view-source"><span>View Source</span></label>
@@ -9766,7 +9742,7 @@ a call to <code>BothCoords._permute</code> will modify <code>lattice_edges</code
                     <div class="decorator">@serializable_dataclass(frozen=True, kw_only=True)</div>
 
     <span class="def">class</span>
-    <span class="name">EdgeSubsets.AllLatticeEdges</span><wbr>(<span class="base">maze_dataset.tokenization.modular.elements.EdgeSubsets._EdgeSubset</span>):
+    <span class="name">EdgeSubsets.AllLatticeEdges</span><wbr>(<span class="base"><a href="tokenization/modular/elements.html#EdgeSubsets._EdgeSubset">maze_dataset.tokenization.modular.elements.EdgeSubsets._EdgeSubset</a></span>):
 
                 <div class="source-button-container">
             <label class="pdoc-button view-source-button" for="EdgeSubsets.AllLatticeEdges-view-source"><span>View Source</span></label>
@@ -10045,9 +10021,9 @@ a call to <code>BothCoords._permute</code> will modify <code>lattice_edges</code
                             <div class="inherited">
                                 <h5>Inherited Members</h5>
                                 <dl>
-                                    <div><dt>maze_dataset.tokenization.modular.elements.EdgeSubsets._EdgeSubset</dt>
-                                <dd id="EdgeSubsets.AllLatticeEdges.attribute_key" class="function">attribute_key</dd>
-                <dd id="EdgeSubsets.AllLatticeEdges.is_valid" class="function">is_valid</dd>
+                                    <div><dt><a href="tokenization/modular/elements.html#EdgeSubsets._EdgeSubset">maze_dataset.tokenization.modular.elements.EdgeSubsets._EdgeSubset</a></dt>
+                                <dd id="EdgeSubsets.AllLatticeEdges.attribute_key" class="function"><a href="tokenization/modular/elements.html#EdgeSubsets._EdgeSubset.attribute_key">attribute_key</a></dd>
+                <dd id="EdgeSubsets.AllLatticeEdges.is_valid" class="function"><a href="tokenization/modular/elements.html#EdgeSubsets._EdgeSubset.is_valid">is_valid</a></dd>
 
             </div>
             <div><dt><a href="#_TokenizerElement">_TokenizerElement</a></dt>
@@ -10073,7 +10049,7 @@ a call to <code>BothCoords._permute</code> will modify <code>lattice_edges</code
                     <div class="decorator">@serializable_dataclass(frozen=True, kw_only=True)</div>
 
     <span class="def">class</span>
-    <span class="name">EdgeSubsets.ConnectionEdges</span><wbr>(<span class="base">maze_dataset.tokenization.modular.elements.EdgeSubsets._EdgeSubset</span>):
+    <span class="name">EdgeSubsets.ConnectionEdges</span><wbr>(<span class="base"><a href="tokenization/modular/elements.html#EdgeSubsets._EdgeSubset">maze_dataset.tokenization.modular.elements.EdgeSubsets._EdgeSubset</a></span>):
 
                 <div class="source-button-container">
             <label class="pdoc-button view-source-button" for="EdgeSubsets.ConnectionEdges-view-source"><span>View Source</span></label>
@@ -10386,9 +10362,9 @@ If true, <code>VOCAB.ADJLIST_WALL</code> is used in place of <code>VOCAB.CONNECT
                             <div class="inherited">
                                 <h5>Inherited Members</h5>
                                 <dl>
-                                    <div><dt>maze_dataset.tokenization.modular.elements.EdgeSubsets._EdgeSubset</dt>
-                                <dd id="EdgeSubsets.ConnectionEdges.attribute_key" class="function">attribute_key</dd>
-                <dd id="EdgeSubsets.ConnectionEdges.is_valid" class="function">is_valid</dd>
+                                    <div><dt><a href="tokenization/modular/elements.html#EdgeSubsets._EdgeSubset">maze_dataset.tokenization.modular.elements.EdgeSubsets._EdgeSubset</a></dt>
+                                <dd id="EdgeSubsets.ConnectionEdges.attribute_key" class="function"><a href="tokenization/modular/elements.html#EdgeSubsets._EdgeSubset.attribute_key">attribute_key</a></dd>
+                <dd id="EdgeSubsets.ConnectionEdges.is_valid" class="function"><a href="tokenization/modular/elements.html#EdgeSubsets._EdgeSubset.is_valid">is_valid</a></dd>
 
             </div>
             <div><dt><a href="#_TokenizerElement">_TokenizerElement</a></dt>
@@ -10413,7 +10389,7 @@ If true, <code>VOCAB.ADJLIST_WALL</code> is used in place of <code>VOCAB.CONNECT
 <div class="attr class">
             
     <span class="def">class</span>
-    <span class="name">TargetTokenizers</span><wbr>(<span class="base">maze_dataset.tokenization.modular.element_base.__TokenizerElementNamespace</span>):
+    <span class="name">TargetTokenizers</span><wbr>(<span class="base"><a href="tokenization/modular/element_base.html#__TokenizerElementNamespace">maze_dataset.tokenization.modular.element_base.__TokenizerElementNamespace</a></span>):
 
                 <div class="source-button-container">
             <label class="pdoc-button view-source-button" for="TargetTokenizers-view-source"><span>View Source</span></label>
@@ -10509,7 +10485,7 @@ If true, <code>VOCAB.ADJLIST_WALL</code> is used in place of <code>VOCAB.CONNECT
                     <div class="decorator">@serializable_dataclass(frozen=True, kw_only=True)</div>
 
     <span class="def">class</span>
-    <span class="name">TargetTokenizers.Unlabeled</span><wbr>(<span class="base">maze_dataset.tokenization.modular.elements.TargetTokenizers._TargetTokenizer</span>):
+    <span class="name">TargetTokenizers.Unlabeled</span><wbr>(<span class="base"><a href="tokenization/modular/elements.html#TargetTokenizers._TargetTokenizer">maze_dataset.tokenization.modular.elements.TargetTokenizers._TargetTokenizer</a></span>):
 
                 <div class="source-button-container">
             <label class="pdoc-button view-source-button" for="TargetTokenizers.Unlabeled-view-source"><span>View Source</span></label>
@@ -10936,8 +10912,8 @@ This could be used to create more or less stringent filters on the valid <code><
                             <div class="inherited">
                                 <h5>Inherited Members</h5>
                                 <dl>
-                                    <div><dt>maze_dataset.tokenization.modular.elements.TargetTokenizers._TargetTokenizer</dt>
-                                <dd id="TargetTokenizers.Unlabeled.attribute_key" class="function">attribute_key</dd>
+                                    <div><dt><a href="tokenization/modular/elements.html#TargetTokenizers._TargetTokenizer">maze_dataset.tokenization.modular.elements.TargetTokenizers._TargetTokenizer</a></dt>
+                                <dd id="TargetTokenizers.Unlabeled.attribute_key" class="function"><a href="tokenization/modular/elements.html#TargetTokenizers._TargetTokenizer.attribute_key">attribute_key</a></dd>
 
             </div>
             <div><dt><a href="#_TokenizerElement">_TokenizerElement</a></dt>
@@ -10961,7 +10937,7 @@ This could be used to create more or less stringent filters on the valid <code><
 <div class="attr class">
             
     <span class="def">class</span>
-    <span class="name">StepSizes</span><wbr>(<span class="base">maze_dataset.tokenization.modular.element_base.__TokenizerElementNamespace</span>):
+    <span class="name">StepSizes</span><wbr>(<span class="base"><a href="tokenization/modular/element_base.html#__TokenizerElementNamespace">maze_dataset.tokenization.modular.element_base.__TokenizerElementNamespace</a></span>):
 
                 <div class="source-button-container">
             <label class="pdoc-button view-source-button" for="StepSizes-view-source"><span>View Source</span></label>
@@ -11096,7 +11072,7 @@ This could be used to create more or less stringent filters on the valid <code><
                     <div class="decorator">@serializable_dataclass(frozen=True, kw_only=True)</div>
 
     <span class="def">class</span>
-    <span class="name">StepSizes.Singles</span><wbr>(<span class="base">maze_dataset.tokenization.modular.elements.StepSizes._StepSize</span>):
+    <span class="name">StepSizes.Singles</span><wbr>(<span class="base"><a href="tokenization/modular/elements.html#StepSizes._StepSize">maze_dataset.tokenization.modular.elements.StepSizes._StepSize</a></span>):
 
                 <div class="source-button-container">
             <label class="pdoc-button view-source-button" for="StepSizes.Singles-view-source"><span>View Source</span></label>
@@ -11376,10 +11352,10 @@ This could be used to create more or less stringent filters on the valid <code><
                             <div class="inherited">
                                 <h5>Inherited Members</h5>
                                 <dl>
-                                    <div><dt>maze_dataset.tokenization.modular.elements.StepSizes._StepSize</dt>
-                                <dd id="StepSizes.Singles.attribute_key" class="function">attribute_key</dd>
-                <dd id="StepSizes.Singles.step_start_end_indices" class="function">step_start_end_indices</dd>
-                <dd id="StepSizes.Singles.is_valid" class="function">is_valid</dd>
+                                    <div><dt><a href="tokenization/modular/elements.html#StepSizes._StepSize">maze_dataset.tokenization.modular.elements.StepSizes._StepSize</a></dt>
+                                <dd id="StepSizes.Singles.attribute_key" class="function"><a href="tokenization/modular/elements.html#StepSizes._StepSize.attribute_key">attribute_key</a></dd>
+                <dd id="StepSizes.Singles.step_start_end_indices" class="function"><a href="tokenization/modular/elements.html#StepSizes._StepSize.step_start_end_indices">step_start_end_indices</a></dd>
+                <dd id="StepSizes.Singles.is_valid" class="function"><a href="tokenization/modular/elements.html#StepSizes._StepSize.is_valid">is_valid</a></dd>
 
             </div>
             <div><dt><a href="#_TokenizerElement">_TokenizerElement</a></dt>
@@ -11406,7 +11382,7 @@ This could be used to create more or less stringent filters on the valid <code><
         <div class="decorator">@mark_as_unsupported(_unsupported_is_invalid)</div>
 
     <span class="def">class</span>
-    <span class="name">StepSizes.Straightaways</span><wbr>(<span class="base">maze_dataset.tokenization.modular.elements.StepSizes._StepSize</span>):
+    <span class="name">StepSizes.Straightaways</span><wbr>(<span class="base"><a href="tokenization/modular/elements.html#StepSizes._StepSize">maze_dataset.tokenization.modular.elements.StepSizes._StepSize</a></span>):
 
                 <div class="source-button-container">
             <label class="pdoc-button view-source-button" for="StepSizes.Straightaways-view-source"><span>View Source</span></label>
@@ -11732,9 +11708,9 @@ specified by the coords at the turns.</p>
                             <div class="inherited">
                                 <h5>Inherited Members</h5>
                                 <dl>
-                                    <div><dt>maze_dataset.tokenization.modular.elements.StepSizes._StepSize</dt>
-                                <dd id="StepSizes.Straightaways.attribute_key" class="function">attribute_key</dd>
-                <dd id="StepSizes.Straightaways.step_start_end_indices" class="function">step_start_end_indices</dd>
+                                    <div><dt><a href="tokenization/modular/elements.html#StepSizes._StepSize">maze_dataset.tokenization.modular.elements.StepSizes._StepSize</a></dt>
+                                <dd id="StepSizes.Straightaways.attribute_key" class="function"><a href="tokenization/modular/elements.html#StepSizes._StepSize.attribute_key">attribute_key</a></dd>
+                <dd id="StepSizes.Straightaways.step_start_end_indices" class="function"><a href="tokenization/modular/elements.html#StepSizes._StepSize.step_start_end_indices">step_start_end_indices</a></dd>
 
             </div>
             <div><dt><a href="#_TokenizerElement">_TokenizerElement</a></dt>
@@ -11760,7 +11736,7 @@ specified by the coords at the turns.</p>
                     <div class="decorator">@serializable_dataclass(frozen=True, kw_only=True)</div>
 
     <span class="def">class</span>
-    <span class="name">StepSizes.Forks</span><wbr>(<span class="base">maze_dataset.tokenization.modular.elements.StepSizes._StepSize</span>):
+    <span class="name">StepSizes.Forks</span><wbr>(<span class="base"><a href="tokenization/modular/elements.html#StepSizes._StepSize">maze_dataset.tokenization.modular.elements.StepSizes._StepSize</a></span>):
 
                 <div class="source-button-container">
             <label class="pdoc-button view-source-button" for="StepSizes.Forks-view-source"><span>View Source</span></label>
@@ -12042,10 +12018,10 @@ The starting and ending coords are always included.</p>
                             <div class="inherited">
                                 <h5>Inherited Members</h5>
                                 <dl>
-                                    <div><dt>maze_dataset.tokenization.modular.elements.StepSizes._StepSize</dt>
-                                <dd id="StepSizes.Forks.attribute_key" class="function">attribute_key</dd>
-                <dd id="StepSizes.Forks.step_start_end_indices" class="function">step_start_end_indices</dd>
-                <dd id="StepSizes.Forks.is_valid" class="function">is_valid</dd>
+                                    <div><dt><a href="tokenization/modular/elements.html#StepSizes._StepSize">maze_dataset.tokenization.modular.elements.StepSizes._StepSize</a></dt>
+                                <dd id="StepSizes.Forks.attribute_key" class="function"><a href="tokenization/modular/elements.html#StepSizes._StepSize.attribute_key">attribute_key</a></dd>
+                <dd id="StepSizes.Forks.step_start_end_indices" class="function"><a href="tokenization/modular/elements.html#StepSizes._StepSize.step_start_end_indices">step_start_end_indices</a></dd>
+                <dd id="StepSizes.Forks.is_valid" class="function"><a href="tokenization/modular/elements.html#StepSizes._StepSize.is_valid">is_valid</a></dd>
 
             </div>
             <div><dt><a href="#_TokenizerElement">_TokenizerElement</a></dt>
@@ -12072,7 +12048,7 @@ The starting and ending coords are always included.</p>
         <div class="decorator">@mark_as_unsupported(_unsupported_is_invalid)</div>
 
     <span class="def">class</span>
-    <span class="name">StepSizes.ForksAndStraightaways</span><wbr>(<span class="base">maze_dataset.tokenization.modular.elements.StepSizes._StepSize</span>):
+    <span class="name">StepSizes.ForksAndStraightaways</span><wbr>(<span class="base"><a href="tokenization/modular/elements.html#StepSizes._StepSize">maze_dataset.tokenization.modular.elements.StepSizes._StepSize</a></span>):
 
                 <div class="source-button-container">
             <label class="pdoc-button view-source-button" for="StepSizes.ForksAndStraightaways-view-source"><span>View Source</span></label>
@@ -12398,9 +12374,9 @@ The starting and ending coords are always included.</p>
                             <div class="inherited">
                                 <h5>Inherited Members</h5>
                                 <dl>
-                                    <div><dt>maze_dataset.tokenization.modular.elements.StepSizes._StepSize</dt>
-                                <dd id="StepSizes.ForksAndStraightaways.attribute_key" class="function">attribute_key</dd>
-                <dd id="StepSizes.ForksAndStraightaways.step_start_end_indices" class="function">step_start_end_indices</dd>
+                                    <div><dt><a href="tokenization/modular/elements.html#StepSizes._StepSize">maze_dataset.tokenization.modular.elements.StepSizes._StepSize</a></dt>
+                                <dd id="StepSizes.ForksAndStraightaways.attribute_key" class="function"><a href="tokenization/modular/elements.html#StepSizes._StepSize.attribute_key">attribute_key</a></dd>
+                <dd id="StepSizes.ForksAndStraightaways.step_start_end_indices" class="function"><a href="tokenization/modular/elements.html#StepSizes._StepSize.step_start_end_indices">step_start_end_indices</a></dd>
 
             </div>
             <div><dt><a href="#_TokenizerElement">_TokenizerElement</a></dt>
@@ -12425,7 +12401,7 @@ The starting and ending coords are always included.</p>
 <div class="attr class">
             
     <span class="def">class</span>
-    <span class="name">StepTokenizers</span><wbr>(<span class="base">maze_dataset.tokenization.modular.element_base.__TokenizerElementNamespace</span>):
+    <span class="name">StepTokenizers</span><wbr>(<span class="base"><a href="tokenization/modular/element_base.html#__TokenizerElementNamespace">maze_dataset.tokenization.modular.element_base.__TokenizerElementNamespace</a></span>):
 
                 <div class="source-button-container">
             <label class="pdoc-button view-source-button" for="StepTokenizers-view-source"><span>View Source</span></label>
@@ -12613,7 +12589,7 @@ The starting and ending coords are always included.</p>
                     <div class="decorator">@serializable_dataclass(frozen=True, kw_only=True)</div>
 
     <span class="def">class</span>
-    <span class="name">StepTokenizers.Coord</span><wbr>(<span class="base">maze_dataset.tokenization.modular.elements.StepTokenizers._StepTokenizer</span>):
+    <span class="name">StepTokenizers.Coord</span><wbr>(<span class="base"><a href="tokenization/modular/elements.html#StepTokenizers._StepTokenizer">maze_dataset.tokenization.modular.elements.StepTokenizers._StepTokenizer</a></span>):
 
                 <div class="source-button-container">
             <label class="pdoc-button view-source-button" for="StepTokenizers.Coord-view-source"><span>View Source</span></label>
@@ -12936,9 +12912,9 @@ The starting and ending coords are always included.</p>
                             <div class="inherited">
                                 <h5>Inherited Members</h5>
                                 <dl>
-                                    <div><dt>maze_dataset.tokenization.modular.elements.StepTokenizers._StepTokenizer</dt>
-                                <dd id="StepTokenizers.Coord.attribute_key" class="function">attribute_key</dd>
-                <dd id="StepTokenizers.Coord.is_valid" class="function">is_valid</dd>
+                                    <div><dt><a href="tokenization/modular/elements.html#StepTokenizers._StepTokenizer">maze_dataset.tokenization.modular.elements.StepTokenizers._StepTokenizer</a></dt>
+                                <dd id="StepTokenizers.Coord.attribute_key" class="function"><a href="tokenization/modular/elements.html#StepTokenizers._StepTokenizer.attribute_key">attribute_key</a></dd>
+                <dd id="StepTokenizers.Coord.is_valid" class="function"><a href="tokenization/modular/elements.html#StepTokenizers._StepTokenizer.is_valid">is_valid</a></dd>
 
             </div>
             <div><dt><a href="#_TokenizerElement">_TokenizerElement</a></dt>
@@ -12963,7 +12939,7 @@ The starting and ending coords are always included.</p>
                     <div class="decorator">@serializable_dataclass(frozen=True, kw_only=True)</div>
 
     <span class="def">class</span>
-    <span class="name">StepTokenizers.Cardinal</span><wbr>(<span class="base">maze_dataset.tokenization.modular.elements.StepTokenizers._StepTokenizer</span>):
+    <span class="name">StepTokenizers.Cardinal</span><wbr>(<span class="base"><a href="tokenization/modular/elements.html#StepTokenizers._StepTokenizer">maze_dataset.tokenization.modular.elements.StepTokenizers._StepTokenizer</a></span>):
 
                 <div class="source-button-container">
             <label class="pdoc-button view-source-button" for="StepTokenizers.Cardinal-view-source"><span>View Source</span></label>
@@ -13295,9 +13271,9 @@ The starting and ending coords are always included.</p>
                             <div class="inherited">
                                 <h5>Inherited Members</h5>
                                 <dl>
-                                    <div><dt>maze_dataset.tokenization.modular.elements.StepTokenizers._StepTokenizer</dt>
-                                <dd id="StepTokenizers.Cardinal.attribute_key" class="function">attribute_key</dd>
-                <dd id="StepTokenizers.Cardinal.is_valid" class="function">is_valid</dd>
+                                    <div><dt><a href="tokenization/modular/elements.html#StepTokenizers._StepTokenizer">maze_dataset.tokenization.modular.elements.StepTokenizers._StepTokenizer</a></dt>
+                                <dd id="StepTokenizers.Cardinal.attribute_key" class="function"><a href="tokenization/modular/elements.html#StepTokenizers._StepTokenizer.attribute_key">attribute_key</a></dd>
+                <dd id="StepTokenizers.Cardinal.is_valid" class="function"><a href="tokenization/modular/elements.html#StepTokenizers._StepTokenizer.is_valid">is_valid</a></dd>
 
             </div>
             <div><dt><a href="#_TokenizerElement">_TokenizerElement</a></dt>
@@ -13322,7 +13298,7 @@ The starting and ending coords are always included.</p>
                     <div class="decorator">@serializable_dataclass(frozen=True, kw_only=True)</div>
 
     <span class="def">class</span>
-    <span class="name">StepTokenizers.Relative</span><wbr>(<span class="base">maze_dataset.tokenization.modular.elements.StepTokenizers._StepTokenizer</span>):
+    <span class="name">StepTokenizers.Relative</span><wbr>(<span class="base"><a href="tokenization/modular/elements.html#StepTokenizers._StepTokenizer">maze_dataset.tokenization.modular.elements.StepTokenizers._StepTokenizer</a></span>):
 
                 <div class="source-button-container">
             <label class="pdoc-button view-source-button" for="StepTokenizers.Relative-view-source"><span>View Source</span></label>
@@ -13688,9 +13664,9 @@ Similarly to <code><a href="#StepTokenizers.Cardinal">Cardinal</a></code>, the d
                             <div class="inherited">
                                 <h5>Inherited Members</h5>
                                 <dl>
-                                    <div><dt>maze_dataset.tokenization.modular.elements.StepTokenizers._StepTokenizer</dt>
-                                <dd id="StepTokenizers.Relative.attribute_key" class="function">attribute_key</dd>
-                <dd id="StepTokenizers.Relative.is_valid" class="function">is_valid</dd>
+                                    <div><dt><a href="tokenization/modular/elements.html#StepTokenizers._StepTokenizer">maze_dataset.tokenization.modular.elements.StepTokenizers._StepTokenizer</a></dt>
+                                <dd id="StepTokenizers.Relative.attribute_key" class="function"><a href="tokenization/modular/elements.html#StepTokenizers._StepTokenizer.attribute_key">attribute_key</a></dd>
+                <dd id="StepTokenizers.Relative.is_valid" class="function"><a href="tokenization/modular/elements.html#StepTokenizers._StepTokenizer.is_valid">is_valid</a></dd>
 
             </div>
             <div><dt><a href="#_TokenizerElement">_TokenizerElement</a></dt>
@@ -13715,7 +13691,7 @@ Similarly to <code><a href="#StepTokenizers.Cardinal">Cardinal</a></code>, the d
                     <div class="decorator">@serializable_dataclass(frozen=True, kw_only=True)</div>
 
     <span class="def">class</span>
-    <span class="name">StepTokenizers.Distance</span><wbr>(<span class="base">maze_dataset.tokenization.modular.elements.StepTokenizers._StepTokenizer</span>):
+    <span class="name">StepTokenizers.Distance</span><wbr>(<span class="base"><a href="tokenization/modular/elements.html#StepTokenizers._StepTokenizer">maze_dataset.tokenization.modular.elements.StepTokenizers._StepTokenizer</a></span>):
 
                 <div class="source-button-container">
             <label class="pdoc-button view-source-button" for="StepTokenizers.Distance-view-source"><span>View Source</span></label>
@@ -14049,9 +14025,9 @@ This constraint is enforced in <code>_PathTokenizer.is_valid</code>.</p>
                             <div class="inherited">
                                 <h5>Inherited Members</h5>
                                 <dl>
-                                    <div><dt>maze_dataset.tokenization.modular.elements.StepTokenizers._StepTokenizer</dt>
-                                <dd id="StepTokenizers.Distance.attribute_key" class="function">attribute_key</dd>
-                <dd id="StepTokenizers.Distance.is_valid" class="function">is_valid</dd>
+                                    <div><dt><a href="tokenization/modular/elements.html#StepTokenizers._StepTokenizer">maze_dataset.tokenization.modular.elements.StepTokenizers._StepTokenizer</a></dt>
+                                <dd id="StepTokenizers.Distance.attribute_key" class="function"><a href="tokenization/modular/elements.html#StepTokenizers._StepTokenizer.attribute_key">attribute_key</a></dd>
+                <dd id="StepTokenizers.Distance.is_valid" class="function"><a href="tokenization/modular/elements.html#StepTokenizers._StepTokenizer.is_valid">is_valid</a></dd>
 
             </div>
             <div><dt><a href="#_TokenizerElement">_TokenizerElement</a></dt>
@@ -14075,7 +14051,7 @@ This constraint is enforced in <code>_PathTokenizer.is_valid</code>.</p>
 <div class="attr class">
             
     <span class="def">class</span>
-    <span class="name">PathTokenizers</span><wbr>(<span class="base">maze_dataset.tokenization.modular.element_base.__TokenizerElementNamespace</span>):
+    <span class="name">PathTokenizers</span><wbr>(<span class="base"><a href="tokenization/modular/element_base.html#__TokenizerElementNamespace">maze_dataset.tokenization.modular.element_base.__TokenizerElementNamespace</a></span>):
 
                 <div class="source-button-container">
             <label class="pdoc-button view-source-button" for="PathTokenizers-view-source"><span>View Source</span></label>
@@ -14261,7 +14237,7 @@ This constraint is enforced in <code>_PathTokenizer.is_valid</code>.</p>
                     <div class="decorator">@serializable_dataclass(frozen=True, kw_only=True)</div>
 
     <span class="def">class</span>
-    <span class="name">PathTokenizers.StepSequence</span><wbr>(<span class="base">maze_dataset.tokenization.modular.elements.PathTokenizers._PathTokenizer</span>, <span class="base">abc.ABC</span>):
+    <span class="name">PathTokenizers.StepSequence</span><wbr>(<span class="base"><a href="tokenization/modular/elements.html#PathTokenizers._PathTokenizer">maze_dataset.tokenization.modular.elements.PathTokenizers._PathTokenizer</a></span>, <span class="base">abc.ABC</span>):
 
                 <div class="source-button-container">
             <label class="pdoc-button view-source-button" for="PathTokenizers.StepSequence-view-source"><span>View Source</span></label>
@@ -14849,8 +14825,8 @@ This could be used to create more or less stringent filters on the valid <code><
                             <div class="inherited">
                                 <h5>Inherited Members</h5>
                                 <dl>
-                                    <div><dt>maze_dataset.tokenization.modular.elements.PathTokenizers._PathTokenizer</dt>
-                                <dd id="PathTokenizers.StepSequence.attribute_key" class="function">attribute_key</dd>
+                                    <div><dt><a href="tokenization/modular/elements.html#PathTokenizers._PathTokenizer">maze_dataset.tokenization.modular.elements.PathTokenizers._PathTokenizer</a></dt>
+                                <dd id="PathTokenizers.StepSequence.attribute_key" class="function"><a href="tokenization/modular/elements.html#PathTokenizers._PathTokenizer.attribute_key">attribute_key</a></dd>
 
             </div>
             <div><dt><a href="#_TokenizerElement">_TokenizerElement</a></dt>

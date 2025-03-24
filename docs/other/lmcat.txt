@@ -1,8 +1,8 @@
 # Stats
 - 58 files
-- 14657 (15K) lines
-- 459762 (460K) chars
-- 50891 (51K) `whitespace-split` tokens
+- 14744 (15K) lines
+- 462743 (463K) chars
+- 51217 (51K) `whitespace-split` tokens
 
 # File Tree
 
@@ -11,7 +11,7 @@ maze-dataset
 ├── .github                                
 │   └── workflows                          
 │    ├── all-tok-checks.yml                [   52L     1,670C   148T]
-│    ├── checks.yml                        [   98L     2,409C   243T]
+│    ├── checks.yml                        [   94L     2,164C   224T]
 │    └── make-docs.yml                     [   47L     1,262C   141T]
 ├── maze_dataset                           
 │   ├── benchmark                          
@@ -22,15 +22,15 @@ maze-dataset
 │   ├── dataset                            
 │   │   ├── __init__.py                    [   25L       615C    45T]
 │   │   ├── collected_dataset.py           [  241L     8,113C   848T]
-│   │   ├── configs.py                     [   68L     2,208C   210T]
+│   │   ├── configs.py                     [   75L     2,370C   218T]
 │   │   ├── dataset.py                     [  553L    18,539C 2,133T]
 │   │   ├── filters.py                     [  295L     9,571C 1,100T]
-│   │   ├── maze_dataset.py                [  618L    19,757C 2,020T]
-│   │   ├── maze_dataset_config.py         [  392L    13,003C 1,384T]
+│   │   ├── maze_dataset.py                [  632L    20,310C 2,073T]
+│   │   ├── maze_dataset_config.py         [  443L    15,075C 1,614T]
 │   │   ├── rasterized.py                  [  330L     9,476C 1,001T]
 │   │   └── success_predict_math.py        [  106L     2,809C   460T]
 │   ├── generation                         
-│   │   ├── __init__.py                    [   23L       526C    53T]
+│   │   ├── __init__.py                    [   24L       535C    54T]
 │   │   ├── default_generators.py          [   21L       754C    68T]
 │   │   ├── generators.py                  [  440L    15,815C 1,918T]
 │   │   └── seed.py                        [    3L        45C     7T]
@@ -54,7 +54,7 @@ maze-dataset
 │   │   │   ├── hashing.py                 [   95L     3,359C   390T]
 │   │   │   ├── maze_tokenizer_modular.py  [  349L    11,291C 1,189T]
 │   │   │   └── save_hashes.py             [  124L     3,399C   294T]
-│   │   ├── __init__.py                    [   57L     1,291C   120T]
+│   │   ├── __init__.py                    [   58L     1,305C   121T]
 │   │   ├── common.py                      [    7L       106C    11T]
 │   │   ├── maze_tokenizer.py              [   15L       307C    23T]
 │   │   └── maze_tokenizer_legacy.py       [  500L    15,213C 1,641T]
@@ -75,8 +75,8 @@ maze-dataset
 │   ├── iterated_backfilling.ipynb         [  207L    30,509C   547T]
 │   └── profile_dataset_save_read.ipynb    [1,133L   269,709C 3,406T]
 ├── README.md                              [  114L     5,184C   521T]
-├── makefile                               [1,754L    54,312C 6,356T]
-├── pyproject.toml                         [  345L    12,437C 1,418T]
+├── makefile                               [1,773L    55,139C 6,422T]
+├── pyproject.toml                         [  346L    12,373C 1,419T]
 ```
 
 # File Contents
@@ -215,16 +215,12 @@ jobs:
 
       - name: Unit tests
         run: make test-unit
-      
-      - name: Notebook tests (muutils)
-        run: make test-notebooks-muutils
-        # see https://github.com/understanding-search/maze-dataset/issues/48
-        if: ${{ matrix.python != '3.13' }}
-      
+
       - name: Notebook tests (nbmake)
         run: make test-notebooks-nbmake  
-        # also see https://github.com/understanding-search/maze-dataset/issues/48
-        if: ${{ matrix.python != '3.13' }}
+      
+      - name: Notebook tests (muutils)
+        run: make test-notebooks-muutils      
         
       - name: check typing (3.11+)
         run: make typing
@@ -1678,6 +1674,13 @@ _MAZE_DATASET_CONFIGS_SRC: dict[str, MazeDatasetConfig] = {
 			maze_ctor=LatticeMazeGenerators.gen_dfs,
 		),
 		MazeDatasetConfig(
+			name="test-perc",
+			grid_n=3,
+			n_mazes=5,
+			maze_ctor=LatticeMazeGenerators.gen_dfs_percolation,
+			maze_ctor_kwargs={"p": 0.7},
+		),
+		MazeDatasetConfig(
 			name="demo_small",
 			grid_n=3,
 			n_mazes=100,
@@ -2598,6 +2601,7 @@ import copy
 import json
 import multiprocessing
 import typing
+import warnings
 from pathlib import Path
 from typing import Literal, Optional, cast, overload
 
@@ -2829,6 +2833,12 @@ class MazeDataset(GPTDataset[MazeDatasetConfig]):
 		# TODO: compare hashes of data instead of the data itself?
 		return self.cfg == other.cfg and self.mazes == other.mazes
 
+	def assert_equal(self, other: "MazeDataset") -> None:
+		"""assert that two datasets are equal"""
+		assert isinstance(other, MazeDataset)
+		assert self.cfg == other.cfg, f"{self.cfg.diff(other.cfg) = }"
+		assert self.mazes == other.mazes, f"{self.mazes = }, {other.mazes = }"
+
 	@classmethod
 	def generate(
 		cls,
@@ -3021,6 +3031,7 @@ class MazeDataset(GPTDataset[MazeDatasetConfig]):
 		return {
 			_FORMAT_KEY: "MazeDataset",
 			"cfg": json_serialize(self.cfg),
+			"fname": self.cfg.to_fname(),
 			"mazes": json_serialize(self.mazes),
 			"generation_metadata_collected": json_serialize(
 				self.generation_metadata_collected,
@@ -3059,6 +3070,7 @@ class MazeDataset(GPTDataset[MazeDatasetConfig]):
 		return {
 			_FORMAT_KEY: "MazeDataset:minimal",
 			"cfg": json_serialize(filtered_meta.cfg),
+			"fname": filtered_meta.cfg.to_fname(),
 			"generation_metadata_collected": json_serialize(
 				filtered_meta.generation_metadata_collected,
 			),
@@ -3108,6 +3120,7 @@ class MazeDataset(GPTDataset[MazeDatasetConfig]):
 		return {
 			_FORMAT_KEY: "MazeDataset:minimal_soln_cat",
 			"cfg": json_serialize(filtered_meta.cfg),
+			"fname": filtered_meta.cfg.to_fname(),
 			"generation_metadata_collected": json_serialize(
 				filtered_meta.generation_metadata_collected,
 			),
@@ -3119,7 +3132,11 @@ class MazeDataset(GPTDataset[MazeDatasetConfig]):
 
 	def update_self_config(self) -> None:
 		"""update the config to match the current state of the dataset (number of mazes, such as after filtering)"""
-		self.cfg.n_mazes = len(self.mazes)
+		if self.cfg.n_mazes != len(self.mazes):
+			warnings.warn(
+				f"updating config n_mazes from {self.cfg.n_mazes} to {len(self.mazes)}",
+			)
+			self.cfg.n_mazes = len(self.mazes)
 
 	def custom_maze_filter(
 		self,
@@ -3212,6 +3229,8 @@ for key, key_type in metadata_types.items():
 ``````{ path="maze_dataset/dataset/maze_dataset_config.py"  }
 "implements `MazeDatasetConfig` which is used to generate or load a dataset"
 
+import hashlib
+import importlib.metadata
 import json
 import typing
 import warnings
@@ -3227,7 +3246,7 @@ from muutils.json_serialize.util import (
 	safe_getsource,
 	string_as_lines,
 )
-from muutils.misc import sanitize_fname, shorten_numerical_to_str, stable_hash
+from muutils.misc import sanitize_fname, shorten_numerical_to_str
 
 from maze_dataset.constants import Coord, CoordTup
 from maze_dataset.dataset.dataset import (
@@ -3332,7 +3351,19 @@ class _MazeDatasetConfig_base(GPTDatasetConfig):  # noqa: N801
 		serialization_fn=lambda gen_func: {
 			"__name__": gen_func.__name__,
 			"__module__": gen_func.__module__,
-			"__doc__": string_as_lines(gen_func.__doc__),
+			# NOTE: this was causing hashing issues on 3.13 vs older versions because somehow,
+			# the `__doc__` variable is different across versions??????? WHY???????? IT TREATS WHITESPACE DIFFERENTLY
+			# so we just uh. strip it all now.
+			# see:
+			# https://github.com/understanding-search/maze-dataset/actions/runs/14028046497/job/39270080746?pr=53
+			# https://github.com/understanding-search/maze-dataset/actions/runs/14028046497/job/39270080742?pr=53
+			# https://www.diffchecker.com/tqIMSevy/
+			# update: we also need to filter for empty lines. B)
+			"__doc__": [
+				line.strip()
+				for line in string_as_lines(gen_func.__doc__)
+				if line.strip()
+			],
 			"source_code": safe_getsource(gen_func),
 		},
 		loading_fn=lambda data: _load_maze_ctor(data["maze_ctor"]),
@@ -3357,6 +3388,16 @@ class _MazeDatasetConfig_base(GPTDatasetConfig):  # noqa: N801
 		assert_type=False,
 	)
 
+	# NOTE: this part is very hacky. the way muutils works is that it iterates over the *keys in the serialized data*,
+	# and so we need to save an `None` here or this wont load the `fname` field on load
+	# this is a total mess, and very confusing, and entirely my fault
+	_fname_loaded: str | None = serializable_field(
+		default=None,
+		compare=False,
+		serialization_fn=lambda _: None,
+		loading_fn=lambda data: data.get("fname", None),
+	)
+
 	@property
 	def grid_shape(self) -> CoordTup:
 		"""return the shape of the grid as a tuple"""
@@ -3372,21 +3413,42 @@ class _MazeDatasetConfig_base(GPTDatasetConfig):  # noqa: N801
 		"""return the maximum of the grid shape"""
 		return max(self.grid_shape)
 
-	def _serialize_base(self) -> dict:
-		"""serialize the base config"""
-		return self.serialize()
+	def _serialize_base(
+		self, applied_filters__skip__collect_generation_meta: bool = True
+	) -> dict:
+		"""serialize the base config for user in `stable_hash_cfg()` and `to_fname()`
+
+		- note that the _fname_loaded will always be `None` to avoid infinite recursion
+		- note that we **do not** by default include information about metadata collection here,
+		since otherwise loading a dataset that we minified by collecting the metadata would be impossible
+		but for comparing things, we do store it when serializing properly by setting
+		`applied_filters__skip__collect_generation_meta=False`
+		"""
+		serialized: dict = _MazeDatasetConfig_base.serialize(self)
+		if applied_filters__skip__collect_generation_meta:
+			serialized["applied_filters"] = [
+				x
+				for x in serialized["applied_filters"]
+				if x.get("name", None) != "collect_generation_meta"
+			]
+		return serialized
+
+	def _stable_str_dump(self) -> str:
+		return json.dumps(
+			self._serialize_base(),
+			sort_keys=True,
+			indent=None,
+		)
 
 	def stable_hash_cfg(self) -> int:
 		"""return a stable hash of the config"""
-		return stable_hash(
-			json.dumps(
-				self._serialize_base(),
-				sort_keys=True,
-				indent=None,
-			),
+		return int.from_bytes(
+			hashlib.md5(  # noqa: S324
+				bytes(self._stable_str_dump(), "ascii")
+			).digest(),
+			"big",
 		)
 
-	# TODO: include fname in serialized form, but exclude it when hashing so we dont infinitely loop?
 	def to_fname(self) -> str:
 		"""return a unique identifier (valid as a filename) for this config"""
 		n_mazes_str: str = shorten_numerical_to_str(self.n_mazes)
@@ -3398,7 +3460,7 @@ class _MazeDatasetConfig_base(GPTDatasetConfig):  # noqa: N801
 
 
 # NOTE: type: ignore[misc] is because it tells us non-default attributes aren't allowed after ones with defaults, but everything is kw_only
-@serializable_dataclass(kw_only=True)
+@serializable_dataclass(kw_only=True, methods_no_override=["serialize"])
 class MazeDatasetConfig(_MazeDatasetConfig_base):  # type: ignore[misc]
 	"""config object which is passed to `MazeDataset.from_config` to generate or load a dataset"""
 
@@ -3407,16 +3469,22 @@ class MazeDatasetConfig(_MazeDatasetConfig_base):  # type: ignore[misc]
 		"""return the version of the config. added in maze_dataset v1.3.0, previous versions had no dataset config"""
 		return "1.0"
 
-	def _serialize_base(self) -> dict:
-		"""serialize the base config"""
-		return super().serialize()
+	@property
+	def versions(self) -> dict:
+		"""return the versions of the config and the maze_dataset"""
+		return dict(
+			config=self.config_version,
+			maze_dataset=importlib.metadata.version("maze_dataset"),
+		)
 
 	def serialize(self) -> dict:
 		"serialize the MazeDatasetConfig with all fields and fname"
 		return {
-			**self._serialize_base(),
+			**self._serialize_base(
+				applied_filters__skip__collect_generation_meta=False
+			),
 			"fname": self.to_fname(),
-			"versions": {"config": self.config_version, "maze_dataset": "1.3.0"},
+			"versions": self.versions,
 		}
 
 	def summary(self) -> dict:
@@ -4067,6 +4135,7 @@ __all__ = [
 	# submodules
 	"default_generators",
 	"generators",
+	"seed",
 	# imports
 	"LatticeMazeGenerators",
 	"GENERATORS_MAP",
@@ -9903,9 +9972,10 @@ from maze_dataset.tokenization.modular.maze_tokenizer_modular import (
 # we don't sort alphabetically on purpose, we sort by the type
 __all__ = [
 	# submodules
-	"all_tokenizers",
+	"modular",
+	"common",
+	"maze_tokenizer_legacy",
 	"maze_tokenizer",
-	"save_hashes",
 	# legacy tokenizer
 	"MazeTokenizer",
 	"TokenizationMode",
@@ -14260,6 +14330,21 @@ benchmark-test: benchmark-speed-test benchmark-success-test
 	@echo "run all benchmarks tests"
 	...
 
+.PHONY: example-clean
+example-clean:
+	@echo "clean up generated examples"
+	...
+
+.PHONY: example-gen
+example-gen:
+	@echo "generate examples"
+	...
+
+.PHONY: regenerate-when-cfg-hashes-changed
+regenerate-when-cfg-hashes-changed: example-clean example-gen benchmark-success
+	@echo "regenerate everything we need to when the process by which we hash configs might have changed -- like if you add a new attribute"
+	...
+
 # verifies that the current branch is $(PUBLISH_BRANCH) and that git is clean
 # used before publishing
 .PHONY: verify-git
@@ -14290,8 +14375,9 @@ clean:
 	@echo "clean up temporary files"
 	...
 
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 .PHONY: clean-all
-clean-all: clean docs-clean dep-clean
+clean-all: clean docs-clean dep-clean example-clean
 	@echo "clean up all temporary files, dep files, venv, and generated docs"
 	...
 
@@ -14427,8 +14513,8 @@ help: help-targets info
     # generate this exclude with `make typing-report`
     exclude = [
         # high priority
-		"tests/unit/maze_dataset/processing/test_collect_gen_metadata.py", # 3
-		"tests/unit/maze_dataset/generation/test_latticemaze.py", # 7
+		"tests/unit/processing/test_collect_gen_metadata.py", # 3
+		"tests/unit/generation/test_latticemaze.py", # 7
 		"maze_dataset/constants.py", # 9
 		"maze_dataset/utils.py", # 19
 		# tokenization
@@ -14440,10 +14526,10 @@ help: help-targets info
 		# low priority
 		"maze_dataset/plotting/plot_maze.py", # 11
 		"tests/all_tokenizers/test_all_tokenizers.py", # 12
-		"tests/unit/maze_dataset/generation/test_maze_dataset.py", # 16
-		"tests/unit/maze_dataset/tokenization/test_token_utils.py", # 16
-		"tests/unit/maze_dataset/tokenization/test_tokenizer.py", # 45
-		"tests/unit/maze_dataset/processing/test_get_forking_path_points.py", # 58
+		"tests/unit/generation/test_maze_dataset.py", # 16
+		"tests/unit/tokenization/test_token_utils.py", # 16
+		"tests/unit/tokenization/test_tokenizer.py", # 45
+		"tests/unit/processing/test_get_forking_path_points.py", # 58
 		# extra low priority (test temp, generated from notebooks)
 		"tests/_temp/*",
     ]
@@ -14597,6 +14683,7 @@ help: help-targets info
         ".nojekyll",
         "assets/",
         "benchmarks",
+		"examples",
         # "resources/", # Templates, CSS, etc. this, or whatever is specified as DOCS_RESOURCES_DIR in makefile will always be preserved
     ]
     markdown_headings_increment = 2
