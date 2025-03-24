@@ -122,7 +122,14 @@ class _MazeDatasetConfig_base(GPTDatasetConfig):  # noqa: N801
 		serialization_fn=lambda gen_func: {
 			"__name__": gen_func.__name__,
 			"__module__": gen_func.__module__,
-			"__doc__": string_as_lines(gen_func.__doc__),
+			# NOTE: this was causing hashing issues on 3.13 vs older versions because somehow,
+			# the `__doc__` variable is different across versions??????? WHY???????? IT TREATS WHITESPACE DIFFERENTLY
+			# so we just uh. strip it all now.
+			# see:
+			# https://github.com/understanding-search/maze-dataset/actions/runs/14028046497/job/39270080746?pr=53
+			# https://github.com/understanding-search/maze-dataset/actions/runs/14028046497/job/39270080742?pr=53
+			# https://www.diffchecker.com/tqIMSevy/
+			"__doc__": [line.strip() for line in string_as_lines(gen_func.__doc__)],
 			"source_code": safe_getsource(gen_func),
 		},
 		loading_fn=lambda data: _load_maze_ctor(data["maze_ctor"]),
