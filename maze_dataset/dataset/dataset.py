@@ -144,9 +144,10 @@ def _dataset_config_serialize(self, *args, **kwargs) -> JSONitem:  # noqa: ANN00
 
 GPTDatasetConfig.load = _dataset_config_load  # type: ignore[method-assign]
 GPTDatasetConfig.serialize = _dataset_config_serialize  # type: ignore[method-assign,assignment]
+T_DatasetConfig = TypeVar("T_DatasetConfig", bound=GPTDatasetConfig)
 
 
-class GPTDataset(typing.Generic["T_DatasetConfig"]):
+class GPTDataset(typing.Generic[T_DatasetConfig]):
 	"""wrapper for torch dataset with some extra functionality
 
 	(meaning the functionality should be inherited in downstream classes)
@@ -517,7 +518,6 @@ def register_filter_namespace_for_dataset(
 	return decorator
 
 
-T_DatasetConfig = TypeVar("T_DatasetConfig", bound=GPTDatasetConfig)
 T_Dataset = TypeVar("T_Dataset", bound=GPTDataset)
 P_FilterKwargs = typing.ParamSpec("P_FilterKwargs")
 DatasetFilterFunc = Callable[typing.Concatenate[T_Dataset, P_FilterKwargs], T_Dataset]
