@@ -31,7 +31,8 @@ from maze_dataset.maze import LatticeMaze
 class MazeDatasetCollectionConfig(GPTDatasetConfig):
 	"""maze dataset collection configuration, including tokenizers and shuffle"""
 
-	maze_dataset_configs: list[MazeDatasetConfig] = serializable_field(
+	# Attributes without a default cannot follow attributes with one  [misc]
+	maze_dataset_configs: list[MazeDatasetConfig] = serializable_field(  # type: ignore[misc]
 		serialization_fn=lambda configs: [config.serialize() for config in configs],
 		loading_fn=lambda data: [
 			MazeDatasetConfig.load(config) for config in data["maze_dataset_configs"]
@@ -40,7 +41,13 @@ class MazeDatasetCollectionConfig(GPTDatasetConfig):
 
 	def summary(self) -> dict:
 		"""return a summary of the config"""
-		return [c.summary() for c in self.maze_dataset_configs]
+		return dict(
+			n_mazes=self.n_mazes,
+			max_grid_n=self.max_grid_n,
+			max_grid_shape=self.max_grid_shape,
+			fname=self.to_fname(),
+			cfg_summaries=[c.summary() for c in self.maze_dataset_configs],
+		)
 
 	@property
 	def n_mazes(self) -> int:
@@ -125,7 +132,7 @@ class MazeDatasetCollection(GPTDataset):
 		# we add 1, since np.searchsorted returns the
 		# index of the last element that is strictly less than the target
 		# while we want the index of the last element less than or equal to the target
-		dataset_idx: int = np.searchsorted(self.dataset_cum_lengths, index + 1)
+		dataset_idx: int = int(np.searchsorted(self.dataset_cum_lengths, index + 1))
 		index_adjusted: int = index
 		if dataset_idx > 0:
 			# if the index is 0, `dataset_idx - 1` will be -1.
@@ -215,15 +222,16 @@ class MazeDatasetCollection(GPTDataset):
 			dataset.update_self_config()
 
 
-MazeDatasetCollectionConfig._dataset_class = MazeDatasetCollection
+MazeDatasetCollectionConfig._dataset_class = MazeDatasetCollection  # type: ignore[method-assign, assignment]
+
 register_loader_handler(
 	LoaderHandler(
-		check=lambda json_item, path=None, z=None: (  # noqa: ARG005
+		check=lambda json_item, path=None, z=None: (  # type: ignore[misc] # noqa: ARG005
 			isinstance(json_item, typing.Mapping)
 			and _FORMAT_KEY in json_item
 			and json_item[_FORMAT_KEY].startswith("MazeDatasetCollection")
 		),
-		load=lambda json_item, path=None, z=None: MazeDatasetCollection.load(json_item),  # noqa: ARG005
+		load=lambda json_item, path=None, z=None: MazeDatasetCollection.load(json_item),  # type: ignore[misc] # noqa: ARG005
 		uid="MazeDatasetCollection",
 		source_pckg="maze_dataset.generation.maze_dataset_collection",
 		desc="MazeDatasetCollection",
