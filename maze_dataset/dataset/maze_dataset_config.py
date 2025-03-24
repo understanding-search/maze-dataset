@@ -192,16 +192,18 @@ class _MazeDatasetConfig_base(GPTDatasetConfig):  # noqa: N801
 			]
 		return serialized
 
-	def stable_hash_cfg(self) -> int:
-		"""return a stable hash of the config"""
-		stable_str_repr: str = json.dumps(
+	def _stable_str_dump(self) -> str:
+		return json.dumps(
 			self._serialize_base(),
 			sort_keys=True,
 			indent=None,
 		)
+
+	def stable_hash_cfg(self) -> int:
+		"""return a stable hash of the config"""
 		return int.from_bytes(
 			hashlib.md5(  # noqa: S324
-				bytes(stable_str_repr, "ascii")
+				bytes(self._stable_str_dump(), "ascii")
 			).digest(),
 			"big",
 		)

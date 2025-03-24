@@ -41,6 +41,8 @@ def test_validate_fname(dataset_path_str: str):
 	print(f"{dataset_fname_new = }")
 	print(f"{dataset_cfg.summary() = }")
 	print(f"{dataset_cfg = }")
+	print(f"{dataset_cfg._stable_str_dump() = }")
 
 	assert dataset_fname_path == dataset_fname_loaded
 	assert dataset_fname_path == dataset_fname_new
+	pytest.fail("wip")
