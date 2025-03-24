@@ -142,7 +142,7 @@ def _dataset_config_serialize(self, *args, **kwargs) -> JSONitem:  # noqa: ANN00
 GPTDatasetConfig.load = _dataset_config_load  # type: ignore[method-assign]
 GPTDatasetConfig.serialize = _dataset_config_serialize  # type: ignore[method-assign,assignment]
 
-class GPTDataset:
+class GPTDataset(typing.Generic["T_DatasetConfig"]):
 	"""wrapper for torch dataset with some extra functionality
 
 	(meaning the functionality should be inherited in downstream classes)
@@ -216,7 +216,7 @@ class GPTDataset:
 
 	@classmethod
 	def from_config(  # noqa: C901, PLR0912
-		cls,
+		cls: "type[T_Dataset]",
 		cfg: "T_DatasetConfig",
 		do_generate: bool = True,
 		load_local: bool = True,
@@ -332,27 +332,27 @@ class GPTDataset:
 			zanj = ZANJ()
 		return zanj.read(file_path)
 
-	def serialize(self) -> JSONitem:
+	def serialize(self: "T_Dataset") -> JSONitem:
 		"(implement in subclass!) serialize to something we can save with zanj"
 		raise NotImplementedError
 
-	def data_hash(self) -> int:
+	def data_hash(self: "T_Dataset") -> int:
 		"(implement in subclass!) return a hash of the data"
 		raise NotImplementedError
 
 	@classmethod
-	def load(cls, data: JSONitem) -> "GPTDataset":
+	def load(cls: "type[T_Dataset]", data: JSONitem) -> "T_Dataset":
 		"(implement in subclass!) load a dataset from what we made with `.serialize()`"
 		raise NotImplementedError
 
 	# generating & downloading
 	@classmethod
-	def generate(cls, cfg: GPTDatasetConfig, **kwargs) -> "GPTDataset":
+	def generate(cls: "type[T_Dataset]", cfg: "T_DatasetConfig", **kwargs) -> "T_Dataset":
 		"(implement in subclass!) generative given the config"
 		raise NotImplementedError
 
 	@classmethod
-	def download(cls, cfg: GPTDatasetConfig, **kwargs) -> "GPTDataset":
+	def download(cls: "type[T_Dataset]", cfg: "T_DatasetConfig", **kwargs) -> "T_Dataset":
 		"(implement in subclass!) download the dataset given the config"
 		raise NotImplementedError
 

@@ -107,7 +107,7 @@ def _maze_gen_init_worker(config: MazeDatasetConfig) -> None:
 		)
 
 
-class MazeDataset(GPTDataset):
+class MazeDataset(GPTDataset[MazeDatasetConfig]):
 	"""a maze dataset class. This is a collection of solved mazes, and should be initialized via `MazeDataset.from_config`"""
 
 	def __init__(
@@ -124,7 +124,7 @@ class MazeDataset(GPTDataset):
 
 	# TYPING: error: Return type "MazeDataset" of "from_config" incompatible with return type "T_Dataset" in supertype "GPTDataset"  [override]
 	@classmethod
-	def from_config( # type: ignore[override]
+	def from_config( # type: ignore[override]	
 		cls,
 		# TYPING: error: Argument 1 of "from_config" is incompatible with supertype "GPTDataset"; supertype defines the argument type as "T_DatasetConfig"  [override]
 		cfg: MazeDatasetConfig, # type: ignore[override]
