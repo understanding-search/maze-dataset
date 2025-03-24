@@ -1,8 +1,8 @@
 # Stats
 - 59 files
-- 15230 (15K) lines
-- 477866 (478K) chars
-- 52888 (53K) `whitespace-split` tokens
+- 15252 (15K) lines
+- 478124 (478K) chars
+- 52911 (53K) `whitespace-split` tokens
 
 # File Tree
 
@@ -23,7 +23,7 @@ maze-dataset
 │   ├── dataset                            
 │   │   ├── __init__.py                    [   25L       615C    45T]
 │   │   ├── collected_dataset.py           [  241L     8,113C   848T]
-│   │   ├── configs.py                     [  263L     7,882C   659T]
+│   │   ├── configs.py                     [  285L     8,000C   668T]
 │   │   ├── dataset.py                     [  553L    18,539C 2,133T]
 │   │   ├── filters.py                     [  295L     9,571C 1,100T]
 │   │   ├── maze_dataset.py                [  632L    20,310C 2,073T]
@@ -33,7 +33,7 @@ maze-dataset
 │   ├── generation                         
 │   │   ├── __init__.py                    [   24L       535C    54T]
 │   │   ├── default_generators.py          [   23L       817C    72T]
-│   │   ├── generators.py                  [  647L    23,065C 2,908T]
+│   │   ├── generators.py                  [  647L    23,205C 2,922T]
 │   │   └── seed.py                        [    3L        45C     7T]
 │   ├── maze                               
 │   │   ├── __init__.py                    [   26L       454C    47T]
@@ -1692,7 +1692,7 @@ register_loader_handler(
 "`MAZE_DATASET_CONFIGS` contains some default configs for tests and demos"
 
 import copy
-from typing import Iterator, Mapping
+from typing import Callable, Iterator, Mapping
 
 from maze_dataset.dataset.maze_dataset import MazeDatasetConfig
 from maze_dataset.generation.generators import LatticeMazeGenerators
@@ -1782,7 +1782,7 @@ def _get_configs_for_examples() -> list[dict]:
 	percolation_probs: list[float] = [0.3, 0.5, 0.7]
 
 	# Core algorithms with basic configurations
-	basic_algorithms: dict[str, tuple[callable, dict]] = {
+	basic_algorithms: dict[str, tuple[Callable, dict]] = {
 		"dfs": (LatticeMazeGenerators.gen_dfs, {}),
 		"wilson": (LatticeMazeGenerators.gen_wilson, {}),
 		"kruskal": (LatticeMazeGenerators.gen_kruskal, {}),
@@ -1814,7 +1814,12 @@ def _get_configs_for_examples() -> list[dict]:
 					maze_ctor=LatticeMazeGenerators.gen_percolation,
 					maze_ctor_kwargs=dict(p=p),
 					description=f"Pure percolation (p={p}) ({grid_n}x{grid_n})",
-					tags=["algo:percolation", "percolation", f"percolation:{p}", f"grid:{grid_n}"],
+					tags=[
+						"algo:percolation",
+						"percolation",
+						f"percolation:{p}",
+						f"grid:{grid_n}",
+					],
 				)
 			)
 
@@ -1826,7 +1831,13 @@ def _get_configs_for_examples() -> list[dict]:
 					maze_ctor=LatticeMazeGenerators.gen_dfs_percolation,
 					maze_ctor_kwargs=dict(p=p),
 					description=f"DFS with percolation (p={p}) ({grid_n}x{grid_n})",
-					tags=["algo:dfs_percolation", "dfs", "percolation", f"percolation:{p}", f"grid:{grid_n}"],
+					tags=[
+						"algo:dfs_percolation",
+						"dfs",
+						"percolation",
+						f"percolation:{p}",
+						f"grid:{grid_n}",
+					],
 				)
 			)
 
@@ -1835,7 +1846,12 @@ def _get_configs_for_examples() -> list[dict]:
 		grid_n=10,
 		maze_ctor=LatticeMazeGenerators.gen_dfs,
 	)
-	constraint_base_tags: list[str] = ["algo:dfs", "dfs", "constrained_dfs", f"grid:{constraint_base_config['grid_n']}"]
+	constraint_base_tags: list[str] = [
+		"algo:dfs",
+		"dfs",
+		"constrained_dfs",
+		f"grid:{constraint_base_config['grid_n']}",
+	]
 
 	constraint_configs: list[dict] = [
 		# DFS without forks (simple path)
@@ -1947,7 +1963,13 @@ def _get_configs_for_examples() -> list[dict]:
 				except_on_no_valid_endpoint=False,
 			),
 			description="DFS percolation (p=0.3) with deadend endpoints",
-			tags=["algo:dfs_percolation", "dfs", "percolation", "deadend_endpoints", "grid:8"],
+			tags=[
+				"algo:dfs_percolation",
+				"dfs",
+				"percolation",
+				"deadend_endpoints",
+				"grid:8",
+			],
 		)
 	)
 
@@ -4831,8 +4853,8 @@ class LatticeMazeGenerators:
 			"Kruskal's algorithm is only implemented for 2D lattices."
 		)
 		# Convert grid_shape to a tuple of ints
-		grid_shape = tuple(int(x) for x in grid_shape)
-		n_rows, n_cols = grid_shape
+		grid_shape_: CoordTup = tuple(int(x) for x in grid_shape)  # type: ignore[assignment]
+		n_rows, n_cols = grid_shape_
 
 		# Initialize union-find data structure.
 		parent: dict[tuple[int, int], tuple[int, int]] = {}
@@ -4888,11 +4910,11 @@ class LatticeMazeGenerators:
 					connection_list[1, cell1[0], cell1[1]] = True
 
 		if start_coord is None:
-			start_coord = tuple(np.random.randint(0, n) for n in grid_shape)
+			start_coord = tuple(np.random.randint(0, n) for n in grid_shape_)  # type: ignore[assignment]
 
 		generation_meta: dict = dict(
 			func_name="gen_kruskal",
-			grid_shape=grid_shape,
+			grid_shape=grid_shape_,
 			start_coord=start_coord,
 			algorithm="kruskal",
 			fully_connected=True,
@@ -4937,8 +4959,8 @@ class LatticeMazeGenerators:
 			"Recursive division algorithm is only implemented for 2D lattices."
 		)
 		# Convert grid_shape to a tuple of ints.
-		grid_shape = tuple(int(x) for x in grid_shape)
-		n_rows, n_cols = grid_shape
+		grid_shape_: CoordTup = tuple(int(x) for x in grid_shape)  # type: ignore[assignment]
+		n_rows, n_cols = grid_shape_
 
 		# Initialize connection_list as a fully connected grid.
 		# For horizontal connections: for each cell (i,j) with i in [0, n_rows-2], set connection to True.
@@ -4986,11 +5008,11 @@ class LatticeMazeGenerators:
 		divide(0, 0, n_cols, n_rows)
 
 		if start_coord is None:
-			start_coord = tuple(np.random.randint(0, n) for n in grid_shape)
+			start_coord = tuple(np.random.randint(0, n) for n in grid_shape_)  # type: ignore[assignment]
 
 		generation_meta: dict = dict(
 			func_name="gen_recursive_division",
-			grid_shape=grid_shape,
+			grid_shape=grid_shape_,
 			start_coord=start_coord,
 			algorithm="recursive_division",
 			fully_connected=True,
@@ -14880,7 +14902,7 @@ paper: paper-clean paper-pdf paper-html
 ``````{ path="pyproject.toml"  }
 [project]
     name = "maze-dataset"
-    version = "1.3.0"
+    version = "1.3.1"
     description = "generating and working with datasets of mazes"
     authors = [
         { name = "Michael Ivanitskiy", email = "mivanits@umich.edu" },

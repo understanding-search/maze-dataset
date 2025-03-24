@@ -6,11 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="pdoc {{ __version__ }}"/>
     <title>{% block title %}{% endblock %}</title>
-    {% block favicon %}
-        {% if favicon %}
-            <link rel="icon" href="{{ favicon }}"/>
-        {% endif %}
-    {% endblock %}
+    <link rel="icon" href="{{ path_to_root }}resources/favicon.png"/>
     {% block head %}{% endblock %}
     {% filter minify_css | indent %}
         {% block style %}
