@@ -76,12 +76,12 @@ jobs:
 
       - name: Unit tests
         run: make test-unit
-      
-      - name: Notebook tests (muutils)
-        run: make test-notebooks-muutils
-      
+
       - name: Notebook tests (nbmake)
         run: make test-notebooks-nbmake  
+      
+      - name: Notebook tests (muutils)
+        run: make test-notebooks-muutils      
         
       - name: check typing (3.11+)
         run: make typing

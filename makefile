@@ -1577,8 +1577,9 @@ benchmark-success-test:
 .PHONY: benchmark-success
 benchmark-success: benchmark-success-test
 	@echo "run success benchmarks"
-	$(PYTHON) docs/benchmarks/percolation_benchmarks.py small -p 12
-	$(PYTHON) docs/benchmarks/percolation_benchmarks.py medium -p 12
+	$(PYTHON) docs/benchmarks/percolation_benchmarks.py test -p 12 --save-dir docs/benchmarks/percolation_fractions
+	$(PYTHON) docs/benchmarks/percolation_benchmarks.py small -p 12 --save-dir docs/benchmarks/percolation_fractions
+	$(PYTHON) docs/benchmarks/percolation_benchmarks.py medium -p 12 --save-dir docs/benchmarks/percolation_fractions
 
 .PHONY: benchmark-test
 benchmark-test: benchmark-speed-test benchmark-success-test
