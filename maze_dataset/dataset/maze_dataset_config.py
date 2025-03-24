@@ -105,9 +105,6 @@ def _load_endpoint_kwargs(data: dict) -> EndpointKwargsType:
 		}
 
 
-def _whatever(x):
-	raise ValueError("!!!!!!!!")
-
 @serializable_dataclass(kw_only=True, properties_to_serialize=["grid_shape"])
 class _MazeDatasetConfig_base(GPTDatasetConfig):  # noqa: N801
 	"""base config -- we serialize, dump to json, and hash this to get the fname. all actual variables we want to be hashed are here"""
@@ -149,6 +146,16 @@ class _MazeDatasetConfig_base(GPTDatasetConfig):  # noqa: N801
 		assert_type=False,
 	)
 
+	# NOTE: this part is very hacky. the way muutils works is that it iterates over the *keys in the serialized data*,
+	# and so we need to save an `None` here or this wont load the `fname` field on load
+	# this is a total mess, and very confusing, and entirely my fault
+	_fname_loaded: str | None = serializable_field(
+		default=None,
+		compare=False,
+		serialization_fn=lambda _: None,
+		loading_fn=lambda data: data["fname"],
+	)
+
 	@property
 	def grid_shape(self) -> CoordTup:
 		"""return the shape of the grid as a tuple"""
@@ -166,12 +173,7 @@ class _MazeDatasetConfig_base(GPTDatasetConfig):  # noqa: N801
 
 	def _serialize_base(self) -> dict:
 		"""serialize the base config"""
-		# HACK: making the hashes stable this way is messy :(
-		serialized: dict = _MazeDatasetConfig_base.serialize(self)
-		if "fname_loaded" in serialized:
-			del serialized["fname_loaded"]
-
-		return serialized
+		return _MazeDatasetConfig_base.serialize(self)
 
 	def stable_hash_cfg(self) -> int:
 		"""return a stable hash of the config"""
@@ -197,14 +199,6 @@ class _MazeDatasetConfig_base(GPTDatasetConfig):  # noqa: N801
 @serializable_dataclass(kw_only=True, methods_no_override=["serialize"])
 class MazeDatasetConfig(_MazeDatasetConfig_base):  # type: ignore[misc]
 	"""config object which is passed to `MazeDataset.from_config` to generate or load a dataset"""
-
-	fname_loaded: str | None = serializable_field(
-		default=None,
-		compare=False,
-		serialization_fn=lambda _: None,
-		# loading_fn=lambda data: data["fname"],
-		loading_fn=_whatever,
-	)
 
 
 	@property
