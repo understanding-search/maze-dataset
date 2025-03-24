@@ -563,9 +563,9 @@
 ## [`maze_dataset/plotting/plot_maze.py`](/maze_dataset/plotting/plot_maze.py)
 
 - this is a hack, we make the walls black (while still allowing negative values) by setting the nan color to black  
-  local link: [`/maze_dataset/plotting/plot_maze.py:392`](/maze_dataset/plotting/plot_maze.py#L392) 
-  | view on GitHub: [maze_dataset/plotting/plot_maze.py#L392](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/plotting/plot_maze.py#L392)
-  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=this%20is%20a%20hack%2C%20we%20make%20the%20walls%20black%20%28while%20still%20allowing%20negative%20values%29%20by%20setting%20the%20nan%20color%20to%20black&body=%23%20source%0A%0A%5B%60maze_dataset%2Fplotting%2Fplot_maze.py%23L392%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Fplotting%2Fplot_maze.py%23L392%29%0A%0A%23%20context%0A%60%60%60python%0A%09%09%09%23%20create%20colormap%0A%09%09%09cmap%20%3D%20mpl.colormaps%5Bself.node_color_map%5D%0A%09%09%09%23%20TODO%3A%20this%20is%20a%20hack%2C%20we%20make%20the%20walls%20black%20%28while%20still%20allowing%20negative%20values%29%20by%20setting%20the%20nan%20color%20to%20black%0A%09%09%09cmap.set_bad%28color%3D%22black%22%29%0A%60%60%60&labels=enhancement)
+  local link: [`/maze_dataset/plotting/plot_maze.py:398`](/maze_dataset/plotting/plot_maze.py#L398) 
+  | view on GitHub: [maze_dataset/plotting/plot_maze.py#L398](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/plotting/plot_maze.py#L398)
+  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=this%20is%20a%20hack%2C%20we%20make%20the%20walls%20black%20%28while%20still%20allowing%20negative%20values%29%20by%20setting%20the%20nan%20color%20to%20black&body=%23%20source%0A%0A%5B%60maze_dataset%2Fplotting%2Fplot_maze.py%23L398%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Fplotting%2Fplot_maze.py%23L398%29%0A%0A%23%20context%0A%60%60%60python%0A%09%09%09%23%20create%20colormap%0A%09%09%09cmap%20%3D%20mpl.colormaps%5Bself.node_color_map%5D%0A%09%09%09%23%20TODO%3A%20this%20is%20a%20hack%2C%20we%20make%20the%20walls%20black%20%28while%20still%20allowing%20negative%20values%29%20by%20setting%20the%20nan%20color%20to%20black%0A%09%09%09cmap.set_bad%28color%3D%22black%22%29%0A%60%60%60&labels=enhancement)
 
   ```python
   # create colormap
@@ -576,9 +576,9 @@
 
 
 - this is a hack, but if you add 1 always then non-node valued plots have their walls dissapear. if you dont add 1, you get ugly colors between nodes when they are colored  
-  local link: [`/maze_dataset/plotting/plot_maze.py:469`](/maze_dataset/plotting/plot_maze.py#L469) 
-  | view on GitHub: [maze_dataset/plotting/plot_maze.py#L469](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/plotting/plot_maze.py#L469)
-  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=this%20is%20a%20hack%2C%20but%20if%20you%20add%201%20always%20then%20non-node%20valued%20plots%20have%20their%20walls%20dissapear.%20if%20you%20dont%20add%201%2C%20you%20get%20ugly%20colors%20between%20nodes%20when%20they%20are%20colored&body=%23%20source%0A%0A%5B%60maze_dataset%2Fplotting%2Fplot_maze.py%23L469%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Fplotting%2Fplot_maze.py%23L469%29%0A%0A%23%20context%0A%60%60%60python%0A%09%09Returns%20a%20matrix%20of%20side%20length%20%28ul%29%20%2A%20n%20%2B%201%20where%20n%20is%20the%20number%20of%20nodes.%0A%09%09%22%22%22%0A%09%09%23%20TODO%3A%20this%20is%20a%20hack%2C%20but%20if%20you%20add%201%20always%20then%20non-node%20valued%20plots%20have%20their%20walls%20dissapear.%20if%20you%20dont%20add%201%2C%20you%20get%20ugly%20colors%20between%20nodes%20when%20they%20are%20colored%0A%09%09node_bdry_hack%3A%20int%0A%09%09connection_list_processed%3A%20Float%5Bnp.ndarray%2C%20%22dim%20row%20col%22%5D%0A%60%60%60&labels=enhancement)
+  local link: [`/maze_dataset/plotting/plot_maze.py:475`](/maze_dataset/plotting/plot_maze.py#L475) 
+  | view on GitHub: [maze_dataset/plotting/plot_maze.py#L475](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/plotting/plot_maze.py#L475)
+  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=this%20is%20a%20hack%2C%20but%20if%20you%20add%201%20always%20then%20non-node%20valued%20plots%20have%20their%20walls%20dissapear.%20if%20you%20dont%20add%201%2C%20you%20get%20ugly%20colors%20between%20nodes%20when%20they%20are%20colored&body=%23%20source%0A%0A%5B%60maze_dataset%2Fplotting%2Fplot_maze.py%23L475%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Fplotting%2Fplot_maze.py%23L475%29%0A%0A%23%20context%0A%60%60%60python%0A%09%09Returns%20a%20matrix%20of%20side%20length%20%28ul%29%20%2A%20n%20%2B%201%20where%20n%20is%20the%20number%20of%20nodes.%0A%09%09%22%22%22%0A%09%09%23%20TODO%3A%20this%20is%20a%20hack%2C%20but%20if%20you%20add%201%20always%20then%20non-node%20valued%20plots%20have%20their%20walls%20dissapear.%20if%20you%20dont%20add%201%2C%20you%20get%20ugly%20colors%20between%20nodes%20when%20they%20are%20colored%0A%09%09node_bdry_hack%3A%20int%0A%09%09connection_list_processed%3A%20Float%5Bnp.ndarray%2C%20%22dim%20row%20col%22%5D%0A%60%60%60&labels=enhancement)
 
   ```python
   Returns a matrix of side length (ul) * n + 1 where n is the number of nodes.
@@ -590,9 +590,9 @@
 
 
 - hack  
-  local link: [`/maze_dataset/plotting/plot_maze.py:477`](/maze_dataset/plotting/plot_maze.py#L477) 
-  | view on GitHub: [maze_dataset/plotting/plot_maze.py#L477](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/plotting/plot_maze.py#L477)
-  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=hack&body=%23%20source%0A%0A%5B%60maze_dataset%2Fplotting%2Fplot_maze.py%23L477%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Fplotting%2Fplot_maze.py%23L477%29%0A%0A%23%20context%0A%60%60%60python%0A%09%09%09connection_values%20%3D%20scaled_node_values%20%2A%20connection_val_scale%0A%09%09%09node_bdry_hack%20%3D%200%0A%09%09%09%23%20TODO%3A%20hack%0A%09%09%09%23%20invert%20connection%20list%0A%09%09%09connection_list_processed%20%3D%20np.logical_not%28self.maze.connection_list%29%0A%60%60%60&labels=enhancement)
+  local link: [`/maze_dataset/plotting/plot_maze.py:483`](/maze_dataset/plotting/plot_maze.py#L483) 
+  | view on GitHub: [maze_dataset/plotting/plot_maze.py#L483](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/plotting/plot_maze.py#L483)
+  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=hack&body=%23%20source%0A%0A%5B%60maze_dataset%2Fplotting%2Fplot_maze.py%23L483%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Fplotting%2Fplot_maze.py%23L483%29%0A%0A%23%20context%0A%60%60%60python%0A%09%09%09connection_values%20%3D%20scaled_node_values%20%2A%20connection_val_scale%0A%09%09%09node_bdry_hack%20%3D%200%0A%09%09%09%23%20TODO%3A%20hack%0A%09%09%09%23%20invert%20connection%20list%0A%09%09%09connection_list_processed%20%3D%20np.logical_not%28self.maze.connection_list%29%0A%60%60%60&labels=enhancement)
 
   ```python
   connection_values = scaled_node_values * connection_val_scale
@@ -604,9 +604,9 @@
 
 
 - hack  
-  local link: [`/maze_dataset/plotting/plot_maze.py:481`](/maze_dataset/plotting/plot_maze.py#L481) 
-  | view on GitHub: [maze_dataset/plotting/plot_maze.py#L481](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/plotting/plot_maze.py#L481)
-  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=hack&body=%23%20source%0A%0A%5B%60maze_dataset%2Fplotting%2Fplot_maze.py%23L481%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Fplotting%2Fplot_maze.py%23L481%29%0A%0A%23%20context%0A%60%60%60python%0A%09%09%09connection_list_processed%20%3D%20np.logical_not%28self.maze.connection_list%29%0A%09%09else%3A%0A%09%09%09%23%20TODO%3A%20hack%0A%09%09%09scaled_node_values%20%3D%20self.node_values%0A%09%09%09%23%20connection_values%20%3D%20scaled_node_values%0A%60%60%60&labels=enhancement)
+  local link: [`/maze_dataset/plotting/plot_maze.py:487`](/maze_dataset/plotting/plot_maze.py#L487) 
+  | view on GitHub: [maze_dataset/plotting/plot_maze.py#L487](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/plotting/plot_maze.py#L487)
+  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=hack&body=%23%20source%0A%0A%5B%60maze_dataset%2Fplotting%2Fplot_maze.py%23L487%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Fplotting%2Fplot_maze.py%23L487%29%0A%0A%23%20context%0A%60%60%60python%0A%09%09%09connection_list_processed%20%3D%20np.logical_not%28self.maze.connection_list%29%0A%09%09else%3A%0A%09%09%09%23%20TODO%3A%20hack%0A%09%09%09scaled_node_values%20%3D%20self.node_values%0A%09%09%09%23%20connection_values%20%3D%20scaled_node_values%0A%60%60%60&labels=enhancement)
 
   ```python
   	connection_list_processed = np.logical_not(self.maze.connection_list)
@@ -1167,9 +1167,9 @@
 ## [`maze_dataset/generation/generators.py`](/maze_dataset/generation/generators.py)
 
 - error: Dict entry 1 has incompatible type  
-  local link: [`/maze_dataset/generation/generators.py:406`](/maze_dataset/generation/generators.py#L406) 
-  | view on GitHub: [maze_dataset/generation/generators.py#L406](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/generation/generators.py#L406)
-  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=error%3A%20Dict%20entry%201%20has%20incompatible%20type&body=%23%20source%0A%0A%5B%60maze_dataset%2Fgeneration%2Fgenerators.py%23L406%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Fgeneration%2Fgenerators.py%23L406%29%0A%0A%23%20context%0A%60%60%60python%0AGENERATORS_MAP%3A%20dict%5Bstr%2C%20Callable%5B%5BCoord%20%7C%20CoordTup%2C%20Any%5D%2C%20%22LatticeMaze%22%5D%5D%20%3D%20%7B%0A%09%22gen_dfs%22%3A%20LatticeMazeGenerators.gen_dfs%2C%0A%09%23%20TYPING%3A%20error%3A%20Dict%20entry%201%20has%20incompatible%20type%0A%09%23%20%22str%22%3A%20%22Callable%5B%5Bndarray%5BAny%2C%20Any%5D%20%7C%20tuple%5Bint%2C%20int%5D%2C%20KwArg%28Any%29%5D%2C%20LatticeMaze%5D%22%3B%0A%09%23%20expected%20%22str%22%3A%20%22Callable%5B%5Bndarray%5BAny%2C%20Any%5D%20%7C%20tuple%5Bint%2C%20int%5D%2C%20Any%5D%2C%20LatticeMaze%5D%22%20%20%5Bdict-item%5D%0A%60%60%60&labels=TYPING)
+  local link: [`/maze_dataset/generation/generators.py:611`](/maze_dataset/generation/generators.py#L611) 
+  | view on GitHub: [maze_dataset/generation/generators.py#L611](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/generation/generators.py#L611)
+  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=error%3A%20Dict%20entry%201%20has%20incompatible%20type&body=%23%20source%0A%0A%5B%60maze_dataset%2Fgeneration%2Fgenerators.py%23L611%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Fgeneration%2Fgenerators.py%23L611%29%0A%0A%23%20context%0A%60%60%60python%0AGENERATORS_MAP%3A%20dict%5Bstr%2C%20Callable%5B%5BCoord%20%7C%20CoordTup%2C%20Any%5D%2C%20%22LatticeMaze%22%5D%5D%20%3D%20%7B%0A%09%22gen_dfs%22%3A%20LatticeMazeGenerators.gen_dfs%2C%0A%09%23%20TYPING%3A%20error%3A%20Dict%20entry%201%20has%20incompatible%20type%0A%09%23%20%22str%22%3A%20%22Callable%5B%5Bndarray%5BAny%2C%20Any%5D%20%7C%20tuple%5Bint%2C%20int%5D%2C%20KwArg%28Any%29%5D%2C%20LatticeMaze%5D%22%3B%0A%09%23%20expected%20%22str%22%3A%20%22Callable%5B%5Bndarray%5BAny%2C%20Any%5D%20%7C%20tuple%5Bint%2C%20int%5D%2C%20Any%5D%2C%20LatticeMaze%5D%22%20%20%5Bdict-item%5D%0A%60%60%60&labels=TYPING)
 
   ```python
   GENERATORS_MAP: dict[str, Callable[[Coord | CoordTup, Any], "LatticeMaze"]] = {
@@ -1181,9 +1181,9 @@
 
 
 - error: Too few arguments  [call-arg]  
-  local link: [`/maze_dataset/generation/generators.py:436`](/maze_dataset/generation/generators.py#L436) 
-  | view on GitHub: [maze_dataset/generation/generators.py#L436](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/generation/generators.py#L436)
-  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=error%3A%20Too%20few%20arguments%20%20%5Bcall-arg%5D&body=%23%20source%0A%0A%5B%60maze_dataset%2Fgeneration%2Fgenerators.py%23L436%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Fgeneration%2Fgenerators.py%23L436%29%0A%0A%23%20context%0A%60%60%60python%0A%09if%20maze_ctor_kwargs%20is%20None%3A%0A%09%09maze_ctor_kwargs%20%3D%20dict%28%29%0A%09%23%20TYPING%3A%20error%3A%20Too%20few%20arguments%20%20%5Bcall-arg%5D%0A%09%23%20not%20sure%20why%20this%20is%20happening%20--%20doesnt%20recognize%20the%20kwargs%3F%0A%09maze%3A%20LatticeMaze%20%3D%20GENERATORS_MAP%5Bgen_name%5D%28grid_shape%2C%20%2A%2Amaze_ctor_kwargs%29%20%20%23%20type%3A%20ignore%5Bcall-arg%5D%0A%60%60%60&labels=TYPING)
+  local link: [`/maze_dataset/generation/generators.py:643`](/maze_dataset/generation/generators.py#L643) 
+  | view on GitHub: [maze_dataset/generation/generators.py#L643](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/generation/generators.py#L643)
+  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=error%3A%20Too%20few%20arguments%20%20%5Bcall-arg%5D&body=%23%20source%0A%0A%5B%60maze_dataset%2Fgeneration%2Fgenerators.py%23L643%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Fgeneration%2Fgenerators.py%23L643%29%0A%0A%23%20context%0A%60%60%60python%0A%09if%20maze_ctor_kwargs%20is%20None%3A%0A%09%09maze_ctor_kwargs%20%3D%20dict%28%29%0A%09%23%20TYPING%3A%20error%3A%20Too%20few%20arguments%20%20%5Bcall-arg%5D%0A%09%23%20not%20sure%20why%20this%20is%20happening%20--%20doesnt%20recognize%20the%20kwargs%3F%0A%09maze%3A%20LatticeMaze%20%3D%20GENERATORS_MAP%5Bgen_name%5D%28grid_shape%2C%20%2A%2Amaze_ctor_kwargs%29%20%20%23%20type%3A%20ignore%5Bcall-arg%5D%0A%60%60%60&labels=TYPING)
 
   ```python
   if maze_ctor_kwargs is None:

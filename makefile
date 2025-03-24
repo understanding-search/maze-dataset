@@ -1594,11 +1594,13 @@ benchmark-test: benchmark-speed-test benchmark-success-test
 example-clean:
 	@echo "clean up generated examples"
 	rm -rf docs/examples/datasets
+	rm -rf docs/examples/plots
 
 .PHONY: example-gen
 example-gen:
 	@echo "generate examples"
-	$(PYTHON) docs/examples/generate_examples.py
+	$(PYTHON) docs/examples/generate_datasets.py
+	$(PYTHON) docs/examples/generate_plots.py
 
 
 .PHONY: regenerate-when-cfg-hashes-changed
@@ -1775,3 +1777,75 @@ help: help-targets info
 # custom targets
 # ==================================================
 # (put them down here, or delimit with ~~~~~)
+
+PAPER_PATH := $(DOCS_DIR)/paper
+PAPER_PATH_INARA := $(PAPER_PATH)/inara
+
+PAPER_DRAFT ?= true
+
+$(PAPER_PATH_INARA)/README.md:
+	wget https://github.com/openjournals/inara/archive/refs/heads/main.zip -O $(PAPER_PATH_INARA).zip
+	unzip $(PAPER_PATH_INARA).zip -d $(PAPER_PATH_INARA)-temp
+	mv $(PAPER_PATH_INARA)-temp/inara-main $(PAPER_PATH_INARA)
+	rm -rf $(PAPER_PATH_INARA)-temp
+	rm -f $(PAPER_PATH_INARA).zip
+	@echo "downloaded and extracted inara for the paper into $(PAPER_PATH_INARA)"
+
+.PHONY: paper-setup
+paper-setup: $(PAPER_PATH_INARA)/README.md
+	@echo "set up inara and packages for compiling the paper"
+	@echo "need packages: pandoc, texlive, fonts-hack-ttf"
+	apt show pandoc texlive fonts-hack-ttf
+
+.PHONY: paper-clean-dev
+paper-clean-dev:
+	@echo "clean up ephemeral files related to the paper"
+	rm -rf $(PAPER_PATH_INARA)
+	rm -rf $(PAPER_PATH_INARA)-temp
+	rm -f $(PAPER_PATH_INARA).zip
+
+.PHONY: paper-clean
+paper-clean:
+	@echo "clean up paper files"
+	rm -rf $(PAPER_PATH)/output
+	rm -f $(PAPER_PATH)/paper.tex
+	rm -f $(PAPER_PATH)/paper.pdf
+	rm -f $(PAPER_PATH)/paper.html
+
+.PHONY: paper-tex
+paper-tex:
+	@echo "compile the paper to tex"
+	INARA_ARTIFACTS_PATH=$(PAPER_PATH) pandoc \
+		--data-dir=$(PAPER_PATH_INARA)/data \
+		--defaults=shared \
+		--defaults=tex.yaml \
+		--defaults=$(PAPER_PATH_INARA)/resources/joss/defaults.yaml \
+		--resource-path=.:$(PAPER_PATH_INARA)/resources:$(PAPER_PATH) \
+		--metadata=article-info-file=$(PAPER_PATH_INARA)/resources/default-article-info.yaml \
+		--variable=joss \
+		--output=$(PAPER_PATH)/paper.tex \
+		$(PAPER_PATH)/paper.md
+
+.PHONY: paper-pdf
+paper-pdf: paper-tex
+	@echo "compile the paper to pdf"
+	latexmk -interaction=nonstopmode -pdf -outdir=$(PAPER_PATH)/output -lualatex $(PAPER_PATH)/paper.tex || true
+	cp $(PAPER_PATH)/output/paper.pdf $(PAPER_PATH)/paper.pdf
+
+.PHONY: paper-html
+paper-html:
+	@echo "compile the paper to html"
+	INARA_ARTIFACTS_PATH=$(PAPER_PATH) pandoc \
+		--data-dir=$(PAPER_PATH_INARA)/data \
+		--defaults=shared \
+		--defaults=html.yaml \
+		--defaults=$(PAPER_PATH_INARA)/resources/joss/defaults.yaml \
+		--resource-path=.:$(PAPER_PATH_INARA)/resources:$(PAPER_PATH) \
+		--metadata=article-info-file=$(PAPER_PATH_INARA)/resources/default-article-info.yaml \
+		--variable=joss \
+		--output=$(PAPER_PATH)/paper.html \
+		$(PAPER_PATH)/paper.md
+
+.PHONY: paper
+paper: paper-clean paper-pdf paper-html
+	@echo "paper compiled to tex, pdf and html"

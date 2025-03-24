@@ -17,6 +17,9 @@ This package includes a variety of maze generation algorithms, including randomi
 |---|---|---|---|
 | ![Maze generated via percolation](docs/assets/maze_perc.png) |  ![Maze generated via constrained randomized depth first search](docs/assets/maze_dfs_constrained.png)  |  ![Maze with random heatmap](docs/assets/mazeplot_heatmap.png)  |  ![MazePlot with solution](docs/assets/mazeplot_path.png)  |
 
+
+You can view and search through a wide variety of example mazes here: [`understanding-search.github.io/maze-dataset/examples/maze_examples`](https://understanding-search.github.io/maze-dataset/examples/maze_examples.html)
+
 # Citing
 
 If you use this code in your research, please cite [our paper](http://arxiv.org/abs/2309.10498):

@@ -15,6 +15,10 @@ outputs/**
 docs/paper/inara*
 docs/paper/output/**
 
+# paper related
+docs/paper/inara*
+docs/paper/output/**
+
 .meta/local/**
 .pypi-token
 .commit_log

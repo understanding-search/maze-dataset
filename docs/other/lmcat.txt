@@ -1,8 +1,8 @@
 # Stats
-- 58 files
-- 14744 (15K) lines
-- 462743 (463K) chars
-- 51217 (51K) `whitespace-split` tokens
+- 59 files
+- 15252 (15K) lines
+- 478124 (478K) chars
+- 52911 (53K) `whitespace-split` tokens
 
 # File Tree
 
@@ -11,6 +11,7 @@ maze-dataset
 ├── .github                                
 │   └── workflows                          
 │    ├── all-tok-checks.yml                [   52L     1,670C   148T]
+│    ├── build-paper.yml                   [   28L       785C    85T]
 │    ├── checks.yml                        [   94L     2,164C   224T]
 │    └── make-docs.yml                     [   47L     1,262C   141T]
 ├── maze_dataset                           
@@ -22,17 +23,17 @@ maze-dataset
 │   ├── dataset                            
 │   │   ├── __init__.py                    [   25L       615C    45T]
 │   │   ├── collected_dataset.py           [  241L     8,113C   848T]
-│   │   ├── configs.py                     [   75L     2,370C   218T]
+│   │   ├── configs.py                     [  285L     8,000C   668T]
 │   │   ├── dataset.py                     [  553L    18,539C 2,133T]
 │   │   ├── filters.py                     [  295L     9,571C 1,100T]
 │   │   ├── maze_dataset.py                [  632L    20,310C 2,073T]
-│   │   ├── maze_dataset_config.py         [  443L    15,075C 1,614T]
+│   │   ├── maze_dataset_config.py         [  442L    15,065C 1,613T]
 │   │   ├── rasterized.py                  [  330L     9,476C 1,001T]
 │   │   └── success_predict_math.py        [  106L     2,809C   460T]
 │   ├── generation                         
 │   │   ├── __init__.py                    [   24L       535C    54T]
-│   │   ├── default_generators.py          [   21L       754C    68T]
-│   │   ├── generators.py                  [  440L    15,815C 1,918T]
+│   │   ├── default_generators.py          [   23L       817C    72T]
+│   │   ├── generators.py                  [  647L    23,205C 2,922T]
 │   │   └── seed.py                        [    3L        45C     7T]
 │   ├── maze                               
 │   │   ├── __init__.py                    [   26L       454C    47T]
@@ -40,7 +41,7 @@ maze-dataset
 │   ├── plotting                           
 │   │   ├── __init__.py                    [   32L       989C   109T]
 │   │   ├── plot_dataset.py                [   64L     1,635C   200T]
-│   │   ├── plot_maze.py                   [  597L    16,684C 1,944T]
+│   │   ├── plot_maze.py                   [  603L    16,819C 1,950T]
 │   │   ├── plot_tokens.py                 [   90L     2,127C   280T]
 │   │   └── print_tokens.py                [  250L     6,431C   799T]
 │   ├── tokenization                       
@@ -74,9 +75,10 @@ maze-dataset
 │   ├── forking_points.ipynb               [  221L    28,462C   621T]
 │   ├── iterated_backfilling.ipynb         [  207L    30,509C   547T]
 │   └── profile_dataset_save_read.ipynb    [1,133L   269,709C 3,406T]
-├── README.md                              [  114L     5,184C   521T]
-├── makefile                               [1,773L    55,139C 6,422T]
-├── pyproject.toml                         [  346L    12,373C 1,419T]
+├── templates                              
+├── README.md                              [  117L     5,408C   535T]
+├── makefile                               [1,851L    57,832C 6,641T]
+├── pyproject.toml                         [  354L    12,560C 1,441T]
 ```
 
 # File Contents
@@ -135,6 +137,37 @@ jobs:
           PYTEST_PARALLEL=${{ github.event.inputs.pytest_parallel || '1' }}
           make tokenizer-test-long NUM_TOKENIZERS_TO_TEST=$N_TO_TEST PYTEST_PARALLEL=$PYTEST_PARALLEL
 ``````{ end_of_file=".github/workflows/all-tok-checks.yml" }
+
+``````{ path=".github/workflows/build-paper.yml"  }
+name: build paper draft pdf
+on:
+  push:
+    paths:
+      - docs/paper/**
+      - .github/workflows/build-paper.yml
+
+jobs:
+  paper:
+    runs-on: ubuntu-latest
+    name: Paper Draft
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Build draft PDF
+        uses: openjournals/openjournals-draft-action@master
+        with:
+          journal: joss
+          # This should be the path to the paper within your repo.
+          paper-path: docs/paper/paper.md
+      - name: Upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: paper
+          # This is the output path where Pandoc will write the compiled
+          # PDF. Note, this should be the same directory as the input
+          # paper.md
+          path: docs/paper/paper.pdf  
+``````{ end_of_file=".github/workflows/build-paper.yml" }
 
 ``````{ path=".github/workflows/checks.yml"  }
 name: Checks
@@ -1659,7 +1692,7 @@ register_loader_handler(
 "`MAZE_DATASET_CONFIGS` contains some default configs for tests and demos"
 
 import copy
-from typing import Iterator, Mapping
+from typing import Callable, Iterator, Mapping
 
 from maze_dataset.dataset.maze_dataset import MazeDatasetConfig
 from maze_dataset.generation.generators import LatticeMazeGenerators
@@ -1731,6 +1764,216 @@ class _MazeDatsetConfigsWrapper(Mapping[str, MazeDatasetConfig]):
 MAZE_DATASET_CONFIGS: _MazeDatsetConfigsWrapper = _MazeDatsetConfigsWrapper(
 	_MAZE_DATASET_CONFIGS_SRC,
 )
+
+
+def _get_configs_for_examples() -> list[dict]:
+	"""Generate a comprehensive list of diverse maze configurations.
+
+	# Returns:
+	- `list[dict]`
+		List of configuration dictionaries for maze generation
+	"""
+	configs: list[dict] = []
+
+	# Define the grid sizes to test
+	grid_sizes: list[int] = [5, 8, 12, 15, 20]
+
+	# Define percolation probabilities
+	percolation_probs: list[float] = [0.3, 0.5, 0.7]
+
+	# Core algorithms with basic configurations
+	basic_algorithms: dict[str, tuple[Callable, dict]] = {
+		"dfs": (LatticeMazeGenerators.gen_dfs, {}),
+		"wilson": (LatticeMazeGenerators.gen_wilson, {}),
+		"kruskal": (LatticeMazeGenerators.gen_kruskal, {}),
+		"recursive_division": (LatticeMazeGenerators.gen_recursive_division, {}),
+	}
+
+	# Generate basic configurations for each algorithm and grid size
+	for grid_n in grid_sizes:
+		for algo_name, (maze_ctor, base_kwargs) in basic_algorithms.items():
+			configs.append(
+				dict(
+					name="basic",
+					grid_n=grid_n,
+					maze_ctor=maze_ctor,
+					maze_ctor_kwargs=base_kwargs,
+					description=f"Basic {algo_name.upper()} maze ({grid_n}x{grid_n})",
+					tags=[f"algo:{algo_name}", "basic", f"grid:{grid_n}"],
+				)
+			)
+
+	# Generate percolation configurations
+	for grid_n in grid_sizes:
+		for p in percolation_probs:
+			# Pure percolation
+			configs.append(
+				dict(
+					name=f"p{p}",
+					grid_n=grid_n,
+					maze_ctor=LatticeMazeGenerators.gen_percolation,
+					maze_ctor_kwargs=dict(p=p),
+					description=f"Pure percolation (p={p}) ({grid_n}x{grid_n})",
+					tags=[
+						"algo:percolation",
+						"percolation",
+						f"percolation:{p}",
+						f"grid:{grid_n}",
+					],
+				)
+			)
+
+			# DFS with percolation
+			configs.append(
+				dict(
+					name=f"p{p}",
+					grid_n=grid_n,
+					maze_ctor=LatticeMazeGenerators.gen_dfs_percolation,
+					maze_ctor_kwargs=dict(p=p),
+					description=f"DFS with percolation (p={p}) ({grid_n}x{grid_n})",
+					tags=[
+						"algo:dfs_percolation",
+						"dfs",
+						"percolation",
+						f"percolation:{p}",
+						f"grid:{grid_n}",
+					],
+				)
+			)
+
+	# Generate specialized constraint configurations
+	constraint_base_config: dict = dict(
+		grid_n=10,
+		maze_ctor=LatticeMazeGenerators.gen_dfs,
+	)
+	constraint_base_tags: list[str] = [
+		"algo:dfs",
+		"dfs",
+		"constrained_dfs",
+		f"grid:{constraint_base_config['grid_n']}",
+	]
+
+	constraint_configs: list[dict] = [
+		# DFS without forks (simple path)
+		dict(
+			name="forkless",
+			maze_ctor_kwargs=dict(do_forks=False),
+			description="DFS without forks (10x10)",
+			tags=["forkless"],
+		),
+		# Accessible cells constraints
+		dict(
+			name="accessible_cells_count",
+			maze_ctor_kwargs=dict(accessible_cells=50),
+			description="DFS with limited accessible cells (50)",
+			tags=["limited:cells", "limited:absolute"],
+		),
+		dict(
+			name="accessible_cells_ratio",
+			maze_ctor_kwargs=dict(accessible_cells=0.6),
+			description="DFS with 60% accessible cells",
+			tags=["limited:cells", "limited:ratio"],
+		),
+		# Tree depth constraints
+		dict(
+			name="max_tree_depth_absolute",
+			maze_ctor_kwargs=dict(max_tree_depth=10),
+			description="DFS with max tree depth of 10",
+			tags=["limited:depth", "limited:absolute"],
+		),
+		dict(
+			name="max_tree_depth_ratio",
+			maze_ctor_kwargs=dict(max_tree_depth=0.3),
+			description="DFS with max tree depth 30% of grid size",
+			tags=["limited:depth", "limited:ratio"],
+		),
+		# Start position constraint
+		dict(
+			name="start_center",
+			maze_ctor_kwargs=dict(start_coord=[5, 5]),
+			description="DFS starting from center of grid",
+			tags=["custom_start"],
+		),
+		dict(
+			name="start_corner",
+			maze_ctor_kwargs=dict(start_coord=[0, 0]),
+			description="DFS starting from corner of grid",
+			tags=["custom_start"],
+		),
+	]
+
+	# Add combined constraints as special case
+	configs.append(
+		dict(
+			name="combined_constraints",
+			grid_n=15,
+			maze_ctor=LatticeMazeGenerators.gen_dfs,
+			maze_ctor_kwargs=dict(
+				accessible_cells=100,
+				max_tree_depth=25,
+				start_coord=[7, 7],
+			),
+			description="DFS with multiple constraints (100 cells, depth 25, center start)",
+			tags=["algo:dfs", "dfs", "constrained_dfs", "grid:15"],
+		)
+	)
+
+	# Apply the base config to all constraint configs and add to main configs list
+	for config in constraint_configs:
+		full_config = constraint_base_config.copy()
+		full_config.update(config)
+		full_config["tags"] = constraint_base_tags + config["tags"]
+		configs.append(full_config)
+
+	# Generate endpoint options
+	endpoint_variations: list[tuple[bool, bool, str]] = [
+		(True, False, "deadend start only"),
+		(False, True, "deadend end only"),
+		(True, True, "deadend start and end"),
+	]
+
+	for deadend_start, deadend_end, desc in endpoint_variations:
+		configs.append(
+			dict(
+				name=f"deadend_s{int(deadend_start)}_e{int(deadend_end)}",
+				grid_n=8,
+				maze_ctor=LatticeMazeGenerators.gen_dfs,
+				maze_ctor_kwargs={},
+				endpoint_kwargs=dict(
+					deadend_start=deadend_start,
+					deadend_end=deadend_end,
+					endpoints_not_equal=True,
+				),
+				description=f"DFS with {desc}",
+				tags=["algo:dfs", "dfs", "deadend_endpoints", "grid:8"],
+			)
+		)
+
+	# Add percolation with deadend endpoints
+	configs.append(
+		dict(
+			name="deadends",
+			grid_n=8,
+			maze_ctor=LatticeMazeGenerators.gen_dfs_percolation,
+			maze_ctor_kwargs=dict(p=0.3),
+			endpoint_kwargs=dict(
+				deadend_start=True,
+				deadend_end=True,
+				endpoints_not_equal=True,
+				except_on_no_valid_endpoint=False,
+			),
+			description="DFS percolation (p=0.3) with deadend endpoints",
+			tags=[
+				"algo:dfs_percolation",
+				"dfs",
+				"percolation",
+				"deadend_endpoints",
+				"grid:8",
+			],
+		)
+	)
+
+	return configs
 
 ``````{ end_of_file="maze_dataset/dataset/configs.py" }
 
@@ -3617,9 +3860,8 @@ class MazeDatasetConfig(_MazeDatasetConfig_base):  # type: ignore[misc]
 
 		except NoPercolationInConfigError as e:
 			if except_if_all_success_expected:
-				return 1.0
-			else:
 				raise e  # noqa: TRY201
+			return 1.0
 
 	def success_fraction_compensate(
 		self,
@@ -4166,6 +4408,8 @@ DEFAULT_GENERATORS: list[tuple[str, dict]] = [
 	# ("gen_prim", dict(accessible_cells=0.5)),
 	# ("gen_prim", dict(max_tree_depth=0.5)),
 	# ("gen_prim", dict(accessible_cells=0.5, max_tree_depth=0.5)),
+	("gen_kruskal", dict()),
+	("gen_recursive_division", dict()),
 ]
 
 ``````{ end_of_file="maze_dataset/generation/default_generators.py" }
@@ -4309,8 +4553,7 @@ class LatticeMazeGenerators:
 			# get the current coord from the stack
 			current_coord: Coord
 			if randomized_stack:
-				# we dont care about S311 because this isnt security related
-				current_coord = stack.pop(random.randint(0, len(stack) - 1))  # noqa: S311
+				current_coord = stack.pop(random.randint(0, len(stack) - 1))
 			else:
 				current_coord = stack.pop()
 
@@ -4338,8 +4581,7 @@ class LatticeMazeGenerators:
 					stack.append(current_coord)
 
 				# choose one of the unvisited neighbors
-				# we dont care about S311 because this isn't security related
-				chosen_neighbor, delta = random.choice(unvisited_neighbors_deltas)  # noqa: S311
+				chosen_neighbor, delta = random.choice(unvisited_neighbors_deltas)
 
 				# add connection
 				dim: int = int(np.argmax(np.abs(delta)))
@@ -4572,6 +4814,213 @@ class LatticeMazeGenerators:
 
 		return maze
 
+	@staticmethod
+	def gen_kruskal(
+		grid_shape: "Coord | CoordTup",
+		lattice_dim: int = 2,
+		start_coord: "Coord | None" = None,
+	) -> "LatticeMaze":
+		"""Generate a maze using Kruskal's algorithm.
+
+		This function generates a random spanning tree over a grid using Kruskal's algorithm.
+		Each cell is treated as a node, and all valid adjacent edges are listed and processed
+		in random order. An edge is added (i.e. its passage carved) only if it connects two cells
+		that are not already connected. The resulting maze is a perfect maze (i.e. a spanning tree)
+		without cycles.
+
+		https://en.wikipedia.org/wiki/Kruskal's_algorithm
+
+		# Parameters:
+		- `grid_shape : Coord | CoordTup`
+			The shape of the maze grid (for example, `(n_rows, n_cols)`).
+		- `lattice_dim : int`
+			The lattice dimension (default is `2`).
+		- `start_coord : Coord | None`
+			Optionally, specify a starting coordinate. If `None`, a random coordinate will be chosen.
+		- `**kwargs`
+			Additional keyword arguments (currently unused).
+
+		# Returns:
+		- `LatticeMaze`
+			A maze represented by a connection list, generated as a spanning tree using Kruskal's algorithm.
+
+		# Usage:
+		```python
+		maze = gen_kruskal((10, 10))
+		```
+		"""
+		assert lattice_dim == 2, (  # noqa: PLR2004
+			"Kruskal's algorithm is only implemented for 2D lattices."
+		)
+		# Convert grid_shape to a tuple of ints
+		grid_shape_: CoordTup = tuple(int(x) for x in grid_shape)  # type: ignore[assignment]
+		n_rows, n_cols = grid_shape_
+
+		# Initialize union-find data structure.
+		parent: dict[tuple[int, int], tuple[int, int]] = {}
+
+		def find(cell: tuple[int, int]) -> tuple[int, int]:
+			while parent[cell] != cell:
+				parent[cell] = parent[parent[cell]]
+				cell = parent[cell]
+			return cell
+
+		def union(cell1: tuple[int, int], cell2: tuple[int, int]) -> None:
+			root1 = find(cell1)
+			root2 = find(cell2)
+			parent[root2] = root1
+
+		# Initialize each cell as its own set.
+		for i in range(n_rows):
+			for j in range(n_cols):
+				parent[(i, j)] = (i, j)
+
+		# List all possible edges.
+		# For vertical edges (i.e. connecting a cell to its right neighbor):
+		edges: list[tuple[tuple[int, int], tuple[int, int], int]] = []
+		for i in range(n_rows):
+			for j in range(n_cols - 1):
+				edges.append(((i, j), (i, j + 1), 1))
+		# For horizontal edges (i.e. connecting a cell to its bottom neighbor):
+		for i in range(n_rows - 1):
+			for j in range(n_cols):
+				edges.append(((i, j), (i + 1, j), 0))
+
+		# Shuffle the list of edges.
+		import random
+
+		random.shuffle(edges)
+
+		# Initialize connection_list with no connections.
+		# connection_list[0] stores downward connections (from cell (i,j) to (i+1,j)).
+		# connection_list[1] stores rightward connections (from cell (i,j) to (i,j+1)).
+		import numpy as np
+
+		connection_list = np.zeros((2, n_rows, n_cols), dtype=bool)
+
+		# Process each edge; if it connects two different trees, union them and carve the passage.
+		for cell1, cell2, direction in edges:
+			if find(cell1) != find(cell2):
+				union(cell1, cell2)
+				if direction == 0:
+					# Horizontal edge: connection is stored in connection_list[0] at cell1.
+					connection_list[0, cell1[0], cell1[1]] = True
+				else:
+					# Vertical edge: connection is stored in connection_list[1] at cell1.
+					connection_list[1, cell1[0], cell1[1]] = True
+
+		if start_coord is None:
+			start_coord = tuple(np.random.randint(0, n) for n in grid_shape_)  # type: ignore[assignment]
+
+		generation_meta: dict = dict(
+			func_name="gen_kruskal",
+			grid_shape=grid_shape_,
+			start_coord=start_coord,
+			algorithm="kruskal",
+			fully_connected=True,
+		)
+		return LatticeMaze(
+			connection_list=connection_list, generation_meta=generation_meta
+		)
+
+	@staticmethod
+	def gen_recursive_division(
+		grid_shape: "Coord | CoordTup",
+		lattice_dim: int = 2,
+		start_coord: "Coord | None" = None,
+	) -> "LatticeMaze":
+		"""Generate a maze using the recursive division algorithm.
+
+		This function generates a maze by recursively dividing the grid with walls and carving a single
+		passage through each wall. The algorithm begins with a fully connected grid (i.e. every pair of adjacent
+		cells is connected) and then removes connections along a chosen division line—leaving one gap as a passage.
+		The resulting maze is a perfect maze, meaning there is exactly one path between any two cells.
+
+		# Parameters:
+		- `grid_shape : Coord | CoordTup`
+			The shape of the maze grid (e.g., `(n_rows, n_cols)`).
+		- `lattice_dim : int`
+			The lattice dimension (default is `2`).
+		- `start_coord : Coord | None`
+			Optionally, specify a starting coordinate. If `None`, a random coordinate is chosen.
+		- `**kwargs`
+			Additional keyword arguments (currently unused).
+
+		# Returns:
+		- `LatticeMaze`
+			A maze represented by a connection list, generated using recursive division.
+
+		# Usage:
+		```python
+		maze = gen_recursive_division((10, 10))
+		```
+		"""
+		assert lattice_dim == 2, (  # noqa: PLR2004
+			"Recursive division algorithm is only implemented for 2D lattices."
+		)
+		# Convert grid_shape to a tuple of ints.
+		grid_shape_: CoordTup = tuple(int(x) for x in grid_shape)  # type: ignore[assignment]
+		n_rows, n_cols = grid_shape_
+
+		# Initialize connection_list as a fully connected grid.
+		# For horizontal connections: for each cell (i,j) with i in [0, n_rows-2], set connection to True.
+		# For vertical connections: for each cell (i,j) with j in [0, n_cols-2], set connection to True.
+		connection_list = np.zeros((2, n_rows, n_cols), dtype=bool)
+		connection_list[0, : n_rows - 1, :] = True
+		connection_list[1, :, : n_cols - 1] = True
+
+		def divide(x: int, y: int, width: int, height: int) -> None:
+			"""Recursively divide the region starting at (x, y) with the given width and height.
+
+			Removes connections along the chosen division line except for one randomly chosen gap.
+			"""
+			if width < 2 or height < 2:  # noqa: PLR2004
+				return
+
+			if width > height:
+				# Vertical division.
+				wall_col = random.randint(x + 1, x + width - 1)
+				gap_row = random.randint(y, y + height - 1)
+				for row in range(y, y + height):
+					if row == gap_row:
+						continue
+					# Remove the vertical connection between (row, wall_col-1) and (row, wall_col).
+					if wall_col - 1 < n_cols - 1:
+						connection_list[1, row, wall_col - 1] = False
+				# Recurse on the left and right subregions.
+				divide(x, y, wall_col - x, height)
+				divide(wall_col, y, x + width - wall_col, height)
+			else:
+				# Horizontal division.
+				wall_row = random.randint(y + 1, y + height - 1)
+				gap_col = random.randint(x, x + width - 1)
+				for col in range(x, x + width):
+					if col == gap_col:
+						continue
+					# Remove the horizontal connection between (wall_row-1, col) and (wall_row, col).
+					if wall_row - 1 < n_rows - 1:
+						connection_list[0, wall_row - 1, col] = False
+				# Recurse on the top and bottom subregions.
+				divide(x, y, width, wall_row - y)
+				divide(x, wall_row, width, y + height - wall_row)
+
+		# Begin the division on the full grid.
+		divide(0, 0, n_cols, n_rows)
+
+		if start_coord is None:
+			start_coord = tuple(np.random.randint(0, n) for n in grid_shape_)  # type: ignore[assignment]
+
+		generation_meta: dict = dict(
+			func_name="gen_recursive_division",
+			grid_shape=grid_shape_,
+			start_coord=start_coord,
+			algorithm="recursive_division",
+			fully_connected=True,
+		)
+		return LatticeMaze(
+			connection_list=connection_list, generation_meta=generation_meta
+		)
+
 
 # cant automatically populate this because it messes with pickling :(
 GENERATORS_MAP: dict[str, Callable[[Coord | CoordTup, Any], "LatticeMaze"]] = {
@@ -4585,6 +5034,8 @@ GENERATORS_MAP: dict[str, Callable[[Coord | CoordTup, Any], "LatticeMaze"]] = {
 	"gen_percolation": LatticeMazeGenerators.gen_percolation,
 	"gen_dfs_percolation": LatticeMazeGenerators.gen_dfs_percolation,
 	"gen_prim": LatticeMazeGenerators.gen_prim,
+	"gen_kruskal": LatticeMazeGenerators.gen_kruskal,
+	"gen_recursive_division": LatticeMazeGenerators.gen_recursive_division,
 }
 "mapping of generator names to generator functions, useful for loading `MazeDatasetConfig`"
 
@@ -6609,6 +7060,12 @@ class MazePlot:
 			self.ax.set_xlabel("col")
 			self.ax.set_ylabel("row")
 			self.ax.set_title(title)
+		else:
+			self.ax.set_xticks([])
+			self.ax.set_yticks([])
+			self.ax.set_xlabel("")
+			self.ax.set_ylabel("")
+			self.ax.axis("off")
 
 		# plot paths
 		if self.true_path is not None:
@@ -13985,6 +14442,9 @@ This package includes a variety of maze generation algorithms, including randomi
 |---|---|---|---|
 | ![Maze generated via percolation](docs/assets/maze_perc.png) |  ![Maze generated via constrained randomized depth first search](docs/assets/maze_dfs_constrained.png)  |  ![Maze with random heatmap](docs/assets/mazeplot_heatmap.png)  |  ![MazePlot with solution](docs/assets/mazeplot_path.png)  |
 
+
+You can view and search through a wide variety of example mazes here: [`understanding-search.github.io/maze-dataset/examples/maze_examples`](https://understanding-search.github.io/maze-dataset/examples/maze_examples.html)
+
 # Citing
 
 If you use this code in your research, please cite [our paper](http://arxiv.org/abs/2309.10498):
@@ -14198,6 +14658,11 @@ tokenizer-fst-check:
 	@echo "regen all tokenizers, check their names are in the fst"
 	...
 
+.PHONY: tokenizer-fst-check-small
+tokenizer-fst-check-small:
+	@echo "regen all tokenizers, check 1000 random ones"
+	...
+
 .PHONY: test-notebooks-muutils-convert
 test-notebooks-muutils-convert:
 	@echo "convert notebooks in $(NOTEBOOKS_DIR) using muutils.nbutils.convert_ipynb_to_script.py"
@@ -14219,7 +14684,7 @@ test-notebooks: test-notebooks-muutils test-notebooks-nbmake
 	...
 
 .PHONY: test
-test: clean test-unit test-notebooks-muutils tokenizer-fst-check
+test: clean test-unit test-notebooks-muutils tokenizer-fst-check-small
 	@echo "run all usual tests: unit, notebooks, and fst check (but not tokenizer-test-long)"
 	...
 
@@ -14397,12 +14862,47 @@ help: help-targets info
 	@echo -n ""
 	...
 
+.PHONY: paper-setup
+paper-setup: $(PAPER_PATH_INARA)/README.md
+	@echo "set up inara and packages for compiling the paper"
+	...
+
+.PHONY: paper-clean-dev
+paper-clean-dev:
+	@echo "clean up ephemeral files related to the paper"
+	...
+
+.PHONY: paper-clean
+paper-clean:
+	@echo "clean up paper files"
+	...
+
+.PHONY: paper-tex
+paper-tex:
+	@echo "compile the paper to tex"
+	...
+
+.PHONY: paper-pdf
+paper-pdf: paper-tex
+	@echo "compile the paper to pdf"
+	...
+
+.PHONY: paper-html
+paper-html:
+	@echo "compile the paper to html"
+	...
+
+.PHONY: paper
+paper: paper-clean paper-pdf paper-html
+	@echo "paper compiled to tex, pdf and html"
+	...
+
 ``````{ end_of_file="makefile" }
 
 ``````{ path="pyproject.toml"  }
 [project]
     name = "maze-dataset"
-    version = "1.3.0"
+    version = "1.3.1"
     description = "generating and working with datasets of mazes"
     authors = [
         { name = "Michael Ivanitskiy", email = "mivanits@umich.edu" },
@@ -14614,6 +15114,12 @@ help: help-targets info
 		# select = ["ICN001"]
 
 		[tool.ruff.lint.per-file-ignores]
+			"maze_dataset/generation/generators.py" = [
+				# none of this is for security
+				"S311",
+				# yes the generation functions are complicated
+				"C901",
+			]
 			"maze_dataset/tokenization/modular/*.py" = [
 				# TODO: lots of unused args in the tokenizer code
 				"ARG002"
@@ -14681,8 +15187,10 @@ help: help-targets info
     # These paths are relative to output_dir
     no_clean = [
         ".nojekyll",
-        "assets/",
+        "assets",
         "benchmarks",
+		"paper",
+		"resources",
 		"examples",
         # "resources/", # Templates, CSS, etc. this, or whatever is specified as DOCS_RESOURCES_DIR in makefile will always be preserved
     ]
