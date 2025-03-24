@@ -240,6 +240,12 @@ class MazeDataset(GPTDataset[MazeDatasetConfig]):
 		# TODO: compare hashes of data instead of the data itself?
 		return self.cfg == other.cfg and self.mazes == other.mazes
 
+	def assert_equal(self, other: "MazeDataset") -> None:
+		"""assert that two datasets are equal"""
+		assert isinstance(other, MazeDataset)
+		assert self.cfg == other.cfg, f"{self.cfg.diff(other.cfg) = }"
+		assert self.mazes == other.mazes, f"{self.mazes = }, {other.mazes = }"
+
 	@classmethod
 	def generate(
 		cls,

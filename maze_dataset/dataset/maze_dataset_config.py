@@ -171,19 +171,22 @@ class _MazeDatasetConfig_base(GPTDatasetConfig):  # noqa: N801
 		"""return the maximum of the grid shape"""
 		return max(self.grid_shape)
 
-	def _serialize_base(self) -> dict:
+	def _serialize_base(self, applied_filters__skip__collect_generation_meta: bool = True) -> dict:
 		"""serialize the base config for user in `stable_hash_cfg()` and `to_fname()`
 
 		- note that the _fname_loaded will always be `None` to avoid infinite recursion
-		- note that we **do not** include information about metadata collection here,
+		- note that we **do not** by default include information about metadata collection here,
 		since otherwise loading a dataset that we minified by collecting the metadata would be impossible
+		but for comparing things, we do store it when serializing properly by setting
+		`applied_filters__skip__collect_generation_meta=False`
 		"""
 		serialized: dict = _MazeDatasetConfig_base.serialize(self)
-		serialized["applied_filters"] = [
-			x
-			for x in serialized["applied_filters"]
-			if x.get("name", None) != "collect_generation_meta"
-		]
+		if applied_filters__skip__collect_generation_meta:
+			serialized["applied_filters"] = [
+				x
+				for x in serialized["applied_filters"]
+				if x.get("name", None) != "collect_generation_meta"
+			]
 		return serialized
 
 	def stable_hash_cfg(self) -> int:
@@ -216,10 +219,6 @@ class MazeDatasetConfig(_MazeDatasetConfig_base):  # type: ignore[misc]
 		"""return the version of the config. added in maze_dataset v1.3.0, previous versions had no dataset config"""
 		return "1.0"
 
-	def _serialize_base(self) -> dict:
-		"""serialize the base config"""
-		return super()._serialize_base()
-
 	@property
 	def versions(self) -> dict:
 		"""return the versions of the config and the maze_dataset"""
@@ -231,7 +230,7 @@ class MazeDatasetConfig(_MazeDatasetConfig_base):  # type: ignore[misc]
 	def serialize(self) -> dict:
 		"serialize the MazeDatasetConfig with all fields and fname"
 		return {
-			**self._serialize_base(),
+			**self._serialize_base(applied_filters__skip__collect_generation_meta=False),
 			"fname": self.to_fname(),
 			"versions": self.versions,
 		}

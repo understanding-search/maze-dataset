@@ -94,7 +94,9 @@ def test_serialize_load():
 )
 def test_serialize_load_minimal(config):
 	d = MazeDataset.generate(config, gen_parallel=False)
-	assert MazeDataset.load(d._serialize_minimal()) == d
+	d_loaded = MazeDataset.load(d._serialize_minimal())
+	d_loaded.assert_equal(d)
+	assert d_loaded == d
 
 
 @pytest.mark.parametrize(
