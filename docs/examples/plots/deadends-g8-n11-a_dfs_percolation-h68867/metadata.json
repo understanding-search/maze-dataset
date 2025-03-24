@@ -11,11 +11,13 @@
     "endpoints_not_equal": true,
     "except_on_no_valid_endpoint": false
   },
-  "description": "DFS percolation with deadend endpoints",
+  "description": "DFS percolation (p=0.3) with deadend endpoints",
   "tags": [
+    "algo:dfs_percolation",
     "dfs",
     "percolation",
-    "deadend_endpoints"
+    "deadend_endpoints",
+    "grid:8"
   ],
   "config": {
     "__muutils_format__": "MazeDatasetConfig(SerializableDataclass)",

@@ -3,10 +3,11 @@
   "grid_n": 8,
   "maze_ctor": "gen_wilson",
   "maze_ctor_kwargs": {},
-  "description": "Wilson's algorithm (8x8) - unbiased random maze",
+  "description": "Basic WILSON maze (8x8)",
   "tags": [
-    "wilson",
-    "uniform_random"
+    "algo:wilson",
+    "basic",
+    "grid:8"
   ],
   "config": {
     "__muutils_format__": "MazeDatasetConfig(SerializableDataclass)",

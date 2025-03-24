@@ -7,8 +7,10 @@
   },
   "description": "Pure percolation (p=0.5) (8x8)",
   "tags": [
+    "algo:percolation",
     "percolation",
-    "p=0.5"
+    "percolation:0.5",
+    "grid:8"
   ],
   "config": {
     "__muutils_format__": "MazeDatasetConfig(SerializableDataclass)",

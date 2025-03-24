@@ -7,9 +7,11 @@
   },
   "description": "DFS with percolation (p=0.5) (5x5)",
   "tags": [
+    "algo:dfs_percolation",
     "dfs",
     "percolation",
-    "p=0.5"
+    "percolation:0.5",
+    "grid:5"
   ],
   "config": {
     "__muutils_format__": "MazeDatasetConfig(SerializableDataclass)",

@@ -3,10 +3,11 @@
   "grid_n": 12,
   "maze_ctor": "gen_wilson",
   "maze_ctor_kwargs": {},
-  "description": "Wilson's algorithm (12x12) - unbiased random maze",
+  "description": "Basic WILSON maze (12x12)",
   "tags": [
-    "wilson",
-    "uniform_random"
+    "algo:wilson",
+    "basic",
+    "grid:12"
   ],
   "config": {
     "__muutils_format__": "MazeDatasetConfig(SerializableDataclass)",
