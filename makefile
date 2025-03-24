@@ -1597,6 +1597,11 @@ example-gen:
 	$(PYTHON) docs/examples/generate_examples.py
 
 
+.PHONY: regenerate-when-cfg-hashes-changed
+regenerate-when-cfg-hashes-changed: example-clean example-gen benchmark-success
+	@echo "regenerate everything we need to when the process by which we hash configs might have changed -- like if you add a new attribute"
+
+
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ########  ##     ## #### ##       ########
