@@ -246,11 +246,10 @@ class MazeDataset(GPTDataset[MazeDatasetConfig]):
 		gen_parallel: bool = False,
 		pool_kwargs: dict | None = None,
 		verbose: bool = False,
-		**kwargs,
+		# TODO: what to do when unexpected kwargs are passed?
+		**kwargs,  # noqa: ARG003
 	) -> "MazeDataset":
 		"""Generate a maze dataset given a config and some generation parameters"""
-		assert not kwargs, f"unexpected kwargs: {kwargs = }"
-
 		# Copy the config to avoid modifying the original
 		cfg_cpy: MazeDatasetConfig = MazeDatasetConfig.load(
 			json.loads(json.dumps(cfg.serialize())),

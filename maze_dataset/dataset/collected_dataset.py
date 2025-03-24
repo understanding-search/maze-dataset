@@ -221,6 +221,8 @@ class MazeDatasetCollection(GPTDataset):
 		for dataset in self.maze_datasets:
 			dataset.update_self_config()
 
+		self.cfg.maze_dataset_configs = [dataset.cfg for dataset in self.maze_datasets]
+
 
 MazeDatasetCollectionConfig._dataset_class = MazeDatasetCollection  # type: ignore[method-assign, assignment]
 
