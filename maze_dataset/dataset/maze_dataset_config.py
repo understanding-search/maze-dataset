@@ -171,7 +171,9 @@ class _MazeDatasetConfig_base(GPTDatasetConfig):  # noqa: N801
 		"""return the maximum of the grid shape"""
 		return max(self.grid_shape)
 
-	def _serialize_base(self, applied_filters__skip__collect_generation_meta: bool = True) -> dict:
+	def _serialize_base(
+		self, applied_filters__skip__collect_generation_meta: bool = True
+	) -> dict:
 		"""serialize the base config for user in `stable_hash_cfg()` and `to_fname()`
 
 		- note that the _fname_loaded will always be `None` to avoid infinite recursion
@@ -230,7 +232,9 @@ class MazeDatasetConfig(_MazeDatasetConfig_base):  # type: ignore[misc]
 	def serialize(self) -> dict:
 		"serialize the MazeDatasetConfig with all fields and fname"
 		return {
-			**self._serialize_base(applied_filters__skip__collect_generation_meta=False),
+			**self._serialize_base(
+				applied_filters__skip__collect_generation_meta=False
+			),
 			"fname": self.to_fname(),
 			"versions": self.versions,
 		}
