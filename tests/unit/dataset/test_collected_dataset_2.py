@@ -288,8 +288,9 @@ def test_different_generation_methods():
 	assert len(collection) == 4
 
 	# Check that the mazes are of different types based on their generation metadata
+	# type ignore here since it might be None, but if its None that will cause an error anyways
 	# For DFS
-	assert collection[0].generation_meta.get("func_name") == "gen_dfs"
+	assert collection[0].generation_meta.get("func_name") == "gen_dfs"  # type: ignore[union-attr]
 	# For percolation
-	assert collection[2].generation_meta.get("func_name") == "gen_percolation"
-	assert collection[2].generation_meta.get("percolation_p") == 0.7
+	assert collection[2].generation_meta.get("func_name") == "gen_percolation"  # type: ignore[union-attr]
+	assert collection[2].generation_meta.get("percolation_p") == 0.7  # type: ignore[union-attr]

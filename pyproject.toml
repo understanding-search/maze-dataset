@@ -111,8 +111,8 @@
     # generate this exclude with `make typing-report`
     exclude = [
         # high priority
-		"tests/unit/maze_dataset/processing/test_collect_gen_metadata.py", # 3
-		"tests/unit/maze_dataset/generation/test_latticemaze.py", # 7
+		"tests/unit/processing/test_collect_gen_metadata.py", # 3
+		"tests/unit/generation/test_latticemaze.py", # 7
 		"maze_dataset/constants.py", # 9
 		"maze_dataset/utils.py", # 19
 		# tokenization
@@ -124,10 +124,10 @@
 		# low priority
 		"maze_dataset/plotting/plot_maze.py", # 11
 		"tests/all_tokenizers/test_all_tokenizers.py", # 12
-		"tests/unit/maze_dataset/generation/test_maze_dataset.py", # 16
-		"tests/unit/maze_dataset/tokenization/test_token_utils.py", # 16
-		"tests/unit/maze_dataset/tokenization/test_tokenizer.py", # 45
-		"tests/unit/maze_dataset/processing/test_get_forking_path_points.py", # 58
+		"tests/unit/generation/test_maze_dataset.py", # 16
+		"tests/unit/tokenization/test_token_utils.py", # 16
+		"tests/unit/tokenization/test_tokenizer.py", # 45
+		"tests/unit/processing/test_get_forking_path_points.py", # 58
 		# extra low priority (test temp, generated from notebooks)
 		"tests/_temp/*",
     ]
