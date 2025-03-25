@@ -35,6 +35,64 @@ bibliography: refs.bib
     
 # Summary
 
+Solving mazes is a classic problem in computer science and artificial intelligence, and humans have been constructing mazes for thousands of years. Although finding the shortest path through a maze is a solved problem, this makes it an excellent testbed for studying how machine learning algorithms solve problems and represent spatial information. In this paper, we introduce `maze-dataset`, a Python library for generating, processing, and visualizing datasets of mazes. This library supports a variety of maze generation algorithms providing both mazes with loops and "perfect" mazes without them. These generation algorithms can be configured with various parameters, and the resulting mazes can be filtered to satisfy a desired property. Also provided are tools for converting mazes to and from various formats, such as rasterized images and tokenized text sequences, making it suitable for training or evaluating convolutional neural networks and autoregressive transformer models, as well as various visualization tools. As well as providing a simple interface for generating, storing, and loading these datasets, `maze-dataset` is extensively tested, type hinted, benchmarked, and documented.
+
+# Statement of Need
+
+The generation of mazes with a given algorithm is not inherently a complex task, but the ability to seamlessly switch out algorithms, modify algorithm parameters, or filter by desired properties all while preserving the ability to convert between different representations of the maze is not trivial. This library aims to greatly streamline the process of generating and working with datasets of mazes that can be described as subgraphs of an $n \times n$ lattice with boolean connections and, optionally, start and end points that are nodes in the graph. Furthermore, we place emphasis on a wide variety of possible text output formats aimed at evaluating the spatial reasoning capabilities of Large Language Models and other text-based transformer models.
+
+
+## Related Works
+
+A multitude of public and open-source software packages exist for generating mazes [@easy_to_hard; @gh_Ehsan_2022; @gh_Nemeth_2019]. However, nearly all of these packages generate and store mazes in a form that is not optimized for storage space or, more importantly, computer readability. The mazes produces by other packages are usually rasterized or in some form of image, rather than the underlying graph structure, and this makes it difficult to work with these datasets.
+
+- Most prior works provide mazes in some kind of image or raster format, which is not suitable for training autoregressive text-based transformer models -- a key usage case this work seeks to enable. However, we still provide a variety of similar output formats:
+  - Our `MazePlot` class provides a feature-rich plotting utility with support for multiple paths, heatmaps over positions, and more. This is similar to the outputs of [@mdl-suite, @mathematica-maze, @mazegenerator-net]
+  - we also include the `RasterizedMazeDataset` class, utilizing `as_pixels()`, in our codebase, which can exactly mimic the outputs provided in `easy-to-hard-data`[@easy_to_hard].
+  - Our `as_ascii()` method provides a format similar to that used in [@eval-gpt-visual, @oppenheimj2018maze].
+
+- Our package provides a selection of maze generation algorithms, which all write to a single unified format. Most output formats are reversible, and operate to and from this unified format.
+
+- The text format provided by `SolvedMaze(...).as_tokens()` is similar to that of [@eval-LLM-graphs], but provides over 5.8 million unique formats for converting mazes to a text stream.
+
+- For rigorous investigations of the response of a model to various distributional shifts, preserving metadata about the generation algorithm with the dataset itself is essential. To this end, our package efficiently stores the dataset along with its metadata in a single human-readable file [@zanj]. This metadata is loaded when the dataset is retrieved from disk and makes it simple to understand how exactly each maze was generated.
+
+- Storing mazes as images is not only difficult to work with, but also inefficient. Directly storing adjacency matrices is also inefficient as subgraphs of the lattice are sparse. Storing adjacency lists can be efficient, but comes with a higher lookup cost and possible high comparison cost. We use a simple, efficient representation of mazes that is optimized for subgraphs of a $d$-dimensional finite lattice.
+
+
+# Features and Implementation
+
+
+# Usage in Research
+
+  
+# Acknowledgements
+
+This work was partially supported by and many of the authors were brought together by AI Safety Camp and AI Safety Support.
+This work was partially funded by National Science Foundation awards DMS-2110745 and DMS-2309810. We are also grateful to LTFF and FAR Labs for hosting three of the authors for a Residency Visit, and to various members of FAR’s technical staff for their advice.
+We thank the Mines Optimization and Deep Learning group (MODL) for fruitful discussions. We also thank Michael Rosenberg for recommending the usage of Finite State Transducers for storing tokenizer validation information.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Abstract
+
 Understanding how machine learning models respond to distributional shifts is a key research challenge. 
 Mazes serve as an excellent testbed for this problem due to varied generation algorithms offering a nuanced platform to simulate both subtle and pronounced distributional shifts. 
 To enable systematic investigations of model behavior on out-of-distribution maze data, we present `maze-dataset`, a comprehensive library for generating, processing, and visualizing datasets consisting of maze-solving tasks. 
@@ -225,14 +283,7 @@ Parallelization is implemented via the `multiprocessing` module in the Python st
 
 ## Relation to Existing Works {#relation-work}
 
-As mentioned in the introduction, a multitude of public and open-source software packages exist for generating mazes [@easy_to_hard; @gh_Ehsan_2022; @gh_Nemeth_2019]. However, our package provides more flexibility and efficiency in the following ways:
-
-- For rigorous investigations of the response of a model to various distributional shifts, preserving metadata about the generation algorithm with the dataset itself is essential. To this end, our package efficiently stores the dataset along with its metadata in a single human-readable file [@zanj]. This metadata is loaded when the dataset is retrieved from disk and reduces the complexity of discerning the parameters under which a dataset was created.
-- Prior works provide maze datasets in only a rasterized format, which is not suitable for training autoregressive text-based transformer models. As discussed in Section [Visual Output Formats](#visual-output-formats) and Section [Tokenized Output Formats](#tokenized-output-formats), our package provides these different formats natively.
-- Our package provides a selection of maze generation algorithms, which all write to a single unified format. All output formats are reversible, and operate to and from this unified format.
-
-As mentioned in Section [Training](#training), we also include the `RasterizedMazeDataset` class in our codebase, which can exactly mimic the outputs provided in `easy-to-hard-data`[@easy_to_hard]. Our `as_ascii()` method provides a format similar to that used in [@eval-gpt-visual]. The text format provided by `as_tokens()` is similar to that of [@eval-LLM-graphs], but provides a custom tokenization scheme.
-
+As mentioned in the introduction, 
 ## Limitations of `maze-dataset` {#limitations}
 
 For simplicity, the package primarily supports mazes that are sub-graphs of a 2-dimensional rectangular lattice. Some support for higher-dimensional lattices is present, but not all output formats are adapted for higher dimensional mazes.
