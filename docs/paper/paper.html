@@ -5,7 +5,7 @@
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <meta name="author" content="Michael Igorevich Ivanitskiy, Aaron
-Sandoval, Alex F. Spies, Rusheb Shah, Brandon Knutson, Cecilia Diniz
+Sandoval, Alex F. Spies, Rusheb Shah, Brandon Knutson, , Cecilia Diniz
 Behn, Samy Wu Fung" />
   <title>A Configurable Library for Generating and Manipulating Maze Datasets</title>
   <style>
@@ -261,32 +261,48 @@ Maze Datasets</h1>
 <p class="author">true</p>
 <p class="author">true</p>
 <p class="author">true</p>
+<p class="author">true</p>
 <p class="date">March 2025</p>
 </header>
 <h1 id="summary">Summary</h1>
-<p>Understanding how machine learning models respond to distributional
-shifts and different input representations is a key research challenge.
-Mazes serve as an excellent testbed for this problem due to the degree
-of control we have over quantifiable distributional shifts. To enable
-systematic investigations of model behavior on maze tasks, we present
-<code>maze-dataset</code>, a comprehensive library for generating,
-processing, visualizing, and tokenizing datasets consisting of
-maze-solving tasks. With this library, researchers can easily create
-datasets and have extensive control over the generation algorithm used,
-the parameters fed to the algorithm of choice, and the filters that
-generated mazes must satisfy. Furthermore, this library supports
-multiple output formats, including rasterized and a large number of
-text-based formats, catering to convolutional neural networks and
-autoregressive transformer models. These formats, along with tools for
-visualizing and converting between them, ensure versatility and
-adaptability in research applications.</p>
-<h1 id="introduction">Introduction</h1>
-<p>Out-of-distribution generalization is a critical challenge in modern
-machine learning (ML) research. For interpretability and behavioral
-research in this area, training on algorithmic tasks offers benefits by
-allowing systematic data generation and task decomposition, as well as
-simplifying the process of circuit discovery <span class="citation"
-data-cites="interpretability-survery">(<a
+<p>Solving mazes is a classic problem in computer science and artificial
+intelligence, and humans have been constructing mazes for thousands of
+years. Although finding the shortest path through a maze is a solved
+problem, this makes it an excellent testbed for studying how machine
+learning algorithms solve problems and represent spatial information. In
+this paper, we introduce <code>maze-dataset</code>, a Python library for
+generating, processing, and visualizing datasets of mazes. This library
+supports a variety of maze generation algorithms providing both mazes
+with loops and “perfect” mazes without them. These generation algorithms
+can be configured with various parameters, and the resulting mazes can
+be filtered to satisfy a desired property. Also provided are tools for
+converting mazes to and from various formats, such as rasterized images
+and tokenized text sequences, making it suitable for training or
+evaluating convolutional neural networks and autoregressive transformer
+models, as well as various visualization tools. As well as providing a
+simple interface for generating, storing, and loading these datasets,
+<code>maze-dataset</code> is extensively tested, type hinted,
+benchmarked, and documented.</p>
+<p><strong>TODO: mention the examples, put in a figure
+https://understanding-search.github.io/maze-dataset/examples/maze_examples.html</strong>
+<!-- ![Example mazes from various algorithms. Left to right: randomized depth-first search (RDFS), RDFS without forks, constrained RDFS, Wilson's [@wilson], RDFS with percolation (p=0.1), RDFS with percolation (p=0.4), random stack RDFS.](figures/demo-dataset.pdf){width=90%} --></p>
+<h1 id="statement-of-need">Statement of Need</h1>
+<p>The generation of mazes with a given algorithm is not inherently a
+complex task, but the ability to seamlessly switch out algorithms,
+modify algorithm parameters, or filter by desired properties all while
+preserving the ability to convert between different representations of
+the maze is not trivial. This library aims to greatly streamline the
+process of generating and working with datasets of mazes that can be
+described as subgraphs of an <span
+class="math inline"><em>n</em> × <em>n</em></span> lattice with boolean
+connections and, optionally, start and end points that are nodes in the
+graph. Furthermore, we place emphasis on a wide variety of possible text
+output formats aimed at evaluating the spatial reasoning capabilities of
+Large Language Models and other text-based transformer models.</p>
+<p>For interpretability and behavioral research, algorithmic tasks offer
+benefits by allowing systematic data generation and task decomposition,
+as well as simplifying the process of circuit discovery <span
+class="citation" data-cites="interpretability-survery">(<a
 href="#ref-interpretability-survery" role="doc-biblioref">Räuker et al.,
 2023</a>)</span>. Although mazes are well suited for these
 investigations, we have found that existing maze generation packages
@@ -303,44 +319,90 @@ generation algorithms that provide fine-grained control of generation
 parameters and the ability to easily transform between multiple
 representations of the mazes (Images, Textual, Tokenized) for training
 and testing models.</p>
-<p>This work aims to facilitate deeper research into generalization and
-interpretability by addressing these limitations. We introduce <a
-href="https://github.com/understanding-search/maze-dataset"><code>maze-dataset</code></a>,
-an accessible Python package <span class="citation"
-data-cites="maze-dataset-github">(<a href="#ref-maze-dataset-github"
-role="doc-biblioref">M. I. Ivanitskiy et al., 2023a</a>)</span>. This
-package offers flexible configuration options for maze dataset
-generation, allowing users to select from a range of algorithms and
-adjust corresponding parameters (Section <a
-href="#generation">Generation</a>). Furthermore, this package supports
-various output formats tailored to different ML architectures (Section
-<a href="#visual-output-formats">Visual Output Formats</a>, Section <a
-href="#tokenized-output-formats">Tokenized Output Formats</a>).</p>
-<p>TODO: links to docs, not just github</p>
-<figure>
-<span class="image placeholder"
-data-original-image-src="figures/demo-dataset.pdf"
-data-original-image-title="" width="90%">Example mazes from various
-algorithms. Left to right: randomized depth-first search (RDFS), RDFS
-without forks, constrained RDFS, Wilson’s <span class="citation"
-data-cites="wilson">(<a href="#ref-wilson" role="doc-biblioref">Wilson,
-1996</a>)</span>, RDFS with percolation (p=0.1), RDFS with percolation
-(p=0.4), random stack RDFS.</span>
-<figcaption>Example mazes from various algorithms. Left to right:
-randomized depth-first search (RDFS), RDFS without forks, constrained
-RDFS, Wilson’s <span class="citation" data-cites="wilson">(<a
-href="#ref-wilson" role="doc-biblioref">Wilson, 1996</a>)</span>, RDFS
-with percolation (p=0.1), RDFS with percolation (p=0.4), random stack
-RDFS.</figcaption>
-</figure>
-<h1 id="generation">Generation and Usage</h1>
+<h2 id="related-works">Related Works</h2>
+<p>A multitude of public and open-source software packages exist for
+generating mazes <span class="citation"
+data-cites="easy_to_hard gh_Ehsan_2022 gh_Nemeth_2019">(<a
+href="#ref-gh_Ehsan_2022" role="doc-biblioref">Ehsan, 2022</a>; <a
+href="#ref-gh_Nemeth_2019" role="doc-biblioref">Németh, 2019</a>; <a
+href="#ref-easy_to_hard" role="doc-biblioref">Schwarzschild, Borgnia,
+Gupta, Bansal, et al., 2021</a>)</span>. However, nearly all of these
+packages generate and store mazes in a form that is not optimized for
+storage space or, more importantly, computer readability. The mazes
+produces by other packages are usually rasterized or in some form of
+image, rather than the underlying graph structure, and this makes it
+difficult to work with these datasets.</p>
+<ul>
+<li><p>Most prior works provide mazes in some kind of image or raster
+format, which is not suitable for training autoregressive text-based
+transformer models – a key usage case this work seeks to enable.
+However, we still provide a variety of similar output formats:</p>
+<ul>
+<li>we also include the <code>RasterizedMazeDataset</code> class,
+utilizing <code>as_pixels()</code>, in our codebase, which can exactly
+mimic the outputs provided in <code>easy-to-hard-data</code><span
+class="citation" data-cites="easy_to_hard">(<a href="#ref-easy_to_hard"
+role="doc-biblioref">Schwarzschild, Borgnia, Gupta, Bansal, et al.,
+2021</a>)</span> and can be configured to be similar to the outputs of
+<span class="citation" data-cites="gh_Nemeth_2019">(<a
+href="#ref-gh_Nemeth_2019" role="doc-biblioref">Németh,
+2019</a>)</span>.</li>
+<li>Our <code>as_ascii()</code> method provides a format similar to that
+used in <span class="citation" data-cites="eval-gpt-visual">Oppenheim
+(<a href="#ref-gh-oppenheimj2018maze"
+role="doc-biblioref">2018</a>)</span>.</li>
+<li>Our <code>MazePlot</code> class provides a feature-rich plotting
+utility with support for multiple paths, heatmaps over positions, and
+more. This is similar to the outputs of <span class="citation"
+data-cites="mdl-suite">Ehsan (<a href="#ref-gh_Ehsan_2022"
+role="doc-biblioref">2022</a>)</span></li>
+</ul></li>
+<li><p>The text format provided by
+<code>SolvedMaze(...).as_tokens()</code> is similar to that of <span
+class="citation" data-cites="eval-LLM-graphs">(<a
+href="#ref-eval-LLM-graphs" role="doc-biblioref">Liu &amp; Wu,
+2023</a>)</span>, but provides over 5.8 million unique formats for
+converting mazes to a text stream. We maintain a single underlying
+format, meaning that the same maze can be turned into a variety of text
+streams to assess how the precise format of the text stream affects the
+model.</p></li>
+<li><p>For rigorous investigations of the response of a model to various
+distributional shifts, preserving metadata about the generation
+algorithm with the dataset itself is essential. To this end, our package
+efficiently stores the dataset along with its metadata in a single
+human-readable file <span class="citation" data-cites="zanj">(<a
+href="#ref-zanj" role="doc-biblioref">M. Ivanitskiy, n.d.</a>)</span>.
+This metadata is loaded when the dataset is retrieved from disk and
+makes it simple to understand how exactly each maze was generated. As
+far as we are aware, no existing packages do this reliably.</p></li>
+<li><p>Storing mazes as images is not only difficult to work with, but
+also inefficient. Directly storing adjacency matrices is also
+inefficient as subgraphs of the lattice are sparse. Storing adjacency
+lists can be efficient, but comes with a higher lookup cost and possible
+high comparison cost. We use a simple, efficient representation of mazes
+that is optimized for subgraphs of a <span
+class="math inline"><em>d</em></span>-dimensional finite lattice that we
+do not believe is used in any existing maze generation package.</p></li>
+<li><p>Our package is easily installable with source code freely
+available. It is extensively tested, type hinted, benchmarked, and
+documented. Many other maze generation packages lack this level of rigor
+and scope, and some <span class="citation" data-cites="ayaz2008maze">(<a
+href="#ref-ayaz2008maze" role="doc-biblioref">Ayaz et al.,
+2008</a>)</span> appear to simply no longer be accessible.</p></li>
+</ul>
+<h1 id="features-and-implementation">Features and Implementation</h1>
+<h2 id="generation">Generation and Usage</h2>
+<p><strong>TODO: JOSS says don’t document the API itself. we should talk
+about the capabilities, but just rewrite this to link to the
+documentation.</strong></p>
 <p>Our package can be installed from <a
 href="https://pypi.org/project/maze-dataset/">PyPi</a> via
 <code>pip install maze-dataset</code>, or directly from the <a
 href="https://github.com/understanding-search/maze-dataset">git
 repository</a> <span class="citation"
 data-cites="maze-dataset-github">(<a href="#ref-maze-dataset-github"
-role="doc-biblioref">M. I. Ivanitskiy et al., 2023a</a>)</span>.</p>
+role="doc-biblioref">Michael I. Ivanitskiy et al.,
+2023a</a>)</span>.</p>
 <p>To create a dataset, we first create a <code>MazeDatasetConfig</code>
 configuration object, which specifies the seed, number, and size of
 mazes, as well as the generation algorithm and its corresponding
@@ -367,10 +429,10 @@ runtime or load an existing dataset, 2) if and how to parallelize
 generation, and 3) where to store the generated dataset. Full
 documentation of configuration options is available in our repository
 <span class="citation" data-cites="maze-dataset-github">(<a
-href="#ref-maze-dataset-github" role="doc-biblioref">M. I. Ivanitskiy et
-al., 2023a</a>)</span>. Available maze generation algorithms are static
-methods of the <code>LatticeMazeGenerators</code> class and include the
-following:</p>
+href="#ref-maze-dataset-github" role="doc-biblioref">Michael I.
+Ivanitskiy et al., 2023a</a>)</span>. Available maze generation
+algorithms are static methods of the <code>LatticeMazeGenerators</code>
+class and include the following:</p>
 <ul>
 <li><code>gen_dfs</code> <strong>(randomized depth-first
 search)</strong>: Parameters can be passed to constrain the number of
@@ -641,7 +703,7 @@ Evaluation</h2>
 <p>Examples of usage of this dataset to train autoregressive
 transformers can be found in our <code>maze-transformer</code> library
 <span class="citation" data-cites="maze-transformer-github">(<a
-href="#ref-maze-transformer-github" role="doc-biblioref">M. I.
+href="#ref-maze-transformer-github" role="doc-biblioref">Michael I.
 Ivanitskiy et al., 2023b</a>)</span>. Other tokenization and vocabulary
 schemes are also included, such as representing each coordinate as a
 pair of <span class="math inline"><em>i</em>, <em>j</em></span> index
@@ -820,7 +882,7 @@ parallelization is disabled.</figcaption>
 <h1 id="implementation">Implementation</h1>
 <p>We refer to our GitHub repository <span class="citation"
 data-cites="maze-dataset-github">(<a href="#ref-maze-dataset-github"
-role="doc-biblioref">M. I. Ivanitskiy et al., 2023a</a>)</span> for
+role="doc-biblioref">Michael I. Ivanitskiy et al., 2023a</a>)</span> for
 documentation and up-to-date implementation details.</p>
 <p>This package utilizes a simple, efficient representation of mazes.
 Using an adjacency list to represent mazes would lead to a poor lookup
@@ -857,50 +919,6 @@ the shortest path between them.</p>
 module in the Python standard library, and parallel generation can be
 controlled via keyword arguments to the
 <code>MazeDataset.from_config()</code> function.</p>
-<h2 id="relation-work">Relation to Existing Works</h2>
-<p>As mentioned in the introduction, a multitude of public and
-open-source software packages exist for generating mazes <span
-class="citation"
-data-cites="easy_to_hard gh_Ehsan_2022 gh_Nemeth_2019">(<a
-href="#ref-gh_Ehsan_2022" role="doc-biblioref">Ehsan, 2022</a>; <a
-href="#ref-gh_Nemeth_2019" role="doc-biblioref">Németh, 2019</a>; <a
-href="#ref-easy_to_hard" role="doc-biblioref">Schwarzschild, Borgnia,
-Gupta, Bansal, et al., 2021</a>)</span>. However, our package provides
-more flexibility and efficiency in the following ways:</p>
-<ul>
-<li>For rigorous investigations of the response of a model to various
-distributional shifts, preserving metadata about the generation
-algorithm with the dataset itself is essential. To this end, our package
-efficiently stores the dataset along with its metadata in a single
-human-readable file <span class="citation" data-cites="zanj">(<a
-href="#ref-zanj" role="doc-biblioref">M. Ivanitskiy, n.d.</a>)</span>.
-This metadata is loaded when the dataset is retrieved from disk and
-reduces the complexity of discerning the parameters under which a
-dataset was created.</li>
-<li>Prior works provide maze datasets in only a rasterized format, which
-is not suitable for training autoregressive text-based transformer
-models. As discussed in Section <a href="#visual-output-formats">Visual
-Output Formats</a> and Section <a
-href="#tokenized-output-formats">Tokenized Output Formats</a>, our
-package provides these different formats natively.</li>
-<li>Our package provides a selection of maze generation algorithms,
-which all write to a single unified format. All output formats are
-reversible, and operate to and from this unified format.</li>
-</ul>
-<p>As mentioned in Section <a href="#training">Training</a>, we also
-include the <code>RasterizedMazeDataset</code> class in our codebase,
-which can exactly mimic the outputs provided in
-<code>easy-to-hard-data</code><span class="citation"
-data-cites="easy_to_hard">(<a href="#ref-easy_to_hard"
-role="doc-biblioref">Schwarzschild, Borgnia, Gupta, Bansal, et al.,
-2021</a>)</span>. Our <code>as_ascii()</code> method provides a format
-similar to that used in <span class="citation"
-data-cites="eval-gpt-visual">(<a href="#ref-eval-gpt-visual"
-role="doc-biblioref">Singla, 2023</a>)</span>. The text format provided
-by <code>as_tokens()</code> is similar to that of <span class="citation"
-data-cites="eval-LLM-graphs">(<a href="#ref-eval-LLM-graphs"
-role="doc-biblioref">Liu &amp; Wu, 2023</a>)</span>, but provides a
-custom tokenization scheme.</p>
 <h2 id="limitations">Limitations of <code>maze-dataset</code></h2>
 <p>For simplicity, the package primarily supports mazes that are
 sub-graphs of a 2-dimensional rectangular lattice. Some support for
@@ -908,18 +926,59 @@ higher-dimensional lattices is present, but not all output formats are
 adapted for higher dimensional mazes. <a
 href="#implementation-implementation">Implementation</a> <a
 href="#implementation-implementation">Implementation</a></p>
+<h1 id="usage-in-research">Usage in Research</h1>
+<p>This package was originally built for the needs of the <span
+class="citation" data-cites="maze-transformer-github">(<a
+href="#ref-maze-transformer-github" role="doc-biblioref">Michael I.
+Ivanitskiy et al., 2023b</a>)</span> project, which aims to investigate
+spatial planning and world models in autoregressive transformer models
+trained on mazes <span class="citation"
+data-cites="ivanitskiy2023structuredworldreps">Spies et al. (<a
+href="#ref-spies2024causalworldmodels"
+role="doc-biblioref">2024</a>)</span>. This project has also adapted
+itself to be useful for work on understanding the mechanisms by which
+recurrent convolutional and implicit networks <span class="citation"
+data-cites="fung2022jfb">(<a href="#ref-fung2022jfb"
+role="doc-biblioref">Fung et al., 2022</a>)</span> solve mazes given a
+rasterized view <span class="citation"
+data-cites="knutson2024logicalextrapolation">(<a
+href="#ref-knutson2024logicalextrapolation" role="doc-biblioref">Knutson
+et al., 2024</a>)</span>, and for this we match the output format of
+<span class="citation" data-cites="easy_to_hard">(<a
+href="#ref-easy_to_hard" role="doc-biblioref">Schwarzschild, Borgnia,
+Gupta, Bansal, et al., 2021</a>)</span>.</p>
+<p>This package has also been utilized in work by other groups:</p>
+<ul>
+<li><p><span class="citation" data-cites="nolte2024multistep">(<a
+href="#ref-nolte2024multistep" role="doc-biblioref">Nolte et al.,
+2024</a>)</span> use <code>maze-dataset</code> to compare the
+effectiveness of transformers trained with the MLM-<span
+class="math inline">𝒰</span> <span class="citation"
+data-cites="MLMU-kitouni2024factorization">(<a
+href="#ref-MLMU-kitouni2024factorization" role="doc-biblioref">Kitouni
+et al., 2024</a>)</span> multistep prediction objective against standard
+autoregressive training for multi-step planning on our maze
+task.</p></li>
+<li><p><span class="citation" data-cites="wang2024imperative">(<a
+href="#ref-wang2024imperative" role="doc-biblioref">Wang et al.,
+2024</a>)</span> and <span class="citation"
+data-cites="chen2024iaimperative">(<a href="#ref-chen2024iaimperative"
+role="doc-biblioref">Chen et al., 2024</a>)</span> use
+<code>maze-dataset</code> to study the effectiveness of imperative
+learning</p></li>
+</ul>
 <h1 id="conclusion">Conclusion</h1>
 <p>The <a
 href="https://github.com/understanding-search/maze-dataset"><code>maze-dataset</code></a>
 library <span class="citation" data-cites="maze-dataset-github">(<a
-href="#ref-maze-dataset-github" role="doc-biblioref">M. I. Ivanitskiy et
-al., 2023a</a>)</span> introduced in this paper provides a flexible and
-extensible toolkit for generating, processing, and analyzing maze
-datasets. By supporting various procedural generation algorithms and
-conversion utilities, it enables the creation of mazes with customizable
-properties to suit diverse research needs. Planned improvements to the
-<code>maze-dataset</code> include adding more generation algorithms
-(such as Prim’s algorithm <span class="citation"
+href="#ref-maze-dataset-github" role="doc-biblioref">Michael I.
+Ivanitskiy et al., 2023a</a>)</span> introduced in this paper provides a
+flexible and extensible toolkit for generating, processing, and
+analyzing maze datasets. By supporting various procedural generation
+algorithms and conversion utilities, it enables the creation of mazes
+with customizable properties to suit diverse research needs. Planned
+improvements to the <code>maze-dataset</code> include adding more
+generation algorithms (such as Prim’s algorithm <span class="citation"
 data-cites="jarnik-prim prim dijkstra-prim">(<a
 href="#ref-dijkstra-prim" role="doc-biblioref">Dijkstra, 1959</a>; <a
 href="#ref-jarnik-prim" role="doc-biblioref">Jarnık, 1930</a>; <a
@@ -930,30 +989,38 @@ among others <span class="citation" data-cites="mazegen_analysis">(<a
 href="#ref-mazegen_analysis" role="doc-biblioref">Gabrovšek,
 2019</a>)</span>), adding the ability to augment a maze with an
 adjacency list to add “shortcuts” to the maze, and resolving certain
-limitations detailed in Section <a href="#limitations">Limitations</a>.
-Future work will make extensive use of this library to study
-interpretability and out-of-distribution generalization in
-autoregressive transformers <span class="citation"
-data-cites="maze-transformer-github">(<a
-href="#ref-maze-transformer-github" role="doc-biblioref">M. I.
-Ivanitskiy et al., 2023b</a>)</span>, recurrent convolutional neural
-networks <span class="citation" data-cites="deepthinking">(<a
-href="#ref-deepthinking" role="doc-biblioref">Schwarzschild, Borgnia,
-Gupta, Huang, et al., 2021</a>)</span>, and implicit networks <span
-class="citation" data-cites="mckenzie2023faster fung2022jfb">(<a
-href="#ref-fung2022jfb" role="doc-biblioref">Fung et al., 2022</a>; <a
-href="#ref-mckenzie2023faster" role="doc-biblioref">McKenzie et al.,
-2023</a>)</span>.</p>
+limitations detailed in Section <a
+href="#limitations">Limitations</a>.</p>
 <h1 id="acknowledgements">Acknowledgements</h1>
 <p>This work was partially supported by and many of the authors were
 brought together by AI Safety Camp and AI Safety Support. This work was
 partially funded by National Science Foundation awards DMS-2110745 and
-DMS-2309810. We thank the Mines Optimization and Deep Learning group
-(MODL) for fruitful discussions. We also thank Michael Rosenberg for
-advice on Finite State Transducers.</p>
+DMS-2309810. We are also grateful to LTFF and FAR Labs for hosting three
+of the authors for a Residency Visit, and to various members of FAR’s
+technical staff for their advice. We thank the Mines Optimization and
+Deep Learning group (MODL) for fruitful discussions. We also thank
+Michael Rosenberg for recommending the usage of Finite State Transducers
+for storing tokenizer validation information.</p>
 <h1 class="unnumbered" id="references">References</h1>
 <div id="refs" class="references csl-bib-body hanging-indent"
 data-line-spacing="2" role="list">
+<div id="ref-mazegenerator-net" class="csl-entry" role="listitem">
+Alance AB. (2019). <em>Maze generator</em>. <a
+href="http://www.mazegenerator.net"
+class="uri">http://www.mazegenerator.net</a>.
+</div>
+<div id="ref-ayaz2008maze" class="csl-entry" role="listitem">
+Ayaz, H., Allen, S. L., Platek, S. M., &amp; Onaral, B. (2008). Maze
+suite 1.0: A complete set of tools to prepare, present, and analyze
+navigational and spatial cognitive neuroscience experiments.
+<em>Behavior Research Methods</em>, <em>40</em>, 353–359.
+</div>
+<div id="ref-chen2024iaimperative" class="csl-entry" role="listitem">
+Chen, X., Yang, F., &amp; Wang, C. (2024). iA <span
+class="math inline">^*</span>: Imperative learning-based a <span
+class="math inline">^*</span> search for pathfinding. <em>arXiv Preprint
+arXiv:2403.15870</em>.
+</div>
 <div id="ref-cobbe2019procgen" class="csl-entry" role="listitem">
 Cobbe, K., Hesse, C., Hilton, J., &amp; Schulman, J. (2019). Leveraging
 procedural generation to benchmark reinforcement learning. <em>arXiv
@@ -990,6 +1057,12 @@ Gabrovšek. (2019). Analysis of maze generating algorithms.
 Research</span></em>, <em>15.1</em>, 23–30. <a
 href="http://www.ipsitransactions.org/journals/papers/tir/2019jan/p5.pdf">http://www.ipsitransactions.org/journals/papers/tir/2019jan/p5.pdf</a>
 </div>
+<div id="ref-mathematica-maze" class="csl-entry" role="listitem">
+Guo, C., Barthelet, L., &amp; Morris, R. (2011). <em>Maze generator and
+solver</em>. Wolfram Demonstrations Project, <a
+href="https://demonstrations.wolfram.com/MazeGeneratorAndSolver/"
+class="uri">https://demonstrations.wolfram.com/MazeGeneratorAndSolver/</a>.
+</div>
 <div id="ref-harriesMazeExplorerCustomisable3D2019" class="csl-entry"
 role="listitem">
 Harries, L., Lee, S., Rzepecki, J., Hofmann, K., &amp; Devlin, S.
@@ -1010,20 +1083,41 @@ Ivanitskiy, M. (n.d.). <em>ZANJ</em>. <a
 href="https://github.com/mivanit/ZANJ">https://github.com/mivanit/ZANJ</a>
 </div>
 <div id="ref-maze-dataset-github" class="csl-entry" role="listitem">
-Ivanitskiy, M. I., Shah, R., Spies, A. F., Räuker, T., Valentine, D.,
-Rager, C., Quirke, L., Corlouer, G., &amp; Mathwin, C. (2023a). <em>Maze
-dataset</em>. <a
+Ivanitskiy, Michael I., Shah, R., Spies, A. F., Räuker, T., Valentine,
+D., Rager, C., Quirke, L., Corlouer, G., &amp; Mathwin, C. (2023a).
+<em>Maze dataset</em>. <a
 href="https://github.com/understanding-search/maze-dataset">https://github.com/understanding-search/maze-dataset</a>
 </div>
 <div id="ref-maze-transformer-github" class="csl-entry" role="listitem">
-Ivanitskiy, M. I., Shah, R., Spies, A. F., Räuker, T., Valentine, D.,
-Rager, C., Quirke, L., Corlouer, G., &amp; Mathwin, C. (2023b). <em>Maze
-transformer interpretability</em>. <a
+Ivanitskiy, Michael I., Shah, R., Spies, A. F., Räuker, T., Valentine,
+D., Rager, C., Quirke, L., Corlouer, G., &amp; Mathwin, C. (2023b).
+<em>Maze transformer interpretability</em>. <a
 href="https://github.com/understanding-search/maze-transformer">https://github.com/understanding-search/maze-transformer</a>
+</div>
+<div id="ref-ivanitskiy2023structuredworldreps" class="csl-entry"
+role="listitem">
+Ivanitskiy, Michael Igorevich, Spies, A. F., Räuker, T., Corlouer, G.,
+Mathwin, C., Quirke, L., Rager, C., Shah, R., Valentine, D., Behn, C.
+D., &amp; others. (2023). Structured world representations in
+maze-solving transformers. <em>arXiv Preprint arXiv:2312.02566</em>.
 </div>
 <div id="ref-jarnik-prim" class="csl-entry" role="listitem">
 Jarnık, V. (1930). About a certain minimal problem. <em>Práce Moravské
 Prırodovedecké Spolecnosti</em>, <em>6</em>, 57–63.
+</div>
+<div id="ref-MLMU-kitouni2024factorization" class="csl-entry"
+role="listitem">
+Kitouni, O., Nolte, N. S., Williams, A., Rabbat, M., Bouchacourt, D.,
+&amp; Ibrahim, M. (2024). The factorization curse: Which tokens you
+predict underlie the reversal curse and more. <em>Advances in Neural
+Information Processing Systems</em>, <em>37</em>, 112329–112355.
+</div>
+<div id="ref-knutson2024logicalextrapolation" class="csl-entry"
+role="listitem">
+Knutson, B., Rabeendran, A. C., Ivanitskiy, M., Pettyjohn, J.,
+Diniz-Behn, C., Fung, S. W., &amp; McKenzie, D. (2024). On logical
+extrapolation for mazes with recurrent and implicit networks. <em>arXiv
+Preprint arXiv:2410.03020</em>.
 </div>
 <div id="ref-kruskal" class="csl-entry" role="listitem">
 Kruskal, J. B. (1956). On the shortest spanning subtree of a graph and
@@ -1036,14 +1130,25 @@ Liu, C., &amp; Wu, B. (2023). Evaluating large language models on
 graphs: Performance insights and comparative analysis. <em>arXiv
 Preprint arXiv:2308.11224</em>.
 </div>
-<div id="ref-mckenzie2023faster" class="csl-entry" role="listitem">
-McKenzie, D., Fung, S. W., &amp; Heaton, H. (2023). Faster
-predict-and-optimize with three-operator splitting. <em>arXiv Preprint
-arXiv:2301.13395</em>.
+<div id="ref-mdl-suite" class="csl-entry" role="listitem">
+Nag, A. (2020). MDL suite: A language, generator and compiler for
+describing mazes. <em>Journal of Open Source Software</em>,
+<em>5</em>(46), 1815.
 </div>
 <div id="ref-gh_Nemeth_2019" class="csl-entry" role="listitem">
 Németh, F. (2019). <em>Maze-generation-algorithms</em>. <a
 href="https://github.com/ferenc-nemeth/maze-generation-algorithms">https://github.com/ferenc-nemeth/maze-generation-algorithms</a>
+</div>
+<div id="ref-nolte2024multistep" class="csl-entry" role="listitem">
+Nolte, N., Kitouni, O., Williams, A., Rabbat, M., &amp; Ibrahim, M.
+(2024). Transformers can navigate mazes with multi-step prediction.
+<em>arXiv Preprint arXiv:2412.05117</em>.
+</div>
+<div id="ref-gh-oppenheimj2018maze" class="csl-entry" role="listitem">
+Oppenheim, J. (2018). <em>Maze-generator: Generate a random maze
+represented as a 2D array using depth-first search</em>. <a
+href="https://github.com/oppenheimj/maze-generator/"
+class="uri">https://github.com/oppenheimj/maze-generator/</a>; GitHub.
 </div>
 <div id="ref-pytorch" class="csl-entry" role="listitem">
 Paszke, A., Gross, S., Massa, F., Lerer, A., Bradbury, J., Chanan, G.,
@@ -1086,6 +1191,19 @@ Generalizing from easy to hard problems with recurrent networks.
 <div id="ref-eval-gpt-visual" class="csl-entry" role="listitem">
 Singla, A. (2023). Evaluating ChatGPT and GPT-4 for visual programming.
 <em>arXiv Preprint arXiv:2308.02522</em>.
+</div>
+<div id="ref-spies2024causalworldmodels" class="csl-entry"
+role="listitem">
+Spies, A. F., Edwards, W., Ivanitskiy, M. I., Skapars, A., Räuker, T.,
+Inoue, K., Russo, A., &amp; Shanahan, M. (2024). Transformers use causal
+world models in maze-solving tasks. <em>arXiv Preprint
+arXiv:2412.11867</em>.
+</div>
+<div id="ref-wang2024imperative" class="csl-entry" role="listitem">
+Wang, C., Ji, K., Geng, J., Ren, Z., Fu, T., Yang, F., Guo, Y., He, H.,
+Chen, X., Zhan, Z., &amp; others. (2024). Imperative learning: A
+self-supervised neural-symbolic learning framework for robot autonomy.
+<em>arXiv Preprint arXiv:2406.16087</em>.
 </div>
 <div id="ref-wilson" class="csl-entry" role="listitem">
 Wilson, D. B. (1996). Generating random spanning trees more quickly than
