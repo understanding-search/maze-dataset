@@ -1,27 +1,12 @@
 "misc utilities for the `maze_dataset` package"
 
-import enum
-import itertools
 import math
-import typing
-from dataclasses import Field  # noqa: TC003
-from functools import cache, wraps
-from types import UnionType
 from typing import (
-	Callable,
-	Generator,
-	Iterable,
-	Literal,
-	TypeVar,
-	get_args,
-	get_origin,
 	overload,
 )
 
-import frozendict
 import numpy as np
 from jaxtyping import Bool, Int, Int8
-from muutils.misc import IsDataclass, flatten, is_abstract
 
 
 def bool_array_from_string(
@@ -197,4 +182,3 @@ def adj_list_to_nested_set(adj_list: list) -> set:
 		frozenset([tuple(start_coord), tuple(end_coord)])
 		for start_coord, end_coord in adj_list
 	}
-

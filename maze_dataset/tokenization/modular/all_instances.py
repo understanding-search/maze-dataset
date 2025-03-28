@@ -2,7 +2,6 @@
 
 import enum
 import itertools
-import math
 import typing
 from dataclasses import Field  # noqa: TC003
 from functools import cache, wraps
@@ -15,7 +14,6 @@ from typing import (
 	TypeVar,
 	get_args,
 	get_origin,
-	overload,
 )
 
 try:
@@ -24,8 +22,6 @@ except ImportError as e:
 	raise ImportError(
 		"You need to install the `frozendict` package to use `all_instances` -- try installing `maze_dataset[tokenization]`"
 	) from e
-import numpy as np
-from jaxtyping import Bool, Int, Int8
 from muutils.misc import IsDataclass, flatten, is_abstract
 
 FiniteValued = TypeVar("FiniteValued", bound=bool | IsDataclass | enum.Enum)

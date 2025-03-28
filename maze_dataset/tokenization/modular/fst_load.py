@@ -11,9 +11,9 @@ thanks to https://github.com/rozbb for suggesting doing this instead of storing 
 
 """
 
+import warnings
 from functools import cache
 from pathlib import Path
-import warnings
 
 _RUST_FST_LOADED: bool = False
 """if the rust_fst module was loaded successfully"""
@@ -25,11 +25,14 @@ _RUST_FST_ERR_MSG: str = (
 	"If you can find away around this, please let us know!\n"
 )
 
+
 class RustFstNotLoadedWarning(UserWarning):
 	"""warning for when `rust_fst` is not loaded"""
 
+
 try:
 	from rust_fst import Set as FstSet  # type: ignore[import-untyped]
+
 	_RUST_FST_LOADED = True
 except ImportError as e:
 	warnings.warn(_RUST_FST_ERR_MSG + str(e), RustFstNotLoadedWarning)
@@ -73,7 +76,7 @@ def check_tokenizer_in_fst(tokenizer_name: str, do_except: bool = False) -> bool
 	return in_fst
 
 
-def _check_tokenizer_in_fst_mock(tokenizer_name: str, do_except: bool = False) -> bool: # noqa: ARG001
+def _check_tokenizer_in_fst_mock(tokenizer_name: str, do_except: bool = False) -> bool:  # noqa: ARG001
 	"""mock function for `check_tokenizer_in_fst`
 
 	runs when we cant import `rust_fst` which sets `_RUST_FST_LOADED` to `False`
