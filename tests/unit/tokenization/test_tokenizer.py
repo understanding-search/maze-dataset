@@ -52,7 +52,8 @@ from maze_dataset.tokenization import (
 	TokenizationMode,
 	_TokenizerElement,
 )
-from maze_dataset.utils import all_instances, lattice_max_degrees, manhattan_distance
+from maze_dataset.tokenization.modular.all_instances import all_instances
+from maze_dataset.utils import lattice_max_degrees, manhattan_distance
 
 # Use for test fuzzing when there are too many possible tokenizers
 NUM_TOKENIZERS_TO_TEST = 100

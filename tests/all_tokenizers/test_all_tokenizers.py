@@ -22,13 +22,13 @@ from maze_dataset.tokenization import (
 	StepTokenizers,
 	_TokenizerElement,
 )
+from maze_dataset.tokenization.modular.all_instances import all_instances
 from maze_dataset.tokenization.modular.all_tokenizers import (
 	EVERY_TEST_TOKENIZERS,
 	MAZE_TOKENIZER_MODULAR_DEFAULT_VALIDATION_FUNCS,
 	sample_tokenizers_for_test,
 	save_hashes,
 )
-from maze_dataset.utils import all_instances
 
 # Size of the sample from `all_tokenizers.get_all_tokenizers()` to test
 # get from env, or set to default value of 100

@@ -39,10 +39,15 @@
         "ipykernel>=6.22.0",
         # misc
         "tqdm>=4.65.0",
-        "frozendict>=2.4.4",
-		# storing valid tokenizers
-		"rust_fst>=0.1.2",
     ]
+
+	[project.optional-dependencies]
+		tokenization = [
+			"frozendict>=2.4.4",
+			# storing valid tokenizers
+			# doesn't appear to work on macos
+			"rust_fst>=0.1.2; platform_system != 'darwin'",
+		]
 
 [dependency-groups]
 	dev = [
