@@ -44,9 +44,7 @@ def bool_array_from_string(
 	expected_symbol_count = math.prod(shape)
 	symbol_count = len(stripped)
 	if len(stripped) != expected_symbol_count:
-		err_msg: str = (
-			f"Connection List contains the wrong number of symbols. Expected {expected_symbol_count}. Found {symbol_count} in {stripped}.",
-		)
+		err_msg: str = f"Connection List contains the wrong number of symbols. Expected {expected_symbol_count}. Found {symbol_count} in {stripped}."
 		raise ValueError(err_msg)
 
 	bools = [(symbol == true_symbol) for symbol in stripped]
@@ -94,8 +92,10 @@ return indices[sorted_order]
 def manhattan_distance(
 	edges: Int[np.ndarray, "edges coord=2 row_col=2"],
 ) -> Int8[np.ndarray, " edges"]: ...
+# TYPING: error: Overloaded function signature 2 will never be matched: signature 1's parameter type(s) are the same or broader  [overload-cannot-match]
+# this is because mypy doesn't play nice with jaxtyping
 @overload
-def manhattan_distance(
+def manhattan_distance(  # type: ignore[overload-cannot-match]
 	edges: Int[np.ndarray, "coord=2 row_col=2"],
 ) -> int: ...
 def manhattan_distance(

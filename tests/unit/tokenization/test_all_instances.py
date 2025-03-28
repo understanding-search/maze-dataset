@@ -5,7 +5,7 @@ from typing import Callable, Iterable, Literal
 import pytest
 from muutils.misc import IsDataclass, dataclass_set_equals
 
-from maze_dataset.utils import FiniteValued, all_instances
+from maze_dataset.tokenization.modular.all_instances import FiniteValued, all_instances
 
 
 # Test classes
