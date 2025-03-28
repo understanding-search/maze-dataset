@@ -18,7 +18,12 @@ from typing import (
 	overload,
 )
 
-import frozendict
+try:
+	import frozendict
+except ImportError as e:
+	raise ImportError(
+		"You need to install the `frozendict` package to use `all_instances` -- try installing `maze_dataset[tokenization]`"
+	) from e
 import numpy as np
 from jaxtyping import Bool, Int, Int8
 from muutils.misc import IsDataclass, flatten, is_abstract
