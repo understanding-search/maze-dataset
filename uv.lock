@@ -1545,16 +1545,20 @@ name = "maze-dataset"
 version = "1.3.1"
 source = { editable = "." }
 dependencies = [
-    { name = "frozendict" },
     { name = "ipykernel" },
     { name = "jaxtyping" },
     { name = "jupyter" },
     { name = "matplotlib" },
     { name = "muutils" },
     { name = "numpy" },
-    { name = "rust-fst" },
     { name = "tqdm" },
     { name = "zanj" },
+]
+
+[package.optional-dependencies]
+tokenization = [
+    { name = "frozendict" },
+    { name = "rust-fst", marker = "platform_system != 'darwin'" },
 ]
 
 [package.dev-dependencies]
@@ -1584,17 +1588,18 @@ lint = [
 
 [package.metadata]
 requires-dist = [
-    { name = "frozendict", specifier = ">=2.4.4" },
+    { name = "frozendict", marker = "extra == 'tokenization'", specifier = ">=2.4.4" },
     { name = "ipykernel", specifier = ">=6.22.0" },
     { name = "jaxtyping", specifier = ">=0.2.19" },
     { name = "jupyter", specifier = ">=1.0.0" },
     { name = "matplotlib", specifier = ">=3.7.0" },
     { name = "muutils", specifier = ">=0.8.3" },
     { name = "numpy" },
-    { name = "rust-fst", specifier = ">=0.1.2" },
+    { name = "rust-fst", marker = "platform_system != 'darwin' and extra == 'tokenization'", specifier = ">=0.1.2" },
     { name = "tqdm", specifier = ">=4.65.0" },
     { name = "zanj", specifier = ">=0.5.0" },
 ]
+provides-extras = ["tokenization"]
 
 [package.metadata.requires-dev]
 benchmark = [{ name = "pysr", specifier = ">=1.4.0" }]
