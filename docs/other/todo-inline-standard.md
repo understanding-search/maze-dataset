@@ -667,6 +667,23 @@
 
 
 
+## [`maze_dataset/tokenization/modular/all_instances.py`](/maze_dataset/tokenization/modular/all_instances.py)
+
+- what is this magic value here exactly?  
+  local link: [`/maze_dataset/tokenization/modular/all_instances.py:143`](/maze_dataset/tokenization/modular/all_instances.py#L143) 
+  | view on GitHub: [maze_dataset/tokenization/modular/all_instances.py#L143](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/modular/all_instances.py#L143)
+  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=what%20is%20this%20magic%20value%20here%20exactly%3F&body=%23%20source%0A%0A%5B%60maze_dataset%2Ftokenization%2Fmodular%2Fall_instances.py%23L143%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Ftokenization%2Fmodular%2Fall_instances.py%23L143%29%0A%0A%23%20context%0A%60%60%60python%0A%09%09validation_funcs%3A%20frozendict.frozendict%0A%09%09%23%20TODO%3A%20what%20is%20this%20magic%20value%20here%20exactly%3F%0A%09%09if%20len%28args%29%20%3E%3D%202%20and%20args%5B1%5D%20is%20not%20None%3A%20%20%23%20noqa%3A%20PLR2004%0A%09%09%09validation_funcs%20%3D%20frozendict.frozendict%28args%5B1%5D%29%0A%60%60%60&labels=enhancement)
+
+  ```python
+  validation_funcs: frozendict.frozendict
+  # TODO: what is this magic value here exactly?
+  if len(args) >= 2 and args[1] is not None:  # noqa: PLR2004
+  	validation_funcs = frozendict.frozendict(args[1])
+  ```
+
+
+
+
 ## [`maze_dataset/tokenization/modular/all_tokenizers.py`](/maze_dataset/tokenization/modular/all_tokenizers.py)
 
 - add more here as specific tokenizers become canonical and frequently used  
@@ -745,23 +762,6 @@
   # TODO: unclear why we need to use `noqa: N805` here since its a classmethod
   # maybe we need to hit every overload with `@classmethod`?
   @overload
-  ```
-
-
-
-
-## [`maze_dataset/utils.py`](/maze_dataset/utils.py)
-
-- what is this magic value here exactly?  
-  local link: [`/maze_dataset/utils.py:318`](/maze_dataset/utils.py#L318) 
-  | view on GitHub: [maze_dataset/utils.py#L318](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/utils.py#L318)
-  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=what%20is%20this%20magic%20value%20here%20exactly%3F&body=%23%20source%0A%0A%5B%60maze_dataset%2Futils.py%23L318%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Futils.py%23L318%29%0A%0A%23%20context%0A%60%60%60python%0A%09%09validation_funcs%3A%20frozendict.frozendict%0A%09%09%23%20TODO%3A%20what%20is%20this%20magic%20value%20here%20exactly%3F%0A%09%09if%20len%28args%29%20%3E%3D%202%20and%20args%5B1%5D%20is%20not%20None%3A%20%20%23%20noqa%3A%20PLR2004%0A%09%09%09validation_funcs%20%3D%20frozendict.frozendict%28args%5B1%5D%29%0A%60%60%60&labels=enhancement)
-
-  ```python
-  validation_funcs: frozendict.frozendict
-  # TODO: what is this magic value here exactly?
-  if len(args) >= 2 and args[1] is not None:  # noqa: PLR2004
-  	validation_funcs = frozendict.frozendict(args[1])
   ```
 
 
@@ -1226,6 +1226,50 @@
 
 
 
+## [`maze_dataset/tokenization/modular/all_instances.py`](/maze_dataset/tokenization/modular/all_instances.py)
+
+- Incompatible return value type (got "filter[FiniteValued]", expected "Generator[FiniteValued, None, None]")  [return-value]  
+  local link: [`/maze_dataset/tokenization/modular/all_instances.py:98`](/maze_dataset/tokenization/modular/all_instances.py#L98) 
+  | view on GitHub: [maze_dataset/tokenization/modular/all_instances.py#L98](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/modular/all_instances.py#L98)
+  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=Incompatible%20return%20value%20type%20%28got%20%22filter%5BFiniteValued%5D%22%2C%20expected%20%22Generator%5BFiniteValued%2C%20None%2C%20None%5D%22%29%20%20%5Breturn-value%5D&body=%23%20source%0A%0A%5B%60maze_dataset%2Ftokenization%2Fmodular%2Fall_instances.py%23L98%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Ftokenization%2Fmodular%2Fall_instances.py%23L98%29%0A%0A%23%20context%0A%60%60%60python%0A%09%09return%20vals%0A%09if%20type_%20in%20validation_funcs%3A%20%20%23%20Only%20possible%20catch%20of%20UnionTypes%0A%09%09%23%20TYPING%3A%20Incompatible%20return%20value%20type%20%28got%20%22filter%5BFiniteValued%5D%22%2C%20expected%20%22Generator%5BFiniteValued%2C%20None%2C%20None%5D%22%29%20%20%5Breturn-value%5D%0A%09%09return%20filter%28validation_funcs%5Btype_%5D%2C%20vals%29%0A%09elif%20hasattr%28%0A%60%60%60&labels=TYPING)
+
+  ```python
+  	return vals
+  if type_ in validation_funcs:  # Only possible catch of UnionTypes
+  	# TYPING: Incompatible return value type (got "filter[FiniteValued]", expected "Generator[FiniteValued, None, None]")  [return-value]
+  	return filter(validation_funcs[type_], vals)
+  elif hasattr(
+  ```
+
+
+- error: Incompatible types in assignment (expression has type "filter[FiniteValued]", variable has type "Generator[FiniteValued, None, None]")  [assignment]  
+  local link: [`/maze_dataset/tokenization/modular/all_instances.py:107`](/maze_dataset/tokenization/modular/all_instances.py#L107) 
+  | view on GitHub: [maze_dataset/tokenization/modular/all_instances.py#L107](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/modular/all_instances.py#L107)
+  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=error%3A%20Incompatible%20types%20in%20assignment%20%28expression%20has%20type%20%22filter%5BFiniteValued%5D%22%2C%20variable%20has%20type%20%22Generator%5BFiniteValued%2C%20None%2C%20None%5D%22%29%20%20%5Bassignment%5D&body=%23%20source%0A%0A%5B%60maze_dataset%2Ftokenization%2Fmodular%2Fall_instances.py%23L107%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Ftokenization%2Fmodular%2Fall_instances.py%23L107%29%0A%0A%23%20context%0A%60%60%60python%0A%09%09%09if%20superclass%20not%20in%20validation_funcs%3A%0A%09%09%09%09continue%0A%09%09%09%23%20TYPING%3A%20error%3A%20Incompatible%20types%20in%20assignment%20%28expression%20has%20type%20%22filter%5BFiniteValued%5D%22%2C%20variable%20has%20type%20%22Generator%5BFiniteValued%2C%20None%2C%20None%5D%22%29%20%20%5Bassignment%5D%0A%09%09%09vals%20%3D%20filter%28validation_funcs%5Bsuperclass%5D%2C%20vals%29%0A%09%09%09break%20%20%23%20Only%20the%20first%20validation%20function%20hit%20in%20the%20mro%20is%20applied%0A%60%60%60&labels=TYPING)
+
+  ```python
+  if superclass not in validation_funcs:
+  	continue
+  # TYPING: error: Incompatible types in assignment (expression has type "filter[FiniteValued]", variable has type "Generator[FiniteValued, None, None]")  [assignment]
+  vals = filter(validation_funcs[superclass], vals)
+  break  # Only the first validation function hit in the mro is applied
+  ```
+
+
+- some better type hints would be nice here  
+  local link: [`/maze_dataset/tokenization/modular/all_instances.py:121`](/maze_dataset/tokenization/modular/all_instances.py#L121) 
+  | view on GitHub: [maze_dataset/tokenization/modular/all_instances.py#L121](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/tokenization/modular/all_instances.py#L121)
+  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=some%20better%20type%20hints%20would%20be%20nice%20here&body=%23%20source%0A%0A%5B%60maze_dataset%2Ftokenization%2Fmodular%2Fall_instances.py%23L121%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Ftokenization%2Fmodular%2Fall_instances.py%23L121%29%0A%0A%23%20context%0A%60%60%60python%0A%23%20TYPING%3A%20some%20better%20type%20hints%20would%20be%20nice%20here%0Adef%20_all_instances_wrapper%28f%3A%20Callable%29%20-%3E%20Callable%3A%0A%09%22%22%22Converts%20dicts%20to%20frozendicts%20to%20allow%20caching%20and%20applies%20%60_apply_validation_func%60.%22%22%22%0A%60%60%60&labels=TYPING)
+
+  ```python
+  # TYPING: some better type hints would be nice here
+  def _all_instances_wrapper(f: Callable) -> Callable:
+  	"""Converts dicts to frozendicts to allow caching and applies `_apply_validation_func`."""
+  ```
+
+
+
+
 ## [`maze_dataset/tokenization/modular/all_tokenizers.py`](/maze_dataset/tokenization/modular/all_tokenizers.py)
 
 - error: Type variable "maze_dataset.utils.FiniteValued" is unbound  [valid-type]  
@@ -1349,54 +1393,28 @@
 
 ## [`maze_dataset/utils.py`](/maze_dataset/utils.py)
 
-- Incompatible return value type (got "filter[FiniteValued]", expected "Generator[FiniteValued, None, None]")  [return-value]  
-  local link: [`/maze_dataset/utils.py:273`](/maze_dataset/utils.py#L273) 
-  | view on GitHub: [maze_dataset/utils.py#L273](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/utils.py#L273)
-  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=Incompatible%20return%20value%20type%20%28got%20%22filter%5BFiniteValued%5D%22%2C%20expected%20%22Generator%5BFiniteValued%2C%20None%2C%20None%5D%22%29%20%20%5Breturn-value%5D&body=%23%20source%0A%0A%5B%60maze_dataset%2Futils.py%23L273%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Futils.py%23L273%29%0A%0A%23%20context%0A%60%60%60python%0A%09%09return%20vals%0A%09if%20type_%20in%20validation_funcs%3A%20%20%23%20Only%20possible%20catch%20of%20UnionTypes%0A%09%09%23%20TYPING%3A%20Incompatible%20return%20value%20type%20%28got%20%22filter%5BFiniteValued%5D%22%2C%20expected%20%22Generator%5BFiniteValued%2C%20None%2C%20None%5D%22%29%20%20%5Breturn-value%5D%0A%09%09return%20filter%28validation_funcs%5Btype_%5D%2C%20vals%29%0A%09elif%20hasattr%28%0A%60%60%60&labels=TYPING)
+- error: Overloaded function signature 2 will never be matched: signature 1's parameter type(s) are the same or broader  [overload-cannot-match]  
+  local link: [`/maze_dataset/utils.py:95`](/maze_dataset/utils.py#L95) 
+  | view on GitHub: [maze_dataset/utils.py#L95](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/utils.py#L95)
+  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=error%3A%20Overloaded%20function%20signature%202%20will%20never%20be%20matched%3A%20signature%201%27s%20parameter%20type%28s%29%20are%20the%20same%20or%20broader%20%20%5Boverload-cannot-match%5D&body=%23%20source%0A%0A%5B%60maze_dataset%2Futils.py%23L95%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Futils.py%23L95%29%0A%0A%23%20context%0A%60%60%60python%0A%09edges%3A%20Int%5Bnp.ndarray%2C%20%22edges%20coord%3D2%20row_col%3D2%22%5D%2C%0A%29%20-%3E%20Int8%5Bnp.ndarray%2C%20%22%20edges%22%5D%3A%20...%0A%23%20TYPING%3A%20error%3A%20Overloaded%20function%20signature%202%20will%20never%20be%20matched%3A%20signature%201%27s%20parameter%20type%28s%29%20are%20the%20same%20or%20broader%20%20%5Boverload-cannot-match%5D%0A%23%20this%20is%20because%20mypy%20doesn%27t%20play%20nice%20with%20jaxtyping%0A%40overload%0A%60%60%60&labels=TYPING)
 
   ```python
-  	return vals
-  if type_ in validation_funcs:  # Only possible catch of UnionTypes
-  	# TYPING: Incompatible return value type (got "filter[FiniteValued]", expected "Generator[FiniteValued, None, None]")  [return-value]
-  	return filter(validation_funcs[type_], vals)
-  elif hasattr(
-  ```
-
-
-- error: Incompatible types in assignment (expression has type "filter[FiniteValued]", variable has type "Generator[FiniteValued, None, None]")  [assignment]  
-  local link: [`/maze_dataset/utils.py:282`](/maze_dataset/utils.py#L282) 
-  | view on GitHub: [maze_dataset/utils.py#L282](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/utils.py#L282)
-  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=error%3A%20Incompatible%20types%20in%20assignment%20%28expression%20has%20type%20%22filter%5BFiniteValued%5D%22%2C%20variable%20has%20type%20%22Generator%5BFiniteValued%2C%20None%2C%20None%5D%22%29%20%20%5Bassignment%5D&body=%23%20source%0A%0A%5B%60maze_dataset%2Futils.py%23L282%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Futils.py%23L282%29%0A%0A%23%20context%0A%60%60%60python%0A%09%09%09if%20superclass%20not%20in%20validation_funcs%3A%0A%09%09%09%09continue%0A%09%09%09%23%20TYPING%3A%20error%3A%20Incompatible%20types%20in%20assignment%20%28expression%20has%20type%20%22filter%5BFiniteValued%5D%22%2C%20variable%20has%20type%20%22Generator%5BFiniteValued%2C%20None%2C%20None%5D%22%29%20%20%5Bassignment%5D%0A%09%09%09vals%20%3D%20filter%28validation_funcs%5Bsuperclass%5D%2C%20vals%29%0A%09%09%09break%20%20%23%20Only%20the%20first%20validation%20function%20hit%20in%20the%20mro%20is%20applied%0A%60%60%60&labels=TYPING)
-
-  ```python
-  if superclass not in validation_funcs:
-  	continue
-  # TYPING: error: Incompatible types in assignment (expression has type "filter[FiniteValued]", variable has type "Generator[FiniteValued, None, None]")  [assignment]
-  vals = filter(validation_funcs[superclass], vals)
-  break  # Only the first validation function hit in the mro is applied
-  ```
-
-
-- some better type hints would be nice here  
-  local link: [`/maze_dataset/utils.py:296`](/maze_dataset/utils.py#L296) 
-  | view on GitHub: [maze_dataset/utils.py#L296](https://github.com/understanding-search/maze-dataset/blob/main/maze_dataset/utils.py#L296)
-  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=some%20better%20type%20hints%20would%20be%20nice%20here&body=%23%20source%0A%0A%5B%60maze_dataset%2Futils.py%23L296%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Fmaze_dataset%2Futils.py%23L296%29%0A%0A%23%20context%0A%60%60%60python%0A%23%20TYPING%3A%20some%20better%20type%20hints%20would%20be%20nice%20here%0Adef%20_all_instances_wrapper%28f%3A%20Callable%29%20-%3E%20Callable%3A%0A%09%22%22%22Converts%20dicts%20to%20frozendicts%20to%20allow%20caching%20and%20applies%20%60_apply_validation_func%60.%22%22%22%0A%60%60%60&labels=TYPING)
-
-  ```python
-  # TYPING: some better type hints would be nice here
-  def _all_instances_wrapper(f: Callable) -> Callable:
-  	"""Converts dicts to frozendicts to allow caching and applies `_apply_validation_func`."""
+  	edges: Int[np.ndarray, "edges coord=2 row_col=2"],
+  ) -> Int8[np.ndarray, " edges"]: ...
+  # TYPING: error: Overloaded function signature 2 will never be matched: signature 1's parameter type(s) are the same or broader  [overload-cannot-match]
+  # this is because mypy doesn't play nice with jaxtyping
+  @overload
   ```
 
 
 
 
-## [`tests/unit/utils.py`](/tests/unit/utils.py)
+## [`tests/unit/tokenization/test_all_instances.py`](/tests/unit/tokenization/test_all_instances.py)
 
 - error: Argument 2 to "dataclass_set_equals" has incompatible type "Iterable[FiniteValued]"; expected "Iterable[IsDataclass]"  [arg-type]  
-  local link: [`/tests/unit/utils.py:289`](/tests/unit/utils.py#L289) 
-  | view on GitHub: [tests/unit/utils.py#L289](https://github.com/understanding-search/maze-dataset/blob/main/tests/unit/utils.py#L289)
-  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=error%3A%20Argument%202%20to%20%22dataclass_set_equals%22%20has%20incompatible%20type%20%22Iterable%5BFiniteValued%5D%22%3B%20expected%20%22Iterable%5BIsDataclass%5D%22%20%20%5Barg-type%5D&body=%23%20source%0A%0A%5B%60tests%2Funit%2Futils.py%23L289%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Ftests%2Funit%2Futils.py%23L289%29%0A%0A%23%20context%0A%60%60%60python%0A%09%09%09list%28all_instances%28type_%2C%20validation_funcs%29%29%0A%09elif%20hasattr%28type_%2C%20%22__dataclass_fields__%22%29%3A%0A%09%09%23%20TYPING%3A%20error%3A%20Argument%202%20to%20%22dataclass_set_equals%22%20has%20incompatible%20type%20%22Iterable%5BFiniteValued%5D%22%3B%20expected%20%22Iterable%5BIsDataclass%5D%22%20%20%5Barg-type%5D%0A%09%09assert%20dataclass_set_equals%28all_instances%28type_%2C%20validation_funcs%29%2C%20result%29%20%20%23%20type%3A%20ignore%5Barg-type%5D%0A%09else%3A%20%20%23%20General%20case%2C%20due%20to%20nesting%2C%20results%20might%20contain%20some%20dataclasses%20and%20some%20other%20types%0A%60%60%60&labels=TYPING)
+  local link: [`/tests/unit/tokenization/test_all_instances.py:289`](/tests/unit/tokenization/test_all_instances.py#L289) 
+  | view on GitHub: [tests/unit/tokenization/test_all_instances.py#L289](https://github.com/understanding-search/maze-dataset/blob/main/tests/unit/tokenization/test_all_instances.py#L289)
+  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=error%3A%20Argument%202%20to%20%22dataclass_set_equals%22%20has%20incompatible%20type%20%22Iterable%5BFiniteValued%5D%22%3B%20expected%20%22Iterable%5BIsDataclass%5D%22%20%20%5Barg-type%5D&body=%23%20source%0A%0A%5B%60tests%2Funit%2Ftokenization%2Ftest_all_instances.py%23L289%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Ftests%2Funit%2Ftokenization%2Ftest_all_instances.py%23L289%29%0A%0A%23%20context%0A%60%60%60python%0A%09%09%09list%28all_instances%28type_%2C%20validation_funcs%29%29%0A%09elif%20hasattr%28type_%2C%20%22__dataclass_fields__%22%29%3A%0A%09%09%23%20TYPING%3A%20error%3A%20Argument%202%20to%20%22dataclass_set_equals%22%20has%20incompatible%20type%20%22Iterable%5BFiniteValued%5D%22%3B%20expected%20%22Iterable%5BIsDataclass%5D%22%20%20%5Barg-type%5D%0A%09%09assert%20dataclass_set_equals%28all_instances%28type_%2C%20validation_funcs%29%2C%20result%29%20%20%23%20type%3A%20ignore%5Barg-type%5D%0A%09else%3A%20%20%23%20General%20case%2C%20due%20to%20nesting%2C%20results%20might%20contain%20some%20dataclasses%20and%20some%20other%20types%0A%60%60%60&labels=TYPING)
 
   ```python
   		list(all_instances(type_, validation_funcs))
@@ -1408,9 +1426,9 @@
 
 
 - error: Argument 1 to "filter" has incompatible type "Callable[[Any], bool]"; expected "Callable[[FiniteValued], TypeGuard[IsDataclass]]"  [arg-type]  
-  local link: [`/tests/unit/utils.py:294`](/tests/unit/utils.py#L294) 
-  | view on GitHub: [tests/unit/utils.py#L294](https://github.com/understanding-search/maze-dataset/blob/main/tests/unit/utils.py#L294)
-  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=error%3A%20Argument%201%20to%20%22filter%22%20has%20incompatible%20type%20%22Callable%5B%5BAny%5D%2C%20bool%5D%22%3B%20expected%20%22Callable%5B%5BFiniteValued%5D%2C%20TypeGuard%5BIsDataclass%5D%5D%22%20%20%5Barg-type%5D&body=%23%20source%0A%0A%5B%60tests%2Funit%2Futils.py%23L294%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Ftests%2Funit%2Futils.py%23L294%29%0A%0A%23%20context%0A%60%60%60python%0A%09%09out%20%3D%20list%28all_instances%28type_%2C%20validation_funcs%29%29%0A%09%09assert%20dataclass_set_equals%28%0A%09%09%09%23%20TYPING%3A%20error%3A%20Argument%201%20to%20%22filter%22%20has%20incompatible%20type%20%22Callable%5B%5BAny%5D%2C%20bool%5D%22%3B%20expected%20%22Callable%5B%5BFiniteValued%5D%2C%20TypeGuard%5BIsDataclass%5D%5D%22%20%20%5Barg-type%5D%0A%09%09%09filter%28lambda%20x%3A%20isinstance%28x%2C%20IsDataclass%29%2C%20out%29%2C%20%20%23%20type%3A%20ignore%5Barg-type%5D%0A%09%09%09filter%28lambda%20x%3A%20isinstance%28x%2C%20IsDataclass%29%2C%20result%29%2C%20%20%23%20type%3A%20ignore%5Barg-type%5D%0A%60%60%60&labels=TYPING)
+  local link: [`/tests/unit/tokenization/test_all_instances.py:294`](/tests/unit/tokenization/test_all_instances.py#L294) 
+  | view on GitHub: [tests/unit/tokenization/test_all_instances.py#L294](https://github.com/understanding-search/maze-dataset/blob/main/tests/unit/tokenization/test_all_instances.py#L294)
+  | [Make Issue](https://github.com/understanding-search/maze-dataset/issues/new?title=error%3A%20Argument%201%20to%20%22filter%22%20has%20incompatible%20type%20%22Callable%5B%5BAny%5D%2C%20bool%5D%22%3B%20expected%20%22Callable%5B%5BFiniteValued%5D%2C%20TypeGuard%5BIsDataclass%5D%5D%22%20%20%5Barg-type%5D&body=%23%20source%0A%0A%5B%60tests%2Funit%2Ftokenization%2Ftest_all_instances.py%23L294%60%5D%28https%3A%2F%2Fgithub.com%2Funderstanding-search%2Fmaze-dataset%2Fblob%2Fmain%2Ftests%2Funit%2Ftokenization%2Ftest_all_instances.py%23L294%29%0A%0A%23%20context%0A%60%60%60python%0A%09%09out%20%3D%20list%28all_instances%28type_%2C%20validation_funcs%29%29%0A%09%09assert%20dataclass_set_equals%28%0A%09%09%09%23%20TYPING%3A%20error%3A%20Argument%201%20to%20%22filter%22%20has%20incompatible%20type%20%22Callable%5B%5BAny%5D%2C%20bool%5D%22%3B%20expected%20%22Callable%5B%5BFiniteValued%5D%2C%20TypeGuard%5BIsDataclass%5D%5D%22%20%20%5Barg-type%5D%0A%09%09%09filter%28lambda%20x%3A%20isinstance%28x%2C%20IsDataclass%29%2C%20out%29%2C%20%20%23%20type%3A%20ignore%5Barg-type%5D%0A%09%09%09filter%28lambda%20x%3A%20isinstance%28x%2C%20IsDataclass%29%2C%20result%29%2C%20%20%23%20type%3A%20ignore%5Barg-type%5D%0A%60%60%60&labels=TYPING)
 
   ```python
   out = list(all_instances(type_, validation_funcs))
