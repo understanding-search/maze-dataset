@@ -1,5 +1,5 @@
 ---
-title: 'A Configurable Library for Generating and Manipulating Maze Datasets'
+title: 'maze-dataset'
 tags:
   - Python
   - machine learning
@@ -12,6 +12,7 @@ authors:
     affiliation: 1
     corresponding: true
   - name: Aaron Sandoval
+    orcid: 0009-0002-8380-6140
   - name: Alex F. Spies
     orcid: 0000-0002-8708-1530
     affiliation: 2
@@ -20,9 +21,11 @@ authors:
   - name: Brandon Knutson
   - orcid: 0009-0004-8413-0239
     affiliation: 1
-  - name: Cecilia Diniz Behn
+  - name: Cecilia Diniz Behn  
+    orcid: 0000-0002-8078-5105
     affiliation: 1
   - name: Samy Wu Fung
+    orcid: 0000-0002-2926-4582
     affiliation: 1
 affiliations:
   - name: Colorado School of Mines, Department of Applied Mathematics and Statistics
