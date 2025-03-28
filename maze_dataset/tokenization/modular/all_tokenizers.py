@@ -41,12 +41,12 @@ from maze_dataset.tokenization import (
 	StepTokenizers,
 	_TokenizerElement,
 )
+from maze_dataset.tokenization.modular.all_instances import FiniteValued, all_instances
 from maze_dataset.tokenization.modular.hashing import (
 	AllTokenizersHashBitLength,
 	AllTokenizersHashDtype,
 	AllTokenizersHashesArray,
 )
-from maze_dataset.utils import FiniteValued, all_instances
 
 # Always include this as the first item in the dict `validation_funcs` whenever using `all_instances` with `MazeTokenizerModular`
 # TYPING: error: Type variable "maze_dataset.utils.FiniteValued" is unbound  [valid-type]

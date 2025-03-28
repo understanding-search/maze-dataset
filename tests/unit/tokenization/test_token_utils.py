@@ -28,9 +28,8 @@ from maze_dataset.tokenization import (
 	StepTokenizers,
 	get_tokens_up_to_path_start,
 )
+from maze_dataset.tokenization.modular.all_instances import FiniteValued, all_instances
 from maze_dataset.utils import (
-	FiniteValued,
-	all_instances,
 	lattice_connection_array,
 	manhattan_distance,
 )

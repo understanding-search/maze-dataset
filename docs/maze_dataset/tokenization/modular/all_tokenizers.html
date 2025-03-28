@@ -221,12 +221,12 @@ This collection should be expanded as specific tokenizers become canonical or po
 </span><span id="L-41"><a href="#L-41"><span class="linenos"> 41</span></a>	<span class="n">StepTokenizers</span><span class="p">,</span>
 </span><span id="L-42"><a href="#L-42"><span class="linenos"> 42</span></a>	<span class="n">_TokenizerElement</span><span class="p">,</span>
 </span><span id="L-43"><a href="#L-43"><span class="linenos"> 43</span></a><span class="p">)</span>
-</span><span id="L-44"><a href="#L-44"><span class="linenos"> 44</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">maze_dataset.tokenization.modular.hashing</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
-</span><span id="L-45"><a href="#L-45"><span class="linenos"> 45</span></a>	<span class="n">AllTokenizersHashBitLength</span><span class="p">,</span>
-</span><span id="L-46"><a href="#L-46"><span class="linenos"> 46</span></a>	<span class="n">AllTokenizersHashDtype</span><span class="p">,</span>
-</span><span id="L-47"><a href="#L-47"><span class="linenos"> 47</span></a>	<span class="n">AllTokenizersHashesArray</span><span class="p">,</span>
-</span><span id="L-48"><a href="#L-48"><span class="linenos"> 48</span></a><span class="p">)</span>
-</span><span id="L-49"><a href="#L-49"><span class="linenos"> 49</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">maze_dataset.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">FiniteValued</span><span class="p">,</span> <span class="n">all_instances</span>
+</span><span id="L-44"><a href="#L-44"><span class="linenos"> 44</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">maze_dataset.tokenization.modular.all_instances</span><span class="w"> </span><span class="kn">import</span> <span class="n">FiniteValued</span><span class="p">,</span> <span class="n">all_instances</span>
+</span><span id="L-45"><a href="#L-45"><span class="linenos"> 45</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">maze_dataset.tokenization.modular.hashing</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+</span><span id="L-46"><a href="#L-46"><span class="linenos"> 46</span></a>	<span class="n">AllTokenizersHashBitLength</span><span class="p">,</span>
+</span><span id="L-47"><a href="#L-47"><span class="linenos"> 47</span></a>	<span class="n">AllTokenizersHashDtype</span><span class="p">,</span>
+</span><span id="L-48"><a href="#L-48"><span class="linenos"> 48</span></a>	<span class="n">AllTokenizersHashesArray</span><span class="p">,</span>
+</span><span id="L-49"><a href="#L-49"><span class="linenos"> 49</span></a><span class="p">)</span>
 </span><span id="L-50"><a href="#L-50"><span class="linenos"> 50</span></a>
 </span><span id="L-51"><a href="#L-51"><span class="linenos"> 51</span></a><span class="c1"># Always include this as the first item in the dict `validation_funcs` whenever using `all_instances` with `MazeTokenizerModular`</span>
 </span><span id="L-52"><a href="#L-52"><span class="linenos"> 52</span></a><span class="c1"># TYPING: error: Type variable &quot;maze_dataset.utils.FiniteValued&quot; is unbound  [valid-type]</span>

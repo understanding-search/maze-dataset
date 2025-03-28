@@ -5,7 +5,7 @@
 [![PyPI](https://img.shields.io/pypi/v/maze-dataset)](https://pypi.org/project/maze-dataset/)
 ![PyPI - Downloads](https://img.shields.io/pypi/dm/maze-dataset)
 [![Checks](https://github.com/understanding-search/maze-dataset/actions/workflows/checks.yml/badge.svg)](https://github.com/understanding-search/maze-dataset/actions/workflows/checks.yml)
-[![Coverage](data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI5OSIgaGVpZ2h0PSIyMCI+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImIiIHgyPSIwIiB5Mj0iMTAwJSI+CiAgICAgICAgPHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjYmJiIiBzdG9wLW9wYWNpdHk9Ii4xIi8+CiAgICAgICAgPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLW9wYWNpdHk9Ii4xIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogICAgPG1hc2sgaWQ9ImEiPgogICAgICAgIDxyZWN0IHdpZHRoPSI5OSIgaGVpZ2h0PSIyMCIgcng9IjMiIGZpbGw9IiNmZmYiLz4KICAgIDwvbWFzaz4KICAgIDxnIG1hc2s9InVybCgjYSkiPgogICAgICAgIDxwYXRoIGZpbGw9IiM1NTUiIGQ9Ik0wIDBoNjN2MjBIMHoiLz4KICAgICAgICA8cGF0aCBmaWxsPSIjZGZiMzE3IiBkPSJNNjMgMGgzNnYyMEg2M3oiLz4KICAgICAgICA8cGF0aCBmaWxsPSJ1cmwoI2IpIiBkPSJNMCAwaDk5djIwSDB6Ii8+CiAgICA8L2c+CiAgICA8ZyBmaWxsPSIjZmZmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iRGVqYVZ1IFNhbnMsVmVyZGFuYSxHZW5ldmEsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMSI+CiAgICAgICAgPHRleHQgeD0iMzEuNSIgeT0iMTUiIGZpbGw9IiMwMTAxMDEiIGZpbGwtb3BhY2l0eT0iLjMiPmNvdmVyYWdlPC90ZXh0PgogICAgICAgIDx0ZXh0IHg9IjMxLjUiIHk9IjE0Ij5jb3ZlcmFnZTwvdGV4dD4KICAgICAgICA8dGV4dCB4PSI4MCIgeT0iMTUiIGZpbGw9IiMwMTAxMDEiIGZpbGwtb3BhY2l0eT0iLjMiPjY0JTwvdGV4dD4KICAgICAgICA8dGV4dCB4PSI4MCIgeT0iMTQiPjY0JTwvdGV4dD4KICAgIDwvZz4KPC9zdmc+Cg==)](docs/coverage/coverage.txt)
+[![Coverage](data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI5OSIgaGVpZ2h0PSIyMCI+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImIiIHgyPSIwIiB5Mj0iMTAwJSI+CiAgICAgICAgPHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjYmJiIiBzdG9wLW9wYWNpdHk9Ii4xIi8+CiAgICAgICAgPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLW9wYWNpdHk9Ii4xIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogICAgPG1hc2sgaWQ9ImEiPgogICAgICAgIDxyZWN0IHdpZHRoPSI5OSIgaGVpZ2h0PSIyMCIgcng9IjMiIGZpbGw9IiNmZmYiLz4KICAgIDwvbWFzaz4KICAgIDxnIG1hc2s9InVybCgjYSkiPgogICAgICAgIDxwYXRoIGZpbGw9IiM1NTUiIGQ9Ik0wIDBoNjN2MjBIMHoiLz4KICAgICAgICA8cGF0aCBmaWxsPSIjZGZiMzE3IiBkPSJNNjMgMGgzNnYyMEg2M3oiLz4KICAgICAgICA8cGF0aCBmaWxsPSJ1cmwoI2IpIiBkPSJNMCAwaDk5djIwSDB6Ii8+CiAgICA8L2c+CiAgICA8ZyBmaWxsPSIjZmZmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iRGVqYVZ1IFNhbnMsVmVyZGFuYSxHZW5ldmEsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMSI+CiAgICAgICAgPHRleHQgeD0iMzEuNSIgeT0iMTUiIGZpbGw9IiMwMTAxMDEiIGZpbGwtb3BhY2l0eT0iLjMiPmNvdmVyYWdlPC90ZXh0PgogICAgICAgIDx0ZXh0IHg9IjMxLjUiIHk9IjE0Ij5jb3ZlcmFnZTwvdGV4dD4KICAgICAgICA8dGV4dCB4PSI4MCIgeT0iMTUiIGZpbGw9IiMwMTAxMDEiIGZpbGwtb3BhY2l0eT0iLjMiPjY1JTwvdGV4dD4KICAgICAgICA8dGV4dCB4PSI4MCIgeT0iMTQiPjY1JTwvdGV4dD4KICAgIDwvZz4KPC9zdmc+Cg==)](docs/coverage/coverage.txt)
 ![code size, bytes](https://img.shields.io/github/languages/code-size/understanding-search/maze-dataset)
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/t/understanding-search/maze-dataset)
 ![GitHub closed pull requests](https://img.shields.io/github/issues-pr-closed/understanding-search/maze-dataset)
@@ -169,7 +169,7 @@ we use this [makefile template](https://github.com/mivanit/python-project-makefi
 [![PyPI](https://img.shields.io/pypi/v/maze-dataset)](https://pypi.org/project/maze-dataset/)
 ![PyPI - Downloads](https://img.shields.io/pypi/dm/maze-dataset)
 [![Checks](https://github.com/understanding-search/maze-dataset/actions/workflows/checks.yml/badge.svg)](https://github.com/understanding-search/maze-dataset/actions/workflows/checks.yml)
-[![Coverage](data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI5OSIgaGVpZ2h0PSIyMCI+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImIiIHgyPSIwIiB5Mj0iMTAwJSI+CiAgICAgICAgPHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjYmJiIiBzdG9wLW9wYWNpdHk9Ii4xIi8+CiAgICAgICAgPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLW9wYWNpdHk9Ii4xIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogICAgPG1hc2sgaWQ9ImEiPgogICAgICAgIDxyZWN0IHdpZHRoPSI5OSIgaGVpZ2h0PSIyMCIgcng9IjMiIGZpbGw9IiNmZmYiLz4KICAgIDwvbWFzaz4KICAgIDxnIG1hc2s9InVybCgjYSkiPgogICAgICAgIDxwYXRoIGZpbGw9IiM1NTUiIGQ9Ik0wIDBoNjN2MjBIMHoiLz4KICAgICAgICA8cGF0aCBmaWxsPSIjZGZiMzE3IiBkPSJNNjMgMGgzNnYyMEg2M3oiLz4KICAgICAgICA8cGF0aCBmaWxsPSJ1cmwoI2IpIiBkPSJNMCAwaDk5djIwSDB6Ii8+CiAgICA8L2c+CiAgICA8ZyBmaWxsPSIjZmZmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iRGVqYVZ1IFNhbnMsVmVyZGFuYSxHZW5ldmEsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMSI+CiAgICAgICAgPHRleHQgeD0iMzEuNSIgeT0iMTUiIGZpbGw9IiMwMTAxMDEiIGZpbGwtb3BhY2l0eT0iLjMiPmNvdmVyYWdlPC90ZXh0PgogICAgICAgIDx0ZXh0IHg9IjMxLjUiIHk9IjE0Ij5jb3ZlcmFnZTwvdGV4dD4KICAgICAgICA8dGV4dCB4PSI4MCIgeT0iMTUiIGZpbGw9IiMwMTAxMDEiIGZpbGwtb3BhY2l0eT0iLjMiPjY0JTwvdGV4dD4KICAgICAgICA8dGV4dCB4PSI4MCIgeT0iMTQiPjY0JTwvdGV4dD4KICAgIDwvZz4KPC9zdmc+Cg==)](docs/coverage/coverage.txt)
+[![Coverage](data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI5OSIgaGVpZ2h0PSIyMCI+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImIiIHgyPSIwIiB5Mj0iMTAwJSI+CiAgICAgICAgPHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjYmJiIiBzdG9wLW9wYWNpdHk9Ii4xIi8+CiAgICAgICAgPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLW9wYWNpdHk9Ii4xIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogICAgPG1hc2sgaWQ9ImEiPgogICAgICAgIDxyZWN0IHdpZHRoPSI5OSIgaGVpZ2h0PSIyMCIgcng9IjMiIGZpbGw9IiNmZmYiLz4KICAgIDwvbWFzaz4KICAgIDxnIG1hc2s9InVybCgjYSkiPgogICAgICAgIDxwYXRoIGZpbGw9IiM1NTUiIGQ9Ik0wIDBoNjN2MjBIMHoiLz4KICAgICAgICA8cGF0aCBmaWxsPSIjZGZiMzE3IiBkPSJNNjMgMGgzNnYyMEg2M3oiLz4KICAgICAgICA8cGF0aCBmaWxsPSJ1cmwoI2IpIiBkPSJNMCAwaDk5djIwSDB6Ii8+CiAgICA8L2c+CiAgICA8ZyBmaWxsPSIjZmZmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iRGVqYVZ1IFNhbnMsVmVyZGFuYSxHZW5ldmEsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMSI+CiAgICAgICAgPHRleHQgeD0iMzEuNSIgeT0iMTUiIGZpbGw9IiMwMTAxMDEiIGZpbGwtb3BhY2l0eT0iLjMiPmNvdmVyYWdlPC90ZXh0PgogICAgICAgIDx0ZXh0IHg9IjMxLjUiIHk9IjE0Ij5jb3ZlcmFnZTwvdGV4dD4KICAgICAgICA8dGV4dCB4PSI4MCIgeT0iMTUiIGZpbGw9IiMwMTAxMDEiIGZpbGwtb3BhY2l0eT0iLjMiPjY1JTwvdGV4dD4KICAgICAgICA8dGV4dCB4PSI4MCIgeT0iMTQiPjY1JTwvdGV4dD4KICAgIDwvZz4KPC9zdmc+Cg==)](docs/coverage/coverage.txt)
 ![code size, bytes](https://img.shields.io/github/languages/code-size/understanding-search/maze-dataset)
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/t/understanding-search/maze-dataset)
 ![GitHub closed pull requests](https://img.shields.io/github/issues-pr-closed/understanding-search/maze-dataset)
@@ -5907,7 +5907,7 @@ maze = gen_recursive_division((10, 10))
 helper function to get a maze already with a solution
 
 
-- `numpy_rng = Generator(PCG64) at 0x7B8242D69C40`
+- `numpy_rng = Generator(PCG64) at 0x7A38A4DC1460`
 
 
 
@@ -5973,7 +5973,7 @@ generation functions have signature `(grid_shape: Coord, **kwargs) -> LatticeMaz
 
 
 
-- `numpy_rng = Generator(PCG64) at 0x7B8242D69C40`
+- `numpy_rng = Generator(PCG64) at 0x7A38A4DC1460`
 
 
 
@@ -14862,6 +14862,7 @@ implements `ModularMazeTokenizer` and related code
 
 ## Submodules
 
+- [`all_instances`](#all_instances)
 - [`all_tokenizers`](#all_tokenizers)
 - [`element_base`](#element_base)
 - [`elements`](#elements)
@@ -14880,8 +14881,166 @@ implements `ModularMazeTokenizer` and related code
 
 implements `ModularMazeTokenizer` and related code
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.1maze_dataset/tokenization/modular.py#L0-L12)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.1maze_dataset/tokenization/modular.py#L0-L13)
 
+
+
+
+
+> docs for [`maze-dataset`](https://github.com/understanding-search/maze-dataset) v1.3.1
+
+
+## Contents
+`all_instances`, `FiniteValued`, and related code for tokenizers
+
+
+## API Documentation
+
+ - [`FiniteValued`](#FiniteValued)
+ - [`UnsupportedAllInstancesError`](#UnsupportedAllInstancesError)
+ - [`all_instances`](#all_instances)
+
+
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.1maze_dataset/tokenization/modular/all_instances.py)
+
+# `maze_dataset.tokenization.modular.all_instances` { #maze_dataset.tokenization.modular.all_instances }
+
+`all_instances`, `FiniteValued`, and related code for tokenizers
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.1maze_dataset/tokenization/modular/all_instances.py#L0-L262)
+
+
+
+- `FiniteValued = ~FiniteValued`
+
+
+### `FiniteValued`
+The details of this type are not possible to fully define via the Python 3.10 typing library.
+This custom generic type is a generic domain of many types which have a finite, discrete, and well-defined range space.
+`FiniteValued` defines the domain of supported types for the `all_instances` function, since that function relies heavily on static typing.
+These types may be nested in an arbitrarily deep tree via Container Types and Superclass Types (see below).
+The leaves of the tree must always be Primitive Types.
+
+### `FiniteValued` Subtypes
+*: Indicates that this subtype is not yet supported by `all_instances`
+
+#### Non-`FiniteValued` (Unbounded) Types
+These are NOT valid subtypes, and are listed for illustrative purposes only.
+This list is not comprehensive.
+While the finite and discrete nature of digital computers means that the cardinality of these types is technically finite,
+they are considered unbounded types in this context.
+- No Container subtype may contain any of these unbounded subtypes.
+- `int`
+- `float`
+- `str`
+- `list`
+- `set`: Set types without a `FiniteValued` argument are unbounded
+- `tuple`: Tuple types without a fixed length are unbounded
+
+#### Primitive Types
+Primitive types are non-nested types which resolve directly to a concrete range of values
+- `bool`: has 2 possible values
+- *`enum.Enum`: The range of a concrete `Enum` subclass is its set of enum members
+- `typing.Literal`: Every type constructed using `Literal` has a finite set of possible literal values in its definition.
+This is the preferred way to include limited ranges of non-`FiniteValued` types such as `int` or `str` in a `FiniteValued` hierarchy.
+
+#### Container Types
+Container types are types which contain zero or more fields of `FiniteValued` type.
+The range of a container type is the cartesian product of their field types, except for `set[FiniteValued]`.
+- `tuple[FiniteValued]`: Tuples of fixed length whose elements are each `FiniteValued`.
+- `IsDataclass`: Concrete dataclasses whose fields are `FiniteValued`.
+- *Standard concrete class: Regular classes could be supported just like dataclasses if all their data members are `FiniteValued`-typed.
+- *`set[FiniteValued]`: Sets of fixed length of a `FiniteValued` type.
+
+#### Superclass Types
+Superclass types don't directly contain data members like container types.
+Their range is the union of the ranges of their subtypes.
+- Abstract dataclasses: Abstract dataclasses whose subclasses are all `FiniteValued` superclass or container types
+- *`IsDataclass`: Concrete dataclasses which also have their own subclasses.
+- *Standard abstract classes: Abstract dataclasses whose subclasses are all `FiniteValued` superclass or container types
+- `UnionType`: Any union of `FiniteValued` types, e.g., bool | Literal[2, 3]
+
+
+### `class UnsupportedAllInstancesError(builtins.TypeError):` { #UnsupportedAllInstancesError }
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.1maze_dataset/tokenization/modular/all_instances.py#L155-L164)
+
+
+Raised when `all_instances` is called on an unsupported type
+
+either has unbounded possible values or is not supported (Enum is not supported)
+
+
+### `UnsupportedAllInstancesError` { #UnsupportedAllInstancesError.__init__ }
+```python
+(type_: type)
+```
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.1maze_dataset/tokenization/modular/all_instances.py#L161-L164)
+
+
+constructs an error message with the type and mro of the type
+
+
+### Inherited Members                                
+
+- [`with_traceback`](#UnsupportedAllInstancesError.with_traceback)
+- [`add_note`](#UnsupportedAllInstancesError.add_note)
+- [`args`](#UnsupportedAllInstancesError.args)
+
+
+### `def all_instances` { #all_instances }
+```python
+(
+    type_: ~FiniteValued,
+    validation_funcs: dict[~FiniteValued, typing.Callable[[~FiniteValued], bool]] | None = None
+) -> Generator[~FiniteValued, NoneType, NoneType]
+```
+
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.1maze_dataset/tokenization/modular/all_instances.py#L167-L263)
+
+
+Returns all possible values of an instance of `type_` if finite instances exist.
+
+Uses type hinting to construct the possible values.
+All nested elements of `type_` must themselves be typed.
+Do not use with types whose members contain circular references.
+Function is susceptible to infinite recursion if `type_` is a dataclass whose member tree includes another instance of `type_`.
+
+### Parameters
+- `type_: FiniteValued`
+        A finite-valued type. See docstring on `FiniteValued` for full details.
+- `validation_funcs: dict[FiniteValued, Callable[[FiniteValued], bool]] | None`
+        A mapping of types to auxiliary functions to validate instances of that type.
+        This optional argument can provide an additional, more precise layer of validation for the instances generated beyond what type hinting alone can provide.
+        See `validation_funcs` Details section below.
+        (default: `None`)
+
+#### Supported `type_` Values
+See docstring on `FiniteValued` for full details.
+`type_` may be:
+- `FiniteValued`
+- A finite-valued, fixed-length Generic tuple type.
+E.g., `tuple[bool]`, `tuple[bool, MyEnum]` are OK.
+`tuple[bool, ...]` is NOT supported, since the length of the tuple is not fixed.
+- Nested versions of any of the types in this list
+- A `UnionType` of any of the types in this list
+
+#### `validation_funcs` Details
+- `validation_funcs` is applied after all instances have been generated according to type hints.
+- If `type_` is in `validation_funcs`, then the list of instances is filtered by `validation_funcs[type_](instance)`.
+- `validation_funcs` is passed down for all recursive calls of `all_instances`.
+- This allows for improved performance through maximal pruning of the exponential tree.
+- `validation_funcs` supports subclass checking.
+- If `type_` is not found in `validation_funcs`, then the search is performed iteratively in mro order.
+- If a superclass of `type_` is found while searching in mro order, that validation function is applied and the list is returned.
+- If no superclass of `type_` is found, then no filter is applied.
+
+### Raises:
+- `UnsupportedAllInstancesError`: If `type_` is not supported by `all_instances`.
 
 
 
@@ -17551,6 +17710,7 @@ thanks to https://github.com/rozbb for suggesting doing this instead of storing 
 
 ## API Documentation
 
+ - [`RustFstNotLoadedWarning`](#RustFstNotLoadedWarning)
  - [`MMT_FST_PATH`](#MMT_FST_PATH)
  - [`get_tokenizers_fst`](#get_tokenizers_fst)
  - [`check_tokenizer_in_fst`](#check_tokenizer_in_fst)
@@ -17573,8 +17733,25 @@ we cannot circularly import
 
 thanks to https://github.com/rozbb for suggesting doing this instead of storing a whole bunch of hashes like we were doing before
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.1maze_dataset/tokenization/modular/fst_load.py#L0-L53)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.1maze_dataset/tokenization/modular/fst_load.py#L0-L94)
 
+
+
+### `class RustFstNotLoadedWarning(builtins.UserWarning):` { #RustFstNotLoadedWarning }
+
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.1maze_dataset/tokenization/modular/fst_load.py#L29-L30)
+
+
+warning for when `rust_fst` is not loaded
+
+
+### Inherited Members                                
+
+- [`UserWarning`](#RustFstNotLoadedWarning.__init__)
+
+- [`with_traceback`](#RustFstNotLoadedWarning.with_traceback)
+- [`add_note`](#RustFstNotLoadedWarning.add_note)
+- [`args`](#RustFstNotLoadedWarning.args)
 
 
 - `MMT_FST_PATH: pathlib.Path = PosixPath('/home/miv/projects/mazes/maze-dataset/maze_dataset/tokenization/modular/MazeTokenizerModular_tested.fst')`
@@ -17588,7 +17765,7 @@ thanks to https://github.com/rozbb for suggesting doing this instead of storing 
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.1maze_dataset/tokenization/modular/fst_load.py#L22-L25)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.1maze_dataset/tokenization/modular/fst_load.py#L44-L47)
 
 
 (cached) load the tokenizers fst set from `MMT_FST_PATH`
@@ -17600,7 +17777,7 @@ thanks to https://github.com/rozbb for suggesting doing this instead of storing 
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.1maze_dataset/tokenization/modular/fst_load.py#L28-L54)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.1maze_dataset/tokenization/modular/fst_load.py#L50-L76)
 
 
 check if a tokenizer is in the fst set
@@ -18189,9 +18366,6 @@ misc utilities for the `maze_dataset` package
  - [`lattice_max_degrees`](#lattice_max_degrees)
  - [`lattice_connection_array`](#lattice_connection_array)
  - [`adj_list_to_nested_set`](#adj_list_to_nested_set)
- - [`FiniteValued`](#FiniteValued)
- - [`UnsupportedAllInstancesError`](#UnsupportedAllInstancesError)
- - [`all_instances`](#all_instances)
 
 
 
@@ -18202,7 +18376,7 @@ misc utilities for the `maze_dataset` package
 
 misc utilities for the `maze_dataset` package
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.1maze_dataset/utils.py#L0-L437)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.1maze_dataset/utils.py#L0-L183)
 
 
 
@@ -18216,7 +18390,7 @@ misc utilities for the `maze_dataset` package
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.1maze_dataset/utils.py#L27-L68)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.1maze_dataset/utils.py#L12-L51)
 
 
 Transform a string into an ndarray of bools.
@@ -18250,7 +18424,7 @@ array([[ True,  True],
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.1maze_dataset/utils.py#L71-L87)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.1maze_dataset/utils.py#L54-L70)
 
 
 returns an array of indices, sorted by distance from the corner
@@ -18276,7 +18450,7 @@ the first n^2 elements of `np.ndindex((n+1, n+1))`
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.1maze_dataset/utils.py#L116-L132)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.1maze_dataset/utils.py#L101-L117)
 
 
 Returns the Manhattan distance between two coords.
@@ -18288,7 +18462,7 @@ Returns the Manhattan distance between two coords.
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.1maze_dataset/utils.py#L135-L140)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.1maze_dataset/utils.py#L120-L125)
 
 
 Returns an array with the maximum possible degree for each coord.
@@ -18302,7 +18476,7 @@ Returns an array with the maximum possible degree for each coord.
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.1maze_dataset/utils.py#L143-L186)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.1maze_dataset/utils.py#L128-L171)
 
 
 Returns a 3D NumPy array containing all the edges in a 2D square lattice of size n x n.
@@ -18323,7 +18497,7 @@ In each pair, the coord with the smaller sum always comes first.
 ```
 
 
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.1maze_dataset/utils.py#L189-L199)
+[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.1maze_dataset/utils.py#L174-L184)
 
 
 Used for comparison of adj_lists
@@ -18331,136 +18505,6 @@ Used for comparison of adj_lists
 Adj_list looks like [[[0, 1], [1, 1]], [[0, 0], [0, 1]], ...]
 We don't care about order of coordinate pairs within
 the adj_list or coordinates within each coordinate pair.
-
-
-- `FiniteValued = ~FiniteValued`
-
-
-### `FiniteValued`
-The details of this type are not possible to fully define via the Python 3.10 typing library.
-This custom generic type is a generic domain of many types which have a finite, discrete, and well-defined range space.
-`FiniteValued` defines the domain of supported types for the `all_instances` function, since that function relies heavily on static typing.
-These types may be nested in an arbitrarily deep tree via Container Types and Superclass Types (see below).
-The leaves of the tree must always be Primitive Types.
-
-### `FiniteValued` Subtypes
-*: Indicates that this subtype is not yet supported by `all_instances`
-
-#### Non-`FiniteValued` (Unbounded) Types
-These are NOT valid subtypes, and are listed for illustrative purposes only.
-This list is not comprehensive.
-While the finite and discrete nature of digital computers means that the cardinality of these types is technically finite,
-they are considered unbounded types in this context.
-- No Container subtype may contain any of these unbounded subtypes.
-- `int`
-- `float`
-- `str`
-- `list`
-- `set`: Set types without a `FiniteValued` argument are unbounded
-- `tuple`: Tuple types without a fixed length are unbounded
-
-#### Primitive Types
-Primitive types are non-nested types which resolve directly to a concrete range of values
-- `bool`: has 2 possible values
-- *`enum.Enum`: The range of a concrete `Enum` subclass is its set of enum members
-- `typing.Literal`: Every type constructed using `Literal` has a finite set of possible literal values in its definition.
-This is the preferred way to include limited ranges of non-`FiniteValued` types such as `int` or `str` in a `FiniteValued` hierarchy.
-
-#### Container Types
-Container types are types which contain zero or more fields of `FiniteValued` type.
-The range of a container type is the cartesian product of their field types, except for `set[FiniteValued]`.
-- `tuple[FiniteValued]`: Tuples of fixed length whose elements are each `FiniteValued`.
-- `IsDataclass`: Concrete dataclasses whose fields are `FiniteValued`.
-- *Standard concrete class: Regular classes could be supported just like dataclasses if all their data members are `FiniteValued`-typed.
-- *`set[FiniteValued]`: Sets of fixed length of a `FiniteValued` type.
-
-#### Superclass Types
-Superclass types don't directly contain data members like container types.
-Their range is the union of the ranges of their subtypes.
-- Abstract dataclasses: Abstract dataclasses whose subclasses are all `FiniteValued` superclass or container types
-- *`IsDataclass`: Concrete dataclasses which also have their own subclasses.
-- *Standard abstract classes: Abstract dataclasses whose subclasses are all `FiniteValued` superclass or container types
-- `UnionType`: Any union of `FiniteValued` types, e.g., bool | Literal[2, 3]
-
-
-### `class UnsupportedAllInstancesError(builtins.TypeError):` { #UnsupportedAllInstancesError }
-
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.1maze_dataset/utils.py#L330-L339)
-
-
-Raised when `all_instances` is called on an unsupported type
-
-either has unbounded possible values or is not supported (Enum is not supported)
-
-
-### `UnsupportedAllInstancesError` { #UnsupportedAllInstancesError.__init__ }
-```python
-(type_: type)
-```
-
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.1maze_dataset/utils.py#L336-L339)
-
-
-constructs an error message with the type and mro of the type
-
-
-### Inherited Members                                
-
-- [`with_traceback`](#UnsupportedAllInstancesError.with_traceback)
-- [`add_note`](#UnsupportedAllInstancesError.add_note)
-- [`args`](#UnsupportedAllInstancesError.args)
-
-
-### `def all_instances` { #all_instances }
-```python
-(
-    type_: ~FiniteValued,
-    validation_funcs: dict[~FiniteValued, typing.Callable[[~FiniteValued], bool]] | None = None
-) -> Generator[~FiniteValued, NoneType, NoneType]
-```
-
-
-[View Source on GitHub](https://github.com/understanding-search/maze-dataset/blob/1.3.1maze_dataset/utils.py#L342-L438)
-
-
-Returns all possible values of an instance of `type_` if finite instances exist.
-
-Uses type hinting to construct the possible values.
-All nested elements of `type_` must themselves be typed.
-Do not use with types whose members contain circular references.
-Function is susceptible to infinite recursion if `type_` is a dataclass whose member tree includes another instance of `type_`.
-
-### Parameters
-- `type_: FiniteValued`
-        A finite-valued type. See docstring on `FiniteValued` for full details.
-- `validation_funcs: dict[FiniteValued, Callable[[FiniteValued], bool]] | None`
-        A mapping of types to auxiliary functions to validate instances of that type.
-        This optional argument can provide an additional, more precise layer of validation for the instances generated beyond what type hinting alone can provide.
-        See `validation_funcs` Details section below.
-        (default: `None`)
-
-#### Supported `type_` Values
-See docstring on `FiniteValued` for full details.
-`type_` may be:
-- `FiniteValued`
-- A finite-valued, fixed-length Generic tuple type.
-E.g., `tuple[bool]`, `tuple[bool, MyEnum]` are OK.
-`tuple[bool, ...]` is NOT supported, since the length of the tuple is not fixed.
-- Nested versions of any of the types in this list
-- A `UnionType` of any of the types in this list
-
-#### `validation_funcs` Details
-- `validation_funcs` is applied after all instances have been generated according to type hints.
-- If `type_` is in `validation_funcs`, then the list of instances is filtered by `validation_funcs[type_](instance)`.
-- `validation_funcs` is passed down for all recursive calls of `all_instances`.
-- This allows for improved performance through maximal pruning of the exponential tree.
-- `validation_funcs` supports subclass checking.
-- If `type_` is not found in `validation_funcs`, then the search is performed iteratively in mro order.
-- If a superclass of `type_` is found while searching in mro order, that validation function is applied and the list is returned.
-- If no superclass of `type_` is found, then no filter is applied.
-
-### Raises:
-- `UnsupportedAllInstancesError`: If `type_` is not supported by `all_instances`.
 
 
 

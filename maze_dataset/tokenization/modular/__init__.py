@@ -2,6 +2,7 @@
 
 __all__ = [
 	# modules
+	"all_instances",
 	"all_tokenizers",
 	"element_base",
 	"elements",

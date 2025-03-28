@@ -39,10 +39,15 @@
         "ipykernel>=6.22.0",
         # misc
         "tqdm>=4.65.0",
-        "frozendict>=2.4.4",
-		# storing valid tokenizers
-		"rust_fst>=0.1.2",
     ]
+
+	[project.optional-dependencies]
+		tokenization = [
+			"frozendict>=2.4.4",
+			# storing valid tokenizers
+			# doesn't appear to work on macos
+			"rust_fst>=0.1.2; platform_system != 'darwin'",
+		]
 
 [dependency-groups]
 	dev = [
@@ -114,13 +119,13 @@
 		"tests/unit/processing/test_collect_gen_metadata.py", # 3
 		"tests/unit/generation/test_latticemaze.py", # 7
 		"maze_dataset/constants.py", # 9
-		"maze_dataset/utils.py", # 19
 		# tokenization
 		"maze_dataset/tokenization/modular/all_tokenizers.py", # 8
 		"maze_dataset/tokenization/maze_tokenizer_legacy.py", # 19
 		"maze_dataset/token_utils.py", # 21
 		"maze_dataset/tokenization/modular/maze_tokenizer_modular.py", # 12
 		"maze_dataset/tokenization/modular/elements.py", # 97
+		"maze_dataset/tokenization/modular/all_instances.py", # 17
 		# low priority
 		"maze_dataset/plotting/plot_maze.py", # 11
 		"tests/all_tokenizers/test_all_tokenizers.py", # 12
