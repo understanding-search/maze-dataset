@@ -194,6 +194,7 @@
          <clipPath id="pb18c59003c">
             <rect x="103.104" y="41.472" width="266.112" height="266.112"/>
          </clipPath>
+         </defs>
       </g>
       <!-- ASCII Maze - top right -->
       <!-- <image x="900" y="0" width="200" height="200" href="./ascii.svg" id="image57" /> -->
@@ -265,10 +266,9 @@
             <text y="210"><tspan x="10" class="w">#</tspan><tspan x="30" class="w">#</tspan><tspan x="50" class="w">#</tspan><tspan x="70" class="w">#</tspan><tspan x="90" class="w">#</tspan><tspan x="110" class="w">#</tspan><tspan x="130" class="w">#</tspan><tspan x="150" class="w">#</tspan><tspan x="170" class="w">#</tspan><tspan x="190" class="w">#</tspan><tspan x="210" class="w">#</tspan></text>
          </g>
       </g>
-      </g>
       <!-- Pixel Grid - middle right -->
       <!-- <image x="900" y="220" width="200" height="200" href="./pixels.svg" id="image59" /> -->
-      <g transform="translate(900, 220)  scale(0.47)">
+      <g transform="translate(900, 220)  scale(0.45)">
          <rect x="0" y="0" width="440" height="440" fill="#222" rx="20.0" ry="20.0"/>
          <path d="M 48.0,40 L 80,40 L 80,80 L 40,80 L 40,48.0 A 8.0 8.0 0 0 1 48.0,40 Z" fill="#f0f0f0" stroke="none"/>
          <path d="M 80,40 L 120,40 L 120,80 L 80,80 L 80,40 Z" fill="#f0f0f0" stroke="none"/>
