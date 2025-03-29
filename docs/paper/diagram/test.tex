@@ -1,0 +1,65 @@
+\documentclass{article}
+
+% Basic packages
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{amsmath,amssymb}
+\usepackage{xcolor}  % Required for colors
+\usepackage{transparent}  % Required for transparency
+\usepackage{import}  % For importing the PDF_TEX file
+
+% Page margins
+\usepackage[margin=1in]{geometry}
+
+% Title information
+\title{Maze Visualization}
+\author{Your Name}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section{Maze Diagram}
+
+Below is the maze representation generated from Inkscape:
+
+\begin{figure}[h]
+    \centering
+    % Set the desired width of the SVG image
+    \def\svgwidth{0.8\textwidth}
+    % Import the PDF_TEX file
+    \input{diagram-4.pdf_tex}
+    \caption{Maze representation with different visualization methods}
+    \label{fig:maze}
+\end{figure}
+
+\section{Notes on the Diagram}
+
+This diagram shows various ways to visualize and represent a maze:
+
+\begin{itemize}
+    \item The top-left shows the configuration setup with \texttt{MazeDatasetConfig}
+    \item The center shows how to access a specific maze with \texttt{ds[0]}
+    \item The right side shows ASCII representation with \texttt{m.as\_ascii()}
+    \item The bottom sections show other visualization methods:
+    \begin{itemize}
+        \item \texttt{m.as\_pixels()} for pixel representation
+        \item \texttt{MazePlot(m)} for a graphical plot
+        \item \texttt{m.as\_tokens(...)} for a tokenized representation
+    \end{itemize}
+\end{itemize}
+
+\section{Using the Maze Dataset}
+
+The diagram illustrates the typical workflow for working with the maze dataset:
+
+\begin{enumerate}
+    \item Configure the maze parameters using \texttt{MazeDatasetConfig}
+    \item Create the dataset with \texttt{MazeDataset.from\_config(cfg)}
+    \item Access individual maze objects from the dataset
+    \item Visualize or process mazes using various methods
+\end{enumerate}
+
+\end{document}

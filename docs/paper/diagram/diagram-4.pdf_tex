@@ -1,0 +1,104 @@
+%% Creator: Inkscape 1.2.2 (b0a8486541, 2022-12-01), www.inkscape.org
+%% PDF/EPS/PS + LaTeX output extension by Johan Engelen, 2010
+%% Accompanies image file 'diagram-4.pdf' (pdf, eps, ps)
+%%
+%% To include the image in your LaTeX document, write
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics{<filename>.pdf}
+%% To scale the image, write
+%%   \def\svgwidth{<desired width>}
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics[width=<desired width>]{<filename>.pdf}
+%%
+%% Images with a different path to the parent latex file can
+%% be accessed with the `import' package (which may need to be
+%% installed) using
+%%   \usepackage{import}
+%% in the preamble, and then including the image with
+%%   \import{<path to file>}{<filename>.pdf_tex}
+%% Alternatively, one can specify
+%%   \graphicspath{{<path to file>/}}
+%% 
+%% For more information, please see info/svg-inkscape on CTAN:
+%%   http://tug.ctan.org/tex-archive/info/svg-inkscape
+%%
+\begingroup%
+  \makeatletter%
+  \providecommand\color[2][]{%
+    \errmessage{(Inkscape) Color is used for the text in Inkscape, but the package 'color.sty' is not loaded}%
+    \renewcommand\color[2][]{}%
+  }%
+  \providecommand\transparent[1]{%
+    \errmessage{(Inkscape) Transparency is used (non-zero) for the text in Inkscape, but the package 'transparent.sty' is not loaded}%
+    \renewcommand\transparent[1]{}%
+  }%
+  \providecommand\rotatebox[2]{#2}%
+  \newcommand*\fsize{\dimexpr\f@size pt\relax}%
+  \newcommand*\lineheight[1]{\fontsize{\fsize}{#1\fsize}\selectfont}%
+  \ifx\svgwidth\undefined%
+    \setlength{\unitlength}{871.7880249bp}%
+    \ifx\svgscale\undefined%
+      \relax%
+    \else%
+      \setlength{\unitlength}{\unitlength * \real{\svgscale}}%
+    \fi%
+  \else%
+    \setlength{\unitlength}{\svgwidth}%
+  \fi%
+  \global\let\svgwidth\undefined%
+  \global\let\svgscale\undefined%
+  \makeatother%
+  \begin{picture}(1,0.5669042)%
+    \lineheight{1}%
+    \setlength\tabcolsep{0pt}%
+    \put(0,0){\includegraphics[width=\unitlength,page=1]{diagram-4.pdf}}%
+    \put(0.02064722,0.53191373){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}cfg = MazeDatasetConfig(\end{tabular}}}}%
+    \put(0.03785324,0.50610471){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}name = "test",\end{tabular}}}}%
+    \put(0.03785324,0.48029568){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}grid_n = 5,\end{tabular}}}}%
+    \put(0.03785324,0.45448665){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}n_mazes = 1,\end{tabular}}}}%
+    \put(0.03785324,0.42867762){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}maze_ctor = gen_dfs,\end{tabular}}}}%
+    \put(0.03785324,0.4028686){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}... \textit{# many, many options}\end{tabular}}}}%
+    \put(0.02064722,0.38566258){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l})\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=2]{diagram-4.pdf}}%
+    \put(0.02064722,0.29361039){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}ds = MazeDataset.from_config(cfg)\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=3]{diagram-4.pdf}}%
+    \put(0.3644374,0.41030253){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}m: SolvedMaze = ds[0]\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=4]{diagram-4.pdf}}%
+    \put(0.85858027,0.56202426){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}###########\end{tabular}}}}%
+    \put(0.85858027,0.54653885){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}#XXX##\end{tabular}}}}%
+    \put(0.85858027,0.53105343){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}####X#X##\end{tabular}}}}%
+    \put(0.85858027,0.51556802){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}##X#S#\end{tabular}}}}%
+    \put(0.85858027,0.5000826){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}#####X#####\end{tabular}}}}%
+    \put(0.85858027,0.48459718){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}#XXXXX#EXX#\end{tabular}}}}%
+    \put(0.85858027,0.46911177){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}#X######X#\end{tabular}}}}%
+    \put(0.85858027,0.45362635){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}#X##X#\end{tabular}}}}%
+    \put(0.85858027,0.43814094){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}#X#######X#\end{tabular}}}}%
+    \put(0.85858027,0.42265552){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}#XXXXXXXXX#\end{tabular}}}}%
+    \put(0.85858027,0.40717011){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}###########\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=5]{diagram-4.pdf}}%
+    \put(0.71957127,0.47513387){\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}m.as_ascii()\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=6]{diagram-4.pdf}}%
+    \put(0.71845961,0.29447069){\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}m.as_pixels()\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=7]{diagram-4.pdf}}%
+    \put(0.72760209,0.10520449){\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}MazePlot(m)\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=8]{diagram-4.pdf}}%
+    \put(0.49046208,0.23754958){\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}m.as_tokens(...)\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=9]{diagram-4.pdf}}%
+    \put(0.01634572,0.19725669){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}<ADJLIST_START> (2,4) <--> (3,4) ; (1,3) <--> (1,4) ; (2,4) <--> (2,3) ;\end{tabular}}}}%
+    \put(0.01634572,0.18005067){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}(1,4) <--> (0,4) ; (2,0) <--> (3,0) ; (4,4) <--> (4,3) ; (4,2) <--> (4,3) ;\end{tabular}}}}%
+    \put(0.01634572,0.16284465){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}(3,1) <--> (3,2) ; (3,0) <--> (4,0) ; (4,1) <--> (4,2) ; (0,1) <--> (0,0) ;\end{tabular}}}}%
+    \put(0.01634572,0.14563864){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}(0,2) <--> (0,3) ; (2,2) <--> (1,2) ; (0,2) <--> (0,1) ; (1,1) <--> (1,0) ;\end{tabular}}}}%
+    \put(0.01634572,0.12843262){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}(3,3) <--> (3,2) ; (1,0) <--> (0,0) ; (0,2) <--> (1,2) ; (2,1) <--> (2,2) ;\end{tabular}}}}%
+    \put(0.01634572,0.1112266){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}(4,0) <--> (4,1) ; (2,1) <--> (2,0) ; (3,2) <--> (2,2) ; (1,3) <--> (0,3) ;\end{tabular}}}}%
+    \put(0.01634572,0.09402058){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}(3,4) <--> (4,4) ; <ADJLIST_END>\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=10]{diagram-4.pdf}}%
+    \put(0.01634572,0.07251306){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}<ORIGIN_START> (1,3) <ORIGIN_END>\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=11]{diagram-4.pdf}}%
+    \put(0.26497267,0.07251306){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}<TARGET_START> (2,3) <TARGET_END>\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=12]{diagram-4.pdf}}%
+    \put(0.01634572,0.05186584){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}<PATH_START> (1,3) (0,3) (0,2) (1,2) (2,2) (2,1) (2,0) (3,0) (4,0) (4,1)\end{tabular}}}}%
+    \put(0.01634572,0.03465982){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}(4,2) (4,3) (4,4) (3,4) (2,4) (2,3) <PATH_END>\end{tabular}}}}%
+  \end{picture}%
+\endgroup%

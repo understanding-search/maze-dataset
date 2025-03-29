@@ -1,0 +1,3 @@
+- `main.svg` contains references to `ascii.svg`, `mazeplot.svg`, `pixels.svg`. `diagram.svg` has these embedded directly.
+- `tokens.html` is not referenced since i don't think there is a way to do this -- we just embed it directly. the actual version also doesn't color the text background but just makes boxes
+- to export to pdf, firefox for some reason breaks links. I tried vivaldi and that worked, so probably a chromium browser will work.
