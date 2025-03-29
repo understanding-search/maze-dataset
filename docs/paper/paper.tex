@@ -343,6 +343,24 @@ et al. (1970). maze-dataset. \emph{Journal of Open Source Software},
 \let\oldsubparagraph\subparagraph
 \renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
 \fi
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage[luatex, pdfversion=1.7]{hyperref}
+\usetikzlibrary{calc}
+\tikzset{ % Define a TikZ style for an external hyperlink node.
+  hyperlink node url/.style={
+    alias=sourcenode,
+    append after command={
+      let \p1 = (sourcenode.north west),
+          \p2 = (sourcenode.south east),
+          \n1 = {\x2-\x1},
+          \n2 = {\y1-\y2} in
+      node[inner sep=0pt, outer sep=0pt, anchor=north west, at=(\p1)]
+          {\href{#1}{\XeTeXLinkBox{\phantom{\rule{\n1}{\n2}}}}}
+    }
+  }
+}
+\providecommand{\XeTeXLinkBox}[1]{#1}
 \ifLuaTeX
   \usepackage{selnolig}  % disable illegal ligatures
 \fi
@@ -446,43 +464,28 @@ Journals} \ExternalLink
   \end{flushleft}
 }
 
+\href{https://understanding-search.github.io/maze-dataset/examples/maze_examples.html}{examples}
+\href{https://understanding-search.github.io/maze-dataset/maze_dataset.html}{docs}
+
 \hypertarget{summary}{%
 \section{Summary}\label{summary}}
-
-Solving mazes is a classic problem in computer science and artificial
-intelligence, and humans have been constructing mazes for thousands of
-years. Although finding the shortest path through a maze is a solved
-problem, this makes it an excellent testbed for studying how machine
-learning algorithms solve problems and represent spatial information. In
-this paper, we introduce \texttt{maze-dataset}, a Python library for
-generating, processing, and visualizing datasets of mazes. This library
-supports a variety of maze generation algorithms providing both mazes
-with loops and ``perfect'' mazes without them. These generation
-algorithms can be configured with various parameters, and the resulting
-mazes can be filtered to satisfy a desired property. Also provided are
-tools for converting mazes to and from various formats, such as
-rasterized images and tokenized text sequences, making it suitable for
-training or evaluating convolutional neural networks and autoregressive
-transformer models, as well as various visualization tools. As well as
-providing a simple interface for generating, storing, and loading these
-datasets, \texttt{maze-dataset} is extensively tested, type hinted,
-benchmarked, and documented.
 
 \textbf{TODO: mention the examples, put in a figure
 https://understanding-search.github.io/maze-dataset/examples/maze\_examples.html}
 
-\colorbox[RGB]{ 176,152,232 }{ \texttt{ <ADJLIST\_START> (0,1) <--> (0,2) ; (1,0) <--> (1,1) ; (0,1) <--> (0,0) ; } }
-\colorbox[RGB]{ 176,152,232 }{ \texttt{ (4,0) <--> (3,0) ; (0,2) <--> (0,3) ; (0,4) <--> (1,4) ; (2,2) <--> (3,2) ; } }
-\colorbox[RGB]{ 176,152,232 }{ \texttt{ (3,4) <--> (2,4) ; (2,0) <--> (3,0) ; (3,4) <--> (4,4) ; (3,2) <--> (3,3) ; } }
-\colorbox[RGB]{ 176,152,232 }{ \texttt{ (2,4) <--> (2,3) ; (1,3) <--> (0,3) ; (1,3) <--> (1,4) ; (1,0) <--> (0,0) ; } }
-\colorbox[RGB]{ 176,152,232 }{ \texttt{ (2,1) <--> (2,0) ; (4,2) <--> (4,3) ; (3,2) <--> (3,1) ; (1,2) <--> (0,2) ; } }
-\colorbox[RGB]{ 176,152,232 }{ \texttt{ (4,1) <--> (4,0) ; (4,2) <--> (4,1) ; (4,3) <--> (4,4) ; (1,2) <--> (2,2) ; } }
-\colorbox[RGB]{ 176,152,232 }{ \texttt{ (2,1) <--> (2,2) ; <ADJLIST\_END> } }
-\newline
-\colorbox[RGB]{ 154,239,123 }{ \texttt{ <ORIGIN\_START> (1,3) <ORIGIN\_END> } }
-\colorbox[RGB]{ 246,136,136 }{ \texttt{ <TARGET\_START> (2,3) <TARGET\_END> } }
-\colorbox[RGB]{ 111,187,254 }{ \texttt{ <PATH\_START> (1,3) (0,3) (0,2) (1,2) (2,2) (2,1) (2,0) (3,0) (4,0) (4,1) } }
-\colorbox[RGB]{ 111,187,254 }{ \texttt{ (4,2) (4,3) (4,4) (3,4) (2,4) (2,3) <PATH\_END> } }
+\begin{figure} 
+\begin{tikzpicture}[remember picture]
+  % Place a clickable blue box at the top left corner (offset down by 1cm)
+  \node[draw=blue, fill=blue!20, fill opacity=0.3,
+        hyperlink node url={https://github.com},
+        minimum width=2cm, minimum height=1cm,
+        anchor=north west]
+    at ($(current page.north west)+(0,-1cm)$) {};
+\end{tikzpicture}
+\caption{testinggggggggggggggggg}
+\end{figure}
+
+\newpage
 
 \hypertarget{statement-of-need}{%
 \section{Statement of Need}\label{statement-of-need}}

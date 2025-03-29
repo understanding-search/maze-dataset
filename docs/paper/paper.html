@@ -249,6 +249,7 @@ Behn, Samy Wu Fung" />
     div.csl-indent {
       margin-left: 2em;
     }  </style>
+  
 </head>
 <body>
 <header id="title-block-header">
@@ -263,51 +264,27 @@ Behn, Samy Wu Fung" />
 <p class="author">true</p>
 <p class="date">March 2025</p>
 </header>
+<p><a
+href="https://understanding-search.github.io/maze-dataset/examples/maze_examples.html">examples</a>
+<a
+href="https://understanding-search.github.io/maze-dataset/maze_dataset.html">docs</a></p>
 <h1 id="summary">Summary</h1>
-<p>Solving mazes is a classic problem in computer science and artificial
-intelligence, and humans have been constructing mazes for thousands of
-years. Although finding the shortest path through a maze is a solved
-problem, this makes it an excellent testbed for studying how machine
-learning algorithms solve problems and represent spatial information. In
-this paper, we introduce <code>maze-dataset</code>, a Python library for
-generating, processing, and visualizing datasets of mazes. This library
-supports a variety of maze generation algorithms providing both mazes
-with loops and “perfect” mazes without them. These generation algorithms
-can be configured with various parameters, and the resulting mazes can
-be filtered to satisfy a desired property. Also provided are tools for
-converting mazes to and from various formats, such as rasterized images
-and tokenized text sequences, making it suitable for training or
-evaluating convolutional neural networks and autoregressive transformer
-models, as well as various visualization tools. As well as providing a
-simple interface for generating, storing, and loading these datasets,
-<code>maze-dataset</code> is extensively tested, type hinted,
-benchmarked, and documented.</p>
+<!-- Solving mazes is a classic problem in computer science and artificial intelligence, and humans have been constructing mazes for thousands of years. Although finding the shortest path through a maze is a solved problem, this makes it an excellent testbed for studying how machine learning algorithms solve problems and represent spatial information. In this paper, we introduce `maze-dataset`, a Python library for generating, processing, and visualizing datasets of mazes. This library supports a variety of maze generation algorithms providing both mazes with loops and "perfect" mazes without them. These generation algorithms can be configured with various parameters, and the resulting mazes can be filtered to satisfy a desired property. Also provided are tools for converting mazes to and from various formats, such as rasterized images and tokenized text sequences, making it suitable for training or evaluating convolutional neural networks and autoregressive transformer models, as well as various visualization tools. As well as providing a simple interface for generating, storing, and loading these datasets, `maze-dataset` is extensively tested, type hinted, benchmarked, and documented. -->
 <p><strong>TODO: mention the examples, put in a figure
 https://understanding-search.github.io/maze-dataset/examples/maze_examples.html</strong>
 <!-- ![Example mazes from various algorithms. Left to right: randomized depth-first search (RDFS), RDFS without forks, constrained RDFS, Wilson's [@wilson], RDFS with percolation (p=0.1), RDFS with percolation (p=0.4), random stack RDFS.](figures/demo-dataset.pdf){width=90%} --></p>
-<p><span style="background-color:  176,152,232 ">
-<code> &lt;ADJLIST_START&gt; (0,1) &lt;–&gt; (0,2) ; (1,0) &lt;–&gt; (1,1) ; (0,1) &lt;–&gt; (0,0) ; </code>
-</span> <span style="background-color:  176,152,232 ">
-<code> (4,0) &lt;–&gt; (3,0) ; (0,2) &lt;–&gt; (0,3) ; (0,4) &lt;–&gt; (1,4) ; (2,2) &lt;–&gt; (3,2) ; </code>
-</span> <span style="background-color:  176,152,232 ">
-<code> (3,4) &lt;–&gt; (2,4) ; (2,0) &lt;–&gt; (3,0) ; (3,4) &lt;–&gt; (4,4) ; (3,2) &lt;–&gt; (3,3) ; </code>
-</span> <span style="background-color:  176,152,232 ">
-<code> (2,4) &lt;–&gt; (2,3) ; (1,3) &lt;–&gt; (0,3) ; (1,3) &lt;–&gt; (1,4) ; (1,0) &lt;–&gt; (0,0) ; </code>
-</span> <span style="background-color:  176,152,232 ">
-<code> (2,1) &lt;–&gt; (2,0) ; (4,2) &lt;–&gt; (4,3) ; (3,2) &lt;–&gt; (3,1) ; (1,2) &lt;–&gt; (0,2) ; </code>
-</span> <span style="background-color:  176,152,232 ">
-<code> (4,1) &lt;–&gt; (4,0) ; (4,2) &lt;–&gt; (4,1) ; (4,3) &lt;–&gt; (4,4) ; (1,2) &lt;–&gt; (2,2) ; </code>
-</span> <span style="background-color:  176,152,232 ">
-<code> (2,1) &lt;–&gt; (2,2) ; &lt;ADJLIST_END&gt; </code> </span> <span
-style="background-color:  154,239,123 ">
-<code> &lt;ORIGIN_START&gt; (1,3) &lt;ORIGIN_END&gt; </code> </span>
-<span style="background-color:  246,136,136 ">
-<code> &lt;TARGET_START&gt; (2,3) &lt;TARGET_END&gt; </code> </span>
-<span style="background-color:  111,187,254 ">
-<code> &lt;PATH_START&gt; (1,3) (0,3) (0,2) (1,2) (2,2) (2,1) (2,0) (3,0) (4,0) (4,1) </code>
-</span> <span style="background-color:  111,187,254 ">
-<code> (4,2) (4,3) (4,4) (3,4) (2,4) (2,3) &lt;PATH_END&gt; </code>
-</span></p>
+<!-- ![Usage of `maze-dataset`. We create a `MazeDataset` from a `MazeDatasetConfig`. This contains `SolvedMaze` objects which can be converted to and from a variety of formats.](docs/paper/diagram/diagram.pdf) -->
+<!-- \vspace{20em} -->
+<figure>
+
+<figcaption>testinggggggggggggggggg</figcaption>
+</figure>
+<!-- \begin{minipage}{5in}
+  \input{docs/paper/diagram/diagram.tikz} 
+\end{minipage} -->
+<!-- ```{=html}
+<img src="docs/paper/diagram/diagram.svg"/>
+``` -->
 <h1 id="statement-of-need">Statement of Need</h1>
 <p>The generation of mazes with a given algorithm is not inherently a
 complex task, but the ability to seamlessly switch out algorithms,

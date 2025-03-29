@@ -34,28 +34,62 @@ affiliations:
     index: 2
 date: March 2025
 bibliography: refs.bib
+header-includes: |
+  \usepackage{graphicx}
+  \usepackage{tikz}
+  \usepackage[luatex, pdfversion=1.7]{hyperref}
+  \usetikzlibrary{calc}
+  \tikzset{ % Define a TikZ style for an external hyperlink node.
+    hyperlink node url/.style={
+      alias=sourcenode,
+      append after command={
+        let \p1 = (sourcenode.north west),
+            \p2 = (sourcenode.south east),
+            \n1 = {\x2-\x1},
+            \n2 = {\y1-\y2} in
+        node[inner sep=0pt, outer sep=0pt, anchor=north west, at=(\p1)]
+            {\href{#1}{\XeTeXLinkBox{\phantom{\rule{\n1}{\n2}}}}}
+      }
+    }
+  }
+  \providecommand{\XeTeXLinkBox}[1]{#1}
 ---
-    
+
+
+[examples](https://understanding-search.github.io/maze-dataset/examples/maze_examples.html)
+[docs](https://understanding-search.github.io/maze-dataset/maze_dataset.html)
+
 # Summary
 
-Solving mazes is a classic problem in computer science and artificial intelligence, and humans have been constructing mazes for thousands of years. Although finding the shortest path through a maze is a solved problem, this makes it an excellent testbed for studying how machine learning algorithms solve problems and represent spatial information. In this paper, we introduce `maze-dataset`, a Python library for generating, processing, and visualizing datasets of mazes. This library supports a variety of maze generation algorithms providing both mazes with loops and "perfect" mazes without them. These generation algorithms can be configured with various parameters, and the resulting mazes can be filtered to satisfy a desired property. Also provided are tools for converting mazes to and from various formats, such as rasterized images and tokenized text sequences, making it suitable for training or evaluating convolutional neural networks and autoregressive transformer models, as well as various visualization tools. As well as providing a simple interface for generating, storing, and loading these datasets, `maze-dataset` is extensively tested, type hinted, benchmarked, and documented.
+<!-- Solving mazes is a classic problem in computer science and artificial intelligence, and humans have been constructing mazes for thousands of years. Although finding the shortest path through a maze is a solved problem, this makes it an excellent testbed for studying how machine learning algorithms solve problems and represent spatial information. In this paper, we introduce `maze-dataset`, a Python library for generating, processing, and visualizing datasets of mazes. This library supports a variety of maze generation algorithms providing both mazes with loops and "perfect" mazes without them. These generation algorithms can be configured with various parameters, and the resulting mazes can be filtered to satisfy a desired property. Also provided are tools for converting mazes to and from various formats, such as rasterized images and tokenized text sequences, making it suitable for training or evaluating convolutional neural networks and autoregressive transformer models, as well as various visualization tools. As well as providing a simple interface for generating, storing, and loading these datasets, `maze-dataset` is extensively tested, type hinted, benchmarked, and documented. -->
 
 **TODO: mention the examples, put in a figure https://understanding-search.github.io/maze-dataset/examples/maze_examples.html**
 <!-- ![Example mazes from various algorithms. Left to right: randomized depth-first search (RDFS), RDFS without forks, constrained RDFS, Wilson's [@wilson], RDFS with percolation (p=0.1), RDFS with percolation (p=0.4), random stack RDFS.](figures/demo-dataset.pdf){width=90%} -->
 
+<!-- ![Usage of `maze-dataset`. We create a `MazeDataset` from a `MazeDatasetConfig`. This contains `SolvedMaze` objects which can be converted to and from a variety of formats.](docs/paper/diagram/diagram.pdf) -->
+<!-- \vspace{20em} -->
 
-\colorbox[RGB]{ 176,152,232 }{ \texttt{ <ADJLIST\_START> (0,1) <--> (0,2) ; (1,0) <--> (1,1) ; (0,1) <--> (0,0) ; } }
-\colorbox[RGB]{ 176,152,232 }{ \texttt{ (4,0) <--> (3,0) ; (0,2) <--> (0,3) ; (0,4) <--> (1,4) ; (2,2) <--> (3,2) ; } }
-\colorbox[RGB]{ 176,152,232 }{ \texttt{ (3,4) <--> (2,4) ; (2,0) <--> (3,0) ; (3,4) <--> (4,4) ; (3,2) <--> (3,3) ; } }
-\colorbox[RGB]{ 176,152,232 }{ \texttt{ (2,4) <--> (2,3) ; (1,3) <--> (0,3) ; (1,3) <--> (1,4) ; (1,0) <--> (0,0) ; } }
-\colorbox[RGB]{ 176,152,232 }{ \texttt{ (2,1) <--> (2,0) ; (4,2) <--> (4,3) ; (3,2) <--> (3,1) ; (1,2) <--> (0,2) ; } }
-\colorbox[RGB]{ 176,152,232 }{ \texttt{ (4,1) <--> (4,0) ; (4,2) <--> (4,1) ; (4,3) <--> (4,4) ; (1,2) <--> (2,2) ; } }
-\colorbox[RGB]{ 176,152,232 }{ \texttt{ (2,1) <--> (2,2) ; <ADJLIST\_END> } } \newline
-\colorbox[RGB]{ 154,239,123 }{ \texttt{ <ORIGIN\_START> (1,3) <ORIGIN\_END> } }
-\colorbox[RGB]{ 246,136,136 }{ \texttt{ <TARGET\_START> (2,3) <TARGET\_END> } }
-\colorbox[RGB]{ 111,187,254 }{ \texttt{ <PATH\_START> (1,3) (0,3) (0,2) (1,2) (2,2) (2,1) (2,0) (3,0) (4,0) (4,1) } }
-\colorbox[RGB]{ 111,187,254 }{ \texttt{ (4,2) (4,3) (4,4) (3,4) (2,4) (2,3) <PATH\_END> } }
+\begin{figure} 
+\begin{tikzpicture}[remember picture]
+  % Place a clickable blue box at the top left corner (offset down by 1cm)
+  \node[draw=blue, fill=blue!20, fill opacity=0.3,
+        hyperlink node url={https://github.com},
+        minimum width=2cm, minimum height=1cm,
+        anchor=north west]
+    at ($(current page.north west)+(0,-1cm)$) {};
+\end{tikzpicture}
+\caption{testinggggggggggggggggg}
+\end{figure}
 
+<!-- \begin{minipage}{5in}
+  \input{docs/paper/diagram/diagram.tikz} 
+\end{minipage} -->
+
+<!-- ```{=html}
+<img src="docs/paper/diagram/diagram.svg"/>
+``` -->
+
+\newpage
 
 # Statement of Need
 
