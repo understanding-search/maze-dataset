@@ -43,6 +43,20 @@ Solving mazes is a classic problem in computer science and artificial intelligen
 **TODO: mention the examples, put in a figure https://understanding-search.github.io/maze-dataset/examples/maze_examples.html**
 <!-- ![Example mazes from various algorithms. Left to right: randomized depth-first search (RDFS), RDFS without forks, constrained RDFS, Wilson's [@wilson], RDFS with percolation (p=0.1), RDFS with percolation (p=0.4), random stack RDFS.](figures/demo-dataset.pdf){width=90%} -->
 
+
+\colorbox[RGB]{ 176,152,232 }{ \texttt{ <ADJLIST\_START> (0,1) <--> (0,2) ; (1,0) <--> (1,1) ; (0,1) <--> (0,0) ; } }
+\colorbox[RGB]{ 176,152,232 }{ \texttt{ (4,0) <--> (3,0) ; (0,2) <--> (0,3) ; (0,4) <--> (1,4) ; (2,2) <--> (3,2) ; } }
+\colorbox[RGB]{ 176,152,232 }{ \texttt{ (3,4) <--> (2,4) ; (2,0) <--> (3,0) ; (3,4) <--> (4,4) ; (3,2) <--> (3,3) ; } }
+\colorbox[RGB]{ 176,152,232 }{ \texttt{ (2,4) <--> (2,3) ; (1,3) <--> (0,3) ; (1,3) <--> (1,4) ; (1,0) <--> (0,0) ; } }
+\colorbox[RGB]{ 176,152,232 }{ \texttt{ (2,1) <--> (2,0) ; (4,2) <--> (4,3) ; (3,2) <--> (3,1) ; (1,2) <--> (0,2) ; } }
+\colorbox[RGB]{ 176,152,232 }{ \texttt{ (4,1) <--> (4,0) ; (4,2) <--> (4,1) ; (4,3) <--> (4,4) ; (1,2) <--> (2,2) ; } }
+\colorbox[RGB]{ 176,152,232 }{ \texttt{ (2,1) <--> (2,2) ; <ADJLIST\_END> } } \newline
+\colorbox[RGB]{ 154,239,123 }{ \texttt{ <ORIGIN\_START> (1,3) <ORIGIN\_END> } }
+\colorbox[RGB]{ 246,136,136 }{ \texttt{ <TARGET\_START> (2,3) <TARGET\_END> } }
+\colorbox[RGB]{ 111,187,254 }{ \texttt{ <PATH\_START> (1,3) (0,3) (0,2) (1,2) (2,2) (2,1) (2,0) (3,0) (4,0) (4,1) } }
+\colorbox[RGB]{ 111,187,254 }{ \texttt{ (4,2) (4,3) (4,4) (3,4) (2,4) (2,3) <PATH\_END> } }
+
+
 # Statement of Need
 
 The generation of mazes with a given algorithm is not inherently a complex task, but the ability to seamlessly switch out algorithms, modify algorithm parameters, or filter by desired properties all while preserving the ability to convert between different representations of the maze is not trivial. This library aims to greatly streamline the process of generating and working with datasets of mazes that can be described as subgraphs of an $n \times n$ lattice with boolean connections and, optionally, start and end points that are nodes in the graph. Furthermore, we place emphasis on a wide variety of possible text output formats aimed at evaluating the spatial reasoning capabilities of Large Language Models and other text-based transformer models.

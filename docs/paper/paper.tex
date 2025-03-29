@@ -12,8 +12,7 @@
     unicode=true,
     pdfapart=3,
     pdfaconformance=B,
-    pdftitle={A Configurable Library for Generating and Manipulating
-Maze Datasets},
+    pdftitle={maze-dataset},
     pdfauthor={Michael Igorevich Ivanitskiy, Aaron Sandoval, Alex F.
 Spies, Rusheb Shah, Brandon Knutson, , Cecilia Diniz Behn, Samy Wu
 Fung},
@@ -139,8 +138,7 @@ Diniz Behn, Samy Wu Fung},
 \renewcommand{\footrulewidth}{0.25pt}
 
 \fancyfoot[L]{\parbox[t]{0.98\headwidth}{\footnotesize{\sffamily Ivanitskiy
-et al. (1970). A Configurable Library for Generating and Manipulating
-Maze Datasets. \emph{Journal of Open Source Software},
+et al. (1970). maze-dataset. \emph{Journal of Open Source Software},
 \emph{¿VOL?}(¿ISSUE?), ¿PAGE? \url{https://doi.org/N/A}}.}}
 
 
@@ -349,8 +347,7 @@ Maze Datasets. \emph{Journal of Open Source Software},
   \usepackage{selnolig}  % disable illegal ligatures
 \fi
 
-\title{A Configurable Library for Generating and Manipulating Maze
-Datasets}
+\title{maze-dataset}
 
 \author[1%
 %
@@ -360,6 +357,7 @@ Datasets}
 \author[%
 %
 ]{Aaron Sandoval%
+  \,\orcidlink{0009-0002-8380-6140}\,%
 }
 \author[2%
 %
@@ -383,10 +381,12 @@ Datasets}
 \author[1%
 %
 ]{Cecilia Diniz Behn%
+  \,\orcidlink{0000-0002-8078-5105}\,%
 }
 \author[1%
 %
 ]{Samy Wu Fung%
+  \,\orcidlink{0000-0002-2926-4582}\,%
 }
 
 \affil[1]{Colorado School of Mines, Department of Applied Mathematics
@@ -470,6 +470,19 @@ benchmarked, and documented.
 
 \textbf{TODO: mention the examples, put in a figure
 https://understanding-search.github.io/maze-dataset/examples/maze\_examples.html}
+
+\colorbox[RGB]{ 176,152,232 }{ \texttt{ <ADJLIST\_START> (0,1) <--> (0,2) ; (1,0) <--> (1,1) ; (0,1) <--> (0,0) ; } }
+\colorbox[RGB]{ 176,152,232 }{ \texttt{ (4,0) <--> (3,0) ; (0,2) <--> (0,3) ; (0,4) <--> (1,4) ; (2,2) <--> (3,2) ; } }
+\colorbox[RGB]{ 176,152,232 }{ \texttt{ (3,4) <--> (2,4) ; (2,0) <--> (3,0) ; (3,4) <--> (4,4) ; (3,2) <--> (3,3) ; } }
+\colorbox[RGB]{ 176,152,232 }{ \texttt{ (2,4) <--> (2,3) ; (1,3) <--> (0,3) ; (1,3) <--> (1,4) ; (1,0) <--> (0,0) ; } }
+\colorbox[RGB]{ 176,152,232 }{ \texttt{ (2,1) <--> (2,0) ; (4,2) <--> (4,3) ; (3,2) <--> (3,1) ; (1,2) <--> (0,2) ; } }
+\colorbox[RGB]{ 176,152,232 }{ \texttt{ (4,1) <--> (4,0) ; (4,2) <--> (4,1) ; (4,3) <--> (4,4) ; (1,2) <--> (2,2) ; } }
+\colorbox[RGB]{ 176,152,232 }{ \texttt{ (2,1) <--> (2,2) ; <ADJLIST\_END> } }
+\newline
+\colorbox[RGB]{ 154,239,123 }{ \texttt{ <ORIGIN\_START> (1,3) <ORIGIN\_END> } }
+\colorbox[RGB]{ 246,136,136 }{ \texttt{ <TARGET\_START> (2,3) <TARGET\_END> } }
+\colorbox[RGB]{ 111,187,254 }{ \texttt{ <PATH\_START> (1,3) (0,3) (0,2) (1,2) (2,2) (2,1) (2,0) (3,0) (4,0) (4,1) } }
+\colorbox[RGB]{ 111,187,254 }{ \texttt{ (4,2) (4,3) (4,4) (3,4) (2,4) (2,3) <PATH\_END> } }
 
 \hypertarget{statement-of-need}{%
 \section{Statement of Need}\label{statement-of-need}}
