@@ -32,7 +32,7 @@ affiliations:
     index: 1
   - name: Imperial College London
     index: 2
-date: March 2025
+date: 30 March 2025
 bibliography: refs.bib
 header-includes: |
   \usepackage{graphicx}
@@ -55,33 +55,26 @@ header-includes: |
   \providecommand{\XeTeXLinkBox}[1]{#1}
 ---
 
-
-[examples](https://understanding-search.github.io/maze-dataset/examples/maze_examples.html)
-[docs](https://understanding-search.github.io/maze-dataset/maze_dataset.html)
-
 # Summary
 
-Solving mazes is a classic problem in computer science and artificial intelligence, and humans have been constructing mazes for thousands of years. Although finding the shortest path through a maze is a solved problem, this makes it an excellent testbed for studying how machine learning algorithms solve problems and represent spatial information. In this paper, we introduce `maze-dataset`, a Python library for generating, processing, and visualizing datasets of mazes. This library supports a variety of maze generation algorithms providing both mazes with loops and "perfect" mazes without them. These generation algorithms can be configured with various parameters, and the resulting mazes can be filtered to satisfy a desired property. Also provided are tools for converting mazes to and from various formats, such as rasterized images and tokenized text sequences, making it suitable for training or evaluating convolutional neural networks and autoregressive transformer models, as well as various visualization tools. As well as providing a simple interface for generating, storing, and loading these datasets, `maze-dataset` is extensively tested, type hinted, benchmarked, and documented.
-
-**TODO: mention the examples, put in a figure https://understanding-search.github.io/maze-dataset/examples/maze_examples.html**
-<!-- ![Example mazes from various algorithms. Left to right: randomized depth-first search (RDFS), RDFS without forks, constrained RDFS, Wilson's [@wilson], RDFS with percolation (p=0.1), RDFS with percolation (p=0.4), random stack RDFS.](figures/demo-dataset.pdf){width=90%} -->
-
-<!-- ![Usage of `maze-dataset`. We create a `MazeDataset` from a `MazeDatasetConfig`. This contains `SolvedMaze` objects which can be converted to and from a variety of formats.](docs/paper/diagram/diagram.pdf) -->
-<!-- \vspace{20em} -->
+Solving mazes is a classic problem in computer science and artificial intelligence, and humans have been constructing mazes for thousands of years. Although finding the shortest path through a maze is a solved problem, this very fact makes it an excellent testbed for studying how machine learning algorithms solve problems and represent spatial information. We introduce `maze-dataset`, a Python library for generating, processing, and visualizing datasets of mazes. This library supports a variety of maze generation algorithms providing both mazes with loops and "perfect" mazes without them. These generation algorithms can be configured with various parameters, and the resulting mazes can be filtered to satisfy desired properties. Also provided are tools for converting mazes to and from various formats suitable for a variety of neural network architectures, such as rasterized images and tokenized text sequences, as well as various visualization tools. As well as providing a simple interface for generating, storing, and loading these datasets, `maze-dataset` is extensively tested, type hinted, benchmarked, and documented.
 
 \begin{figure} 
   \begin{minipage}{5in}
     \input{docs/paper/diagram/diagram.tikz} 
   \end{minipage}
-  \caption{Usage of maze-dataset. We create a `MazeDataset` from a `MazeDatasetConfig`. This contains `SolvedMaze` objects which can be converted to and from a variety of formats. Code in the image contains clickable links to documentation.}
+  \caption{Usage of maze-dataset. We create a `MazeDataset` from a `MazeDatasetConfig`. This contains `SolvedMaze` objects which can be converted to and from a variety of formats. Code in the image contains clickable links to \href{https://understanding-search.github.io/maze-dataset/maze_dataset.html}{documentation}. A variety of generated examples can be viewed \href{https://understanding-search.github.io/maze-dataset/examples/maze_examples.html}{here}.}
   \label{fig:diagram}
 \end{figure}
 
-<!-- ```{=html}
-<img src="docs/paper/diagram/diagram.svg"/>
-``` -->
+<!-- [examples](https://understanding-search.github.io/maze-dataset/examples/maze_examples.html)
+[docs]()
 
-\newpage
+ -->
+
+```{=html}
+<img src="docs/paper/diagram/diagram.svg"/>
+```
 
 # Statement of Need
 
@@ -109,17 +102,13 @@ A multitude of public and open-source software packages exist for generating maz
 - Our package is easily installable with source code freely available. It is extensively tested, type hinted, benchmarked, and documented. Many other maze generation packages lack this level of rigor and scope, and some [@ayaz2008maze] appear to simply no longer be accessible.
 
 
-# Features and Implementation
-
-
+# Features
 
 ## Generation and Usage {#generation}
 
-**TODO: JOSS says don't document the API itself. we should talk about the capabilities, but just rewrite this to link to the documentation.**
-
 Our package can be installed from [PyPi](https://pypi.org/project/maze-dataset/) via `pip install maze-dataset`, or directly from the [git repository](https://github.com/understanding-search/maze-dataset) [@maze-dataset-github].
 
-To create a dataset, we first create a `MazeDatasetConfig` configuration object, which specifies the seed, number, and size of mazes, as well as the generation algorithm and its corresponding parameters. This object is passed to a `MazeDataset` class to create a dataset. Crucially, this `MazeDataset` inherits from a PyTorch [@pytorch] `Dataset`, and can thus be easily incorporated into existing data pre-processing and training pipelines, e.g., through the use of a `Dataloader` class.
+To create a dataset, we first create a `MazeDatasetConfig` configuration object, which specifies the seed, number, and size of mazes, as well as the generation algorithm and its corresponding parameters. This object is passed to a `MazeDataset` class to create a dataset. Crucially, this `MazeDataset` mimics the interface of a PyTorch [@pytorch] `Dataset`, and can thus be easily incorporated into existing data pre-processing and training pipelines, e.g., through the use of a `Dataloader` class.
 
 ```python
 from maze_dataset import MazeDataset, MazeDatasetConfig, LatticeMazeGenerators
@@ -132,7 +121,7 @@ cfg: MazeDatasetConfig = MazeDatasetConfig(
 dataset: MazeDataset = MazeDataset.from_config(cfg)
 ```
 
-When initializing mazes, further configuration options can be specified through the `from_config()` factory method as necessary. Options include 1) whether to generate the dataset during runtime or load an existing dataset, 2) if and how to parallelize generation, and 3) where to store the generated dataset. Full documentation of configuration options is available in our repository [@maze-dataset-github]. Available maze generation algorithms are static methods of the `LatticeMazeGenerators` class and include the following:
+When initializing mazes, further configuration options can be specified through the `from_config()` factory method as necessary. Options allow for saving/loading existing datasets instead of regenerating, and parallelization options for generation. Available maze generation algorithms are static methods of the `LatticeMazeGenerators` class and include the following:
 
 - `gen_dfs` **(randomized depth-first search)**:
   Parameters can be passed to constrain the number of accessible cells, the number of forks in the maze, and the maximum tree depth. Creates a spanning tree by default or a partially spanning tree if constrained.
@@ -156,8 +145,7 @@ Custom filters can be specified, and several filters are included:
 - `remove_duplicates(...)`: remove mazes which are similar to others in the dataset, measured via Hamming distance.
 - `remove_duplicates_fast()`: remove mazes which are exactly identical to others in the dataset.
 
-All implemented maze generation algorithms are stochastic by nature. For reproducibility, the `seed` parameter of `MazeDatasetConfig` may be set. In practice, we do not find that exact duplicates of mazes are generated with any meaningful frequency,
-even when generating large datasets.
+All implemented maze generation algorithms are stochastic by nature. For reproducibility, the `seed` parameter of `MazeDatasetConfig` may be set. In practice, we do not find that exact duplicates of mazes are generated with any meaningful frequency, even when generating large datasets.
 
 # Visual Output Formats {#visual-output-formats}
 
@@ -167,13 +155,14 @@ Internally, mazes are `SolvedMaze` objects, which have path information, and a c
 |-------------|--------------|-------------|
 | Simple text format for displaying mazes, useful for debugging in a terminal environment. | `numpy` array of `dtype=uint8` and shape `(height, width, 3)`. The last dimension is RGB color. | feature-rich plotting utility with support for multiple paths, heatmaps over positions, and more. |
 
-![Various output formats. Top row (left to right): ASCII diagram, rasterized pixel grid, and advanced display.](figures/output-fmts.pdf)
+![Various output formats. Top row (left to right): ASCII diagram, rasterized pixel grid, and advanced display.](docs/paper/figures/output-fmts.pdf){#fig:visualoutputs}
 
 ## Visual Outputs for Training and Evaluation {#training}
 
-In previous work, maze tasks have been used with Recurrent Convolutional Neural Network (RCNN) derived architectures [@deepthinking]. To facilitate the use of our package in this context, we replicate the format of [@easy_to_hard] and provide the `RasterizedMazeDataset` class which returns rasterized pairs of (input, target) mazes as shown in Figure below.
+In previous work, maze tasks have been used with Recurrent Convolutional Neural Network (RCNN) derived architectures [@deepthinking]. To facilitate the use of our package in this context, we replicate the format of [@easy_to_hard] and provide the `RasterizedMazeDataset` class which returns rasterized pairs of (input, target) mazes as shown in \autoref{fig:e2hraster} below.
 
-![Input is the rasterized maze without the path marked (left), and provide as a target the maze with all but the correct path removed. Configuration options exist to adjust whether endpoints are included and if empty cells should be filled in.](figures/maze-raster-input-target.pdf){width=30%}
+![Input is the rasterized maze without the path marked (left), and provide as a target the maze with all but the correct path removed. Configuration options exist to adjust whether endpoints are included and if empty cells should be filled in.](docs/paper/figures/maze-raster-input-target.pdf){#fig:e2hraster width=30%}
+
 
 # Tokenized Output Formats {#tokenized-output-formats}
 
@@ -190,11 +179,11 @@ All output sequences consist of four token regions representing different featur
 - <span style="background-color:rgb(234,209,220)">Target</span>: Ending coordinate
 - <span style="background-color:rgb(207,226,243)">Path</span>: Maze solution sequence from the start to the end
 
-![Example text output format with token regions highlighted.](figures/outputs-tokens-colored.tex)
+![Example text output format with token regions highlighted.](docs/paper/figures/outputs-tokens-colored.tex)
 
 Each `MazeTokenizerModular` is constructed from a set of several `_TokenizerElement` objects, each of which specifies how different token regions or other elements of the stringification are produced.
 
-![Nested internal structure of `_TokenizerElement` objects inside a typical `MazeTokenizerModular` object.](figures/TokenizerElement_structure.pdf)
+![Nested internal structure of `_TokenizerElement` objects inside a typical `MazeTokenizerModular` object.](docs/paper/figures/TokenizerElement_structure.pdf)
 
 Optional delimiter tokens may be added in many places in the output. Delimiter options are all configured using the parameters named `pre`, `intra`, and `post` in various `_TokenizerElement` classes. Each option controls a unique delimiter token.
 Here we describe each `_TokenizerElement` and the behaviors they support. We also discuss some of the model behaviors and properties that may be investigated using these options. 
@@ -268,7 +257,7 @@ We provide approximate benchmarks for relative generation time across various al
 | **median (all runs)** |                            | 10.8              | 6.0                 | 44.4                      | 367.7             |
 | **mean (all runs)**   |                            | 490.0             | 11.7                | 187.2                     | 2769.6            |
 
-![Plots of maze generation time. Generation time scales exponentially with maze size for all algorithms (left). Generation time does not depend on the number of mazes being generated, and there is minimal overhead to initializing the generation process for a small dataset (right). Wilson's algorithm is notably less efficient than others and has high variance. Note that for both plots, values are averaged across all parameter sets for that algorithm, and parallelization is disabled.](figures/gridsize-vs-gentime.pdf){width=95%}
+![Plots of maze generation time. Generation time scales exponentially with maze size for all algorithms (left). Generation time does not depend on the number of mazes being generated, and there is minimal overhead to initializing the generation process for a small dataset (right). Wilson's algorithm is notably less efficient than others and has high variance. Note that for both plots, values are averaged across all parameter sets for that algorithm, and parallelization is disabled.](docs/paper/figures/gridsize-vs-gentime.pdf){width=95%}
 
 # Implementation {#implementation}
 

@@ -464,23 +464,34 @@ Journals} \ExternalLink
   \end{flushleft}
 }
 
-\href{https://understanding-search.github.io/maze-dataset/examples/maze_examples.html}{examples}
-\href{https://understanding-search.github.io/maze-dataset/maze_dataset.html}{docs}
-
 \hypertarget{summary}{%
 \section{Summary}\label{summary}}
 
-\textbf{TODO: mention the examples, put in a figure
-https://understanding-search.github.io/maze-dataset/examples/maze\_examples.html}
+Solving mazes is a classic problem in computer science and artificial
+intelligence, and humans have been constructing mazes for thousands of
+years. Although finding the shortest path through a maze is a solved
+problem, this very fact makes it an excellent testbed for studying how
+machine learning algorithms solve problems and represent spatial
+information. We introduce \texttt{maze-dataset}, a Python library for
+generating, processing, and visualizing datasets of mazes. This library
+supports a variety of maze generation algorithms providing both mazes
+with loops and ``perfect'' mazes without them. These generation
+algorithms can be configured with various parameters, and the resulting
+mazes can be filtered to satisfy desired properties. Also provided are
+tools for converting mazes to and from various formats suitable for a
+variety of neural network architectures, such as rasterized images and
+tokenized text sequences, as well as various visualization tools. As
+well as providing a simple interface for generating, storing, and
+loading these datasets, \texttt{maze-dataset} is extensively tested,
+type hinted, benchmarked, and documented.
 
 \begin{figure} 
   \begin{minipage}{5in}
     \input{docs/paper/diagram/diagram.tikz} 
   \end{minipage}
-  \caption{Usage of maze-dataset}
+  \caption{Usage of maze-dataset. We create a `MazeDataset` from a `MazeDatasetConfig`. This contains `SolvedMaze` objects which can be converted to and from a variety of formats. Code in the image contains clickable links to \href{https://understanding-search.github.io/maze-dataset/maze_dataset.html}{documentation}. A variety of generated examples can be viewed \href{https://understanding-search.github.io/maze-dataset/examples/maze_examples.html}{here}.}
+  \label{fig:diagram}
 \end{figure}
-
-\newpage
 
 \hypertarget{statement-of-need}{%
 \section{Statement of Need}\label{statement-of-need}}
@@ -589,16 +600,11 @@ these datasets.
   2008}) appear to simply no longer be accessible.
 \end{itemize}
 
-\hypertarget{features-and-implementation}{%
-\section{Features and
-Implementation}\label{features-and-implementation}}
+\hypertarget{features}{%
+\section{Features}\label{features}}
 
 \hypertarget{generation}{%
 \subsection{Generation and Usage}\label{generation}}
-
-\textbf{TODO: JOSS says don't document the API itself. we should talk
-about the capabilities, but just rewrite this to link to the
-documentation.}
 
 Our package can be installed from
 \href{https://pypi.org/project/maze-dataset/}{PyPi} via
@@ -611,11 +617,11 @@ To create a dataset, we first create a \texttt{MazeDatasetConfig}
 configuration object, which specifies the seed, number, and size of
 mazes, as well as the generation algorithm and its corresponding
 parameters. This object is passed to a \texttt{MazeDataset} class to
-create a dataset. Crucially, this \texttt{MazeDataset} inherits from a
-PyTorch (\protect\hyperlink{ref-pytorch}{Paszke et al., 2019})
-\texttt{Dataset}, and can thus be easily incorporated into existing data
-pre-processing and training pipelines, e.g., through the use of a
-\texttt{Dataloader} class.
+create a dataset. Crucially, this \texttt{MazeDataset} mimics the
+interface of a PyTorch (\protect\hyperlink{ref-pytorch}{Paszke et al.,
+2019}) \texttt{Dataset}, and can thus be easily incorporated into
+existing data pre-processing and training pipelines, e.g., through the
+use of a \texttt{Dataloader} class.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -632,13 +638,10 @@ pre-processing and training pipelines, e.g., through the use of a
 
 When initializing mazes, further configuration options can be specified
 through the \texttt{from\_config()} factory method as necessary. Options
-include 1) whether to generate the dataset during runtime or load an
-existing dataset, 2) if and how to parallelize generation, and 3) where
-to store the generated dataset. Full documentation of configuration
-options is available in our repository
-(\protect\hyperlink{ref-maze-dataset-github}{Michael I. Ivanitskiy et
-al., 2023a}). Available maze generation algorithms are static methods of
-the \texttt{LatticeMazeGenerators} class and include the following:
+allow for saving/loading existing datasets instead of regenerating, and
+parallelization options for generation. Available maze generation
+algorithms are static methods of the \texttt{LatticeMazeGenerators}
+class and include the following:
 
 \begin{itemize}
 \tightlist
@@ -732,10 +735,12 @@ over positions, and more. \\
 \end{longtable}
 
 \begin{figure}
+\hypertarget{fig:visualoutputs}{%
 \centering
-\includegraphics{figures/output-fmts.pdf}
+\includegraphics{docs/paper/figures/output-fmts.pdf}
 \caption{Various output formats. Top row (left to right): ASCII diagram,
-rasterized pixel grid, and advanced display.}
+rasterized pixel grid, and advanced display.}\label{fig:visualoutputs}
+}
 \end{figure}
 
 \hypertarget{training}{%
@@ -749,15 +754,17 @@ context, we replicate the format of
 (\protect\hyperlink{ref-easy_to_hard}{Schwarzschild, Borgnia, Gupta,
 Bansal, et al., 2021}) and provide the \texttt{RasterizedMazeDataset}
 class which returns rasterized pairs of (input, target) mazes as shown
-in Figure below.
+in \autoref{fig:e2hraster} below.
 
 \begin{figure}
+\hypertarget{fig:e2hraster}{%
 \centering
-\includegraphics[width=0.3\textwidth,height=\textheight]{figures/maze-raster-input-target.pdf}
+\includegraphics[width=0.3\textwidth,height=\textheight]{docs/paper/figures/maze-raster-input-target.pdf}
 \caption{Input is the rasterized maze without the path marked (left),
 and provide as a target the maze with all but the correct path removed.
 Configuration options exist to adjust whether endpoints are included and
-if empty cells should be filled in.}
+if empty cells should be filled in.}\label{fig:e2hraster}
+}
 \end{figure}
 
 \hypertarget{tokenized-output-formats}{%
@@ -807,7 +814,7 @@ in Figure below.
 
 \begin{figure}
 \centering
-\includegraphics{figures/outputs-tokens-colored.tex}
+\includegraphics{docs/paper/figures/outputs-tokens-colored.tex}
 \caption{Example text output format with token regions highlighted.}
 \end{figure}
 
@@ -818,7 +825,7 @@ produced.
 
 \begin{figure}
 \centering
-\includegraphics{figures/TokenizerElement_structure.pdf}
+\includegraphics{docs/paper/figures/TokenizerElement_structure.pdf}
 \caption{Nested internal structure of \texttt{\_TokenizerElement}
 objects inside a typical \texttt{MazeTokenizerModular} object.}
 \end{figure}
@@ -1042,7 +1049,7 @@ gen\_wilson & -- & 767.9 & 10.1 & 212.9 & 4530.4 \\
 
 \begin{figure}
 \centering
-\includegraphics[width=0.95\textwidth,height=\textheight]{figures/gridsize-vs-gentime.pdf}
+\includegraphics[width=0.95\textwidth,height=\textheight]{docs/paper/figures/gridsize-vs-gentime.pdf}
 \caption{Plots of maze generation time. Generation time scales
 exponentially with maze size for all algorithms (left). Generation time
 does not depend on the number of mazes being generated, and there is
