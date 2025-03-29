@@ -18,6 +18,7 @@ __all__ = [
 	# submodules
 	"plot_dataset",
 	"plot_maze",
+	"plot_svg_fancy",
 	"plot_tokens",
 	"print_tokens",
 	# imports
