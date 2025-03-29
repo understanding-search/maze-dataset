@@ -6,149 +6,65 @@
       .p { fill: blue; }  /* path */
       .s { fill: green; } /* start */
       .e { fill: red; }   /* end */
+      
+      /* Add span styling for individual characters */
+      .row text { dominant-baseline: central; }
+      .row text tspan { text-anchor: middle; }
     </style>
     
     <!-- Row 1 -->
-    <text x="10" y="10" class="w" text-anchor="middle" dominant-baseline="central">#</text>
-    <text x="30" y="10" class="w" text-anchor="middle" dominant-baseline="central">#</text>
-    <text x="50" y="10" class="w" text-anchor="middle" dominant-baseline="central">#</text>
-    <text x="70" y="10" class="w" text-anchor="middle" dominant-baseline="central">#</text>
-    <text x="90" y="10" class="w" text-anchor="middle" dominant-baseline="central">#</text>
-    <text x="110" y="10" class="w" text-anchor="middle" dominant-baseline="central">#</text>
-    <text x="130" y="10" class="w" text-anchor="middle" dominant-baseline="central">#</text>
-    <text x="150" y="10" class="w" text-anchor="middle" dominant-baseline="central">#</text>
-    <text x="170" y="10" class="w" text-anchor="middle" dominant-baseline="central">#</text>
-    <text x="190" y="10" class="w" text-anchor="middle" dominant-baseline="central">#</text>
-    <text x="210" y="10" class="w" text-anchor="middle" dominant-baseline="central">#</text>
+    <g class="row">
+      <text y="10"><tspan x="10" class="w">#</tspan><tspan x="30" class="w">#</tspan><tspan x="50" class="w">#</tspan><tspan x="70" class="w">#</tspan><tspan x="90" class="w">#</tspan><tspan x="110" class="w">#</tspan><tspan x="130" class="w">#</tspan><tspan x="150" class="w">#</tspan><tspan x="170" class="w">#</tspan><tspan x="190" class="w">#</tspan><tspan x="210" class="w">#</tspan></text>
+    </g>
     
     <!-- Row 2 -->
-    <text x="10" y="30" class="w" text-anchor="middle" dominant-baseline="central">#</text>
-    <text x="30" y="30" class="w" text-anchor="middle" dominant-baseline="central"> </text>
-    <text x="50" y="30" class="w" text-anchor="middle" dominant-baseline="central"> </text>
-    <text x="70" y="30" class="w" text-anchor="middle" dominant-baseline="central"> </text>
-    <text x="90" y="30" class="w" text-anchor="middle" dominant-baseline="central"> </text>
-    <text x="110" y="30" class="p" text-anchor="middle" dominant-baseline="central">X</text>
-    <text x="130" y="30" class="p" text-anchor="middle" dominant-baseline="central">X</text>
-    <text x="150" y="30" class="p" text-anchor="middle" dominant-baseline="central">X</text>
-    <text x="170" y="30" class="w" text-anchor="middle" dominant-baseline="central">#</text>
-    <text x="190" y="30" class="w" text-anchor="middle" dominant-baseline="central"> </text>
-    <text x="210" y="30" class="w" text-anchor="middle" dominant-baseline="central">#</text>
+    <g class="row">
+      <text y="30"><tspan x="10" class="w">#</tspan><tspan x="30" class="w"> </tspan><tspan x="50" class="w"> </tspan><tspan x="70" class="w"> </tspan><tspan x="90" class="w"> </tspan><tspan x="110" class="p">X</tspan><tspan x="130" class="p">X</tspan><tspan x="150" class="p">X</tspan><tspan x="170" class="w">#</tspan><tspan x="190" class="w"> </tspan><tspan x="210" class="w">#</tspan></text>
+    </g>
     
     <!-- Row 3 -->
-    <text x="10" y="50" class="w" text-anchor="middle" dominant-baseline="central">#</text>
-    <text x="30" y="50" class="w" text-anchor="middle" dominant-baseline="central"> </text>
-    <text x="50" y="50" class="w" text-anchor="middle" dominant-baseline="central">#</text>
-    <text x="70" y="50" class="w" text-anchor="middle" dominant-baseline="central">#</text>
-    <text x="90" y="50" class="w" text-anchor="middle" dominant-baseline="central">#</text>
-    <text x="110" y="50" class="p" text-anchor="middle" dominant-baseline="central">X</text>
-    <text x="130" y="50" class="w" text-anchor="middle" dominant-baseline="central">#</text>
-    <text x="150" y="50" class="p" text-anchor="middle" dominant-baseline="central">X</text>
-    <text x="170" y="50" class="w" text-anchor="middle" dominant-baseline="central">#</text>
-    <text x="190" y="50" class="w" text-anchor="middle" dominant-baseline="central"> </text>
-    <text x="210" y="50" class="w" text-anchor="middle" dominant-baseline="central">#</text>
+    <g class="row">
+      <text y="50"><tspan x="10" class="w">#</tspan><tspan x="30" class="w"> </tspan><tspan x="50" class="w">#</tspan><tspan x="70" class="w">#</tspan><tspan x="90" class="w">#</tspan><tspan x="110" class="p">X</tspan><tspan x="130" class="w">#</tspan><tspan x="150" class="p">X</tspan><tspan x="170" class="w">#</tspan><tspan x="190" class="w"> </tspan><tspan x="210" class="w">#</tspan></text>
+    </g>
     
     <!-- Row 4 -->
-    <text x="10" y="70" class="w" text-anchor="middle" dominant-baseline="central">#</text>
-    <text x="30" y="70" class="w" text-anchor="middle" dominant-baseline="central"> </text>
-    <text x="50" y="70" class="w" text-anchor="middle" dominant-baseline="central"> </text>
-    <text x="70" y="70" class="w" text-anchor="middle" dominant-baseline="central"> </text>
-    <text x="90" y="70" class="w" text-anchor="middle" dominant-baseline="central">#</text>
-    <text x="110" y="70" class="p" text-anchor="middle" dominant-baseline="central">X</text>
-    <text x="130" y="70" class="w" text-anchor="middle" dominant-baseline="central">#</text>
-    <text x="150" y="70" class="s" text-anchor="middle" dominant-baseline="central">S</text>
-    <text x="170" y="70" class="w" text-anchor="middle" dominant-baseline="central"> </text>
-    <text x="190" y="70" class="w" text-anchor="middle" dominant-baseline="central"> </text>
-    <text x="210" y="70" class="w" text-anchor="middle" dominant-baseline="central">#</text>
+    <g class="row">
+      <text y="70"><tspan x="10" class="w">#</tspan><tspan x="30" class="w"> </tspan><tspan x="50" class="w"> </tspan><tspan x="70" class="w"> </tspan><tspan x="90" class="w">#</tspan><tspan x="110" class="p">X</tspan><tspan x="130" class="w">#</tspan><tspan x="150" class="s">S</tspan><tspan x="170" class="w"> </tspan><tspan x="190" class="w"> </tspan><tspan x="210" class="w">#</tspan></text>
+    </g>
     
     <!-- Row 5 -->
-    <text x="10" y="90" class="w" text-anchor="middle" dominant-baseline="central">#</text>
-    <text x="30" y="90" class="w" text-anchor="middle" dominant-baseline="central">#</text>
-    <text x="50" y="90" class="w" text-anchor="middle" dominant-baseline="central">#</text>
-    <text x="70" y="90" class="w" text-anchor="middle" dominant-baseline="central">#</text>
-    <text x="90" y="90" class="w" text-anchor="middle" dominant-baseline="central">#</text>
-    <text x="110" y="90" class="p" text-anchor="middle" dominant-baseline="central">X</text>
-    <text x="130" y="90" class="w" text-anchor="middle" dominant-baseline="central">#</text>
-    <text x="150" y="90" class="w" text-anchor="middle" dominant-baseline="central">#</text>
-    <text x="170" y="90" class="w" text-anchor="middle" dominant-baseline="central">#</text>
-    <text x="190" y="90" class="w" text-anchor="middle" dominant-baseline="central">#</text>
-    <text x="210" y="90" class="w" text-anchor="middle" dominant-baseline="central">#</text>
+    <g class="row">
+      <text y="90"><tspan x="10" class="w">#</tspan><tspan x="30" class="w">#</tspan><tspan x="50" class="w">#</tspan><tspan x="70" class="w">#</tspan><tspan x="90" class="w">#</tspan><tspan x="110" class="p">X</tspan><tspan x="130" class="w">#</tspan><tspan x="150" class="w">#</tspan><tspan x="170" class="w">#</tspan><tspan x="190" class="w">#</tspan><tspan x="210" class="w">#</tspan></text>
+    </g>
     
     <!-- Row 6 -->
-    <text x="10" y="110" class="w" text-anchor="middle" dominant-baseline="central">#</text>
-    <text x="30" y="110" class="p" text-anchor="middle" dominant-baseline="central">X</text>
-    <text x="50" y="110" class="p" text-anchor="middle" dominant-baseline="central">X</text>
-    <text x="70" y="110" class="p" text-anchor="middle" dominant-baseline="central">X</text>
-    <text x="90" y="110" class="p" text-anchor="middle" dominant-baseline="central">X</text>
-    <text x="110" y="110" class="p" text-anchor="middle" dominant-baseline="central">X</text>
-    <text x="130" y="110" class="w" text-anchor="middle" dominant-baseline="central">#</text>
-    <text x="150" y="110" class="e" text-anchor="middle" dominant-baseline="central">E</text>
-    <text x="170" y="110" class="p" text-anchor="middle" dominant-baseline="central">X</text>
-    <text x="190" y="110" class="p" text-anchor="middle" dominant-baseline="central">X</text>
-    <text x="210" y="110" class="w" text-anchor="middle" dominant-baseline="central">#</text>
+    <g class="row">
+      <text y="110"><tspan x="10" class="w">#</tspan><tspan x="30" class="p">X</tspan><tspan x="50" class="p">X</tspan><tspan x="70" class="p">X</tspan><tspan x="90" class="p">X</tspan><tspan x="110" class="p">X</tspan><tspan x="130" class="w">#</tspan><tspan x="150" class="e">E</tspan><tspan x="170" class="p">X</tspan><tspan x="190" class="p">X</tspan><tspan x="210" class="w">#</tspan></text>
+    </g>
     
     <!-- Row 7 -->
-    <text x="10" y="130" class="w" text-anchor="middle" dominant-baseline="central">#</text>
-    <text x="30" y="130" class="p" text-anchor="middle" dominant-baseline="central">X</text>
-    <text x="50" y="130" class="w" text-anchor="middle" dominant-baseline="central">#</text>
-    <text x="70" y="130" class="w" text-anchor="middle" dominant-baseline="central">#</text>
-    <text x="90" y="130" class="w" text-anchor="middle" dominant-baseline="central">#</text>
-    <text x="110" y="130" class="w" text-anchor="middle" dominant-baseline="central"> </text>
-    <text x="130" y="130" class="w" text-anchor="middle" dominant-baseline="central">#</text>
-    <text x="150" y="130" class="w" text-anchor="middle" dominant-baseline="central">#</text>
-    <text x="170" y="130" class="w" text-anchor="middle" dominant-baseline="central">#</text>
-    <text x="190" y="130" class="p" text-anchor="middle" dominant-baseline="central">X</text>
-    <text x="210" y="130" class="w" text-anchor="middle" dominant-baseline="central">#</text>
+    <g class="row">
+      <text y="130"><tspan x="10" class="w">#</tspan><tspan x="30" class="p">X</tspan><tspan x="50" class="w">#</tspan><tspan x="70" class="w">#</tspan><tspan x="90" class="w">#</tspan><tspan x="110" class="w"> </tspan><tspan x="130" class="w">#</tspan><tspan x="150" class="w">#</tspan><tspan x="170" class="w">#</tspan><tspan x="190" class="p">X</tspan><tspan x="210" class="w">#</tspan></text>
+    </g>
     
     <!-- Row 8 -->
-    <text x="10" y="150" class="w" text-anchor="middle" dominant-baseline="central">#</text>
-    <text x="30" y="150" class="p" text-anchor="middle" dominant-baseline="central">X</text>
-    <text x="50" y="150" class="w" text-anchor="middle" dominant-baseline="central">#</text>
-    <text x="70" y="150" class="w" text-anchor="middle" dominant-baseline="central"> </text>
-    <text x="90" y="150" class="w" text-anchor="middle" dominant-baseline="central"> </text>
-    <text x="110" y="150" class="w" text-anchor="middle" dominant-baseline="central"> </text>
-    <text x="130" y="150" class="w" text-anchor="middle" dominant-baseline="central"> </text>
-    <text x="150" y="150" class="w" text-anchor="middle" dominant-baseline="central"> </text>
-    <text x="170" y="150" class="w" text-anchor="middle" dominant-baseline="central">#</text>
-    <text x="190" y="150" class="p" text-anchor="middle" dominant-baseline="central">X</text>
-    <text x="210" y="150" class="w" text-anchor="middle" dominant-baseline="central">#</text>
+    <g class="row">
+      <text y="150"><tspan x="10" class="w">#</tspan><tspan x="30" class="p">X</tspan><tspan x="50" class="w">#</tspan><tspan x="70" class="w"> </tspan><tspan x="90" class="w"> </tspan><tspan x="110" class="w"> </tspan><tspan x="130" class="w"> </tspan><tspan x="150" class="w"> </tspan><tspan x="170" class="w">#</tspan><tspan x="190" class="p">X</tspan><tspan x="210" class="w">#</tspan></text>
+    </g>
     
     <!-- Row 9 -->
-    <text x="10" y="170" class="w" text-anchor="middle" dominant-baseline="central">#</text>
-    <text x="30" y="170" class="p" text-anchor="middle" dominant-baseline="central">X</text>
-    <text x="50" y="170" class="w" text-anchor="middle" dominant-baseline="central">#</text>
-    <text x="70" y="170" class="w" text-anchor="middle" dominant-baseline="central">#</text>
-    <text x="90" y="170" class="w" text-anchor="middle" dominant-baseline="central">#</text>
-    <text x="110" y="170" class="w" text-anchor="middle" dominant-baseline="central">#</text>
-    <text x="130" y="170" class="w" text-anchor="middle" dominant-baseline="central">#</text>
-    <text x="150" y="170" class="w" text-anchor="middle" dominant-baseline="central">#</text>
-    <text x="170" y="170" class="w" text-anchor="middle" dominant-baseline="central">#</text>
-    <text x="190" y="170" class="p" text-anchor="middle" dominant-baseline="central">X</text>
-    <text x="210" y="170" class="w" text-anchor="middle" dominant-baseline="central">#</text>
+    <g class="row">
+      <text y="170"><tspan x="10" class="w">#</tspan><tspan x="30" class="p">X</tspan><tspan x="50" class="w">#</tspan><tspan x="70" class="w">#</tspan><tspan x="90" class="w">#</tspan><tspan x="110" class="w">#</tspan><tspan x="130" class="w">#</tspan><tspan x="150" class="w">#</tspan><tspan x="170" class="w">#</tspan><tspan x="190" class="p">X</tspan><tspan x="210" class="w">#</tspan></text>
+    </g>
     
     <!-- Row 10 -->
-    <text x="10" y="190" class="w" text-anchor="middle" dominant-baseline="central">#</text>
-    <text x="30" y="190" class="p" text-anchor="middle" dominant-baseline="central">X</text>
-    <text x="50" y="190" class="p" text-anchor="middle" dominant-baseline="central">X</text>
-    <text x="70" y="190" class="p" text-anchor="middle" dominant-baseline="central">X</text>
-    <text x="90" y="190" class="p" text-anchor="middle" dominant-baseline="central">X</text>
-    <text x="110" y="190" class="p" text-anchor="middle" dominant-baseline="central">X</text>
-    <text x="130" y="190" class="p" text-anchor="middle" dominant-baseline="central">X</text>
-    <text x="150" y="190" class="p" text-anchor="middle" dominant-baseline="central">X</text>
-    <text x="170" y="190" class="p" text-anchor="middle" dominant-baseline="central">X</text>
-    <text x="190" y="190" class="p" text-anchor="middle" dominant-baseline="central">X</text>
-    <text x="210" y="190" class="w" text-anchor="middle" dominant-baseline="central">#</text>
+    <g class="row">
+      <text y="190"><tspan x="10" class="w">#</tspan><tspan x="30" class="p">X</tspan><tspan x="50" class="p">X</tspan><tspan x="70" class="p">X</tspan><tspan x="90" class="p">X</tspan><tspan x="110" class="p">X</tspan><tspan x="130" class="p">X</tspan><tspan x="150" class="p">X</tspan><tspan x="170" class="p">X</tspan><tspan x="190" class="p">X</tspan><tspan x="210" class="w">#</tspan></text>
+    </g>
     
     <!-- Row 11 -->
-    <text x="10" y="210" class="w" text-anchor="middle" dominant-baseline="central">#</text>
-    <text x="30" y="210" class="w" text-anchor="middle" dominant-baseline="central">#</text>
-    <text x="50" y="210" class="w" text-anchor="middle" dominant-baseline="central">#</text>
-    <text x="70" y="210" class="w" text-anchor="middle" dominant-baseline="central">#</text>
-    <text x="90" y="210" class="w" text-anchor="middle" dominant-baseline="central">#</text>
-    <text x="110" y="210" class="w" text-anchor="middle" dominant-baseline="central">#</text>
-    <text x="130" y="210" class="w" text-anchor="middle" dominant-baseline="central">#</text>
-    <text x="150" y="210" class="w" text-anchor="middle" dominant-baseline="central">#</text>
-    <text x="170" y="210" class="w" text-anchor="middle" dominant-baseline="central">#</text>
-    <text x="190" y="210" class="w" text-anchor="middle" dominant-baseline="central">#</text>
-    <text x="210" y="210" class="w" text-anchor="middle" dominant-baseline="central">#</text>
+    <g class="row">
+      <text y="210"><tspan x="10" class="w">#</tspan><tspan x="30" class="w">#</tspan><tspan x="50" class="w">#</tspan><tspan x="70" class="w">#</tspan><tspan x="90" class="w">#</tspan><tspan x="110" class="w">#</tspan><tspan x="130" class="w">#</tspan><tspan x="150" class="w">#</tspan><tspan x="170" class="w">#</tspan><tspan x="190" class="w">#</tspan><tspan x="210" class="w">#</tspan></text>
+    </g>
   </g>
 </svg>
