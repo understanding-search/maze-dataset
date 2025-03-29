@@ -158,7 +158,7 @@
             id="a94"><tspan class="function" id="tspan85">as_tokens</tspan></a>(...)
       </text>
    <!-- Text Representation Box (Bottom) -->
-   <rect x="2" y="408" width="680" height="232" fill="white" stroke="#666666" stroke-width="2" rx="20" ry="20" />
+   <rect x="2" y="408" width="680" height="230" fill="white" stroke="#666666" stroke-width="2" rx="20" ry="20" />
 
    <!-- ADJLIST section (purple) -->
       <rect x="15" y="419" width="650" height="140" fill="rgb(176,152,232)" rx="3" ry="3" />
