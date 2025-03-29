@@ -25,6 +25,10 @@
     <a href="https://understanding-search.github.io/maze-dataset/examples/maze_examples.html">
       <img src="https://img.shields.io/badge/examples-view-blue" alt="Examples">
     </a>
+    &nbsp;
+    <a href="http://arxiv.org/abs/2309.10498">
+        <img src="https://img.shields.io/badge/arXiv-2309.10498-b31b1b.svg" alt="arXiv">
+    </a>
   </p>
 
   <!-- Diagram -->
@@ -38,7 +42,7 @@
       <img src="https://img.shields.io/pypi/v/maze-dataset" alt="PyPI">
     </a>
     &nbsp;
-    <img src="https://img.shields.io/pypi/dm/maze-dataset" alt="PyPI - Downloads">
+    <img src="https://img.shields.io/badge/python-3.10%2B-blue?logo=python&logoColor=white" alt="Python Version">
     &nbsp;
     <a href="https://github.com/understanding-search/maze-dataset/actions/workflows/checks.yml">
       <img src="https://github.com/understanding-search/maze-dataset/actions/workflows/checks.yml/badge.svg" alt="Checks">
@@ -52,10 +56,15 @@
     &nbsp;
     <img src="https://img.shields.io/github/commit-activity/t/understanding-search/maze-dataset" alt="GitHub commit activity">
     &nbsp;
+    <img src="https://img.shields.io/github/issues-closed/understanding-search/maze-dataset" alt="GitHub closed issues">
+    &nbsp;
     <img src="https://img.shields.io/github/issues-pr-closed/understanding-search/maze-dataset" alt="GitHub closed pull requests">
+    &nbsp;
+    <img src="https://img.shields.io/pypi/dm/maze-dataset" alt="PyPI - Downloads">
   </p>
 
 </div>
+
 
 
 <!-- [![PyPI](https://img.shields.io/pypi/v/maze-dataset)](https://pypi.org/project/maze-dataset/)
