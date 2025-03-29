@@ -169,13 +169,13 @@ def color_tokens_cmap(
 # colors roughly made to be similar to visual representation
 _MAZE_TOKENS_DEFAULT_COLORS: dict[tuple[str, str], tuple[int, int, int]] = {
 	(SPECIAL_TOKENS.ADJLIST_START, SPECIAL_TOKENS.ADJLIST_END): (
-		217,
-		210,
-		233,
+		176,
+		152,
+		232,
 	),  # purple
-	(SPECIAL_TOKENS.ORIGIN_START, SPECIAL_TOKENS.ORIGIN_END): (217, 234, 211),  # green
-	(SPECIAL_TOKENS.TARGET_START, SPECIAL_TOKENS.TARGET_END): (234, 209, 220),  # red
-	(SPECIAL_TOKENS.PATH_START, SPECIAL_TOKENS.PATH_END): (207, 226, 243),  # blue
+	(SPECIAL_TOKENS.ORIGIN_START, SPECIAL_TOKENS.ORIGIN_END): (154, 239, 123),  # green
+	(SPECIAL_TOKENS.TARGET_START, SPECIAL_TOKENS.TARGET_END): (246, 136, 136),  # red
+	(SPECIAL_TOKENS.PATH_START, SPECIAL_TOKENS.PATH_END): (111, 187, 254),  # blue
 }
 "default colors for maze tokens, roughly matches the format of `as_pixels`"
 
