@@ -124,12 +124,12 @@
       <image x="900" y="220" width="200" height="200" href="./pixels.svg" id="image59" />
       <!-- MazePlot - bottom right -->
       <image x="900" y="440" width="200" height="200" href="./mazeplot.svg" id="image61" />
-   <!-- Arrows from SolvedMaze box to raster formats -->
+   <!-- Arrows from SolvedMaze box to formats -->
       <!-- bidirectional for as_ascii -->
       <path d="M 729.51947,164.2179 C 756.81043,156.39983 772.3542,131.2753 901,132" fill="none" stroke="#333333"
          stroke-width="2" marker-start="url(#arrow-start)" marker-end="url(#arrow-end)" id="path63"
          />
-      <text x="837.41815" y="156.28349" font-family="monospace" font-size="16px" text-anchor="middle" id="text65">
+      <text x="837.41815" y="110" font-family="monospace" font-size="16px" text-anchor="middle" id="text65">
          <tspan class="variable" id="tspan64">m</tspan>.<a
             xlink:href="https://understanding-search.github.io/maze-dataset/maze_dataset.html#LatticeMaze.as_ascii"
             id="a75"><tspan class="function" id="tspan66">as_ascii</tspan></a>()
@@ -138,7 +138,7 @@
       <path d="m 728.03997,176.72525 c 96,-5 87.60883,120.07235 173.96003,122.27475" fill="none" stroke="#333333"
          stroke-width="2" marker-start="url(#arrow-start)" marker-end="url(#arrow-end)" id="path67"
          />
-      <text x="836.12598" y="319.72046" font-family="monospace" font-size="16px" text-anchor="middle" id="text69">
+      <text x="836.12598" y="320" font-family="monospace" font-size="16px" text-anchor="middle" id="text69">
          <tspan class="variable" id="tspan70">m</tspan>.<a
             xlink:href="https://understanding-search.github.io/maze-dataset/maze_dataset.html#LatticeMaze.as_pixels"
             id="a81"><tspan class="function" id="tspan72">as_pixels</tspan></a>()
@@ -146,45 +146,61 @@
       <!-- To MazePlot - single direction -->
       <path d="M 698.31935,206.78258 C 777.04836,303.14005 689.68044,510.73745 901,509" fill="none" stroke="#333333"
          stroke-width="2" marker-end="url(#arrow)" id="path71" />
-      <text x="846.75305" y="537.41064" font-family="monospace" font-size="16px" text-anchor="middle" id="text73"><a
+      <text x="846.75305" y="540" font-family="monospace" font-size="16px" text-anchor="middle" id="text73"><a
             xlink:href="https://understanding-search.github.io/maze-dataset/maze_dataset/plotting.html#MazePlot" id="a86">
             <tspan class="class" id="tspan76">MazePlot</tspan></a>(<tspan class="variable" id="tspan78">m</tspan>)</text>
+      <!-- Bidirectional arrow from SolvedMaze box to Token representation -->
+      <path d="m 649.4163,207 1.50486,202.95295" fill="none" stroke="#333333" stroke-width="2"
+         marker-start="url(#arrow-start)" marker-end="url(#arrow-end)" id="path77" />
+      <text x="571.10529" y="386.16418" font-family="monospace" font-size="16px" text-anchor="middle" id="text79">
+         <tspan class="variable" id="tspan83">m</tspan>.<a
+            xlink:href="https://understanding-search.github.io/maze-dataset/maze_dataset.html#LatticeMaze.as_tokens"
+            id="a94"><tspan class="function" id="tspan85">as_tokens</tspan></a>(...)
+      </text>
    <!-- Text Representation Box (Bottom) -->
-   <rect x="2" y="408" width="730" height="232" fill="none" stroke="#666666" stroke-width="2" rx="20" ry="20"
-      id="rect75" />
-   <foreignObject x="15" y="419" width="700" height="218">
-      <xhtml:body style="margin:0; padding:8px; background: white;">
-         <xhtml:div style="font-family: monospace; font-size: 16px; line-height: 1.3;">
-            <xhtml:span style="color: black; background-color: rgb(176,152,232);">
-               &lt;ADJLIST_START&gt; (2,4) &lt;--&gt; (3,4) ; (1,3) &lt;--&gt; (1,4) ; (2,4) &lt;--&gt; (2,3) ; (1,4)
-               &lt;--&gt; (0,4) ; (2,0) &lt;--&gt; (3,0) ; (4,4) &lt;--&gt; (4,3) ; (4,2) &lt;--&gt; (4,3) ; (3,1)
-               &lt;--&gt; (3,2) ; (3,0) &lt;--&gt; (4,0) ; (4,1) &lt;--&gt; (4,2) ; (0,1) &lt;--&gt; (0,0) ; (0,2)
-               &lt;--&gt; (0,3) ; (2,2) &lt;--&gt; (1,2) ; (0,2) &lt;--&gt; (0,1) ; (1,1) &lt;--&gt; (1,0) ; (3,3)
-               &lt;--&gt; (3,2) ; (1,0) &lt;--&gt; (0,0) ; (0,2) &lt;--&gt; (1,2) ; (2,1) &lt;--&gt; (2,2) ; (4,0)
-               &lt;--&gt; (4,1) ; (2,1) &lt;--&gt; (2,0) ; (3,2) &lt;--&gt; (2,2) ; (1,3) &lt;--&gt; (0,3) ; (3,4)
-               &lt;--&gt; (4,4) ; &lt;ADJLIST_END&gt;
-            </xhtml:span>
-            <xhtml:br />
-            <xhtml:span style="color: black; background-color: rgb(154,239,123);">
-               &lt;ORIGIN_START&gt; (1,3) &lt;ORIGIN_END&gt;
-            </xhtml:span>
-            <xhtml:span style="color: black; background-color: rgb(246,136,136);">
-               &lt;TARGET_START&gt; (2,3) &lt;TARGET_END&gt;
-            </xhtml:span>
-            <xhtml:br />
-            <xhtml:span style="color: black; background-color: rgb(111,187,254);">
-               &lt;PATH_START&gt; (1,3) (0,3) (0,2) (1,2) (2,2) (2,1) (2,0) (3,0) (4,0) (4,1) (4,2) (4,3) (4,4) (3,4)
-               (2,4) (2,3) &lt;PATH_END&gt;
-            </xhtml:span>
-         </xhtml:div>
-      </xhtml:body>
-   </foreignObject>
-   <!-- Bidirectional arrow from SolvedMaze box to Token representation -->
-   <path d="m 649.4163,207 1.50486,202.95295" fill="none" stroke="#333333" stroke-width="2"
-      marker-start="url(#arrow-start)" marker-end="url(#arrow-end)" id="path77" />
-   <text x="571.10529" y="386.16418" font-family="monospace" font-size="16px" text-anchor="middle" id="text79">
-      <tspan class="variable" id="tspan83">m</tspan>.<a
-         xlink:href="https://understanding-search.github.io/maze-dataset/maze_dataset.html#LatticeMaze.as_tokens"
-         id="a94"><tspan class="function" id="tspan85">as_tokens</tspan></a>(...)
-   </text>
+   <rect x="2" y="408" width="680" height="232" fill="white" stroke="#666666" stroke-width="2" rx="20" ry="20" />
+
+   <!-- ADJLIST section (purple) -->
+      <rect x="15" y="419" width="650" height="140" fill="rgb(176,152,232)" rx="3" ry="3" />
+      <text x="20" y="433" font-family="monospace" font-size="14px" fill="black">
+      &lt;ADJLIST_START&gt; (2,4) &lt;--&gt; (3,4) ; (1,3) &lt;--&gt; (1,4) ; (2,4) &lt;--&gt; (2,3) ;
+      </text>
+      <text x="20" y="453" font-family="monospace" font-size="14px" fill="black">
+      (1,4) &lt;--&gt; (0,4) ; (2,0) &lt;--&gt; (3,0) ; (4,4) &lt;--&gt; (4,3) ; (4,2) &lt;--&gt; (4,3) ;
+      </text>
+      <text x="20" y="473" font-family="monospace" font-size="14px" fill="black">
+      (3,1) &lt;--&gt; (3,2) ; (3,0) &lt;--&gt; (4,0) ; (4,1) &lt;--&gt; (4,2) ; (0,1) &lt;--&gt; (0,0) ;
+      </text>
+      <text x="20" y="493" font-family="monospace" font-size="14px" fill="black">
+      (0,2) &lt;--&gt; (0,3) ; (2,2) &lt;--&gt; (1,2) ; (0,2) &lt;--&gt; (0,1) ; (1,1) &lt;--&gt; (1,0) ;
+      </text>
+      <text x="20" y="513" font-family="monospace" font-size="14px" fill="black">
+      (3,3) &lt;--&gt; (3,2) ; (1,0) &lt;--&gt; (0,0) ; (0,2) &lt;--&gt; (1,2) ; (2,1) &lt;--&gt; (2,2) ;
+      </text>
+      <text x="20" y="533" font-family="monospace" font-size="14px" fill="black">
+       (4,0) &lt;--&gt; (4,1) ; (2,1) &lt;--&gt; (2,0) ; (3,2) &lt;--&gt; (2,2) ; (1,3) &lt;--&gt; (0,3) ;
+      </text>
+      <text x="20" y="553" font-family="monospace" font-size="14px" fill="black">
+      (3,4) &lt;--&gt; (4,4) ; &lt;ADJLIST_END&gt;
+      </text>
+
+   <!-- ORIGIN section (green) and TARGET section (red) on the same line -->
+      <rect x="15" y="563" width="289" height="20" fill="rgb(154,239,123)" rx="3" ry="3" />
+      <text x="20" y="578" font-family="monospace" font-size="14px" fill="black">
+      &lt;ORIGIN_START&gt; (1,3) &lt;ORIGIN_END&gt;
+      </text>
+
+      <rect x="304" y="563" width="293" height="20" fill="rgb(246,136,136)" rx="3" ry="3" />
+      <text x="309" y="578" font-family="monospace" font-size="14px" fill="black">
+      &lt;TARGET_START&gt; (2,3) &lt;TARGET_END&gt;
+      </text>
+
+   <!-- PATH section (blue) -->
+      <rect x="15" y="588" width="620" height="40" fill="rgb(111,187,254)" rx="3" ry="3" />
+      <text x="20" y="602" font-family="monospace" font-size="14px" fill="black">
+      &lt;PATH_START&gt; (1,3) (0,3) (0,2) (1,2) (2,2) (2,1) (2,0) (3,0) (4,0) (4,1)
+      </text>
+      <text x="20" y="622" font-family="monospace" font-size="14px" fill="black">
+      (4,2) (4,3) (4,4) (3,4) (2,4) (2,3) &lt;PATH_END&gt;
+      </text>
 </svg>
