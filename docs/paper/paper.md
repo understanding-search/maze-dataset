@@ -61,7 +61,7 @@ header-includes: |
 
 # Summary
 
-<!-- Solving mazes is a classic problem in computer science and artificial intelligence, and humans have been constructing mazes for thousands of years. Although finding the shortest path through a maze is a solved problem, this makes it an excellent testbed for studying how machine learning algorithms solve problems and represent spatial information. In this paper, we introduce `maze-dataset`, a Python library for generating, processing, and visualizing datasets of mazes. This library supports a variety of maze generation algorithms providing both mazes with loops and "perfect" mazes without them. These generation algorithms can be configured with various parameters, and the resulting mazes can be filtered to satisfy a desired property. Also provided are tools for converting mazes to and from various formats, such as rasterized images and tokenized text sequences, making it suitable for training or evaluating convolutional neural networks and autoregressive transformer models, as well as various visualization tools. As well as providing a simple interface for generating, storing, and loading these datasets, `maze-dataset` is extensively tested, type hinted, benchmarked, and documented. -->
+Solving mazes is a classic problem in computer science and artificial intelligence, and humans have been constructing mazes for thousands of years. Although finding the shortest path through a maze is a solved problem, this makes it an excellent testbed for studying how machine learning algorithms solve problems and represent spatial information. In this paper, we introduce `maze-dataset`, a Python library for generating, processing, and visualizing datasets of mazes. This library supports a variety of maze generation algorithms providing both mazes with loops and "perfect" mazes without them. These generation algorithms can be configured with various parameters, and the resulting mazes can be filtered to satisfy a desired property. Also provided are tools for converting mazes to and from various formats, such as rasterized images and tokenized text sequences, making it suitable for training or evaluating convolutional neural networks and autoregressive transformer models, as well as various visualization tools. As well as providing a simple interface for generating, storing, and loading these datasets, `maze-dataset` is extensively tested, type hinted, benchmarked, and documented.
 
 **TODO: mention the examples, put in a figure https://understanding-search.github.io/maze-dataset/examples/maze_examples.html**
 <!-- ![Example mazes from various algorithms. Left to right: randomized depth-first search (RDFS), RDFS without forks, constrained RDFS, Wilson's [@wilson], RDFS with percolation (p=0.1), RDFS with percolation (p=0.4), random stack RDFS.](figures/demo-dataset.pdf){width=90%} -->
@@ -73,7 +73,8 @@ header-includes: |
   \begin{minipage}{5in}
     \input{docs/paper/diagram/diagram.tikz} 
   \end{minipage}
-  \caption{Usage of maze-dataset}
+  \caption{Usage of maze-dataset. We create a `MazeDataset` from a `MazeDatasetConfig`. This contains `SolvedMaze` objects which can be converted to and from a variety of formats. Code in the image contains clickable links to documentation.}
+  \label{fig:diagram}
 \end{figure}
 
 <!-- ```{=html}
