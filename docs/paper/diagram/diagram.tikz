@@ -1,89 +1,89 @@
 \begin{tikzpicture}[remember picture]
-	% will be scaled to width of minipage?
-\node[anchor=south west,inner sep=0] (img) at (0,0) {%
-	\includegraphics{docs/paper/diagram/diagram.pdf}%
-};
+	% Background image node
+	\node[anchor=south west,inner sep=0] (img) at (0,0) {%
+	  \includegraphics{docs/paper/diagram/diagram.pdf}%
+	};
 
-\node[anchor=north west,
-	hyperlink url={https://github.com},
-	draw=blue, fill=blue!20, fill opacity=0.3,
-	minimum width=2cm, minimum height=1cm]
-	at ($(current page.north west)+(0,-1cm)$) {};
+  % Box 1: MazeDatasetConfig
+  \node[anchor=south west, draw=blue, fill=blue!20, fill opacity=0.3,
+        minimum width=0.68in, minimum height=0.16in]
+    at (0.05in, 2.75in) {%
+      \href{https://understanding-search.github.io/maze-dataset/maze_dataset.html\#MazeDatasetConfig}{%
+        \rule{1.6in}{0.16in}%
+      }%
+    };
 
-% Establish a coordinate system mapping the original SVG viewBox (1100x640)
-% \begin{scope}[x={(img.south east)}, y={(img.north west)}]
-	
-% 	% 1. MazeDatasetConfig (for both "cfg" and "MazeDatasetConfig")
-% 	\node[hyperlink url={https://understanding-search.github.io/maze-dataset/maze_dataset.html#MazeDatasetConfig},
-% 			anchor=south west,
-% 			draw=blue, fill=blue!20, fill opacity=0.3, line width=1pt,
-% 			minimum width={(150-25)/1100*6in},
-% 			minimum height={(60-30)/640*3.5in}]
-% 		at ($(25/1100, {1 - 60/640})$) {};
-	
-% 	% 2. LatticeMazeGenerators.gen_dfs (the "gen_dfs" text)
-% 	\node[hyperlink url={https://understanding-search.github.io/maze-dataset/maze_dataset.html#LatticeMazeGenerators.gen_dfs},
-% 			anchor=south west,
-% 			draw=blue, fill=blue!20, fill opacity=0.3, line width=1pt,
-% 			minimum width={(150-45)/1100*6in},
-% 			minimum height={(180-150)/640*3.5in}]
-% 		at ($(45/1100, {1 - 180/640})$) {};
-	
-% 	% 3. MazeDataset (the "ds" and "MazeDataset" text)
-% 	\node[hyperlink url={https://understanding-search.github.io/maze-dataset/maze_dataset.html#MazeDataset},
-% 			anchor=south west,
-% 			draw=blue, fill=blue!20, fill opacity=0.3, line width=1pt,
-% 			minimum width={(150-25)/1100*6in},
-% 			minimum height={(335-305)/640*3.5in}]
-% 		at ($(25/1100, {1 - 335/640})$) {};
-	
-% 	% 4. MazeDataset.from_config (following MazeDataset on the same line)
-% 	\node[hyperlink url={https://understanding-search.github.io/maze-dataset/maze_dataset.html#MazeDataset.from_config},
-% 			anchor=south west,
-% 			draw=blue, fill=blue!20, fill opacity=0.3, line width=1pt,
-% 			minimum width={(300-150)/1100*6in},
-% 			minimum height={(335-305)/640*3.5in}]
-% 		at ($(150/1100, {1 - 335/640})$) {};
-	
-% 	% 5. SolvedMaze (the text starting at x≈424.6, y≈205)
-% 	\node[hyperlink url={https://understanding-search.github.io/maze-dataset/maze_dataset.html#SolvedMaze},
-% 			anchor=south west,
-% 			draw=blue, fill=blue!20, fill opacity=0.3, line width=1pt,
-% 			minimum width={(544.6-424.6)/1100*6in},  % 544.6 = 424.6+120
-% 			minimum height={(205-165)/640*3.5in}]
-% 		at ($(424.6/1100, {1 - 205/640})$) {};
-	
-% 	% 6. LatticeMaze.as_ascii (from x≈837.4, y≈125)
-% 	\node[hyperlink url={https://understanding-search.github.io/maze-dataset/maze_dataset.html#LatticeMaze.as_ascii},
-% 			anchor=south west,
-% 			draw=blue, fill=blue!20, fill opacity=0.3, line width=1pt,
-% 			minimum width={(937.4-837.4)/1100*6in},  % 937.4 = 837.4+100
-% 			minimum height={(125-95)/640*3.5in}]
-% 		at ($(837.4/1100, {1 - 125/640})$) {};
-	
-% 	% 7. LatticeMaze.as_pixels (from x≈836.1, y≈335)
-% 	\node[hyperlink url={https://understanding-search.github.io/maze-dataset/maze_dataset.html#LatticeMaze.as_pixels},
-% 			anchor=south west,
-% 			draw=blue, fill=blue!20, fill opacity=0.3, line width=1pt,
-% 			minimum width={(936.1-836.1)/1100*6in},  % 936.1 = 836.1+100
-% 			minimum height={(335-305)/640*3.5in}]
-% 		at ($(836.1/1100, {1 - 335/640})$) {};
-	
-% 	% 8. MazePlot (from x≈846.8, y≈555)
-% 	\node[hyperlink url={https://understanding-search.github.io/maze-dataset/maze_dataset/plotting.html#MazePlot},
-% 			anchor=south west,
-% 			draw=blue, fill=blue!20, fill opacity=0.3, line width=1pt,
-% 			minimum width={(966.8-846.8)/1100*6in},  % 966.8 = 846.8+120
-% 			minimum height={(555-525)/640*3.5in}]
-% 		at ($(846.8/1100, {1 - 555/640})$) {};
-	
-% 	% 9. LatticeMaze.as_tokens (from x≈571.1, y≈406)
-% 	\node[hyperlink url={https://understanding-search.github.io/maze-dataset/maze_dataset.html#LatticeMaze.as_tokens},
-% 			anchor=south west,
-% 			draw=blue, fill=blue!20, fill opacity=0.3, line width=1pt,
-% 			minimum width={(691.1-571.1)/1100*6in},  % 691.1 = 571.1+120
-% 			minimum height={(406-376)/640*3.5in}]
-% 		at ($(571.1/1100, {1 - 406/640})$) {};
-	
-% \end{scope}
-\end{tikzpicture}
+  % Box 2: LatticeMazeGenerators.gen_dfs
+  \node[anchor=south west, draw=blue, fill=blue!20, fill opacity=0.3,
+        minimum width=0.57in, minimum height=0.16in]
+    at (0.1in, 2.2in) {%
+      \href{https://understanding-search.github.io/maze-dataset/maze_dataset.html\#LatticeMazeGenerators.gen_dfs}{%
+        \rule{1.3in}{0.16in}%
+      }%
+    };
+
+  % Box 3: MazeDataset
+  \node[anchor=south west, draw=blue, fill=blue!20, fill opacity=0.3,
+        minimum width=0.68in, minimum height=0.16in]
+    at (0.05in, 1.5in) {%
+      \href{https://understanding-search.github.io/maze-dataset/maze_dataset.html\#MazeDataset}{%
+        \rule{1.07in}{0.16in}%
+      }%
+    };
+
+  % Box 4: MazeDataset.from_config
+  \node[anchor=south west, draw=blue, fill=blue!20, fill opacity=0.3,
+        minimum width=0.82in, minimum height=0.16in]
+    at (1.17in, 1.5in) {%
+      \href{https://understanding-search.github.io/maze-dataset/maze_dataset.html\#MazeDataset.from_config}{%
+        \rule{1.05in}{0.16in}%
+      }%
+    };
+
+  % Box 5: SolvedMaze
+  \node[anchor=south west, draw=blue, fill=blue!20, fill opacity=0.3,
+        minimum width=0.65in, minimum height=0.22in]
+    at (1.87in, 2.08in) {%
+      \href{https://understanding-search.github.io/maze-dataset/maze_dataset.html\#SolvedMaze}{%
+        \rule{0.9in}{0.22in}%
+      }%
+    };
+
+  % Box 6: LatticeMaze.as_ascii
+  \node[anchor=south west, draw=blue, fill=blue!20, fill opacity=0.3,
+        minimum width=0.55in, minimum height=0.16in]
+    at (3.45in, 2.43in) {%
+      \href{https://understanding-search.github.io/maze-dataset/maze_dataset.html\#LatticeMaze.as_ascii}{%
+        \rule{0.7in}{0.16in}%
+      }%
+    };
+
+  % Box 7: LatticeMaze.as_pixels
+  \node[anchor=south west, draw=blue, fill=blue!20, fill opacity=0.3,
+        minimum width=0.55in, minimum height=0.16in]
+    at (3.45in, 1.48in) {%
+      \href{https://understanding-search.github.io/maze-dataset/maze_dataset.html\#LatticeMaze.as_pixels}{%
+        \rule{0.7in}{0.16in}%
+      }%
+    };
+
+  % Box 8: MazePlot
+  \node[anchor=south west, draw=blue, fill=blue!20, fill opacity=0.3,
+        minimum width=0.65in, minimum height=0.16in]
+    at (3.45in, 0.48in) {%
+      \href{https://understanding-search.github.io/maze-dataset/maze_dataset/plotting.html\#MazePlot}{%
+        \rule{0.65in}{0.16in}%
+      }%
+    };
+
+  % Box 9: LatticeMaze.as_tokens
+  \node[anchor=south west, draw=blue, fill=blue!20, fill opacity=0.3,
+        minimum width=0.65in, minimum height=0.16in]
+    at (2.18in, 1.18in) {%
+      \href{https://understanding-search.github.io/maze-dataset/maze_dataset.html\#LatticeMaze.as_tokens}{%
+        \rule{0.7in}{0.16in}%
+      }%
+    };
+
+  \end{tikzpicture}
+  

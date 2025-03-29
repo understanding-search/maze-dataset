@@ -70,20 +70,11 @@ header-includes: |
 <!-- \vspace{20em} -->
 
 \begin{figure} 
-\begin{tikzpicture}[remember picture]
-  % Place a clickable blue box at the top left corner (offset down by 1cm)
-  \node[draw=blue, fill=blue!20, fill opacity=0.3,
-        hyperlink node url={https://github.com},
-        minimum width=2cm, minimum height=1cm,
-        anchor=north west]
-    at ($(current page.north west)+(0,-1cm)$) {};
-\end{tikzpicture}
-\caption{testinggggggggggggggggg}
+  \begin{minipage}{5in}
+    \input{docs/paper/diagram/diagram.tikz} 
+  \end{minipage}
+  \caption{Usage of maze-dataset}
 \end{figure}
-
-<!-- \begin{minipage}{5in}
-  \input{docs/paper/diagram/diagram.tikz} 
-\end{minipage} -->
 
 <!-- ```{=html}
 <img src="docs/paper/diagram/diagram.svg"/>
