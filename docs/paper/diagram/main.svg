@@ -1,14 +1,6 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg width="1100" height="640" viewBox="0 0 1100 640" style="background: white" version="1.1" id="svg81"
-   sodipodi:docname="main.svg" inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg" xmlns:xhtml="http://www.w3.org/1999/xhtml">
-   <sodipodi:namedview id="namedview83" pagecolor="#ffffff" bordercolor="#000000" borderopacity="0.25"
-      inkscape:showpageshadow="2" inkscape:pageopacity="0.0" inkscape:pagecheckerboard="0" inkscape:deskcolor="#d1d1d1"
-      showgrid="false" inkscape:zoom="1.2882602" inkscape:cx="374.53615" inkscape:cy="98.582572"
-      inkscape:window-width="1536" inkscape:window-height="792" inkscape:window-x="0" inkscape:window-y="0"
-      inkscape:window-maximized="1" inkscape:current-layer="svg81" />
    <defs id="defs5">
       <!-- Arrow marker definition -->
       <marker id="arrow" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto">
@@ -17,7 +9,22 @@
       <marker id="arrow-3" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto">
          <path d="M 0,0 V 6 L 6,3 Z" fill="#333333" id="path2-6" />
       </marker>
+      <!-- Bidirectional arrow markers -->
+      <marker id="arrow-start" markerWidth="10" markerHeight="10" refX="0" refY="3" orient="auto">
+         <path d="M 6 0 L 6 6 L 0 3 z" fill="#333333" />
+      </marker>
+      <marker id="arrow-end" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto">
+         <path d="M 0 0 L 0 6 L 6 3 z" fill="#333333" />
+      </marker>
    </defs>
+   <!-- CSS Styles for syntax highlighting -->
+   <style type="text/css">
+      .variable { fill: #069f6f; }
+      .class { fill: #ff2fff; }
+      .function { fill: #f08604; }
+      .literal { fill: #0000FF; }
+      .keyword { fill: #000000; }
+   </style>
    <!-- Config box (top) -->
    <rect x="10.669169" y="13.476555" width="381.66644" height="200.71454" fill="#f0f0f0" stroke="#cccccc"
       stroke-width="2.06299" rx="14.842584" ry="15.053591" id="rect7" />
@@ -28,39 +35,41 @@
    <rect x="449.79913" y="158.48268" width="250.79169" height="68.266205" fill="#f0f0f0" stroke="#cccccc"
       stroke-width="1.5021" rx="9.9600124" ry="7.3386173" id="rect11" />
    <!-- Config content (Top box) -->
-   <text x="25.017153" y="43.940823" font-family="monospace" font-size="24px" fill="#000000" id="text13">cfg =
-      MazeDatasetConfig(</text>
-   <text x="45.017151" y="73.940826" font-family="monospace" font-size="24px" fill="#7f0055" id="text15">name</text>
-   <text x="105.01715" y="73.940826" font-family="monospace" font-size="24px" fill="#000000" id="text17">=</text>
-   <text x="123.01715" y="73.940826" font-family="monospace" font-size="24px" fill="#2a00ff"
+   <text x="25.017153" y="43.940823" font-family="monospace" font-size="24px" id="text13">
+      <tspan class="variable">cfg</tspan> =
+      <tspan class="class">MazeDatasetConfig</tspan>(</text>
+   <text x="45.017151" y="73.940826" font-family="monospace" font-size="24px" class="keyword" id="text15">name</text>
+   <text x="105.01715" y="73.940826" font-family="monospace" font-size="24px" class="keyword" id="text17">=</text>
+   <text x="123.01715" y="73.940826" font-family="monospace" font-size="24px" class="literal"
       id="text19">&quot;test&quot;</text>
-   <text x="195.01715" y="73.940826" font-family="monospace" font-size="24px" fill="#000000" id="text21">,</text>
-   <text x="45.017151" y="103.94083" font-family="monospace" font-size="24px" fill="#7f0055" id="text23">grid_n</text>
-   <text x="136.01715" y="103.94083" font-family="monospace" font-size="24px" fill="#000000" id="text25">=</text>
-   <text x="154.01715" y="103.94083" font-family="monospace" font-size="24px" fill="#0000ff" id="text27">5</text>
-   <text x="164.01715" y="103.94083" font-family="monospace" font-size="24px" fill="#000000" id="text29">,</text>
-   <text x="45.017151" y="133.94083" font-family="monospace" font-size="24px" fill="#7f0055" id="text31">n_mazes</text>
-   <text x="150.18834" y="134.63443" font-family="monospace" font-size="24px" fill="#000000" id="text33">=</text>
-   <text x="168.7318" y="134.00531" font-family="monospace" font-size="24px" fill="#0000ff" id="text35">1</text>
-   <text x="181.3589" y="135.63582" font-family="monospace" font-size="24px" fill="#000000" id="text37">,</text>
-   <text x="45.017151" y="163.94083" font-family="monospace" font-size="24px" fill="#7f0055"
+   <text x="195.01715" y="73.940826" font-family="monospace" font-size="24px" class="keyword" id="text21">,</text>
+   <text x="45.017151" y="103.94083" font-family="monospace" font-size="24px" class="keyword" id="text23">grid_n</text>
+   <text x="136.01715" y="103.94083" font-family="monospace" font-size="24px" class="keyword" id="text25">=</text>
+   <text x="154.01715" y="103.94083" font-family="monospace" font-size="24px" class="literal" id="text27">5</text>
+   <text x="164.01715" y="103.94083" font-family="monospace" font-size="24px" class="keyword" id="text29">,</text>
+   <text x="45.017151" y="133.94083" font-family="monospace" font-size="24px" class="keyword" id="text31">n_mazes</text>
+   <text x="150.18834" y="134.63443" font-family="monospace" font-size="24px" class="keyword" id="text33">=</text>
+   <text x="168.7318" y="134.00531" font-family="monospace" font-size="24px" class="literal" id="text35">1</text>
+   <text x="181.3589" y="135.63582" font-family="monospace" font-size="24px" class="keyword" id="text37">,</text>
+   <text x="45.017151" y="163.94083" font-family="monospace" font-size="24px" class="keyword"
       id="text39">maze_ctor</text>
-   <text x="180.01715" y="163.94083" font-family="monospace" font-size="24px" fill="#000000" id="text41">=</text>
-   <text x="198.81715" y="163.94083" font-family="monospace" font-size="24px" fill="#22aa77" id="text43">gen_dfs</text>
-   <text x="295.01715" y="163.94083" font-family="monospace" font-size="24px" fill="#000000" id="text45">,</text>
-   <text x="25.017153" y="193.94083" font-family="monospace" font-size="24px" fill="#000000" id="text47">)</text>
+   <text x="180.01715" y="163.94083" font-family="monospace" font-size="24px" class="keyword" id="text41">=</text>
+   <text x="198.81715" y="163.94083" font-family="monospace" font-size="24px" class="function" id="text43">gen_dfs</text>
+   <text x="295.01715" y="163.94083" font-family="monospace" font-size="24px" class="keyword" id="text45">,</text>
+   <text x="25.017153" y="193.94083" font-family="monospace" font-size="24px" class="keyword" id="text47">)</text>
    <!-- Dataset box text (Middle box) -->
-   <text x="25.144407" y="320.85593" font-family="monospace" font-size="24px" fill="#000000" id="text49">ds =
-      MazeDataset.from_config(cfg)</text>
+   <text x="25.144407" y="320.85593" font-family="monospace" font-size="24px" id="text49">
+      <tspan class="variable">ds</tspan> = 
+      <tspan class="class">MazeDataset</tspan>.<tspan class="function">from_config</tspan>(<tspan class="variable">cfg</tspan>)</text>
    <!-- SolvedMaze box text (Right box) -->
-   <text x="463.60205" y="204.00943" font-family="monospace" font-size="24px" fill="#000000" id="text51">maze:
-      SolvedMaze</text>
+   <text x="463.60205" y="204.00943" font-family="monospace" font-size="24px" id="text51">
+      <tspan class="variable">m</tspan>: <tspan class="class">SolvedMaze</tspan> = <tspan class="variable">ds</tspan>[<tspan class="literal">0</tspan>]</text>
    <!-- Arrows between boxes -->
    <!-- Arrow from Config to Dataset -->
    <path d="m 192.62101,214.25319 0.63373,66.03144" fill="none" stroke="#333333" stroke-width="3"
-      marker-end="url(#arrow)" id="path53" sodipodi:nodetypes="cc" />
+      marker-end="url(#arrow)" id="path53" />
    <path d="m 513.16491,315.45745 c 51.11418,-0.36228 59.78856,1.5772 60.70754,-87.55717" fill="none" stroke="#333333"
-      stroke-width="3" marker-end="url(#arrow-3)" id="path53-7" sodipodi:nodetypes="cc"
+      stroke-width="3" marker-end="url(#arrow-3)" id="path53-7"
       style="marker-end:url(#arrow-3)" />
    <!-- Arrow from Dataset to SolvedMaze -->
    <!-- Right-Aligned Maze Placeholders -->
@@ -70,22 +79,21 @@
    <image x="900" y="220" width="200" height="200" href="./pixels.svg" id="image59" />
    <!-- MazePlot - bottom right -->
    <image x="900" y="440" width="200" height="200" href="./mazeplot.svg" id="image61" />
-   <!-- Arrows from SolvedMaze box to placeholders -->
-   <!-- To ASCII Maze -->
+   <!-- Arrows from SolvedMaze box to placeholders - bidirectional for as_ascii -->
    <path d="M 699.38998,160.79775 C 724.69727,142.37686 850.03349,131.80137 900.5,131.8" fill="none" stroke="#333333"
-      stroke-width="2" marker-end="url(#arrow)" id="path63" sodipodi:nodetypes="cc" />
-   <text x="849.99915" y="122.72659" font-family="sans-serif" font-size="16px" fill="#333333" text-anchor="middle"
-      id="text65">as_ascii</text>
-   <!-- To Pixel Grid -->
+      stroke-width="2" marker-start="url(#arrow-start)" marker-end="url(#arrow-end)" id="path63" />
+   <text x="849.99915" y="122.72659" font-family="monospace" font-size="16px" text-anchor="middle"
+      id="text65"><tspan class="variable">m</tspan>.<tspan class="function">as_ascii</tspan>()</text>
+   <!-- Bidirectional arrow for as_pixels -->
    <path d="m 701.64112,191.02388 c 15.44237,-9.97106 146.90036,105.38379 214.5422,108.65502" fill="none"
-      stroke="#333333" stroke-width="2" marker-end="url(#arrow)" id="path67" sodipodi:nodetypes="cc" />
-   <text x="838.13892" y="242.4657" font-family="sans-serif" font-size="16px" fill="#333333" text-anchor="middle"
-      id="text69">as_pixels</text>
-   <!-- To MazePlot -->
+      stroke="#333333" stroke-width="2" marker-start="url(#arrow-start)" marker-end="url(#arrow-end)" id="path67" />
+   <text x="838.13892" y="242.4657" font-family="monospace" font-size="16px" text-anchor="middle"
+      id="text69"><tspan class="variable">m</tspan>.<tspan class="function">as_pixels</tspan>()</text>
+   <!-- To MazePlot - single direction -->
    <path d="M 699.28277,223.88108 C 877.50387,359.89737 798.94134,509.32796 901.1,508.5" fill="none" stroke="#333333"
-      stroke-width="2" marker-end="url(#arrow)" id="path71" sodipodi:nodetypes="cc" />
-   <text x="857.9386" y="351.10205" font-family="sans-serif" font-size="16px" fill="#333333" text-anchor="middle"
-      id="text73">MazePlot</text>
+      stroke-width="2" marker-end="url(#arrow)" id="path71" />
+   <text x="857.9386" y="351.10205" font-family="monospace" font-size="16px" text-anchor="middle"
+      id="text73"><tspan class="class">MazePlot</tspan>(<tspan class="variable">m</tspan>)</text>
    <!-- Text Representation Box (Bottom) -->
    <rect x="1" y="390" width="800" height="249" fill="none" stroke="#000000" stroke-width="2" rx="15" ry="15"
       id="rect75" />
@@ -116,11 +124,11 @@
          </xhtml:div>
       </xhtml:body>
    </foreignObject>
-   <!-- Arrow from SolvedMaze box to Token representation -->
-   <path d="M 652.48714,228.31475 V 385.32161" fill="none" stroke="#333333" stroke-width="2" marker-end="url(#arrow)"
-      id="path77" sodipodi:nodetypes="cc" />
-   <text x="701.60376" y="305.46039" font-family="sans-serif" font-size="16px" fill="#333333" text-anchor="middle"
-      id="text79">as_tokens</text>
-   <text x="545.72223" y="289.53308" font-family="sans-serif" font-size="16px" fill="#333333" text-anchor="middle"
-      id="text79-5">ds[0]</text>
+   <!-- Bidirectional arrow from SolvedMaze box to Token representation -->
+   <path d="M 652.48714,228.31475 V 385.32161" fill="none" stroke="#333333" stroke-width="2" 
+      marker-start="url(#arrow-start)" marker-end="url(#arrow-end)" id="path77" />
+   <text x="701.60376" y="305.46039" font-family="monospace" font-size="16px" text-anchor="middle"
+      id="text79"><tspan class="variable">m</tspan>.<tspan class="function">as_tokens</tspan>(...)</text>
+   <text x="545.72223" y="289.53308" font-family="monospace" font-size="16px" text-anchor="middle"
+      id="text79-5"><tspan class="variable">ds</tspan>[<tspan class="literal">0</tspan>]</text>
 </svg>
