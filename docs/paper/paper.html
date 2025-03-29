@@ -593,15 +593,12 @@ several <code>_TokenizerElement</code> objects, each of which specifies
 how different token regions or other elements of the stringification are
 produced.</p>
 <figure>
-<span class="image placeholder"
-data-original-image-src="docs/paper/figures/TokenizerElement_structure.pdf"
-data-original-image-title="">Nested internal structure of
-<code>_TokenizerElement</code> objects inside a typical
-<code>MazeTokenizerModular</code> object.</span>
+
 <figcaption>Nested internal structure of <code>_TokenizerElement</code>
 objects inside a typical <code>MazeTokenizerModular</code>
 object.</figcaption>
 </figure>
+<!-- \label{fig:_TokenizerElement structure} -->
 <p>Optional delimiter tokens may be added in many places in the output.
 Delimiter options are all configured using the parameters named
 <code>pre</code>, <code>intra</code>, and <code>post</code> in various
@@ -861,24 +858,20 @@ class="math inline">10 &lt; <em>g</em> ≤ 32</span>)</td>
 </tbody>
 </table>
 <figure>
-<span class="image placeholder"
-data-original-image-src="docs/paper/figures/gridsize-vs-gentime.pdf"
-data-original-image-title="" width="95%">Plots of maze generation time.
-Generation time scales exponentially with maze size for all algorithms
-(left). Generation time does not depend on the number of mazes being
-generated, and there is minimal overhead to initializing the generation
-process for a small dataset (right). Wilson’s algorithm is notably less
-efficient than others and has high variance. Note that for both plots,
-values are averaged across all parameter sets for that algorithm, and
-parallelization is disabled.</span>
-<figcaption>Plots of maze generation time. Generation time scales
-exponentially with maze size for all algorithms (left). Generation time
-does not depend on the number of mazes being generated, and there is
-minimal overhead to initializing the generation process for a small
-dataset (right). Wilson’s algorithm is notably less efficient than
-others and has high variance. Note that for both plots, values are
+<embed src="media/docs/benchmarks/figures/gridsize-vs-gentime.pdf"
+style="width:95.0%" />
+<figcaption aria-hidden="true">Plots of maze generation time. Generation
+time scales exponentially with maze size for all algorithms (left).
+Generation time does not depend on the number of mazes being generated,
+and there is minimal overhead to initializing the generation process for
+a small dataset (right). Wilson’s algorithm is notably less efficient
+than others and has high variance. Note that for both plots, values are
 averaged across all parameter sets for that algorithm, and
 parallelization is disabled.</figcaption>
+</figure>
+<figure>
+<embed src="media/docs/benchmarks/figures/n_mazes-vs-gentime.pdf" />
+<figcaption aria-hidden="true">Maze size vs generation time</figcaption>
 </figure>
 <h1 id="implementation">Implementation</h1>
 <p>We refer to our GitHub repository <span class="citation"

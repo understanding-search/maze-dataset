@@ -18,6 +18,8 @@ docs/paper/output/**
 # paper related
 docs/paper/inara*
 docs/paper/output/**
+media/**
+joss/**
 
 .meta/local/**
 .pypi-token
