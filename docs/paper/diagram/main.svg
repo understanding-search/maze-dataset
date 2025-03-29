@@ -7,16 +7,16 @@
    xmlns:xlink="http://www.w3.org/1999/xlink">
    <sodipodi:namedview id="namedview94" pagecolor="#ffffff" bordercolor="#000000" borderopacity="0.25"
       inkscape:showpageshadow="2" inkscape:pageopacity="0.0" inkscape:pagecheckerboard="0" inkscape:deskcolor="#d1d1d1"
-      showgrid="false" inkscape:zoom="0.64413008" inkscape:cx="387.34412" inkscape:cy="319.81118"
-      inkscape:window-width="1536" inkscape:window-height="792" inkscape:window-x="0" inkscape:window-y="0"
-      inkscape:window-maximized="1" inkscape:current-layer="svg81" />
+      showgrid="false" inkscape:zoom="0.64413008" inkscape:cx="387" inkscape:cy="320" inkscape:window-width="1536"
+      inkscape:window-height="792" inkscape:window-x="0" inkscape:window-y="0" inkscape:window-maximized="1"
+      inkscape:current-layer="svg81" />
    <defs id="defs5">
       <!-- Arrow marker definition -->
       <marker id="arrow" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto">
          <path d="M 0 0 L 0 6 L 6 3 z" fill="#333333" id="path2" />
       </marker>
       <marker id="arrow-3" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto">
-         <path d="M 0,0 V 6 L 6,3 Z" fill="#333333" id="path2-6" />
+         <path d="M 0 0 V 6 L 6 3 Z" fill="#333333" id="path2-6" />
       </marker>
       <!-- Bidirectional arrow markers -->
       <marker id="arrow-start" markerWidth="10" markerHeight="10" refX="0" refY="3" orient="auto">
@@ -50,7 +50,7 @@
       }
 
       .comment {
-         fill: #808080;
+         fill: #f82a2a;
          font-style: italic;
       }
 
@@ -62,7 +62,7 @@
       /* Code block styles */
       .code-block {
          fill: #f0f0f0;
-         stroke: #666666;
+         stroke: #686868;
          stroke-width: 2;
       }
 
@@ -73,13 +73,13 @@
       }
    </style>
    <!-- Config box (top) -->
-   <rect x="10.669169" y="13.476555" width="381.66644" height="220.71454" class="code-block rounded-box" id="rect7" />
+   <rect x="10" y="14" width="381" height="221" class="code-block rounded-box" id="rect7" />
    <!-- Dataset box (middle) -->
-   <rect x="6.4810371" y="281.87167" width="505.74017" height="64.123528" class="code-block rounded-box" id="rect9" />
+   <rect x="6" y="282" width="506" height="64" class="code-block rounded-box" id="rect9" />
    <!-- SolvedMaze box (bottom) -->
-   <rect x="419.21674" y="148.48347" width="316.5448" height="59.259468" class="code-block rounded-box" id="rect11" />
+   <rect x="419" y="148" width="317" height="59" class="code-block rounded-box" id="rect11" />
    <!-- Config content (Top box) -->
-   <text x="25.017153" y="43.940823" font-family="monospace" font-size="24px" id="text13">
+   <text x="25" y="44" font-family="monospace" font-size="24px" id="text13">
       <a xlink:href="https://understanding-search.github.io/maze-dataset/maze_dataset.html#MazeDatasetConfig">
          <tspan class="variable" id="tspan18">cfg</tspan>
       </a> =
@@ -87,28 +87,27 @@
          <tspan class="class" id="tspan20">MazeDatasetConfig</tspan>
       </a>(
    </text>
-   <text x="45.017151" y="73.940826" font-family="monospace" font-size="24px" id="text15">
+   <text x="45" y="74" font-family="monospace" font-size="24px" id="text15">
       <tspan class="keyword">name</tspan> = <tspan class="literal">"test"</tspan>,
    </text>
-   <text x="45.017151" y="103.94083" font-family="monospace" font-size="24px" id="text23">
+   <text x="45" y="104" font-family="monospace" font-size="24px" id="text23">
       <tspan class="keyword">grid_n</tspan> = <tspan class="literal">5</tspan>,
    </text>
-   <text x="45.017151" y="133.94083" font-family="monospace" font-size="24px" id="text31">
+   <text x="45" y="134" font-family="monospace" font-size="24px" id="text31">
       <tspan class="keyword">n_mazes</tspan> = <tspan class="literal">1</tspan>,
    </text>
-   <text x="45.017151" y="163.94083" font-family="monospace" font-size="24px" id="text39">
+   <text x="45" y="164" font-family="monospace" font-size="24px" id="text39">
       <tspan class="keyword">maze_ctor</tspan> = <a
          xlink:href="https://understanding-search.github.io/maze-dataset/maze_dataset.html#LatticeMazeGenerators.gen_dfs">
          <tspan class="function">gen_dfs</tspan>
       </a>,
    </text>
-   <text x="45.017151" y="183.94083" font-family="monospace" font-size="20px" id="text-options"
-     > ... <tspan class="comment"># many, many options</tspan></text>
-   <text x="25.017153" y="213.94083" font-family="monospace" font-size="24px" id="text47"
-     >)</text>
+   <text x="45" y="184" font-family="monospace" font-size="24px" id="text-options"> ... <tspan class="comment"># many,
+         many options</tspan></text>
+   <text x="25" y="214" font-family="monospace" font-size="24px" id="text47">)</text>
 
    <!-- Dataset box text (Middle box) -->
-   <text x="25" y="320.85593" font-family="monospace" font-size="24px" id="text49">
+   <text x="25" y="321" font-family="monospace" font-size="24px" id="text49">
       <a xlink:href="https://understanding-search.github.io/maze-dataset/maze_dataset.html#MazeDataset">
          <tspan class="variable" id="tspan40">ds</tspan>
       </a> = <a xlink:href="https://understanding-search.github.io/maze-dataset/maze_dataset.html#MazeDataset">
@@ -120,7 +119,7 @@
    </text>
 
    <!-- SolvedMaze box text (Right box) -->
-   <text x="430.40308" y="186.41937" font-family="monospace" font-size="24px" id="text51">
+   <text x="430" y="186" font-family="monospace" font-size="24px" id="text51">
       <tspan class="variable" id="tspan49">m</tspan>: <a
          xlink:href="https://understanding-search.github.io/maze-dataset/maze_dataset.html#SolvedMaze">
          <tspan class="class" id="tspan51">SolvedMaze</tspan>
@@ -129,11 +128,10 @@
 
    <!-- Arrows between boxes -->
    <!-- Arrow from Config to Dataset -->
-   <path d="m 192.62101,234.25319 0.54693,47.85682" fill="none" stroke="#333333" stroke-width="3"
-      marker-end="url(#arrow)" id="path53" sodipodi:nodetypes="cc" />
-   <path d="m 513.16491,315.45745 c 72.23339,1.67245 50.39212,-16.49741 53.51951,-107.87449" fill="none"
-      stroke="#333333" stroke-width="3" marker-end="url(#arrow-3)" id="path53-7" style="marker-end:url(#arrow-3)"
+   <path d="m 193,234 1,48" fill="none" stroke="#333333" stroke-width="3" marker-end="url(#arrow)" id="path53"
       sodipodi:nodetypes="cc" />
+   <path d="m 513,315 c 72,2 50,-16 54,-108" fill="none" stroke="#333333" stroke-width="3" marker-end="url(#arrow-3)"
+      id="path53-7" style="marker-end:url(#arrow-3)" sodipodi:nodetypes="cc" />
 
    <!-- Right-Aligned Maze Placeholders -->
    <!-- ASCII Maze - top right -->
@@ -144,10 +142,9 @@
    <image x="900" y="440" width="200" height="200" href="./mazeplot.svg" id="image61" />
 
    <!-- Arrows from SolvedMaze box to placeholders - bidirectional for as_ascii -->
-   <path d="M 732.51021,150.65697 C 757.8175,132.23608 850.03349,131.80137 900.5,131.8" fill="none" stroke="#333333"
-      stroke-width="2" marker-start="url(#arrow-start)" marker-end="url(#arrow-end)" id="path63"
-      sodipodi:nodetypes="cc" />
-   <text x="849.99915" y="122.72659" font-family="monospace" font-size="16px" text-anchor="middle" id="text65">
+   <path d="M 733,151 C 758,132 850,132 901,132" fill="none" stroke="#333333" stroke-width="2"
+      marker-start="url(#arrow-start)" marker-end="url(#arrow-end)" id="path63" sodipodi:nodetypes="cc" />
+   <text x="850" y="123" font-family="monospace" font-size="16px" text-anchor="middle" id="text65">
       <tspan class="variable" id="tspan64">m</tspan>.<a
          xlink:href="https://understanding-search.github.io/maze-dataset/maze_dataset.html#LatticeMaze.as_ascii">
          <tspan class="function" id="tspan66">as_ascii</tspan>
@@ -155,10 +152,9 @@
    </text>
 
    <!-- Bidirectional arrow for as_pixels -->
-   <path d="m 735.63771,178.36894 c 95.89244,-5.48797 98.04149,118.03873 165.68333,121.30996" fill="none"
-      stroke="#333333" stroke-width="2" marker-start="url(#arrow-start)" marker-end="url(#arrow-end)" id="path67"
-      sodipodi:nodetypes="cc" />
-   <text x="842.00494" y="183.43199" font-family="monospace" font-size="16px" text-anchor="middle" id="text69">
+   <path d="m 736,178 c 96,-5 98,118 166,121" fill="none" stroke="#333333" stroke-width="2"
+      marker-start="url(#arrow-start)" marker-end="url(#arrow-end)" id="path67" sodipodi:nodetypes="cc" />
+   <text x="842" y="183" font-family="monospace" font-size="16px" text-anchor="middle" id="text69">
       <tspan class="variable" id="tspan70">m</tspan>.<a
          xlink:href="https://understanding-search.github.io/maze-dataset/maze_dataset.html#LatticeMaze.as_pixels">
          <tspan class="function" id="tspan72">as_pixels</tspan>
@@ -166,9 +162,9 @@
    </text>
 
    <!-- To MazePlot - single direction -->
-   <path d="M 733.34375,205.25282 C 911.56485,341.26911 798.94134,509.32796 901.1,508.5" fill="none" stroke="#333333"
-      stroke-width="2" marker-end="url(#arrow)" id="path71" sodipodi:nodetypes="cc" />
-   <text x="858.87903" y="532.2912" font-family="monospace" font-size="16px" text-anchor="middle" id="text73">
+   <path d="M 733,205 C 912,341 799,509 901,509" fill="none" stroke="#333333" stroke-width="2" marker-end="url(#arrow)"
+      id="path71" sodipodi:nodetypes="cc" />
+   <text x="859" y="532" font-family="monospace" font-size="16px" text-anchor="middle" id="text73">
       <a xlink:href="https://understanding-search.github.io/maze-dataset/maze_dataset/plotting.html#MazePlot">
          <tspan class="class" id="tspan76">MazePlot</tspan>
       </a>(<tspan class="variable" id="tspan78">m</tspan>)
@@ -206,9 +202,9 @@
    </foreignObject>
 
    <!-- Bidirectional arrow from SolvedMaze box to Token representation -->
-   <path d="m 649.83169,207.00304 1.06355,182.53862" fill="none" stroke="#333333" stroke-width="2"
-      marker-start="url(#arrow-start)" marker-end="url(#arrow-end)" id="path77" sodipodi:nodetypes="cc" />
-   <text x="732.59106" y="321.88251" font-family="monospace" font-size="16px" text-anchor="middle" id="text79">
+   <path d="m 650,207 1,183" fill="none" stroke="#333333" stroke-width="2" marker-start="url(#arrow-start)"
+      marker-end="url(#arrow-end)" id="path77" sodipodi:nodetypes="cc" />
+   <text x="733" y="322" font-family="monospace" font-size="16px" text-anchor="middle" id="text79">
       <tspan class="variable" id="tspan83">m</tspan>.<a
          xlink:href="https://understanding-search.github.io/maze-dataset/maze_dataset.html#LatticeMaze.as_tokens">
          <tspan class="function" id="tspan85">as_tokens</tspan>
