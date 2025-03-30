@@ -35,6 +35,7 @@ affiliations:
 date: 30 March 2025
 bibliography: refs.bib
 header-includes: |
+  \usepackage{makecell}
   \usepackage{graphicx}
   \usepackage{tikz}
   \usetikzlibrary{calc}
@@ -52,6 +53,7 @@ header-includes: |
     }
   }
   \providecommand{\XeTeXLinkBox}[1]{#1}
+  \newcommand{\docslink}[2]{\href{https://understanding-search.github.io/maze-dataset/#1}{#2}}
 ---
 
 # Summary
@@ -63,7 +65,7 @@ Solving mazes is a classic problem in computer science and artificial intelligen
     \input{diagram/diagram.tikz} 
   \end{minipage}
   \caption{
-    Usage of maze-dataset. We create a \texttt{MazeDataset} from a \texttt{MazeDatasetConfig}. This contains \texttt{SolvedMaze} objects which can be converted to and from a variety of formats. Code in the image contains clickable links to \href{https://understanding-search.github.io/maze-dataset/maze_dataset.html}{documentation}. A variety of generated examples can be viewed \href{https://understanding-search.github.io/maze-dataset/examples/maze_examples.html}{here}.
+    Usage of maze-dataset. We create a \texttt{MazeDataset} from a \texttt{MazeDatasetConfig}. This contains \texttt{SolvedMaze} objects which can be converted to and from a variety of formats. Code in the image contains clickable links to \docslink{maze_dataset.html}{documentation}. A variety of generated examples can be viewed \docslink{examples/maze_examples.html}{here}.
   }
   \label{fig:diagram}
 \end{figure}
@@ -200,7 +202,7 @@ Each `MazeTokenizerModular` is constructed from a set of several `_TokenizerElem
 \begin{figure}
     \centering
     \input{figures/TokenizerElement_structure.tikz}
-    \caption{Nested internal structure of \texttt{\_TokenizerElement} objects inside a typical \texttt{MazeTokenizerModular} object.}
+    \caption{Nested internal structure of \texttt{\_TokenizerElement} objects inside a typical \texttt{MazeTokenizerModular}.}
 \end{figure}
 
 
@@ -212,25 +214,51 @@ The breadth of tokenizers is also easily scaled in the opposite direction. Due t
 
 ## Benchmarks of Generation Speed {#benchmarks}
 
-We provide approximate benchmarks for relative generation time across various algorithms, parameter choices, maze sizes, and dataset sizes.
+We provide approximate benchmarks for relative generation time across various algorithms, parameter choices, maze sizes, and dataset sizes in \autoref{tab:benchmarks} and \autoref{fig:benchmarks}. Experiments were performed on a \href{https://docs.github.com/en/actions/using-github-hosted-runners/using-github-hosted-runners/about-github-hosted-runners#standard-github-hosted-runners-for-public-repositories}{standard GitHub runner} without parallelism.
 
-| Method & Parameters   | Average time per maze (ms) |                   |                     |                           |                   |
-| --------------------- | -------------------------- | ----------------- | ------------------- | ------------------------- | ----------------- |
-| Generation algorithm  | Generation parameters      | all sizes         | small ($g \leq 10$) | medium ($10 < g \leq 32$) | large ($g > 32$)  |
-| :===============:     | :===============:          | :===============: | :===============:   | :===============:         | :===============: |
-| gen_dfs               | accessible_cells=20        | 2.4               | 2.4                 | 2.6                       | 2.4               |
-| gen_dfs               | do_forks=False             | 3.0               | 2.4                 | 3.7                       | 3.8               |
-| gen_dfs               | max_tree_depth=0.5         | 4.5               | 2.2                 | 4.9                       | 11.6              |
-| gen_dfs               | --                         | 31.1              | 2.8                 | 28.0                      | 136.5             |
-| gen_dfs_percolation   | p=0.1                      | 53.9              | 3.6                 | 42.5                      | 252.9             |
-| gen_dfs_percolation   | p=0.4                      | 58.8              | 3.7                 | 44.7                      | 280.2             |
-| gen_percolation       | --                         | 59.1              | 3.3                 | 43.6                      | 285.2             |
-| gen_wilson            | --                         | 767.9             | 10.1                | 212.9                     | 4530.4            |
-| :===============:     | :===============:          | :===============: | :===============:   | :===============:         | :===============: |
-| **median (all runs)** |                            | 10.8              | 6.0                 | 44.4                      | 367.7             |
-| **mean (all runs)**   |                            | 490.0             | 11.7                | 187.2                     | 2769.6            |
+\begin{table}[H]
+\centering
+\begin{tabular}{|ll|r|rrr|}
+  \hline
+  maze\_ctor
+          & keyword args           & all sizes 
+                                              & \makecell{small \\ $g \leq 10$} 
+                                                         & \makecell{medium \\ $g \in (10, 32]$} 
+                                                                    & \makecell{large \\ $g > 32$} \\
+  \hline\hline
+  \docslink{maze_dataset.html#LatticeMazeGenerators.gen_dfs}{dfs}
+          &                        &   28.0   &    2.8   &   20.3   &  131.8   \\
+  \docslink{maze_dataset.html#LatticeMazeGenerators.gen_dfs}{dfs}
+          & accessible\_cells=20   &    2.3   &    2.2   &    2.4   &    2.2   \\
+  \docslink{maze_dataset.html#LatticeMazeGenerators.gen_dfs}{dfs}
+          & do\_forks=False        &    2.7   &    2.2   &    3.1   &    3.5   \\
+  \docslink{maze_dataset.html#LatticeMazeGenerators.gen_dfs}{dfs}
+          & max\_tree\_depth=0.5   &    2.5   &    2.0   &    2.7   &    4.0   \\
+  \docslink{maze_dataset.html#LatticeMazeGenerators.gen_dfs_percolation}{dfs\_percolation}
+          & p=0.1                  &   43.9   &    2.8   &   33.9   &  208.0   \\
+  \docslink{maze_dataset.html#LatticeMazeGenerators.gen_dfs_percolation}{dfs\_percolation}
+          & p=0.4                  &   48.7   &    3.0   &   36.5   &  233.5   \\
+  \docslink{maze_dataset.html#LatticeMazeGenerators.gen_kruskal}{kruskal}
+          &                        &   12.8   &    1.9   &   10.3   &   55.8   \\
+  \docslink{maze_dataset.html#LatticeMazeGenerators.gen_percolation}{percolation}
+          & p=1.0                  &   50.2   &    2.6   &   37.2   &  242.5   \\
+  \docslink{maze_dataset.html#LatticeMazeGenerators.gen_recursive_division}{recursive\_div}
+          &                        &   10.2   &    1.7   &    8.9   &   42.1   \\
+  \docslink{maze_dataset.html#LatticeMazeGenerators.gen_wilson}{wilson}
+          &                        &  676.5   &    7.8   &  188.6   & 3992.6   \\
+  \hline\hline
+  mean
+          &                        &  559.9   &   13.0   &  223.5   & 3146.9   \\
+  median
+          &                        &   11.1   &    6.5   &   32.9   &  302.7   \\
+  \hline
+\end{tabular}
+\caption{Generation times for various algorithms and maze sizes.}
+\label{tab:benchmarks}
+\end{table}
 
-![Plots of maze generation time. Generation time scales exponentially with maze size for all algorithms (left). Generation time does not depend on the number of mazes being generated, and there is minimal overhead to initializing the generation process for a small dataset (right). Wilson's algorithm is notably less efficient than others and has high variance. Note that for both plots, values are averaged across all parameter sets for that algorithm, and parallelization is disabled.](docs/benchmarks/figures/gridsize-vs-gentime.pdf){width=95%}
+
+![Plots of maze generation time. Generation time scales exponentially with maze size for all algorithms (left). Generation time does not depend on the number of mazes being generated, and there is minimal overhead to initializing the generation process for a small dataset (right). Wilson's algorithm is notably less efficient than others and has high variance. Note that for both plots, values are averaged across all parameter sets for that algorithm, and parallelization is disabled.](docs/benchmarks/figures/gridsize-vs-gentime.pdf){#fig:benchmarks width=95%}
 
 ## Success Rate Estimation {#success-rate-estimation}
 
