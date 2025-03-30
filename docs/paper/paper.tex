@@ -488,7 +488,9 @@ type hinted, benchmarked, and documented.
   \begin{minipage}{5in}
     \input{diagram/diagram.tikz} 
   \end{minipage}
-  \caption{Usage of maze-dataset. We create a `MazeDataset` from a `MazeDatasetConfig`. This contains `SolvedMaze` objects which can be converted to and from a variety of formats. Code in the image contains clickable links to \href{https://understanding-search.github.io/maze-dataset/maze_dataset.html}{documentation}. A variety of generated examples can be viewed \href{https://understanding-search.github.io/maze-dataset/examples/maze_examples.html}{here}.}
+  \caption{
+    Usage of maze-dataset. We create a \texttt{MazeDataset} from a \texttt{MazeDatasetConfig}. This contains \texttt{SolvedMaze} objects which can be converted to and from a variety of formats. Code in the image contains clickable links to \href{https://understanding-search.github.io/maze-dataset/maze_dataset.html}{documentation}. A variety of generated examples can be viewed \href{https://understanding-search.github.io/maze-dataset/examples/maze_examples.html}{here}.
+  }
   \label{fig:diagram}
 \end{figure}
 
@@ -636,66 +638,30 @@ use of a \texttt{Dataloader} class.
 \end{Shaded}
 
 When initializing mazes, further configuration options can be specified
-through the \texttt{from\_config()} factory method as necessary. Options
-allow for saving/loading existing datasets instead of regenerating, and
-parallelization options for generation. Available maze generation
-algorithms are static methods of the \texttt{LatticeMazeGenerators}
-class and include the following:
-
-\begin{itemize}
-\tightlist
-\item
-  \texttt{gen\_dfs} \textbf{(randomized depth-first search)}: Parameters
-  can be passed to constrain the number of accessible cells, the number
-  of forks in the maze, and the maximum tree depth. Creates a spanning
-  tree by default or a partially spanning tree if constrained.
-\item
-  \texttt{gen\_wilson} \textbf{(Wilson's algorithm)}: Generates a random
-  spanning tree via loop-erased random walk
-  (\protect\hyperlink{ref-wilson}{Wilson, 1996}).
-\item
-  \texttt{gen\_percolation} \textbf{(percolation)}: Starting with no
-  connections, every possible lattice connection is set to either true
-  or false with some probability \(p\), independently of all other
-  connections. For the kinds of graphs that this process generates, we
-  refer to existing work
-  (\protect\hyperlink{ref-percolation}{Duminil-Copin, 2017};
-  \protect\hyperlink{ref-percolation-clustersize}{Fisher \& Essam,
-  2004}).
-\item
-  \texttt{gen\_dfs\_percolation} \textbf{(randomized depth-first search
-  with percolation)}: A connection exists if it exists in a maze
-  generated via \texttt{gen\_dfs\ OR\ gen\_percolation}. Useful for
-  generating mazes that are not acyclic graphs.
-\end{itemize}
+through the
+\href{https://understanding-search.github.io/maze-dataset/maze_dataset.html\#MazeDataset.from_config}{\texttt{from\_config()}}
+factory method as necessary. Options allow for saving/loading existing
+datasets instead of regenerating, and parallelization options for
+generation. Available maze generation algorithms are static methods of
+the \texttt{LatticeMazeGenerators} class and include generation
+algorithms based on randomized depth-first search, Wilson's algorithm
+(\protect\hyperlink{ref-wilson}{Wilson, 1996}), percolation
+(\protect\hyperlink{ref-percolation}{Duminil-Copin, 2017};
+\protect\hyperlink{ref-percolation-clustersize}{Fisher \& Essam, 2004}),
+Kruskal's algorithm
+(\protect\hyperlink{ref-kruskal1956shortest}{Kruskal, 1956a}), and
+others.
 
 Furthermore, a dataset of mazes can be filtered to satisfy certain
-properties:
+properties. Custom filters can be specified, and some filters are
+included in
+\href{https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/filters.html\#MazeDatasetFilters}{\texttt{MazeDatasetFilters}}.
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{dataset\_filtered: MazeDataset }\OperatorTok{=}\NormalTok{ dataset.filter\_by.path\_length(min\_length}\OperatorTok{=}\DecValTok{3}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
-
-Custom filters can be specified, and several filters are included:
-
-\begin{itemize}
-\tightlist
-\item
-  \texttt{path\_length(min\_length:\ int)}: shortest length from the
-  origin to target should be at least \texttt{min\_length}.
-\item
-  \texttt{start\_end\_distance(min\_distance:\ int)}: Manhattan distance
-  between start and end should be at least \texttt{min\_distance},
-  ignoring walls.
-\item
-  \texttt{remove\_duplicates(...)}: remove mazes which are similar to
-  others in the dataset, measured via Hamming distance.
-\item
-  \texttt{remove\_duplicates\_fast()}: remove mazes which are exactly
-  identical to others in the dataset.
-\end{itemize}
 
 All implemented maze generation algorithms are stochastic by nature. For
 reproducibility, the \texttt{seed} parameter of
@@ -706,40 +672,38 @@ even when generating large datasets.
 \hypertarget{visual-output-formats}{%
 \section{Visual Output Formats}\label{visual-output-formats}}
 
-Internally, mazes are \texttt{SolvedMaze} objects, which have path
-information, and a connection list optimized for storing sub-graphs of a
-lattice. These objects can be converted to and from several formats.
+Internally, mazes are
+\href{https://understanding-search.github.io/maze-dataset/maze_dataset.html\#SolvedMaze}{\texttt{SolvedMaze}}
+objects, which have path information, and a connection list optimized
+for storing sub-graphs of a lattice. These objects can be converted to
+and from several formats.
 
-\begin{longtable}[]{@{}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3250}}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3500}}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3250}}@{}}
-\toprule\noalign{}
-\begin{minipage}[b]{\linewidth}\raggedright
-\texttt{as\_ascii()}
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-\texttt{as\_pixels()}
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-\texttt{MazePlot()}
-\end{minipage} \\
-\midrule\noalign{}
-\endhead
-\bottomrule\noalign{}
-\endlastfoot
-Simple text format for displaying mazes, useful for debugging in a
-terminal environment. & \texttt{numpy} array of \texttt{dtype=uint8} and
-shape \texttt{(height,\ width,\ 3)}. The last dimension is RGB color. &
-feature-rich plotting utility with support for multiple paths, heatmaps
-over positions, and more. \\
-\end{longtable}
-
-\begin{figure}
-\hypertarget{fig:visualoutputs}{%
-\centering
-\includegraphics{figures/output-fmts.pdf}
-\caption{Various output formats. Top row (left to right): ASCII diagram,
-rasterized pixel grid, and advanced display.}\label{fig:visualoutputs}
-}
+\begin{figure}[H]
+  \centering
+  \begin{tabular}{p{2in} p{2in} p{2in}} 
+    \hline \\[.5em]
+    % algorithms
+    \texttt{as\_ascii()} & \texttt{as\_pixels()} & \texttt{MazePlot()} \\[.5em]
+    % descriptions
+      Simple text format for displaying mazes, useful for debugging in a terminal environment.
+      & \texttt{numpy} array of \texttt{dtype=uint8} and shape \texttt{(height, width, 3)}. The last dimension is RGB color.
+      & feature-rich plotting utility with support for multiple paths, heatmaps over positions, and more. \\[1em]
+    \hline \\
+    % examples
+      \multicolumn{1}{c}{\begin{minipage}[b]{1.6in}
+        \input{figures/outputs-ascii-colored.tex} 
+      \end{minipage}}
+      & \multicolumn{1}{c}{
+        \includegraphics[width=0.25\textwidth]{figures/outputs-pixels.pdf}
+      }
+      & \multicolumn{1}{c}{
+        \includegraphics[width=0.25\textwidth, trim={0 0 -.3cm, -.5cm}, clip]{figures/outputs-mazeplot.pdf}
+      } \\[1em]
+    
+    \hline \\
+  \end{tabular}
+  \caption{Various output formats. Top row (left to right): ASCII diagram, rasterized pixel grid, and advanced display.}
+  \label{fig:output-fmts}
 \end{figure}
 
 \hypertarget{training}{%
@@ -1058,12 +1022,6 @@ averaged across all parameter sets for that algorithm, and
 parallelization is disabled.}
 \end{figure}
 
-\begin{figure}
-\centering
-\includegraphics{docs/benchmarks/figures/n_mazes-vs-gentime.pdf}
-\caption{Maze size vs generation time}
-\end{figure}
-
 \hypertarget{implementation}{%
 \section{Implementation}\label{implementation}}
 
@@ -1095,7 +1053,8 @@ the \(A^*\) algorithm (\protect\hyperlink{ref-A_star}{Hart et al.,
 Parallelization is implemented via the \texttt{multiprocessing} module
 in the Python standard library, and parallel generation can be
 controlled via keyword arguments to the
-\texttt{MazeDataset.from\_config()} function.
+\href{https://understanding-search.github.io/maze-dataset/maze_dataset.html\#MazeDataset.from_config}{\texttt{MazeDataset.from\_config()}}
+function.
 
 \hypertarget{limitations}{%
 \subsection{\texorpdfstring{Limitations of
@@ -1157,7 +1116,7 @@ properties to suit diverse research needs. Planned improvements to the
 Prim's algorithm (\protect\hyperlink{ref-dijkstra-prim}{Dijkstra, 1959};
 \protect\hyperlink{ref-jarnik-prim}{Jarnık, 1930};
 \protect\hyperlink{ref-prim}{Prim, 1957}) and Kruskal's algorithm
-(\protect\hyperlink{ref-kruskal}{Kruskal, 1956}), among others
+(\protect\hyperlink{ref-kruskal}{Kruskal, 1956b}), among others
 (\protect\hyperlink{ref-mazegen_analysis}{Gabrovšek, 2019})), adding the
 ability to augment a maze with an adjacency list to add ``shortcuts'' to
 the maze, and resolving certain limitations detailed in Section
@@ -1284,8 +1243,13 @@ Diniz-Behn, C., Fung, S. W., \& McKenzie, D. (2024). On logical
 extrapolation for mazes with recurrent and implicit networks.
 \emph{arXiv Preprint arXiv:2410.03020}.
 
+\leavevmode\vadjust pre{\hypertarget{ref-kruskal1956shortest}{}}%
+Kruskal, J. B. (1956a). On the shortest spanning subtree of a graph and
+the traveling salesman problem. \emph{Proceedings of the American
+Mathematical Society}, \emph{7}(1), 48--50.
+
 \leavevmode\vadjust pre{\hypertarget{ref-kruskal}{}}%
-Kruskal, J. B. (1956). On the shortest spanning subtree of a graph and
+Kruskal, J. B. (1956b). On the shortest spanning subtree of a graph and
 the traveling salesman problem. \emph{Proceedings of the American
 Mathematical Society}, \emph{7}(1), 48--50.
 \url{https://doi.org/10.1090/S0002-9939-1956-0078686-7}

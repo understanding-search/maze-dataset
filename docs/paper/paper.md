@@ -62,7 +62,9 @@ Solving mazes is a classic problem in computer science and artificial intelligen
   \begin{minipage}{5in}
     \input{diagram/diagram.tikz} 
   \end{minipage}
-  \caption{Usage of maze-dataset. We create a `MazeDataset` from a `MazeDatasetConfig`. This contains `SolvedMaze` objects which can be converted to and from a variety of formats. Code in the image contains clickable links to \href{https://understanding-search.github.io/maze-dataset/maze_dataset.html}{documentation}. A variety of generated examples can be viewed \href{https://understanding-search.github.io/maze-dataset/examples/maze_examples.html}{here}.}
+  \caption{
+    Usage of maze-dataset. We create a \texttt{MazeDataset} from a \texttt{MazeDatasetConfig}. This contains \texttt{SolvedMaze} objects which can be converted to and from a variety of formats. Code in the image contains clickable links to \href{https://understanding-search.github.io/maze-dataset/maze_dataset.html}{documentation}. A variety of generated examples can be viewed \href{https://understanding-search.github.io/maze-dataset/examples/maze_examples.html}{here}.
+  }
   \label{fig:diagram}
 \end{figure}
 
@@ -120,41 +122,48 @@ cfg: MazeDatasetConfig = MazeDatasetConfig(
 dataset: MazeDataset = MazeDataset.from_config(cfg)
 ```
 
-When initializing mazes, further configuration options can be specified through the `from_config()` factory method as necessary. Options allow for saving/loading existing datasets instead of regenerating, and parallelization options for generation. Available maze generation algorithms are static methods of the `LatticeMazeGenerators` class and include the following:
+When initializing mazes, further configuration options can be specified through the [`from_config()`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#MazeDataset.from_config) factory method as necessary. Options allow for saving/loading existing datasets instead of regenerating, and parallelization options for generation. Available maze generation algorithms are static methods of the `LatticeMazeGenerators` class and include generation algorithms based on randomized depth-first search, Wilson's algorithm [@wilson], percolation [@percolation; @percolation-clustersize], Kruskal's algorithm [@kruskal1956shortest], and others.
 
-- `gen_dfs` **(randomized depth-first search)**:
-  Parameters can be passed to constrain the number of accessible cells, the number of forks in the maze, and the maximum tree depth. Creates a spanning tree by default or a partially spanning tree if constrained.
-- `gen_wilson` **(Wilson's algorithm)**: 
-  Generates a random spanning tree via loop-erased random walk [@wilson]. 
-- `gen_percolation` **(percolation)**:
-  Starting with no connections, every possible lattice connection is set to either true or false with some probability $p$, independently of all other connections. For the kinds of graphs that this process generates, we refer to existing work [@percolation; @percolation-clustersize]. 
-- `gen_dfs_percolation` **(randomized depth-first search with percolation)**: 
-  A connection exists if it exists in a maze generated via `gen_dfs OR gen_percolation`. Useful for generating mazes that are not acyclic graphs.
-
-Furthermore, a dataset of mazes can be filtered to satisfy certain properties: 
+Furthermore, a dataset of mazes can be filtered to satisfy certain properties. Custom filters can be specified, and some filters are included in [`MazeDatasetFilters`](https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/filters.html#MazeDatasetFilters).
 
 ```python
 dataset_filtered: MazeDataset = dataset.filter_by.path_length(min_length=3)
 ```
 
-Custom filters can be specified, and several filters are included:
-
-- `path_length(min_length: int)`: shortest length from the origin to target should be at least `min_length`.
-- `start_end_distance(min_distance: int)`: Manhattan distance between start and end should be at least `min_distance`, ignoring walls.
-- `remove_duplicates(...)`: remove mazes which are similar to others in the dataset, measured via Hamming distance.
-- `remove_duplicates_fast()`: remove mazes which are exactly identical to others in the dataset.
-
 All implemented maze generation algorithms are stochastic by nature. For reproducibility, the `seed` parameter of `MazeDatasetConfig` may be set. In practice, we do not find that exact duplicates of mazes are generated with any meaningful frequency, even when generating large datasets.
+
 
 # Visual Output Formats {#visual-output-formats}
 
-Internally, mazes are `SolvedMaze` objects, which have path information, and a connection list optimized for storing sub-graphs of a lattice. These objects can be converted to and from several formats.
+Internally, mazes are [`SolvedMaze`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#SolvedMaze) objects, which have path information, and a connection list optimized for storing sub-graphs of a lattice. These objects can be converted to and from several formats.
 
-| `as_ascii()` | `as_pixels()` | `MazePlot()` |
-|-------------|--------------|-------------|
-| Simple text format for displaying mazes, useful for debugging in a terminal environment. | `numpy` array of `dtype=uint8` and shape `(height, width, 3)`. The last dimension is RGB color. | feature-rich plotting utility with support for multiple paths, heatmaps over positions, and more. |
-
-![Various output formats. Top row (left to right): ASCII diagram, rasterized pixel grid, and advanced display.](figures/output-fmts.pdf){#fig:visualoutputs}
+\begin{figure}[H]
+  \centering
+  \begin{tabular}{p{2in} p{2in} p{2in}} 
+    \hline \\[.5em]
+    % algorithms
+    \texttt{as\_ascii()} & \texttt{as\_pixels()} & \texttt{MazePlot()} \\[.5em]
+    % descriptions
+      Simple text format for displaying mazes, useful for debugging in a terminal environment.
+      & \texttt{numpy} array of \texttt{dtype=uint8} and shape \texttt{(height, width, 3)}. The last dimension is RGB color.
+      & feature-rich plotting utility with support for multiple paths, heatmaps over positions, and more. \\[1em]
+    \hline \\
+    % examples
+      \multicolumn{1}{c}{\begin{minipage}[b]{1.6in}
+        \input{figures/outputs-ascii-colored.tex} 
+      \end{minipage}}
+      & \multicolumn{1}{c}{
+        \includegraphics[width=0.25\textwidth]{figures/outputs-pixels.pdf}
+      }
+      & \multicolumn{1}{c}{
+        \includegraphics[width=0.25\textwidth, trim={0 0 -.3cm, -.5cm}, clip]{figures/outputs-mazeplot.pdf}
+      } \\[1em]
+    
+    \hline \\
+  \end{tabular}
+  \caption{Various output formats. Top row (left to right): ASCII diagram, rasterized pixel grid, and advanced display.}
+  \label{fig:output-fmts}
+\end{figure}
 
 ## Visual Outputs for Training and Evaluation {#training}
 
@@ -273,7 +282,7 @@ Instead, we describe mazes with the following simple representation: for a $d$-d
 
 To produce solutions to mazes, two points are selected uniformly at random without replacement from the connected component of the maze, and the $A^*$ algorithm [@A_star] is applied to find the shortest path between them.
 
-Parallelization is implemented via the `multiprocessing` module in the Python standard library, and parallel generation can be controlled via keyword arguments to the `MazeDataset.from_config()` function.
+Parallelization is implemented via the `multiprocessing` module in the Python standard library, and parallel generation can be controlled via keyword arguments to the [`MazeDataset.from_config()`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#MazeDataset.from_config) function.
 
 ## Limitations of `maze-dataset` {#limitations}
 
