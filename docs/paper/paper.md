@@ -35,7 +35,6 @@ affiliations:
 date: 30 March 2025
 bibliography: refs.bib
 header-includes: |
-  \usepackage{makecell}
   \usepackage{graphicx}
   \usepackage{tikz}
   \usetikzlibrary{calc}
@@ -223,9 +222,9 @@ We provide approximate benchmarks for relative generation time across various al
   \hline
   maze\_ctor
           & keyword args           & all sizes 
-                                              & \makecell{small \\ $g \leq 10$} 
-                                                         & \makecell{medium \\ $g \in (10, 32]$} 
-                                                                    & \makecell{large \\ $g > 32$} \\
+                                              & \shortstack{small \\ $g \leq 10$} 
+                                                         & \shortstack{medium \\ $g \in (10, 32]$} 
+                                                                    & \shortstack{large \\ $g > 32$} \\
   \hline\hline
   \docslink{maze_dataset.html#LatticeMazeGenerators.gen_dfs}{dfs}
           &                        &   28.0   &    2.8   &   20.3   &  131.8   \\
@@ -259,7 +258,7 @@ We provide approximate benchmarks for relative generation time across various al
 \end{table}
 
 
-![Plots of maze generation time. Generation time scales exponentially with maze size for all algorithms (left). Generation time does not depend on the number of mazes being generated, and there is minimal overhead to initializing the generation process for a small dataset (right). Wilson's algorithm is notably less efficient than others and has high variance. Note that for both plots, values are averaged across all parameter sets for that algorithm, and parallelization is disabled.](docs/benchmarks/figures/gridsize-vs-gentime.pdf){#fig:benchmarks width=95%}
+![Plots of maze generation time. Generation time scales exponentially with maze size for all algorithms (left). Generation time does not depend on the number of mazes being generated, and there is minimal overhead to initializing the generation process for a small dataset (right). Wilson's algorithm is notably less efficient than others and has high variance. Note that for both plots, values are averaged across all parameter sets for that algorithm, and parallelization is disabled.](figures/benchmarks/gridsize-vs-gentime.pdf){#fig:benchmarks width=95%}
 
 ## Success Rate Estimation {#success-rate-estimation}
 
