@@ -57,7 +57,7 @@ header-includes: |
 
 # Summary
 
-Solving mazes is a classic problem in computer science and artificial intelligence, and humans have been constructing mazes for thousands of years. Although finding the shortest path through a maze is a solved problem, this very fact makes it an excellent testbed for studying how machine learning algorithms solve problems and represent spatial information. We introduce `maze-dataset`, a Python library for generating, processing, and visualizing datasets of mazes. This library supports a variety of maze generation algorithms providing both mazes with loops and "perfect" mazes without them. These generation algorithms can be configured with various parameters, and the resulting mazes can be filtered to satisfy desired properties. Also provided are tools for converting mazes to and from various formats suitable for a variety of neural network architectures, such as rasterized images and tokenized text sequences, as well as various visualization tools. As well as providing a simple interface for generating, storing, and loading these datasets, `maze-dataset` is extensively tested, type hinted, benchmarked, and documented.
+Solving mazes is a classic problem in computer science and artificial intelligence, and humans have been constructing mazes for thousands of years. Although finding the shortest path through a maze is a solved problem, this very fact makes it an excellent testbed for studying how machine learning algorithms solve problems and represent spatial information. We introduce `maze-dataset`, a Python library for generating, processing, and visualizing datasets of mazes. This library supports a variety of maze generation algorithms providing mazes with or without loops, fully-connected or not, and many other variations. These generation algorithms can be configured with various parameters, and the resulting mazes can be filtered to satisfy desired properties. Also provided are tools for converting mazes to and from various formats suitable for a variety of neural network architectures, such as rasterized images, tokenized text sequences, and various visualizations. As well as providing a simple interface for generating, storing, and loading these datasets, `maze-dataset` is extensively tested, type hinted, benchmarked, and documented.
 
 \begin{figure} 
   \begin{minipage}{5in}
@@ -125,7 +125,7 @@ dataset: MazeDataset = MazeDataset.from_config(cfg)
 
 When initializing mazes, further configuration options can be specified through the [`from_config()`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#MazeDataset.from_config) factory method as necessary. Options allow for saving/loading existing datasets instead of regenerating, and parallelization options for generation. Available maze generation algorithms are static methods of the [`LatticeMazeGenerators`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#LatticeMazeGenerators) class and include generation algorithms based on randomized depth-first search, Wilson's algorithm [@wilson], percolation [@percolation; @percolation-clustersize], Kruskal's algorithm [@kruskal1956shortest], and others.
 
-Furthermore, a dataset of mazes can be filtered to satisfy certain properties. Custom filters can be specified, and some filters are included in [`MazeDatasetFilters`](https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/filters.html#MazeDatasetFilters).
+Furthermore, a dataset of mazes can be filtered to satisfy certain properties. Custom filters can be specified, and some filters are included in [`MazeDatasetFilters`](https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/filters.html#MazeDatasetFilters). For example, we can require a minimum path length from origin to target of 3:
 
 ```python
 dataset_filtered: MazeDataset = dataset.filter_by.path_length(min_length=3)
@@ -299,7 +299,7 @@ where `raw_val` is the output of the symbolic regression model. $x_0$ is the per
 
 We refer to our \href{https://github.com/understanding-search/maze-dataset}{GitHub repository} and \docslink{maze_dataset.html}{docs} for documentation and up-to-date implementation details.
 
-This package utilizes a simple, efficient representation of mazes. Using an adjacency list to represent mazes would lead to a poor lookup time of whether any given connection exists, while using an adjacency matrix would waste memory by failing to exploit the structure (e.g., only 4 of the diagonals would be filled in).
+This package utilizes a simple, efficient representation of mazes. Using an adjacency list to represent mazes would lead to a poor lookup time for whether any given connection exists, while using an adjacency matrix would waste memory by failing to exploit the structure (e.g., only 4 of the diagonals would be filled in).
 Instead, we describe mazes with the following simple representation: for a $d$-dimensional lattice with $r$ rows and $c$ columns, we initialize a boolean array $A = \{0, 1\}^{d \times r \times c}$, which we refer to in the code as a [`connection_list`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#LatticeMaze.connection_list). The value at $A[0,i,j]$ determines whether a downward connection exists from node $[i,j]$ to $[i+1, j]$. Likewise, the value at $A[1,i,j]$ determines whether a rightwards connection to $[i, j+1]$ exists. Thus, we avoid duplication of data about the existence of connections, at the cost of requiring additional care with indexing when looking for a connection upwards or to the left. Note that this setup allows for a periodic lattice.
 
 To produce solutions to mazes, two points are selected uniformly at random without replacement from the connected component of the maze, and the $A^*$ algorithm [@A_star] is applied to find the shortest path between them. The endpoint selection can be affected by [`MazeDatasetConfig.endpoint_kwargs:`](https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/maze_dataset_config.html#MazeDatasetConfig.endpoint_kwargs) [`EndpointKwargsType`](https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/maze_dataset_config.html#EndpointKwargsType), and complications caused by this are detailed in \autoref{success-rate-estimation}.
@@ -314,7 +314,7 @@ This package has also been utilized in work by other groups:
 
 - [@nolte2024multistep] use `maze-dataset` to compare the effectiveness of transformers trained with the MLM-$\mathcal{U}$ [@MLMU-kitouni2024factorization] multistep prediction objective against standard autoregressive training for multi-step planning on our maze task.
 
-- [@wang2024imperative] and [@chen2024iaimperative] use `maze-dataset` to study the effectiveness of imperative learning
+- [@wang2024imperative] and [@chen2024iaimperative] use `maze-dataset` to study the effectiveness of imperative learning.
 
 
 <!-- # Conclusion {#conclusion}

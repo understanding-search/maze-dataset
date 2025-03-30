@@ -469,14 +469,14 @@ problem, this very fact makes it an excellent testbed for studying how
 machine learning algorithms solve problems and represent spatial
 information. We introduce \texttt{maze-dataset}, a Python library for
 generating, processing, and visualizing datasets of mazes. This library
-supports a variety of maze generation algorithms providing both mazes
-with loops and ``perfect'' mazes without them. These generation
-algorithms can be configured with various parameters, and the resulting
-mazes can be filtered to satisfy desired properties. Also provided are
-tools for converting mazes to and from various formats suitable for a
-variety of neural network architectures, such as rasterized images and
-tokenized text sequences, as well as various visualization tools. As
-well as providing a simple interface for generating, storing, and
+supports a variety of maze generation algorithms providing mazes with or
+without loops, fully-connected or not, and many other variations. These
+generation algorithms can be configured with various parameters, and the
+resulting mazes can be filtered to satisfy desired properties. Also
+provided are tools for converting mazes to and from various formats
+suitable for a variety of neural network architectures, such as
+rasterized images, tokenized text sequences, and various visualizations.
+As well as providing a simple interface for generating, storing, and
 loading these datasets, \texttt{maze-dataset} is extensively tested,
 type hinted, benchmarked, and documented.
 
@@ -653,6 +653,8 @@ Furthermore, a dataset of mazes can be filtered to satisfy certain
 properties. Custom filters can be specified, and some filters are
 included in
 \href{https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/filters.html\#MazeDatasetFilters}{\texttt{MazeDatasetFilters}}.
+For example, we can require a minimum path length from origin to target
+of 3:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -978,8 +980,8 @@ and
 for documentation and up-to-date implementation details.
 
 This package utilizes a simple, efficient representation of mazes. Using
-an adjacency list to represent mazes would lead to a poor lookup time of
-whether any given connection exists, while using an adjacency matrix
+an adjacency list to represent mazes would lead to a poor lookup time
+for whether any given connection exists, while using an adjacency matrix
 would waste memory by failing to exploit the structure (e.g., only 4 of
 the diagonals would be filled in). Instead, we describe mazes with the
 following simple representation: for a \(d\)-dimensional lattice with
@@ -1043,7 +1045,7 @@ This package has also been utilized in work by other groups:
   (\protect\hyperlink{ref-wang2024imperative}{Wang et al., 2024}) and
   (\protect\hyperlink{ref-chen2024iaimperative}{Chen et al., 2024}) use
   \texttt{maze-dataset} to study the effectiveness of imperative
-  learning
+  learning.
 \end{itemize}
 
 \hypertarget{acknowledgements}{%
