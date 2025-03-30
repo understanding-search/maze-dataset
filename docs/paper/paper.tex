@@ -14,7 +14,8 @@
     pdfaconformance=B,
     pdftitle={maze-dataset},
     pdfauthor={Michael Igorevich Ivanitskiy, Aaron Sandoval, Alex F.
-Spies, Rusheb Shah, Brandon Knutson, Cecilia Diniz Behn, Samy Wu Fung},
+Spies, Tilman Räuker, Brandon Knutson, Cecilia Diniz Behn, Samy Wu
+Fung},
     pdfpublication={Journal of Open Source Software},
     pdfpublisher={Open Journals},
     pdfissn={2475-9066},
@@ -23,7 +24,7 @@ Spies, Rusheb Shah, Brandon Knutson, Cecilia Diniz Behn, Samy Wu Fung},
     pdfissuenum={},
     pdfdoi={N/A},
     pdfcopyright={Copyright (c) 1970, Michael Igorevich Ivanitskiy,
-Aaron Sandoval, Alex F. Spies, Rusheb Shah, Brandon Knutson, Cecilia
+Aaron Sandoval, Alex F. Spies, Tilman Räuker, Brandon Knutson, Cecilia
 Diniz Behn, Samy Wu Fung},
     pdflicenseurl={http://creativecommons.org/licenses/by/4.0/},
     colorlinks=true,
@@ -383,8 +384,8 @@ et al. (1970). maze-dataset. \emph{Journal of Open Source Software},
 }
 \author[%
 %
-]{Rusheb Shah%
-  \,\orcidlink{0009-0008-3058-0217}\,%
+]{Tilman Räuker%
+  \,\orcidlink{0009-0009-6321-4413}\,%
 }
 \author[1%
 %
@@ -663,7 +664,8 @@ Internally, mazes are
 \href{https://understanding-search.github.io/maze-dataset/maze_dataset.html\#SolvedMaze}{\texttt{SolvedMaze}}
 objects, which have path information, and a connection list optimized
 for storing sub-graphs of a lattice. These objects can be converted to
-and from several formats.
+and from several formats to maximize their utility in different
+contexts.
 
 \begin{figure}[H]
   \centering
@@ -718,14 +720,20 @@ if empty cells should be filled in.}\label{fig:e2h-raster}
 \hypertarget{tokenized-output-formats}{%
 \subsection{Tokenized Output Formats}\label{tokenized-output-formats}}
 
-To train autoregressive text models such as transformers, we convert
-mazes to token sequences in two steps. First, the maze is stringified
-using \texttt{as\_tokens()}. The \texttt{MazeTokenizerModular} class
-provides a powerful interface for configuring maze stringification
-behavior. Second, the sequence of strings is tokenized into integers
-using \texttt{encode()}. Tokenization uses a fixed vocabulary for
-simplicity. Mazes up to 50x50 are supported using unique tokens, and up
-to 128x128 when using coordinate tuple tokens.
+Autoregressive transformer models can be quite sensitive to the exact
+format of the input data, and may use delimiter tokens to perform
+reasoning steps (\protect\hyperlink{ref-pfau2024dotbydot}{Pfau et al.,
+2024}). To facilitate systematic investigation of this, we provide a
+variety of tokenized output formats.
+
+We convert mazes to token sequences in two steps. First, the maze is
+stringified using \texttt{as\_tokens()}. The
+\texttt{MazeTokenizerModular} class provides a powerful interface for
+configuring maze stringification behavior. Second, the sequence of
+strings is tokenized into integers using \texttt{encode()}. Tokenization
+uses a fixed vocabulary for simplicity. Mazes up to \(50 \times 50\) are
+supported using unique tokens, and up to \(128 \times 128\) when using
+coordinate tuple tokens.
 
 There are many algorithms by which one might tokenize a 2D maze into a
 1D format usable by autoregressive text models. Training multiple models
@@ -770,8 +778,6 @@ produced.
     \input{figures/TokenizerElement_structure.tikz}
     \caption{Nested internal structure of \texttt{\_TokenizerElement} objects inside a typical \texttt{MazeTokenizerModular}.}
 \end{figure}
-
-\textbf{TODO: add fst stuff}
 
 The tokenizer architecture is purposefully designed such that adding and
 testing a wide variety of new tokenization algorithms is fast and
@@ -938,9 +944,11 @@ unique dead ends.}
 \hypertarget{implementation}{%
 \section{Implementation}\label{implementation}}
 
-We refer to our GitHub repository
-(\protect\hyperlink{ref-maze-dataset-github}{Michael I. Ivanitskiy et
-al., 2023a}) for documentation and up-to-date implementation details.
+We refer to our
+\href{https://github.com/understanding-search/maze-dataset}{GitHub repository}
+and
+\href{https://understanding-search.github.io/maze-dataset/maze_dataset.html}{docs}
+for documentation and up-to-date implementation details.
 
 This package utilizes a simple, efficient representation of mazes. Using
 an adjacency list to represent mazes would lead to a poor lookup time of
@@ -1166,6 +1174,11 @@ Wallach, H. Larochelle, A. Beygelzimer, F. d'Alché-Buc, E. Fox, \& R.
 Garnett (Eds.), \emph{Advances in neural information processing systems
 32} (pp. 8024--8035). Curran Associates, Inc.
 \url{http://papers.neurips.cc/paper/9015-pytorch-an-imperative-style-high-performance-deep-learning-library.pdf}
+
+\leavevmode\vadjust pre{\hypertarget{ref-pfau2024dotbydot}{}}%
+Pfau, J., Merrill, W., \& Bowman, S. R. (2024). Let's think dot by dot:
+Hidden computation in transformer language models. \emph{arXiv Preprint
+arXiv:2404.15758}.
 
 \leavevmode\vadjust pre{\hypertarget{ref-interpretability-survery}{}}%
 Räuker, T., Ho, A., Casper, S., \& Hadfield-Menell, D. (2023). Toward

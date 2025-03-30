@@ -16,8 +16,8 @@ authors:
   - name: Alex F. Spies
     orcid: 0000-0002-8708-1530
     affiliation: 2
-  - name: Rusheb Shah
-    orcid: 0009-0008-3058-0217
+  - name: Tilman Räuker
+    orcid: 0009-0009-6321-4413
   - name: Brandon Knutson
     orcid: 0009-0004-8413-0239
     affiliation: 1
@@ -137,7 +137,7 @@ All implemented maze generation algorithms are stochastic by nature. For reprodu
 
 ## Visual Output Formats {#visual-output-formats}
 
-Internally, mazes are [`SolvedMaze`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#SolvedMaze) objects, which have path information, and a connection list optimized for storing sub-graphs of a lattice. These objects can be converted to and from several formats.
+Internally, mazes are [`SolvedMaze`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#SolvedMaze) objects, which have path information, and a connection list optimized for storing sub-graphs of a lattice. These objects can be converted to and from several formats to maximize their utility in different contexts.
 
 \begin{figure}[H]
   \centering
@@ -175,7 +175,9 @@ In previous work, maze tasks have been used with Recurrent Convolutional Neural 
 
 ## Tokenized Output Formats {#tokenized-output-formats}
 
-To train autoregressive text models such as transformers, we convert mazes to token sequences in two steps. First, the maze is stringified using `as_tokens()`. The `MazeTokenizerModular` class provides a powerful interface for configuring maze stringification behavior. Second, the sequence of strings is tokenized into integers using `encode()`. Tokenization uses a fixed vocabulary for simplicity. Mazes up to 50x50 are supported using unique tokens, and up to 128x128 when using coordinate tuple tokens.
+Autoregressive transformer models can be quite sensitive to the exact format of the input data, and may use delimiter tokens to perform reasoning steps [@pfau2024dotbydot]. To facilitate systematic investigation of this, we provide a variety of tokenized output formats.
+
+We convert mazes to token sequences in two steps. First, the maze is stringified using `as_tokens()`. The `MazeTokenizerModular` class provides a powerful interface for configuring maze stringification behavior. Second, the sequence of strings is tokenized into integers using `encode()`. Tokenization uses a fixed vocabulary for simplicity. Mazes up to $50 \times 50$ are supported using unique tokens, and up to $128 \times 128$ when using coordinate tuple tokens.
 
 There are many algorithms by which one might tokenize a 2D maze into a 1D format usable by autoregressive text models. Training multiple models on the encodings output from each of these algorithms may produce very different internal representations, learned solution algorithms, and levels of performance. To allow exploration of how different maze tokenization algorithms affect these models, the `MazeTokenizerModular` class contains a rich set of options to customize how mazes are stringified. This class contains 19 discrete parameters, resulting in over 5.8 million unique tokenizers. But wait, there's more! There are 6 additional parameters available in the library which are untested but further expand the the number of tokenizers by a factor of $44/3$ to 86 million.
 
@@ -204,9 +206,6 @@ Each `MazeTokenizerModular` is constructed from a set of several `_TokenizerElem
     \input{figures/TokenizerElement_structure.tikz}
     \caption{Nested internal structure of \texttt{\_TokenizerElement} objects inside a typical \texttt{MazeTokenizerModular}.}
 \end{figure}
-
-
-**TODO: add fst stuff**
 
 The tokenizer architecture is purposefully designed such that adding and testing a wide variety of new tokenization algorithms is fast and minimizes disturbances to functioning code. This is enabled by the modular architecture and the automatic inclusion of any new tokenizers in integration tests. To create a new tokenizer, developers forking the library may simply create their own `_TokenizerElement` subclass and implement the abstract methods. If the behavior change is sufficiently small, simply adding a parameter to an existing `_TokenizerElement` subclass and updating its implementation will suffice. For small additions, simply adding new cases to existing unit tests will suffice.
 
@@ -297,7 +296,7 @@ where `raw_val` is the output of the symbolic regression model. $x_0$ is the per
 
 # Implementation {#implementation}
 
-We refer to our GitHub repository [@maze-dataset-github] for documentation and up-to-date implementation details.
+We refer to our \href{https://github.com/understanding-search/maze-dataset}{GitHub repository} and \docslink{maze_dataset.html}{docs} for documentation and up-to-date implementation details.
 
 This package utilizes a simple, efficient representation of mazes. Using an adjacency list to represent mazes would lead to a poor lookup time of whether any given connection exists, while using an adjacency matrix would waste memory by failing to exploit the structure (e.g., only 4 of the diagonals would be filled in).
 Instead, we describe mazes with the following simple representation: for a $d$-dimensional lattice with $r$ rows and $c$ columns, we initialize a boolean array $A = \{0, 1\}^{d \times r \times c}$, which we refer to in the code as a `connection_list`. The value at $A[0,i,j]$ determines whether a downward connection exists from node $[i,j]$ to $[i+1, j]$. Likewise, the value at $A[1,i,j]$ determines whether a rightwards connection to $[i, j+1]$ exists. Thus, we avoid duplication of data about the existence of connections, at the cost of requiring additional care with indexing when looking for a connection upwards or to the left. Note that this setup allows for a periodic lattice.
