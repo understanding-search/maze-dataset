@@ -224,6 +224,43 @@ We provide approximate benchmarks for relative generation time across various al
 
 ## Success Rate Estimation
 
+In order to replicate the datasets of [@easy_to_hard], we allow placing additional constraints 
+
+
+
+**Shifted Sigmoid**: Creates sharp transition at $x=0.5$
+$$\sigma_s(x) = (1 + e^{-10^3 \cdot (x-0.5)})^{-1}$$
+
+## Composite Functions
+**h-function**: Transition function combining polynomial and sigmoid components
+$$h(q,a) = q \cdot (1 - |2q-1|^a) \cdot (1-\sigma_s(q)) + (1-(1-q) \cdot (1 - |2(1-q)-1|^a)) \cdot \sigma_s(q)$$
+
+**Amplitude Scaling**: Weight-modulated polynomial
+$$A(q,a,w) = w \cdot (1 - |2q-1|^a)$$
+
+**Soft Step**: Identity-like for $p \approx 0.5$, pushes $x$ to extremes otherwise
+$$\text{soft\_step}(x, p, \alpha, w) = h(x, A(p, \alpha, w))$$
+
+## Prediction Function
+**Configuration Success Predictor**: Symbolic regression model for $\mathbf{x} = [x_0, x_1, x_2, x_3, x_4]$
+
+$$\text{raw\_val} = (1 + e^{-[(((1 + e^{-(x_1 - x_3)^3})^{-1} \cdot c_1 - (x_3 \cdot c_2)) \cdot (x_2 \cdot (x_4 + ((x_0 + c_3)^{c_4} + (c_5^{x_1})))) + (c_6^{(c_7 - x_0)})) \cdot (((c_8 - x_0) \cdot ((x_4 \cdot c_9)^{x_1})) + x_0) \cdot (1 + e^{-x_1})^{-3} + c_{10}]})^{-1}$$
+
+$$\text{cfg\_success\_predict\_fn}(\mathbf{x}) = \text{soft\_step}(\text{raw\_val}, x_0, 5, 10)$$
+
+## Constants Table
+
+| Constant | Value | Constant | Value |
+|----------|-------|----------|-------|
+| $c_1$ | -4.721228 | $c_6$ | 2.4524326 |
+| $c_2$ | 1.4636494 | $c_7$ | 2.9501643 |
+| $c_3$ | 0.048765484 | $c_8$ | 0.9077277 |
+| $c_4$ | 9.746339 | $c_9$ | 1.0520288 |
+| $c_5$ | 0.8998194 | $c_{10}$ | -0.18268494 |
+
+
+
+
 
 # Implementation {#implementation}
 
