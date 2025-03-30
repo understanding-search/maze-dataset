@@ -276,7 +276,7 @@ class MazeDatasetConfig(MazeDatasetConfig_base):  # type: ignore[misc]
 		list of filters that have been applied to the dataset. We recommend applying filters to datasets directly,
 		but these are stored with the config in case you want to re-generate the dataset with the same filters.
 
-	"""	
+	"""
 
 	@property
 	def config_version(self) -> str:
