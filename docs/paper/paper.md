@@ -165,29 +165,25 @@ Internally, mazes are [`SolvedMaze`](https://understanding-search.github.io/maze
   \label{fig:output-fmts}
 \end{figure}
 
-## Visual Outputs for Training and Evaluation {#training}
+In previous work, maze tasks have been used with Recurrent Convolutional Neural Network (RCNN) derived architectures [@deepthinking]. To facilitate the use of our package in this context, we replicate the format of [@easy_to_hard] and provide the `RasterizedMazeDataset` class which returns rasterized pairs of (input, target) mazes as shown in \autoref{fig:e2h-raster} below.
 
-In previous work, maze tasks have been used with Recurrent Convolutional Neural Network (RCNN) derived architectures [@deepthinking]. To facilitate the use of our package in this context, we replicate the format of [@easy_to_hard] and provide the `RasterizedMazeDataset` class which returns rasterized pairs of (input, target) mazes as shown in \autoref{fig:e2hraster} below.
-
-![Input is the rasterized maze without the path marked (left), and provide as a target the maze with all but the correct path removed. Configuration options exist to adjust whether endpoints are included and if empty cells should be filled in.](figures/maze-raster-input-target.pdf){#fig:e2hraster width=30%}
+![Input is the rasterized maze without the path marked (left), and provide as a target the maze with all but the correct path removed. Configuration options exist to adjust whether endpoints are included and if empty cells should be filled in.](figures/maze-raster-input-target.pdf){#fig:e2h-raster width=30%}
 
 
-# Tokenized Output Formats {#tokenized-output-formats}
+## Tokenized Output Formats {#tokenized-output-formats}
 
 To train autoregressive text models such as transformers, we convert mazes to token sequences in two steps. First, the maze is stringified using `as_tokens()`. The `MazeTokenizerModular` class provides a powerful interface for configuring maze stringification behavior. Second, the sequence of strings is tokenized into integers using `encode()`. Tokenization uses a fixed vocabulary for simplicity. Mazes up to 50x50 are supported using unique tokens, and up to 128x128 when using coordinate tuple tokens.
 
-## Stringification Options and `MazeTokenizerModular` {#mtm}
+There are many algorithms by which one might tokenize a 2D maze into a 1D format usable by autoregressive text models. Training multiple models on the encodings output from each of these algorithms may produce very different internal representations, learned solution algorithms, and levels of performance. To allow exploration of how different maze tokenization algorithms affect these models, the `MazeTokenizerModular` class contains a rich set of options to customize how mazes are stringified. This class contains 19 discrete parameters, resulting in over 5.8 million unique tokenizers. But wait, there's more! There are 6 additional parameters available in the library which are untested but further expand the the number of tokenizers by a factor of $44/3$ to 86 million.
 
-There are many algorithms by which one might tokenize a 2D maze into a 1D format usable by autoregressive text models. Training multiple models on the encodings output from each of these algorithms may produce very different internal representations, learned solution algorithms, and levels of performance. To explore how different maze tokenization algorithms affect these models, the `MazeTokenizerModular` class contains a rich set of options to customize how mazes are stringified. This class contains 19 discrete parameters, resulting in 5.9 million unique tokenizers. But wait, there's more! There are 6 additional parameters available in the library which are untested but further expand the the number of tokenizers by a factor of $44/3$ to 86 million.
-
-All output sequences consist of four token regions representing different features of the maze. These regions are distinguished by color in Figure below.
+All output sequences consist of four token regions representing different features of the maze. These regions are distinguished by color in \autoref{fig:token-regions}.
 
 - <span style="background-color:rgb(217,210,233)">Adjacency list</span>: A text representation of the lattice graph
 - <span style="background-color:rgb(217,234,211)">Origin</span>: Starting coordinate
 - <span style="background-color:rgb(234,209,220)">Target</span>: Ending coordinate
 - <span style="background-color:rgb(207,226,243)">Path</span>: Maze solution sequence from the start to the end
 
-![Example text output format with token regions highlighted.](figures/outputs-tokens-colored.tex)
+![Example text output format with token regions highlighted.](figures/outputs-tokens-colored.tex){#fig:token-regions}
 
 Each `MazeTokenizerModular` is constructed from a set of several `_TokenizerElement` objects, each of which specifies how different token regions or other elements of the stringification are produced.
 

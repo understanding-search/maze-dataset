@@ -706,9 +706,6 @@ and from several formats.
   \label{fig:output-fmts}
 \end{figure}
 
-\hypertarget{training}{%
-\subsection{Visual Outputs for Training and Evaluation}\label{training}}
-
 In previous work, maze tasks have been used with Recurrent Convolutional
 Neural Network (RCNN) derived architectures
 (\protect\hyperlink{ref-deepthinking}{Schwarzschild, Borgnia, Gupta,
@@ -717,21 +714,21 @@ context, we replicate the format of
 (\protect\hyperlink{ref-easy_to_hard}{Schwarzschild, Borgnia, Gupta,
 Bansal, et al., 2021}) and provide the \texttt{RasterizedMazeDataset}
 class which returns rasterized pairs of (input, target) mazes as shown
-in \autoref{fig:e2hraster} below.
+in \autoref{fig:e2h-raster} below.
 
 \begin{figure}
-\hypertarget{fig:e2hraster}{%
+\hypertarget{fig:e2h-raster}{%
 \centering
 \includegraphics[width=0.3\textwidth,height=\textheight]{figures/maze-raster-input-target.pdf}
 \caption{Input is the rasterized maze without the path marked (left),
 and provide as a target the maze with all but the correct path removed.
 Configuration options exist to adjust whether endpoints are included and
-if empty cells should be filled in.}\label{fig:e2hraster}
+if empty cells should be filled in.}\label{fig:e2h-raster}
 }
 \end{figure}
 
 \hypertarget{tokenized-output-formats}{%
-\section{Tokenized Output Formats}\label{tokenized-output-formats}}
+\subsection{Tokenized Output Formats}\label{tokenized-output-formats}}
 
 To train autoregressive text models such as transformers, we convert
 mazes to token sequences in two steps. First, the maze is stringified
@@ -742,26 +739,22 @@ using \texttt{encode()}. Tokenization uses a fixed vocabulary for
 simplicity. Mazes up to 50x50 are supported using unique tokens, and up
 to 128x128 when using coordinate tuple tokens.
 
-\hypertarget{mtm}{%
-\subsection{\texorpdfstring{Stringification Options and
-\texttt{MazeTokenizerModular}}{Stringification Options and MazeTokenizerModular}}\label{mtm}}
-
 There are many algorithms by which one might tokenize a 2D maze into a
 1D format usable by autoregressive text models. Training multiple models
 on the encodings output from each of these algorithms may produce very
 different internal representations, learned solution algorithms, and
-levels of performance. To explore how different maze tokenization
-algorithms affect these models, the \texttt{MazeTokenizerModular} class
-contains a rich set of options to customize how mazes are stringified.
-This class contains 19 discrete parameters, resulting in 5.9 million
-unique tokenizers. But wait, there's more! There are 6 additional
-parameters available in the library which are untested but further
-expand the the number of tokenizers by a factor of \(44/3\) to 86
-million.
+levels of performance. To allow exploration of how different maze
+tokenization algorithms affect these models, the
+\texttt{MazeTokenizerModular} class contains a rich set of options to
+customize how mazes are stringified. This class contains 19 discrete
+parameters, resulting in over 5.8 million unique tokenizers. But wait,
+there's more! There are 6 additional parameters available in the library
+which are untested but further expand the the number of tokenizers by a
+factor of \(44/3\) to 86 million.
 
 All output sequences consist of four token regions representing
 different features of the maze. These regions are distinguished by color
-in Figure below.
+in \autoref{fig:token-regions}.
 
 \begin{itemize}
 \tightlist
@@ -776,9 +769,12 @@ in Figure below.
 \end{itemize}
 
 \begin{figure}
+\hypertarget{fig:token-regions}{%
 \centering
 \includegraphics{figures/outputs-tokens-colored.tex}
-\caption{Example text output format with token regions highlighted.}
+\caption{Example text output format with token regions
+highlighted.}\label{fig:token-regions}
+}
 \end{figure}
 
 Each \texttt{MazeTokenizerModular} is constructed from a set of several
