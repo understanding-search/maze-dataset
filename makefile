@@ -1833,7 +1833,7 @@ paper-tex:
 .PHONY: paper-pdf
 paper-pdf: paper-tex
 	@echo "compile the paper to pdf"
-	TEXINPUTS=$(PAPER_RESOURCES): latexmk -interaction=nonstopmode -pdf -outdir=$(PAPER_PATH)/output -lualatex $(PAPER_PATH)/paper.tex || true
+	TEXINPUTS=$(PAPER_RESOURCES): latexmk -f -interaction=nonstopmode -pdf -outdir=$(PAPER_PATH)/output -lualatex $(PAPER_PATH)/paper.tex || true
 	cp $(PAPER_PATH)/output/paper.pdf $(PAPER_PATH)/paper.pdf
 
 .PHONY: paper-html
