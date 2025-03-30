@@ -44,5 +44,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: benchmark-results-${{ github.event.inputs.analysis_type }}
-          path: benchmarks/results/benchmark_generation.jsonl
+          path: benchmarks/results/benchmark_data.jsonl
           retention-days: 90
