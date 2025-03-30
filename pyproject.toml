@@ -82,6 +82,7 @@
     benchmark = [
         # only used in `estimate_dataset_fractions.ipynb`
         "pysr>=1.4.0",
+		"seaborn",
     ]
 
 [project.urls]

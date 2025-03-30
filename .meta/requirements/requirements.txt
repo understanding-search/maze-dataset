@@ -147,6 +147,7 @@ ruff==0.9.10
 rust-fst==0.1.2 ; platform_system != 'darwin'
 scikit-learn==1.6.1
 scipy==1.15.2
+seaborn==0.13.2
 secretstorage==3.3.3 ; platform_machine != 'ppc64le' and platform_machine != 's390x' and sys_platform == 'linux'
 semver==3.0.4
 send2trash==1.8.3
