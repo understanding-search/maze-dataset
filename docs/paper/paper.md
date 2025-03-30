@@ -61,7 +61,7 @@ Solving mazes is a classic problem in computer science and artificial intelligen
 
 \begin{figure} 
   \begin{minipage}{5in}
-    \input{docs/paper/diagram/diagram.tikz} 
+    \input{diagram/diagram.tikz} 
   \end{minipage}
   \caption{Usage of maze-dataset. We create a `MazeDataset` from a `MazeDatasetConfig`. This contains `SolvedMaze` objects which can be converted to and from a variety of formats. Code in the image contains clickable links to \href{https://understanding-search.github.io/maze-dataset/maze_dataset.html}{documentation}. A variety of generated examples can be viewed \href{https://understanding-search.github.io/maze-dataset/examples/maze_examples.html}{here}.}
   \label{fig:diagram}
@@ -73,7 +73,7 @@ Solving mazes is a classic problem in computer science and artificial intelligen
  -->
 
 ```{=html}
-<img src="docs/paper/diagram/diagram.svg"/>
+<img src="diagram/diagram.svg"/>
 ```
 
 # Statement of Need
@@ -155,13 +155,13 @@ Internally, mazes are `SolvedMaze` objects, which have path information, and a c
 |-------------|--------------|-------------|
 | Simple text format for displaying mazes, useful for debugging in a terminal environment. | `numpy` array of `dtype=uint8` and shape `(height, width, 3)`. The last dimension is RGB color. | feature-rich plotting utility with support for multiple paths, heatmaps over positions, and more. |
 
-![Various output formats. Top row (left to right): ASCII diagram, rasterized pixel grid, and advanced display.](docs/paper/figures/output-fmts.pdf){#fig:visualoutputs}
+![Various output formats. Top row (left to right): ASCII diagram, rasterized pixel grid, and advanced display.](figures/output-fmts.pdf){#fig:visualoutputs}
 
 ## Visual Outputs for Training and Evaluation {#training}
 
 In previous work, maze tasks have been used with Recurrent Convolutional Neural Network (RCNN) derived architectures [@deepthinking]. To facilitate the use of our package in this context, we replicate the format of [@easy_to_hard] and provide the `RasterizedMazeDataset` class which returns rasterized pairs of (input, target) mazes as shown in \autoref{fig:e2hraster} below.
 
-![Input is the rasterized maze without the path marked (left), and provide as a target the maze with all but the correct path removed. Configuration options exist to adjust whether endpoints are included and if empty cells should be filled in.](docs/paper/figures/maze-raster-input-target.pdf){#fig:e2hraster width=30%}
+![Input is the rasterized maze without the path marked (left), and provide as a target the maze with all but the correct path removed. Configuration options exist to adjust whether endpoints are included and if empty cells should be filled in.](figures/maze-raster-input-target.pdf){#fig:e2hraster width=30%}
 
 
 # Tokenized Output Formats {#tokenized-output-formats}
@@ -179,13 +179,13 @@ All output sequences consist of four token regions representing different featur
 - <span style="background-color:rgb(234,209,220)">Target</span>: Ending coordinate
 - <span style="background-color:rgb(207,226,243)">Path</span>: Maze solution sequence from the start to the end
 
-![Example text output format with token regions highlighted.](docs/paper/figures/outputs-tokens-colored.tex)
+![Example text output format with token regions highlighted.](figures/outputs-tokens-colored.tex)
 
 Each `MazeTokenizerModular` is constructed from a set of several `_TokenizerElement` objects, each of which specifies how different token regions or other elements of the stringification are produced.
 
 \begin{figure}
     \centering
-    \input{docs/paper/figures/TokenizerElement_structure.tikz}
+    \input{figures/TokenizerElement_structure.tikz}
     \caption{Nested internal structure of \texttt{\_TokenizerElement} objects inside a typical \texttt{MazeTokenizerModular} object.}
 \end{figure}
 
