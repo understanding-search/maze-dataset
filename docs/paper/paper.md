@@ -19,7 +19,7 @@ authors:
   - name: Rusheb Shah
     orcid: 0009-0008-3058-0217
   - name: Brandon Knutson
-  - orcid: 0009-0004-8413-0239
+    orcid: 0009-0004-8413-0239
     affiliation: 1
   - name: Cecilia Diniz Behn  
     orcid: 0000-0002-8078-5105
