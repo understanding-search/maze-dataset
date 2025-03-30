@@ -133,7 +133,7 @@ dataset_filtered: MazeDataset = dataset.filter_by.path_length(min_length=3)
 All implemented maze generation algorithms are stochastic by nature. For reproducibility, the `seed` parameter of `MazeDatasetConfig` may be set. In practice, we do not find that exact duplicates of mazes are generated with any meaningful frequency, even when generating large datasets.
 
 
-# Visual Output Formats {#visual-output-formats}
+## Visual Output Formats {#visual-output-formats}
 
 Internally, mazes are [`SolvedMaze`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#SolvedMaze) objects, which have path information, and a connection list optimized for storing sub-graphs of a lattice. These objects can be converted to and from several formats.
 
@@ -194,19 +194,13 @@ Each `MazeTokenizerModular` is constructed from a set of several `_TokenizerElem
 \end{figure}
 
 
-## Tokenized Outputs for Training and Evaluation {#token-training}
-
-During deployment we provide only the prompt up to the `<PATH_START>` token. 
-
-Examples of usage of this dataset to train autoregressive transformers can be found in our `maze-transformer` library [@maze-transformer-github]. Other tokenization and vocabulary schemes are also included, such as representing each coordinate as a pair of $i,j$ index tokens.
-
-## Extensibility {#extensibility}
+**TODO: add fst stuff**
 
 The tokenizer architecture is purposefully designed such that adding and testing a wide variety of new tokenization algorithms is fast and minimizes disturbances to functioning code. This is enabled by the modular architecture and the automatic inclusion of any new tokenizers in integration tests. To create a new tokenizer, developers forking the library may simply create their own `_TokenizerElement` subclass and implement the abstract methods. If the behavior change is sufficiently small, simply adding a parameter to an existing `_TokenizerElement` subclass and updating its implementation will suffice. For small additions, simply adding new cases to existing unit tests will suffice.
 
 The breadth of tokenizers is also easily scaled in the opposite direction. Due to the exponential scaling of parameter combinations, adding a small number of new features can significantly slow certain procedures which rely on constructing all possible tokenizers, such as integration tests. If any existing subclass contains features which aren't needed, a developer tool decorator is provided which can be applied to the unneeded `_TokenizerElement` subclasses to prune those features and compact the available space of tokenizers.
 
-# Benchmarks of Generation Speed {#benchmarks}
+## Benchmarks of Generation Speed {#benchmarks}
 
 We provide approximate benchmarks for relative generation time across various algorithms, parameter choices, maze sizes, and dataset sizes.
 
@@ -227,6 +221,9 @@ We provide approximate benchmarks for relative generation time across various al
 | **mean (all runs)**   |                            | 490.0             | 11.7                | 187.2                     | 2769.6            |
 
 ![Plots of maze generation time. Generation time scales exponentially with maze size for all algorithms (left). Generation time does not depend on the number of mazes being generated, and there is minimal overhead to initializing the generation process for a small dataset (right). Wilson's algorithm is notably less efficient than others and has high variance. Note that for both plots, values are averaged across all parameter sets for that algorithm, and parallelization is disabled.](docs/benchmarks/figures/gridsize-vs-gentime.pdf){width=95%}
+
+## Success Rate Estimation
+
 
 # Implementation {#implementation}
 

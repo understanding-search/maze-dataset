@@ -442,6 +442,7 @@ def plot_grouped(  # noqa: C901
 	save_dir: Path | None = None,
 	show: bool = True,
 	logy: bool = False,
+	save_fmt: str = "svg",
 ) -> None:
 	"""Plot grouped sweep percolation value results for each distinct `endpoint_kwargs` in the configs
 
@@ -528,7 +529,9 @@ def plot_grouped(  # noqa: C901
 
 		# save and show
 		if save_dir:
-			save_path: Path = save_dir / f"ep_{endpoint_kwargs_to_name(ep_kw)}.svg"
+			save_path: Path = (
+				save_dir / f"ep_{endpoint_kwargs_to_name(ep_kw)}.{save_fmt}"
+			)
 			print(f"Saving plot to {save_path.as_posix()}")
 			save_path.parent.mkdir(exist_ok=True, parents=True)
 			plt.savefig(save_path)

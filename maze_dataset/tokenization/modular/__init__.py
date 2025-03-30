@@ -35,7 +35,7 @@ the structure of a typical `MazeTokenizerModular` is something like this:
 ```
 
 Optional delimiter tokens may be added in many places in the output. Delimiter options are all configured using the parameters named `pre`, `intra`, and `post` in various `_TokenizerElement` classes. Each option controls a unique delimiter token.
-Here we describe each `_TokenizerElement` and the behaviors they support. We also discuss some of the model behaviors and properties that may be investigated using these options. 
+Here we describe each `_TokenizerElement` and the behaviors they support. We also discuss some of the model behaviors and properties that may be investigated using these options.
 
 ### Coordinates {#coordtokenizer}
 
@@ -61,7 +61,7 @@ The `_AdjListTokenizer` object controls this token region. All tokenizations rep
 
 ### Path {#pathtokenizer}
 
-The `_PathTokenizer` object controls this token region. Paths are all represented as a sequence of steps moving from the start to the end position. 
+The `_PathTokenizer` object controls this token region. Paths are all represented as a sequence of steps moving from the start to the end position.
 
 - `_StepSize`: Specifies the size of each step
   - **Singles**: Every coordinate traversed between start and end is directly represented
