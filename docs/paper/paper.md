@@ -143,9 +143,9 @@ Internally, mazes are [`SolvedMaze`](https://understanding-search.github.io/maze
   \begin{tabular}{p{1.5in} p{1.5in} p{1.5in}} 
     \hline \\[.5em]
     % algorithms
-    \docslink{maze_dataset.html#LatticeMaze.as_ascii}{\texttt{as\_ascii()}}
-    & \docslink{maze_dataset.html#LatticeMaze.as_pixels}{\texttt{as\_pixels()}}
-    & \docslink{maze_dataset/plotting.html#MazePlot}{\texttt{MazePlot()}} \\[.5em]
+    \docslink{maze_dataset.html\#LatticeMaze.as_ascii}{\texttt{as\_ascii()}}
+    & \docslink{maze_dataset.html\#LatticeMaze.as_pixels}{\texttt{as\_pixels()}}
+    & \docslink{maze_dataset/plotting.html\#MazePlot}{\texttt{MazePlot()}} \\[.5em]
     % descriptions
       Simple text format for displaying mazes, useful for debugging in a terminal environment.
       & \texttt{numpy} array of \texttt{dtype=uint8} and shape \texttt{(height, width, 3)}. The last dimension is RGB color.
@@ -226,25 +226,25 @@ We provide approximate benchmarks for relative generation time across various al
                                                          & \shortstack{medium \\ $g \in (10, 32]$} 
                                                                     & \shortstack{large \\ $g > 32$} \\
   \hline\hline
-  \docslink{maze_dataset.html#LatticeMazeGenerators.gen_dfs}{dfs}
+  \docslink{maze_dataset.html\#LatticeMazeGenerators.gen_dfs}{dfs}
           &                        &   28.0   &    2.8   &   20.3   &  131.8   \\
-  \docslink{maze_dataset.html#LatticeMazeGenerators.gen_dfs}{dfs}
+  \docslink{maze_dataset.html\#LatticeMazeGenerators.gen_dfs}{dfs}
           & accessible\_cells=20   &    2.3   &    2.2   &    2.4   &    2.2   \\
-  \docslink{maze_dataset.html#LatticeMazeGenerators.gen_dfs}{dfs}
+  \docslink{maze_dataset.html\#LatticeMazeGenerators.gen_dfs}{dfs}
           & do\_forks=False        &    2.7   &    2.2   &    3.1   &    3.5   \\
-  \docslink{maze_dataset.html#LatticeMazeGenerators.gen_dfs}{dfs}
+  \docslink{maze_dataset.html\#LatticeMazeGenerators.gen_dfs}{dfs}
           & max\_tree\_depth=0.5   &    2.5   &    2.0   &    2.7   &    4.0   \\
-  \docslink{maze_dataset.html#LatticeMazeGenerators.gen_dfs_percolation}{dfs\_percolation}
+  \docslink{maze_dataset.html\#LatticeMazeGenerators.gen_dfs_percolation}{dfs\_percolation}
           & p=0.1                  &   43.9   &    2.8   &   33.9   &  208.0   \\
-  \docslink{maze_dataset.html#LatticeMazeGenerators.gen_dfs_percolation}{dfs\_percolation}
+  \docslink{maze_dataset.html\#LatticeMazeGenerators.gen_dfs_percolation}{dfs\_percolation}
           & p=0.4                  &   48.7   &    3.0   &   36.5   &  233.5   \\
-  \docslink{maze_dataset.html#LatticeMazeGenerators.gen_kruskal}{kruskal}
+  \docslink{maze_dataset.html\#LatticeMazeGenerators.gen_kruskal}{kruskal}
           &                        &   12.8   &    1.9   &   10.3   &   55.8   \\
-  \docslink{maze_dataset.html#LatticeMazeGenerators.gen_percolation}{percolation}
+  \docslink{maze_dataset.html\#LatticeMazeGenerators.gen_percolation}{percolation}
           & p=1.0                  &   50.2   &    2.6   &   37.2   &  242.5   \\
-  \docslink{maze_dataset.html#LatticeMazeGenerators.gen_recursive_division}{recursive\_div}
+  \docslink{maze_dataset.html\#LatticeMazeGenerators.gen_recursive_division}{recursive\_div}
           &                        &   10.2   &    1.7   &    8.9   &   42.1   \\
-  \docslink{maze_dataset.html#LatticeMazeGenerators.gen_wilson}{wilson}
+  \docslink{maze_dataset.html\#LatticeMazeGenerators.gen_wilson}{wilson}
           &                        &  676.5   &    7.8   &  188.6   & 3992.6   \\
   \hline\hline
   mean
