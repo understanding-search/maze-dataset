@@ -37,7 +37,6 @@ bibliography: refs.bib
 header-includes: |
   \usepackage{graphicx}
   \usepackage{tikz}
-  \usepackage[luatex, pdfversion=1.7]{hyperref}
   \usetikzlibrary{calc}
   \tikzset{ % Define a TikZ style for an external hyperlink node.
     hyperlink node url/.style={

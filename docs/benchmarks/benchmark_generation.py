@@ -13,6 +13,11 @@ BENCHMARK_KWARGS: dict[str, dict[str, Any]] = dict(
 		n_mazes_vals=list(range(1, 12, 2)),
 		trials=10,
 	),
+	large=dict(
+		grid_n_vals=[2, 3, 4, 5, 6, 7, 8, 11, 16, 22, 32, 45, 64],
+		n_mazes_vals=list(range(1, 12, 2)),
+		trials=10,
+	),
 )
 
 if __name__ == "__main__":
