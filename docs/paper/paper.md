@@ -262,10 +262,7 @@ We provide approximate benchmarks for relative generation time across various al
 | **median (all runs)** |                            | 10.8              | 6.0                 | 44.4                      | 367.7             |
 | **mean (all runs)**   |                            | 490.0             | 11.7                | 187.2                     | 2769.6            |
 
-![Plots of maze generation time. Generation time scales exponentially with maze size for all algorithms (left). Generation time does not depend on the number of mazes being generated, and there is minimal overhead to initializing the generation process for a small dataset (right). Wilson's algorithm is notably less efficient than others and has high variance. Note that for both plots, values are averaged across all parameter sets for that algorithm, and parallelization is disabled.](../benchmarks/figures/gridsize-vs-gentime.pdf){width=95%}
-
-
-![Maze size vs generation time](../benchmarks/figures/n_mazes-vs-gentime.pdf)
+![Plots of maze generation time. Generation time scales exponentially with maze size for all algorithms (left). Generation time does not depend on the number of mazes being generated, and there is minimal overhead to initializing the generation process for a small dataset (right). Wilson's algorithm is notably less efficient than others and has high variance. Note that for both plots, values are averaged across all parameter sets for that algorithm, and parallelization is disabled.](docs/benchmarks/figures/gridsize-vs-gentime.pdf){width=95%}
 
 # Implementation {#implementation}
 
