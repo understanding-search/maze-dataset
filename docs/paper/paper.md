@@ -91,12 +91,12 @@ For interpretability and behavioral research, algorithmic tasks offer benefits b
 A multitude of public and open-source software packages exist for generating mazes [@easy_to_hard; @gh_Ehsan_2022; @gh_Nemeth_2019]. However, nearly all of these packages generate and store mazes in a form that is not optimized for storage space or, more importantly, computer readability. The mazes produces by other packages are usually rasterized or in some form of image, rather than the underlying graph structure, and this makes it difficult to work with these datasets.
 
 - Most prior works provide mazes in some kind of image or raster format, and we provide a variety of similar output formats:
-  - `RasterizedMazeDataset`, utilizing `as_pixels()`, which can exactly mimic the outputs provided in `easy-to-hard-data`[@easy_to_hard] and can be configured to be similar to the outputs of @gh_Nemeth_2019
-  - `as_ascii()` provides a format similar to that used in [@eval-gpt-visual; @gh-oppenheimj2018maze]
-  - `MazePlot` provides a feature-rich plotting utility with support for multiple paths, heatmaps over positions, and more. This is similar to the outputs of [@mdl-suite; @mathematica-maze; @mazegenerator-net; @gh_Ehsan_2022]
+  - [`RasterizedMazeDataset`](https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/rasterized.html#RasterizedMazeDataset), utilizing [`as_pixels()`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#LatticeMaze.as_pixels), which can exactly mimic the outputs provided in `easy-to-hard-data`[@easy_to_hard] and can be configured to be similar to the outputs of @gh_Nemeth_2019
+  - [`as_ascii()`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#LatticeMaze.as_ascii) provides a format similar to that used in [@eval-gpt-visual; @gh-oppenheimj2018maze]
+  - [`MazePlot`](https://understanding-search.github.io/maze-dataset/maze_dataset/plotting.html#MazePlot) provides a feature-rich plotting utility with support for multiple paths, heatmaps over positions, and more. This is similar to the outputs of [@mdl-suite; @mathematica-maze; @mazegenerator-net; @gh_Ehsan_2022]
 
 
-- The text format provided by `SolvedMaze(...).as_tokens()` is similar to that of [@eval-LLM-graphs], but provides over 5.8 million unique formats for converting mazes to a text stream, detailed in \autoref{tokenized-output-formats}.
+- The text format provided by [`SolvedMaze(...).as_tokens()`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#MazeDataset.as_tokens) is similar to that of [@eval-LLM-graphs], but provides over 5.8 million unique formats for converting mazes to a text stream, detailed in \autoref{tokenized-output-formats}.
 
 - For rigorous investigations of the response of a model to various distributional shifts, preserving metadata about the generation algorithm with the dataset itself is essential. To this end, our package efficiently stores the dataset along with its metadata in a single human-readable file [@zanj]. As far as we are aware, no existing packages do this reliably.
 
@@ -111,7 +111,7 @@ A multitude of public and open-source software packages exist for generating maz
 
 Our package can be installed from [PyPi](https://pypi.org/project/maze-dataset/) via `pip install maze-dataset`, or directly from the [git repository](https://github.com/understanding-search/maze-dataset) [@maze-dataset-github].
 
-To create a dataset, we first create a `MazeDatasetConfig` configuration object, which specifies the seed, number, and size of mazes, as well as the generation algorithm and its corresponding parameters. This object is passed to a `MazeDataset` class to create a dataset. Crucially, this `MazeDataset` mimics the interface of a PyTorch [@pytorch] `Dataset`, and can thus be easily incorporated into existing data pre-processing and training pipelines, e.g., through the use of a `Dataloader` class.
+To create a dataset, we first create a [`MazeDatasetConfig`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#MazeDatasetConfig) configuration object, which specifies the seed, number, and size of mazes, as well as the generation algorithm and its corresponding parameters. This object is passed to a [`MazeDataset`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#MazeDataset) class to create a dataset. Crucially, this [`MazeDataset`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#MazeDataset) mimics the interface of a PyTorch [@pytorch] [`Dataset`](https://pytorch.org/docs/stable/data.html), and can thus be easily incorporated into existing data pre-processing and training pipelines, e.g., through the use of a `DataLoader` class.
 
 ```python
 from maze_dataset import MazeDataset, MazeDatasetConfig, LatticeMazeGenerators
@@ -124,7 +124,7 @@ cfg: MazeDatasetConfig = MazeDatasetConfig(
 dataset: MazeDataset = MazeDataset.from_config(cfg)
 ```
 
-When initializing mazes, further configuration options can be specified through the [`from_config()`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#MazeDataset.from_config) factory method as necessary. Options allow for saving/loading existing datasets instead of regenerating, and parallelization options for generation. Available maze generation algorithms are static methods of the `LatticeMazeGenerators` class and include generation algorithms based on randomized depth-first search, Wilson's algorithm [@wilson], percolation [@percolation; @percolation-clustersize], Kruskal's algorithm [@kruskal1956shortest], and others.
+When initializing mazes, further configuration options can be specified through the [`from_config()`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#MazeDataset.from_config) factory method as necessary. Options allow for saving/loading existing datasets instead of regenerating, and parallelization options for generation. Available maze generation algorithms are static methods of the [`LatticeMazeGenerators`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#LatticeMazeGenerators) class and include generation algorithms based on randomized depth-first search, Wilson's algorithm [@wilson], percolation [@percolation; @percolation-clustersize], Kruskal's algorithm [@kruskal1956shortest], and others.
 
 Furthermore, a dataset of mazes can be filtered to satisfy certain properties. Custom filters can be specified, and some filters are included in [`MazeDatasetFilters`](https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/filters.html#MazeDatasetFilters).
 
@@ -132,7 +132,7 @@ Furthermore, a dataset of mazes can be filtered to satisfy certain properties. C
 dataset_filtered: MazeDataset = dataset.filter_by.path_length(min_length=3)
 ```
 
-All implemented maze generation algorithms are stochastic by nature. For reproducibility, the `seed` parameter of `MazeDatasetConfig` may be set. In practice, we do not find that exact duplicates of mazes are generated with any meaningful frequency, even when generating large datasets.
+All implemented maze generation algorithms are stochastic by nature. For reproducibility, the `seed` parameter of [`MazeDatasetConfig`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#MazeDatasetConfig) may be set. In practice, we do not find that exact duplicates of mazes are generated with any meaningful frequency, even when generating large datasets.
 
 
 ## Visual Output Formats {#visual-output-formats}
@@ -144,7 +144,9 @@ Internally, mazes are [`SolvedMaze`](https://understanding-search.github.io/maze
   \begin{tabular}{p{1.5in} p{1.5in} p{1.5in}} 
     \hline \\[.5em]
     % algorithms
-    \texttt{as\_ascii()} & \texttt{as\_pixels()} & \texttt{MazePlot()} \\[.5em]
+    \docslink{maze_dataset.html#LatticeMaze.as_ascii}{\texttt{as\_ascii()}}
+    & \docslink{maze_dataset.html#LatticeMaze.as_pixels}{\texttt{as\_pixels()}}
+    & \docslink{maze_dataset/plotting.html#MazePlot}{\texttt{MazePlot()}} \\[.5em]
     % descriptions
       Simple text format for displaying mazes, useful for debugging in a terminal environment.
       & \texttt{numpy} array of \texttt{dtype=uint8} and shape \texttt{(height, width, 3)}. The last dimension is RGB color.
@@ -168,7 +170,7 @@ Internally, mazes are [`SolvedMaze`](https://understanding-search.github.io/maze
   \label{fig:output-fmts}
 \end{figure}
 
-In previous work, maze tasks have been used with Recurrent Convolutional Neural Network (RCNN) derived architectures [@deepthinking]. To facilitate the use of our package in this context, we replicate the format of [@easy_to_hard] and provide the `RasterizedMazeDataset` class which returns rasterized pairs of (input, target) mazes as shown in \autoref{fig:e2h-raster} below.
+In previous work, maze tasks have been used with Recurrent Convolutional Neural Network (RCNN) derived architectures [@deepthinking]. To facilitate the use of our package in this context, we replicate the format of [@easy_to_hard] and provide the [`RasterizedMazeDataset`](https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/rasterized.html#RasterizedMazeDataset) class which returns rasterized pairs of (input, target) mazes as shown in \autoref{fig:e2h-raster} below.
 
 ![Input is the rasterized maze without the path marked (left), and provide as a target the maze with all but the correct path removed. Configuration options exist to adjust whether endpoints are included and if empty cells should be filled in.](figures/maze-raster-input-target.pdf){#fig:e2h-raster width=30%}
 
@@ -177,9 +179,9 @@ In previous work, maze tasks have been used with Recurrent Convolutional Neural 
 
 Autoregressive transformer models can be quite sensitive to the exact format of the input data, and may use delimiter tokens to perform reasoning steps [@pfau2024dotbydot]. To facilitate systematic investigation of this, we provide a variety of tokenized output formats.
 
-We convert mazes to token sequences in two steps. First, the maze is stringified using `as_tokens()`. The `MazeTokenizerModular` class provides a powerful interface for configuring maze stringification behavior. Second, the sequence of strings is tokenized into integers using `encode()`. Tokenization uses a fixed vocabulary for simplicity. Mazes up to $50 \times 50$ are supported using unique tokens, and up to $128 \times 128$ when using coordinate tuple tokens.
+We convert mazes to token sequences in two steps. First, the maze is stringified using [`as_tokens()`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#MazeDataset.as_tokens). The [`MazeTokenizerModular`](https://understanding-search.github.io/maze-dataset/maze_dataset/tokenization.html#MazeTokenizerModular) class provides a powerful interface for configuring maze stringification behavior. Second, the sequence of strings is tokenized into integers using `encode()`. Tokenization uses a fixed vocabulary for simplicity. Mazes up to $50 \times 50$ are supported using unique tokens, and up to $128 \times 128$ when using coordinate tuple tokens.
 
-There are many algorithms by which one might tokenize a 2D maze into a 1D format usable by autoregressive text models. Training multiple models on the encodings output from each of these algorithms may produce very different internal representations, learned solution algorithms, and levels of performance. To allow exploration of how different maze tokenization algorithms affect these models, the `MazeTokenizerModular` class contains a rich set of options to customize how mazes are stringified. This class contains 19 discrete parameters, resulting in over 5.8 million unique tokenizers. But wait, there's more! There are 6 additional parameters available in the library which are untested but further expand the the number of tokenizers by a factor of $44/3$ to 86 million.
+There are many algorithms by which one might tokenize a 2D maze into a 1D format usable by autoregressive text models. Training multiple models on the encodings output from each of these algorithms may produce very different internal representations, learned solution algorithms, and levels of performance. To allow exploration of how different maze tokenization algorithms affect these models, the [`MazeTokenizerModular`](https://understanding-search.github.io/maze-dataset/maze_dataset/tokenization.html#MazeTokenizerModular) class contains a rich set of options to customize how mazes are stringified. This class contains 19 discrete parameters, resulting in over 5.8 million unique tokenizers. But wait, there's more! There are 6 additional parameters available in the library which are untested but further expand the the number of tokenizers by a factor of $44/3$ to 86 million.
 
 All output sequences consist of four token regions representing different features of the maze of which we see an example in \autoref{fig:token-regions}.
 
@@ -199,7 +201,7 @@ All output sequences consist of four token regions representing different featur
   \label{fig:token-regions}
 \end{figure}
 
-Each `MazeTokenizerModular` is constructed from a set of several `_TokenizerElement` objects, each of which specifies how different token regions or other elements of the stringification are produced.
+Each [`MazeTokenizerModular`](https://understanding-search.github.io/maze-dataset/maze_dataset/tokenization.html#MazeTokenizerModular) is constructed from a set of several [`_TokenizerElement`](https://understanding-search.github.io/maze-dataset/maze_dataset/tokenization.html#_TokenizerElement) objects, each of which specifies how different token regions or other elements of the stringification are produced.
 
 \begin{figure}
     \centering
@@ -207,9 +209,9 @@ Each `MazeTokenizerModular` is constructed from a set of several `_TokenizerElem
     \caption{Nested internal structure of \texttt{\_TokenizerElement} objects inside a typical \texttt{MazeTokenizerModular}.}
 \end{figure}
 
-The tokenizer architecture is purposefully designed such that adding and testing a wide variety of new tokenization algorithms is fast and minimizes disturbances to functioning code. This is enabled by the modular architecture and the automatic inclusion of any new tokenizers in integration tests. To create a new tokenizer, developers forking the library may simply create their own `_TokenizerElement` subclass and implement the abstract methods. If the behavior change is sufficiently small, simply adding a parameter to an existing `_TokenizerElement` subclass and updating its implementation will suffice. For small additions, simply adding new cases to existing unit tests will suffice.
+The tokenizer architecture is purposefully designed such that adding and testing a wide variety of new tokenization algorithms is fast and minimizes disturbances to functioning code. This is enabled by the modular architecture and the automatic inclusion of any new tokenizers in integration tests. To create a new tokenizer, developers forking the library may simply create their own [`_TokenizerElement`](https://understanding-search.github.io/maze-dataset/maze_dataset/tokenization.html#_TokenizerElement) subclass and implement the abstract methods. If the behavior change is sufficiently small, simply adding a parameter to an existing [`_TokenizerElement`](https://understanding-search.github.io/maze-dataset/maze_dataset/tokenization.html#_TokenizerElement) subclass and updating its implementation will suffice. For small additions, simply adding new cases to existing unit tests will suffice.
 
-The breadth of tokenizers is also easily scaled in the opposite direction. Due to the exponential scaling of parameter combinations, adding a small number of new features can significantly slow certain procedures which rely on constructing all possible tokenizers, such as integration tests. If any existing subclass contains features which aren't needed, a developer tool decorator is provided which can be applied to the unneeded `_TokenizerElement` subclasses to prune those features and compact the available space of tokenizers.
+The breadth of tokenizers is also easily scaled in the opposite direction. Due to the exponential scaling of parameter combinations, adding a small number of new features can significantly slow certain procedures which rely on constructing all possible tokenizers, such as integration tests. If any existing subclass contains features which aren't needed, a developer tool decorator [`@mark_as_unsupported`](https://understanding-search.github.io/maze-dataset/maze_dataset/tokenization/modular/element_base.html#mark_as_unsupported) is provided which can be applied to the unneeded [`_TokenizerElement`](https://understanding-search.github.io/maze-dataset/maze_dataset/tokenization.html#_TokenizerElement) subclasses to prune those features and compact the available space of tokenizers.
 
 ## Benchmarks of Generation Speed {#benchmarks}
 
@@ -261,15 +263,15 @@ We provide approximate benchmarks for relative generation time across various al
 
 ## Success Rate Estimation {#success-rate-estimation}
 
-In order to replicate the exact dataset distribution of [@easy_to_hard], we allow placing additional constraints in `MazeDatasetConfig.endpoint_kwargs: EndpointKwargsType`, such as enforcing that the start or end point be in a "dead end" with only one accessible neighbor cell. However, combining this with cyclic mazes (such as those generated with percolation), as was required for the work in [@knutson2024logicalextrapolation], can lead to an absence of valid start and end points. Placing theoretical bounds on this success rate is difficult, as it depends on the exact maze generation algorithm and parameters used. However, our package provides a way to estimate the success rate of a given configuration using a symbolic regression model trained with PySR [@pysr]. More details on this can be found in [`estimate_dataset_fractions.ipynb`](https://understanding-search.github.io/maze-dataset/notebooks/estimate_dataset_fractions.html). 
+In order to replicate the exact dataset distribution of [@easy_to_hard], we allow placing additional constraints in [`MazeDatasetConfig.endpoint_kwargs:`](https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/maze_dataset_config.html#MazeDatasetConfig.endpoint_kwargs) [`EndpointKwargsType`](https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/maze_dataset_config.html#EndpointKwargsType), such as enforcing that the start or end point be in a "dead end" with only one accessible neighbor cell. However, combining this with cyclic mazes (such as those generated with percolation), as was required for the work in [@knutson2024logicalextrapolation], can lead to an absence of valid start and end points. Placing theoretical bounds on this success rate is difficult, as it depends on the exact maze generation algorithm and parameters used. However, our package provides a way to estimate the success rate of a given configuration using a symbolic regression model trained with PySR [@pysr]. More details on this can be found in [`estimate_dataset_fractions.ipynb`](https://understanding-search.github.io/maze-dataset/notebooks/estimate_dataset_fractions.html). 
 
-Using the estimation simply requires the user to call `cfg_new: MazeDatasetConfig = cfg.success_fraction_compensate()` given their predefined `cfg`.
+Using the estimation simply requires the user to call [`cfg_new: MazeDatasetConfig = cfg.success_fraction_compensate()`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#MazeDatasetConfig.success_fraction_compensate), providing their initial `cfg` and then using the returned `cfg_new` in its place.
 
 ### Success Rate Estimation Algorithm
 
 The base function learned by symbolic regression is not particularly insightful, and is potentially subject to change. It is defined as [`cfg_success_predict_fn`](https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/success_predict_math.html#cfg_success_predict_fn), and takes a 5 dimensional float vector created by `MazeDatasetConfig._to_ps_array()` which represents the 0) percolation value 1) grid size 2) endpoint deadend configuration 3) endpoint uniqueness 4) categorical generation function index.
 
-However, the outputs of this function are not directly usable due to minor divergences at the endpoints with respect to the percolation probability $p$. Since we know that maze success is either guaranteed or impossible for $p=0$ and $p=1$, we define the `soft_step` function to nudge the raw output of the symbolic regression. This function is defined with:
+However, the outputs of this function are not directly usable due to minor divergences at the endpoints with respect to the percolation probability $p$. Since we know that maze success is either guaranteed or impossible for $p=0$ and $p=1$, we define the [`soft_step`](https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/success_predict_math.html#soft_step) function to nudge the raw output of the symbolic regression. This function is defined with:
 
 A shifted sigmoid $\sigma_s$, amplitude scaling $A$, and $h$ function:
 $$
@@ -280,7 +282,7 @@ $$
   h(q,a) = q \cdot (1 - |2q-1|^a) \cdot (1-\sigma_s(q)) + (1-(1-q) \cdot (1 - |2(1-q)-1|^a)) \cdot \sigma_s(q)
 $$
 
-We combine these to get the `soft_step` function, which is identity-like for $p \approx 0.5$, and pushes pushes $x$ to extremes otherwise.
+We combine these to get the [`soft_step`](https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/success_predict_math.html#soft_step) function, which is identity-like for $p \approx 0.5$, and pushes pushes $x$ to extremes otherwise.
 $$
   \text{soft\_step}(x, p, \alpha, w) = h(x, A(p, \alpha, w))
 $$
@@ -299,9 +301,9 @@ where `raw_val` is the output of the symbolic regression model. $x_0$ is the per
 We refer to our \href{https://github.com/understanding-search/maze-dataset}{GitHub repository} and \docslink{maze_dataset.html}{docs} for documentation and up-to-date implementation details.
 
 This package utilizes a simple, efficient representation of mazes. Using an adjacency list to represent mazes would lead to a poor lookup time of whether any given connection exists, while using an adjacency matrix would waste memory by failing to exploit the structure (e.g., only 4 of the diagonals would be filled in).
-Instead, we describe mazes with the following simple representation: for a $d$-dimensional lattice with $r$ rows and $c$ columns, we initialize a boolean array $A = \{0, 1\}^{d \times r \times c}$, which we refer to in the code as a `connection_list`. The value at $A[0,i,j]$ determines whether a downward connection exists from node $[i,j]$ to $[i+1, j]$. Likewise, the value at $A[1,i,j]$ determines whether a rightwards connection to $[i, j+1]$ exists. Thus, we avoid duplication of data about the existence of connections, at the cost of requiring additional care with indexing when looking for a connection upwards or to the left. Note that this setup allows for a periodic lattice.
+Instead, we describe mazes with the following simple representation: for a $d$-dimensional lattice with $r$ rows and $c$ columns, we initialize a boolean array $A = \{0, 1\}^{d \times r \times c}$, which we refer to in the code as a [`connection_list`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#LatticeMaze.connection_list). The value at $A[0,i,j]$ determines whether a downward connection exists from node $[i,j]$ to $[i+1, j]$. Likewise, the value at $A[1,i,j]$ determines whether a rightwards connection to $[i, j+1]$ exists. Thus, we avoid duplication of data about the existence of connections, at the cost of requiring additional care with indexing when looking for a connection upwards or to the left. Note that this setup allows for a periodic lattice.
 
-To produce solutions to mazes, two points are selected uniformly at random without replacement from the connected component of the maze, and the $A^*$ algorithm [@A_star] is applied to find the shortest path between them. The endpoint selection can be affected by `MazeDatasetConfig.endpoint_kwargs: EndpointKwargsType`, and complications caused by this are detailed in \autoref{success-rate-estimation}.
+To produce solutions to mazes, two points are selected uniformly at random without replacement from the connected component of the maze, and the $A^*$ algorithm [@A_star] is applied to find the shortest path between them. The endpoint selection can be affected by [`MazeDatasetConfig.endpoint_kwargs:`](https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/maze_dataset_config.html#MazeDatasetConfig.endpoint_kwargs) [`EndpointKwargsType`](https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/maze_dataset_config.html#EndpointKwargsType), and complications caused by this are detailed in \autoref{success-rate-estimation}.
 
 Parallelization is implemented via the `multiprocessing` module in the Python standard library, and parallel generation can be controlled via keyword arguments to [`MazeDataset.from_config()`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#MazeDataset.from_config).
 
