@@ -1,3 +1,5 @@
+"script for running percolation benchmarks"
+
 from pathlib import Path
 from typing import Any
 

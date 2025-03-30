@@ -1,6 +1,4 @@
-#!/usr/bin/env python3
-"""
-Generate HTML examples of various maze configurations.
+"""Generate HTML examples of various maze configurations.
 
 This script generates a variety of maze examples with different configurations,
 saves them as SVG files, and creates an HTML page to display them with searchable
@@ -8,23 +6,19 @@ configuration details.
 """
 
 import json
-import os
 from pathlib import Path
 from typing import Any, Callable
 
-import matplotlib.pyplot as plt
-import numpy as np
-from matplotlib.figure import Figure
 import jinja2
+import matplotlib.pyplot as plt
+from matplotlib.figure import Figure
 from PIL import Image
 from tqdm import tqdm
 
-from maze_dataset import LatticeMaze, MazeDatasetConfig
+from maze_dataset import MazeDatasetConfig
 from maze_dataset.dataset.configs import _get_configs_for_examples
 from maze_dataset.dataset.maze_dataset import MazeDataset
-from maze_dataset.generation import LatticeMazeGenerators
 from maze_dataset.plotting import MazePlot
-
 
 plt.rcParams["svg.fonttype"] = "none"  # preserve text as text
 
@@ -122,7 +116,7 @@ def main() -> None:
 	maze_examples: list[dict] = []
 	all_tags: set[str] = set()
 
-	for i, cfg_src in tqdm(
+	for _i, cfg_src in tqdm(
 		enumerate(configs_sources),
 		desc="Generating maze examples",
 		total=len(configs_sources),
