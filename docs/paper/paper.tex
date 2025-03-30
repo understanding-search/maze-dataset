@@ -592,7 +592,8 @@ these datasets.
   comparison cost. We use a simple, efficient representation of mazes
   that is optimized for subgraphs of a \(d\)-dimensional finite lattice
   that we do not believe is used in any existing maze generation
-  package.
+  package. This method is described in detail in
+  \autoref{implementation}.
 \item
   Our package is easily installable with source code freely available.
   It is extensively tested, type hinted, benchmarked, and documented.
@@ -670,7 +671,7 @@ exact duplicates of mazes are generated with any meaningful frequency,
 even when generating large datasets.
 
 \hypertarget{visual-output-formats}{%
-\section{Visual Output Formats}\label{visual-output-formats}}
+\subsection{Visual Output Formats}\label{visual-output-formats}}
 
 Internally, mazes are
 \href{https://understanding-search.github.io/maze-dataset/maze_dataset.html\#SolvedMaze}{\texttt{SolvedMaze}}
@@ -788,156 +789,7 @@ produced.
     \caption{Nested internal structure of \texttt{\_TokenizerElement} objects inside a typical \texttt{MazeTokenizerModular} object.}
 \end{figure}
 
-Optional delimiter tokens may be added in many places in the output.
-Delimiter options are all configured using the parameters named
-\texttt{pre}, \texttt{intra}, and \texttt{post} in various
-\texttt{\_TokenizerElement} classes. Each option controls a unique
-delimiter token. Here we describe each \texttt{\_TokenizerElement} and
-the behaviors they support. We also discuss some of the model behaviors
-and properties that may be investigated using these options.
-
-\hypertarget{coordtokenizer}{%
-\subsubsection{Coordinates}\label{coordtokenizer}}
-
-The \texttt{\_CoordTokenizer} object controls how coordinates in the
-lattice are represented in across all token regions. Options include:
-
-\begin{itemize}
-\tightlist
-\item
-  \textbf{Unique tokens}: Each coordinate is represented as a single
-  unique token \texttt{"(i,j)"}
-\item
-  \textbf{Coordinate tuple tokens}: Each coordinate is represented as a
-  sequence of 2 tokens, respectively encoding the row and column
-  positions: \texttt{{[}"i",\ ",",\ "j"{]}}
-\end{itemize}
-
-\hypertarget{adjlisttokenizer}{%
-\subsubsection{Adjacency List}\label{adjlisttokenizer}}
-
-The \texttt{\_AdjListTokenizer} object controls this token region. All
-tokenizations represent the maze connectivity as a sequence of
-connections or walls between pairs of adjacent coordinates in the
-lattice.
-
-\begin{itemize}
-\tightlist
-\item
-  \texttt{\_EdgeSubset}: Specifies the subset of lattice edges to be
-  tokenized
-
-  \begin{itemize}
-  \tightlist
-  \item
-    \textbf{All edges}: Every edge in the lattice
-  \item
-    \textbf{Connections}: Only edges which contain a connection
-  \item
-    \textbf{Walls}: Only edges which contain a wall
-  \end{itemize}
-\item
-  \texttt{\_EdgePermuter}: Specifies how to sequence the two coordinates
-  in each lattice edge
-
-  \begin{itemize}
-  \tightlist
-  \item
-    \textbf{Random}
-  \item
-    \textbf{Sorted}: The smaller coordinate always comes first
-  \item
-    \textbf{Both permutations}: Each edge is represented twice, once
-    with each permutation. This option attempts to represent connections
-    in a more directionally symmetric manner. Including only one
-    permutation of each edge may affect models' internal representations
-    of edges, treating a path traversing the edge differently depending
-    on if the coordinate sequence in the path matches the sequence in
-    the adjacency list.
-  \end{itemize}
-\item
-  \texttt{shuffle\_d0}: Whether to shuffle the edges randomly or sort
-  them in the output by their first coordinate
-\item
-  \texttt{connection\_token\_ordinal}: Location in the sequence of the
-  token representing whether the edge is a connection or a wall
-\end{itemize}
-
-\hypertarget{pathtokenizer}{%
-\subsubsection{Path}\label{pathtokenizer}}
-
-The \texttt{\_PathTokenizer} object controls this token region. Paths
-are all represented as a sequence of steps moving from the start to the
-end position.
-
-\begin{itemize}
-\tightlist
-\item
-  \texttt{\_StepSize}: Specifies the size of each step
-
-  \begin{itemize}
-  \tightlist
-  \item
-    \textbf{Singles}: Every coordinate traversed between start and end
-    is directly represented
-  \item
-    \textbf{Forks}: Only coordinates at forking points in the maze are
-    represented. The paths between forking points are implicit. Using
-    this option might train models more directly to represent forking
-    points differently from coordinates where the maze connectivity
-    implies an obvious next step in the path.
-  \end{itemize}
-\item
-  \texttt{\_StepTokenizer}: Specifies how an individual step is
-  represented
-
-  \begin{itemize}
-  \tightlist
-  \item
-    \textbf{Coordinate}: The coordinates of each step are directly
-    tokenized using a \texttt{\_CoordTokenizer}
-  \item
-    \textbf{Cardinal direction}: A single token corresponding to the
-    cardinal direction taken at the starting position of that step.
-    E.g., \texttt{NORTH}, \texttt{SOUTH}. If using a \texttt{\_StepSize}
-    other than \textbf{Singles}, this direction may not correspond to
-    the final direction traveled to arrive at the end position of the
-    step.
-  \item
-    \textbf{Relative direction}: A single token corresponding to the
-    first-person perspective relative direction taken at the starting
-    position of that step. E.g., \texttt{RIGHT}, \texttt{LEFT}.
-  \item
-    \textbf{Distance}: A single token corresponding to the number of
-    coordinate positions traversed in that step. E.g., using a
-    \texttt{\_StepSize} of \textbf{Singles}, the \textbf{Distance} token
-    would be the same for each step, corresponding to a distance of 1
-    coordinate. This option is only of interest in combination with a
-    \texttt{\_StepSize} other than \textbf{Singles}.
-  \end{itemize}
-\end{itemize}
-
-A \texttt{\_PathTokenizer} contains a sequence of one or more unique
-\texttt{\_StepTokenizer} objects. Different step representations may be
-mixed and permuted, allowing for investigation of model representations
-of multiple aspects of a maze solution at once.
-
-\hypertarget{token-training}{%
-\subsection{Tokenized Outputs for Training and
-Evaluation}\label{token-training}}
-
-During deployment we provide only the prompt up to the
-\texttt{\textless{}PATH\_START\textgreater{}} token.
-
-Examples of usage of this dataset to train autoregressive transformers
-can be found in our \texttt{maze-transformer} library
-(\protect\hyperlink{ref-maze-transformer-github}{Michael I. Ivanitskiy
-et al., 2023b}). Other tokenization and vocabulary schemes are also
-included, such as representing each coordinate as a pair of \(i,j\)
-index tokens.
-
-\hypertarget{extensibility}{%
-\subsection{Extensibility}\label{extensibility}}
+\textbf{TODO: add fst stuff}
 
 The tokenizer architecture is purposefully designed such that adding and
 testing a wide variety of new tokenization algorithms is fast and
@@ -961,7 +813,7 @@ applied to the unneeded \texttt{\_TokenizerElement} subclasses to prune
 those features and compact the available space of tokenizers.
 
 \hypertarget{benchmarks}{%
-\section{Benchmarks of Generation Speed}\label{benchmarks}}
+\subsection{Benchmarks of Generation Speed}\label{benchmarks}}
 
 We provide approximate benchmarks for relative generation time across
 various algorithms, parameter choices, maze sizes, and dataset sizes.
@@ -1018,6 +870,86 @@ averaged across all parameter sets for that algorithm, and
 parallelization is disabled.}
 \end{figure}
 
+\hypertarget{success-rate-estimation}{%
+\subsection{Success Rate Estimation}\label{success-rate-estimation}}
+
+In order to replicate the exact dataset distribution of
+(\protect\hyperlink{ref-easy_to_hard}{Schwarzschild, Borgnia, Gupta,
+Bansal, et al., 2021}), we allow placing additional constraints in
+\texttt{MazeDatasetConfig.endpoint\_kwargs:\ EndpointKwargsType}, such
+as enforcing that the start or end point be in a ``dead end'' with only
+one accessible neighbor cell. However, combining this with cyclic mazes
+(such as those generated with percolation), as was required for the work
+in (\protect\hyperlink{ref-knutson2024logicalextrapolation}{Knutson et
+al., 2024}), can lead to an absence of valid start and end points.
+Placing theoretical bounds on this success rate is difficult, as it
+depends on the exact maze generation algorithm and parameters used.
+However, our package provides a way to estimate the success rate of a
+given configuration using a symbolic regression model trained with PySR
+(\protect\hyperlink{ref-pysr}{Cranmer, 2023}). More details on this can
+be found in
+\href{https://understanding-search.github.io/maze-dataset/notebooks/estimate_dataset_fractions.html}{\texttt{estimate\_dataset\_fractions.ipynb}}.
+
+Using the estimation simply requires the user to call
+\texttt{cfg\_new:\ MazeDatasetConfig\ =\ cfg.success\_fraction\_compensate()}
+given their predefined \texttt{cfg}.
+
+\hypertarget{success-rate-estimation}{%
+\subsubsection{Success Rate Estimation
+Algorithm}\label{success-rate-estimation}}
+
+The base function learned by symbolic regression is not particularly
+insightful, and is potentially subject to change. It is defined as
+\href{https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/success_predict_math.html\#cfg_success_predict_fn}{\texttt{cfg\_success\_predict\_fn}},
+and takes a 5 dimensional float vector created by
+\texttt{MazeDatasetConfig.\_to\_ps\_array()} which represents the 0)
+percolation value 1) grid size 2) endpoint deadend configuration 3)
+endpoint uniqueness 4) categorical generation function index.
+
+However, the outputs of this function are not directly usable due to
+minor divergences at the endpoints with respect to the percolation
+probability \(p\). Since we know that maze success is either guaranteed
+or impossible for \(p=0\) and \(p=1\), we define the \texttt{soft\_step}
+function to nudge the raw output of the symbolic regression. This
+function is defined with:
+
+\begin{itemize}
+\item
+  \textbf{Shifted Sigmoid}: Creates sharp transition at \(x=0.5\)
+  \[\sigma_s(x) = (1 + e^{-10^3 \cdot (x-0.5)})^{-1}\]
+\item
+  \textbf{h-function}: Transition function combining polynomial and
+  sigmoid components
+  \[h(q,a) = q \cdot (1 - |2q-1|^a) \cdot (1-\sigma_s(q)) + (1-(1-q) \cdot (1 - |2(1-q)-1|^a)) \cdot \sigma_s(q)\]
+\item
+  \textbf{Amplitude Scaling}: Weight-modulated polynomial
+  \[A(q,a,w) = w \cdot (1 - |2q-1|^a)\]
+\item
+  \textbf{Soft Step}: Identity-like for \(p \approx 0.5\), pushes \(x\)
+  to extremes otherwise
+  \[\text{soft\_step}(x, p, \alpha, w) = h(x, A(p, \alpha, w))\]
+\end{itemize}
+
+Finally, we define
+
+\[
+  \text{cfg\_success\_predict\_fn}(\mathbf{x}) = \text{soft\_step}(\text{raw\_val}, x_0, 5, 10)
+\]
+
+where \texttt{raw\_val} is the output of the symbolic regression model.
+\(x_0\) is the percolation probability, while all other parameters from
+\texttt{\_to\_ps\_array()} only affect \texttt{raw\_val}.
+
+\begin{figure}
+\centering
+\includegraphics{figures/ep/ep_deadends_unique.pdf}
+\caption{An example of both empirical and predicted success rates as a
+function of the percolation probability \(p\) for various maze sizes,
+percolation with and without depth first search, and
+\texttt{endpoint\_kwargs} requiring that both the start and end be in
+unique dead ends.}
+\end{figure}
+
 \hypertarget{implementation}{%
 \section{Implementation}\label{implementation}}
 
@@ -1027,11 +959,11 @@ al., 2023a}) for documentation and up-to-date implementation details.
 
 This package utilizes a simple, efficient representation of mazes. Using
 an adjacency list to represent mazes would lead to a poor lookup time of
-whether any given connection exists, whilst using a dense adjacency
-matrix would waste memory by failing to exploit the structure (e.g.,
-only 4 of the diagonals would be filled in). Instead, we describe mazes
-with the following simple representation: for a \(d\)-dimensional
-lattice with \(r\) rows and \(c\) columns, we initialize a boolean array
+whether any given connection exists, while using an adjacency matrix
+would waste memory by failing to exploit the structure (e.g., only 4 of
+the diagonals would be filled in). Instead, we describe mazes with the
+following simple representation: for a \(d\)-dimensional lattice with
+\(r\) rows and \(c\) columns, we initialize a boolean array
 \(A = \{0, 1\}^{d \times r \times c}\), which we refer to in the code as
 a \texttt{connection\_list}. The value at \(A[0,i,j]\) determines
 whether a downward connection exists from node \([i,j]\) to
@@ -1044,24 +976,16 @@ to the left. Note that this setup allows for a periodic lattice.
 To produce solutions to mazes, two points are selected uniformly at
 random without replacement from the connected component of the maze, and
 the \(A^*\) algorithm (\protect\hyperlink{ref-A_star}{Hart et al.,
-1968}) is applied to find the shortest path between them.
+1968}) is applied to find the shortest path between them. The endpoint
+selection can be affected by
+\texttt{MazeDatasetConfig.endpoint\_kwargs:\ EndpointKwargsType}, and
+complications caused by this are detailed in
+\autoref{success-rate-estimation}.
 
 Parallelization is implemented via the \texttt{multiprocessing} module
 in the Python standard library, and parallel generation can be
-controlled via keyword arguments to the
-\href{https://understanding-search.github.io/maze-dataset/maze_dataset.html\#MazeDataset.from_config}{\texttt{MazeDataset.from\_config()}}
-function.
-
-\hypertarget{limitations}{%
-\subsection{\texorpdfstring{Limitations of
-\texttt{maze-dataset}}{Limitations of maze-dataset}}\label{limitations}}
-
-For simplicity, the package primarily supports mazes that are sub-graphs
-of a 2-dimensional rectangular lattice. Some support for
-higher-dimensional lattices is present, but not all output formats are
-adapted for higher dimensional mazes.
-\protect\hyperlink{implementation-implementation}{Implementation}
-\protect\hyperlink{implementation-implementation}{Implementation}
+controlled via keyword arguments to
+\href{https://understanding-search.github.io/maze-dataset/maze_dataset.html\#MazeDataset.from_config}{\texttt{MazeDataset.from\_config()}}.
 
 \hypertarget{usage-in-research}{%
 \section{Usage in Research}\label{usage-in-research}}
@@ -1156,6 +1080,10 @@ arXiv:2403.15870}.
 Cobbe, K., Hesse, C., Hilton, J., \& Schulman, J. (2019). Leveraging
 procedural generation to benchmark reinforcement learning. \emph{arXiv
 Preprint arXiv:1912.01588}.
+
+\leavevmode\vadjust pre{\hypertarget{ref-pysr}{}}%
+Cranmer, M. (2023). Interpretable machine learning for science with PySR
+and SymbolicRegression. jl. \emph{arXiv Preprint arXiv:2305.01582}.
 
 \leavevmode\vadjust pre{\hypertarget{ref-dijkstra-prim}{}}%
 Dijkstra, E. W. (1959). \emph{A note on two problems in connexion with

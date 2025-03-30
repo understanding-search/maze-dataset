@@ -98,7 +98,7 @@ A multitude of public and open-source software packages exist for generating maz
 
 - For rigorous investigations of the response of a model to various distributional shifts, preserving metadata about the generation algorithm with the dataset itself is essential. To this end, our package efficiently stores the dataset along with its metadata in a single human-readable file [@zanj]. This metadata is loaded when the dataset is retrieved from disk and makes it simple to understand how exactly each maze was generated. As far as we are aware, no existing packages do this reliably.
 
-- Storing mazes as images is not only difficult to work with, but also inefficient. Directly storing adjacency matrices is also inefficient as subgraphs of the lattice are sparse. Storing adjacency lists can be efficient, but comes with a higher lookup cost and possible high comparison cost. We use a simple, efficient representation of mazes that is optimized for subgraphs of a $d$-dimensional finite lattice that we do not believe is used in any existing maze generation package.
+- Storing mazes as images is not only difficult to work with, but also inefficient. Directly storing adjacency matrices is also inefficient as subgraphs of the lattice are sparse. Storing adjacency lists can be efficient, but comes with a higher lookup cost and possible high comparison cost. We use a simple, efficient representation of mazes that is optimized for subgraphs of a $d$-dimensional finite lattice that we do not believe is used in any existing maze generation package. This method is described in detail in \autoref{implementation}.
 
 - Our package is easily installable with source code freely available. It is extensively tested, type hinted, benchmarked, and documented. Many other maze generation packages lack this level of rigor and scope, and some [@ayaz2008maze] appear to simply no longer be accessible.
 
@@ -224,62 +224,48 @@ We provide approximate benchmarks for relative generation time across various al
 
 ## Success Rate Estimation
 
-In order to replicate the datasets of [@easy_to_hard], we allow placing additional constraints 
+In order to replicate the exact dataset distribution of [@easy_to_hard], we allow placing additional constraints in `MazeDatasetConfig.endpoint_kwargs: EndpointKwargsType`, such as enforcing that the start or end point be in a "dead end" with only one accessible neighbor cell. However, combining this with cyclic mazes (such as those generated with percolation), as was required for the work in [@knutson2024logicalextrapolation], can lead to an absence of valid start and end points. Placing theoretical bounds on this success rate is difficult, as it depends on the exact maze generation algorithm and parameters used. However, our package provides a way to estimate the success rate of a given configuration using a symbolic regression model trained with PySR [@pysr]. More details on this can be found in [`estimate_dataset_fractions.ipynb`](https://understanding-search.github.io/maze-dataset/notebooks/estimate_dataset_fractions.html). 
 
+Using the estimation simply requires the user to call `cfg_new: MazeDatasetConfig = cfg.success_fraction_compensate()` given their predefined `cfg`.
 
+### Success Rate Estimation Algorithm {#success-rate-estimation}
 
-**Shifted Sigmoid**: Creates sharp transition at $x=0.5$
-$$\sigma_s(x) = (1 + e^{-10^3 \cdot (x-0.5)})^{-1}$$
+The base function learned by symbolic regression is not particularly insightful, and is potentially subject to change. It is defined as [`cfg_success_predict_fn`](https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/success_predict_math.html#cfg_success_predict_fn), and takes a 5 dimensional float vector created by `MazeDatasetConfig._to_ps_array()` which represents the 0) percolation value 1) grid size 2) endpoint deadend configuration 3) endpoint uniqueness 4) categorical generation function index.
 
-## Composite Functions
-**h-function**: Transition function combining polynomial and sigmoid components
-$$h(q,a) = q \cdot (1 - |2q-1|^a) \cdot (1-\sigma_s(q)) + (1-(1-q) \cdot (1 - |2(1-q)-1|^a)) \cdot \sigma_s(q)$$
+However, the outputs of this function are not directly usable due to minor divergences at the endpoints with respect to the percolation probability $p$. Since we know that maze success is either guaranteed or impossible for $p=0$ and $p=1$, we define the `soft_step` function to nudge the raw output of the symbolic regression. This function is defined with:
 
-**Amplitude Scaling**: Weight-modulated polynomial
-$$A(q,a,w) = w \cdot (1 - |2q-1|^a)$$
+- **Shifted Sigmoid**: Creates sharp transition at $x=0.5$
+  $$\sigma_s(x) = (1 + e^{-10^3 \cdot (x-0.5)})^{-1}$$
 
-**Soft Step**: Identity-like for $p \approx 0.5$, pushes $x$ to extremes otherwise
-$$\text{soft\_step}(x, p, \alpha, w) = h(x, A(p, \alpha, w))$$
+-  **h-function**: Transition function combining polynomial and sigmoid components
+  $$h(q,a) = q \cdot (1 - |2q-1|^a) \cdot (1-\sigma_s(q)) + (1-(1-q) \cdot (1 - |2(1-q)-1|^a)) \cdot \sigma_s(q)$$
 
-## Prediction Function
-**Configuration Success Predictor**: Symbolic regression model for $\mathbf{x} = [x_0, x_1, x_2, x_3, x_4]$
+-  **Amplitude Scaling**: Weight-modulated polynomial
+  $$A(q,a,w) = w \cdot (1 - |2q-1|^a)$$
 
-$$\text{raw\_val} = (1 + e^{-[(((1 + e^{-(x_1 - x_3)^3})^{-1} \cdot c_1 - (x_3 \cdot c_2)) \cdot (x_2 \cdot (x_4 + ((x_0 + c_3)^{c_4} + (c_5^{x_1})))) + (c_6^{(c_7 - x_0)})) \cdot (((c_8 - x_0) \cdot ((x_4 \cdot c_9)^{x_1})) + x_0) \cdot (1 + e^{-x_1})^{-3} + c_{10}]})^{-1}$$
+- **Soft Step**: Identity-like for $p \approx 0.5$, pushes $x$ to extremes otherwise
+  $$\text{soft\_step}(x, p, \alpha, w) = h(x, A(p, \alpha, w))$$
 
-$$\text{cfg\_success\_predict\_fn}(\mathbf{x}) = \text{soft\_step}(\text{raw\_val}, x_0, 5, 10)$$
+Finally, we define
 
-## Constants Table
+$$
+  \text{cfg\_success\_predict\_fn}(\mathbf{x}) = \text{soft\_step}(\text{raw\_val}, x_0, 5, 10)
+$$
 
-| Constant | Value | Constant | Value |
-|----------|-------|----------|-------|
-| $c_1$ | -4.721228 | $c_6$ | 2.4524326 |
-| $c_2$ | 1.4636494 | $c_7$ | 2.9501643 |
-| $c_3$ | 0.048765484 | $c_8$ | 0.9077277 |
-| $c_4$ | 9.746339 | $c_9$ | 1.0520288 |
-| $c_5$ | 0.8998194 | $c_{10}$ | -0.18268494 |
+where `raw_val` is the output of the symbolic regression model. $x_0$ is the percolation probability, while all other parameters from `_to_ps_array()` only affect `raw_val`.
 
-
-
-
+![An example of both empirical and predicted success rates as a function of the percolation probability $p$ for various maze sizes, percolation with and without depth first search, and `endpoint_kwargs` requiring that both the start and end be in unique dead ends.](figures/ep/ep_deadends_unique.pdf)
 
 # Implementation {#implementation}
 
 We refer to our GitHub repository [@maze-dataset-github] for documentation and up-to-date implementation details.
 
-This package utilizes a simple, efficient representation of mazes. Using an adjacency list to represent mazes would lead to a poor lookup time of whether any given connection exists, whilst using a dense adjacency matrix would waste memory by failing to exploit the structure (e.g., only 4 of the diagonals would be filled in).
+This package utilizes a simple, efficient representation of mazes. Using an adjacency list to represent mazes would lead to a poor lookup time of whether any given connection exists, while using an adjacency matrix would waste memory by failing to exploit the structure (e.g., only 4 of the diagonals would be filled in).
 Instead, we describe mazes with the following simple representation: for a $d$-dimensional lattice with $r$ rows and $c$ columns, we initialize a boolean array $A = \{0, 1\}^{d \times r \times c}$, which we refer to in the code as a `connection_list`. The value at $A[0,i,j]$ determines whether a downward connection exists from node $[i,j]$ to $[i+1, j]$. Likewise, the value at $A[1,i,j]$ determines whether a rightwards connection to $[i, j+1]$ exists. Thus, we avoid duplication of data about the existence of connections, at the cost of requiring additional care with indexing when looking for a connection upwards or to the left. Note that this setup allows for a periodic lattice.
 
-To produce solutions to mazes, two points are selected uniformly at random without replacement from the connected component of the maze, and the $A^*$ algorithm [@A_star] is applied to find the shortest path between them.
+To produce solutions to mazes, two points are selected uniformly at random without replacement from the connected component of the maze, and the $A^*$ algorithm [@A_star] is applied to find the shortest path between them. The endpoint selection can be affected by `MazeDatasetConfig.endpoint_kwargs: EndpointKwargsType`, and complications caused by this are detailed in \autoref{success-rate-estimation}.
 
-Parallelization is implemented via the `multiprocessing` module in the Python standard library, and parallel generation can be controlled via keyword arguments to the [`MazeDataset.from_config()`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#MazeDataset.from_config) function.
-
-## Limitations of `maze-dataset` {#limitations}
-
-For simplicity, the package primarily supports mazes that are sub-graphs of a 2-dimensional rectangular lattice. Some support for higher-dimensional lattices is present, but not all output formats are adapted for higher dimensional mazes.
-[Implementation](#implementation-implementation)
-[Implementation](#implementation-implementation)
-
-
+Parallelization is implemented via the `multiprocessing` module in the Python standard library, and parallel generation can be controlled via keyword arguments to [`MazeDataset.from_config()`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#MazeDataset.from_config).
 
 # Usage in Research
 
