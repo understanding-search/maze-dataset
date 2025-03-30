@@ -81,24 +81,24 @@ Solving mazes is a classic problem in computer science and artificial intelligen
 
 The generation of mazes with a given algorithm is not inherently a complex task, but the ability to seamlessly switch out algorithms, modify algorithm parameters, or filter by desired properties all while preserving the ability to convert between different representations of the maze is not trivial. This library aims to greatly streamline the process of generating and working with datasets of mazes that can be described as subgraphs of an $n \times n$ lattice with boolean connections and, optionally, start and end points that are nodes in the graph. Furthermore, we place emphasis on a wide variety of possible text output formats aimed at evaluating the spatial reasoning capabilities of Large Language Models and other text-based transformer models.
 
-For interpretability and behavioral research, algorithmic tasks offer benefits by allowing systematic data generation and task decomposition, as well as simplifying the process of circuit discovery [@interpretability-survery]. Although mazes are well suited for these investigations, we have found that existing maze generation packages [@cobbe2019procgen; @harriesMazeExplorerCustomisable3D2019; @gh_Ehsan_2022; @gh_Nemeth_2019; @easy_to_hard] do not support flexible maze generation algorithms that provide fine-grained control of generation parameters and the ability to easily transform between multiple representations of the mazes (Images, Textual, Tokenized) for training and testing models.
+For interpretability and behavioral research, algorithmic tasks offer benefits by allowing systematic data generation and task decomposition, as well as simplifying the process of circuit discovery [@interpretability-survery]. Although mazes are well suited for these investigations, we have found that existing maze generation packages [@cobbe2019procgen; @harriesMazeExplorerCustomisable3D2019; @gh_Ehsan_2022; @gh_Nemeth_2019; @easy_to_hard] do not support flexible maze generation algorithms that provide fine-grained control of generation parameters and the ability to easily transform between multiple representations of the mazes (Raster, Textual, Tokenized) for training and testing models.
 
 
 ## Related Works
 
 A multitude of public and open-source software packages exist for generating mazes [@easy_to_hard; @gh_Ehsan_2022; @gh_Nemeth_2019]. However, nearly all of these packages generate and store mazes in a form that is not optimized for storage space or, more importantly, computer readability. The mazes produces by other packages are usually rasterized or in some form of image, rather than the underlying graph structure, and this makes it difficult to work with these datasets.
 
-- Most prior works provide mazes in some kind of image or raster format, which is not suitable for training autoregressive text-based transformer models -- a key usage case this work seeks to enable. However, we still provide a variety of similar output formats:
-  - we also include the `RasterizedMazeDataset` class, utilizing `as_pixels()`, in our codebase, which can exactly mimic the outputs provided in `easy-to-hard-data`[@easy_to_hard] and can be configured to be similar to the outputs of [@gh_Nemeth_2019].
-  - Our `as_ascii()` method provides a format similar to that used in [@eval-gpt-visual, @gh-oppenheimj2018maze].
-  - Our `MazePlot` class provides a feature-rich plotting utility with support for multiple paths, heatmaps over positions, and more. This is similar to the outputs of [@mdl-suite, @mathematica-maze, @mazegenerator-net, @gh_Ehsan_2022]
+- Most prior works provide mazes in some kind of image or raster format, and we provide a variety of similar output formats:
+  - `RasterizedMazeDataset`, utilizing `as_pixels()`, which can exactly mimic the outputs provided in `easy-to-hard-data`[@easy_to_hard] and can be configured to be similar to the outputs of @gh_Nemeth_2019
+  - `as_ascii()` provides a format similar to that used in [@eval-gpt-visual; @gh-oppenheimj2018maze]
+  - `MazePlot` provides a feature-rich plotting utility with support for multiple paths, heatmaps over positions, and more. This is similar to the outputs of [@mdl-suite; @mathematica-maze; @mazegenerator-net; @gh_Ehsan_2022]
 
 
-- The text format provided by `SolvedMaze(...).as_tokens()` is similar to that of [@eval-LLM-graphs], but provides over 5.8 million unique formats for converting mazes to a text stream. We maintain a single underlying format, meaning that the same maze can be turned into a variety of text streams to assess how the precise format of the text stream affects the model.
+- The text format provided by `SolvedMaze(...).as_tokens()` is similar to that of [@eval-LLM-graphs], but provides over 5.8 million unique formats for converting mazes to a text stream, detailed in \autoref{tokenized-output-formats}.
 
-- For rigorous investigations of the response of a model to various distributional shifts, preserving metadata about the generation algorithm with the dataset itself is essential. To this end, our package efficiently stores the dataset along with its metadata in a single human-readable file [@zanj]. This metadata is loaded when the dataset is retrieved from disk and makes it simple to understand how exactly each maze was generated. As far as we are aware, no existing packages do this reliably.
+- For rigorous investigations of the response of a model to various distributional shifts, preserving metadata about the generation algorithm with the dataset itself is essential. To this end, our package efficiently stores the dataset along with its metadata in a single human-readable file [@zanj]. As far as we are aware, no existing packages do this reliably.
 
-- Storing mazes as images is not only difficult to work with, but also inefficient. Directly storing adjacency matrices is also inefficient as subgraphs of the lattice are sparse. Storing adjacency lists can be efficient, but comes with a higher lookup cost and possible high comparison cost. We use a simple, efficient representation of mazes that is optimized for subgraphs of a $d$-dimensional finite lattice that we do not believe is used in any existing maze generation package. This method is described in detail in \autoref{implementation}.
+- Storing mazes as images is not only difficult to work with, but also inefficient. We use an extremely efficient method detailed in \autoref{implementation}.
 
 - Our package is easily installable with source code freely available. It is extensively tested, type hinted, benchmarked, and documented. Many other maze generation packages lack this level of rigor and scope, and some [@ayaz2008maze] appear to simply no longer be accessible.
 
@@ -139,7 +139,7 @@ Internally, mazes are [`SolvedMaze`](https://understanding-search.github.io/maze
 
 \begin{figure}[H]
   \centering
-  \begin{tabular}{p{2in} p{2in} p{2in}} 
+  \begin{tabular}{p{1.5in} p{1.5in} p{1.5in}} 
     \hline \\[.5em]
     % algorithms
     \texttt{as\_ascii()} & \texttt{as\_pixels()} & \texttt{MazePlot()} \\[.5em]
@@ -150,6 +150,7 @@ Internally, mazes are [`SolvedMaze`](https://understanding-search.github.io/maze
     \hline \\
     % examples
       \multicolumn{1}{c}{\begin{minipage}[b]{1.6in}
+        \setlength{\baselineskip}{0.9em}
         \input{figures/outputs-ascii-colored.tex} 
       \end{minipage}}
       & \multicolumn{1}{c}{
@@ -176,14 +177,23 @@ To train autoregressive text models such as transformers, we convert mazes to to
 
 There are many algorithms by which one might tokenize a 2D maze into a 1D format usable by autoregressive text models. Training multiple models on the encodings output from each of these algorithms may produce very different internal representations, learned solution algorithms, and levels of performance. To allow exploration of how different maze tokenization algorithms affect these models, the `MazeTokenizerModular` class contains a rich set of options to customize how mazes are stringified. This class contains 19 discrete parameters, resulting in over 5.8 million unique tokenizers. But wait, there's more! There are 6 additional parameters available in the library which are untested but further expand the the number of tokenizers by a factor of $44/3$ to 86 million.
 
-All output sequences consist of four token regions representing different features of the maze. These regions are distinguished by color in \autoref{fig:token-regions}.
+All output sequences consist of four token regions representing different features of the maze of which we see an example in \autoref{fig:token-regions}.
 
-- <span style="background-color:rgb(217,210,233)">Adjacency list</span>: A text representation of the lattice graph
-- <span style="background-color:rgb(217,234,211)">Origin</span>: Starting coordinate
-- <span style="background-color:rgb(234,209,220)">Target</span>: Ending coordinate
-- <span style="background-color:rgb(207,226,243)">Path</span>: Maze solution sequence from the start to the end
-
-![Example text output format with token regions highlighted.](figures/outputs-tokens-colored.tex){#fig:token-regions}
+\begin{figure} 
+  \centering
+  \begin{minipage}{5in}
+    \footnotesize
+    \input{figures/outputs-tokens-colored.tex}
+  \end{minipage}
+  \caption{
+    Example text output format with token regions highlighted.
+    \colorbox[RGB]{ 217,210,233 }{Adjacency list}: text representation of the lattice graph,
+    \colorbox[RGB]{ 217,234,211 }{Origin}: starting coordinate,
+    \colorbox[RGB]{ 234,209,220 }{Target}: ending coordinate,
+    \colorbox[RGB]{ 207,226,243 }{Path}: maze solution sequence
+  }
+  \label{fig:token-regions}
+\end{figure}
 
 Each `MazeTokenizerModular` is constructed from a set of several `_TokenizerElement` objects, each of which specifies how different token regions or other elements of the stringification are produced.
 
@@ -222,39 +232,40 @@ We provide approximate benchmarks for relative generation time across various al
 
 ![Plots of maze generation time. Generation time scales exponentially with maze size for all algorithms (left). Generation time does not depend on the number of mazes being generated, and there is minimal overhead to initializing the generation process for a small dataset (right). Wilson's algorithm is notably less efficient than others and has high variance. Note that for both plots, values are averaged across all parameter sets for that algorithm, and parallelization is disabled.](docs/benchmarks/figures/gridsize-vs-gentime.pdf){width=95%}
 
-## Success Rate Estimation
+## Success Rate Estimation {#success-rate-estimation}
 
 In order to replicate the exact dataset distribution of [@easy_to_hard], we allow placing additional constraints in `MazeDatasetConfig.endpoint_kwargs: EndpointKwargsType`, such as enforcing that the start or end point be in a "dead end" with only one accessible neighbor cell. However, combining this with cyclic mazes (such as those generated with percolation), as was required for the work in [@knutson2024logicalextrapolation], can lead to an absence of valid start and end points. Placing theoretical bounds on this success rate is difficult, as it depends on the exact maze generation algorithm and parameters used. However, our package provides a way to estimate the success rate of a given configuration using a symbolic regression model trained with PySR [@pysr]. More details on this can be found in [`estimate_dataset_fractions.ipynb`](https://understanding-search.github.io/maze-dataset/notebooks/estimate_dataset_fractions.html). 
 
 Using the estimation simply requires the user to call `cfg_new: MazeDatasetConfig = cfg.success_fraction_compensate()` given their predefined `cfg`.
 
-### Success Rate Estimation Algorithm {#success-rate-estimation}
+### Success Rate Estimation Algorithm
 
 The base function learned by symbolic regression is not particularly insightful, and is potentially subject to change. It is defined as [`cfg_success_predict_fn`](https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/success_predict_math.html#cfg_success_predict_fn), and takes a 5 dimensional float vector created by `MazeDatasetConfig._to_ps_array()` which represents the 0) percolation value 1) grid size 2) endpoint deadend configuration 3) endpoint uniqueness 4) categorical generation function index.
 
 However, the outputs of this function are not directly usable due to minor divergences at the endpoints with respect to the percolation probability $p$. Since we know that maze success is either guaranteed or impossible for $p=0$ and $p=1$, we define the `soft_step` function to nudge the raw output of the symbolic regression. This function is defined with:
 
-- **Shifted Sigmoid**: Creates sharp transition at $x=0.5$
-  $$\sigma_s(x) = (1 + e^{-10^3 \cdot (x-0.5)})^{-1}$$
+A shifted sigmoid $\sigma_s$, amplitude scaling $A$, and $h$ function:
+$$
+  \sigma_s(x) = (1 + e^{-10^3 \cdot (x-0.5)})^{-1}
+  \qquad A(q,a,w) = w \cdot (1 - |2q-1|^a)
+$$
+$$
+  h(q,a) = q \cdot (1 - |2q-1|^a) \cdot (1-\sigma_s(q)) + (1-(1-q) \cdot (1 - |2(1-q)-1|^a)) \cdot \sigma_s(q)
+$$
 
--  **h-function**: Transition function combining polynomial and sigmoid components
-  $$h(q,a) = q \cdot (1 - |2q-1|^a) \cdot (1-\sigma_s(q)) + (1-(1-q) \cdot (1 - |2(1-q)-1|^a)) \cdot \sigma_s(q)$$
-
--  **Amplitude Scaling**: Weight-modulated polynomial
-  $$A(q,a,w) = w \cdot (1 - |2q-1|^a)$$
-
-- **Soft Step**: Identity-like for $p \approx 0.5$, pushes $x$ to extremes otherwise
-  $$\text{soft\_step}(x, p, \alpha, w) = h(x, A(p, \alpha, w))$$
+We combine these to get the `soft_step` function, which is identity-like for $p \approx 0.5$, and pushes pushes $x$ to extremes otherwise.
+$$
+  \text{soft\_step}(x, p, \alpha, w) = h(x, A(p, \alpha, w))
+$$
 
 Finally, we define
-
 $$
   \text{cfg\_success\_predict\_fn}(\mathbf{x}) = \text{soft\_step}(\text{raw\_val}, x_0, 5, 10)
 $$
 
 where `raw_val` is the output of the symbolic regression model. $x_0$ is the percolation probability, while all other parameters from `_to_ps_array()` only affect `raw_val`.
 
-![An example of both empirical and predicted success rates as a function of the percolation probability $p$ for various maze sizes, percolation with and without depth first search, and `endpoint_kwargs` requiring that both the start and end be in unique dead ends.](figures/ep/ep_deadends_unique.pdf)
+![An example of both empirical and predicted success rates as a function of the percolation probability $p$ for various maze sizes, percolation with and without depth first search, and `endpoint_kwargs` requiring that both the start and end be in unique dead ends.](figures/ep/ep_deadends_unique.pdf){width=100%}
 
 # Implementation {#implementation}
 
@@ -269,7 +280,7 @@ Parallelization is implemented via the `multiprocessing` module in the Python st
 
 # Usage in Research
 
-This package was originally built for the needs of the [@maze-transformer-github] project, which aims to investigate spatial planning and world models in autoregressive transformer models trained on mazes [@ivanitskiy2023structuredworldreps, @spies2024causalworldmodels]. This project has also adapted itself to be useful for work on understanding the mechanisms by which recurrent convolutional and implicit networks [@fung2022jfb] solve mazes given a rasterized view [@knutson2024logicalextrapolation], and for this we match the output format of [@easy_to_hard].
+This package was originally built for the needs of the [@maze-transformer-github] project, which aims to investigate spatial planning and world models in autoregressive transformer models trained on mazes [@ivanitskiy2023structuredworldreps; @spies2024causalworldmodels]. This project has also adapted itself to be useful for work on understanding the mechanisms by which recurrent convolutional and implicit networks [@fung2022jfb] solve mazes given a rasterized view [@knutson2024logicalextrapolation], and for this we match the output format of [@easy_to_hard].
 
 This package has also been utilized in work by other groups:
 
@@ -278,15 +289,18 @@ This package has also been utilized in work by other groups:
 - [@wang2024imperative] and [@chen2024iaimperative] use `maze-dataset` to study the effectiveness of imperative learning
 
 
-# Conclusion {#conclusion}
+<!-- # Conclusion {#conclusion}
 
 The [`maze-dataset`](https://github.com/understanding-search/maze-dataset) library [@maze-dataset-github] introduced in this paper provides a flexible and extensible toolkit for generating, processing, and analyzing maze datasets. By supporting various procedural generation algorithms and conversion utilities, it enables the creation of mazes with customizable properties to suit diverse research needs. 
-Planned improvements to the `maze-dataset` include adding more generation algorithms (such as Prim's algorithm [@jarnik-prim; @prim; @dijkstra-prim] and Kruskal's algorithm [@kruskal], among others [@mazegen_analysis]), adding the ability to augment a maze with an adjacency list to add "shortcuts" to the maze, and resolving certain limitations detailed in Section [Limitations](#limitations).
+Planned improvements to the `maze-dataset` include adding more generation algorithms (such as Prim's algorithm [@jarnik-prim; @prim; @dijkstra-prim] and Kruskal's algorithm [@kruskal], among others [@mazegen_analysis]), adding the ability to augment a maze with an adjacency list to add "shortcuts" to the maze, and resolving certain limitations detailed in Section [Limitations](#limitations). -->
 
 # Acknowledgements
 
-This work was partially supported by and many of the authors were brought together by AI Safety Camp and AI Safety Support.
+This work was partially supported by and many of the authors were brought together by AI Safety Camp and AI Safety Support. We would like to thank our former collaborators at AI Safety Camp and other users and contributors to the  `maze-dataset` package: Naveen Arunachalam, Benji Berczi, Guillaume Corlouer, William Edwards, Leon Eshuijs, Chris Mathwin, Lucia Quirke, Can Rager, Adrians Skapars, Johannes Treutlein, and Dan Valentine.
+
+
 This work was partially funded by National Science Foundation awards DMS-2110745 and DMS-2309810. We are also grateful to LTFF and FAR Labs for hosting three of the authors for a Residency Visit, and to various members of FAR’s technical staff for their advice.
+
 We thank the Mines Optimization and Deep Learning group (MODL) for fruitful discussions. We also thank Michael Rosenberg for recommending the usage of Finite State Transducers for storing tokenizer validation information.
 
 

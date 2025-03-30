@@ -523,7 +523,7 @@ al., n.d.}; \protect\hyperlink{ref-gh_Nemeth_2019}{Németh, 2019};
 Bansal, et al., 2021}) do not support flexible maze generation
 algorithms that provide fine-grained control of generation parameters
 and the ability to easily transform between multiple representations of
-the mazes (Images, Textual, Tokenized) for training and testing models.
+the mazes (Raster, Textual, Tokenized) for training and testing models.
 
 \hypertarget{related-works}{%
 \subsection{Related Works}\label{related-works}}
@@ -542,57 +542,47 @@ these datasets.
 \begin{itemize}
 \item
   Most prior works provide mazes in some kind of image or raster format,
-  which is not suitable for training autoregressive text-based
-  transformer models -- a key usage case this work seeks to enable.
-  However, we still provide a variety of similar output formats:
+  and we provide a variety of similar output formats:
 
   \begin{itemize}
   \tightlist
   \item
-    we also include the \texttt{RasterizedMazeDataset} class, utilizing
-    \texttt{as\_pixels()}, in our codebase, which can exactly mimic the
-    outputs provided in
+    \texttt{RasterizedMazeDataset}, utilizing \texttt{as\_pixels()},
+    which can exactly mimic the outputs provided in
     \texttt{easy-to-hard-data}(\protect\hyperlink{ref-easy_to_hard}{Schwarzschild,
     Borgnia, Gupta, Bansal, et al., 2021}) and can be configured to be
-    similar to the outputs of
-    (\protect\hyperlink{ref-gh_Nemeth_2019}{Németh, 2019}).
+    similar to the outputs of Németh
+    (\protect\hyperlink{ref-gh_Nemeth_2019}{2019})
   \item
-    Our \texttt{as\_ascii()} method provides a format similar to that
-    used in Oppenheim
-    (\protect\hyperlink{ref-gh-oppenheimj2018maze}{2018}).
+    \texttt{as\_ascii()} provides a format similar to that used in
+    (\protect\hyperlink{ref-gh-oppenheimj2018maze}{Oppenheim, 2018};
+    \protect\hyperlink{ref-eval-gpt-visual}{Singla, 2023})
   \item
-    Our \texttt{MazePlot} class provides a feature-rich plotting utility
-    with support for multiple paths, heatmaps over positions, and more.
-    This is similar to the outputs of Ehsan
-    (\protect\hyperlink{ref-gh_Ehsan_2022}{2022})
+    \texttt{MazePlot} provides a feature-rich plotting utility with
+    support for multiple paths, heatmaps over positions, and more. This
+    is similar to the outputs of
+    (\protect\hyperlink{ref-mazegenerator-net}{Alance AB, 2019};
+    \protect\hyperlink{ref-gh_Ehsan_2022}{Ehsan, 2022};
+    \protect\hyperlink{ref-mathematica-maze}{Guo et al., 2011};
+    \protect\hyperlink{ref-mdl-suite}{Nag, 2020})
   \end{itemize}
 \item
   The text format provided by \texttt{SolvedMaze(...).as\_tokens()} is
   similar to that of (\protect\hyperlink{ref-eval-LLM-graphs}{Liu \& Wu,
   2023}), but provides over 5.8 million unique formats for converting
-  mazes to a text stream. We maintain a single underlying format,
-  meaning that the same maze can be turned into a variety of text
-  streams to assess how the precise format of the text stream affects
-  the model.
+  mazes to a text stream, detailed in
+  \autoref{tokenized-output-formats}.
 \item
   For rigorous investigations of the response of a model to various
   distributional shifts, preserving metadata about the generation
   algorithm with the dataset itself is essential. To this end, our
   package efficiently stores the dataset along with its metadata in a
   single human-readable file (\protect\hyperlink{ref-zanj}{M.
-  Ivanitskiy, n.d.}). This metadata is loaded when the dataset is
-  retrieved from disk and makes it simple to understand how exactly each
-  maze was generated. As far as we are aware, no existing packages do
+  Ivanitskiy, n.d.}). As far as we are aware, no existing packages do
   this reliably.
 \item
   Storing mazes as images is not only difficult to work with, but also
-  inefficient. Directly storing adjacency matrices is also inefficient
-  as subgraphs of the lattice are sparse. Storing adjacency lists can be
-  efficient, but comes with a higher lookup cost and possible high
-  comparison cost. We use a simple, efficient representation of mazes
-  that is optimized for subgraphs of a \(d\)-dimensional finite lattice
-  that we do not believe is used in any existing maze generation
-  package. This method is described in detail in
+  inefficient. We use an extremely efficient method detailed in
   \autoref{implementation}.
 \item
   Our package is easily installable with source code freely available.
@@ -650,7 +640,7 @@ algorithms based on randomized depth-first search, Wilson's algorithm
 (\protect\hyperlink{ref-percolation}{Duminil-Copin, 2017};
 \protect\hyperlink{ref-percolation-clustersize}{Fisher \& Essam, 2004}),
 Kruskal's algorithm
-(\protect\hyperlink{ref-kruskal1956shortest}{Kruskal, 1956a}), and
+(\protect\hyperlink{ref-kruskal1956shortest}{Kruskal, 1956}), and
 others.
 
 Furthermore, a dataset of mazes can be filtered to satisfy certain
@@ -681,7 +671,7 @@ and from several formats.
 
 \begin{figure}[H]
   \centering
-  \begin{tabular}{p{2in} p{2in} p{2in}} 
+  \begin{tabular}{p{1.5in} p{1.5in} p{1.5in}} 
     \hline \\[.5em]
     % algorithms
     \texttt{as\_ascii()} & \texttt{as\_pixels()} & \texttt{MazePlot()} \\[.5em]
@@ -692,6 +682,7 @@ and from several formats.
     \hline \\
     % examples
       \multicolumn{1}{c}{\begin{minipage}[b]{1.6in}
+        \setlength{\baselineskip}{0.9em}
         \input{figures/outputs-ascii-colored.tex} 
       \end{minipage}}
       & \multicolumn{1}{c}{
@@ -754,28 +745,23 @@ which are untested but further expand the the number of tokenizers by a
 factor of \(44/3\) to 86 million.
 
 All output sequences consist of four token regions representing
-different features of the maze. These regions are distinguished by color
-in \autoref{fig:token-regions}.
+different features of the maze of which we see an example in
+\autoref{fig:token-regions}.
 
-\begin{itemize}
-\tightlist
-\item
-  {Adjacency list}: A text representation of the lattice graph
-\item
-  {Origin}: Starting coordinate
-\item
-  {Target}: Ending coordinate
-\item
-  {Path}: Maze solution sequence from the start to the end
-\end{itemize}
-
-\begin{figure}
-\hypertarget{fig:token-regions}{%
-\centering
-\includegraphics{figures/outputs-tokens-colored.tex}
-\caption{Example text output format with token regions
-highlighted.}\label{fig:token-regions}
-}
+\begin{figure} 
+  \centering
+  \begin{minipage}{5in}
+    \footnotesize
+    \input{figures/outputs-tokens-colored.tex}
+  \end{minipage}
+  \caption{
+    Example text output format with token regions highlighted.
+    \colorbox[RGB]{ 217,210,233 }{Adjacency list}: text representation of the lattice graph,
+    \colorbox[RGB]{ 217,234,211 }{Origin}: starting coordinate,
+    \colorbox[RGB]{ 234,209,220 }{Target}: ending coordinate,
+    \colorbox[RGB]{ 207,226,243 }{Path}: maze solution sequence
+  }
+  \label{fig:token-regions}
 \end{figure}
 
 Each \texttt{MazeTokenizerModular} is constructed from a set of several
@@ -894,9 +880,9 @@ Using the estimation simply requires the user to call
 \texttt{cfg\_new:\ MazeDatasetConfig\ =\ cfg.success\_fraction\_compensate()}
 given their predefined \texttt{cfg}.
 
-\hypertarget{success-rate-estimation}{%
+\hypertarget{success-rate-estimation-algorithm}{%
 \subsubsection{Success Rate Estimation
-Algorithm}\label{success-rate-estimation}}
+Algorithm}\label{success-rate-estimation-algorithm}}
 
 The base function learned by symbolic regression is not particularly
 insightful, and is potentially subject to change. It is defined as
@@ -913,26 +899,21 @@ or impossible for \(p=0\) and \(p=1\), we define the \texttt{soft\_step}
 function to nudge the raw output of the symbolic regression. This
 function is defined with:
 
-\begin{itemize}
-\item
-  \textbf{Shifted Sigmoid}: Creates sharp transition at \(x=0.5\)
-  \[\sigma_s(x) = (1 + e^{-10^3 \cdot (x-0.5)})^{-1}\]
-\item
-  \textbf{h-function}: Transition function combining polynomial and
-  sigmoid components
-  \[h(q,a) = q \cdot (1 - |2q-1|^a) \cdot (1-\sigma_s(q)) + (1-(1-q) \cdot (1 - |2(1-q)-1|^a)) \cdot \sigma_s(q)\]
-\item
-  \textbf{Amplitude Scaling}: Weight-modulated polynomial
-  \[A(q,a,w) = w \cdot (1 - |2q-1|^a)\]
-\item
-  \textbf{Soft Step}: Identity-like for \(p \approx 0.5\), pushes \(x\)
-  to extremes otherwise
-  \[\text{soft\_step}(x, p, \alpha, w) = h(x, A(p, \alpha, w))\]
-\end{itemize}
+A shifted sigmoid \(\sigma_s\), amplitude scaling \(A\), and \(h\)
+function: \[
+  \sigma_s(x) = (1 + e^{-10^3 \cdot (x-0.5)})^{-1}
+  \qquad A(q,a,w) = w \cdot (1 - |2q-1|^a)
+\] \[
+  h(q,a) = q \cdot (1 - |2q-1|^a) \cdot (1-\sigma_s(q)) + (1-(1-q) \cdot (1 - |2(1-q)-1|^a)) \cdot \sigma_s(q)
+\]
 
-Finally, we define
+We combine these to get the \texttt{soft\_step} function, which is
+identity-like for \(p \approx 0.5\), and pushes pushes \(x\) to extremes
+otherwise. \[
+  \text{soft\_step}(x, p, \alpha, w) = h(x, A(p, \alpha, w))
+\]
 
-\[
+Finally, we define \[
   \text{cfg\_success\_predict\_fn}(\mathbf{x}) = \text{soft\_step}(\text{raw\_val}, x_0, 5, 10)
 \]
 
@@ -942,7 +923,7 @@ where \texttt{raw\_val} is the output of the symbolic regression model.
 
 \begin{figure}
 \centering
-\includegraphics{figures/ep/ep_deadends_unique.pdf}
+\includegraphics[width=1\textwidth,height=\textheight]{figures/ep/ep_deadends_unique.pdf}
 \caption{An example of both empirical and predicted success rates as a
 function of the percolation probability \(p\) for various maze sizes,
 percolation with and without depth first search, and
@@ -993,12 +974,14 @@ controlled via keyword arguments to
 This package was originally built for the needs of the
 (\protect\hyperlink{ref-maze-transformer-github}{Michael I. Ivanitskiy
 et al., 2023b}) project, which aims to investigate spatial planning and
-world models in autoregressive transformer models trained on mazes Spies
-et al. (\protect\hyperlink{ref-spies2024causalworldmodels}{2024}). This
-project has also adapted itself to be useful for work on understanding
-the mechanisms by which recurrent convolutional and implicit networks
-(\protect\hyperlink{ref-fung2022jfb}{Fung et al., 2022}) solve mazes
-given a rasterized view
+world models in autoregressive transformer models trained on mazes
+(\protect\hyperlink{ref-ivanitskiy2023structuredworldreps}{Michael
+Igorevich Ivanitskiy et al., 2023};
+\protect\hyperlink{ref-spies2024causalworldmodels}{Spies et al., 2024}).
+This project has also adapted itself to be useful for work on
+understanding the mechanisms by which recurrent convolutional and
+implicit networks (\protect\hyperlink{ref-fung2022jfb}{Fung et al.,
+2022}) solve mazes given a rasterized view
 (\protect\hyperlink{ref-knutson2024logicalextrapolation}{Knutson et al.,
 2024}), and for this we match the output format of
 (\protect\hyperlink{ref-easy_to_hard}{Schwarzschild, Borgnia, Gupta,
@@ -1021,39 +1004,26 @@ This package has also been utilized in work by other groups:
   learning
 \end{itemize}
 
-\hypertarget{conclusion}{%
-\section{Conclusion}\label{conclusion}}
-
-The
-\href{https://github.com/understanding-search/maze-dataset}{\texttt{maze-dataset}}
-library (\protect\hyperlink{ref-maze-dataset-github}{Michael I.
-Ivanitskiy et al., 2023a}) introduced in this paper provides a flexible
-and extensible toolkit for generating, processing, and analyzing maze
-datasets. By supporting various procedural generation algorithms and
-conversion utilities, it enables the creation of mazes with customizable
-properties to suit diverse research needs. Planned improvements to the
-\texttt{maze-dataset} include adding more generation algorithms (such as
-Prim's algorithm (\protect\hyperlink{ref-dijkstra-prim}{Dijkstra, 1959};
-\protect\hyperlink{ref-jarnik-prim}{Jarnık, 1930};
-\protect\hyperlink{ref-prim}{Prim, 1957}) and Kruskal's algorithm
-(\protect\hyperlink{ref-kruskal}{Kruskal, 1956b}), among others
-(\protect\hyperlink{ref-mazegen_analysis}{Gabrovšek, 2019})), adding the
-ability to augment a maze with an adjacency list to add ``shortcuts'' to
-the maze, and resolving certain limitations detailed in Section
-\protect\hyperlink{limitations}{Limitations}.
-
 \hypertarget{acknowledgements}{%
 \section{Acknowledgements}\label{acknowledgements}}
 
 This work was partially supported by and many of the authors were
-brought together by AI Safety Camp and AI Safety Support. This work was
-partially funded by National Science Foundation awards DMS-2110745 and
-DMS-2309810. We are also grateful to LTFF and FAR Labs for hosting three
-of the authors for a Residency Visit, and to various members of FAR's
-technical staff for their advice. We thank the Mines Optimization and
-Deep Learning group (MODL) for fruitful discussions. We also thank
-Michael Rosenberg for recommending the usage of Finite State Transducers
-for storing tokenizer validation information.
+brought together by AI Safety Camp and AI Safety Support. We would like
+to thank our former collaborators at AI Safety Camp and other users and
+contributors to the \texttt{maze-dataset} package: Naveen Arunachalam,
+Benji Berczi, Guillaume Corlouer, William Edwards, Leon Eshuijs, Chris
+Mathwin, Lucia Quirke, Can Rager, Adrians Skapars, Johannes Treutlein,
+and Dan Valentine.
+
+This work was partially funded by National Science Foundation awards
+DMS-2110745 and DMS-2309810. We are also grateful to LTFF and FAR Labs
+for hosting three of the authors for a Residency Visit, and to various
+members of FAR's technical staff for their advice.
+
+We thank the Mines Optimization and Deep Learning group (MODL) for
+fruitful discussions. We also thank Michael Rosenberg for recommending
+the usage of Finite State Transducers for storing tokenizer validation
+information.
 
 \hypertarget{references}{%
 \section*{References}\label{references}}
@@ -1085,10 +1055,6 @@ Preprint arXiv:1912.01588}.
 Cranmer, M. (2023). Interpretable machine learning for science with PySR
 and SymbolicRegression. jl. \emph{arXiv Preprint arXiv:2305.01582}.
 
-\leavevmode\vadjust pre{\hypertarget{ref-dijkstra-prim}{}}%
-Dijkstra, E. W. (1959). \emph{A note on two problems in connexion with
-graphs:({Numerische Mathematik}, 1 (1959), p 269-271)}.
-
 \leavevmode\vadjust pre{\hypertarget{ref-percolation}{}}%
 Duminil-Copin, H. (2017). \emph{Sixty years of percolation} (No.
 arXiv:1712.04651). {arXiv}. \url{http://arxiv.org/abs/1712.04651}
@@ -1106,11 +1072,6 @@ Fung, S. W., Heaton, H., Li, Q., McKenzie, D., Osher, S., \& Yin, W.
 (2022). Jfb: Jacobian-free backpropagation for implicit networks.
 \emph{Proceedings of the AAAI Conference on Artificial Intelligence},
 \emph{36}, 6648--6656.
-
-\leavevmode\vadjust pre{\hypertarget{ref-mazegen_analysis}{}}%
-Gabrovšek. (2019). Analysis of maze generating algorithms. \emph{{IPSI
-Transactions} on {Internet Research}}, \emph{15.1}, 23--30.
-\url{http://www.ipsitransactions.org/journals/papers/tir/2019jan/p5.pdf}
 
 \leavevmode\vadjust pre{\hypertarget{ref-mathematica-maze}{}}%
 Guo, C., Barthelet, L., \& Morris, R. (2011). \emph{Maze generator and
@@ -1151,10 +1112,6 @@ Mathwin, C., Quirke, L., Rager, C., Shah, R., Valentine, D., Behn, C.
 D., \& others. (2023). Structured world representations in maze-solving
 transformers. \emph{arXiv Preprint arXiv:2312.02566}.
 
-\leavevmode\vadjust pre{\hypertarget{ref-jarnik-prim}{}}%
-Jarnık, V. (1930). About a certain minimal problem. \emph{Práce Moravské
-Prırodovedecké Spolecnosti}, \emph{6}, 57--63.
-
 \leavevmode\vadjust pre{\hypertarget{ref-MLMU-kitouni2024factorization}{}}%
 Kitouni, O., Nolte, N. S., Williams, A., Rabbat, M., Bouchacourt, D., \&
 Ibrahim, M. (2024). The factorization curse: Which tokens you predict
@@ -1168,15 +1125,9 @@ extrapolation for mazes with recurrent and implicit networks.
 \emph{arXiv Preprint arXiv:2410.03020}.
 
 \leavevmode\vadjust pre{\hypertarget{ref-kruskal1956shortest}{}}%
-Kruskal, J. B. (1956a). On the shortest spanning subtree of a graph and
+Kruskal, J. B. (1956). On the shortest spanning subtree of a graph and
 the traveling salesman problem. \emph{Proceedings of the American
 Mathematical Society}, \emph{7}(1), 48--50.
-
-\leavevmode\vadjust pre{\hypertarget{ref-kruskal}{}}%
-Kruskal, J. B. (1956b). On the shortest spanning subtree of a graph and
-the traveling salesman problem. \emph{Proceedings of the American
-Mathematical Society}, \emph{7}(1), 48--50.
-\url{https://doi.org/10.1090/S0002-9939-1956-0078686-7}
 
 \leavevmode\vadjust pre{\hypertarget{ref-eval-LLM-graphs}{}}%
 Liu, C., \& Wu, B. (2023). Evaluating large language models on graphs:
@@ -1212,11 +1163,6 @@ Wallach, H. Larochelle, A. Beygelzimer, F. d'Alché-Buc, E. Fox, \& R.
 Garnett (Eds.), \emph{Advances in neural information processing systems
 32} (pp. 8024--8035). Curran Associates, Inc.
 \url{http://papers.neurips.cc/paper/9015-pytorch-an-imperative-style-high-performance-deep-learning-library.pdf}
-
-\leavevmode\vadjust pre{\hypertarget{ref-prim}{}}%
-Prim, R. C. (1957). Shortest connection networks and some
-generalizations. \emph{The Bell System Technical Journal}, \emph{36}(6),
-1389--1401.
 
 \leavevmode\vadjust pre{\hypertarget{ref-interpretability-survery}{}}%
 Räuker, T., Ho, A., Casper, S., \& Hadfield-Menell, D. (2023). Toward

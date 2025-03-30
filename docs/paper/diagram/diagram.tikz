@@ -1,7 +1,7 @@
 \begin{tikzpicture}[remember picture]
 	% Background image node
 	\node[anchor=south west,inner sep=0] (img) at (0,0) {%
-	  \includegraphics{docs/paper/diagram/diagram.pdf}%
+	  \includegraphics{diagram/diagram.pdf}%
 	};
 
   % Box 1: MazeDatasetConfig
