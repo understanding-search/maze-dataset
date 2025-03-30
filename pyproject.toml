@@ -249,7 +249,10 @@
 				"PTH100",
 				"PTH118",
 			]
-			"docs/*" = ["ALL"] # not our problem
+			"docs/resources/make_docs.py" = ["ALL"] # not our problem
+			"docs/*" = [
+				"INP001", # scripts, not modules
+			]
 			"test.ipynb" = ["ALL"] # this is just a test notebook
 			"**/*.ipynb" = [
 				"D103", # dont need docstrings
