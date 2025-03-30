@@ -487,7 +487,7 @@ type hinted, benchmarked, and documented.
 
 \begin{figure} 
   \begin{minipage}{5in}
-    \input{docs/paper/diagram/diagram.tikz} 
+    \input{diagram/diagram.tikz} 
   \end{minipage}
   \caption{Usage of maze-dataset. We create a `MazeDataset` from a `MazeDatasetConfig`. This contains `SolvedMaze` objects which can be converted to and from a variety of formats. Code in the image contains clickable links to \href{https://understanding-search.github.io/maze-dataset/maze_dataset.html}{documentation}. A variety of generated examples can be viewed \href{https://understanding-search.github.io/maze-dataset/examples/maze_examples.html}{here}.}
   \label{fig:diagram}
@@ -737,7 +737,7 @@ over positions, and more. \\
 \begin{figure}
 \hypertarget{fig:visualoutputs}{%
 \centering
-\includegraphics{docs/paper/figures/output-fmts.pdf}
+\includegraphics{figures/output-fmts.pdf}
 \caption{Various output formats. Top row (left to right): ASCII diagram,
 rasterized pixel grid, and advanced display.}\label{fig:visualoutputs}
 }
@@ -759,7 +759,7 @@ in \autoref{fig:e2hraster} below.
 \begin{figure}
 \hypertarget{fig:e2hraster}{%
 \centering
-\includegraphics[width=0.3\textwidth,height=\textheight]{docs/paper/figures/maze-raster-input-target.pdf}
+\includegraphics[width=0.3\textwidth,height=\textheight]{figures/maze-raster-input-target.pdf}
 \caption{Input is the rasterized maze without the path marked (left),
 and provide as a target the maze with all but the correct path removed.
 Configuration options exist to adjust whether endpoints are included and
@@ -814,7 +814,7 @@ in Figure below.
 
 \begin{figure}
 \centering
-\includegraphics{docs/paper/figures/outputs-tokens-colored.tex}
+\includegraphics{figures/outputs-tokens-colored.tex}
 \caption{Example text output format with token regions highlighted.}
 \end{figure}
 
@@ -825,7 +825,7 @@ produced.
 
 \begin{figure}
     \centering
-    \input{docs/paper/figures/TokenizerElement_structure.tikz}
+    \input{figures/TokenizerElement_structure.tikz}
     \caption{Nested internal structure of \texttt{\_TokenizerElement} objects inside a typical \texttt{MazeTokenizerModular} object.}
 \end{figure}
 
@@ -1048,7 +1048,7 @@ gen\_wilson & -- & 767.9 & 10.1 & 212.9 & 4530.4 \\
 
 \begin{figure}
 \centering
-\includegraphics[width=0.95\textwidth,height=\textheight]{docs/benchmarks/figures/gridsize-vs-gentime.pdf}
+\includegraphics[width=0.95\textwidth,height=\textheight]{../benchmarks/figures/gridsize-vs-gentime.pdf}
 \caption{Plots of maze generation time. Generation time scales
 exponentially with maze size for all algorithms (left). Generation time
 does not depend on the number of mazes being generated, and there is
@@ -1061,7 +1061,7 @@ parallelization is disabled.}
 
 \begin{figure}
 \centering
-\includegraphics{docs/benchmarks/figures/n_mazes-vs-gentime.pdf}
+\includegraphics{../benchmarks/figures/n_mazes-vs-gentime.pdf}
 \caption{Maze size vs generation time}
 \end{figure}
 
