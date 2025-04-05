@@ -198,7 +198,7 @@ All output sequences consist of four token regions representing different featur
   \end{minipage}
   \caption{
     Example text output format with token regions highlighted.
-    \colorbox[RGB]{ 217,210,233 }{Adjacency list}: text representation of the lattice graph,
+    \colorbox[RGB]{ 217,210,233 }{Adjacency list}: text representation of the graph,
     \colorbox[RGB]{ 217,234,211 }{Origin}: starting coordinate,
     \colorbox[RGB]{ 234,209,220 }{Target}: ending coordinate,
     \colorbox[RGB]{ 207,226,243 }{Path}: maze solution sequence
