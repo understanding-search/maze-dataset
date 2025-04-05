@@ -9,15 +9,17 @@ tags:
 authors:
   - name: Michael Igorevich Ivanitskiy
     orcid: 0000-0002-4213-4993
-    affiliation: 1
+    affiliation: 1, 3
     corresponding: true
   - name: Aaron Sandoval
     orcid: 0009-0002-8380-6140
+    affiliation: 2
   - name: Alex F. Spies
     orcid: 0000-0002-8708-1530
-    affiliation: 2
+    affiliation: 2, 3
   - name: Tilman Räuker
     orcid: 0009-0009-6321-4413
+    affiliation: 2
   - name: Brandon Knutson
     orcid: 0009-0004-8413-0239
     affiliation: 1
@@ -32,6 +34,10 @@ affiliations:
     index: 1
   - name: Imperial College London
     index: 2
+  - name: unsearch.org
+    index: 3
+  - name: Independent
+    index: 4
 date: 30 March 2025
 bibliography: refs.bib
 header-includes: |
