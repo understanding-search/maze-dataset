@@ -138,8 +138,7 @@ Furthermore, a dataset of mazes can be filtered to satisfy certain properties. C
 dataset_filtered: MazeDataset = dataset.filter_by.path_length(min_length=3)
 ```
 
-All implemented maze generation algorithms are stochastic by nature. For reproducibility, the `seed` parameter of [`MazeDatasetConfig`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#MazeDatasetConfig) may be set. In practice, we do not find that exact duplicates of mazes are generated with any meaningful frequency, even when generating large datasets.
-
+All implemented maze generation algorithms are stochastic by nature. For reproducibility, the `seed` parameter of [`MazeDatasetConfig`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#MazeDatasetConfig) may be set. In practice, using provided deduplication filters, we do find that exact duplicate mazes are generated very infrequently, even when generating very large datasets.
 
 ## Visual Output Formats {#visual-output-formats}
 
