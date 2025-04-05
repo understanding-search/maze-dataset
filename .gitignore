@@ -1,23 +1,19 @@
 # custom
 .DS_Store
+*.bak
 data/**
 tests/_temp/**
-.coverage
-htmlcov/
 .vscode/**
+.coverage
 notebooks/data/**
 notebooks/tests/**
-*.bak
 # pysr outputs
 notebooks/outputs/**
 outputs/**
 # paper:
 docs/paper/inara*
 docs/paper/output/**
-
-# paper related
-docs/paper/inara*
-docs/paper/output/**
+docs/paper/comments/**
 media/**
 joss/**
 
