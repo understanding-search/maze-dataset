@@ -333,7 +333,7 @@ Planned improvements to the `maze-dataset` include adding more generation algori
 This work was partially supported by and many of the authors were brought together by AI Safety Camp and AI Safety Support. We would like to thank our former collaborators at AI Safety Camp and other users and contributors to the  `maze-dataset` package: Naveen Arunachalam, Benji Berczi, Guillaume Corlouer, William Edwards, Leon Eshuijs, Chris Mathwin, Lucia Quirke, Can Rager, Adrians Skapars, Johannes Treutlein, and Dan Valentine.
 
 
-This work was partially funded by National Science Foundation awards DMS-2110745 and DMS-2309810. We are also grateful to LTFF and FAR Labs for hosting three of the authors for a Residency Visit, and to various members of FAR’s technical staff for their advice.
+This work was partially funded by National Science Foundation awards DMS-2110745 and DMS-2309810. We are also grateful to LTFF and FAR Labs for hosting MII, AFS, and TR for a residency visit, and to various members of FAR’s technical staff for their advice.
 
 We thank the Mines Optimization and Deep Learning group (MODL) for fruitful discussions. We also thank Michael Rosenberg for recommending the usage of Finite State Transducers for storing tokenizer validation information.
 
