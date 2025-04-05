@@ -471,18 +471,18 @@ intelligence, and humans have been constructing mazes for thousands of
 years. Although finding the shortest path through a maze is a solved
 problem, this very fact makes it an excellent testbed for studying how
 machine learning algorithms solve problems and represent spatial
-information. We introduce \texttt{maze-dataset}, a Python library for
-generating, processing, and visualizing datasets of mazes. This library
-supports a variety of maze generation algorithms providing mazes with or
-without loops, fully-connected or not, and many other variations. These
-generation algorithms can be configured with various parameters, and the
-resulting mazes can be filtered to satisfy desired properties. Also
-provided are tools for converting mazes to and from various formats
-suitable for a variety of neural network architectures, such as
-rasterized images, tokenized text sequences, and various visualizations.
-As well as providing a simple interface for generating, storing, and
-loading these datasets, \texttt{maze-dataset} is extensively tested,
-type hinted, benchmarked, and documented.
+information. We introduce \texttt{maze-dataset}, a user-friendly Python
+library for generating, processing, and visualizing datasets of mazes.
+This library supports a variety of maze generation algorithms providing
+mazes with or without loops, mazes that are connected or not, and many
+other variations. These generation algorithms can be configured with
+various parameters, and the resulting mazes can be filtered to satisfy
+desired properties. Also provided are tools for converting mazes to and
+from various formats suitable for a variety of neural network
+architectures, such as rasterized images, tokenized text sequences, and
+various visualizations. As well as providing a simple interface for
+generating, storing, and loading these datasets, \texttt{maze-dataset}
+is extensively tested, type hinted, benchmarked, and documented.
 
 \begin{figure} 
   \begin{minipage}{5in}
@@ -497,33 +497,31 @@ type hinted, benchmarked, and documented.
 \hypertarget{statement-of-need}{%
 \section{Statement of Need}\label{statement-of-need}}
 
-The generation of mazes with a given algorithm is not inherently a
-complex task, but the ability to seamlessly switch out algorithms,
-modify algorithm parameters, or filter by desired properties all while
-preserving the ability to convert between different representations of
-the maze is not trivial. This library aims to greatly streamline the
-process of generating and working with datasets of mazes that can be
-described as subgraphs of an \(n \times n\) lattice with boolean
-connections and, optionally, start and end points that are nodes in the
-graph. Furthermore, we place emphasis on a wide variety of possible text
-output formats aimed at evaluating the spatial reasoning capabilities of
-Large Language Models and other text-based transformer models.
+While maze generation itself is straightforward, the architectural
+challenge comes from building a system supporting many algorithms with
+configurable parameters, property filtering, and representation
+transformation. This library aims to greatly streamline the process of
+generating and working with datasets of mazes that can be described as
+subgraphs of an \(n \times n\) lattice with boolean connections and,
+optionally, start and end points that are nodes in the graph.
+Furthermore, we place emphasis on a wide variety of possible text output
+formats aimed at evaluating the spatial reasoning capabilities of Large
+Language Models and other text-based transformer models.
 
 For interpretability and behavioral research, algorithmic tasks offer
 benefits by allowing systematic data generation and task decomposition,
 as well as simplifying the process of circuit discovery
 (\protect\hyperlink{ref-interpretability-survery}{Räuker et al., 2023}).
-Although mazes are well suited for these investigations, we have found
-that existing maze generation packages
+Although mazes are well suited for these investigations, we found that
+existing maze generation packages
 (\protect\hyperlink{ref-cobbe2019procgen}{Cobbe et al., 2019};
 \protect\hyperlink{ref-gh_Ehsan_2022}{Ehsan, 2022};
 \protect\hyperlink{ref-harriesMazeExplorerCustomisable3D2019}{Harries et
 al., n.d.}; \protect\hyperlink{ref-gh_Nemeth_2019}{Németh, 2019};
 \protect\hyperlink{ref-easy_to_hard}{Schwarzschild, Borgnia, Gupta,
-Bansal, et al., 2021}) do not support flexible maze generation
-algorithms that provide fine-grained control of generation parameters
-and the ability to easily transform between multiple representations of
-the mazes (Raster, Textual, Tokenized) for training and testing models.
+Bansal, et al., 2021}) lack support for transforming between multiple
+representations and provide limited control over the maze generation
+process.
 
 \hypertarget{related-works}{%
 \subsection{Related Works}\label{related-works}}
@@ -532,17 +530,15 @@ A multitude of public and open-source software packages exist for
 generating mazes (\protect\hyperlink{ref-gh_Ehsan_2022}{Ehsan, 2022};
 \protect\hyperlink{ref-gh_Nemeth_2019}{Németh, 2019};
 \protect\hyperlink{ref-easy_to_hard}{Schwarzschild, Borgnia, Gupta,
-Bansal, et al., 2021}). However, nearly all of these packages generate
-and store mazes in a form that is not optimized for storage space or,
-more importantly, computer readability. The mazes produces by other
-packages are usually rasterized or in some form of image, rather than
-the underlying graph structure, and this makes it difficult to work with
-these datasets.
+Bansal, et al., 2021}). However, nearly all of these packages produce
+mazes represented as rasterized images or other visual formats rather
+than the underlying graph structure, and this makes it difficult to work
+with these datasets.
 
 \begin{itemize}
 \item
-  Most prior works provide mazes in some kind of image or raster format,
-  and we provide a variety of similar output formats:
+  Most prior works provide mazes in visual or raster formats, and we
+  provide a variety of similar output formats:
 
   \begin{itemize}
   \tightlist
@@ -586,7 +582,7 @@ these datasets.
   this reliably.
 \item
   Storing mazes as images is not only difficult to work with, but also
-  inefficient. We use an extremely efficient method detailed in
+  inefficient. We use a highly efficient method detailed in
   \autoref{implementation}.
 \item
   Our package is easily installable with source code freely available.
@@ -657,8 +653,8 @@ Furthermore, a dataset of mazes can be filtered to satisfy certain
 properties. Custom filters can be specified, and some filters are
 included in
 \href{https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/filters.html\#MazeDatasetFilters}{\texttt{MazeDatasetFilters}}.
-For example, we can require a minimum path length from origin to target
-of 3:
+For example, we can require a minimum path length of three steps from
+the origin to the target:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -669,19 +665,18 @@ of 3:
 All implemented maze generation algorithms are stochastic by nature. For
 reproducibility, the \texttt{seed} parameter of
 \href{https://understanding-search.github.io/maze-dataset/maze_dataset.html\#MazeDatasetConfig}{\texttt{MazeDatasetConfig}}
-may be set. In practice, we do not find that exact duplicates of mazes
-are generated with any meaningful frequency, even when generating large
-datasets.
+may be set. In practice, using provided deduplication filters, we do
+find that exact duplicate mazes are generated very infrequently, even
+when generating very large datasets.
 
 \hypertarget{visual-output-formats}{%
 \subsection{Visual Output Formats}\label{visual-output-formats}}
 
 Internally, mazes are
 \href{https://understanding-search.github.io/maze-dataset/maze_dataset.html\#SolvedMaze}{\texttt{SolvedMaze}}
-objects, which have path information, and a connection list optimized
-for storing sub-graphs of a lattice. These objects can be converted to
-and from several formats to maximize their utility in different
-contexts.
+objects, which have path information and a tensor optimized for storing
+sub-graphs of a lattice. These objects can be converted to and from
+several formats to maximize their utility in different contexts.
 
 \begin{figure}[H]
   \centering
@@ -730,9 +725,9 @@ in \autoref{fig:e2h-raster} below.
 \centering
 \includegraphics[width=0.3\textwidth,height=\textheight]{figures/maze-raster-input-target.pdf}
 \caption{Input is the rasterized maze without the path marked (left),
-and provide as a target the maze with all but the correct path removed.
-Configuration options exist to adjust whether endpoints are included and
-if empty cells should be filled in.}\label{fig:e2h-raster}
+and provide as a target the maze with all but the correct path removed
+(right). Configuration options exist to adjust whether endpoints are
+included and if empty cells should be filled in.}\label{fig:e2h-raster}
 }
 \end{figure}
 
@@ -753,8 +748,10 @@ The
 class provides a powerful interface for configuring maze stringification
 behavior. Second, the sequence of strings is tokenized into integers
 using \texttt{encode()}. Tokenization uses a fixed vocabulary for
-simplicity. Mazes up to \(50 \times 50\) are supported using unique
-tokens, and up to \(128 \times 128\) when using coordinate tuple tokens.
+simplicity. Mazes up to \(50 \times 50\) are supported when using a
+unique token for each position, and up to \(128 \times 128\) are
+supported when positions in the maze are represented as a pair of
+coordinates.
 
 There are many algorithms by which one might tokenize a 2D maze into a
 1D format usable by autoregressive text models. Training multiple models
@@ -765,13 +762,13 @@ tokenization algorithms affect these models, the
 \href{https://understanding-search.github.io/maze-dataset/maze_dataset/tokenization.html\#MazeTokenizerModular}{\texttt{MazeTokenizerModular}}
 class contains a rich set of options to customize how mazes are
 stringified. This class contains 19 discrete parameters, resulting in
-over 5.8 million unique tokenizers. But wait, there's more! There are 6
-additional parameters available in the library which are untested but
+over 5.8 million unique tokenizers. There are 6 additional parameters
+available whose functionality is not verified via automated testing, but
 further expand the the number of tokenizers by a factor of \(44/3\) to
 86 million.
 
 All output sequences consist of four token regions representing
-different features of the maze of which we see an example in
+different features of the maze; an example output sequence is shown in
 \autoref{fig:token-regions}.
 
 \begin{figure} 
@@ -782,7 +779,7 @@ different features of the maze of which we see an example in
   \end{minipage}
   \caption{
     Example text output format with token regions highlighted.
-    \colorbox[RGB]{ 217,210,233 }{Adjacency list}: text representation of the lattice graph,
+    \colorbox[RGB]{ 217,210,233 }{Adjacency list}: text representation of the graph,
     \colorbox[RGB]{ 217,234,211 }{Origin}: starting coordinate,
     \colorbox[RGB]{ 234,209,220 }{Target}: ending coordinate,
     \colorbox[RGB]{ 207,226,243 }{Path}: maze solution sequence
@@ -807,14 +804,13 @@ The tokenizer architecture is purposefully designed such that adding and
 testing a wide variety of new tokenization algorithms is fast and
 minimizes disturbances to functioning code. This is enabled by the
 modular architecture and the automatic inclusion of any new tokenizers
-in integration tests. To create a new tokenizer, developers forking the
-library may simply create their own
+in integration tests. To create a new variety of tokenizer, developers
+forking the library may simply create their own
 \href{https://understanding-search.github.io/maze-dataset/maze_dataset/tokenization.html\#_TokenizerElement}{\texttt{\_TokenizerElement}}
 subclass and implement the abstract methods. If the behavior change is
 sufficiently small, simply adding a parameter to an existing
 \href{https://understanding-search.github.io/maze-dataset/maze_dataset/tokenization.html\#_TokenizerElement}{\texttt{\_TokenizerElement}}
-subclass and updating its implementation will suffice. For small
-additions, simply adding new cases to existing unit tests will suffice.
+subclass and updating its implementation will suffice.
 
 The breadth of tokenizers is also easily scaled in the opposite
 direction. Due to the exponential scaling of parameter combinations,
@@ -883,14 +879,13 @@ without parallelism.
 \hypertarget{fig:benchmarks}{%
 \centering
 \includegraphics[width=0.95\textwidth,height=\textheight]{figures/benchmarks/gridsize-vs-gentime.pdf}
-\caption{Plots of maze generation time. Generation time scales
-exponentially with maze size for all algorithms (left). Generation time
-does not depend on the number of mazes being generated, and there is
-minimal overhead to initializing the generation process for a small
-dataset (right). Wilson's algorithm is notably less efficient than
-others and has high variance. Note that for both plots, values are
-averaged across all parameter sets for that algorithm, and
-parallelization is disabled.}\label{fig:benchmarks}
+\caption{Plot of maze generation time. Generation time scales
+exponentially with maze size for all algorithms. Generation time per
+maze does not depend on the number of mazes being generated, and there
+is minimal overhead to initializing the generation process for a small
+dataset. Wilson's algorithm is notably less efficient than others and
+has high variance. Note that values are averaged across all parameter
+sets for that algorithm.}\label{fig:benchmarks}
 }
 \end{figure}
 
@@ -899,7 +894,7 @@ parallelization is disabled.}\label{fig:benchmarks}
 
 In order to replicate the exact dataset distribution of
 (\protect\hyperlink{ref-easy_to_hard}{Schwarzschild, Borgnia, Gupta,
-Bansal, et al., 2021}), we allow placing additional constraints in
+Bansal, et al., 2021}), we allow for additional constraints in
 \href{https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/maze_dataset_config.html\#MazeDatasetConfig.endpoint_kwargs}{\texttt{MazeDatasetConfig.endpoint\_kwargs:}}
 \href{https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/maze_dataset_config.html\#EndpointKwargsType}{\texttt{EndpointKwargsType}},
 such as enforcing that the start or end point be in a ``dead end'' with
@@ -925,8 +920,8 @@ providing their initial \texttt{cfg} and then using the returned
 \subsubsection{Success Rate Estimation
 Algorithm}\label{success-rate-estimation-algorithm}}
 
-The base function learned by symbolic regression is not particularly
-insightful, and is potentially subject to change. It is defined as
+The base function learned by symbolic regression privdes limited insight
+and may be subject to change. It is defined as
 \href{https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/success_predict_math.html\#cfg_success_predict_fn}{\texttt{cfg\_success\_predict\_fn}},
 and takes a 5 dimensional float vector created by
 \texttt{MazeDatasetConfig.\_to\_ps\_array()} which represents the 0)
@@ -1039,17 +1034,22 @@ This package has also been utilized in work by other groups:
 
 \begin{itemize}
 \item
-  (\protect\hyperlink{ref-nolte2024multistep}{Nolte et al., 2024}) use
-  \texttt{maze-dataset} to compare the effectiveness of transformers
-  trained with the MLM-\(\mathcal{U}\)
+  By (\protect\hyperlink{ref-nolte2024multistep}{Nolte et al., 2024}) to
+  compare the effectiveness of transformers trained with the
+  MLM-\(\mathcal{U}\)
   (\protect\hyperlink{ref-MLMU-kitouni2024factorization}{Kitouni et al.,
   2024}) multistep prediction objective against standard autoregressive
   training for multi-step planning on our maze task.
 \item
-  (\protect\hyperlink{ref-wang2024imperative}{Wang et al., 2024}) and
-  (\protect\hyperlink{ref-chen2024iaimperative}{Chen et al., 2024}) use
-  \texttt{maze-dataset} to study the effectiveness of imperative
-  learning.
+  By (\protect\hyperlink{ref-wang2024imperative}{Wang et al., 2024}) and
+  (\protect\hyperlink{ref-chen2024iaimperative}{Chen et al., 2024}) to
+  study the effectiveness of imperative learning.
+\item
+  By (\protect\hyperlink{ref-zhang2025tscend}{Zhang et al., 2025}) to
+  introduce a novel framework for reasoning diffusion models.
+\item
+  By (\protect\hyperlink{ref-dao2025alphamaze}{Dao \& Vu, 2025}) to
+  improve spatial reasoning in LLMs with GRPO.
 \end{itemize}
 
 \hypertarget{acknowledgements}{%
@@ -1065,7 +1065,7 @@ and Dan Valentine.
 
 This work was partially funded by National Science Foundation awards
 DMS-2110745 and DMS-2309810. We are also grateful to LTFF and FAR Labs
-for hosting three of the authors for a Residency Visit, and to various
+for hosting MII, AFS, and TR for a residency visit, and to various
 members of FAR's technical staff for their advice.
 
 We thank the Mines Optimization and Deep Learning group (MODL) for
@@ -1101,6 +1101,11 @@ Preprint arXiv:1912.01588}.
 \leavevmode\vadjust pre{\hypertarget{ref-pysr}{}}%
 Cranmer, M. (2023). Interpretable machine learning for science with PySR
 and SymbolicRegression. jl. \emph{arXiv Preprint arXiv:2305.01582}.
+
+\leavevmode\vadjust pre{\hypertarget{ref-dao2025alphamaze}{}}%
+Dao, A., \& Vu, D. B. (2025). AlphaMaze: Enhancing large language
+models' spatial intelligence via GRPO. \emph{arXiv Preprint
+arXiv:2502.14669}.
 
 \leavevmode\vadjust pre{\hypertarget{ref-percolation}{}}%
 Duminil-Copin, H. (2017). \emph{Sixty years of percolation} (No.
@@ -1256,6 +1261,11 @@ Wilson, D. B. (1996). Generating random spanning trees more quickly than
 the cover time. \emph{Proceedings of the Twenty-Eighth Annual {ACM}
 Symposium on {Theory} of Computing - {STOC} '96}, 296--303.
 \url{https://doi.org/10.1145/237814.237880}
+
+\leavevmode\vadjust pre{\hypertarget{ref-zhang2025tscend}{}}%
+Zhang, T., Pan, J.-S., Feng, R., \& Wu, T. (2025). T-SCEND: Test-time
+scalable MCTS-enhanced diffusion model. \emph{arXiv Preprint
+arXiv:2502.01989}.
 
 \end{CSLReferences}
 
