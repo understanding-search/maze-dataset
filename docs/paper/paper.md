@@ -93,9 +93,9 @@ For interpretability and behavioral research, algorithmic tasks offer benefits b
 
 ## Related Works
 
-A multitude of public and open-source software packages exist for generating mazes [@easy_to_hard; @gh_Ehsan_2022; @gh_Nemeth_2019]. However, nearly all of these packages generate and store mazes in a form that is not optimized for storage space or, more importantly, computer readability. The mazes produces by other packages are usually rasterized or in some form of image, rather than the underlying graph structure, and this makes it difficult to work with these datasets.
+A multitude of public and open-source software packages exist for generating mazes [@easy_to_hard; @gh_Ehsan_2022; @gh_Nemeth_2019]. However, nearly all of these packages produce mazes represented as rasterized images or other visual formats rather than the underlying graph structure, and this makes it difficult to work with these datasets.
 
-- Most prior works provide mazes in some kind of image or raster format, and we provide a variety of similar output formats:
+- Most prior works provide mazes in visual or raster formats, and we provide a variety of similar output formats:
   - [`RasterizedMazeDataset`](https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/rasterized.html#RasterizedMazeDataset), utilizing [`as_pixels()`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#LatticeMaze.as_pixels), which can exactly mimic the outputs provided in `easy-to-hard-data`[@easy_to_hard] and can be configured to be similar to the outputs of @gh_Nemeth_2019
   - [`as_ascii()`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#LatticeMaze.as_ascii) provides a format similar to that used in [@eval-gpt-visual; @gh-oppenheimj2018maze]
   - [`MazePlot`](https://understanding-search.github.io/maze-dataset/maze_dataset/plotting.html#MazePlot) provides a feature-rich plotting utility with support for multiple paths, heatmaps over positions, and more. This is similar to the outputs of [@mdl-suite; @mathematica-maze; @mazegenerator-net; @gh_Ehsan_2022]
