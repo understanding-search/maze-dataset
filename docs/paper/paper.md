@@ -106,7 +106,7 @@ A multitude of public and open-source software packages exist for generating maz
 
 - For rigorous investigations of the response of a model to various distributional shifts, preserving metadata about the generation algorithm with the dataset itself is essential. To this end, our package efficiently stores the dataset along with its metadata in a single human-readable file [@zanj]. As far as we are aware, no existing packages do this reliably.
 
-- Storing mazes as images is not only difficult to work with, but also inefficient. We use an extremely efficient method detailed in \autoref{implementation}.
+- Storing mazes as images is not only difficult to work with, but also inefficient. We use a highly efficient method detailed in \autoref{implementation}.
 
 - Our package is easily installable with source code freely available. It is extensively tested, type hinted, benchmarked, and documented. Many other maze generation packages lack this level of rigor and scope, and some [@ayaz2008maze] appear to simply no longer be accessible.
 
