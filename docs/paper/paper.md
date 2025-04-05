@@ -318,10 +318,13 @@ This package was originally built for the needs of the [@maze-transformer-github
 
 This package has also been utilized in work by other groups:
 
-- [@nolte2024multistep] use `maze-dataset` to compare the effectiveness of transformers trained with the MLM-$\mathcal{U}$ [@MLMU-kitouni2024factorization] multistep prediction objective against standard autoregressive training for multi-step planning on our maze task.
+- By [@nolte2024multistep] to compare the effectiveness of transformers trained with the MLM-$\mathcal{U}$ [@MLMU-kitouni2024factorization] multistep prediction objective against standard autoregressive training for multi-step planning on our maze task.
 
-- [@wang2024imperative] and [@chen2024iaimperative] use `maze-dataset` to study the effectiveness of imperative learning.
+- By [@wang2024imperative] and [@chen2024iaimperative] to study the effectiveness of imperative learning.
 
+- By [@zhang2025tscend] to introduce a novel framework for reasoning diffusion models.
+
+- By [@dao2025alphamaze] to improve spatial reasoning in LLMs with GRPO.
 
 <!-- # Conclusion {#conclusion}
 
