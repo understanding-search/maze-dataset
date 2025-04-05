@@ -274,7 +274,7 @@ Using the estimation simply requires the user to call [`cfg_new: MazeDatasetConf
 
 ### Success Rate Estimation Algorithm
 
-The base function learned by symbolic regression is not particularly insightful, and is potentially subject to change. It is defined as [`cfg_success_predict_fn`](https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/success_predict_math.html#cfg_success_predict_fn), and takes a 5 dimensional float vector created by `MazeDatasetConfig._to_ps_array()` which represents the 0) percolation value 1) grid size 2) endpoint deadend configuration 3) endpoint uniqueness 4) categorical generation function index.
+The base function learned by symbolic regression privdes limited insight and may be subject to change. It is defined as [`cfg_success_predict_fn`](https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/success_predict_math.html#cfg_success_predict_fn), and takes a 5 dimensional float vector created by `MazeDatasetConfig._to_ps_array()` which represents the 0) percolation value 1) grid size 2) endpoint deadend configuration 3) endpoint uniqueness 4) categorical generation function index.
 
 However, the outputs of this function are not directly usable due to minor divergences at the endpoints with respect to the percolation probability $p$. Since we know that maze success is either guaranteed or impossible for $p=0$ and $p=1$, we define the [`soft_step`](https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/success_predict_math.html#soft_step) function to nudge the raw output of the symbolic regression. This function is defined with:
 
