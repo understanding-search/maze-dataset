@@ -65,6 +65,7 @@
 		"mypy>=1.0.1",
         "types-tqdm",
         "pandas-stubs",
+		"types-psutil", # see https://github.com/understanding-search/maze-dataset/actions/runs/14327419830/job/40155509863
 		# docs
 		'pdoc>=14.6.0',
 		"nbconvert>=7.16.4", # for notebooks
