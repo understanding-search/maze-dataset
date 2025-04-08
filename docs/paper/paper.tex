@@ -366,22 +366,22 @@ et al. (1970). maze-dataset. \emph{Journal of Open Source Software},
 
 \title{maze-dataset}
 
-\author[1,3%
+\author[1%
 %
 \ensuremath\mathparagraph]{Michael Igorevich Ivanitskiy%
   \,\orcidlink{0000-0002-4213-4993}\,%
 }
-\author[2%
+\author[4%
 %
 ]{Aaron Sandoval%
   \,\orcidlink{0009-0002-8380-6140}\,%
 }
-\author[2,3%
+\author[2%
 %
 ]{Alex F. Spies%
   \,\orcidlink{0000-0002-8708-1530}\,%
 }
-\author[2%
+\author[3%
 %
 ]{Tilman Räuker%
   \,\orcidlink{0009-0009-6321-4413}\,%
@@ -407,7 +407,7 @@ and Statistics%
 }
 \affil[2]{Imperial College London%
 }
-\affil[3]{unsearch.org%
+\affil[3]{UnSearch.org%
 }
 \affil[4]{Independent%
 }
@@ -894,24 +894,23 @@ sets for that algorithm.}\label{fig:benchmarks}
 
 In order to replicate the exact dataset distribution of
 (\protect\hyperlink{ref-easy_to_hard}{Schwarzschild, Borgnia, Gupta,
-Bansal, et al., 2021}), we allow for additional constraints in
+Bansal, et al., 2021}), the parameter
 \href{https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/maze_dataset_config.html\#MazeDatasetConfig.endpoint_kwargs}{\texttt{MazeDatasetConfig.endpoint\_kwargs:}}
-\href{https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/maze_dataset_config.html\#EndpointKwargsType}{\texttt{EndpointKwargsType}},
-such as enforcing that the start or end point be in a ``dead end'' with
-only one accessible neighbor cell. However, combining this with cyclic
-mazes (such as those generated with percolation), as was required for
-the work in
+\href{https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/maze_dataset_config.html\#EndpointKwargsType}{\texttt{EndpointKwargsType}}
+allows for additional constraints such as enforcing that the start or
+end point be in a ``dead end'' with only one accessible neighbor cell.
+However, combining these constraints with cyclic mazes (such as those
+generated with percolation), as was required for the work in
 (\protect\hyperlink{ref-knutson2024logicalextrapolation}{Knutson et al.,
 2024}), can lead to an absence of valid start and end points. Placing
 theoretical bounds on this success rate is difficult, as it depends on
-the exact maze generation algorithm and parameters used. However, our
-package provides a way to estimate the success rate of a given
+the exact maze generation algorithm and parameters used. To deal with
+this, our package provides a way to estimate the success rate of a given
 configuration using a symbolic regression model trained with PySR
 (\protect\hyperlink{ref-pysr}{Cranmer, 2023}). More details on this can
 be found in
 \href{https://understanding-search.github.io/maze-dataset/notebooks/estimate_dataset_fractions.html}{\texttt{estimate\_dataset\_fractions.ipynb}}.
-
-Using the estimation simply requires the user to call
+Using the estimation algorithm simply requires the user to call
 \href{https://understanding-search.github.io/maze-dataset/maze_dataset.html\#MazeDatasetConfig.success_fraction_compensate}{\texttt{cfg\_new:\ MazeDatasetConfig\ =\ cfg.success\_fraction\_compensate()}},
 providing their initial \texttt{cfg} and then using the returned
 \texttt{cfg\_new} in its place.
@@ -934,10 +933,10 @@ probability \(p\). Since we know that maze success is either guaranteed
 or impossible for \(p=0\) and \(p=1\), we define the
 \href{https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/success_predict_math.html\#soft_step}{\texttt{soft\_step}}
 function to nudge the raw output of the symbolic regression. This
-function is defined with:
+function is defined with the following components:
 
-A shifted sigmoid \(\sigma_s\), amplitude scaling \(A\), and \(h\)
-function: \[
+shifted sigmoid \(\sigma_s\), amplitude scaling \(A\), and \(h\)
+function given by \[
   \sigma_s(x) = (1 + e^{-10^3 \cdot (x-0.5)})^{-1}
   \qquad A(q,a,w) = w \cdot (1 - |2q-1|^a)
 \] \[
@@ -956,12 +955,13 @@ Finally, we define \[
 \]
 
 where \texttt{raw\_val} is the output of the symbolic regression model.
-\(x_0\) is the percolation probability, while all other parameters from
-\texttt{\_to\_ps\_array()} only affect \texttt{raw\_val}.
+The parameter \(x_0\) is the percolation probability, while all other
+parameters from \texttt{\_to\_ps\_array()} only affect
+\texttt{raw\_val}.
 
 \begin{figure}
 \centering
-\includegraphics[width=1\textwidth,height=\textheight]{figures/ep/ep_deadends_unique.pdf}
+\includegraphics[width=1\textwidth,height=\textheight]{figures/ep/ep_deadends_unique-crop.pdf}
 \caption{An example of both empirical and predicted success rates as a
 function of the percolation probability \(p\) for various maze sizes,
 percolation with and without depth first search, and
@@ -1058,10 +1058,10 @@ This package has also been utilized in work by other groups:
 This work was partially supported by and many of the authors were
 brought together by AI Safety Camp and AI Safety Support. We would like
 to thank our former collaborators at AI Safety Camp and other users and
-contributors to the \texttt{maze-dataset} package: Naveen Arunachalam,
-Benji Berczi, Guillaume Corlouer, William Edwards, Leon Eshuijs, Chris
-Mathwin, Lucia Quirke, Can Rager, Adrians Skapars, Johannes Treutlein,
-and Dan Valentine.
+contributors to the \texttt{maze-dataset} package: Benji Berczi,
+Guillaume Corlouer, William Edwards, Leon Eshuijs, Chris Mathwin, Lucia
+Quirke, Can Rager, Adrians Skapars, Rusheb Shah, Johannes Treutlein, and
+Dan Valentine.
 
 This work was partially funded by National Science Foundation awards
 DMS-2110745 and DMS-2309810. We are also grateful to LTFF and FAR Labs

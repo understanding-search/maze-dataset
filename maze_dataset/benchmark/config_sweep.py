@@ -261,6 +261,8 @@ class SweepResult(SerializableDataclass, Generic[ParamType, SweepReturnType]):
 		plot_only: bool = False,
 		show: bool = True,
 		ax: plt.Axes | None = None,
+		minify_title: bool = False,
+		legend_kwargs: dict[str, Any]|None = None,
 	) -> plt.Axes:
 		"""Plot the results of percolation analysis"""
 		# set up figure
@@ -297,6 +299,12 @@ class SweepResult(SerializableDataclass, Generic[ParamType, SweepReturnType]):
 
 		# repr of config
 		cfg_shared: dict = self.configs_shared()
+		if minify_title:
+			cfg_shared["endpoint_kwargs"] = {
+				k : v
+				for k, v in cfg_shared["endpoint_kwargs"].items()
+				if k != "except_on_no_valid_endpoint"
+			}
 		cfg_repr: str = (
 			str(cfg_shared)
 			if cfg_keys is None
@@ -323,7 +331,12 @@ class SweepResult(SerializableDataclass, Generic[ParamType, SweepReturnType]):
 				f"{self.param_key} vs {self.analyze_func.__name__}\n{cfg_repr}",
 			)
 			ax_.grid(True)
-			ax_.legend(loc="center left")
+			# ax_.legend(loc="upper center", ncol=2, bbox_to_anchor=(0.5, -0.1))
+			legend_kwargs = {
+				**dict(loc="center left"),
+				**(legend_kwargs or dict()),
+			}
+			ax_.legend(**legend_kwargs)
 
 		# save and show
 		if save_path:
@@ -443,6 +456,9 @@ def plot_grouped(  # noqa: C901
 	show: bool = True,
 	logy: bool = False,
 	save_fmt: str = "svg",
+	figsize: tuple[int, int] = (22, 10),
+	minify_title: bool = False,
+	legend_kwargs: dict[str, Any] | None = None,
 ) -> None:
 	"""Plot grouped sweep percolation value results for each distinct `endpoint_kwargs` in the configs
 
@@ -485,7 +501,7 @@ def plot_grouped(  # noqa: C901
 		)
 		shared_keys: set[str] = set(results_epkw.configs_shared().keys())
 		cfg_keys: set[str] = shared_keys.intersection({"n_mazes", "endpoint_kwargs"})
-		fig, ax = plt.subplots(1, 1, figsize=(22, 10))
+		fig, ax = plt.subplots(1, 1, figsize=figsize)
 		for gf_idx, gen_func in enumerate(generator_funcs_names):
 			results_filtered: SweepResult = results_epkw.get_where(
 				"maze_ctor",
@@ -507,6 +523,8 @@ def plot_grouped(  # noqa: C901
 				ax=ax,
 				show=False,
 				cmap_name=cmap_name,
+				minify_title=minify_title,
+				legend_kwargs=legend_kwargs,
 			)
 			if logy:
 				ax.set_yscale("log")

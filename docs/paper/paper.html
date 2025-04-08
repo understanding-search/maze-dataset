@@ -795,26 +795,26 @@ parameter sets for that algorithm.</figcaption>
 <p>In order to replicate the exact dataset distribution of <span
 class="citation" data-cites="easy_to_hard">(<a href="#ref-easy_to_hard"
 role="doc-biblioref">Schwarzschild, Borgnia, Gupta, Bansal, et al.,
-2021</a>)</span>, we allow for additional constraints in <a
+2021</a>)</span>, the parameter <a
 href="https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/maze_dataset_config.html#MazeDatasetConfig.endpoint_kwargs"><code>MazeDatasetConfig.endpoint_kwargs:</code></a>
 <a
-href="https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/maze_dataset_config.html#EndpointKwargsType"><code>EndpointKwargsType</code></a>,
-such as enforcing that the start or end point be in a “dead end” with
-only one accessible neighbor cell. However, combining this with cyclic
-mazes (such as those generated with percolation), as was required for
-the work in <span class="citation"
-data-cites="knutson2024logicalextrapolation">(<a
+href="https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/maze_dataset_config.html#EndpointKwargsType"><code>EndpointKwargsType</code></a>
+allows for additional constraints such as enforcing that the start or
+end point be in a “dead end” with only one accessible neighbor cell.
+However, combining these constraints with cyclic mazes (such as those
+generated with percolation), as was required for the work in <span
+class="citation" data-cites="knutson2024logicalextrapolation">(<a
 href="#ref-knutson2024logicalextrapolation" role="doc-biblioref">Knutson
 et al., 2024</a>)</span>, can lead to an absence of valid start and end
 points. Placing theoretical bounds on this success rate is difficult, as
 it depends on the exact maze generation algorithm and parameters used.
-However, our package provides a way to estimate the success rate of a
-given configuration using a symbolic regression model trained with PySR
-<span class="citation" data-cites="pysr">(<a href="#ref-pysr"
+To deal with this, our package provides a way to estimate the success
+rate of a given configuration using a symbolic regression model trained
+with PySR <span class="citation" data-cites="pysr">(<a href="#ref-pysr"
 role="doc-biblioref">Cranmer, 2023</a>)</span>. More details on this can
 be found in <a
-href="https://understanding-search.github.io/maze-dataset/notebooks/estimate_dataset_fractions.html"><code>estimate_dataset_fractions.ipynb</code></a>.</p>
-<p>Using the estimation simply requires the user to call <a
+href="https://understanding-search.github.io/maze-dataset/notebooks/estimate_dataset_fractions.html"><code>estimate_dataset_fractions.ipynb</code></a>.
+Using the estimation algorithm simply requires the user to call <a
 href="https://understanding-search.github.io/maze-dataset/maze_dataset.html#MazeDatasetConfig.success_fraction_compensate"><code>cfg_new: MazeDatasetConfig = cfg.success_fraction_compensate()</code></a>,
 providing their initial <code>cfg</code> and then using the returned
 <code>cfg_new</code> in its place.</p>
@@ -835,11 +835,11 @@ class="math inline"><em>p</em> = 0</span> and <span
 class="math inline"><em>p</em> = 1</span>, we define the <a
 href="https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/success_predict_math.html#soft_step"><code>soft_step</code></a>
 function to nudge the raw output of the symbolic regression. This
-function is defined with:</p>
-<p>A shifted sigmoid <span
+function is defined with the following components:</p>
+<p>shifted sigmoid <span
 class="math inline"><em>σ</em><sub><em>s</em></sub></span>, amplitude
 scaling <span class="math inline"><em>A</em></span>, and <span
-class="math inline"><em>h</em></span> function: <span
+class="math inline"><em>h</em></span> function given by <span
 class="math display"><em>σ</em><sub><em>s</em></sub>(<em>x</em>) = (1+<em>e</em><sup>−10<sup>3</sup> ⋅ (<em>x</em>−0.5)</sup>)<sup>−1</sup>   <em>A</em>(<em>q</em>,<em>a</em>,<em>w</em>) = <em>w</em> ⋅ (1−|2<em>q</em>−1|<sup><em>a</em></sup>)</span>
 <span
 class="math display"><em>h</em>(<em>q</em>,<em>a</em>) = <em>q</em> ⋅ (1−|2<em>q</em>−1|<sup><em>a</em></sup>) ⋅ (1−<em>σ</em><sub><em>s</em></sub>(<em>q</em>)) + (1−(1−<em>q</em>)⋅(1−|2(1−<em>q</em>)−1|<sup><em>a</em></sup>)) ⋅ <em>σ</em><sub><em>s</em></sub>(<em>q</em>)</span></p>
@@ -852,11 +852,12 @@ class="math display">soft_step(<em>x</em>,<em>p</em>,<em>α</em>,<em>w</em>) =
 <p>Finally, we define <span
 class="math display">cfg_success_predict_fn(<strong>x</strong>) = soft_step(raw_val,<em>x</em><sub>0</sub>,5,10)</span></p>
 <p>where <code>raw_val</code> is the output of the symbolic regression
-model. <span class="math inline"><em>x</em><sub>0</sub></span> is the
-percolation probability, while all other parameters from
-<code>_to_ps_array()</code> only affect <code>raw_val</code>.</p>
+model. The parameter <span
+class="math inline"><em>x</em><sub>0</sub></span> is the percolation
+probability, while all other parameters from <code>_to_ps_array()</code>
+only affect <code>raw_val</code>.</p>
 <figure>
-<embed src="media/figures/ep/ep_deadends_unique.pdf"
+<embed src="media/figures/ep/ep_deadends_unique-crop.pdf"
 style="width:100.0%" />
 <figcaption aria-hidden="true">An example of both empirical and
 predicted success rates as a function of the percolation probability
@@ -971,10 +972,10 @@ Planned improvements to the `maze-dataset` include adding more generation algori
 <p>This work was partially supported by and many of the authors were
 brought together by AI Safety Camp and AI Safety Support. We would like
 to thank our former collaborators at AI Safety Camp and other users and
-contributors to the <code>maze-dataset</code> package: Naveen
-Arunachalam, Benji Berczi, Guillaume Corlouer, William Edwards, Leon
-Eshuijs, Chris Mathwin, Lucia Quirke, Can Rager, Adrians Skapars,
-Johannes Treutlein, and Dan Valentine.</p>
+contributors to the <code>maze-dataset</code> package: Benji Berczi,
+Guillaume Corlouer, William Edwards, Leon Eshuijs, Chris Mathwin, Lucia
+Quirke, Can Rager, Adrians Skapars, Rusheb Shah, Johannes Treutlein, and
+Dan Valentine.</p>
 <p>This work was partially funded by National Science Foundation awards
 DMS-2110745 and DMS-2309810. We are also grateful to LTFF and FAR Labs
 for hosting MII, AFS, and TR for a residency visit, and to various

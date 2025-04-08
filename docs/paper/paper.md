@@ -9,17 +9,17 @@ tags:
 authors:
   - name: Michael Igorevich Ivanitskiy
     orcid: 0000-0002-4213-4993
-    affiliation: 1, 3
+    affiliation: 1
     corresponding: true
   - name: Aaron Sandoval
     orcid: 0009-0002-8380-6140
-    affiliation: 2
+    affiliation: 4
   - name: Alex F. Spies
     orcid: 0000-0002-8708-1530
-    affiliation: 2, 3
+    affiliation: 2
   - name: Tilman Räuker
     orcid: 0009-0009-6321-4413
-    affiliation: 2
+    affiliation: 3
   - name: Brandon Knutson
     orcid: 0009-0004-8413-0239
     affiliation: 1
@@ -34,7 +34,7 @@ affiliations:
     index: 1
   - name: Imperial College London
     index: 2
-  - name: unsearch.org
+  - name: UnSearch.org
     index: 3
   - name: Independent
     index: 4
@@ -268,17 +268,15 @@ We provide approximate benchmarks for relative generation time across various al
 
 ## Success Rate Estimation {#success-rate-estimation}
 
-In order to replicate the exact dataset distribution of [@easy_to_hard], we allow for additional constraints in [`MazeDatasetConfig.endpoint_kwargs:`](https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/maze_dataset_config.html#MazeDatasetConfig.endpoint_kwargs) [`EndpointKwargsType`](https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/maze_dataset_config.html#EndpointKwargsType), such as enforcing that the start or end point be in a "dead end" with only one accessible neighbor cell. However, combining this with cyclic mazes (such as those generated with percolation), as was required for the work in [@knutson2024logicalextrapolation], can lead to an absence of valid start and end points. Placing theoretical bounds on this success rate is difficult, as it depends on the exact maze generation algorithm and parameters used. However, our package provides a way to estimate the success rate of a given configuration using a symbolic regression model trained with PySR [@pysr]. More details on this can be found in [`estimate_dataset_fractions.ipynb`](https://understanding-search.github.io/maze-dataset/notebooks/estimate_dataset_fractions.html). 
-
-Using the estimation simply requires the user to call [`cfg_new: MazeDatasetConfig = cfg.success_fraction_compensate()`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#MazeDatasetConfig.success_fraction_compensate), providing their initial `cfg` and then using the returned `cfg_new` in its place.
+In order to replicate the exact dataset distribution of [@easy_to_hard], the parameter [`MazeDatasetConfig.endpoint_kwargs:`](https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/maze_dataset_config.html#MazeDatasetConfig.endpoint_kwargs) [`EndpointKwargsType`](https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/maze_dataset_config.html#EndpointKwargsType) allows for additional constraints such as enforcing that the start or end point be in a "dead end" with only one accessible neighbor cell. However, combining these constraints with cyclic mazes (such as those generated with percolation), as was required for the work in [@knutson2024logicalextrapolation], can lead to an absence of valid start and end points. Placing theoretical bounds on this success rate is difficult, as it depends on the exact maze generation algorithm and parameters used. To deal with this, our package provides a way to estimate the success rate of a given configuration using a symbolic regression model trained with PySR [@pysr]. More details on this can be found in [`estimate_dataset_fractions.ipynb`](https://understanding-search.github.io/maze-dataset/notebooks/estimate_dataset_fractions.html). Using the estimation algorithm simply requires the user to call [`cfg_new: MazeDatasetConfig = cfg.success_fraction_compensate()`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#MazeDatasetConfig.success_fraction_compensate), providing their initial `cfg` and then using the returned `cfg_new` in its place.
 
 ### Success Rate Estimation Algorithm
 
 The base function learned by symbolic regression privdes limited insight and may be subject to change. It is defined as [`cfg_success_predict_fn`](https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/success_predict_math.html#cfg_success_predict_fn), and takes a 5 dimensional float vector created by `MazeDatasetConfig._to_ps_array()` which represents the 0) percolation value 1) grid size 2) endpoint deadend configuration 3) endpoint uniqueness 4) categorical generation function index.
 
-However, the outputs of this function are not directly usable due to minor divergences at the endpoints with respect to the percolation probability $p$. Since we know that maze success is either guaranteed or impossible for $p=0$ and $p=1$, we define the [`soft_step`](https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/success_predict_math.html#soft_step) function to nudge the raw output of the symbolic regression. This function is defined with:
+However, the outputs of this function are not directly usable due to minor divergences at the endpoints with respect to the percolation probability $p$. Since we know that maze success is either guaranteed or impossible for $p=0$ and $p=1$, we define the [`soft_step`](https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/success_predict_math.html#soft_step) function to nudge the raw output of the symbolic regression. This function is defined with the following components:
 
-A shifted sigmoid $\sigma_s$, amplitude scaling $A$, and $h$ function:
+shifted sigmoid $\sigma_s$, amplitude scaling $A$, and $h$ function given by
 $$
   \sigma_s(x) = (1 + e^{-10^3 \cdot (x-0.5)})^{-1}
   \qquad A(q,a,w) = w \cdot (1 - |2q-1|^a)
@@ -297,9 +295,9 @@ $$
   \text{cfg\_success\_predict\_fn}(\mathbf{x}) = \text{soft\_step}(\text{raw\_val}, x_0, 5, 10)
 $$
 
-where `raw_val` is the output of the symbolic regression model. $x_0$ is the percolation probability, while all other parameters from `_to_ps_array()` only affect `raw_val`.
+where `raw_val` is the output of the symbolic regression model. The parameter $x_0$ is the percolation probability, while all other parameters from `_to_ps_array()` only affect `raw_val`.
 
-![An example of both empirical and predicted success rates as a function of the percolation probability $p$ for various maze sizes, percolation with and without depth first search, and `endpoint_kwargs` requiring that both the start and end be in unique dead ends.](figures/ep/ep_deadends_unique.pdf){width=100%}
+![An example of both empirical and predicted success rates as a function of the percolation probability $p$ for various maze sizes, percolation with and without depth first search, and `endpoint_kwargs` requiring that both the start and end be in unique dead ends.](figures/ep/ep_deadends_unique-crop.pdf){width=100%}
 
 # Implementation {#implementation}
 
@@ -333,8 +331,7 @@ Planned improvements to the `maze-dataset` include adding more generation algori
 
 # Acknowledgements
 
-This work was partially supported by and many of the authors were brought together by AI Safety Camp and AI Safety Support. We would like to thank our former collaborators at AI Safety Camp and other users and contributors to the  `maze-dataset` package: Naveen Arunachalam, Benji Berczi, Guillaume Corlouer, William Edwards, Leon Eshuijs, Chris Mathwin, Lucia Quirke, Can Rager, Adrians Skapars, Johannes Treutlein, and Dan Valentine.
-
+This work was partially supported by and many of the authors were brought together by AI Safety Camp and AI Safety Support. We would like to thank our former collaborators at AI Safety Camp and other users and contributors to the  `maze-dataset` package: Benji Berczi, Guillaume Corlouer, William Edwards, Leon Eshuijs, Chris Mathwin, Lucia Quirke, Can Rager, Adrians Skapars, Rusheb Shah, Johannes Treutlein, and Dan Valentine.
 
 This work was partially funded by National Science Foundation awards DMS-2110745 and DMS-2309810. We are also grateful to LTFF and FAR Labs for hosting MII, AFS, and TR for a residency visit, and to various members of FAR’s technical staff for their advice.
 
