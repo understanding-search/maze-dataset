@@ -1,5 +1,5 @@
 ---
-title: 'maze-dataset'
+title: 'maze-dataset: Algorithmic Variety and Representation Flexibility in Maze Generation'
 tags:
   - Python
   - machine learning
