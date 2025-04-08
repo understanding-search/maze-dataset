@@ -113,21 +113,33 @@ A multitude of public and open-source software packages exist for generating maz
 
 # Features
 
-## Generation and Usage {#generation}
+## Generation and Basic Usage {#generation}
 
 Our package can be installed from [PyPi](https://pypi.org/project/maze-dataset/) via `pip install maze-dataset`, or directly from the [git repository](https://github.com/understanding-search/maze-dataset) [@maze-dataset-github].
 
 To create a dataset, we first create a [`MazeDatasetConfig`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#MazeDatasetConfig) configuration object, which specifies the seed, number, and size of mazes, as well as the generation algorithm and its corresponding parameters. This object is passed to a [`MazeDataset`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#MazeDataset) class to create a dataset. Crucially, this [`MazeDataset`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#MazeDataset) mimics the interface of a PyTorch [@pytorch] [`Dataset`](https://pytorch.org/docs/stable/data.html), and can thus be easily incorporated into existing data pre-processing and training pipelines, e.g., through the use of a `DataLoader` class.
 
 ```python
-from maze_dataset import MazeDataset, MazeDatasetConfig, LatticeMazeGenerators
-cfg: MazeDatasetConfig = MazeDatasetConfig(
-    name="example", 
-    grid_n=3, 
-    n_mazes=32, 
-    maze_ctor=LatticeMazeGenerators.gen_dfs,
+from maze_dataset import (
+  MazeDataset, MazeDatasetConfig, LatticeMazeGenerators
 )
-dataset: MazeDataset = MazeDataset.from_config(cfg)
+# create a config
+cfg: MazeDatasetConfig = MazeDatasetConfig(
+    name="example", # names need not be unique
+    grid_n=3,   # size of the maze
+    n_mazes=32, # number of mazes in the dataset
+    maze_ctor=LatticeMazeGenerators.gen_dfs, # many algorithms available
+    # (optional) algorithm-specific parameters
+    maze_ctor_kwargs={"do_forks": True, ...}, 
+    # (optional) many options for restricting start/end points
+    endpoint_kwargs={"deadend_start": True, ...},
+)
+# create a dataset
+dataset: MazeDataset = MazeDataset.from_config(
+  cfg, # pass the config
+  ..., # other options such as whether to load from disk,
+       # generate in parallel, etc.
+)
 ```
 
 When initializing mazes, further configuration options can be specified through the [`from_config()`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#MazeDataset.from_config) factory method as necessary. Options allow for saving/loading existing datasets instead of regenerating, and parallelization options for generation. Available maze generation algorithms are static methods of the [`LatticeMazeGenerators`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#LatticeMazeGenerators) class and include generation algorithms based on randomized depth-first search, Wilson's algorithm [@wilson], percolation [@percolation; @percolation-clustersize], Kruskal's algorithm [@kruskal1956shortest], and others.
@@ -182,7 +194,7 @@ In previous work, maze tasks have been used with Recurrent Convolutional Neural 
 
 ## Tokenized Output Formats {#tokenized-output-formats}
 
-Autoregressive transformer models can be quite sensitive to the exact format of the input data, and may use delimiter tokens to perform reasoning steps [@pfau2024dotbydot]. To facilitate systematic investigation of this, we provide a variety of tokenized output formats.
+Autoregressive transformer models can be quite sensitive to the exact format of input data, and may even use delimiter tokens to perform reasoning steps [@pfau2024dotbydot; @spies2024causalworldmodels]. To facilitate systematic investigation of the effects of different representations of data on text model performance, we provide a variety of tokenized text output formats.
 
 We convert mazes to token sequences in two steps. First, the maze is stringified using [`as_tokens()`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#MazeDataset.as_tokens). The [`MazeTokenizerModular`](https://understanding-search.github.io/maze-dataset/maze_dataset/tokenization.html#MazeTokenizerModular) class provides a powerful interface for configuring maze stringification behavior. Second, the sequence of strings is tokenized into integers using `encode()`. Tokenization uses a fixed vocabulary for simplicity. Mazes up to $50 \times 50$ are supported when using a unique token for each position, and up to $128 \times 128$ are supported when positions in the maze are represented as a pair of coordinates.
 
@@ -301,10 +313,10 @@ where `raw_val` is the output of the symbolic regression model. The parameter $x
 
 # Implementation {#implementation}
 
-We refer to our \href{https://github.com/understanding-search/maze-dataset}{GitHub repository} and \docslink{maze_dataset.html}{docs} for documentation and up-to-date implementation details.
+We refer to our \href{https://github.com/understanding-search/maze-dataset}{repository} and \docslink{maze_dataset.html}{docs} for documentation and up-to-date implementation details.
 
 This package utilizes a simple, efficient representation of mazes. Using an adjacency list to represent mazes would lead to a poor lookup time for whether any given connection exists, while using an adjacency matrix would waste memory by failing to exploit the structure (e.g., only 4 of the diagonals would be filled in).
-Instead, we describe mazes with the following simple representation: for a $d$-dimensional lattice with $r$ rows and $c$ columns, we initialize a boolean array $A = \{0, 1\}^{d \times r \times c}$, which we refer to in the code as a [`connection_list`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#LatticeMaze.connection_list). The value at $A[0,i,j]$ determines whether a downward connection exists from node $[i,j]$ to $[i+1, j]$. Likewise, the value at $A[1,i,j]$ determines whether a rightwards connection to $[i, j+1]$ exists. Thus, we avoid duplication of data about the existence of connections, at the cost of requiring additional care with indexing when looking for a connection upwards or to the left. Note that this setup allows for a periodic lattice.
+Instead, we describe mazes with the following representation: for a $d$-dimensional lattice with $r$ rows and $c$ columns, we initialize a boolean array $A = \{0, 1\}^{d \times r \times c}$, which we refer to in the code as a [`connection_list`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#LatticeMaze.connection_list). The value at $A[0,i,j]$ determines whether a downward connection exists from node $[i,j]$ to $[i+1, j]$. Likewise, the value at $A[1,i,j]$ determines whether a rightwards connection to $[i, j+1]$ exists. Thus, we avoid duplication of data about the existence of connections, at the cost of requiring additional care with indexing when looking for a connection upwards or to the left. Note that this setup allows for a periodic lattice.
 
 To produce solutions to mazes, two points are selected uniformly at random without replacement from the connected component of the maze, and the $A^*$ algorithm [@A_star] is applied to find the shortest path between them. The endpoint selection can be affected by [`MazeDatasetConfig.endpoint_kwargs:`](https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/maze_dataset_config.html#MazeDatasetConfig.endpoint_kwargs) [`EndpointKwargsType`](https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/maze_dataset_config.html#EndpointKwargsType), and complications caused by this are detailed in \autoref{success-rate-estimation}.
 
@@ -312,7 +324,7 @@ Parallelization is implemented via the `multiprocessing` module in the Python st
 
 # Usage in Research
 
-This package was originally built for the needs of the [@maze-transformer-github] project, which aims to investigate spatial planning and world models in autoregressive transformer models trained on mazes [@ivanitskiy2023structuredworldreps; @spies2024causalworldmodels]. This project has also adapted itself to be useful for work on understanding the mechanisms by which recurrent convolutional and implicit networks [@fung2022jfb] solve mazes given a rasterized view [@knutson2024logicalextrapolation], and for this we match the output format of [@easy_to_hard].
+This package was originally built for the needs of the [@maze-transformer-github] project, which aims to investigate spatial planning and world models in autoregressive transformer models trained on mazes [@ivanitskiy2023structuredworldreps; @spies2024causalworldmodels; @maze-dataset-arxiv-2023]. It was extended for work on understanding the mechanisms by which recurrent convolutional and implicit networks [@fung2022jfb] solve mazes given a rasterized view [@knutson2024logicalextrapolation], which required matching the pixel-padded and endpoint constrained output format of [@easy_to_hard]. Ongoing work using `maze-dataset` aims to investigate the effects of varying the tokenization format on the performance of pretrained Large Language Models (LLMs) on spatial reasoning.
 
 This package has also been utilized in work by other groups:
 
@@ -331,9 +343,9 @@ Planned improvements to the `maze-dataset` include adding more generation algori
 
 # Acknowledgements
 
-This work was partially supported by and many of the authors were brought together by AI Safety Camp and AI Safety Support. We would like to thank our former collaborators at AI Safety Camp and other users and contributors to the  `maze-dataset` package: Benji Berczi, Guillaume Corlouer, William Edwards, Leon Eshuijs, Chris Mathwin, Lucia Quirke, Can Rager, Adrians Skapars, Rusheb Shah, Johannes Treutlein, and Dan Valentine.
+This work was partially funded by National Science Foundation awards DMS-2110745 and DMS-2309810. We are also grateful to LTFF and FAR Labs for hosting authors MII, AFS, and TR for a residency visit, and to various members of FAR’s technical staff for their advice.
 
-This work was partially funded by National Science Foundation awards DMS-2110745 and DMS-2309810. We are also grateful to LTFF and FAR Labs for hosting MII, AFS, and TR for a residency visit, and to various members of FAR’s technical staff for their advice.
+This work was partially supported by AI Safety Camp and AI Safety Support, which also brought many of the authors together. We would like to thank our former collaborators at AI Safety Camp and other users and contributors to the  `maze-dataset` package: Benji Berczi, Guillaume Corlouer, William Edwards, Leon Eshuijs, Chris Mathwin, Lucia Quirke, Can Rager, Adrians Skapars, Rusheb Shah, Johannes Treutlein, and Dan Valentine.
 
 We thank the Mines Optimization and Deep Learning group (MODL) for fruitful discussions. We also thank Michael Rosenberg for recommending the usage of Finite State Transducers for storing tokenizer validation information.
 

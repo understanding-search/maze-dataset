@@ -596,7 +596,7 @@ with these datasets.
 \section{Features}\label{features}}
 
 \hypertarget{generation}{%
-\subsection{Generation and Usage}\label{generation}}
+\subsection{Generation and Basic Usage}\label{generation}}
 
 Our package can be installed from
 \href{https://pypi.org/project/maze-dataset/}{PyPi} via
@@ -622,14 +622,26 @@ class.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\ImportTok{from}\NormalTok{ maze\_dataset }\ImportTok{import}\NormalTok{ MazeDataset, MazeDatasetConfig, LatticeMazeGenerators}
-\NormalTok{cfg: MazeDatasetConfig }\OperatorTok{=}\NormalTok{ MazeDatasetConfig(}
-\NormalTok{    name}\OperatorTok{=}\StringTok{"example"}\NormalTok{, }
-\NormalTok{    grid\_n}\OperatorTok{=}\DecValTok{3}\NormalTok{, }
-\NormalTok{    n\_mazes}\OperatorTok{=}\DecValTok{32}\NormalTok{, }
-\NormalTok{    maze\_ctor}\OperatorTok{=}\NormalTok{LatticeMazeGenerators.gen\_dfs,}
+\ImportTok{from}\NormalTok{ maze\_dataset }\ImportTok{import}\NormalTok{ (}
+\NormalTok{  MazeDataset, MazeDatasetConfig, LatticeMazeGenerators}
 \NormalTok{)}
-\NormalTok{dataset: MazeDataset }\OperatorTok{=}\NormalTok{ MazeDataset.from\_config(cfg)}
+\CommentTok{\# create a config}
+\NormalTok{cfg: MazeDatasetConfig }\OperatorTok{=}\NormalTok{ MazeDatasetConfig(}
+\NormalTok{    name}\OperatorTok{=}\StringTok{"example"}\NormalTok{, }\CommentTok{\# names need not be unique, filenames are automatically made to be}
+\NormalTok{    grid\_n}\OperatorTok{=}\DecValTok{3}\NormalTok{,   }\CommentTok{\# size of the maze}
+\NormalTok{    n\_mazes}\OperatorTok{=}\DecValTok{32}\NormalTok{, }\CommentTok{\# number of mazes in the dataset}
+\NormalTok{    maze\_ctor}\OperatorTok{=}\NormalTok{LatticeMazeGenerators.gen\_dfs, }\CommentTok{\# many algorithms available}
+    \CommentTok{\# (optional) algorithm{-}specific parameters}
+\NormalTok{    maze\_ctor\_kwargs}\OperatorTok{=}\NormalTok{\{}\StringTok{"do\_forks"}\NormalTok{: }\VariableTok{True}\NormalTok{, ...\}, }
+    \CommentTok{\# (optional) many options for restricting start/end points}
+\NormalTok{    endpoint\_kwargs}\OperatorTok{=}\NormalTok{\{}\StringTok{"deadend\_start"}\NormalTok{: }\VariableTok{True}\NormalTok{, ...\},}
+\NormalTok{)}
+\CommentTok{\# create a dataset}
+\NormalTok{dataset: MazeDataset }\OperatorTok{=}\NormalTok{ MazeDataset.from\_config(}
+\NormalTok{  cfg, }\CommentTok{\# pass the config}
+\NormalTok{  ..., }\CommentTok{\# other options such as whether to load from disk,}
+       \CommentTok{\# generate in parallel, etc.}
+\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -735,10 +747,12 @@ included and if empty cells should be filled in.}\label{fig:e2h-raster}
 \subsection{Tokenized Output Formats}\label{tokenized-output-formats}}
 
 Autoregressive transformer models can be quite sensitive to the exact
-format of the input data, and may use delimiter tokens to perform
+format of input data, and may even use delimiter tokens to perform
 reasoning steps (\protect\hyperlink{ref-pfau2024dotbydot}{Pfau et al.,
-2024}). To facilitate systematic investigation of this, we provide a
-variety of tokenized output formats.
+2024}; \protect\hyperlink{ref-spies2024causalworldmodels}{Spies et al.,
+2024}). To facilitate systematic investigation of the effects of
+different representations of data on text model performance, we provide
+a variety of tokenized text output formats.
 
 We convert mazes to token sequences in two steps. First, the maze is
 stringified using
@@ -973,7 +987,7 @@ unique dead ends.}
 \section{Implementation}\label{implementation}}
 
 We refer to our
-\href{https://github.com/understanding-search/maze-dataset}{GitHub repository}
+\href{https://github.com/understanding-search/maze-dataset}{repository}
 and
 \href{https://understanding-search.github.io/maze-dataset/maze_dataset.html}{docs}
 for documentation and up-to-date implementation details.
@@ -983,8 +997,8 @@ an adjacency list to represent mazes would lead to a poor lookup time
 for whether any given connection exists, while using an adjacency matrix
 would waste memory by failing to exploit the structure (e.g., only 4 of
 the diagonals would be filled in). Instead, we describe mazes with the
-following simple representation: for a \(d\)-dimensional lattice with
-\(r\) rows and \(c\) columns, we initialize a boolean array
+following representation: for a \(d\)-dimensional lattice with \(r\)
+rows and \(c\) columns, we initialize a boolean array
 \(A = \{0, 1\}^{d \times r \times c}\), which we refer to in the code as
 a
 \href{https://understanding-search.github.io/maze-dataset/maze_dataset.html\#LatticeMaze.connection_list}{\texttt{connection\_list}}.
@@ -1019,16 +1033,22 @@ This package was originally built for the needs of the
 et al., 2023b}) project, which aims to investigate spatial planning and
 world models in autoregressive transformer models trained on mazes
 (\protect\hyperlink{ref-ivanitskiy2023structuredworldreps}{Michael
-Igorevich Ivanitskiy et al., 2023};
+Igorevich Ivanitskiy, Spies, et al., 2023};
+\protect\hyperlink{ref-maze-dataset-arxiv-2023}{Michael Igorevich
+Ivanitskiy, Shah, et al., 2023};
 \protect\hyperlink{ref-spies2024causalworldmodels}{Spies et al., 2024}).
-This project has also adapted itself to be useful for work on
-understanding the mechanisms by which recurrent convolutional and
-implicit networks (\protect\hyperlink{ref-fung2022jfb}{Fung et al.,
-2022}) solve mazes given a rasterized view
+It was extended for work on understanding the mechanisms by which
+recurrent convolutional and implicit networks
+(\protect\hyperlink{ref-fung2022jfb}{Fung et al., 2022}) solve mazes
+given a rasterized view
 (\protect\hyperlink{ref-knutson2024logicalextrapolation}{Knutson et al.,
-2024}), and for this we match the output format of
+2024}), which required matching the pixel-padded and endpoint
+constrained output format of
 (\protect\hyperlink{ref-easy_to_hard}{Schwarzschild, Borgnia, Gupta,
-Bansal, et al., 2021}).
+Bansal, et al., 2021}). Ongoing work using \texttt{maze-dataset} aims to
+investigate the effects of varying the tokenization format on the
+performance of pretrained Large Language Models (LLMs) on spatial
+reasoning.
 
 This package has also been utilized in work by other groups:
 
@@ -1055,18 +1075,18 @@ This package has also been utilized in work by other groups:
 \hypertarget{acknowledgements}{%
 \section{Acknowledgements}\label{acknowledgements}}
 
-This work was partially supported by and many of the authors were
-brought together by AI Safety Camp and AI Safety Support. We would like
+This work was partially funded by National Science Foundation awards
+DMS-2110745 and DMS-2309810. We are also grateful to LTFF and FAR Labs
+for hosting authors MII, AFS, and TR for a residency visit, and to
+various members of FAR's technical staff for their advice.
+
+This work was partially supported by AI Safety Camp and AI Safety
+Support, which also brought many of the authors together. We would like
 to thank our former collaborators at AI Safety Camp and other users and
 contributors to the \texttt{maze-dataset} package: Benji Berczi,
 Guillaume Corlouer, William Edwards, Leon Eshuijs, Chris Mathwin, Lucia
 Quirke, Can Rager, Adrians Skapars, Rusheb Shah, Johannes Treutlein, and
 Dan Valentine.
-
-This work was partially funded by National Science Foundation awards
-DMS-2110745 and DMS-2309810. We are also grateful to LTFF and FAR Labs
-for hosting MII, AFS, and TR for a residency visit, and to various
-members of FAR's technical staff for their advice.
 
 We thank the Mines Optimization and Deep Learning group (MODL) for
 fruitful discussions. We also thank Michael Rosenberg for recommending
@@ -1157,6 +1177,12 @@ Ivanitskiy, Michael I., Shah, R., Spies, A. F., Räuker, T., Valentine,
 D., Rager, C., Quirke, L., Corlouer, G., \& Mathwin, C. (2023b).
 \emph{Maze transformer interpretability}.
 \url{https://github.com/understanding-search/maze-transformer}
+
+\leavevmode\vadjust pre{\hypertarget{ref-maze-dataset-arxiv-2023}{}}%
+Ivanitskiy, Michael Igorevich, Shah, R., Spies, A. F., Räuker, T.,
+Valentine, D., Rager, C., Quirke, L., Mathwin, C., Corlouer, G., Behn,
+C. D., \& others. (2023). A configurable library for generating and
+manipulating maze datasets. \emph{arXiv Preprint arXiv:2309.10498}.
 
 \leavevmode\vadjust pre{\hypertarget{ref-ivanitskiy2023structuredworldreps}{}}%
 Ivanitskiy, Michael Igorevich, Spies, A. F., Räuker, T., Corlouer, G.,
