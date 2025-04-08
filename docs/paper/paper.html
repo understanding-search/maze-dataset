@@ -309,8 +309,8 @@ subgraphs of an <span class="math inline"><em>n</em> × <em>n</em></span>
 lattice with boolean connections and, optionally, start and end points
 that are nodes in the graph. Furthermore, we place emphasis on a wide
 variety of possible text output formats aimed at evaluating the spatial
-reasoning capabilities of Large Language Models and other text-based
-transformer models.</p>
+reasoning capabilities of Large Language Models (LLMs) and other
+text-based transformer models.</p>
 <p>For interpretability and behavioral research, algorithmic tasks offer
 benefits by allowing systematic data generation and task decomposition,
 as well as simplifying the process of circuit discovery <span
@@ -475,9 +475,9 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a hr
 <p>All implemented maze generation algorithms are stochastic by nature.
 For reproducibility, the <code>seed</code> parameter of <a
 href="https://understanding-search.github.io/maze-dataset/maze_dataset.html#MazeDatasetConfig"><code>MazeDatasetConfig</code></a>
-may be set. In practice, using provided deduplication filters, we do
-find that exact duplicate mazes are generated very infrequently, even
-when generating very large datasets.</p>
+may be set. In practice, using provided deduplication filters, we find
+that exact duplicate mazes are generated very infrequently, even when
+generating very large datasets.</p>
 <p>For use cases where mazes of different sizes, generation algorithms,
 or other parameter variations are required, we provide the <a
 href="https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/collected_dataset.html#MazeDatasetCollection"><code>MazeDatasetCollection</code></a>
@@ -969,8 +969,7 @@ data-cites="easy_to_hard">(<a href="#ref-easy_to_hard"
 role="doc-biblioref">Schwarzschild, Borgnia, Gupta, Bansal, et al.,
 2021</a>)</span>. Ongoing work using <code>maze-dataset</code> aims to
 investigate the effects of varying the tokenization format on the
-performance of pretrained Large Language Models (LLMs) on spatial
-reasoning.</p>
+performance of pretrained LLMs on spatial reasoning.</p>
 <p>This package has also been utilized in work by other groups:</p>
 <ul>
 <li><p>By <span class="citation" data-cites="nolte2024multistep">(<a

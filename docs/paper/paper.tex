@@ -506,7 +506,7 @@ subgraphs of an \(n \times n\) lattice with boolean connections and,
 optionally, start and end points that are nodes in the graph.
 Furthermore, we place emphasis on a wide variety of possible text output
 formats aimed at evaluating the spatial reasoning capabilities of Large
-Language Models and other text-based transformer models.
+Language Models (LLMs) and other text-based transformer models.
 
 For interpretability and behavioral research, algorithmic tasks offer
 benefits by allowing systematic data generation and task decomposition,
@@ -678,9 +678,9 @@ the origin to the target:
 All implemented maze generation algorithms are stochastic by nature. For
 reproducibility, the \texttt{seed} parameter of
 \href{https://understanding-search.github.io/maze-dataset/maze_dataset.html\#MazeDatasetConfig}{\texttt{MazeDatasetConfig}}
-may be set. In practice, using provided deduplication filters, we do
-find that exact duplicate mazes are generated very infrequently, even
-when generating very large datasets.
+may be set. In practice, using provided deduplication filters, we find
+that exact duplicate mazes are generated very infrequently, even when
+generating very large datasets.
 
 For use cases where mazes of different sizes, generation algorithms, or
 other parameter variations are required, we provide the
@@ -1064,8 +1064,7 @@ constrained output format of
 (\protect\hyperlink{ref-easy_to_hard}{Schwarzschild, Borgnia, Gupta,
 Bansal, et al., 2021}). Ongoing work using \texttt{maze-dataset} aims to
 investigate the effects of varying the tokenization format on the
-performance of pretrained Large Language Models (LLMs) on spatial
-reasoning.
+performance of pretrained LLMs on spatial reasoning.
 
 This package has also been utilized in work by other groups:
 
