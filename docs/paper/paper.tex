@@ -627,7 +627,7 @@ class.
 \NormalTok{)}
 \CommentTok{\# create a config}
 \NormalTok{cfg: MazeDatasetConfig }\OperatorTok{=}\NormalTok{ MazeDatasetConfig(}
-\NormalTok{    name}\OperatorTok{=}\StringTok{"example"}\NormalTok{, }\CommentTok{\# names need not be unique, filenames are automatically made to be}
+\NormalTok{    name}\OperatorTok{=}\StringTok{"example"}\NormalTok{, }\CommentTok{\# names need not be unique}
 \NormalTok{    grid\_n}\OperatorTok{=}\DecValTok{3}\NormalTok{,   }\CommentTok{\# size of the maze}
 \NormalTok{    n\_mazes}\OperatorTok{=}\DecValTok{32}\NormalTok{, }\CommentTok{\# number of mazes in the dataset}
 \NormalTok{    maze\_ctor}\OperatorTok{=}\NormalTok{LatticeMazeGenerators.gen\_dfs, }\CommentTok{\# many algorithms available}
@@ -645,19 +645,20 @@ class.
 \end{Highlighting}
 \end{Shaded}
 
-When initializing mazes, further configuration options can be specified
-through the
+When initializing a dataset, options which do not affect the mazes
+themselves can be specified through the
 \href{https://understanding-search.github.io/maze-dataset/maze_dataset.html\#MazeDataset.from_config}{\texttt{from\_config()}}
-factory method as necessary. Options allow for saving/loading existing
-datasets instead of regenerating, and parallelization options for
-generation. Available maze generation algorithms are static methods of
-the
+factory method as necessary. These options allow for saving/loading
+existing datasets instead of re-generating, parallelization options for
+generation, and more. Available maze generation algorithms are static
+methods of the
 \href{https://understanding-search.github.io/maze-dataset/maze_dataset.html\#LatticeMazeGenerators}{\texttt{LatticeMazeGenerators}}
-class and include generation algorithms based on randomized depth-first
-search, Wilson's algorithm (\protect\hyperlink{ref-wilson}{Wilson,
-1996}), percolation (\protect\hyperlink{ref-percolation}{Duminil-Copin,
-2017}; \protect\hyperlink{ref-percolation-clustersize}{Fisher \& Essam,
-2004}), Kruskal's algorithm
+namespace class and include generation algorithms based on randomized
+depth-first search, Wilson's algorithm
+(\protect\hyperlink{ref-wilson}{Wilson, 1996}), percolation
+(\protect\hyperlink{ref-percolation}{Duminil-Copin, 2017};
+\protect\hyperlink{ref-percolation-clustersize}{Fisher \& Essam, 2004}),
+Kruskal's algorithm
 (\protect\hyperlink{ref-kruskal1956shortest}{Kruskal, 1956}), and
 others.
 
@@ -680,6 +681,12 @@ reproducibility, the \texttt{seed} parameter of
 may be set. In practice, using provided deduplication filters, we do
 find that exact duplicate mazes are generated very infrequently, even
 when generating very large datasets.
+
+For use cases where mazes of different sizes, generation algorithms, or
+other parameter variations are required, we provide the
+\href{https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/collected_dataset.html\#MazeDatasetCollection}{\texttt{MazeDatasetCollection}}
+class, which allows for creating a single iterable dataset from multiple
+independent configurations.
 
 \hypertarget{visual-output-formats}{%
 \subsection{Visual Output Formats}\label{visual-output-formats}}
@@ -712,12 +719,12 @@ several formats to maximize their utility in different contexts.
         \includegraphics[width=0.25\textwidth]{figures/outputs-pixels.pdf}
       }
       & \multicolumn{1}{c}{
-        \includegraphics[width=0.25\textwidth, trim={0 0 -.3cm, -.5cm}, clip]{figures/outputs-mazeplot.pdf}
+        \includegraphics[width=0.27\textwidth, trim={0 0.8cm -.3cm, -.5cm}, clip]{figures/outputs-mazeplot.pdf}
       } \\[1em]
     
     \hline \\
   \end{tabular}
-  \caption{Various output formats. Top row (left to right): ASCII diagram, rasterized pixel grid, and advanced display.}
+  \caption{Various output formats. Top row (left to right): ASCII diagram, rasterized pixel grid, and advanced display tool.}
   \label{fig:output-fmts}
 \end{figure}
 

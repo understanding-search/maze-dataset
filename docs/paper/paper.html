@@ -431,7 +431,7 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a hr
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># create a config</span></span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>cfg: MazeDatasetConfig <span class="op">=</span> MazeDatasetConfig(</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    name<span class="op">=</span><span class="st">&quot;example&quot;</span>, <span class="co"># names need not be unique, filenames are automatically made to be</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    name<span class="op">=</span><span class="st">&quot;example&quot;</span>, <span class="co"># names need not be unique</span></span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    grid_n<span class="op">=</span><span class="dv">3</span>,   <span class="co"># size of the maze</span></span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    n_mazes<span class="op">=</span><span class="dv">32</span>, <span class="co"># number of mazes in the dataset</span></span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    maze_ctor<span class="op">=</span>LatticeMazeGenerators.gen_dfs, <span class="co"># many algorithms available</span></span>
@@ -446,16 +446,16 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a hr
 <span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>  ..., <span class="co"># other options such as whether to load from disk,</span></span>
 <span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>       <span class="co"># generate in parallel, etc.</span></span>
 <span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
-<p>When initializing mazes, further configuration options can be
-specified through the <a
+<p>When initializing a dataset, options which do not affect the mazes
+themselves can be specified through the <a
 href="https://understanding-search.github.io/maze-dataset/maze_dataset.html#MazeDataset.from_config"><code>from_config()</code></a>
-factory method as necessary. Options allow for saving/loading existing
-datasets instead of regenerating, and parallelization options for
-generation. Available maze generation algorithms are static methods of
-the <a
+factory method as necessary. These options allow for saving/loading
+existing datasets instead of re-generating, parallelization options for
+generation, and more. Available maze generation algorithms are static
+methods of the <a
 href="https://understanding-search.github.io/maze-dataset/maze_dataset.html#LatticeMazeGenerators"><code>LatticeMazeGenerators</code></a>
-class and include generation algorithms based on randomized depth-first
-search, Wilson’s algorithm <span class="citation"
+namespace class and include generation algorithms based on randomized
+depth-first search, Wilson’s algorithm <span class="citation"
 data-cites="wilson">(<a href="#ref-wilson" role="doc-biblioref">Wilson,
 1996</a>)</span>, percolation <span class="citation"
 data-cites="percolation percolation-clustersize">(<a
@@ -478,6 +478,11 @@ href="https://understanding-search.github.io/maze-dataset/maze_dataset.html#Maze
 may be set. In practice, using provided deduplication filters, we do
 find that exact duplicate mazes are generated very infrequently, even
 when generating very large datasets.</p>
+<p>For use cases where mazes of different sizes, generation algorithms,
+or other parameter variations are required, we provide the <a
+href="https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/collected_dataset.html#MazeDatasetCollection"><code>MazeDatasetCollection</code></a>
+class, which allows for creating a single iterable dataset from multiple
+independent configurations.</p>
 <h2 id="visual-output-formats">Visual Output Formats</h2>
 <p>Internally, mazes are <a
 href="https://understanding-search.github.io/maze-dataset/maze_dataset.html#SolvedMaze"><code>SolvedMaze</code></a>
@@ -519,7 +524,7 @@ for multiple paths, heatmaps over positions, and more.</td>
 <td style="text-align: center;"><embed
 src="media/figures/outputs-pixels.pdf" style="width:25.0%" /></td>
 <td style="text-align: center;"><embed
-src="media/figures/outputs-mazeplot.pdf" style="width:25.0%" /></td>
+src="media/figures/outputs-mazeplot.pdf" style="width:27.0%" /></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"></td>
@@ -529,7 +534,7 @@ src="media/figures/outputs-mazeplot.pdf" style="width:25.0%" /></td>
 </tbody>
 </table>
 <figcaption>Various output formats. Top row (left to right): ASCII
-diagram, rasterized pixel grid, and advanced display.</figcaption>
+diagram, rasterized pixel grid, and advanced display tool.</figcaption>
 </figure>
 <p>In previous work, maze tasks have been used with Recurrent
 Convolutional Neural Network (RCNN) derived architectures <span

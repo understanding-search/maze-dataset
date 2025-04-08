@@ -142,7 +142,7 @@ dataset: MazeDataset = MazeDataset.from_config(
 )
 ```
 
-When initializing mazes, further configuration options can be specified through the [`from_config()`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#MazeDataset.from_config) factory method as necessary. Options allow for saving/loading existing datasets instead of regenerating, and parallelization options for generation. Available maze generation algorithms are static methods of the [`LatticeMazeGenerators`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#LatticeMazeGenerators) class and include generation algorithms based on randomized depth-first search, Wilson's algorithm [@wilson], percolation [@percolation; @percolation-clustersize], Kruskal's algorithm [@kruskal1956shortest], and others.
+When initializing a dataset, options which do not affect the mazes themselves can be specified through the [`from_config()`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#MazeDataset.from_config) factory method as necessary. These options allow for saving/loading existing datasets instead of re-generating, parallelization options for generation, and more. Available maze generation algorithms are static methods of the [`LatticeMazeGenerators`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#LatticeMazeGenerators) namespace class and include generation algorithms based on randomized depth-first search, Wilson's algorithm [@wilson], percolation [@percolation; @percolation-clustersize], Kruskal's algorithm [@kruskal1956shortest], and others.
 
 Furthermore, a dataset of mazes can be filtered to satisfy certain properties. Custom filters can be specified, and some filters are included in [`MazeDatasetFilters`](https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/filters.html#MazeDatasetFilters). For example, we can require a minimum path length of three steps from the origin to the target:
 
@@ -151,6 +151,8 @@ dataset_filtered: MazeDataset = dataset.filter_by.path_length(min_length=3)
 ```
 
 All implemented maze generation algorithms are stochastic by nature. For reproducibility, the `seed` parameter of [`MazeDatasetConfig`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#MazeDatasetConfig) may be set. In practice, using provided deduplication filters, we do find that exact duplicate mazes are generated very infrequently, even when generating very large datasets.
+
+For use cases where mazes of different sizes, generation algorithms, or other parameter variations are required, we provide the [`MazeDatasetCollection`](https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/collected_dataset.html#MazeDatasetCollection) class, which allows for creating a single iterable dataset from multiple independent configurations.
 
 ## Visual Output Formats {#visual-output-formats}
 
@@ -178,12 +180,12 @@ Internally, mazes are [`SolvedMaze`](https://understanding-search.github.io/maze
         \includegraphics[width=0.25\textwidth]{figures/outputs-pixels.pdf}
       }
       & \multicolumn{1}{c}{
-        \includegraphics[width=0.25\textwidth, trim={0 0 -.3cm, -.5cm}, clip]{figures/outputs-mazeplot.pdf}
+        \includegraphics[width=0.27\textwidth, trim={0 0.8cm -.3cm, -.5cm}, clip]{figures/outputs-mazeplot.pdf}
       } \\[1em]
     
     \hline \\
   \end{tabular}
-  \caption{Various output formats. Top row (left to right): ASCII diagram, rasterized pixel grid, and advanced display.}
+  \caption{Various output formats. Top row (left to right): ASCII diagram, rasterized pixel grid, and advanced display tool.}
   \label{fig:output-fmts}
 \end{figure}
 
