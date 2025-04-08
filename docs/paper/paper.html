@@ -357,7 +357,7 @@ role="doc-biblioref">Schwarzschild, Borgnia, Gupta, Bansal, et al.,
 href="#ref-gh_Nemeth_2019" role="doc-biblioref">2019</a>)</span></li>
 <li><a
 href="https://understanding-search.github.io/maze-dataset/maze_dataset.html#LatticeMaze.as_ascii"><code>as_ascii()</code></a>
-provides a format similar to that used in <span class="citation"
+provides a format similar to <span class="citation"
 data-cites="eval-gpt-visual gh-oppenheimj2018maze">(<a
 href="#ref-gh-oppenheimj2018maze" role="doc-biblioref">Oppenheim,
 2018</a>; <a href="#ref-eval-gpt-visual" role="doc-biblioref">Singla,
@@ -401,6 +401,13 @@ href="#ref-ayaz2008maze" role="doc-biblioref">Ayaz et al.,
 2008</a>)</span> appear to simply no longer be accessible.</p></li>
 </ul>
 <h1 id="features">Features</h1>
+<p>We direct readers to our <a
+href="https://understanding-search.github.io/maze-dataset/examples/maze_examples.html">examples</a>,
+<a
+href="https://understanding-search.github.io/maze-dataset/maze_dataset.html">docs</a>,
+and <a
+href="https://understanding-search.github.io/maze-dataset/notebooks/">notebooks</a>
+for more information.</p>
 <h2 id="generation">Generation and Basic Usage</h2>
 <p>Our package can be installed from <a
 href="https://pypi.org/project/maze-dataset/">PyPi</a> via
@@ -443,9 +450,8 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a hr
 <span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="co"># create a dataset</span></span>
 <span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>dataset: MazeDataset <span class="op">=</span> MazeDataset.from_config(</span>
 <span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>  cfg, <span class="co"># pass the config</span></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>  ..., <span class="co"># other options such as whether to load from disk,</span></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>       <span class="co"># generate in parallel, etc.</span></span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>  ..., <span class="co"># other options for disk loading, parallelization, etc.</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
 <p>When initializing a dataset, options which do not affect the mazes
 themselves can be specified through the <a
 href="https://understanding-search.github.io/maze-dataset/maze_dataset.html#MazeDataset.from_config"><code>from_config()</code></a>

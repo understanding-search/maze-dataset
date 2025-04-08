@@ -553,7 +553,7 @@ with these datasets.
     (\protect\hyperlink{ref-gh_Nemeth_2019}{2019})
   \item
     \href{https://understanding-search.github.io/maze-dataset/maze_dataset.html\#LatticeMaze.as_ascii}{\texttt{as\_ascii()}}
-    provides a format similar to that used in
+    provides a format similar to
     (\protect\hyperlink{ref-gh-oppenheimj2018maze}{Oppenheim, 2018};
     \protect\hyperlink{ref-eval-gpt-visual}{Singla, 2023})
   \item
@@ -594,6 +594,13 @@ with these datasets.
 
 \hypertarget{features}{%
 \section{Features}\label{features}}
+
+We direct readers to our
+\href{https://understanding-search.github.io/maze-dataset/examples/maze_examples.html}{examples},
+\href{https://understanding-search.github.io/maze-dataset/maze_dataset.html}{docs},
+and
+\href{https://understanding-search.github.io/maze-dataset/notebooks/}{notebooks}
+for more information.
 
 \hypertarget{generation}{%
 \subsection{Generation and Basic Usage}\label{generation}}
@@ -639,8 +646,7 @@ class.
 \CommentTok{\# create a dataset}
 \NormalTok{dataset: MazeDataset }\OperatorTok{=}\NormalTok{ MazeDataset.from\_config(}
 \NormalTok{  cfg, }\CommentTok{\# pass the config}
-\NormalTok{  ..., }\CommentTok{\# other options such as whether to load from disk,}
-       \CommentTok{\# generate in parallel, etc.}
+\NormalTok{  ..., }\CommentTok{\# other options for disk loading, parallelization, etc.}
 \NormalTok{)}
 \end{Highlighting}
 \end{Shaded}

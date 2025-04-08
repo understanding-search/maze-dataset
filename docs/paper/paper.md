@@ -90,15 +90,13 @@ While maze generation itself is straightforward, the architectural challenge com
 
 For interpretability and behavioral research, algorithmic tasks offer benefits by allowing systematic data generation and task decomposition, as well as simplifying the process of circuit discovery [@interpretability-survery]. Although mazes are well suited for these investigations, we found that existing maze generation packages [@cobbe2019procgen; @harriesMazeExplorerCustomisable3D2019; @gh_Ehsan_2022; @gh_Nemeth_2019; @easy_to_hard] lack support for transforming between multiple representations and provide limited control over the maze generation process.
 
-
-
 ## Related Works
 
 A multitude of public and open-source software packages exist for generating mazes [@easy_to_hard; @gh_Ehsan_2022; @gh_Nemeth_2019]. However, nearly all of these packages produce mazes represented as rasterized images or other visual formats rather than the underlying graph structure, and this makes it difficult to work with these datasets.
 
 - Most prior works provide mazes in visual or raster formats, and we provide a variety of similar output formats:
   - [`RasterizedMazeDataset`](https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/rasterized.html#RasterizedMazeDataset), utilizing [`as_pixels()`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#LatticeMaze.as_pixels), which can exactly mimic the outputs provided in `easy-to-hard-data`[@easy_to_hard] and can be configured to be similar to the outputs of @gh_Nemeth_2019
-  - [`as_ascii()`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#LatticeMaze.as_ascii) provides a format similar to that used in [@eval-gpt-visual; @gh-oppenheimj2018maze]
+  - [`as_ascii()`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#LatticeMaze.as_ascii) provides a format similar to [@eval-gpt-visual; @gh-oppenheimj2018maze]
   - [`MazePlot`](https://understanding-search.github.io/maze-dataset/maze_dataset/plotting.html#MazePlot) provides a feature-rich plotting utility with support for multiple paths, heatmaps over positions, and more. This is similar to the outputs of [@mdl-suite; @mathematica-maze; @mazegenerator-net; @gh_Ehsan_2022]
 
 
@@ -112,6 +110,8 @@ A multitude of public and open-source software packages exist for generating maz
 
 
 # Features
+
+We direct readers to our [examples](https://understanding-search.github.io/maze-dataset/examples/maze_examples.html), [docs](https://understanding-search.github.io/maze-dataset/maze_dataset.html), and [notebooks](https://understanding-search.github.io/maze-dataset/notebooks/) for more information.
 
 ## Generation and Basic Usage {#generation}
 
@@ -137,8 +137,7 @@ cfg: MazeDatasetConfig = MazeDatasetConfig(
 # create a dataset
 dataset: MazeDataset = MazeDataset.from_config(
   cfg, # pass the config
-  ..., # other options such as whether to load from disk,
-       # generate in parallel, etc.
+  ..., # other options for disk loading, parallelization, etc.
 )
 ```
 
