@@ -892,39 +892,46 @@ href="https://github.com/understanding-search/maze-dataset">repository</a>
 and <a
 href="https://understanding-search.github.io/maze-dataset/maze_dataset.html">docs</a>
 for documentation and up-to-date implementation details.</p>
-<p>This package utilizes a simple, efficient representation of mazes.
-Using an adjacency list to represent mazes would lead to a poor lookup
-time for whether any given connection exists, while using an adjacency
-matrix would waste memory by failing to exploit the structure (e.g.,
-only 4 of the diagonals would be filled in). Instead, we describe mazes
-with the following representation: for a <span
-class="math inline"><em>d</em></span>-dimensional lattice with <span
-class="math inline"><em>r</em></span> rows and <span
+<p>This package utilizes a simple, efficient representation of mazes as
+subgraphs of a finite lattice, which we call a <a
+href="https://understanding-search.github.io/maze-dataset/maze_dataset.html#LatticeMaze"><code>LatticeMaze</code></a>.
+Using an adjacency matrix would be memory inefficient by failing to
+exploit the highly sparse structure – for example, for a 2-dimsnionsal
+maze, only 4 of the diagonals would be filled in. On the other hand,
+using an adjacency list could lead to a poor lookup time for whether any
+given connection exists.</p>
+<p>Instead, we describe mazes with the following representation: for a
+<span class="math inline"><em>d</em></span>-dimensional lattice with
+<span class="math inline"><em>r</em></span> rows and <span
 class="math inline"><em>c</em></span> columns, we initialize a boolean
 array <span
-class="math inline"><em>A</em> = {0, 1}<sup><em>d</em> × <em>r</em> × <em>c</em></sup></span>,
+class="math display"><em>A</em> = {0, 1}<sup><em>d</em> × <em>r</em> × <em>c</em></sup></span>
 which we refer to in the code as a <a
 href="https://understanding-search.github.io/maze-dataset/maze_dataset.html#LatticeMaze.connection_list"><code>connection_list</code></a>.
-The value at <span
+In two dimensions, the value at <span
 class="math inline"><em>A</em>[0,<em>i</em>,<em>j</em>]</span>
-determines whether a downward connection exists from node <span
+determines whether a <em>downward</em> connection exists from node <span
 class="math inline">[<em>i</em>,<em>j</em>]</span> to <span
 class="math inline">[<em>i</em>+1,<em>j</em>]</span>. Likewise, the
 value at <span
 class="math inline"><em>A</em>[1,<em>i</em>,<em>j</em>]</span>
-determines whether a rightwards connection to <span
+determines whether a <em>rightward</em> connection to <span
 class="math inline">[<em>i</em>,<em>j</em>+1]</span> exists. Thus, we
 avoid duplication of data about the existence of connections, at the
 cost of requiring additional care with indexing when looking for a
 connection upwards or to the left. Note that this setup allows for a
-periodic lattice.</p>
+periodic lattice. This format generalizes to lattices of higher
+dimensions, but our package provides only limited support for generation
+and visualization of higher dimensional mazes. Generation of mazes is
+detailed in <a
+href="https://understanding-search.github.io/maze-dataset/maze_dataset.html#LatticeMazeGenerators"><code>LatticeMazeGenerators</code></a>.</p>
 <p>To produce solutions to mazes, two points are selected uniformly at
 random without replacement from the connected component of the maze, and
 the <span class="math inline"><em>A</em><sup>*</sup></span> algorithm
 <span class="citation" data-cites="A_star">(<a href="#ref-A_star"
 role="doc-biblioref">Hart et al., 1968</a>)</span> is applied to find
-the shortest path between them. The endpoint selection can be affected
-by <a
+the shortest path between them. The endpoint selection can be controlled
+via <a
 href="https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/maze_dataset_config.html#MazeDatasetConfig.endpoint_kwargs"><code>MazeDatasetConfig.endpoint_kwargs:</code></a>
 <a
 href="https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/maze_dataset_config.html#EndpointKwargsType"><code>EndpointKwargsType</code></a>,

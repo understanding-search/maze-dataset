@@ -317,10 +317,15 @@ where `raw_val` is the output of the symbolic regression model. The parameter $x
 
 We refer to our \href{https://github.com/understanding-search/maze-dataset}{repository} and \docslink{maze_dataset.html}{docs} for documentation and up-to-date implementation details.
 
-This package utilizes a simple, efficient representation of mazes. Using an adjacency list to represent mazes would lead to a poor lookup time for whether any given connection exists, while using an adjacency matrix would waste memory by failing to exploit the structure (e.g., only 4 of the diagonals would be filled in).
-Instead, we describe mazes with the following representation: for a $d$-dimensional lattice with $r$ rows and $c$ columns, we initialize a boolean array $A = \{0, 1\}^{d \times r \times c}$, which we refer to in the code as a [`connection_list`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#LatticeMaze.connection_list). The value at $A[0,i,j]$ determines whether a downward connection exists from node $[i,j]$ to $[i+1, j]$. Likewise, the value at $A[1,i,j]$ determines whether a rightwards connection to $[i, j+1]$ exists. Thus, we avoid duplication of data about the existence of connections, at the cost of requiring additional care with indexing when looking for a connection upwards or to the left. Note that this setup allows for a periodic lattice.
+This package utilizes a simple, efficient representation of mazes as subgraphs of a finite lattice, which we call a [`LatticeMaze`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#LatticeMaze). Using an adjacency matrix would be memory inefficient by failing to exploit the highly sparse structure -- for example, for a 2-dimsnionsal maze, only 4 of the diagonals would be filled in. On the other hand, using an adjacency list could lead to a poor lookup time for whether any given connection exists.
 
-To produce solutions to mazes, two points are selected uniformly at random without replacement from the connected component of the maze, and the $A^*$ algorithm [@A_star] is applied to find the shortest path between them. The endpoint selection can be affected by [`MazeDatasetConfig.endpoint_kwargs:`](https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/maze_dataset_config.html#MazeDatasetConfig.endpoint_kwargs) [`EndpointKwargsType`](https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/maze_dataset_config.html#EndpointKwargsType), and complications caused by this are detailed in \autoref{success-rate-estimation}.
+Instead, we describe mazes with the following representation: for a $d$-dimensional lattice with $r$ rows and $c$ columns, we initialize a boolean array
+$$
+  A = \{0, 1\}^{d \times r \times c}
+$$
+which we refer to in the code as a [`connection_list`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#LatticeMaze.connection_list). In two dimensions, the value at $A[0,i,j]$ determines whether a *downward* connection exists from node $[i,j]$ to $[i+1, j]$. Likewise, the value at $A[1,i,j]$ determines whether a *rightward* connection to $[i, j+1]$ exists. Thus, we avoid duplication of data about the existence of connections, at the cost of requiring additional care with indexing when looking for a connection upwards or to the left. Note that this setup allows for a periodic lattice. This format generalizes to lattices of higher dimensions, but our package provides only limited support for generation and visualization of higher dimensional mazes. Generation of mazes is detailed in [`LatticeMazeGenerators`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#LatticeMazeGenerators).
+
+To produce solutions to mazes, two points are selected uniformly at random without replacement from the connected component of the maze, and the $A^*$ algorithm [@A_star] is applied to find the shortest path between them. The endpoint selection can be controlled via [`MazeDatasetConfig.endpoint_kwargs:`](https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/maze_dataset_config.html#MazeDatasetConfig.endpoint_kwargs) [`EndpointKwargsType`](https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/maze_dataset_config.html#EndpointKwargsType), and complications caused by this are detailed in \autoref{success-rate-estimation}.
 
 Parallelization is implemented via the `multiprocessing` module in the Python standard library, and parallel generation can be controlled via keyword arguments to [`MazeDataset.from_config()`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#MazeDataset.from_config).
 
@@ -351,6 +356,6 @@ This work was partially supported by AI Safety Camp and AI Safety Support, which
 
 We thank the Mines Optimization and Deep Learning group (MODL) for fruitful discussions. We also thank Michael Rosenberg for recommending the usage of Finite State Transducers for storing tokenizer validation information.
 
-
+\newpage
 
 # References
