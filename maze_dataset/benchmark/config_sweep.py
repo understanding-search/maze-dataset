@@ -4,7 +4,7 @@ import functools
 import json
 import warnings
 from pathlib import Path
-from typing import Any, Callable, Generic, Sequence, TypeVar
+from typing import Any, Callable, Generic, Literal, Sequence, TypeVar
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -459,6 +459,7 @@ def plot_grouped(  # noqa: C901
 	figsize: tuple[int, int] = (22, 10),
 	minify_title: bool = False,
 	legend_kwargs: dict[str, Any] | None = None,
+	manual_titles: dict[Literal["x", "y", "title"], str] | None = None,
 ) -> None:
 	"""Plot grouped sweep percolation value results for each distinct `endpoint_kwargs` in the configs
 
@@ -544,6 +545,11 @@ def plot_grouped(  # noqa: C901
 
 					# Plot prediction as dashed line
 					ax.plot(p_dense, predictions, "--", color=color, alpha=0.8)
+
+			if manual_titles:
+				ax.set_xlabel(manual_titles["x"])
+				ax.set_ylabel(manual_titles["y"])
+				ax.set_title(manual_titles["title"])
 
 		# save and show
 		if save_dir:

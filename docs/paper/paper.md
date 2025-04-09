@@ -1,5 +1,5 @@
 ---
-title: 'maze-dataset: Algorithmic Variety and Representation Flexibility in Maze Generation'
+title: 'maze-dataset: User Friendly Maze Generation with Algorithmic Variety and Representation Flexibility'
 tags:
   - Python
   - machine learning
@@ -310,7 +310,7 @@ $$
 
 where `raw_val` is the output of the symbolic regression model. The parameter $x_0$ is the percolation probability, while all other parameters from `_to_ps_array()` only affect `raw_val`.
 
-![An example of both empirical and predicted success rates as a function of the percolation probability $p$ for various maze sizes, percolation with and without depth first search, and `endpoint_kwargs` requiring that both the start and end be in unique dead ends.](figures/ep/ep_deadends_unique-crop.pdf){width=100%}
+![An example of both empirical and predicted success rates as a function of the percolation probability $p$ for various maze sizes, percolation with and without depth first search, and `endpoint_kwargs` requiring that both the start and end be in unique dead ends. Empirical measures derived from a sample of 128 mazes.](figures/ep/ep_deadends_unique-crop.pdf){width=100%}
 
 # Implementation {#implementation}
 
