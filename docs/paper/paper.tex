@@ -362,6 +362,7 @@ Software}, \emph{¿VOL?}(¿ISSUE?), ¿PAGE? \url{https://doi.org/N/A}}.}}
 }
 \providecommand{\XeTeXLinkBox}[1]{#1}
 \newcommand{\docslink}[2]{\href{https://understanding-search.github.io/maze-dataset/#1}{#2}}
+\newcommand{\docslinkcode}[2]{\href{https://understanding-search.github.io/maze-dataset/#1}{\texttt{#2}}}
 \newcommand{\secref}[1]{\hyperref[#1]{section: \textit{\nameref{#1}}}}
 \ifLuaTeX
   \usepackage{selnolig}  % disable illegal ligatures
@@ -1018,29 +1019,25 @@ for documentation and up-to-date implementation details.
 This package utilizes a simple, efficient representation of mazes as
 subgraphs of a finite lattice, which we call a
 \href{https://understanding-search.github.io/maze-dataset/maze_dataset.html\#LatticeMaze}{\texttt{LatticeMaze}}.
-Using an adjacency matrix would be memory inefficient by failing to
-exploit the highly sparse structure -- for example, for a 2-dimsnionsal
-maze, only 4 of the diagonals would be filled in. On the other hand,
-using an adjacency list could lead to a poor lookup time for whether any
-given connection exists.
+Using an adjacency matrix for storing mazes would be memory inefficient
+by failing to exploit the highly sparse structure -- for example, for a
+2-dimensional maze, only 4 of the diagonals would be filled in. On the
+other hand, using an adjacency list could lead to a poor lookup time for
+whether any given connection exists.
 
 Instead, we describe mazes with the following representation: for a
-\(d\)-dimensional lattice with \(r\) rows and \(c\) columns, we
+\(2\)-dimensional lattice with \(r\) rows and \(c\) columns, we
 initialize a boolean array \[
-  A = \{0, 1\}^{d \times r \times c}
+  A = \{0, 1\}^{2 \times r \times c}
 \] which we refer to in the code as a
 \href{https://understanding-search.github.io/maze-dataset/maze_dataset.html\#LatticeMaze.connection_list}{\texttt{connection\_list}}.
-In two dimensions, the value at \(A[0,i,j]\) determines whether a
-\emph{downward} connection exists from node \([i,j]\) to \([i+1, j]\).
-Likewise, the value at \(A[1,i,j]\) determines whether a
-\emph{rightward} connection to \([i, j+1]\) exists. Thus, we avoid
-duplication of data about the existence of connections, at the cost of
-requiring additional care with indexing when looking for a connection
-upwards or to the left. Note that this setup allows for a periodic
-lattice. This format generalizes to lattices of higher dimensions, but
-our package provides only limited support for generation and
-visualization of higher dimensional mazes. Generation of mazes is
-detailed in
+The value at \(A[0,i,j]\) determines whether a \emph{downward}
+connection exists from node \([i,j]\) to \([i+1, j]\). Likewise, the
+value at \(A[1,i,j]\) determines whether a \emph{rightward} connection
+to \([i, j+1]\) exists. Thus, we avoid duplication of data about the
+existence of connections and facillitate fast lookup time, at the cost
+of requiring additional care with indexing. Note that this setup allows
+for a periodic lattice. Generation of mazes is detailed in
 \href{https://understanding-search.github.io/maze-dataset/maze_dataset.html\#LatticeMazeGenerators}{\texttt{LatticeMazeGenerators}}.
 
 To produce solutions to mazes, two points are selected uniformly at
@@ -1052,11 +1049,17 @@ selection can be controlled via
 \href{https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/maze_dataset_config.html\#EndpointKwargsType}{\texttt{EndpointKwargsType}},
 and complications caused by this are detailed in
 \hyperref[sec:success-rate-estimation]{section: \textit{\nameref{sec:success-rate-estimation}}}.
+A maze with a solution is denoted a
+\href{https://understanding-search.github.io/maze-dataset/maze_dataset.html\#SolvedMaze}{\texttt{SolvedMaze}},
+which inherits from
+\href{https://understanding-search.github.io/maze-dataset/maze_dataset.html\#LatticeMaze}{\texttt{LatticeMaze}}.
 
 Parallelization is implemented via the \texttt{multiprocessing} module
 in the Python standard library, and parallel generation can be
 controlled via keyword arguments to
 \href{https://understanding-search.github.io/maze-dataset/maze_dataset.html\#MazeDataset.from_config}{\texttt{MazeDataset.from\_config()}}.
+
+\newpage
 
 \hypertarget{usage-in-research}{%
 \section{Usage in Research}\label{usage-in-research}}
