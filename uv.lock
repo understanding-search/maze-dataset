@@ -1542,7 +1542,7 @@ wheels = [
 
 [[package]]
 name = "maze-dataset"
-version = "1.3.1"
+version = "1.3.2"
 source = { editable = "." }
 dependencies = [
     { name = "ipykernel" },
@@ -1564,6 +1564,7 @@ tokenization = [
 [package.dev-dependencies]
 benchmark = [
     { name = "pysr" },
+    { name = "seaborn" },
 ]
 dev = [
     { name = "coverage-badge" },
@@ -1580,6 +1581,7 @@ dev = [
     { name = "pytest-xdist" },
     { name = "tomli", marker = "python_full_version < '3.11'" },
     { name = "twine" },
+    { name = "types-psutil" },
     { name = "types-tqdm" },
 ]
 lint = [
@@ -1602,7 +1604,10 @@ requires-dist = [
 provides-extras = ["tokenization"]
 
 [package.metadata.requires-dev]
-benchmark = [{ name = "pysr", specifier = ">=1.4.0" }]
+benchmark = [
+    { name = "pysr", specifier = ">=1.4.0" },
+    { name = "seaborn" },
+]
 dev = [
     { name = "coverage-badge", specifier = ">=1.1.0" },
     { name = "lmcat", marker = "python_full_version >= '3.11'", specifier = ">=0.2.0" },
@@ -1618,6 +1623,7 @@ dev = [
     { name = "pytest-xdist", specifier = ">=3.6.1" },
     { name = "tomli", marker = "python_full_version < '3.11'", specifier = ">=2.1.0" },
     { name = "twine" },
+    { name = "types-psutil" },
     { name = "types-tqdm" },
 ]
 lint = [{ name = "ruff", specifier = ">=0.4.8" }]
@@ -2787,6 +2793,20 @@ wheels = [
 ]
 
 [[package]]
+name = "seaborn"
+version = "0.13.2"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "matplotlib" },
+    { name = "numpy" },
+    { name = "pandas" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/86/59/a451d7420a77ab0b98f7affa3a1d78a313d2f7281a57afb1a34bae8ab412/seaborn-0.13.2.tar.gz", hash = "sha256:93e60a40988f4d65e9f4885df477e2fdaff6b73a9ded434c1ab356dd57eefff7", size = 1457696 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/83/11/00d3c3dfc25ad54e731d91449895a79e4bf2384dc3ac01809010ba88f6d5/seaborn-0.13.2-py3-none-any.whl", hash = "sha256:636f8336facf092165e27924f223d3c62ca560b1f2bb5dff7ab7fad265361987", size = 294914 },
+]
+
+[[package]]
 name = "secretstorage"
 version = "3.3.3"
 source = { registry = "https://pypi.org/simple" }
@@ -3010,6 +3030,15 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/c8/a2/6df94fc5c8e2170d21d7134a565c3a8fb84f9797c1dd65a5976aaf714418/twine-6.1.0.tar.gz", hash = "sha256:be324f6272eff91d07ee93f251edf232fc647935dd585ac003539b42404a8dbd", size = 168404 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/7c/b6/74e927715a285743351233f33ea3c684528a0d374d2e43ff9ce9585b73fe/twine-6.1.0-py3-none-any.whl", hash = "sha256:a47f973caf122930bf0fbbf17f80b83bc1602c9ce393c7845f289a3001dc5384", size = 40791 },
+]
+
+[[package]]
+name = "types-psutil"
+version = "7.0.0.20250401"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/ef/fc/3829cb113aa05c268b18369f1f003a4589216931658ebfa69e3d4931ba60/types_psutil-7.0.0.20250401.tar.gz", hash = "sha256:2a7d663c0888a079fc1643ebc109ad12e57a21c9552a9e2035da504191336dbf", size = 20273 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/58/42/45e01f3bce242c0caad36b968114a00f454169df6c771c092c96727239d8/types_psutil-7.0.0.20250401-py3-none-any.whl", hash = "sha256:ed23f7140368104afe4e05a6085a5fa56fbe8c880a0f4dfe8d63e041106071ed", size = 23173 },
 ]
 
 [[package]]

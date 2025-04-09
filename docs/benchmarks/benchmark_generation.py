@@ -1,4 +1,10 @@
+"script for benchmarking generation performance"
+
+import platform
 from typing import Any
+
+import psutil
+
 from maze_dataset.benchmark.speed import run_benchmark
 from maze_dataset.generation.default_generators import DEFAULT_GENERATORS
 
@@ -20,7 +26,37 @@ BENCHMARK_KWARGS: dict[str, dict[str, Any]] = dict(
 	),
 )
 
+
+def get_system_info() -> dict[str, Any]:
+	"""Retrieve system hardware information"""
+	info: dict[str, Any] = {}
+
+	# Retrieve CPU frequency (in MHz)
+	cpu_freq: psutil._common.scpufreq = psutil.cpu_freq()  # type: ignore
+	info["cpu_current_freq"] = cpu_freq.current if cpu_freq else None
+	info["cpu_max_freq"] = cpu_freq.max if cpu_freq else None
+
+	# Retrieve CPU model information
+	cpu_model: str = platform.processor()
+	if not cpu_model:
+		# On some systems, platform.processor() returns an empty string.
+		cpu_model = platform.uname().processor
+	info["cpu_model"] = cpu_model
+
+	# Retrieve CPU core counts
+	info["cpu_logical_cores"] = psutil.cpu_count(logical=True)
+	info["cpu_physical_cores"] = psutil.cpu_count(logical=False)
+
+	# Retrieve total system RAM in bytes
+	virtual_mem: psutil._common.svmem = psutil.virtual_memory()  # type: ignore
+	info["total_ram"] = virtual_mem.total if virtual_mem else None
+
+	return info
+
+
 if __name__ == "__main__":
+	print(get_system_info())
+
 	import argparse
 
 	parser: argparse.ArgumentParser = argparse.ArgumentParser()

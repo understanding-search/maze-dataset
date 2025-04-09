@@ -1,5 +1,4 @@
-"""
-python project makefile template -- docs generation script
+"""python project makefile template -- docs generation script
 originally by Michael Ivanitskiy (mivanits@umich.edu)
 https://github.com/mivanit/python-project-makefile-template
 license: https://creativecommons.org/licenses/by-sa/4.0/
@@ -8,14 +7,14 @@ as this makes it easier to find edits when updating
 """
 
 import argparse
-from dataclasses import asdict, dataclass, field
-from functools import reduce
 import inspect
 import json
 import re
-from typing import Any, Dict, List, Optional
 import warnings
+from dataclasses import asdict, dataclass, field
+from functools import reduce
 from pathlib import Path
+from typing import Any, Dict, List, Optional
 
 try:
 	import tomllib  # type: ignore[import-not-found]
@@ -29,7 +28,6 @@ import pdoc.extract  # type: ignore[import-not-found]
 import pdoc.render  # type: ignore[import-not-found]
 import pdoc.render_helpers  # type: ignore[import-not-found]
 from markupsafe import Markup
-
 
 """
  ######  ######## ######## ##     ## ########
@@ -221,16 +219,15 @@ def replace_heading(match: re.Match) -> str:
 
 
 def increment_markdown_headings(markdown_text: str) -> str:
-	"""
-	Increment all Markdown headings in the given text by the specified amount.
+	"""Increment all Markdown headings in the given text by the specified amount.
 
 	Args:
 	    markdown_text (str): The input Markdown text.
 
 	Returns:
 	    str: The Markdown text with incremented heading levels.
-	"""
 
+	"""
 	# Regular expression to match Markdown headings
 	heading_pattern: re.Pattern = re.compile(r"^(#{1,6})(.+)$", re.MULTILINE)
 
@@ -297,8 +294,8 @@ def use_markdown_format() -> None:
 # ============================================================
 def convert_notebooks() -> None:
 	try:
-		import nbformat
 		import nbconvert
+		import nbformat
 	except ImportError:
 		raise ImportError(
 			'nbformat and nbconvert are required to convert notebooks to HTML, add "nbconvert>=7.16.4" to dev/docs deps'
@@ -367,6 +364,7 @@ def pdoc_combined(*modules, output_file: Path) -> None:
 	4. Write the combined documentation to the specified output file.
 
 	Rendering options can be configured by calling `pdoc.render.configure` in advance.
+
 	"""
 	# Extract all modules and submodules
 	all_modules: Dict[str, pdoc.doc.Module] = {}

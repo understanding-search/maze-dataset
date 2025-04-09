@@ -86,7 +86,28 @@ EndpointKwargsType = dict[
 	],
 	bool | None | list[tuple[int, int]],
 ]
-"type hint for `MazeDatasetConfig.endpoint_kwargs`"
+"""type hint for `MazeDatasetConfig.endpoint_kwargs`
+
+- `except_on_no_valid_endpoint : bool` (default: `True`)
+	some of the conditions (dead ends if a maze is very open, no path between given start and end) can cause the maze generation to fail.
+	if `except_on_no_valid_endpoint` is `True`, then the maze generation will raise an error if it fails to generate a valid maze.
+	however, if `False`, then the maze generation will return a dataset with fewer mazes than requested.
+	If you are generating large datasets, consider using `MazeDatasetConfig.success_fraction_compensate()`
+	this uses a pysr-created function to roughly estimate the success fraction of the dataset.
+- `allowed_start : list[tuple[int, int]]` (default: `None`)
+	list of allowed starting position coordinates
+- `allowed_end : list[tuple[int, int]]` (default: `None`)
+	list of allowed ending position coordinates
+- `deadend_start : bool` (default: `False`)
+	if `True`, the starting position must be a dead end
+- `deadend_end : bool` (default: `False`)
+	if `True`, the ending position must be a dead end
+- `endpoints_not_equal : bool` (default: `True`)
+	if `True`, the starting and ending positions must be different
+
+
+
+"""
 
 
 def _load_endpoint_kwargs(data: dict) -> EndpointKwargsType:
@@ -106,8 +127,9 @@ def _load_endpoint_kwargs(data: dict) -> EndpointKwargsType:
 		}
 
 
+# not private because we need this to show up in docs
 @serializable_dataclass(kw_only=True, properties_to_serialize=["grid_shape"])
-class _MazeDatasetConfig_base(GPTDatasetConfig):  # noqa: N801
+class MazeDatasetConfig_base(GPTDatasetConfig):  # noqa: N801
 	"""base config -- we serialize, dump to json, and hash this to get the fname. all actual variables we want to be hashed are here"""
 
 	# NOTE: type: ignore[misc] is because it tells us non-default attributes aren't allowed after ones with defaults, but everything is kw_only
@@ -195,7 +217,7 @@ class _MazeDatasetConfig_base(GPTDatasetConfig):  # noqa: N801
 		but for comparing things, we do store it when serializing properly by setting
 		`applied_filters__skip__collect_generation_meta=False`
 		"""
-		serialized: dict = _MazeDatasetConfig_base.serialize(self)
+		serialized: dict = MazeDatasetConfig_base.serialize(self)
 		if applied_filters__skip__collect_generation_meta:
 			serialized["applied_filters"] = [
 				x
@@ -232,8 +254,29 @@ class _MazeDatasetConfig_base(GPTDatasetConfig):  # noqa: N801
 
 # NOTE: type: ignore[misc] is because it tells us non-default attributes aren't allowed after ones with defaults, but everything is kw_only
 @serializable_dataclass(kw_only=True, methods_no_override=["serialize"])
-class MazeDatasetConfig(_MazeDatasetConfig_base):  # type: ignore[misc]
-	"""config object which is passed to `MazeDataset.from_config` to generate or load a dataset"""
+class MazeDatasetConfig(MazeDatasetConfig_base):  # type: ignore[misc]
+	"""config object which is passed to `MazeDataset.from_config` to generate or load a dataset
+
+	# Parameters:
+	- `name : str`
+		name of the dataset -- this can be anything, but should be filesystem safe since we use it in the `fname`
+	- `grid_n : int`
+		grid size of the maze (number of rows/columns)
+	- `n_mazes : int`
+		number of mazes to request. For some combinations of `endpoint_kwargs` and `maze_ctor`, not all mazes might successfully generate.
+		see `EndpointKwargsType` for more details.
+	- `maze_ctor : Callable`
+		maze generator function. This should be a function that takes a grid size and returns a maze.
+		This will usually be one of the functions in `LatticeMazeGenerators`.
+	- `maze_ctor_kwargs : dict`
+		keyword arguments to pass to the maze generator function. Specific to the `maze_ctor` you are using.
+	- `endpoint_kwargs : EndpointKwargsType`
+		keyword arguments passed to `LatticeMaze.generate_random_path()`. see `EndpointKwargsType` for more info.
+	- `applied_filters : list[dict]`
+		list of filters that have been applied to the dataset. We recommend applying filters to datasets directly,
+		but these are stored with the config in case you want to re-generate the dataset with the same filters.
+
+	"""
 
 	@property
 	def config_version(self) -> str:
@@ -369,7 +412,10 @@ class MazeDatasetConfig(_MazeDatasetConfig_base):  # type: ignore[misc]
 		only valid when the generator is a percolation generator,
 		and endpoints are enforced to be dead ends
 
-		this estimate comes from `estimate_dataset_fractions.ipynb` and `maze_dataset.benchmarks.sweep_fit`
+		more information on where this comes from can be found in
+		- `cfg_success_predict_fn()` from `maze_dataset.dataset.success_predict_math`
+		- `estimate_dataset_fractions.ipynb`
+		- `maze_dataset.benchmarks.sweep_fit`
 
 		# Parameters:
 		- `except_if_all_success_expected : bool`
@@ -398,6 +444,14 @@ class MazeDatasetConfig(_MazeDatasetConfig_base):  # type: ignore[misc]
 		epsilon: float = 1e-2,
 	) -> "MazeDatasetConfig":
 		"""return a new `MazeDatasetConfig` like this one with `n_mazes` adjusted to compensate for the success fraction
+
+		calls `MazeDatasetConfig.success_fraction_estimate()` to get the success fraction, and then
+		computes the new number of mazes as `n_mazes = n_mazes * safety_margin / success_fraction + 1`
+
+		more information on where this comes from can be found in
+		- `cfg_success_predict_fn()` from `maze_dataset.dataset.success_predict_math`
+		- `estimate_dataset_fractions.ipynb`
+		- `maze_dataset.benchmarks.sweep_fit`
 
 		# Parameters:
 		- `safety_margin : float`

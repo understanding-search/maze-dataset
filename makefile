@@ -1780,6 +1780,14 @@ help: help-targets info
 
 PAPER_PATH := $(DOCS_DIR)/paper
 PAPER_PATH_INARA := $(PAPER_PATH)/inara
+PAPER_RESOURCES := .:$(PAPER_PATH_INARA)/resources:$(PAPER_PATH)
+
+PAPER_PANDOC_INARA_ARGS := --data-dir=$(PAPER_PATH_INARA)/data \
+	--defaults=shared \
+	--defaults=$(PAPER_PATH_INARA)/resources/joss/defaults.yaml \
+	--resource-path=$(PAPER_RESOURCES) \
+	--metadata=article-info-file=$(PAPER_PATH_INARA)/resources/default-article-info.yaml \
+	--variable=joss \
 
 PAPER_DRAFT ?= true
 
@@ -1816,33 +1824,25 @@ paper-clean:
 paper-tex:
 	@echo "compile the paper to tex"
 	INARA_ARTIFACTS_PATH=$(PAPER_PATH) pandoc \
+		$(PAPER_PANDOC_INARA_ARGS) \
 		--data-dir=$(PAPER_PATH_INARA)/data \
-		--defaults=shared \
 		--defaults=tex.yaml \
-		--defaults=$(PAPER_PATH_INARA)/resources/joss/defaults.yaml \
-		--resource-path=.:$(PAPER_PATH_INARA)/resources:$(PAPER_PATH) \
-		--metadata=article-info-file=$(PAPER_PATH_INARA)/resources/default-article-info.yaml \
-		--variable=joss \
 		--output=$(PAPER_PATH)/paper.tex \
 		$(PAPER_PATH)/paper.md
 
 .PHONY: paper-pdf
 paper-pdf: paper-tex
 	@echo "compile the paper to pdf"
-	latexmk -interaction=nonstopmode -pdf -outdir=$(PAPER_PATH)/output -lualatex $(PAPER_PATH)/paper.tex || true
+	TEXINPUTS=$(PAPER_RESOURCES): latexmk -f -interaction=nonstopmode -pdf -outdir=$(PAPER_PATH)/output -lualatex $(PAPER_PATH)/paper.tex || true
+	TEXINPUTS=$(PAPER_RESOURCES): latexmk -f -interaction=nonstopmode -pdf -outdir=$(PAPER_PATH)/output -lualatex $(PAPER_PATH)/paper.tex || true
 	cp $(PAPER_PATH)/output/paper.pdf $(PAPER_PATH)/paper.pdf
 
 .PHONY: paper-html
 paper-html:
 	@echo "compile the paper to html"
 	INARA_ARTIFACTS_PATH=$(PAPER_PATH) pandoc \
-		--data-dir=$(PAPER_PATH_INARA)/data \
-		--defaults=shared \
+		$(PAPER_PANDOC_INARA_ARGS) \
 		--defaults=html.yaml \
-		--defaults=$(PAPER_PATH_INARA)/resources/joss/defaults.yaml \
-		--resource-path=.:$(PAPER_PATH_INARA)/resources:$(PAPER_PATH) \
-		--metadata=article-info-file=$(PAPER_PATH_INARA)/resources/default-article-info.yaml \
-		--variable=joss \
 		--output=$(PAPER_PATH)/paper.html \
 		$(PAPER_PATH)/paper.md
 

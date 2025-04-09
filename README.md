@@ -1,10 +1,79 @@
-[![PyPI](https://img.shields.io/pypi/v/maze-dataset)](https://pypi.org/project/maze-dataset/)
+<div align="center">
+
+  <!-- Header with logo to the left of the title -->
+  <table style="margin: 0 auto;">
+    <tr>
+      <td style="vertical-align: middle;">
+        <img src="docs/resources/logo.svg" alt="Maze Dataset Logo" width="50">
+      </td>
+      <td style="vertical-align: middle; padding-left: 10px;">
+        <h1 style="margin: 0;">maze-dataset</h1>
+      </td>
+    </tr>
+  </table>
+
+<!-- Top prominent badges -->
+  <p>
+    <a href="https://pypi.org/project/maze-dataset/">
+      <img src="https://img.shields.io/pypi/v/maze-dataset" alt="PyPI">
+    </a>
+    &nbsp;
+    <a href="https://understanding-search.github.io/maze-dataset/">
+      <img src="https://img.shields.io/badge/docs-available-brightgreen" alt="Docs">
+    </a>
+    &nbsp;
+    <a href="https://understanding-search.github.io/maze-dataset/examples/maze_examples.html">
+      <img src="https://img.shields.io/badge/examples-view-blue" alt="Examples">
+    </a>
+    &nbsp;
+    <a href="http://arxiv.org/abs/2309.10498">
+        <img src="https://img.shields.io/badge/arXiv-2309.10498-b31b1b.svg" alt="arXiv">
+    </a>
+  </p>
+
+  <!-- Diagram -->
+  <p>
+    <img src="docs/resources/diagram.svg" alt="Diagram">
+  </p>
+
+  <!-- Additional badges -->
+  <p>
+    <a href="https://pypi.org/project/maze-dataset/">
+      <img src="https://img.shields.io/pypi/v/maze-dataset" alt="PyPI">
+    </a>
+    &nbsp;
+    <img src="https://img.shields.io/badge/python-3.10%2B-blue?logo=python&logoColor=white" alt="Python Version">
+    &nbsp;
+    <a href="https://github.com/understanding-search/maze-dataset/actions/workflows/checks.yml">
+      <img src="https://github.com/understanding-search/maze-dataset/actions/workflows/checks.yml/badge.svg" alt="Checks">
+    </a>
+    &nbsp;
+    <a href="docs/coverage/coverage.txt">
+      <img src="docs/coverage/coverage.svg" alt="Coverage">
+    </a>
+    &nbsp;
+    <img src="https://img.shields.io/github/languages/code-size/understanding-search/maze-dataset" alt="code size, bytes">
+    &nbsp;
+    <img src="https://img.shields.io/github/commit-activity/t/understanding-search/maze-dataset" alt="GitHub commit activity">
+    &nbsp;
+    <img src="https://img.shields.io/github/issues-closed/understanding-search/maze-dataset" alt="GitHub closed issues">
+    &nbsp;
+    <img src="https://img.shields.io/github/issues-pr-closed/understanding-search/maze-dataset" alt="GitHub closed pull requests">
+    &nbsp;
+    <img src="https://img.shields.io/pypi/dm/maze-dataset" alt="PyPI - Downloads">
+  </p>
+
+</div>
+
+
+
+<!-- [![PyPI](https://img.shields.io/pypi/v/maze-dataset)](https://pypi.org/project/maze-dataset/)
 ![PyPI - Downloads](https://img.shields.io/pypi/dm/maze-dataset)
 [![Checks](https://github.com/understanding-search/maze-dataset/actions/workflows/checks.yml/badge.svg)](https://github.com/understanding-search/maze-dataset/actions/workflows/checks.yml)
 [![Coverage](docs/coverage/coverage.svg)](docs/coverage/coverage.txt)
 ![code size, bytes](https://img.shields.io/github/languages/code-size/understanding-search/maze-dataset)
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/t/understanding-search/maze-dataset)
-![GitHub closed pull requests](https://img.shields.io/github/issues-pr-closed/understanding-search/maze-dataset)
+![GitHub closed pull requests](https://img.shields.io/github/issues-pr-closed/understanding-search/maze-dataset) -->
 
 
 # `maze-dataset`
