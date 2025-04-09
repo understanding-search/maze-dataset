@@ -47,7 +47,7 @@
 </script></head>
 <body>
 <div class="package-version">
-    docs for <a href="https://github.com/understanding-search/maze-dataset">maze-dataset</a> v1.3.1<br>
+    docs for <a href="https://github.com/understanding-search/maze-dataset">maze-dataset</a> v1.3.2<br>
 </div>
     <nav class="pdoc">
         <label id="navtoggle" for="togglestate" class="pdoc-button">
@@ -122,7 +122,7 @@
     </nav>
     <main class="pdoc">
             <section class="module-info">
-                        <a class="pdoc-button git-button" href="https://github.com/understanding-search/maze-dataset/blob/1.3.1maze_dataset/plotting/print_tokens.py">View Source on GitHub</a>
+                        <a class="pdoc-button git-button" href="https://github.com/understanding-search/maze-dataset/blob/1.3.2maze_dataset/plotting/print_tokens.py">View Source on GitHub</a>
                     <h1 class="modulename">
 <a href="./../../maze_dataset.html">maze_dataset</a><wbr>.<a href="./../plotting.html">plotting</a><wbr>.print_tokens    </h1>
 
@@ -144,7 +144,7 @@
                         <div class="source-button-container">
             <label class="pdoc-button view-source-button" for="mod-print_tokens-view-source"><span>View Source</span></label>
             <div class="github-button-wrapper">
-                <a class="pdoc-button github-link-button" href="https://github.com/understanding-search/maze-dataset/blob/1.3.1maze_dataset/plotting/print_tokens.py#L0-L249" target="_blank">
+                <a class="pdoc-button github-link-button" href="https://github.com/understanding-search/maze-dataset/blob/1.3.2maze_dataset/plotting/print_tokens.py#L0-L249" target="_blank">
                     <span>View on GitHub</span>
                 </a>
             </div>
@@ -322,13 +322,13 @@
 </span><span id="L-169"><a href="#L-169"><span class="linenos">169</span></a><span class="c1"># colors roughly made to be similar to visual representation</span>
 </span><span id="L-170"><a href="#L-170"><span class="linenos">170</span></a><span class="n">_MAZE_TOKENS_DEFAULT_COLORS</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{</span>
 </span><span id="L-171"><a href="#L-171"><span class="linenos">171</span></a>	<span class="p">(</span><span class="n">SPECIAL_TOKENS</span><span class="o">.</span><span class="n">ADJLIST_START</span><span class="p">,</span> <span class="n">SPECIAL_TOKENS</span><span class="o">.</span><span class="n">ADJLIST_END</span><span class="p">):</span> <span class="p">(</span>
-</span><span id="L-172"><a href="#L-172"><span class="linenos">172</span></a>		<span class="mi">217</span><span class="p">,</span>
-</span><span id="L-173"><a href="#L-173"><span class="linenos">173</span></a>		<span class="mi">210</span><span class="p">,</span>
-</span><span id="L-174"><a href="#L-174"><span class="linenos">174</span></a>		<span class="mi">233</span><span class="p">,</span>
+</span><span id="L-172"><a href="#L-172"><span class="linenos">172</span></a>		<span class="mi">176</span><span class="p">,</span>
+</span><span id="L-173"><a href="#L-173"><span class="linenos">173</span></a>		<span class="mi">152</span><span class="p">,</span>
+</span><span id="L-174"><a href="#L-174"><span class="linenos">174</span></a>		<span class="mi">232</span><span class="p">,</span>
 </span><span id="L-175"><a href="#L-175"><span class="linenos">175</span></a>	<span class="p">),</span>  <span class="c1"># purple</span>
-</span><span id="L-176"><a href="#L-176"><span class="linenos">176</span></a>	<span class="p">(</span><span class="n">SPECIAL_TOKENS</span><span class="o">.</span><span class="n">ORIGIN_START</span><span class="p">,</span> <span class="n">SPECIAL_TOKENS</span><span class="o">.</span><span class="n">ORIGIN_END</span><span class="p">):</span> <span class="p">(</span><span class="mi">217</span><span class="p">,</span> <span class="mi">234</span><span class="p">,</span> <span class="mi">211</span><span class="p">),</span>  <span class="c1"># green</span>
-</span><span id="L-177"><a href="#L-177"><span class="linenos">177</span></a>	<span class="p">(</span><span class="n">SPECIAL_TOKENS</span><span class="o">.</span><span class="n">TARGET_START</span><span class="p">,</span> <span class="n">SPECIAL_TOKENS</span><span class="o">.</span><span class="n">TARGET_END</span><span class="p">):</span> <span class="p">(</span><span class="mi">234</span><span class="p">,</span> <span class="mi">209</span><span class="p">,</span> <span class="mi">220</span><span class="p">),</span>  <span class="c1"># red</span>
-</span><span id="L-178"><a href="#L-178"><span class="linenos">178</span></a>	<span class="p">(</span><span class="n">SPECIAL_TOKENS</span><span class="o">.</span><span class="n">PATH_START</span><span class="p">,</span> <span class="n">SPECIAL_TOKENS</span><span class="o">.</span><span class="n">PATH_END</span><span class="p">):</span> <span class="p">(</span><span class="mi">207</span><span class="p">,</span> <span class="mi">226</span><span class="p">,</span> <span class="mi">243</span><span class="p">),</span>  <span class="c1"># blue</span>
+</span><span id="L-176"><a href="#L-176"><span class="linenos">176</span></a>	<span class="p">(</span><span class="n">SPECIAL_TOKENS</span><span class="o">.</span><span class="n">ORIGIN_START</span><span class="p">,</span> <span class="n">SPECIAL_TOKENS</span><span class="o">.</span><span class="n">ORIGIN_END</span><span class="p">):</span> <span class="p">(</span><span class="mi">154</span><span class="p">,</span> <span class="mi">239</span><span class="p">,</span> <span class="mi">123</span><span class="p">),</span>  <span class="c1"># green</span>
+</span><span id="L-177"><a href="#L-177"><span class="linenos">177</span></a>	<span class="p">(</span><span class="n">SPECIAL_TOKENS</span><span class="o">.</span><span class="n">TARGET_START</span><span class="p">,</span> <span class="n">SPECIAL_TOKENS</span><span class="o">.</span><span class="n">TARGET_END</span><span class="p">):</span> <span class="p">(</span><span class="mi">246</span><span class="p">,</span> <span class="mi">136</span><span class="p">,</span> <span class="mi">136</span><span class="p">),</span>  <span class="c1"># red</span>
+</span><span id="L-178"><a href="#L-178"><span class="linenos">178</span></a>	<span class="p">(</span><span class="n">SPECIAL_TOKENS</span><span class="o">.</span><span class="n">PATH_START</span><span class="p">,</span> <span class="n">SPECIAL_TOKENS</span><span class="o">.</span><span class="n">PATH_END</span><span class="p">):</span> <span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="mi">187</span><span class="p">,</span> <span class="mi">254</span><span class="p">),</span>  <span class="c1"># blue</span>
 </span><span id="L-179"><a href="#L-179"><span class="linenos">179</span></a><span class="p">}</span>
 </span><span id="L-180"><a href="#L-180"><span class="linenos">180</span></a><span class="s2">&quot;default colors for maze tokens, roughly matches the format of `as_pixels`&quot;</span>
 </span><span id="L-181"><a href="#L-181"><span class="linenos">181</span></a>
@@ -459,7 +459,7 @@
                 <div class="source-button-container">
             <label class="pdoc-button view-source-button" for="color_tokens_rgb-view-source"><span>View Source</span></label>
             <div class="github-button-wrapper">
-                <a class="pdoc-button github-link-button" href="https://github.com/understanding-search/maze-dataset/blob/1.3.1maze_dataset/plotting/print_tokens.py#L63-L120" target="_blank">
+                <a class="pdoc-button github-link-button" href="https://github.com/understanding-search/maze-dataset/blob/1.3.2maze_dataset/plotting/print_tokens.py#L63-L120" target="_blank">
                     <span>View on GitHub</span>
                 </a>
             </div>
@@ -551,7 +551,7 @@
                 <div class="source-button-container">
             <label class="pdoc-button view-source-button" for="color_tokens_cmap-view-source"><span>View Source</span></label>
             <div class="github-button-wrapper">
-                <a class="pdoc-button github-link-button" href="https://github.com/understanding-search/maze-dataset/blob/1.3.1maze_dataset/plotting/print_tokens.py#L124-L166" target="_blank">
+                <a class="pdoc-button github-link-button" href="https://github.com/understanding-search/maze-dataset/blob/1.3.2maze_dataset/plotting/print_tokens.py#L124-L166" target="_blank">
                     <span>View on GitHub</span>
                 </a>
             </div>
@@ -620,7 +620,7 @@
                 <div class="source-button-container">
             <label class="pdoc-button view-source-button" for="color_maze_tokens_AOTP-view-source"><span>View Source</span></label>
             <div class="github-button-wrapper">
-                <a class="pdoc-button github-link-button" href="https://github.com/understanding-search/maze-dataset/blob/1.3.1maze_dataset/plotting/print_tokens.py#L183-L218" target="_blank">
+                <a class="pdoc-button github-link-button" href="https://github.com/understanding-search/maze-dataset/blob/1.3.2maze_dataset/plotting/print_tokens.py#L183-L218" target="_blank">
                     <span>View on GitHub</span>
                 </a>
             </div>
@@ -684,7 +684,7 @@
                 <div class="source-button-container">
             <label class="pdoc-button view-source-button" for="display_html-view-source"><span>View Source</span></label>
             <div class="github-button-wrapper">
-                <a class="pdoc-button github-link-button" href="https://github.com/understanding-search/maze-dataset/blob/1.3.1maze_dataset/plotting/print_tokens.py#L221-L223" target="_blank">
+                <a class="pdoc-button github-link-button" href="https://github.com/understanding-search/maze-dataset/blob/1.3.2maze_dataset/plotting/print_tokens.py#L221-L223" target="_blank">
                     <span>View on GitHub</span>
                 </a>
             </div>
@@ -713,7 +713,7 @@
                 <div class="source-button-container">
             <label class="pdoc-button view-source-button" for="display_color_tokens_rgb-view-source"><span>View Source</span></label>
             <div class="github-button-wrapper">
-                <a class="pdoc-button github-link-button" href="https://github.com/understanding-search/maze-dataset/blob/1.3.1maze_dataset/plotting/print_tokens.py#L226-L232" target="_blank">
+                <a class="pdoc-button github-link-button" href="https://github.com/understanding-search/maze-dataset/blob/1.3.2maze_dataset/plotting/print_tokens.py#L226-L232" target="_blank">
                     <span>View on GitHub</span>
                 </a>
             </div>
@@ -746,7 +746,7 @@
                 <div class="source-button-container">
             <label class="pdoc-button view-source-button" for="display_color_tokens_cmap-view-source"><span>View Source</span></label>
             <div class="github-button-wrapper">
-                <a class="pdoc-button github-link-button" href="https://github.com/understanding-search/maze-dataset/blob/1.3.1maze_dataset/plotting/print_tokens.py#L235-L242" target="_blank">
+                <a class="pdoc-button github-link-button" href="https://github.com/understanding-search/maze-dataset/blob/1.3.2maze_dataset/plotting/print_tokens.py#L235-L242" target="_blank">
                     <span>View on GitHub</span>
                 </a>
             </div>
@@ -780,7 +780,7 @@
                 <div class="source-button-container">
             <label class="pdoc-button view-source-button" for="display_color_maze_tokens_AOTP-view-source"><span>View Source</span></label>
             <div class="github-button-wrapper">
-                <a class="pdoc-button github-link-button" href="https://github.com/understanding-search/maze-dataset/blob/1.3.1maze_dataset/plotting/print_tokens.py#L245-L250" target="_blank">
+                <a class="pdoc-button github-link-button" href="https://github.com/understanding-search/maze-dataset/blob/1.3.2maze_dataset/plotting/print_tokens.py#L245-L250" target="_blank">
                     <span>View on GitHub</span>
                 </a>
             </div>
