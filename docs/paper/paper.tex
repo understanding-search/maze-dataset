@@ -904,7 +904,7 @@ without parallelism.
           &                        &   11.1   &    6.5   &   32.9   &  302.7   \\
   \hline
 \end{tabular}
-\caption{Generation times for various algorithms and maze sizes.}
+\caption{Generation times for various algorithms and maze sizes. More information can be found on the \docsref{benchmarks}{benchmarks page}.}
 \label{tab:benchmarks}
 \end{table}
 
@@ -954,13 +954,13 @@ providing their initial \texttt{cfg} and then using the returned
 \subsubsection{Success Rate Estimation
 Algorithm}\label{success-rate-estimation-algorithm}}
 
-The base function learned by symbolic regression privdes limited insight
-and may be subject to change. It is defined as
+The base function learned by symbolic regression provides limited
+insight and may be subject to change. It is defined as
 \href{https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/success_predict_math.html\#cfg_success_predict_fn}{\texttt{cfg\_success\_predict\_fn}},
 and takes a 5 dimensional float vector created by
-\texttt{MazeDatasetConfig.\_to\_ps\_array()} which represents the 0)
-percolation value 1) grid size 2) endpoint deadend configuration 3)
-endpoint uniqueness 4) categorical generation function index.
+\texttt{MazeDatasetConfig.\_to\_ps\_array()} which represents the
+{[}percolation value, grid size, endpoint deadend configuration,
+endpoint uniqueness, categorical generation function index{]}.
 
 However, the outputs of this function are not directly usable due to
 minor divergences at the endpoints with respect to the percolation
@@ -980,8 +980,8 @@ function given by \[
 
 We combine these to get the
 \href{https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/success_predict_math.html\#soft_step}{\texttt{soft\_step}}
-function, which is identity-like for \(p \approx 0.5\), and pushes
-pushes \(x\) to extremes otherwise. \[
+function, which is identity-like for \(p \approx 0.5\), and pushes \(x\)
+to extremes otherwise. \[
   \text{soft\_step}(x, p, \alpha, w) = h(x, A(p, \alpha, w))
 \]
 
@@ -1035,9 +1035,9 @@ The value at \(A[0,i,j]\) determines whether a \emph{downward}
 connection exists from node \([i,j]\) to \([i+1, j]\). Likewise, the
 value at \(A[1,i,j]\) determines whether a \emph{rightward} connection
 to \([i, j+1]\) exists. Thus, we avoid duplication of data about the
-existence of connections and facillitate fast lookup time, at the cost
-of requiring additional care with indexing. Note that this setup allows
-for a periodic lattice. Generation of mazes is detailed in
+existence of connections and facilitate fast lookup time, at the cost of
+requiring additional care with indexing. Note that this setup allows for
+a periodic lattice. Generation of mazes is detailed in
 \href{https://understanding-search.github.io/maze-dataset/maze_dataset.html\#LatticeMazeGenerators}{\texttt{LatticeMazeGenerators}}.
 
 To produce solutions to mazes, two points are selected uniformly at
