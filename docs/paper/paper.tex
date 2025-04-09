@@ -12,8 +12,8 @@
     unicode=true,
     pdfapart=3,
     pdfaconformance=B,
-    pdftitle={maze-dataset: User Friendly Maze Generation with
-Algorithmic Variety and Representation Flexibility},
+    pdftitle={maze-dataset: Maze Generation with Algorithmic Variety and
+Representational Flexibility},
     pdfauthor={Michael Igorevich Ivanitskiy, Aaron Sandoval, Alex F.
 Spies, Tilman Räuker, Brandon Knutson, Cecilia Diniz Behn, Samy Wu
 Fung},
@@ -139,10 +139,9 @@ Diniz Behn, Samy Wu Fung},
 \renewcommand{\footrulewidth}{0.25pt}
 
 \fancyfoot[L]{\parbox[t]{0.98\headwidth}{\footnotesize{\sffamily Ivanitskiy
-et al. (1970). maze-dataset: User Friendly Maze Generation with
-Algorithmic Variety and Representation Flexibility. \emph{Journal of
-Open Source Software}, \emph{¿VOL?}(¿ISSUE?), ¿PAGE?
-\url{https://doi.org/N/A}}.}}
+et al. (1970). maze-dataset: Maze Generation with Algorithmic Variety
+and Representational Flexibility. \emph{Journal of Open Source
+Software}, \emph{¿VOL?}(¿ISSUE?), ¿PAGE? \url{https://doi.org/N/A}}.}}
 
 
 \fancyfoot[R]{\sffamily \thepage}
@@ -367,8 +366,8 @@ Open Source Software}, \emph{¿VOL?}(¿ISSUE?), ¿PAGE?
   \usepackage{selnolig}  % disable illegal ligatures
 \fi
 
-\title{maze-dataset: User Friendly Maze Generation with Algorithmic
-Variety and Representation Flexibility}
+\title{maze-dataset: Maze Generation with Algorithmic Variety and
+Representational Flexibility}
 
 \author[1%
 %
@@ -575,7 +574,7 @@ with these datasets.
   is similar to that of (\protect\hyperlink{ref-eval-LLM-graphs}{Liu \&
   Wu, 2023}), but provides over 5.8 million unique formats for
   converting mazes to a text stream, detailed in
-  \autoref{tokenized-output-formats}.
+  \autoref{sec:tokenized-output-formats}.
 \item
   For rigorous investigations of the response of a model to various
   distributional shifts, preserving metadata about the generation
@@ -587,7 +586,7 @@ with these datasets.
 \item
   Storing mazes as images is not only difficult to work with, but also
   inefficient. We use a highly efficient method detailed in
-  \autoref{implementation}.
+  \autoref{sec:implementation}.
 \item
   Our package is easily installable with source code freely available.
   It is extensively tested, type hinted, benchmarked, and documented.
@@ -760,8 +759,9 @@ included and if empty cells should be filled in.}\label{fig:e2h-raster}
 }
 \end{figure}
 
-\hypertarget{tokenized-output-formats}{%
-\subsection{Tokenized Output Formats}\label{tokenized-output-formats}}
+\hypertarget{sec:tokenized-output-formats}{%
+\subsection{Tokenized Output
+Formats}\label{sec:tokenized-output-formats}}
 
 Autoregressive transformer models can be quite sensitive to the exact
 format of input data, and may even use delimiter tokens to perform
@@ -916,12 +916,14 @@ maze does not depend on the number of mazes being generated, and there
 is minimal overhead to initializing the generation process for a small
 dataset. Wilson's algorithm is notably less efficient than others and
 has high variance. Note that values are averaged across all parameter
-sets for that algorithm.}\label{fig:benchmarks}
+sets for that algorithm. More information can be found on the
+\href{https://understanding-search.github.io/maze-dataset/benchmarks/}{benchmarks
+page}.}\label{fig:benchmarks}
 }
 \end{figure}
 
-\hypertarget{success-rate-estimation}{%
-\subsection{Success Rate Estimation}\label{success-rate-estimation}}
+\hypertarget{sec:success-rate-estimation}{%
+\subsection{Success Rate Estimation}\label{sec:success-rate-estimation}}
 
 In order to replicate the exact dataset distribution of
 (\protect\hyperlink{ref-easy_to_hard}{Schwarzschild, Borgnia, Gupta,
@@ -997,12 +999,14 @@ parameters from \texttt{\_to\_ps\_array()} only affect
 function of the percolation probability \(p\) for various maze sizes,
 percolation with and without depth first search, and
 \texttt{endpoint\_kwargs} requiring that both the start and end be in
-unique dead ends. Empirical measures derived from a sample of 128
-mazes.}
+unique dead ends. Empirical measures derived from a sample of 128 mazes.
+More information can be found on the
+\href{https://understanding-search.github.io/maze-dataset/benchmarks/}{benchmarks
+page}.}
 \end{figure}
 
-\hypertarget{implementation}{%
-\section{Implementation}\label{implementation}}
+\hypertarget{sec:implementation}{%
+\section{Implementation}\label{sec:implementation}}
 
 We refer to our
 \href{https://github.com/understanding-search/maze-dataset}{repository}
@@ -1046,7 +1050,7 @@ selection can be controlled via
 \href{https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/maze_dataset_config.html\#MazeDatasetConfig.endpoint_kwargs}{\texttt{MazeDatasetConfig.endpoint\_kwargs:}}
 \href{https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/maze_dataset_config.html\#EndpointKwargsType}{\texttt{EndpointKwargsType}},
 and complications caused by this are detailed in
-\autoref{success-rate-estimation}.
+\autoref{sec:success-rate-estimation}.
 
 Parallelization is implemented via the \texttt{multiprocessing} module
 in the Python standard library, and parallel generation can be

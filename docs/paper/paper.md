@@ -1,5 +1,5 @@
 ---
-title: 'maze-dataset: User Friendly Maze Generation with Algorithmic Variety and Representation Flexibility'
+title: 'maze-dataset: Maze Generation with Algorithmic Variety and Representational Flexibility'
 tags:
   - Python
   - machine learning
@@ -100,11 +100,11 @@ A multitude of public and open-source software packages exist for generating maz
   - [`MazePlot`](https://understanding-search.github.io/maze-dataset/maze_dataset/plotting.html#MazePlot) provides a feature-rich plotting utility with support for multiple paths, heatmaps over positions, and more. This is similar to the outputs of [@mdl-suite; @mathematica-maze; @mazegenerator-net; @gh_Ehsan_2022]
 
 
-- The text format provided by [`SolvedMaze(...).as_tokens()`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#MazeDataset.as_tokens) is similar to that of [@eval-LLM-graphs], but provides over 5.8 million unique formats for converting mazes to a text stream, detailed in \autoref{tokenized-output-formats}.
+- The text format provided by [`SolvedMaze(...).as_tokens()`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#MazeDataset.as_tokens) is similar to that of [@eval-LLM-graphs], but provides over 5.8 million unique formats for converting mazes to a text stream, detailed in \autoref{sec:tokenized-output-formats}.
 
 - For rigorous investigations of the response of a model to various distributional shifts, preserving metadata about the generation algorithm with the dataset itself is essential. To this end, our package efficiently stores the dataset along with its metadata in a single human-readable file [@zanj]. As far as we are aware, no existing packages do this reliably.
 
-- Storing mazes as images is not only difficult to work with, but also inefficient. We use a highly efficient method detailed in \autoref{implementation}.
+- Storing mazes as images is not only difficult to work with, but also inefficient. We use a highly efficient method detailed in \autoref{sec:implementation}.
 
 - Our package is easily installable with source code freely available. It is extensively tested, type hinted, benchmarked, and documented. Many other maze generation packages lack this level of rigor and scope, and some [@ayaz2008maze] appear to simply no longer be accessible.
 
@@ -193,7 +193,7 @@ In previous work, maze tasks have been used with Recurrent Convolutional Neural 
 ![Input is the rasterized maze without the path marked (left), and provide as a target the maze with all but the correct path removed (right). Configuration options exist to adjust whether endpoints are included and if empty cells should be filled in.](figures/maze-raster-input-target.pdf){#fig:e2h-raster width=30%}
 
 
-## Tokenized Output Formats {#tokenized-output-formats}
+## Tokenized Output Formats {#sec:tokenized-output-formats}
 
 Autoregressive transformer models can be quite sensitive to the exact format of input data, and may even use delimiter tokens to perform reasoning steps [@pfau2024dotbydot; @spies2024causalworldmodels]. To facilitate systematic investigation of the effects of different representations of data on text model performance, we provide a variety of tokenized text output formats.
 
@@ -277,9 +277,9 @@ We provide approximate benchmarks for relative generation time across various al
 \end{table}
 
 
-![Plot of maze generation time. Generation time scales exponentially with maze size for all algorithms. Generation time per maze does not depend on the number of mazes being generated, and there is minimal overhead to initializing the generation process for a small dataset. Wilson's algorithm is notably less efficient than others and has high variance. Note that values are averaged across all parameter sets for that algorithm.](figures/benchmarks/gridsize-vs-gentime.pdf){#fig:benchmarks width=95%}
+![Plot of maze generation time. Generation time scales exponentially with maze size for all algorithms. Generation time per maze does not depend on the number of mazes being generated, and there is minimal overhead to initializing the generation process for a small dataset. Wilson's algorithm is notably less efficient than others and has high variance. Note that values are averaged across all parameter sets for that algorithm. More information can be found on the [benchmarks page](https://understanding-search.github.io/maze-dataset/benchmarks/).](figures/benchmarks/gridsize-vs-gentime.pdf){#fig:benchmarks width=95%}
 
-## Success Rate Estimation {#success-rate-estimation}
+## Success Rate Estimation {#sec:success-rate-estimation}
 
 In order to replicate the exact dataset distribution of [@easy_to_hard], the parameter [`MazeDatasetConfig.endpoint_kwargs:`](https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/maze_dataset_config.html#MazeDatasetConfig.endpoint_kwargs) [`EndpointKwargsType`](https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/maze_dataset_config.html#EndpointKwargsType) allows for additional constraints such as enforcing that the start or end point be in a "dead end" with only one accessible neighbor cell. However, combining these constraints with cyclic mazes (such as those generated with percolation), as was required for the work in [@knutson2024logicalextrapolation], can lead to an absence of valid start and end points. Placing theoretical bounds on this success rate is difficult, as it depends on the exact maze generation algorithm and parameters used. To deal with this, our package provides a way to estimate the success rate of a given configuration using a symbolic regression model trained with PySR [@pysr]. More details on this can be found in [`estimate_dataset_fractions.ipynb`](https://understanding-search.github.io/maze-dataset/notebooks/estimate_dataset_fractions.html). Using the estimation algorithm simply requires the user to call [`cfg_new: MazeDatasetConfig = cfg.success_fraction_compensate()`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#MazeDatasetConfig.success_fraction_compensate), providing their initial `cfg` and then using the returned `cfg_new` in its place.
 
@@ -310,9 +310,9 @@ $$
 
 where `raw_val` is the output of the symbolic regression model. The parameter $x_0$ is the percolation probability, while all other parameters from `_to_ps_array()` only affect `raw_val`.
 
-![An example of both empirical and predicted success rates as a function of the percolation probability $p$ for various maze sizes, percolation with and without depth first search, and `endpoint_kwargs` requiring that both the start and end be in unique dead ends. Empirical measures derived from a sample of 128 mazes.](figures/ep/ep_deadends_unique-crop.pdf){width=100%}
+![An example of both empirical and predicted success rates as a function of the percolation probability $p$ for various maze sizes, percolation with and without depth first search, and `endpoint_kwargs` requiring that both the start and end be in unique dead ends. Empirical measures derived from a sample of 128 mazes. More information can be found on the [benchmarks page](https://understanding-search.github.io/maze-dataset/benchmarks/).](figures/ep/ep_deadends_unique-crop.pdf){width=100%}
 
-# Implementation {#implementation}
+# Implementation {#sec:implementation}
 
 We refer to our \href{https://github.com/understanding-search/maze-dataset}{repository} and \docslink{maze_dataset.html}{docs} for documentation and up-to-date implementation details.
 
@@ -324,7 +324,7 @@ $$
 $$
 which we refer to in the code as a [`connection_list`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#LatticeMaze.connection_list). In two dimensions, the value at $A[0,i,j]$ determines whether a *downward* connection exists from node $[i,j]$ to $[i+1, j]$. Likewise, the value at $A[1,i,j]$ determines whether a *rightward* connection to $[i, j+1]$ exists. Thus, we avoid duplication of data about the existence of connections, at the cost of requiring additional care with indexing when looking for a connection upwards or to the left. Note that this setup allows for a periodic lattice. This format generalizes to lattices of higher dimensions, but our package provides only limited support for generation and visualization of higher dimensional mazes. Generation of mazes is detailed in [`LatticeMazeGenerators`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#LatticeMazeGenerators).
 
-To produce solutions to mazes, two points are selected uniformly at random without replacement from the connected component of the maze, and the $A^*$ algorithm [@A_star] is applied to find the shortest path between them. The endpoint selection can be controlled via [`MazeDatasetConfig.endpoint_kwargs:`](https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/maze_dataset_config.html#MazeDatasetConfig.endpoint_kwargs) [`EndpointKwargsType`](https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/maze_dataset_config.html#EndpointKwargsType), and complications caused by this are detailed in \autoref{success-rate-estimation}.
+To produce solutions to mazes, two points are selected uniformly at random without replacement from the connected component of the maze, and the $A^*$ algorithm [@A_star] is applied to find the shortest path between them. The endpoint selection can be controlled via [`MazeDatasetConfig.endpoint_kwargs:`](https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/maze_dataset_config.html#MazeDatasetConfig.endpoint_kwargs) [`EndpointKwargsType`](https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/maze_dataset_config.html#EndpointKwargsType), and complications caused by this are detailed in \autoref{sec:success-rate-estimation}.
 
 Parallelization is implemented via the `multiprocessing` module in the Python standard library, and parallel generation can be controlled via keyword arguments to [`MazeDataset.from_config()`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#MazeDataset.from_config).
 

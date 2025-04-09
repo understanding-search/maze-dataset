@@ -8,7 +8,7 @@
 Sandoval, Alex F. Spies, Tilman Räuker, Brandon Knutson, Cecilia Diniz
 Behn, Samy Wu Fung" />
   <meta name="dcterms.date" content="2025-03-30" />
-  <title>maze-dataset: User Friendly Maze Generation with Algorithmic Variety and Representation Flexibility</title>
+  <title>maze-dataset: Maze Generation with Algorithmic Variety and Representational Flexibility</title>
   <style>
     html {
       color: #1a1a1a;
@@ -254,8 +254,8 @@ Behn, Samy Wu Fung" />
 </head>
 <body>
 <header id="title-block-header">
-<h1 class="title">maze-dataset: User Friendly Maze Generation with
-Algorithmic Variety and Representation Flexibility</h1>
+<h1 class="title">maze-dataset: Maze Generation with Algorithmic Variety
+and Representational Flexibility</h1>
 <p class="author">true</p>
 <p class="author">true</p>
 <p class="author">true</p>
@@ -380,9 +380,9 @@ is similar to that of <span class="citation"
 data-cites="eval-LLM-graphs">(<a href="#ref-eval-LLM-graphs"
 role="doc-biblioref">Liu &amp; Wu, 2023</a>)</span>, but provides over
 5.8 million unique formats for converting mazes to a text stream,
-detailed in <a href="#tokenized-output-formats"
+detailed in <a href="#sec:tokenized-output-formats"
 data-reference-type="autoref"
-data-reference="tokenized-output-formats">[tokenized-output-formats]</a>.</p></li>
+data-reference="sec:tokenized-output-formats">[sec:tokenized-output-formats]</a>.</p></li>
 <li><p>For rigorous investigations of the response of a model to various
 distributional shifts, preserving metadata about the generation
 algorithm with the dataset itself is essential. To this end, our package
@@ -392,8 +392,8 @@ href="#ref-zanj" role="doc-biblioref">M. Ivanitskiy, n.d.</a>)</span>.
 As far as we are aware, no existing packages do this reliably.</p></li>
 <li><p>Storing mazes as images is not only difficult to work with, but
 also inefficient. We use a highly efficient method detailed in <a
-href="#implementation" data-reference-type="autoref"
-data-reference="implementation">[implementation]</a>.</p></li>
+href="#sec:implementation" data-reference-type="autoref"
+data-reference="sec:implementation">[sec:implementation]</a>.</p></li>
 <li><p>Our package is easily installable with source code freely
 available. It is extensively tested, type hinted, benchmarked, and
 documented. Many other maze generation packages lack this level of rigor
@@ -565,7 +565,7 @@ correct path removed (right). Configuration options exist to adjust
 whether endpoints are included and if empty cells should be filled
 in.</figcaption>
 </figure>
-<h2 id="tokenized-output-formats">Tokenized Output Formats</h2>
+<h2 id="sec:tokenized-output-formats">Tokenized Output Formats</h2>
 <p>Autoregressive transformer models can be quite sensitive to the exact
 format of input data, and may even use delimiter tokens to perform
 reasoning steps <span class="citation"
@@ -816,9 +816,12 @@ time per maze does not depend on the number of mazes being generated,
 and there is minimal overhead to initializing the generation process for
 a small dataset. Wilson’s algorithm is notably less efficient than
 others and has high variance. Note that values are averaged across all
-parameter sets for that algorithm.</figcaption>
+parameter sets for that algorithm. More information can be found on the
+<a
+href="https://understanding-search.github.io/maze-dataset/benchmarks/">benchmarks
+page</a>.</figcaption>
 </figure>
-<h2 id="success-rate-estimation">Success Rate Estimation</h2>
+<h2 id="sec:success-rate-estimation">Success Rate Estimation</h2>
 <p>In order to replicate the exact dataset distribution of <span
 class="citation" data-cites="easy_to_hard">(<a href="#ref-easy_to_hard"
 role="doc-biblioref">Schwarzschild, Borgnia, Gupta, Bansal, et al.,
@@ -891,10 +894,12 @@ predicted success rates as a function of the percolation probability
 <span class="math inline"><em>p</em></span> for various maze sizes,
 percolation with and without depth first search, and
 <code>endpoint_kwargs</code> requiring that both the start and end be in
-unique dead ends. Empirical measures derived from a sample of 128
-mazes.</figcaption>
+unique dead ends. Empirical measures derived from a sample of 128 mazes.
+More information can be found on the <a
+href="https://understanding-search.github.io/maze-dataset/benchmarks/">benchmarks
+page</a>.</figcaption>
 </figure>
-<h1 id="implementation">Implementation</h1>
+<h1 id="sec:implementation">Implementation</h1>
 <p>We refer to our <a
 href="https://github.com/understanding-search/maze-dataset">repository</a>
 and <a
@@ -944,8 +949,8 @@ href="https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/m
 <a
 href="https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/maze_dataset_config.html#EndpointKwargsType"><code>EndpointKwargsType</code></a>,
 and complications caused by this are detailed in <a
-href="#success-rate-estimation" data-reference-type="autoref"
-data-reference="success-rate-estimation">[success-rate-estimation]</a>.</p>
+href="#sec:success-rate-estimation" data-reference-type="autoref"
+data-reference="sec:success-rate-estimation">[sec:success-rate-estimation]</a>.</p>
 <p>Parallelization is implemented via the <code>multiprocessing</code>
 module in the Python standard library, and parallel generation can be
 controlled via keyword arguments to <a
