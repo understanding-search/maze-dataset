@@ -84,7 +84,7 @@ This package includes a variety of maze generation algorithms, including randomi
 
 |   |   |   |   |
 |---|---|---|---|
-| ![Maze generated via percolation](docs/assets/maze_perc.png) |  ![Maze generated via constrained randomized depth first search](docs/assets/maze_dfs_constrained.png)  |  ![Maze with random heatmap](docs/assets/mazeplot_heatmap.png)  |  ![MazePlot with solution](docs/assets/mazeplot_path.png)  |
+| <img src="docs/assets/maze_perc.png" alt="Maze generated via percolation" width="95%"/> | <img src="docs/assets/maze_dfs_constrained.png" alt="Maze generated via constrained randomized depth first search" width="95%"/> | <img src="docs/assets/mazeplot_heatmap.png" alt="Maze with random heatmap" width="95%"/> | <img src="docs/assets/mazeplot_path.png" alt="MazePlot with solution" width="95%"/> |
 
 
 You can view and search through a wide variety of example mazes here: [`understanding-search.github.io/maze-dataset/examples/maze_examples`](https://understanding-search.github.io/maze-dataset/examples/maze_examples.html)
@@ -169,7 +169,7 @@ from maze_dataset.plotting import MazePlot
 MazePlot(maze).plot()
 ```
 
-![textual and visual output formats](docs/assets/output_formats.png)
+<img src="docs/assets/output_formats.png" alt="textual and visual output formats" width="100%"/>
 
 
 # Development
