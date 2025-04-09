@@ -1021,9 +1021,9 @@ subgraphs of a finite lattice, which we call a
 \href{https://understanding-search.github.io/maze-dataset/maze_dataset.html\#LatticeMaze}{\texttt{LatticeMaze}}.
 Using an adjacency matrix for storing mazes would be memory inefficient
 by failing to exploit the highly sparse structure -- for example, for a
-2-dimensional maze, only 4 of the diagonals would be filled in. On the
-other hand, using an adjacency list could lead to a poor lookup time for
-whether any given connection exists.
+2-dimensional maze, only 4 off-diagonal bands would be have nonzero
+values. On the other hand, using an adjacency list could lead to a poor
+lookup time for whether any given connection exists.
 
 Instead, we describe mazes with the following representation: for a
 \(2\)-dimensional lattice with \(r\) rows and \(c\) columns, we

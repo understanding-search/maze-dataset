@@ -7,7 +7,7 @@
   <meta name="author" content="Michael Igorevich Ivanitskiy, Aaron
 Sandoval, Alex F. Spies, Tilman Räuker, Brandon Knutson, Cecilia Diniz
 Behn, Samy Wu Fung" />
-  <meta name="dcterms.date" content="2025-03-30" />
+  <meta name="dcterms.date" content="2025-04-09" />
   <title>maze-dataset: Maze Generation with Algorithmic Variety and Representational Flexibility</title>
   <style>
     html {
@@ -263,7 +263,7 @@ and Representational Flexibility</h1>
 <p class="author">true</p>
 <p class="author">true</p>
 <p class="author">true</p>
-<p class="date">30 March 2025</p>
+<p class="date">9 April 2025</p>
 </header>
 <h1 id="summary">Summary</h1>
 <p>Solving mazes is a classic problem in computer science and artificial
@@ -295,11 +295,9 @@ A variety of generated examples can be viewed <a
 href="https://understanding-search.github.io/maze-dataset/examples/maze_examples.html">here</a>.
 </figcaption>
 </figure>
-<!-- [examples](https://understanding-search.github.io/maze-dataset/examples/maze_examples.html)
-[docs]()
-
- -->
+<!-- ```{=html}
 <img src="diagram/diagram.svg"/>
+``` -->
 <h1 id="statement-of-need">Statement of Need</h1>
 <p>While maze generation itself is straightforward, the architectural
 challenge comes from building a system supporting many algorithms with
@@ -908,9 +906,9 @@ subgraphs of a finite lattice, which we call a <a
 href="https://understanding-search.github.io/maze-dataset/maze_dataset.html#LatticeMaze"><code>LatticeMaze</code></a>.
 Using an adjacency matrix for storing mazes would be memory inefficient
 by failing to exploit the highly sparse structure – for example, for a
-2-dimensional maze, only 4 of the diagonals would be filled in. On the
-other hand, using an adjacency list could lead to a poor lookup time for
-whether any given connection exists.</p>
+2-dimensional maze, only 4 off-diagonal bands would be have nonzero
+values. On the other hand, using an adjacency list could lead to a poor
+lookup time for whether any given connection exists.</p>
 <p>Instead, we describe mazes with the following representation: for a
 <span class="math inline">2</span>-dimensional lattice with <span
 class="math inline"><em>r</em></span> rows and <span
@@ -1007,10 +1005,6 @@ href="#ref-dao2025alphamaze" role="doc-biblioref">Dao &amp; Vu,
 2025</a>)</span> to improve spatial reasoning in LLMs with
 GRPO.</p></li>
 </ul>
-<!-- # Conclusion {#conclusion}
-
-The [`maze-dataset`](https://github.com/understanding-search/maze-dataset) library [@maze-dataset-github] introduced in this paper provides a flexible and extensible toolkit for generating, processing, and analyzing maze datasets. By supporting various procedural generation algorithms and conversion utilities, it enables the creation of mazes with customizable properties to suit diverse research needs. 
-Planned improvements to the `maze-dataset` include adding more generation algorithms (such as Prim's algorithm [@jarnik-prim; @prim; @dijkstra-prim] and Kruskal's algorithm [@kruskal], among others [@mazegen_analysis]), adding the ability to augment a maze with an adjacency list to add "shortcuts" to the maze, and resolving certain limitations detailed in Section [Limitations](#limitations). -->
 <h1 id="acknowledgements">Acknowledgements</h1>
 <p>This work was partially funded by National Science Foundation awards
 DMS-2110745 and DMS-2309810. We are also grateful to LTFF and FAR Labs

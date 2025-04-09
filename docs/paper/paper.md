@@ -23,7 +23,7 @@ authors:
   - name: Brandon Knutson
     orcid: 0009-0004-8413-0239
     affiliation: 1
-  - name: Cecilia Diniz Behn  
+  - name: Cecilia Diniz Behn
     orcid: 0000-0002-8078-5105
     affiliation: 1
   - name: Samy Wu Fung
@@ -38,7 +38,7 @@ affiliations:
     index: 3
   - name: Independent
     index: 4
-date: 30 March 2025
+date: 9 April 2025
 bibliography: refs.bib
 header-includes: |
   \usepackage{graphicx}
@@ -77,14 +77,9 @@ Solving mazes is a classic problem in computer science and artificial intelligen
   \label{fig:diagram}
 \end{figure}
 
-<!-- [examples](https://understanding-search.github.io/maze-dataset/examples/maze_examples.html)
-[docs]()
-
- -->
-
-```{=html}
+<!-- ```{=html}
 <img src="diagram/diagram.svg"/>
-```
+``` -->
 
 # Statement of Need
 
@@ -318,7 +313,7 @@ where `raw_val` is the output of the symbolic regression model. The parameter $x
 
 We refer to our \href{https://github.com/understanding-search/maze-dataset}{repository} and \docslink{maze_dataset.html}{docs} for documentation and up-to-date implementation details.
 
-This package utilizes a simple, efficient representation of mazes as subgraphs of a finite lattice, which we call a [`LatticeMaze`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#LatticeMaze). Using an adjacency matrix for storing mazes would be memory inefficient by failing to exploit the highly sparse structure -- for example, for a 2-dimensional maze, only 4 of the diagonals would be filled in. On the other hand, using an adjacency list could lead to a poor lookup time for whether any given connection exists.
+This package utilizes a simple, efficient representation of mazes as subgraphs of a finite lattice, which we call a [`LatticeMaze`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#LatticeMaze). Using an adjacency matrix for storing mazes would be memory inefficient by failing to exploit the highly sparse structure -- for example, for a 2-dimensional maze, only 4 off-diagonal bands would be have nonzero values. On the other hand, using an adjacency list could lead to a poor lookup time for whether any given connection exists.
 
 Instead, we describe mazes with the following representation: for a $2$-dimensional lattice with $r$ rows and $c$ columns, we initialize a boolean array
 $$
@@ -345,11 +340,6 @@ This package has also been utilized in work by other groups:
 - By [@zhang2025tscend] to introduce a novel framework for reasoning diffusion models.
 
 - By [@dao2025alphamaze] to improve spatial reasoning in LLMs with GRPO.
-
-<!-- # Conclusion {#conclusion}
-
-The [`maze-dataset`](https://github.com/understanding-search/maze-dataset) library [@maze-dataset-github] introduced in this paper provides a flexible and extensible toolkit for generating, processing, and analyzing maze datasets. By supporting various procedural generation algorithms and conversion utilities, it enables the creation of mazes with customizable properties to suit diverse research needs. 
-Planned improvements to the `maze-dataset` include adding more generation algorithms (such as Prim's algorithm [@jarnik-prim; @prim; @dijkstra-prim] and Kruskal's algorithm [@kruskal], among others [@mazegen_analysis]), adding the ability to augment a maze with an adjacency list to add "shortcuts" to the maze, and resolving certain limitations detailed in Section [Limitations](#limitations). -->
 
 # Acknowledgements
 
