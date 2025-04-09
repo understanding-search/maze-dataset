@@ -55,7 +55,6 @@ def get_system_info() -> dict[str, Any]:
 
 
 if __name__ == "__main__":
-
 	print(get_system_info())
 
 	import argparse

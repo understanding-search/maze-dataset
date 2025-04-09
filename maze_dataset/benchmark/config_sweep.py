@@ -262,7 +262,7 @@ class SweepResult(SerializableDataclass, Generic[ParamType, SweepReturnType]):
 		show: bool = True,
 		ax: plt.Axes | None = None,
 		minify_title: bool = False,
-		legend_kwargs: dict[str, Any]|None = None,
+		legend_kwargs: dict[str, Any] | None = None,
 	) -> plt.Axes:
 		"""Plot the results of percolation analysis"""
 		# set up figure
@@ -301,7 +301,7 @@ class SweepResult(SerializableDataclass, Generic[ParamType, SweepReturnType]):
 		cfg_shared: dict = self.configs_shared()
 		if minify_title:
 			cfg_shared["endpoint_kwargs"] = {
-				k : v
+				k: v
 				for k, v in cfg_shared["endpoint_kwargs"].items()
 				if k != "except_on_no_valid_endpoint"
 			}
