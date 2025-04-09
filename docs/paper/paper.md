@@ -269,7 +269,7 @@ We provide approximate benchmarks for relative generation time across various al
           &                        &   11.1   &    6.5   &   32.9   &  302.7   \\
   \hline
 \end{tabular}
-\caption{Generation times for various algorithms and maze sizes. More information can be found on the \docsref{benchmarks}{benchmarks page}.}
+\caption{Generation times for various algorithms and maze sizes. More information can be found on the \docslink{benchmarks}{benchmarks page}.}
 \label{tab:benchmarks}
 \end{table}
 
