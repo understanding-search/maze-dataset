@@ -51,7 +51,11 @@ def get_neighbors_in_bounds(
 
 
 class LatticeMazeGenerators:
-	"""namespace for lattice maze generation algorithms"""
+	"""namespace for lattice maze generation algorithms
+
+	examples of generated mazes can be found here:
+	https://understanding-search.github.io/maze-dataset/examples/maze_examples.html
+	"""
 
 	@staticmethod
 	def gen_dfs(
