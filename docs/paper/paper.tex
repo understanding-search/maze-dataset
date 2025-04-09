@@ -362,6 +362,7 @@ Software}, \emph{¿VOL?}(¿ISSUE?), ¿PAGE? \url{https://doi.org/N/A}}.}}
 }
 \providecommand{\XeTeXLinkBox}[1]{#1}
 \newcommand{\docslink}[2]{\href{https://understanding-search.github.io/maze-dataset/#1}{#2}}
+\newcommand{\secref}[1]{\hyperref[#1]{section: \textit{\nameref{#1}}}}
 \ifLuaTeX
   \usepackage{selnolig}  % disable illegal ligatures
 \fi
@@ -574,7 +575,7 @@ with these datasets.
   is similar to that of (\protect\hyperlink{ref-eval-LLM-graphs}{Liu \&
   Wu, 2023}), but provides over 5.8 million unique formats for
   converting mazes to a text stream, detailed in
-  \autoref{sec:tokenized-output-formats}.
+  \hyperref[sec:tokenized-output-formats]{section: \textit{\nameref{sec:tokenized-output-formats}}}.
 \item
   For rigorous investigations of the response of a model to various
   distributional shifts, preserving metadata about the generation
@@ -586,7 +587,7 @@ with these datasets.
 \item
   Storing mazes as images is not only difficult to work with, but also
   inefficient. We use a highly efficient method detailed in
-  \autoref{sec:implementation}.
+  \hyperref[sec:implementation]{section: \textit{\nameref{sec:implementation}}}.
 \item
   Our package is easily installable with source code freely available.
   It is extensively tested, type hinted, benchmarked, and documented.
@@ -1050,7 +1051,7 @@ selection can be controlled via
 \href{https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/maze_dataset_config.html\#MazeDatasetConfig.endpoint_kwargs}{\texttt{MazeDatasetConfig.endpoint\_kwargs:}}
 \href{https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/maze_dataset_config.html\#EndpointKwargsType}{\texttt{EndpointKwargsType}},
 and complications caused by this are detailed in
-\autoref{sec:success-rate-estimation}.
+\hyperref[sec:success-rate-estimation]{section: \textit{\nameref{sec:success-rate-estimation}}}.
 
 Parallelization is implemented via the \texttt{multiprocessing} module
 in the Python standard library, and parallel generation can be
