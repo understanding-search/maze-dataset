@@ -30,6 +30,7 @@
         <img src="https://img.shields.io/badge/arXiv-2309.10498-b31b1b.svg" alt="arXiv">
     </a>
   </p>
+  
 
   <!-- Diagram -->
   <p>
@@ -61,6 +62,10 @@
     <img src="https://img.shields.io/github/issues-pr-closed/understanding-search/maze-dataset" alt="GitHub closed pull requests">
     &nbsp;
     <img src="https://img.shields.io/pypi/dm/maze-dataset" alt="PyPI - Downloads">
+    &nbsp;
+    <a href="https://juleskreuer.eu/projects/citation-badge">
+         <img alt="Citation Badge" src="https://api.juleskreuer.eu/citation-badge.php?doi=10.48550/arxiv.2309.10498">
+    </a>
   </p>
 
 </div>
