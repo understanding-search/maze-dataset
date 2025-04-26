@@ -316,15 +316,6 @@ Software}, \emph{¿VOL?}(¿ISSUE?), ¿PAGE? \url{https://doi.org/N/A}}.}}
 \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
 \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
 
-\usepackage{graphicx,grffile}
-\makeatletter
-\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
-\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
-\makeatother
-% Scale images if necessary, so that they will not overflow the page
-% margins by default, and it is still possible to overwrite the defaults
-% using explicit options in \includegraphics[width, height, ...]{}
-\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
 \IfFileExists{parskip.sty}{%
 \usepackage{parskip}
 }{% else
@@ -567,20 +558,19 @@ with these datasets.
   The text format provided by
   \href{https://understanding-search.github.io/maze-dataset/maze_dataset.html\#MazeDataset.as_tokens}{\texttt{SolvedMaze(...).as\_tokens()}}
   is similar to that of (\protect\hyperlink{ref-eval-LLM-graphs}{Liu \&
-  Wu, 2023}), but provides over 5.8 million unique formats for
-  converting mazes to a text stream, detailed in
+  Wu, 2023}) but with many more options, detailed
   \hyperref[sec:tokenized-output-formats]{section: \textit{\nameref{sec:tokenized-output-formats}}}.
 \item
-  For rigorous investigations of the response of a model to various
-  distributional shifts, preserving metadata about the generation
-  algorithm with the dataset itself is essential. To this end, our
-  package efficiently stores the dataset along with its metadata in a
-  single human-readable file (\protect\hyperlink{ref-zanj}{M.
+  Preserving metadata about the generation algorithm with the dataset
+  itself is essential for studying the effects of distributional shifts.
+  Our package efficiently stores the dataset along with its metadata in
+  a single human-readable file (\protect\hyperlink{ref-zanj}{M.
   Ivanitskiy, n.d.}). As far as we are aware, no existing packages do
   this reliably.
 \item
-  Storing mazes as images is not only difficult to work with, but also
-  inefficient. We use a highly efficient method detailed in
+  Storing mazes as images or adjacency matrices is not only difficult to
+  work with, but also inefficient. We use a highly efficient method
+  detailed in
   \hyperref[sec:implementation]{section: \textit{\nameref{sec:implementation}}}.
 \item
   Our package is easily installable with source code freely available.
@@ -714,16 +704,7 @@ Bansal, et al., 2021}) and provide the
 class which returns rasterized pairs of (input, target) mazes as shown
 in \autoref{fig:e2h-raster} below.
 
-\begin{figure}
-\hypertarget{fig:e2h-raster}{%
-\centering
-\includegraphics[width=0.3\textwidth,height=\textheight]{figures/maze-raster-input-target.pdf}
-\caption{Input is the rasterized maze without the path marked (left),
-and provide as a target the maze with all but the correct path removed
-(right). Configuration options exist to adjust whether endpoints are
-included and if empty cells should be filled in.}\label{fig:e2h-raster}
-}
-\end{figure}
+\input{figures/tex/fig3_raster.tex}
 
 \hypertarget{sec:tokenized-output-formats}{%
 \subsection{Tokenized Output
@@ -735,34 +716,14 @@ reasoning steps (\protect\hyperlink{ref-pfau2024dotbydot}{Pfau et al.,
 2024}; \protect\hyperlink{ref-spies2024causalworldmodels}{Spies et al.,
 2024}). To facilitate systematic investigation of the effects of
 different representations of data on text model performance, we provide
-a variety of tokenized text output formats.
-
-We convert mazes to token sequences in two steps. First, the maze is
-stringified using
-\href{https://understanding-search.github.io/maze-dataset/maze_dataset.html\#MazeDataset.as_tokens}{\texttt{as\_tokens()}}.
-The
+a variety of text output formats. By passing an instance of
 \href{https://understanding-search.github.io/maze-dataset/maze_dataset/tokenization.html\#MazeTokenizerModular}{\texttt{MazeTokenizerModular}}
-class provides a powerful interface for configuring maze stringification
-behavior. Second, the sequence of strings is tokenized into integers
-using \texttt{encode()}. Tokenization uses a fixed vocabulary for
-simplicity. Mazes up to \(50 \times 50\) are supported when using a
-unique token for each position, and up to \(128 \times 128\) are
-supported when positions in the maze are represented as a pair of
-coordinates.
-
-There are many algorithms by which one might tokenize a 2D maze into a
-1D format usable by autoregressive text models. Training multiple models
-on the encodings output from each of these algorithms may produce very
-different internal representations, learned solution algorithms, and
-levels of performance. To allow exploration of how different maze
-tokenization algorithms affect these models, the
+to
+\href{https://understanding-search.github.io/maze-dataset/maze_dataset.html\#MazeDataset.as_tokens}{\texttt{as\_tokens(...)}},
+a maze can be converted to a text sequence. The
 \href{https://understanding-search.github.io/maze-dataset/maze_dataset/tokenization.html\#MazeTokenizerModular}{\texttt{MazeTokenizerModular}}
-class contains a rich set of options to customize how mazes are
-stringified. This class contains 19 discrete parameters, resulting in
-over 5.8 million unique tokenizers. There are 6 additional parameters
-available whose functionality is not verified via automated testing, but
-further expand the the number of tokenizers by a factor of \(44/3\) to
-86 million.
+class contains a rich set of options with class contains 19 discrete
+parameters, resulting in over 5.8 million unique possible tokenizers.
 
 All output sequences consist of four token regions representing
 different features of the maze; an example output sequence is shown in
@@ -778,30 +739,6 @@ objects, each of which specifies how different token regions or other
 elements of the stringification are produced.
 
 \input{figures/tex/fig5_mmt.tex}
-
-The tokenizer architecture is purposefully designed such that adding and
-testing a wide variety of new tokenization algorithms is fast and
-minimizes disturbances to functioning code. This is enabled by the
-modular architecture and the automatic inclusion of any new tokenizers
-in integration tests. To create a new variety of tokenizer, developers
-forking the library may simply create their own
-\href{https://understanding-search.github.io/maze-dataset/maze_dataset/tokenization.html#_TokenizerElement}{\texttt{\_TokenizerElement}}
-subclass and implement the abstract methods. If the behavior change is
-sufficiently small, simply adding a parameter to an existing
-\href{https://understanding-search.github.io/maze-dataset/maze_dataset/tokenization.html#_TokenizerElement}{\texttt{\_TokenizerElement}}
-subclass and updating its implementation will suffice.
-
-The breadth of tokenizers is also easily scaled in the opposite
-direction. Due to the exponential scaling of parameter combinations,
-adding a small number of new features can significantly slow certain
-procedures which rely on constructing all possible tokenizers, such as
-integration tests. If any existing subclass contains features which
-aren't needed, a developer tool decorator
-\href{https://understanding-search.github.io/maze-dataset/maze_dataset/tokenization/modular/element_base.html\#mark_as_unsupported}{\texttt{@mark\_as\_unsupported}}
-is provided which can be applied to the unneeded
-\href{https://understanding-search.github.io/maze-dataset/maze_dataset/tokenization.html#_TokenizerElement}{\texttt{\_TokenizerElement}}
-subclasses to prune those features and compact the available space of
-tokenizers.
 
 \hypertarget{benchmarks}{%
 \subsection{Benchmarks of Generation Speed}\label{benchmarks}}
@@ -825,18 +762,16 @@ In order to replicate the exact dataset distribution of
 Bansal, et al., 2021}), the parameter
 \href{https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/maze_dataset_config.html\#MazeDatasetConfig.endpoint_kwargs}{\texttt{MazeDatasetConfig.endpoint\_kwargs:}}
 \href{https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/maze_dataset_config.html\#EndpointKwargsType}{\texttt{EndpointKwargsType}}
-allows for additional constraints such as enforcing that the start or
+allows for additional constraints, such as enforcing that the start or
 end point be in a ``dead end'' with only one accessible neighbor cell.
-However, combining these constraints with cyclic mazes (such as those
-generated with percolation), as was required for the work in
-(\protect\hyperlink{ref-knutson2024logicalextrapolation}{Knutson et al.,
-2024}), can lead to an absence of valid start and end points. Placing
-theoretical bounds on this success rate is difficult, as it depends on
-the exact maze generation algorithm and parameters used. To deal with
-this, our package provides a way to estimate the success rate of a given
-configuration using a symbolic regression model trained with PySR
-(\protect\hyperlink{ref-pysr}{Cranmer, 2023}). More details on this can
-be found in
+However, combining these constraints with cyclic mazes\footnote{Such as
+  those generated with percolation, as was required for the work in
+  (\protect\hyperlink{ref-knutson2024logicalextrapolation}{Knutson et
+  al., 2024}).} can lead to an absence of valid start and end points. To
+deal with this, our package provides a way to estimate the success rate
+of a given configuration using a symbolic regression model trained with
+PySR (\protect\hyperlink{ref-pysr}{Cranmer, 2023}). More details on this
+can be found in
 \href{https://understanding-search.github.io/maze-dataset/notebooks/estimate_dataset_fractions.html}{\texttt{estimate\_dataset\_fractions.ipynb}}.
 
 \input{figures/tex/fig7_sre.tex}
@@ -862,9 +797,7 @@ connection exists from node \([i,j]\) to \([i+1, j]\). Likewise, the
 value at \(A[1,i,j]\) determines whether a \emph{rightward} connection
 to \([i, j+1]\) exists. Thus, we avoid duplication of data about the
 existence of connections and facilitate fast lookup time, at the cost of
-requiring additional care with indexing. Note that this setup allows for
-a periodic lattice. Generation of mazes is detailed in
-\href{https://understanding-search.github.io/maze-dataset/maze_dataset.html\#LatticeMazeGenerators}{\texttt{LatticeMazeGenerators}}.
+requiring additional care with indexing.
 
 \newpage
 

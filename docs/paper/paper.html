@@ -362,20 +362,20 @@ href="#ref-mathematica-maze" role="doc-biblioref">Guo et al., 2011</a>;
 href="https://understanding-search.github.io/maze-dataset/maze_dataset.html#MazeDataset.as_tokens"><code>SolvedMaze(...).as_tokens()</code></a>
 is similar to that of <span class="citation"
 data-cites="eval-LLM-graphs">(<a href="#ref-eval-LLM-graphs"
-role="doc-biblioref">Liu &amp; Wu, 2023</a>)</span>, but provides over
-5.8 million unique formats for converting mazes to a text stream,
-detailed in <a href="#sec:tokenized-output-formats">section:
+role="doc-biblioref">Liu &amp; Wu, 2023</a>)</span> but with many more
+options, detailed <a href="#sec:tokenized-output-formats">section:
 <em></em></a>.</p></li>
-<li><p>For rigorous investigations of the response of a model to various
-distributional shifts, preserving metadata about the generation
-algorithm with the dataset itself is essential. To this end, our package
-efficiently stores the dataset along with its metadata in a single
-human-readable file <span class="citation" data-cites="zanj">(<a
-href="#ref-zanj" role="doc-biblioref">M. Ivanitskiy, n.d.</a>)</span>.
-As far as we are aware, no existing packages do this reliably.</p></li>
-<li><p>Storing mazes as images is not only difficult to work with, but
-also inefficient. We use a highly efficient method detailed in <a
-href="#sec:implementation">section: <em></em></a>.</p></li>
+<li><p>Preserving metadata about the generation algorithm with the
+dataset itself is essential for studying the effects of distributional
+shifts. Our package efficiently stores the dataset along with its
+metadata in a single human-readable file <span class="citation"
+data-cites="zanj">(<a href="#ref-zanj" role="doc-biblioref">M.
+Ivanitskiy, n.d.</a>)</span>. As far as we are aware, no existing
+packages do this reliably.</p></li>
+<li><p>Storing mazes as images or adjacency matrices is not only
+difficult to work with, but also inefficient. We use a highly efficient
+method detailed in <a href="#sec:implementation">section:
+<em></em></a>.</p></li>
 <li><p>Our package is easily installable with source code freely
 available. It is extensively tested, type hinted, benchmarked, and
 documented. Many other maze generation packages lack this level of rigor
@@ -491,15 +491,6 @@ href="https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/r
 class which returns rasterized pairs of (input, target) mazes as shown
 in <a href="#fig:e2h-raster" data-reference-type="autoref"
 data-reference="fig:e2h-raster">[fig:e2h-raster]</a> below.</p>
-<figure id="fig:e2h-raster">
-<embed src="media/figures/maze-raster-input-target.pdf"
-style="width:30.0%" />
-<figcaption aria-hidden="true">Input is the rasterized maze without the
-path marked (left), and provide as a target the maze with all but the
-correct path removed (right). Configuration options exist to adjust
-whether endpoints are included and if empty cells should be filled
-in.</figcaption>
-</figure>
 <h2 id="sec:tokenized-output-formats">Tokenized Output Formats</h2>
 <p>Autoregressive transformer models can be quite sensitive to the exact
 format of input data, and may even use delimiter tokens to perform
@@ -509,32 +500,16 @@ href="#ref-pfau2024dotbydot" role="doc-biblioref">Pfau et al., 2024</a>;
 <a href="#ref-spies2024causalworldmodels" role="doc-biblioref">Spies et
 al., 2024</a>)</span>. To facilitate systematic investigation of the
 effects of different representations of data on text model performance,
-we provide a variety of tokenized text output formats.</p>
-<p>We convert mazes to token sequences in two steps. First, the maze is
-stringified using <a
-href="https://understanding-search.github.io/maze-dataset/maze_dataset.html#MazeDataset.as_tokens"><code>as_tokens()</code></a>.
-The <a
+we provide a variety of text output formats. By passing an instance of
+<a
 href="https://understanding-search.github.io/maze-dataset/maze_dataset/tokenization.html#MazeTokenizerModular"><code>MazeTokenizerModular</code></a>
-class provides a powerful interface for configuring maze stringification
-behavior. Second, the sequence of strings is tokenized into integers
-using <code>encode()</code>. Tokenization uses a fixed vocabulary for
-simplicity. Mazes up to <span class="math inline">50 × 50</span> are
-supported when using a unique token for each position, and up to <span
-class="math inline">128 × 128</span> are supported when positions in the
-maze are represented as a pair of coordinates.</p>
-<p>There are many algorithms by which one might tokenize a 2D maze into
-a 1D format usable by autoregressive text models. Training multiple
-models on the encodings output from each of these algorithms may produce
-very different internal representations, learned solution algorithms,
-and levels of performance. To allow exploration of how different maze
-tokenization algorithms affect these models, the <a
+to <a
+href="https://understanding-search.github.io/maze-dataset/maze_dataset.html#MazeDataset.as_tokens"><code>as_tokens(...)</code></a>,
+a maze can be converted to a text sequence. The <a
 href="https://understanding-search.github.io/maze-dataset/maze_dataset/tokenization.html#MazeTokenizerModular"><code>MazeTokenizerModular</code></a>
-class contains a rich set of options to customize how mazes are
-stringified. This class contains 19 discrete parameters, resulting in
-over 5.8 million unique tokenizers. There are 6 additional parameters
-available whose functionality is not verified via automated testing, but
-further expand the the number of tokenizers by a factor of <span
-class="math inline">44/3</span> to 86 million.</p>
+class contains a rich set of options with class contains 19 discrete
+parameters, resulting in over 5.8 million unique possible
+tokenizers.</p>
 <p>All output sequences consist of four token regions representing
 different features of the maze; an example output sequence is shown in
 <a href="#fig:token-regions" data-reference-type="autoref"
@@ -545,28 +520,6 @@ is constructed from a set of several <a
 href="https://understanding-search.github.io/maze-dataset/maze_dataset/tokenization.html#_TokenizerElement"><code>_TokenizerElement</code></a>
 objects, each of which specifies how different token regions or other
 elements of the stringification are produced.</p>
-<p>The tokenizer architecture is purposefully designed such that adding
-and testing a wide variety of new tokenization algorithms is fast and
-minimizes disturbances to functioning code. This is enabled by the
-modular architecture and the automatic inclusion of any new tokenizers
-in integration tests. To create a new variety of tokenizer, developers
-forking the library may simply create their own <a
-href="https://understanding-search.github.io/maze-dataset/maze_dataset/tokenization.html#_TokenizerElement"><code>_TokenizerElement</code></a>
-subclass and implement the abstract methods. If the behavior change is
-sufficiently small, simply adding a parameter to an existing <a
-href="https://understanding-search.github.io/maze-dataset/maze_dataset/tokenization.html#_TokenizerElement"><code>_TokenizerElement</code></a>
-subclass and updating its implementation will suffice.</p>
-<p>The breadth of tokenizers is also easily scaled in the opposite
-direction. Due to the exponential scaling of parameter combinations,
-adding a small number of new features can significantly slow certain
-procedures which rely on constructing all possible tokenizers, such as
-integration tests. If any existing subclass contains features which
-aren’t needed, a developer tool decorator <a
-href="https://understanding-search.github.io/maze-dataset/maze_dataset/tokenization/modular/element_base.html#mark_as_unsupported"><code>@mark_as_unsupported</code></a>
-is provided which can be applied to the unneeded <a
-href="https://understanding-search.github.io/maze-dataset/maze_dataset/tokenization.html#_TokenizerElement"><code>_TokenizerElement</code></a>
-subclasses to prune those features and compact the available space of
-tokenizers.</p>
 <h2 id="benchmarks">Benchmarks of Generation Speed</h2>
 <p>We provide approximate benchmarks for relative generation time across
 various algorithms, parameter choices, maze sizes, and dataset sizes in
@@ -585,18 +538,14 @@ role="doc-biblioref">Schwarzschild, Borgnia, Gupta, Bansal, et al.,
 href="https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/maze_dataset_config.html#MazeDatasetConfig.endpoint_kwargs"><code>MazeDatasetConfig.endpoint_kwargs:</code></a>
 <a
 href="https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/maze_dataset_config.html#EndpointKwargsType"><code>EndpointKwargsType</code></a>
-allows for additional constraints such as enforcing that the start or
+allows for additional constraints, such as enforcing that the start or
 end point be in a “dead end” with only one accessible neighbor cell.
-However, combining these constraints with cyclic mazes (such as those
-generated with percolation), as was required for the work in <span
-class="citation" data-cites="knutson2024logicalextrapolation">(<a
-href="#ref-knutson2024logicalextrapolation" role="doc-biblioref">Knutson
-et al., 2024</a>)</span>, can lead to an absence of valid start and end
-points. Placing theoretical bounds on this success rate is difficult, as
-it depends on the exact maze generation algorithm and parameters used.
-To deal with this, our package provides a way to estimate the success
-rate of a given configuration using a symbolic regression model trained
-with PySR <span class="citation" data-cites="pysr">(<a href="#ref-pysr"
+However, combining these constraints with cyclic mazes<a href="#fn1"
+class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> can
+lead to an absence of valid start and end points. To deal with this, our
+package provides a way to estimate the success rate of a given
+configuration using a symbolic regression model trained with PySR <span
+class="citation" data-cites="pysr">(<a href="#ref-pysr"
 role="doc-biblioref">Cranmer, 2023</a>)</span>. More details on this can
 be found in <a
 href="https://understanding-search.github.io/maze-dataset/notebooks/estimate_dataset_fractions.html"><code>estimate_dataset_fractions.ipynb</code></a>.</p>
@@ -626,9 +575,7 @@ determines whether a <em>rightward</em> connection to <span
 class="math inline">[<em>i</em>,<em>j</em>+1]</span> exists. Thus, we
 avoid duplication of data about the existence of connections and
 facilitate fast lookup time, at the cost of requiring additional care
-with indexing. Note that this setup allows for a periodic lattice.
-Generation of mazes is detailed in <a
-href="https://understanding-search.github.io/maze-dataset/maze_dataset.html#LatticeMazeGenerators"><code>LatticeMazeGenerators</code></a>.</p>
+with indexing.</p>
 <h1 id="usage-in-research">Usage in Research</h1>
 <p>This package was originally built for the needs of the <span
 class="citation" data-cites="maze-transformer-github">(<a
@@ -893,5 +840,17 @@ scalable MCTS-enhanced diffusion model. <em>arXiv Preprint
 arXiv:2502.01989</em>.
 </div>
 </div>
+<aside id="footnotes" class="footnotes footnotes-end-of-document"
+role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1"><p>Such as those generated with percolation, as was
+required for the work in <span class="citation"
+data-cites="knutson2024logicalextrapolation">(<a
+href="#ref-knutson2024logicalextrapolation" role="doc-biblioref">Knutson
+et al., 2024</a>)</span>.<a href="#fnref1" class="footnote-back"
+role="doc-backlink">↩︎</a></p></li>
+</ol>
+</aside>
 </body>
 </html>
