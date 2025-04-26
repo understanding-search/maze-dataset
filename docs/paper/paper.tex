@@ -772,7 +772,7 @@ different features of the maze; an example output sequence is shown in
 Each
 \href{https://understanding-search.github.io/maze-dataset/maze_dataset/tokenization.html\#MazeTokenizerModular}{\texttt{MazeTokenizerModular}}
 is constructed from a set of several
-\href{https://understanding-search.github.io/maze-dataset/maze_dataset/tokenization.html\#_TokenizerElement}{\texttt{\_TokenizerElement}}
+\href{https://understanding-search.github.io/maze-dataset/maze_dataset/tokenization.html#_TokenizerElement}{\texttt{\_TokenizerElement}}
 objects, each of which specifies how different token regions or other
 elements of the stringification are produced.
 
@@ -784,10 +784,10 @@ minimizes disturbances to functioning code. This is enabled by the
 modular architecture and the automatic inclusion of any new tokenizers
 in integration tests. To create a new variety of tokenizer, developers
 forking the library may simply create their own
-\href{https://understanding-search.github.io/maze-dataset/maze_dataset/tokenization.html\#_TokenizerElement}{\texttt{\_TokenizerElement}}
+\href{https://understanding-search.github.io/maze-dataset/maze_dataset/tokenization.html#_TokenizerElement}{\texttt{\_TokenizerElement}}
 subclass and implement the abstract methods. If the behavior change is
 sufficiently small, simply adding a parameter to an existing
-\href{https://understanding-search.github.io/maze-dataset/maze_dataset/tokenization.html\#_TokenizerElement}{\texttt{\_TokenizerElement}}
+\href{https://understanding-search.github.io/maze-dataset/maze_dataset/tokenization.html#_TokenizerElement}{\texttt{\_TokenizerElement}}
 subclass and updating its implementation will suffice.
 
 The breadth of tokenizers is also easily scaled in the opposite
@@ -798,7 +798,7 @@ integration tests. If any existing subclass contains features which
 aren't needed, a developer tool decorator
 \href{https://understanding-search.github.io/maze-dataset/maze_dataset/tokenization/modular/element_base.html\#mark_as_unsupported}{\texttt{@mark\_as\_unsupported}}
 is provided which can be applied to the unneeded
-\href{https://understanding-search.github.io/maze-dataset/maze_dataset/tokenization.html\#_TokenizerElement}{\texttt{\_TokenizerElement}}
+\href{https://understanding-search.github.io/maze-dataset/maze_dataset/tokenization.html#_TokenizerElement}{\texttt{\_TokenizerElement}}
 subclasses to prune those features and compact the available space of
 tokenizers.
 
@@ -1016,23 +1016,7 @@ This package has also been utilized in work by other groups:
 \hypertarget{acknowledgements}{%
 \section{Acknowledgements}\label{acknowledgements}}
 
-This work was partially funded by National Science Foundation awards
-DMS-2110745 and DMS-2309810. We are also grateful to LTFF and FAR Labs
-for hosting authors MII, AFS, and TR for a residency visit, and to
-various members of FAR's technical staff for their advice.
-
-This work was partially supported by AI Safety Camp and AI Safety
-Support, which also brought many of the authors together. We would like
-to thank our former collaborators at AI Safety Camp and other users and
-contributors to the \texttt{maze-dataset} package: Benji Berczi,
-Guillaume Corlouer, William Edwards, Leon Eshuijs, Chris Mathwin, Lucia
-Quirke, Can Rager, Adrians Skapars, Rusheb Shah, Johannes Treutlein, and
-Dan Valentine.
-
-We thank the Mines Optimization and Deep Learning group (MODL) for
-fruitful discussions. We also thank Michael Rosenberg for recommending
-the usage of Finite State Transducers for storing tokenizer validation
-information.
+\input{figures/tex/acknowledgements.tex}
 
 \newpage
 

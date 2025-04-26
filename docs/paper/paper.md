@@ -124,7 +124,7 @@ dataset: MazeDataset = MazeDataset.from_config(
   cfg, # pass the config
   ..., # other options for disk loading, parallelization, etc.
 )
-```
+``` 
 
 When initializing a dataset, options which do not affect the mazes themselves can be specified through the [`from_config()`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#MazeDataset.from_config) factory method as necessary. These options allow for saving/loading existing datasets instead of re-generating, parallelization options for generation, and more. Available maze generation algorithms are static methods of the [`LatticeMazeGenerators`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#LatticeMazeGenerators) namespace class and include generation algorithms based on randomized depth-first search, Wilson's algorithm [@wilson], percolation [@percolation; @percolation-clustersize], Kruskal's algorithm [@kruskal1956shortest], and others.
 
@@ -161,13 +161,13 @@ All output sequences consist of four token regions representing different featur
 
 \input{figures/tex/fig4_tokenfmt.tex}
 
-Each [`MazeTokenizerModular`](https://understanding-search.github.io/maze-dataset/maze_dataset/tokenization.html#MazeTokenizerModular) is constructed from a set of several [`_TokenizerElement`](https://understanding-search.github.io/maze-dataset/maze_dataset/tokenization.html#_TokenizerElement) objects, each of which specifies how different token regions or other elements of the stringification are produced.
+Each [`MazeTokenizerModular`](https://understanding-search.github.io/maze-dataset/maze_dataset/tokenization.html#MazeTokenizerModular) is constructed from a set of several \docslinkcode{maze_dataset/tokenization.html#_TokenizerElement}{\_TokenizerElement} objects, each of which specifies how different token regions or other elements of the stringification are produced.
 
 \input{figures/tex/fig5_mmt.tex}
 
-The tokenizer architecture is purposefully designed such that adding and testing a wide variety of new tokenization algorithms is fast and minimizes disturbances to functioning code. This is enabled by the modular architecture and the automatic inclusion of any new tokenizers in integration tests. To create a new variety of tokenizer, developers forking the library may simply create their own [`_TokenizerElement`](https://understanding-search.github.io/maze-dataset/maze_dataset/tokenization.html#_TokenizerElement) subclass and implement the abstract methods. If the behavior change is sufficiently small, simply adding a parameter to an existing [`_TokenizerElement`](https://understanding-search.github.io/maze-dataset/maze_dataset/tokenization.html#_TokenizerElement) subclass and updating its implementation will suffice.
+The tokenizer architecture is purposefully designed such that adding and testing a wide variety of new tokenization algorithms is fast and minimizes disturbances to functioning code. This is enabled by the modular architecture and the automatic inclusion of any new tokenizers in integration tests. To create a new variety of tokenizer, developers forking the library may simply create their own \docslinkcode{maze_dataset/tokenization.html#_TokenizerElement}{\_TokenizerElement} subclass and implement the abstract methods. If the behavior change is sufficiently small, simply adding a parameter to an existing \docslinkcode{maze_dataset/tokenization.html#_TokenizerElement}{\_TokenizerElement} subclass and updating its implementation will suffice.
 
-The breadth of tokenizers is also easily scaled in the opposite direction. Due to the exponential scaling of parameter combinations, adding a small number of new features can significantly slow certain procedures which rely on constructing all possible tokenizers, such as integration tests. If any existing subclass contains features which aren't needed, a developer tool decorator [`@mark_as_unsupported`](https://understanding-search.github.io/maze-dataset/maze_dataset/tokenization/modular/element_base.html#mark_as_unsupported) is provided which can be applied to the unneeded [`_TokenizerElement`](https://understanding-search.github.io/maze-dataset/maze_dataset/tokenization.html#_TokenizerElement) subclasses to prune those features and compact the available space of tokenizers.
+The breadth of tokenizers is also easily scaled in the opposite direction. Due to the exponential scaling of parameter combinations, adding a small number of new features can significantly slow certain procedures which rely on constructing all possible tokenizers, such as integration tests. If any existing subclass contains features which aren't needed, a developer tool decorator [`@mark_as_unsupported`](https://understanding-search.github.io/maze-dataset/maze_dataset/tokenization/modular/element_base.html#mark_as_unsupported) is provided which can be applied to the unneeded \docslinkcode{maze_dataset/tokenization.html#_TokenizerElement}{\_TokenizerElement} subclasses to prune those features and compact the available space of tokenizers.
 
 ## Benchmarks of Generation Speed {#benchmarks}
 
@@ -245,11 +245,7 @@ This package has also been utilized in work by other groups:
 
 # Acknowledgements
 
-This work was partially funded by National Science Foundation awards DMS-2110745 and DMS-2309810. We are also grateful to LTFF and FAR Labs for hosting authors MII, AFS, and TR for a residency visit, and to various members of FAR’s technical staff for their advice.
-
-This work was partially supported by AI Safety Camp and AI Safety Support, which also brought many of the authors together. We would like to thank our former collaborators at AI Safety Camp and other users and contributors to the  `maze-dataset` package: Benji Berczi, Guillaume Corlouer, William Edwards, Leon Eshuijs, Chris Mathwin, Lucia Quirke, Can Rager, Adrians Skapars, Rusheb Shah, Johannes Treutlein, and Dan Valentine.
-
-We thank the Mines Optimization and Deep Learning group (MODL) for fruitful discussions. We also thank Michael Rosenberg for recommending the usage of Finite State Transducers for storing tokenizer validation information.
+\input{figures/tex/acknowledgements.tex}
 
 \newpage
 
