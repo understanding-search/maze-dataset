@@ -489,15 +489,7 @@ various visualizations. As well as providing a simple interface for
 generating, storing, and loading these datasets, \texttt{maze-dataset}
 is extensively tested, type hinted, benchmarked, and documented.
 
-\begin{figure} 
-  \begin{minipage}{5in}
-    \input{diagram/diagram.tikz} 
-  \end{minipage}
-  \caption{
-    Usage of maze-dataset. We create a \texttt{MazeDataset} from a \texttt{MazeDatasetConfig}. This contains \texttt{SolvedMaze} objects which can be converted to and from a variety of formats. Code in the image contains clickable links to \href{https://understanding-search.github.io/maze-dataset/maze_dataset.html}{documentation}. A variety of generated examples can be viewed \href{https://understanding-search.github.io/maze-dataset/examples/maze_examples.html}{here}.
-  }
-  \label{fig:diagram}
-\end{figure}
+\input{figures/tex/fig1_diagram.tex}
 
 \hypertarget{statement-of-need}{%
 \section{Statement of Need}\label{statement-of-need}}
@@ -708,36 +700,7 @@ objects, which have path information and a tensor optimized for storing
 sub-graphs of a lattice. These objects can be converted to and from
 several formats to maximize their utility in different contexts.
 
-\begin{figure}[H]
-  \centering
-  \begin{tabular}{p{1.5in} p{1.5in} p{1.5in}} 
-    \hline \\[.5em]
-    % algorithms
-    \href{https://understanding-search.github.io/maze-dataset/maze_dataset.html\#LatticeMaze.as_ascii}{\texttt{as\_ascii()}}
-    & \href{https://understanding-search.github.io/maze-dataset/maze_dataset.html\#LatticeMaze.as_pixels}{\texttt{as\_pixels()}}
-    & \href{https://understanding-search.github.io/maze-dataset/maze_dataset/plotting.html\#MazePlot}{\texttt{MazePlot()}} \\[.5em]
-    % descriptions
-      Simple text format for displaying mazes, useful for debugging in a terminal environment.
-      & \texttt{numpy} array of \texttt{dtype=uint8} and shape \texttt{(height, width, 3)}. The last dimension is RGB color.
-      & feature-rich plotting utility with support for multiple paths, heatmaps over positions, and more. \\[1em]
-    \hline \\
-    % examples
-      \multicolumn{1}{c}{\begin{minipage}[b]{1.6in}
-        \setlength{\baselineskip}{0.9em}
-        \input{figures/outputs-ascii-colored.tex} 
-      \end{minipage}}
-      & \multicolumn{1}{c}{
-        \includegraphics[width=0.25\textwidth]{figures/outputs-pixels.pdf}
-      }
-      & \multicolumn{1}{c}{
-        \includegraphics[width=0.27\textwidth, trim={0 0.8cm -.3cm, -.5cm}, clip]{figures/outputs-mazeplot.pdf}
-      } \\[1em]
-    
-    \hline \\
-  \end{tabular}
-  \caption{Various output formats. Top row (left to right): ASCII diagram, rasterized pixel grid, and advanced display tool.}
-  \label{fig:output-fmts}
-\end{figure}
+\input{figures/tex/fig2_formats.tex}
 
 In previous work, maze tasks have been used with Recurrent Convolutional
 Neural Network (RCNN) derived architectures
@@ -804,21 +767,7 @@ All output sequences consist of four token regions representing
 different features of the maze; an example output sequence is shown in
 \autoref{fig:token-regions}.
 
-\begin{figure} 
-  \centering
-  \begin{minipage}{5in}
-    \footnotesize
-    \input{figures/outputs-tokens-colored.tex}
-  \end{minipage}
-  \caption{
-    Example text output format with token regions highlighted.
-    \colorbox[RGB]{ 217,210,233 }{Adjacency list}: text representation of the graph,
-    \colorbox[RGB]{ 217,234,211 }{Origin}: starting coordinate,
-    \colorbox[RGB]{ 234,209,220 }{Target}: ending coordinate,
-    \colorbox[RGB]{ 207,226,243 }{Path}: maze solution sequence
-  }
-  \label{fig:token-regions}
-\end{figure}
+\input{figures/tex/fig4_tokenfmt.tex}
 
 Each
 \href{https://understanding-search.github.io/maze-dataset/maze_dataset/tokenization.html\#MazeTokenizerModular}{\texttt{MazeTokenizerModular}}
@@ -827,11 +776,7 @@ is constructed from a set of several
 objects, each of which specifies how different token regions or other
 elements of the stringification are produced.
 
-\begin{figure}
-    \centering
-    \input{figures/TokenizerElement_structure.tikz}
-    \caption{Nested internal structure of \texttt{\_TokenizerElement} objects inside a typical \texttt{MazeTokenizerModular}.}
-\end{figure}
+\input{figures/tex/fig5_mmt.tex}
 
 The tokenizer architecture is purposefully designed such that adding and
 testing a wide variety of new tokenization algorithms is fast and
@@ -867,46 +812,7 @@ performed on a
 \href{https://docs.github.com/en/actions/using-github-hosted-runners/using-github-hosted-runners/about-github-hosted-runners#standard-github-hosted-runners-for-public-repositories}{standard GitHub runner}
 without parallelism.
 
-\begin{table}[H]
-\centering
-\begin{tabular}{|ll|r|rrr|}
-  \hline
-  maze\_ctor
-          & keyword args           & all sizes 
-                                              & \shortstack{small \\ $g \leq 10$} 
-                                                         & \shortstack{medium \\ $g \in (10, 32]$} 
-                                                                    & \shortstack{large \\ $g > 32$} \\
-  \hline\hline
-  \href{https://understanding-search.github.io/maze-dataset/maze_dataset.html\#LatticeMazeGenerators.gen_dfs}{dfs}
-          &                        &   28.0   &    2.8   &   20.3   &  131.8   \\
-  \href{https://understanding-search.github.io/maze-dataset/maze_dataset.html\#LatticeMazeGenerators.gen_dfs}{dfs}
-          & accessible\_cells=20   &    2.3   &    2.2   &    2.4   &    2.2   \\
-  \href{https://understanding-search.github.io/maze-dataset/maze_dataset.html\#LatticeMazeGenerators.gen_dfs}{dfs}
-          & do\_forks=False        &    2.7   &    2.2   &    3.1   &    3.5   \\
-  \href{https://understanding-search.github.io/maze-dataset/maze_dataset.html\#LatticeMazeGenerators.gen_dfs}{dfs}
-          & max\_tree\_depth=0.5   &    2.5   &    2.0   &    2.7   &    4.0   \\
-  \href{https://understanding-search.github.io/maze-dataset/maze_dataset.html\#LatticeMazeGenerators.gen_dfs_percolation}{dfs\_percolation}
-          & p=0.1                  &   43.9   &    2.8   &   33.9   &  208.0   \\
-  \href{https://understanding-search.github.io/maze-dataset/maze_dataset.html\#LatticeMazeGenerators.gen_dfs_percolation}{dfs\_percolation}
-          & p=0.4                  &   48.7   &    3.0   &   36.5   &  233.5   \\
-  \href{https://understanding-search.github.io/maze-dataset/maze_dataset.html\#LatticeMazeGenerators.gen_kruskal}{kruskal}
-          &                        &   12.8   &    1.9   &   10.3   &   55.8   \\
-  \href{https://understanding-search.github.io/maze-dataset/maze_dataset.html\#LatticeMazeGenerators.gen_percolation}{percolation}
-          & p=1.0                  &   50.2   &    2.6   &   37.2   &  242.5   \\
-  \href{https://understanding-search.github.io/maze-dataset/maze_dataset.html\#LatticeMazeGenerators.gen_recursive_division}{recursive\_div}
-          &                        &   10.2   &    1.7   &    8.9   &   42.1   \\
-  \href{https://understanding-search.github.io/maze-dataset/maze_dataset.html\#LatticeMazeGenerators.gen_wilson}{wilson}
-          &                        &  676.5   &    7.8   &  188.6   & 3992.6   \\
-  \hline\hline
-  mean
-          &                        &  559.9   &   13.0   &  223.5   & 3146.9   \\
-  median
-          &                        &   11.1   &    6.5   &   32.9   &  302.7   \\
-  \hline
-\end{tabular}
-\caption{Generation times for various algorithms and maze sizes. More information can be found on the \href{https://understanding-search.github.io/maze-dataset/benchmarks}{benchmarks page}.}
-\label{tab:benchmarks}
-\end{table}
+\input{figures/tex/tab1_benchmarks.tex}
 
 \begin{figure}
 \hypertarget{fig:benchmarks}{%

@@ -67,19 +67,7 @@ header-includes: |
 
 Solving mazes is a classic problem in computer science and artificial intelligence, and humans have been constructing mazes for thousands of years. Although finding the shortest path through a maze is a solved problem, this very fact makes it an excellent testbed for studying how machine learning algorithms solve problems and represent spatial information. We introduce `maze-dataset`, a user-friendly Python library for generating, processing, and visualizing datasets of mazes. This library supports a variety of maze generation algorithms providing mazes with or without loops, mazes that are connected or not, and many other variations. These generation algorithms can be configured with various parameters, and the resulting mazes can be filtered to satisfy desired properties. Also provided are tools for converting mazes to and from various formats suitable for a variety of neural network architectures, such as rasterized images, tokenized text sequences, and various visualizations. As well as providing a simple interface for generating, storing, and loading these datasets, `maze-dataset` is extensively tested, type hinted, benchmarked, and documented.
 
-\begin{figure} 
-  \begin{minipage}{5in}
-    \input{diagram/diagram.tikz} 
-  \end{minipage}
-  \caption{
-    Usage of maze-dataset. We create a \texttt{MazeDataset} from a \texttt{MazeDatasetConfig}. This contains \texttt{SolvedMaze} objects which can be converted to and from a variety of formats. Code in the image contains clickable links to \docslink{maze_dataset.html}{documentation}. A variety of generated examples can be viewed \docslink{examples/maze_examples.html}{here}.
-  }
-  \label{fig:diagram}
-\end{figure}
-
-<!-- ```{=html}
-<img src="diagram/diagram.svg"/>
-``` -->
+\input{figures/tex/fig1_diagram.tex}
 
 # Statement of Need
 
@@ -154,36 +142,7 @@ For use cases where mazes of different sizes, generation algorithms, or other pa
 
 Internally, mazes are [`SolvedMaze`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#SolvedMaze) objects, which have path information and a tensor optimized for storing sub-graphs of a lattice. These objects can be converted to and from several formats to maximize their utility in different contexts.
 
-\begin{figure}[H]
-  \centering
-  \begin{tabular}{p{1.5in} p{1.5in} p{1.5in}} 
-    \hline \\[.5em]
-    % algorithms
-    \docslink{maze_dataset.html\#LatticeMaze.as_ascii}{\texttt{as\_ascii()}}
-    & \docslink{maze_dataset.html\#LatticeMaze.as_pixels}{\texttt{as\_pixels()}}
-    & \docslink{maze_dataset/plotting.html\#MazePlot}{\texttt{MazePlot()}} \\[.5em]
-    % descriptions
-      Simple text format for displaying mazes, useful for debugging in a terminal environment.
-      & \texttt{numpy} array of \texttt{dtype=uint8} and shape \texttt{(height, width, 3)}. The last dimension is RGB color.
-      & feature-rich plotting utility with support for multiple paths, heatmaps over positions, and more. \\[1em]
-    \hline \\
-    % examples
-      \multicolumn{1}{c}{\begin{minipage}[b]{1.6in}
-        \setlength{\baselineskip}{0.9em}
-        \input{figures/outputs-ascii-colored.tex} 
-      \end{minipage}}
-      & \multicolumn{1}{c}{
-        \includegraphics[width=0.25\textwidth]{figures/outputs-pixels.pdf}
-      }
-      & \multicolumn{1}{c}{
-        \includegraphics[width=0.27\textwidth, trim={0 0.8cm -.3cm, -.5cm}, clip]{figures/outputs-mazeplot.pdf}
-      } \\[1em]
-    
-    \hline \\
-  \end{tabular}
-  \caption{Various output formats. Top row (left to right): ASCII diagram, rasterized pixel grid, and advanced display tool.}
-  \label{fig:output-fmts}
-\end{figure}
+\input{figures/tex/fig2_formats.tex}
 
 In previous work, maze tasks have been used with Recurrent Convolutional Neural Network (RCNN) derived architectures [@deepthinking]. To facilitate the use of our package in this context, we replicate the format of [@easy_to_hard] and provide the [`RasterizedMazeDataset`](https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/rasterized.html#RasterizedMazeDataset) class which returns rasterized pairs of (input, target) mazes as shown in \autoref{fig:e2h-raster} below.
 
@@ -200,29 +159,11 @@ There are many algorithms by which one might tokenize a 2D maze into a 1D format
 
 All output sequences consist of four token regions representing different features of the maze; an example output sequence is shown in \autoref{fig:token-regions}.
 
-\begin{figure} 
-  \centering
-  \begin{minipage}{5in}
-    \footnotesize
-    \input{figures/outputs-tokens-colored.tex}
-  \end{minipage}
-  \caption{
-    Example text output format with token regions highlighted.
-    \colorbox[RGB]{ 217,210,233 }{Adjacency list}: text representation of the graph,
-    \colorbox[RGB]{ 217,234,211 }{Origin}: starting coordinate,
-    \colorbox[RGB]{ 234,209,220 }{Target}: ending coordinate,
-    \colorbox[RGB]{ 207,226,243 }{Path}: maze solution sequence
-  }
-  \label{fig:token-regions}
-\end{figure}
+\input{figures/tex/fig4_tokenfmt.tex}
 
 Each [`MazeTokenizerModular`](https://understanding-search.github.io/maze-dataset/maze_dataset/tokenization.html#MazeTokenizerModular) is constructed from a set of several [`_TokenizerElement`](https://understanding-search.github.io/maze-dataset/maze_dataset/tokenization.html#_TokenizerElement) objects, each of which specifies how different token regions or other elements of the stringification are produced.
 
-\begin{figure}
-    \centering
-    \input{figures/TokenizerElement_structure.tikz}
-    \caption{Nested internal structure of \texttt{\_TokenizerElement} objects inside a typical \texttt{MazeTokenizerModular}.}
-\end{figure}
+\input{figures/tex/fig5_mmt.tex}
 
 The tokenizer architecture is purposefully designed such that adding and testing a wide variety of new tokenization algorithms is fast and minimizes disturbances to functioning code. This is enabled by the modular architecture and the automatic inclusion of any new tokenizers in integration tests. To create a new variety of tokenizer, developers forking the library may simply create their own [`_TokenizerElement`](https://understanding-search.github.io/maze-dataset/maze_dataset/tokenization.html#_TokenizerElement) subclass and implement the abstract methods. If the behavior change is sufficiently small, simply adding a parameter to an existing [`_TokenizerElement`](https://understanding-search.github.io/maze-dataset/maze_dataset/tokenization.html#_TokenizerElement) subclass and updating its implementation will suffice.
 
@@ -232,46 +173,7 @@ The breadth of tokenizers is also easily scaled in the opposite direction. Due t
 
 We provide approximate benchmarks for relative generation time across various algorithms, parameter choices, maze sizes, and dataset sizes in \autoref{tab:benchmarks} and \autoref{fig:benchmarks}. Experiments were performed on a \href{https://docs.github.com/en/actions/using-github-hosted-runners/using-github-hosted-runners/about-github-hosted-runners#standard-github-hosted-runners-for-public-repositories}{standard GitHub runner} without parallelism.
 
-\begin{table}[H]
-\centering
-\begin{tabular}{|ll|r|rrr|}
-  \hline
-  maze\_ctor
-          & keyword args           & all sizes 
-                                              & \shortstack{small \\ $g \leq 10$} 
-                                                         & \shortstack{medium \\ $g \in (10, 32]$} 
-                                                                    & \shortstack{large \\ $g > 32$} \\
-  \hline\hline
-  \docslink{maze_dataset.html\#LatticeMazeGenerators.gen_dfs}{dfs}
-          &                        &   28.0   &    2.8   &   20.3   &  131.8   \\
-  \docslink{maze_dataset.html\#LatticeMazeGenerators.gen_dfs}{dfs}
-          & accessible\_cells=20   &    2.3   &    2.2   &    2.4   &    2.2   \\
-  \docslink{maze_dataset.html\#LatticeMazeGenerators.gen_dfs}{dfs}
-          & do\_forks=False        &    2.7   &    2.2   &    3.1   &    3.5   \\
-  \docslink{maze_dataset.html\#LatticeMazeGenerators.gen_dfs}{dfs}
-          & max\_tree\_depth=0.5   &    2.5   &    2.0   &    2.7   &    4.0   \\
-  \docslink{maze_dataset.html\#LatticeMazeGenerators.gen_dfs_percolation}{dfs\_percolation}
-          & p=0.1                  &   43.9   &    2.8   &   33.9   &  208.0   \\
-  \docslink{maze_dataset.html\#LatticeMazeGenerators.gen_dfs_percolation}{dfs\_percolation}
-          & p=0.4                  &   48.7   &    3.0   &   36.5   &  233.5   \\
-  \docslink{maze_dataset.html\#LatticeMazeGenerators.gen_kruskal}{kruskal}
-          &                        &   12.8   &    1.9   &   10.3   &   55.8   \\
-  \docslink{maze_dataset.html\#LatticeMazeGenerators.gen_percolation}{percolation}
-          & p=1.0                  &   50.2   &    2.6   &   37.2   &  242.5   \\
-  \docslink{maze_dataset.html\#LatticeMazeGenerators.gen_recursive_division}{recursive\_div}
-          &                        &   10.2   &    1.7   &    8.9   &   42.1   \\
-  \docslink{maze_dataset.html\#LatticeMazeGenerators.gen_wilson}{wilson}
-          &                        &  676.5   &    7.8   &  188.6   & 3992.6   \\
-  \hline\hline
-  mean
-          &                        &  559.9   &   13.0   &  223.5   & 3146.9   \\
-  median
-          &                        &   11.1   &    6.5   &   32.9   &  302.7   \\
-  \hline
-\end{tabular}
-\caption{Generation times for various algorithms and maze sizes. More information can be found on the \docslink{benchmarks}{benchmarks page}.}
-\label{tab:benchmarks}
-\end{table}
+\input{figures/tex/tab1_benchmarks.tex}
 
 
 ![Plot of maze generation time. Generation time scales exponentially with maze size for all algorithms. Generation time per maze does not depend on the number of mazes being generated, and there is minimal overhead to initializing the generation process for a small dataset. Wilson's algorithm is notably less efficient than others and has high variance. Note that values are averaged across all parameter sets for that algorithm. More information can be found on the [benchmarks page](https://understanding-search.github.io/maze-dataset/benchmarks/).](figures/benchmarks/gridsize-vs-gentime.pdf){#fig:benchmarks width=95%}

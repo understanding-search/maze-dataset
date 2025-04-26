@@ -284,20 +284,6 @@ various visualizations. As well as providing a simple interface for
 generating, storing, and loading these datasets,
 <code>maze-dataset</code> is extensively tested, type hinted,
 benchmarked, and documented.</p>
-<figure id="fig:diagram">
-
-<figcaption> Usage of maze-dataset. We create a <code>MazeDataset</code>
-from a <code>MazeDatasetConfig</code>. This contains
-<code>SolvedMaze</code> objects which can be converted to and from a
-variety of formats. Code in the image contains clickable links to <a
-href="https://understanding-search.github.io/maze-dataset/maze_dataset.html">documentation</a>.
-A variety of generated examples can be viewed <a
-href="https://understanding-search.github.io/maze-dataset/examples/maze_examples.html">here</a>.
-</figcaption>
-</figure>
-<!-- ```{=html}
-<img src="diagram/diagram.svg"/>
-``` -->
 <h1 id="statement-of-need">Statement of Need</h1>
 <p>While maze generation itself is straightforward, the architectural
 challenge comes from building a system supporting many algorithms with
@@ -492,53 +478,6 @@ href="https://understanding-search.github.io/maze-dataset/maze_dataset.html#Solv
 objects, which have path information and a tensor optimized for storing
 sub-graphs of a lattice. These objects can be converted to and from
 several formats to maximize their utility in different contexts.</p>
-<figure id="fig:output-fmts">
-<table>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;"></td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;"></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><a
-href="https://understanding-search.github.io/maze-dataset/maze_dataset.html#LatticeMaze.as_ascii"><code>as_ascii()</code></a></td>
-<td style="text-align: left;"><a
-href="https://understanding-search.github.io/maze-dataset/maze_dataset.html#LatticeMaze.as_pixels"><code>as_pixels()</code></a></td>
-<td style="text-align: left;"><a
-href="https://understanding-search.github.io/maze-dataset/maze_dataset/plotting.html#MazePlot"><code>MazePlot()</code></a></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Simple text format for displaying mazes,
-useful for debugging in a terminal environment.</td>
-<td style="text-align: left;"><code>numpy</code> array of
-<code>dtype=uint8</code> and shape <code>(height, width, 3)</code>. The
-last dimension is RGB color.</td>
-<td style="text-align: left;">feature-rich plotting utility with support
-for multiple paths, heatmaps over positions, and more.</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"></td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;"></td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;"></td>
-<td style="text-align: center;"><embed
-src="media/figures/outputs-pixels.pdf" style="width:25.0%" /></td>
-<td style="text-align: center;"><embed
-src="media/figures/outputs-mazeplot.pdf" style="width:27.0%" /></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"></td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;"></td>
-</tr>
-</tbody>
-</table>
-<figcaption>Various output formats. Top row (left to right): ASCII
-diagram, rasterized pixel grid, and advanced display tool.</figcaption>
-</figure>
 <p>In previous work, maze tasks have been used with Recurrent
 Convolutional Neural Network (RCNN) derived architectures <span
 class="citation" data-cites="deepthinking">(<a href="#ref-deepthinking"
@@ -600,28 +539,12 @@ class="math inline">44/3</span> to 86 million.</p>
 different features of the maze; an example output sequence is shown in
 <a href="#fig:token-regions" data-reference-type="autoref"
 data-reference="fig:token-regions">[fig:token-regions]</a>.</p>
-<figure id="fig:token-regions">
-
-<figcaption> Example text output format with token regions highlighted.
-<span style="background-color:  217,210,233 ">Adjacency list</span>:
-text representation of the graph, <span
-style="background-color:  217,234,211 ">Origin</span>: starting
-coordinate, <span style="background-color:  234,209,220 ">Target</span>:
-ending coordinate, <span
-style="background-color:  207,226,243 ">Path</span>: maze solution
-sequence </figcaption>
-</figure>
 <p>Each <a
 href="https://understanding-search.github.io/maze-dataset/maze_dataset/tokenization.html#MazeTokenizerModular"><code>MazeTokenizerModular</code></a>
 is constructed from a set of several <a
 href="https://understanding-search.github.io/maze-dataset/maze_dataset/tokenization.html#_TokenizerElement"><code>_TokenizerElement</code></a>
 objects, each of which specifies how different token regions or other
 elements of the stringification are produced.</p>
-<figure>
-
-<figcaption>Nested internal structure of <code>_TokenizerElement</code>
-objects inside a typical <code>MazeTokenizerModular</code>.</figcaption>
-</figure>
 <p>The tokenizer architecture is purposefully designed such that adding
 and testing a wide variety of new tokenization algorithms is fast and
 minimizes disturbances to functioning code. This is enabled by the
@@ -654,157 +577,6 @@ data-reference="fig:benchmarks">[fig:benchmarks]</a>. Experiments were
 performed on a <a
 href="https://docs.github.com/en/actions/using-github-hosted-runners/using-github-hosted-runners/about-github-hosted-runners#standard-github-hosted-runners-for-public-repositories">standard
 GitHub runner</a> without parallelism.</p>
-<div id="tab:benchmarks">
-<table>
-<caption>Generation times for various algorithms and maze sizes. More
-information can be found on the <a
-href="https://understanding-search.github.io/maze-dataset/benchmarks">benchmarks
-page</a>.</caption>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">maze_ctor</td>
-<td style="text-align: left;">keyword args</td>
-<td style="text-align: right;">all sizes</td>
-<td style="text-align: right;"></td>
-<td style="text-align: right;"></td>
-<td style="text-align: right;"></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><span
-class="math inline"><em>g</em> ≤ 10</span></td>
-<td style="text-align: left;"></td>
-<td style="text-align: right;"></td>
-<td style="text-align: right;"></td>
-<td style="text-align: right;"></td>
-<td style="text-align: right;"></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><span
-class="math inline"><em>g</em> ∈ (10, 32]</span></td>
-<td style="text-align: left;"></td>
-<td style="text-align: right;"></td>
-<td style="text-align: right;"></td>
-<td style="text-align: right;"></td>
-<td style="text-align: right;"></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><span
-class="math inline"><em>g</em> &gt; 32</span></td>
-<td style="text-align: left;"></td>
-<td style="text-align: right;"></td>
-<td style="text-align: right;"></td>
-<td style="text-align: right;"></td>
-<td style="text-align: right;"></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><a
-href="https://understanding-search.github.io/maze-dataset/maze_dataset.html#LatticeMazeGenerators.gen_dfs">dfs</a></td>
-<td style="text-align: left;"></td>
-<td style="text-align: right;">28.0</td>
-<td style="text-align: right;">2.8</td>
-<td style="text-align: right;">20.3</td>
-<td style="text-align: right;">131.8</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><a
-href="https://understanding-search.github.io/maze-dataset/maze_dataset.html#LatticeMazeGenerators.gen_dfs">dfs</a></td>
-<td style="text-align: left;">accessible_cells=20</td>
-<td style="text-align: right;">2.3</td>
-<td style="text-align: right;">2.2</td>
-<td style="text-align: right;">2.4</td>
-<td style="text-align: right;">2.2</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><a
-href="https://understanding-search.github.io/maze-dataset/maze_dataset.html#LatticeMazeGenerators.gen_dfs">dfs</a></td>
-<td style="text-align: left;">do_forks=False</td>
-<td style="text-align: right;">2.7</td>
-<td style="text-align: right;">2.2</td>
-<td style="text-align: right;">3.1</td>
-<td style="text-align: right;">3.5</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><a
-href="https://understanding-search.github.io/maze-dataset/maze_dataset.html#LatticeMazeGenerators.gen_dfs">dfs</a></td>
-<td style="text-align: left;">max_tree_depth=0.5</td>
-<td style="text-align: right;">2.5</td>
-<td style="text-align: right;">2.0</td>
-<td style="text-align: right;">2.7</td>
-<td style="text-align: right;">4.0</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><a
-href="https://understanding-search.github.io/maze-dataset/maze_dataset.html#LatticeMazeGenerators.gen_dfs_percolation">dfs_percolation</a></td>
-<td style="text-align: left;">p=0.1</td>
-<td style="text-align: right;">43.9</td>
-<td style="text-align: right;">2.8</td>
-<td style="text-align: right;">33.9</td>
-<td style="text-align: right;">208.0</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><a
-href="https://understanding-search.github.io/maze-dataset/maze_dataset.html#LatticeMazeGenerators.gen_dfs_percolation">dfs_percolation</a></td>
-<td style="text-align: left;">p=0.4</td>
-<td style="text-align: right;">48.7</td>
-<td style="text-align: right;">3.0</td>
-<td style="text-align: right;">36.5</td>
-<td style="text-align: right;">233.5</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><a
-href="https://understanding-search.github.io/maze-dataset/maze_dataset.html#LatticeMazeGenerators.gen_kruskal">kruskal</a></td>
-<td style="text-align: left;"></td>
-<td style="text-align: right;">12.8</td>
-<td style="text-align: right;">1.9</td>
-<td style="text-align: right;">10.3</td>
-<td style="text-align: right;">55.8</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><a
-href="https://understanding-search.github.io/maze-dataset/maze_dataset.html#LatticeMazeGenerators.gen_percolation">percolation</a></td>
-<td style="text-align: left;">p=1.0</td>
-<td style="text-align: right;">50.2</td>
-<td style="text-align: right;">2.6</td>
-<td style="text-align: right;">37.2</td>
-<td style="text-align: right;">242.5</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><a
-href="https://understanding-search.github.io/maze-dataset/maze_dataset.html#LatticeMazeGenerators.gen_recursive_division">recursive_div</a></td>
-<td style="text-align: left;"></td>
-<td style="text-align: right;">10.2</td>
-<td style="text-align: right;">1.7</td>
-<td style="text-align: right;">8.9</td>
-<td style="text-align: right;">42.1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><a
-href="https://understanding-search.github.io/maze-dataset/maze_dataset.html#LatticeMazeGenerators.gen_wilson">wilson</a></td>
-<td style="text-align: left;"></td>
-<td style="text-align: right;">676.5</td>
-<td style="text-align: right;">7.8</td>
-<td style="text-align: right;">188.6</td>
-<td style="text-align: right;">3992.6</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">mean</td>
-<td style="text-align: left;"></td>
-<td style="text-align: right;">559.9</td>
-<td style="text-align: right;">13.0</td>
-<td style="text-align: right;">223.5</td>
-<td style="text-align: right;">3146.9</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">median</td>
-<td style="text-align: left;"></td>
-<td style="text-align: right;">11.1</td>
-<td style="text-align: right;">6.5</td>
-<td style="text-align: right;">32.9</td>
-<td style="text-align: right;">302.7</td>
-</tr>
-</tbody>
-</table>
-</div>
 <figure id="fig:benchmarks">
 <embed src="media/figures/benchmarks/gridsize-vs-gentime.pdf"
 style="width:95.0%" />
