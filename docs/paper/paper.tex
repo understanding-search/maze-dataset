@@ -363,6 +363,7 @@ Software}, \emph{¿VOL?}(¿ISSUE?), ¿PAGE? \url{https://doi.org/N/A}}.}}
 \providecommand{\XeTeXLinkBox}[1]{#1}
 \newcommand{\docslink}[2]{\href{https://understanding-search.github.io/maze-dataset/#1}{#2}}
 \newcommand{\docslinkcode}[2]{\href{https://understanding-search.github.io/maze-dataset/#1}{\texttt{#2}}}
+\newcommand{\docslinkcodemain}[1]{\href{https://understanding-search.github.io/maze-dataset/maze_dataset.html\##1}{\texttt{#1}}}
 \newcommand{\secref}[1]{\hyperref[#1]{section: \textit{\nameref{#1}}}}
 \ifLuaTeX
   \usepackage{selnolig}  % disable illegal ligatures
@@ -814,21 +815,7 @@ without parallelism.
 
 \input{figures/tex/tab1_benchmarks.tex}
 
-\begin{figure}
-\hypertarget{fig:benchmarks}{%
-\centering
-\includegraphics[width=0.9\textwidth,height=\textheight]{figures/benchmarks/gridsize-vs-gentime.pdf}
-\caption{Plot of maze generation time. Generation time scales
-exponentially with maze size for all algorithms. Generation time per
-maze does not depend on the number of mazes being generated, and there
-is minimal overhead to initializing the generation process for a small
-dataset. Wilson's algorithm is notably less efficient than others and
-has high variance. Note that values are averaged across all parameter
-sets for that algorithm. More information can be found on the
-\href{https://understanding-search.github.io/maze-dataset/benchmarks/}{benchmarks
-page}.}\label{fig:benchmarks}
-}
-\end{figure}
+\input{figures/tex/fig6_benchmarks.tex}
 
 \hypertarget{sec:success-rate-estimation}{%
 \subsection{Success Rate Estimation}\label{sec:success-rate-estimation}}
@@ -851,87 +838,20 @@ configuration using a symbolic regression model trained with PySR
 (\protect\hyperlink{ref-pysr}{Cranmer, 2023}). More details on this can
 be found in
 \href{https://understanding-search.github.io/maze-dataset/notebooks/estimate_dataset_fractions.html}{\texttt{estimate\_dataset\_fractions.ipynb}}.
-Using the estimation algorithm simply requires the user to call
-\href{https://understanding-search.github.io/maze-dataset/maze_dataset.html\#MazeDatasetConfig.success_fraction_compensate}{\texttt{cfg\_new:\ MazeDatasetConfig\ =\ cfg.success\_fraction\_compensate()}},
-providing their initial \texttt{cfg} and then using the returned
-\texttt{cfg\_new} in its place.
 
-\hypertarget{success-rate-estimation-algorithm}{%
-\subsubsection{Success Rate Estimation
-Algorithm}\label{success-rate-estimation-algorithm}}
-
-The base function learned by symbolic regression provides limited
-insight and may be subject to change. It is defined as
-\href{https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/success_predict_math.html\#cfg_success_predict_fn}{\texttt{cfg\_success\_predict\_fn}},
-and takes a 5 dimensional float vector created by
-\texttt{MazeDatasetConfig.\_to\_ps\_array()} which represents the
-{[}percolation value, grid size, endpoint deadend configuration,
-endpoint uniqueness, categorical generation function index{]}.
-
-However, the outputs of this function are not directly usable due to
-minor divergences at the endpoints with respect to the percolation
-probability \(p\). Since we know that maze success is either guaranteed
-or impossible for \(p=0\) and \(p=1\), we define the
-\href{https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/success_predict_math.html\#soft_step}{\texttt{soft\_step}}
-function to nudge the raw output of the symbolic regression. This
-function is defined with the following components:
-
-shifted sigmoid \(\sigma_s\), amplitude scaling \(A\), and \(h\)
-function given by \[
-  \sigma_s(x) = (1 + e^{-10^3 \cdot (x-0.5)})^{-1}
-  \qquad A(q,a,w) = w \cdot (1 - |2q-1|^a)
-\] \[
-  h(q,a) = q \cdot (1 - |2q-1|^a) \cdot (1-\sigma_s(q)) + (1-(1-q) \cdot (1 - |2(1-q)-1|^a)) \cdot \sigma_s(q)
-\]
-
-We combine these to get the
-\href{https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/success_predict_math.html\#soft_step}{\texttt{soft\_step}}
-function, which is identity-like for \(p \approx 0.5\), and pushes \(x\)
-to extremes otherwise. \[
-  \text{soft\_step}(x, p, \alpha, w) = h(x, A(p, \alpha, w))
-\]
-
-Finally, we define \[
-  \text{cfg\_success\_predict\_fn}(\mathbf{x}) = \text{soft\_step}(\text{raw\_val}, x_0, 5, 10)
-\]
-
-where \texttt{raw\_val} is the output of the symbolic regression model.
-The parameter \(x_0\) is the percolation probability, while all other
-parameters from \texttt{\_to\_ps\_array()} only affect
-\texttt{raw\_val}.
-
-\begin{figure}
-\centering
-\includegraphics[width=1\textwidth,height=\textheight]{figures/ep/ep_deadends_unique-crop.pdf}
-\caption{An example of both empirical and predicted success rates as a
-function of the percolation probability \(p\) for various maze sizes,
-percolation with and without depth first search, and
-\texttt{endpoint\_kwargs} requiring that both the start and end be in
-unique dead ends. Empirical measures derived from a sample of 128 mazes.
-More information can be found on the
-\href{https://understanding-search.github.io/maze-dataset/benchmarks/}{benchmarks
-page}.}
-\end{figure}
+\input{figures/tex/fig7_sre.tex}
 
 \hypertarget{sec:implementation}{%
 \section{Implementation}\label{sec:implementation}}
 
-We refer to our
-\href{https://github.com/understanding-search/maze-dataset}{repository}
-and
-\href{https://understanding-search.github.io/maze-dataset/maze_dataset.html}{docs}
-for documentation and up-to-date implementation details.
-
-This package utilizes a simple, efficient representation of mazes as
-subgraphs of a finite lattice, which we call a
-\href{https://understanding-search.github.io/maze-dataset/maze_dataset.html\#LatticeMaze}{\texttt{LatticeMaze}}.
 Using an adjacency matrix for storing mazes would be memory inefficient
-by failing to exploit the highly sparse structure -- for example, for a
-2-dimensional maze, only 4 off-diagonal bands would be have nonzero
-values. On the other hand, using an adjacency list could lead to a poor
-lookup time for whether any given connection exists.
+by failing to exploit the highly sparse structure, while using an
+adjacency list could lead to a poor lookup time. This package utilizes a
+simple, efficient representation of mazes as subgraphs of a finite
+lattice, which we call a
+\href{https://understanding-search.github.io/maze-dataset/maze_dataset.html\#LatticeMaze}{\texttt{LatticeMaze}}.
 
-Instead, we describe mazes with the following representation: for a
+We describe mazes with the following representation: for a
 \(2\)-dimensional lattice with \(r\) rows and \(c\) columns, we
 initialize a boolean array \[
   A = \{0, 1\}^{2 \times r \times c}
@@ -945,25 +865,6 @@ existence of connections and facilitate fast lookup time, at the cost of
 requiring additional care with indexing. Note that this setup allows for
 a periodic lattice. Generation of mazes is detailed in
 \href{https://understanding-search.github.io/maze-dataset/maze_dataset.html\#LatticeMazeGenerators}{\texttt{LatticeMazeGenerators}}.
-
-To produce solutions to mazes, two points are selected uniformly at
-random without replacement from the connected component of the maze, and
-the \(A^*\) algorithm (\protect\hyperlink{ref-A_star}{Hart et al.,
-1968}) is applied to find the shortest path between them. The endpoint
-selection can be controlled via
-\href{https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/maze_dataset_config.html\#MazeDatasetConfig.endpoint_kwargs}{\texttt{MazeDatasetConfig.endpoint\_kwargs:}}
-\href{https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/maze_dataset_config.html\#EndpointKwargsType}{\texttt{EndpointKwargsType}},
-and complications caused by this are detailed in
-\hyperref[sec:success-rate-estimation]{section: \textit{\nameref{sec:success-rate-estimation}}}.
-A maze with a solution is denoted a
-\href{https://understanding-search.github.io/maze-dataset/maze_dataset.html\#SolvedMaze}{\texttt{SolvedMaze}},
-which inherits from
-\href{https://understanding-search.github.io/maze-dataset/maze_dataset.html\#LatticeMaze}{\texttt{LatticeMaze}}.
-
-Parallelization is implemented via the \texttt{multiprocessing} module
-in the Python standard library, and parallel generation can be
-controlled via keyword arguments to
-\href{https://understanding-search.github.io/maze-dataset/maze_dataset.html\#MazeDataset.from_config}{\texttt{MazeDataset.from\_config()}}.
 
 \newpage
 
@@ -1082,12 +983,6 @@ Harries, L., Lee, S., Rzepecki, J., Hofmann, K., \& Devlin, S. (n.d.).
 {MazeExplorer}: {A Customisable 3D Benchmark} for {Assessing
 Generalisation} in {Reinforcement Learning}. \emph{2019 {IEEE Conf}.
 {Games CoG}}, 1--4.
-
-\leavevmode\vadjust pre{\hypertarget{ref-A_star}{}}%
-Hart, P. E., Nilsson, N. J., \& Raphael, B. (1968). A {Formal Basis} for
-the {Heuristic Determination} of {Minimum Cost Paths}. \emph{IEEE
-Transactions on Systems Science and Cybernetics}, \emph{4}(2), 100--107.
-\url{https://doi.org/10.1109/TSSC.1968.300136}
 
 \leavevmode\vadjust pre{\hypertarget{ref-zanj}{}}%
 Ivanitskiy, M. (n.d.). \emph{ZANJ}.
