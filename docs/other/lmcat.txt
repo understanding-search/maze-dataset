@@ -1,8 +1,8 @@
 # Stats
-- 61 files
-- 15930 (16K) lines
-- 540920 (541K) chars
-- 58987 (59K) `whitespace-split` tokens
+- 64 files
+- 16400 (16K) lines
+- 532427 (532K) chars
+- 60025 (60K) `whitespace-split` tokens
 
 # File Tree
 
@@ -10,43 +10,45 @@
 maze-dataset                               
 ├── .github                                
 │   └── workflows                          
-│    ├── all-tok-checks.yml                [   52L     1,670C   148T]
+│    ├── all-tok-checks.yml                [   55L     1,728C   155T]
 │    ├── build-paper.yml                   [   28L       785C    85T]
 │    ├── checks.yml                        [   94L     2,164C   224T]
-│    └── make-docs.yml                     [   47L     1,262C   141T]
+│    ├── make-docs.yml                     [   47L     1,262C   141T]
+│    └── speed-benchmark.yml               [   48L     1,261C   109T]
 ├── maze_dataset                           
 │   ├── benchmark                          
-│   │   ├── __init__.py                    [    6L       102C    15T]
-│   │   ├── config_sweep.py                [  537L    16,350C 1,738T]
+│   │   ├── __init__.py                    [    9L       220C    24T]
+│   │   ├── config_sweep.py                [  564L    17,188C 1,819T]
 │   │   ├── speed.py                       [  132L     3,053C   327T]
 │   │   └── sweep_fit.py                   [  407L    11,569C 1,369T]
 │   ├── dataset                            
-│   │   ├── __init__.py                    [   25L       615C    45T]
+│   │   ├── __init__.py                    [   45L     2,111C   243T]
 │   │   ├── collected_dataset.py           [  241L     8,113C   848T]
 │   │   ├── configs.py                     [  285L     8,000C   668T]
 │   │   ├── dataset.py                     [  553L    18,539C 2,133T]
 │   │   ├── filters.py                     [  295L     9,571C 1,100T]
 │   │   ├── maze_dataset.py                [  632L    20,310C 2,073T]
-│   │   ├── maze_dataset_config.py         [  442L    15,065C 1,613T]
+│   │   ├── maze_dataset_config.py         [  496L    17,917C 2,019T]
 │   │   ├── rasterized.py                  [  330L     9,476C 1,001T]
 │   │   └── success_predict_math.py        [  106L     2,809C   460T]
 │   ├── generation                         
-│   │   ├── __init__.py                    [   24L       535C    54T]
+│   │   ├── __init__.py                    [   23L       534C    54T]
 │   │   ├── default_generators.py          [   23L       817C    72T]
-│   │   ├── generators.py                  [  647L    23,205C 2,922T]
+│   │   ├── generators.py                  [  651L    23,337C 2,932T]
 │   │   └── seed.py                        [    3L        45C     7T]
 │   ├── maze                               
-│   │   ├── __init__.py                    [   26L       454C    47T]
+│   │   ├── __init__.py                    [   34L     1,905C   272T]
 │   │   └── lattice_maze.py                [1,532L    49,541C 5,753T]
 │   ├── plotting                           
-│   │   ├── __init__.py                    [   32L       989C   109T]
+│   │   ├── __init__.py                    [   33L     1,008C   110T]
 │   │   ├── plot_dataset.py                [   64L     1,635C   200T]
 │   │   ├── plot_maze.py                   [  603L    16,819C 1,950T]
+│   │   ├── plot_svg_fancy.py              [  199L     5,617C   863T]
 │   │   ├── plot_tokens.py                 [   90L     2,127C   280T]
 │   │   └── print_tokens.py                [  250L     6,431C   799T]
 │   ├── tokenization                       
 │   │   ├── modular                        
-│   │   │   ├── __init__.py                [   14L       226C    20T]
+│   │   │   ├── __init__.py                [   90L     5,930C   797T]
 │   │   │   ├── all_instances.py           [  263L    10,748C 1,388T]
 │   │   │   ├── all_tokenizers.py          [  219L     8,375C   855T]
 │   │   │   ├── element_base.py            [  314L    11,410C 1,396T]
@@ -56,7 +58,7 @@ maze-dataset
 │   │   │   ├── hashing.py                 [   95L     3,359C   390T]
 │   │   │   ├── maze_tokenizer_modular.py  [  349L    11,291C 1,189T]
 │   │   │   └── save_hashes.py             [  124L     3,399C   294T]
-│   │   ├── __init__.py                    [   58L     1,305C   121T]
+│   │   ├── __init__.py                    [  125L     8,653C 1,156T]
 │   │   ├── common.py                      [    7L       106C    11T]
 │   │   ├── maze_tokenizer.py              [   15L       307C    23T]
 │   │   └── maze_tokenizer_legacy.py       [  500L    15,213C 1,641T]
@@ -72,15 +74,16 @@ maze-dataset
 │   ├── demo_latticemaze.ipynb             [  751L   293,508C 2,318T]
 │   ├── demo_mazetokenizermodular.ipynb    [1,788L    92,501C 7,020T]
 │   ├── demo_tokenization.ipynb            [  434L   145,864C 9,259T]
-│   ├── estimate_dataset_fractions.ipynb   [  483L 3,248,926C 1,268T]
+│   ├── estimate_dataset_fractions.ipynb   [  503L 3,265,942C 1,368T]
 │   ├── forking_points.ipynb               [  221L    28,462C   621T]
 │   ├── iterated_backfilling.ipynb         [  207L    30,509C   547T]
+│   ├── output_formats.ipynb               [  235L    20,199C 1,348T]
 │   └── profile_dataset_save_read.ipynb    [1,133L   269,709C 3,406T]
 ├── templates                              
-├── README.md                              [  117L     5,408C   535T]
-├── makefile                               [1,851L    57,832C 6,641T]
-├── pyproject.toml                         [  359L    12,709C 1,456T]
-├── temp.ipynb.                            [  612L    60,169C 5,775T]
+├── LICENSE.md                             [  427L    20,126C 2,768T]
+├── README.md                              [  186L     8,054C   696T]
+├── makefile                               [1,851L    57,868C 6,652T]
+├── pyproject.toml                         [  364L    12,919C 1,470T]
 ```
 
 # File Contents
@@ -128,6 +131,9 @@ jobs:
         
       - name: set up uv
         run: curl -LsSf https://astral.sh/uv/install.sh | sh
+
+      - name: install dependencies
+        run: make dep
 
       - name: tokenizer fst check (check all, this will take a while)
         run: |
@@ -318,8 +324,62 @@ jobs:
         run: make docs
 ``````{ end_of_file=".github/workflows/make-docs.yml" }
 
+``````{ path=".github/workflows/speed-benchmark.yml"  }
+name: Benchmark Generation
+
+on:
+  workflow_dispatch:
+    inputs:
+      analysis_type:
+        description: 'Benchmark analysis type to run'
+        required: true
+        default: 'large'
+        type: choice
+        options:
+          - test
+          - default
+          - large
+
+jobs:
+  benchmark:
+    name: Run Benchmark
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      
+      - name: Set up python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Set up uv
+        run: curl -LsSf https://astral.sh/uv/install.sh | sh
+      
+      - name: Install dependencies and package
+        run: make dep
+      
+      - name: Info
+        run: make info-long
+      
+      - name: Run benchmark
+        run: uv run python docs/benchmarks/benchmark_generation.py ${{ github.event.inputs.analysis_type }} --save-path benchmarks/results/benchmark_data.jsonl
+      
+      - name: Upload benchmark results
+        uses: actions/upload-artifact@v4
+        with:
+          name: benchmark-results-${{ github.event.inputs.analysis_type }}
+          path: benchmarks/results/benchmark_data.jsonl
+          retention-days: 90
+``````{ end_of_file=".github/workflows/speed-benchmark.yml" }
+
 ``````{ path="maze_dataset/benchmark/__init__.py"  }
-"benchmarking the speed or success rate of maze generation"
+"""benchmarking the speed or success rate of maze generation.
+
+you can view generated benchmark results here: https://understanding-search.github.io/maze-dataset/benchmarks/
+"""
 
 __all__ = [
 	"config_sweep",
@@ -335,7 +395,7 @@ import functools
 import json
 import warnings
 from pathlib import Path
-from typing import Any, Callable, Generic, Sequence, TypeVar
+from typing import Any, Callable, Generic, Literal, Sequence, TypeVar
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -592,6 +652,8 @@ class SweepResult(SerializableDataclass, Generic[ParamType, SweepReturnType]):
 		plot_only: bool = False,
 		show: bool = True,
 		ax: plt.Axes | None = None,
+		minify_title: bool = False,
+		legend_kwargs: dict[str, Any] | None = None,
 	) -> plt.Axes:
 		"""Plot the results of percolation analysis"""
 		# set up figure
@@ -628,6 +690,12 @@ class SweepResult(SerializableDataclass, Generic[ParamType, SweepReturnType]):
 
 		# repr of config
 		cfg_shared: dict = self.configs_shared()
+		if minify_title:
+			cfg_shared["endpoint_kwargs"] = {
+				k: v
+				for k, v in cfg_shared["endpoint_kwargs"].items()
+				if k != "except_on_no_valid_endpoint"
+			}
 		cfg_repr: str = (
 			str(cfg_shared)
 			if cfg_keys is None
@@ -654,7 +722,12 @@ class SweepResult(SerializableDataclass, Generic[ParamType, SweepReturnType]):
 				f"{self.param_key} vs {self.analyze_func.__name__}\n{cfg_repr}",
 			)
 			ax_.grid(True)
-			ax_.legend(loc="center left")
+			# ax_.legend(loc="upper center", ncol=2, bbox_to_anchor=(0.5, -0.1))
+			legend_kwargs = {
+				**dict(loc="center left"),
+				**(legend_kwargs or dict()),
+			}
+			ax_.legend(**legend_kwargs)
 
 		# save and show
 		if save_path:
@@ -773,6 +846,11 @@ def plot_grouped(  # noqa: C901
 	save_dir: Path | None = None,
 	show: bool = True,
 	logy: bool = False,
+	save_fmt: str = "svg",
+	figsize: tuple[int, int] = (22, 10),
+	minify_title: bool = False,
+	legend_kwargs: dict[str, Any] | None = None,
+	manual_titles: dict[Literal["x", "y", "title"], str] | None = None,
 ) -> None:
 	"""Plot grouped sweep percolation value results for each distinct `endpoint_kwargs` in the configs
 
@@ -815,7 +893,7 @@ def plot_grouped(  # noqa: C901
 		)
 		shared_keys: set[str] = set(results_epkw.configs_shared().keys())
 		cfg_keys: set[str] = shared_keys.intersection({"n_mazes", "endpoint_kwargs"})
-		fig, ax = plt.subplots(1, 1, figsize=(22, 10))
+		fig, ax = plt.subplots(1, 1, figsize=figsize)
 		for gf_idx, gen_func in enumerate(generator_funcs_names):
 			results_filtered: SweepResult = results_epkw.get_where(
 				"maze_ctor",
@@ -837,6 +915,8 @@ def plot_grouped(  # noqa: C901
 				ax=ax,
 				show=False,
 				cmap_name=cmap_name,
+				minify_title=minify_title,
+				legend_kwargs=legend_kwargs,
 			)
 			if logy:
 				ax.set_yscale("log")
@@ -857,9 +937,16 @@ def plot_grouped(  # noqa: C901
 					# Plot prediction as dashed line
 					ax.plot(p_dense, predictions, "--", color=color, alpha=0.8)
 
+			if manual_titles:
+				ax.set_xlabel(manual_titles["x"])
+				ax.set_ylabel(manual_titles["y"])
+				ax.set_title(manual_titles["title"])
+
 		# save and show
 		if save_dir:
-			save_path: Path = save_dir / f"ep_{endpoint_kwargs_to_name(ep_kw)}.svg"
+			save_path: Path = (
+				save_dir / f"ep_{endpoint_kwargs_to_name(ep_kw)}.{save_fmt}"
+			)
 			print(f"Saving plot to {save_path.as_posix()}")
 			save_path.parent.mkdir(exist_ok=True, parents=True)
 			plt.savefig(save_path)
@@ -1417,7 +1504,27 @@ def create_interactive_plot(heatmap: bool = True) -> None:  # noqa: C901, PLR091
 ``````{ end_of_file="maze_dataset/benchmark/sweep_fit.py" }
 
 ``````{ path="maze_dataset/dataset/__init__.py"  }
-"`MazeDatasetConfig`s are used to create a `MazeDataset` via `MazeDataset.from_config(cfg)`"
+"""`MazeDatasetConfig`s are used to create a `MazeDataset` via `MazeDataset.from_config(cfg)`"
+
+When initializing mazes, further configuration options can be specified through the `from_config()` factory method as necessary. Options include 1) whether to generate the dataset during runtime or load an existing dataset, 2) if and how to parallelize generation, and 3) where to store the generated dataset. Full documentation of configuration options is available in our repository [@maze-dataset-github]. Available maze generation algorithms are static methods of the `LatticeMazeGenerators` class.
+
+Furthermore, a dataset of mazes can be filtered to satisfy certain properties:
+
+```python
+dataset_filtered: MazeDataset = dataset.filter_by.path_length(min_length=3)
+```
+
+Custom filters can be specified, and several filters are included:
+
+- `path_length(min_length: int)`: shortest length from the origin to target should be at least `min_length`.
+- `start_end_distance(min_distance: int)`: Manhattan distance between start and end should be at least `min_distance`, ignoring walls.
+- `remove_duplicates(...)`: remove mazes which are similar to others in the dataset, measured via Hamming distance.
+- `remove_duplicates_fast()`: remove mazes which are exactly identical to others in the dataset.
+
+All implemented maze generation algorithms are stochastic by nature. For reproducibility, the `seed` parameter of `MazeDatasetConfig` may be set. In practice, we do not find that exact duplicates of mazes are generated with any meaningful frequency,
+even when generating large datasets.
+
+"""
 
 from maze_dataset.dataset.collected_dataset import (
 	MazeDatasetCollection,
@@ -3560,7 +3667,28 @@ EndpointKwargsType = dict[
 	],
 	bool | None | list[tuple[int, int]],
 ]
-"type hint for `MazeDatasetConfig.endpoint_kwargs`"
+"""type hint for `MazeDatasetConfig.endpoint_kwargs`
+
+- `except_on_no_valid_endpoint : bool` (default: `True`)
+	some of the conditions (dead ends if a maze is very open, no path between given start and end) can cause the maze generation to fail.
+	if `except_on_no_valid_endpoint` is `True`, then the maze generation will raise an error if it fails to generate a valid maze.
+	however, if `False`, then the maze generation will return a dataset with fewer mazes than requested.
+	If you are generating large datasets, consider using `MazeDatasetConfig.success_fraction_compensate()`
+	this uses a pysr-created function to roughly estimate the success fraction of the dataset.
+- `allowed_start : list[tuple[int, int]]` (default: `None`)
+	list of allowed starting position coordinates
+- `allowed_end : list[tuple[int, int]]` (default: `None`)
+	list of allowed ending position coordinates
+- `deadend_start : bool` (default: `False`)
+	if `True`, the starting position must be a dead end
+- `deadend_end : bool` (default: `False`)
+	if `True`, the ending position must be a dead end
+- `endpoints_not_equal : bool` (default: `True`)
+	if `True`, the starting and ending positions must be different
+
+
+
+"""
 
 
 def _load_endpoint_kwargs(data: dict) -> EndpointKwargsType:
@@ -3580,8 +3708,9 @@ def _load_endpoint_kwargs(data: dict) -> EndpointKwargsType:
 		}
 
 
+# not private because we need this to show up in docs
 @serializable_dataclass(kw_only=True, properties_to_serialize=["grid_shape"])
-class _MazeDatasetConfig_base(GPTDatasetConfig):  # noqa: N801
+class MazeDatasetConfig_base(GPTDatasetConfig):  # noqa: N801
 	"""base config -- we serialize, dump to json, and hash this to get the fname. all actual variables we want to be hashed are here"""
 
 	# NOTE: type: ignore[misc] is because it tells us non-default attributes aren't allowed after ones with defaults, but everything is kw_only
@@ -3669,7 +3798,7 @@ class _MazeDatasetConfig_base(GPTDatasetConfig):  # noqa: N801
 		but for comparing things, we do store it when serializing properly by setting
 		`applied_filters__skip__collect_generation_meta=False`
 		"""
-		serialized: dict = _MazeDatasetConfig_base.serialize(self)
+		serialized: dict = MazeDatasetConfig_base.serialize(self)
 		if applied_filters__skip__collect_generation_meta:
 			serialized["applied_filters"] = [
 				x
@@ -3706,8 +3835,29 @@ class _MazeDatasetConfig_base(GPTDatasetConfig):  # noqa: N801
 
 # NOTE: type: ignore[misc] is because it tells us non-default attributes aren't allowed after ones with defaults, but everything is kw_only
 @serializable_dataclass(kw_only=True, methods_no_override=["serialize"])
-class MazeDatasetConfig(_MazeDatasetConfig_base):  # type: ignore[misc]
-	"""config object which is passed to `MazeDataset.from_config` to generate or load a dataset"""
+class MazeDatasetConfig(MazeDatasetConfig_base):  # type: ignore[misc]
+	"""config object which is passed to `MazeDataset.from_config` to generate or load a dataset
+
+	# Parameters:
+	- `name : str`
+		name of the dataset -- this can be anything, but should be filesystem safe since we use it in the `fname`
+	- `grid_n : int`
+		grid size of the maze (number of rows/columns)
+	- `n_mazes : int`
+		number of mazes to request. For some combinations of `endpoint_kwargs` and `maze_ctor`, not all mazes might successfully generate.
+		see `EndpointKwargsType` for more details.
+	- `maze_ctor : Callable`
+		maze generator function. This should be a function that takes a grid size and returns a maze.
+		This will usually be one of the functions in `LatticeMazeGenerators`.
+	- `maze_ctor_kwargs : dict`
+		keyword arguments to pass to the maze generator function. Specific to the `maze_ctor` you are using.
+	- `endpoint_kwargs : EndpointKwargsType`
+		keyword arguments passed to `LatticeMaze.generate_random_path()`. see `EndpointKwargsType` for more info.
+	- `applied_filters : list[dict]`
+		list of filters that have been applied to the dataset. We recommend applying filters to datasets directly,
+		but these are stored with the config in case you want to re-generate the dataset with the same filters.
+
+	"""
 
 	@property
 	def config_version(self) -> str:
@@ -3843,7 +3993,10 @@ class MazeDatasetConfig(_MazeDatasetConfig_base):  # type: ignore[misc]
 		only valid when the generator is a percolation generator,
 		and endpoints are enforced to be dead ends
 
-		this estimate comes from `estimate_dataset_fractions.ipynb` and `maze_dataset.benchmarks.sweep_fit`
+		more information on where this comes from can be found in
+		- `cfg_success_predict_fn()` from `maze_dataset.dataset.success_predict_math`
+		- `estimate_dataset_fractions.ipynb`
+		- `maze_dataset.benchmarks.sweep_fit`
 
 		# Parameters:
 		- `except_if_all_success_expected : bool`
@@ -3872,6 +4025,14 @@ class MazeDatasetConfig(_MazeDatasetConfig_base):  # type: ignore[misc]
 		epsilon: float = 1e-2,
 	) -> "MazeDatasetConfig":
 		"""return a new `MazeDatasetConfig` like this one with `n_mazes` adjusted to compensate for the success fraction
+
+		calls `MazeDatasetConfig.success_fraction_estimate()` to get the success fraction, and then
+		computes the new number of mazes as `n_mazes = n_mazes * safety_margin / success_fraction + 1`
+
+		more information on where this comes from can be found in
+		- `cfg_success_predict_fn()` from `maze_dataset.dataset.success_predict_math`
+		- `estimate_dataset_fractions.ipynb`
+		- `maze_dataset.benchmarks.sweep_fit`
 
 		# Parameters:
 		- `safety_margin : float`
@@ -4365,7 +4526,6 @@ def cfg_success_predict_fn(cfg) -> float:  # noqa: ANN001
 """generation functions have signature `(grid_shape: Coord, **kwargs) -> LatticeMaze` and are methods in `LatticeMazeGenerators`
 
 `DEFAULT_GENERATORS` is a list of generator name, generator kwargs pairs used in tests and demos
-
 """
 
 from maze_dataset.generation.generators import (
@@ -4470,7 +4630,11 @@ def get_neighbors_in_bounds(
 
 
 class LatticeMazeGenerators:
-	"""namespace for lattice maze generation algorithms"""
+	"""namespace for lattice maze generation algorithms
+
+	examples of generated mazes can be found here:
+	https://understanding-search.github.io/maze-dataset/examples/maze_examples.html
+	"""
 
 	@staticmethod
 	def gen_dfs(
@@ -5075,7 +5239,15 @@ GLOBAL_SEED: int = 42
 ``````{ end_of_file="maze_dataset/generation/seed.py" }
 
 ``````{ path="maze_dataset/maze/__init__.py"  }
-"`LatticeMaze` and the classes like `SolvedMaze` that inherit from it, along with a ton of helper funcs"
+r"""`LatticeMaze` and the classes like `SolvedMaze` that inherit from it, along with a variety of helper functions"
+
+This package utilizes a simple, efficient representation of mazes. Using an adjacency list to represent mazes would lead to a poor lookup time of whether any given connection exists, whilst using a dense adjacency matrix would waste memory by failing to exploit the structure (e.g., only 4 of the diagonals would be filled in).
+Instead, we describe mazes with the following simple representation: for a $d$-dimensional lattice with $r$ rows and $c$ columns, we initialize a boolean array $A = \{0, 1\}^{d \times r \times c}$, which we refer to in the code as a `connection_list`. The value at $A[0,i,j]$ determines whether a downward connection exists from node $[i,j]$ to $[i+1, j]$. Likewise, the value at $A[1,i,j]$ determines whether a rightwards connection to $[i, j+1]$ exists. Thus, we avoid duplication of data about the existence of connections, at the cost of requiring additional care with indexing when looking for a connection upwards or to the left. Note that this setup allows for a periodic lattice.
+
+To produce solutions to mazes, two points are selected uniformly at random without replacement from the connected component of the maze, and the $A^*$ algorithm is applied to find the shortest path between them.
+
+Parallelization is implemented via the `multiprocessing` module in the Python standard library, and parallel generation can be controlled via keyword arguments to the `MazeDataset.from_config()` function.
+"""
 
 from maze_dataset.maze.lattice_maze import (
 	AsciiChars,
@@ -6661,6 +6833,7 @@ __all__ = [
 	# submodules
 	"plot_dataset",
 	"plot_maze",
+	"plot_svg_fancy",
 	"plot_tokens",
 	"print_tokens",
 	# imports
@@ -7351,6 +7524,209 @@ class MazePlot:
 
 ``````{ end_of_file="maze_dataset/plotting/plot_maze.py" }
 
+``````{ path="maze_dataset/plotting/plot_svg_fancy.py"  }
+"""Plot a maze as SVG with rounded corners."""
+
+from xml.dom.minidom import parseString
+from xml.etree.ElementTree import Element, SubElement, tostring
+
+import numpy as np
+
+# Known color map (excluding walls).
+COLOR_MAP: dict[tuple[int, int, int], str] = {
+	(255, 255, 255): "#f0f0f0",
+	(0, 255, 0): "#4caf50",
+	(255, 0, 0): "#f44336",
+	(0, 0, 255): "#2196f3",
+}
+
+WALL_COLOR_HEX: str = "#222"  # (0,0,0) in hex
+WALL_RGB: tuple[int, int, int] = (0, 0, 0)
+
+# Offsets in the order [top, right, bottom, left]
+_NEIGHBORS: np.ndarray = np.array(
+	[
+		[-1, 0],  # top
+		[0, +1],  # right
+		[+1, 0],  # bottom
+		[0, -1],  # left
+	],
+	dtype=int,
+)
+
+
+def is_wall(y: int, x: int, grid: np.ndarray) -> bool:
+	"""True if (y, x) is out of bounds or has the wall color."""
+	h, w, _ = grid.shape
+	if not (0 <= y < h and 0 <= x < w):
+		return True
+	return bool((grid[y, x] == WALL_RGB).all())
+
+
+def create_tile_path(
+	origin: tuple[float, float],
+	tile_size: float,
+	corner_radius: float,
+	edges: tuple[bool, bool, bool, bool],
+) -> str:
+	"""Generate an SVG path for a tile at `origin` with side length `tile_size`.
+
+	`edges` is (top, right, bottom, left) booleans, where True means that edge
+	borders a wall/outside. If both edges meeting at a corner are True and
+	corner_radius>0, we draw a rounded corner; else it's a sharp corner.
+
+	Corner order (clockwise):
+		c0 = top-left
+		c1 = top-right
+		c2 = bottom-right
+		c3 = bottom-left
+
+	edges = (top, right, bottom, left).
+		corner c0 is formed by edges top + left => edges[0] & edges[3]
+		corner c1 => top + right => edges[0] & edges[1]
+		corner c2 => right + bottom => edges[1] & edges[2]
+		corner c3 => bottom + left => edges[2] & edges[3]
+	"""
+	x0, y0 = origin
+	top, right, bottom, left = edges
+
+	# A corner is "exposed" if both adjoining edges are True
+	c0_exposed: bool = top and left  # top-left
+	c1_exposed: bool = top and right  # top-right
+	c2_exposed: bool = right and bottom  # bottom-right
+	c3_exposed: bool = bottom and left  # bottom-left
+
+	# If corner_radius=0, arcs become straight lines.
+	r: float = corner_radius
+
+	# We'll construct the path in a standard top-left -> top-right -> bottom-right -> bottom-left order.
+	path_cmds = []
+	# Move to top-left corner, possibly offset if c0 is exposed
+	# (meaning both top and left edges are external).
+	start_x = x0 + (r if c0_exposed else 0)
+	start_y = y0
+	path_cmds.append(f"M {start_x},{start_y}")
+
+	# === TOP edge to top-right corner
+	end_x = x0 + tile_size - (r if c1_exposed else 0)
+	end_y = y0
+	path_cmds.append(f"L {end_x},{end_y}")
+	# Arc if c1_exposed
+	if c1_exposed and r > 0:
+		path_cmds.append(f"A {r} {r} 0 0 1 {x0 + tile_size},{y0 + r}")
+
+	# === RIGHT edge to bottom-right corner
+	path_cmds.append(f"L {x0 + tile_size},{y0 + tile_size - (r if c2_exposed else 0)}")
+	if c2_exposed and r > 0:
+		path_cmds.append(f"A {r} {r} 0 0 1 {x0 + tile_size - r},{y0 + tile_size}")
+
+	# === BOTTOM edge to bottom-left corner
+	path_cmds.append(f"L {x0 + (r if c3_exposed else 0)},{y0 + tile_size}")
+	if c3_exposed and r > 0:
+		path_cmds.append(f"A {r} {r} 0 0 1 {x0},{y0 + tile_size - r}")
+
+	# === LEFT edge back up to top-left corner
+	path_cmds.append(f"L {x0},{y0 + (r if c0_exposed else 0)}")
+	if c0_exposed and r > 0:
+		path_cmds.append(f"A {r} {r} 0 0 1 {x0 + r},{y0}")
+
+	path_cmds.append("Z")
+	return " ".join(path_cmds)
+
+
+def plot_svg_fancy(
+	pixel_grid: np.ndarray,
+	size: int = 40,
+	corner_radius: float = 8.0,
+	bounding_corner_radius: float = 20.0,
+) -> str:
+	"""plot the output of SolvedMaze(...).as_pixels() as a nice svg
+
+	Create an SVG with:
+	- A single rounded-square background (walls).
+	- Each non-wall cell is drawn via create_tile_path, with corner_radius controlling
+		whether corners are rounded. (Set corner_radius=0 for squares.)
+
+	# Parameters:
+	- `pixel_grid : np.ndarray`
+		3D array of shape (h, w, 3) with RGB values
+	- `size : int`
+		Size (in px) of each grid cell
+	- `corner_radius : float`
+		Radius for rounding corners of each tile (0 => squares)
+	- `bounding_corner_radius : float`
+		Radius for rounding the outer bounding rectangle
+
+	# Returns:
+	`str`: A pretty-printed SVG string
+	"""
+	h, w, _ = pixel_grid.shape
+
+	# Create the root <svg>
+	svg = Element(
+		"svg",
+		xmlns="http://www.w3.org/2000/svg",
+		width=str(w * size),
+		height=str(h * size),
+		viewBox=f"0 0 {w * size} {h * size}",
+	)
+
+	# Single rounded-square background for the walls
+	SubElement(
+		svg,
+		"rect",
+		{
+			"x": "0",
+			"y": "0",
+			"width": str(w * size),
+			"height": str(h * size),
+			"fill": WALL_COLOR_HEX,
+			"rx": str(bounding_corner_radius),
+			"ry": str(bounding_corner_radius),
+		},
+	)
+
+	for yy in range(h):
+		for xx in range(w):
+			rgb_tuple = tuple(pixel_grid[yy, xx])
+			if rgb_tuple == WALL_RGB:
+				# It's a wall => skip (already covered by background)
+				continue
+
+			fill_color: str | None = COLOR_MAP.get(rgb_tuple, None)  # noqa: SIM910
+			if fill_color is None:
+				# Unknown color => skip or handle differently
+				continue
+
+			# Check which edges are "external" => next cell is wall
+			# edges in the order (top, right, bottom, left)
+			edges_bool = [
+				is_wall(yy + dy, xx + dx, pixel_grid) for (dy, dx) in _NEIGHBORS
+			]
+
+			d_path = create_tile_path(
+				origin=(xx * size, yy * size),
+				tile_size=size,
+				corner_radius=corner_radius,
+				edges=tuple(edges_bool),  # type: ignore[arg-type]
+			)
+
+			SubElement(
+				svg,
+				"path",
+				{
+					"d": d_path,
+					"fill": fill_color,
+					"stroke": "none",
+				},
+			)
+
+	raw_svg = tostring(svg, encoding="unicode")
+	# we are in charge of the svg so it's safe to decode
+	return parseString(raw_svg).toprettyxml(indent="  ")  # noqa: S318
+
+``````{ end_of_file="maze_dataset/plotting/plot_svg_fancy.py" }
+
 ``````{ path="maze_dataset/plotting/plot_tokens.py"  }
 "`plot_colored_text` function to plot tokens on a matplotlib axis with colored backgrounds"
 
@@ -7617,13 +7993,13 @@ def color_tokens_cmap(
 # colors roughly made to be similar to visual representation
 _MAZE_TOKENS_DEFAULT_COLORS: dict[tuple[str, str], tuple[int, int, int]] = {
 	(SPECIAL_TOKENS.ADJLIST_START, SPECIAL_TOKENS.ADJLIST_END): (
-		217,
-		210,
-		233,
+		176,
+		152,
+		232,
 	),  # purple
-	(SPECIAL_TOKENS.ORIGIN_START, SPECIAL_TOKENS.ORIGIN_END): (217, 234, 211),  # green
-	(SPECIAL_TOKENS.TARGET_START, SPECIAL_TOKENS.TARGET_END): (234, 209, 220),  # red
-	(SPECIAL_TOKENS.PATH_START, SPECIAL_TOKENS.PATH_END): (207, 226, 243),  # blue
+	(SPECIAL_TOKENS.ORIGIN_START, SPECIAL_TOKENS.ORIGIN_END): (154, 239, 123),  # green
+	(SPECIAL_TOKENS.TARGET_START, SPECIAL_TOKENS.TARGET_END): (246, 136, 136),  # red
+	(SPECIAL_TOKENS.PATH_START, SPECIAL_TOKENS.PATH_END): (111, 187, 254),  # blue
 }
 "default colors for maze tokens, roughly matches the format of `as_pixels`"
 
@@ -7700,7 +8076,83 @@ def display_color_maze_tokens_AOTP(
 ``````{ end_of_file="maze_dataset/plotting/print_tokens.py" }
 
 ``````{ path="maze_dataset/tokenization/modular/__init__.py"  }
-"""implements `ModularMazeTokenizer` and related code"""
+"""implements `ModularMazeTokenizer` and related code
+
+the structure of a typical `MazeTokenizerModular` is something like this:
+```
++----------------------------------------------------+
+|                  MazeTokenizerModular              |
+|  +-----------------------------------------------+ |
+|  |                 _PromptSequencer              | |
+|  |         +-----------------------------+       | |
+|  |         |       _CoordTokenizer       |       | |
+|  |         +-----------------------------+       | |
+|  |     +------------------------------------+    | |
+|  |     |         _AdjListTokenizer          |    | |
+|  |     | +-----------+    +-------------+   |    | |
+|  |     | |_EdgeSubset|    |_EdgeGrouping|   |    | |
+|  |     | +-----------+    +-------------+   |    | |
+|  |     |          +-------------+           |    | |
+|  |     |          |_EdgePermuter|           |    | |
+|  |     |          +-------------+           |    | |
+|  |     +------------------------------------+    | |
+|  |         +-----------------------------+       | |
+|  |         |      _TargetTokenizer       |       | |
+|  |         +-----------------------------+       | |
+|  |  +------------------------------------------+ | |
+|  |  |              _PathTokenizer              | | |
+|  |  |  +---------------+   +----------------+  | | |
+|  |  |  |   _StepSize   |   | _StepTokenizer |  | | |
+|  |  |  +---------------+   +----------------+  | | |
+|  |  |                      | _StepTokenizer |  | | |
+|  |  |                      +----------------+  | | |
+|  |  |                             :            | | |
+|  |  +------------------------------------------+ | |
+|  +-----------------------------------------------+ |
++----------------------------------------------------+
+```
+
+Optional delimiter tokens may be added in many places in the output. Delimiter options are all configured using the parameters named `pre`, `intra`, and `post` in various `_TokenizerElement` classes. Each option controls a unique delimiter token.
+Here we describe each `_TokenizerElement` and the behaviors they support. We also discuss some of the model behaviors and properties that may be investigated using these options.
+
+### Coordinates {#coordtokenizer}
+
+The `_CoordTokenizer` object controls how coordinates in the lattice are represented in across all token regions. Options include:
+
+- **Unique tokens**: Each coordinate is represented as a single unique token `"(i,j)"`
+- **Coordinate tuple tokens**: Each coordinate is represented as a sequence of 2 tokens, respectively encoding the row and column positions: `["i", ",", "j"]`
+
+### Adjacency List {#adjlisttokenizer}
+
+The `_AdjListTokenizer` object controls this token region. All tokenizations represent the maze connectivity as a sequence of connections or walls between pairs of adjacent coordinates in the lattice.
+
+- `_EdgeSubset`: Specifies the subset of lattice edges to be tokenized
+  - **All edges**: Every edge in the lattice
+  - **Connections**: Only edges which contain a connection
+  - **Walls**: Only edges which contain a wall
+- `_EdgePermuter`: Specifies how to sequence the two coordinates in each lattice edge
+  - **Random**
+  - **Sorted**: The smaller coordinate always comes first
+  - **Both permutations**: Each edge is represented twice, once with each permutation. This option attempts to represent connections in a more directionally symmetric manner. Including only one permutation of each edge may affect models' internal representations of edges, treating a path traversing the edge differently depending on if the coordinate sequence in the path matches the sequence in the adjacency list.
+- `shuffle_d0`: Whether to shuffle the edges randomly or sort them in the output by their first coordinate
+- `connection_token_ordinal`: Location in the sequence of the token representing whether the edge is a connection or a wall
+
+### Path {#pathtokenizer}
+
+The `_PathTokenizer` object controls this token region. Paths are all represented as a sequence of steps moving from the start to the end position.
+
+- `_StepSize`: Specifies the size of each step
+  - **Singles**: Every coordinate traversed between start and end is directly represented
+  - **Forks**: Only coordinates at forking points in the maze are represented. The paths between forking points are implicit. Using this option might train models more directly to represent forking points differently from coordinates where the maze connectivity implies an obvious next step in the path.
+- `_StepTokenizer`: Specifies how an individual step is represented
+  - **Coordinate**: The coordinates of each step are directly tokenized using a `_CoordTokenizer`
+  - **Cardinal direction**: A single token corresponding to the cardinal direction taken at the starting position of that step. E.g., `NORTH`, `SOUTH`. If using a `_StepSize` other than **Singles**, this direction may not correspond to the final direction traveled to arrive at the end position of the step.
+  - **Relative direction**: A single token corresponding to the first-person perspective relative direction taken at the starting position of that step. E.g., `RIGHT`, `LEFT`.
+  - **Distance**: A single token corresponding to the number of coordinate positions traversed in that step. E.g., using a `_StepSize` of **Singles**, the **Distance** token would be the same for each step, corresponding to a distance of 1 coordinate. This option is only of interest in combination with a `_StepSize` other than **Singles**.
+
+A `_PathTokenizer` contains a sequence of one or more unique `_StepTokenizer` objects. Different step representations may be mixed and permuted, allowing for investigation of model representations of multiple aspects of a maze solution at once.
+
+"""
 
 __all__ = [
 	# modules
@@ -10711,7 +11163,74 @@ if __name__ == "__main__":
 
 - `MazeTokenizerModular` is the new recommended way to do this as of 1.0.0
 - legacy `TokenizationMode` enum and `MazeTokenizer` class for supporting existing code
-- a whole lot of helper classes and functions
+- a variety of helper classes and functions
+
+There are many algorithms by which one might tokenize a 2D maze into a 1D format usable by autoregressive text models. Training multiple models on the encodings output from each of these algorithms may produce very different internal representations, learned solution algorithms, and levels of performance. To explore how different maze tokenization algorithms affect these models, the `MazeTokenizerModular` class contains a rich set of options to customize how mazes are stringified. This class contains 19 discrete parameters, resulting in 5.9 million unique tokenizers. But wait, there's more! There are 6 additional parameters available in the library which are untested but further expand the the number of tokenizers by a factor of $44/3$ to 86 million.
+
+All output sequences consist of four token regions representing different features of the maze. These regions are distinguished by color in Figure below.
+
+- <span style="background-color:rgb(217,210,233)">Adjacency list</span>: A text representation of the lattice graph
+- <span style="background-color:rgb(217,234,211)">Origin</span>: Starting coordinate
+- <span style="background-color:rgb(234,209,220)">Target</span>: Ending coordinate
+- <span style="background-color:rgb(207,226,243)">Path</span>: Maze solution sequence from the start to the end
+
+![Example text output format with token regions highlighted.](figures/outputs-tokens-colored.tex)
+
+Each `MazeTokenizerModular` is constructed from a set of several `_TokenizerElement` objects, each of which specifies how different token regions or other elements of the stringification are produced.
+
+![Nested internal structure of `_TokenizerElement` objects inside a typical `MazeTokenizerModular` object.](figures/TokenizerElement_structure.pdf)
+
+Optional delimiter tokens may be added in many places in the output. Delimiter options are all configured using the parameters named `pre`, `intra`, and `post` in various `_TokenizerElement` classes. Each option controls a unique delimiter token.
+Here we describe each `_TokenizerElement` and the behaviors they support. We also discuss some of the model behaviors and properties that may be investigated using these options.
+
+### Coordinates
+
+The `_CoordTokenizer` object controls how coordinates in the lattice are represented in across all token regions. Options include:
+
+- **Unique tokens**: Each coordinate is represented as a single unique token `"(i,j)"`
+- **Coordinate tuple tokens**: Each coordinate is represented as a sequence of 2 tokens, respectively encoding the row and column positions: `["i", ",", "j"]`
+
+### Adjacency List
+
+The `_AdjListTokenizer` object controls this token region. All tokenizations represent the maze connectivity as a sequence of connections or walls between pairs of adjacent coordinates in the lattice.
+
+- `_EdgeSubset`: Specifies the subset of lattice edges to be tokenized
+  - **All edges**: Every edge in the lattice
+  - **Connections**: Only edges which contain a connection
+  - **Walls**: Only edges which contain a wall
+- `_EdgePermuter`: Specifies how to sequence the two coordinates in each lattice edge
+  - **Random**
+  - **Sorted**: The smaller coordinate always comes first
+  - **Both permutations**: Each edge is represented twice, once with each permutation. This option attempts to represent connections in a more directionally symmetric manner. Including only one permutation of each edge may affect models' internal representations of edges, treating a path traversing the edge differently depending on if the coordinate sequence in the path matches the sequence in the adjacency list.
+- `shuffle_d0`: Whether to shuffle the edges randomly or sort them in the output by their first coordinate
+- `connection_token_ordinal`: Location in the sequence of the token representing whether the edge is a connection or a wall
+
+### Path
+
+The `_PathTokenizer` object controls this token region. Paths are all represented as a sequence of steps moving from the start to the end position.
+
+- `_StepSize`: Specifies the size of each step
+  - **Singles**: Every coordinate traversed between start and end is directly represented
+  - **Forks**: Only coordinates at forking points in the maze are represented. The paths between forking points are implicit. Using this option might train models more directly to represent forking points differently from coordinates where the maze connectivity implies an obvious next step in the path.
+- `_StepTokenizer`: Specifies how an individual step is represented
+  - **Coordinate**: The coordinates of each step are directly tokenized using a `_CoordTokenizer`
+  - **Cardinal direction**: A single token corresponding to the cardinal direction taken at the starting position of that step. E.g., `NORTH`, `SOUTH`. If using a `_StepSize` other than **Singles**, this direction may not correspond to the final direction traveled to arrive at the end position of the step.
+  - **Relative direction**: A single token corresponding to the first-person perspective relative direction taken at the starting position of that step. E.g., `RIGHT`, `LEFT`.
+  - **Distance**: A single token corresponding to the number of coordinate positions traversed in that step. E.g., using a `_StepSize` of **Singles**, the **Distance** token would be the same for each step, corresponding to a distance of 1 coordinate. This option is only of interest in combination with a `_StepSize` other than **Singles**.
+
+A `_PathTokenizer` contains a sequence of one or more unique `_StepTokenizer` objects. Different step representations may be mixed and permuted, allowing for investigation of model representations of multiple aspects of a maze solution at once.
+
+## Tokenized Outputs for Training and Evaluation {#token-training}
+
+During deployment we provide only the prompt up to the `<PATH_START>` token.
+
+Examples of usage of this dataset to train autoregressive transformers can be found in our `maze-transformer` library [@maze-transformer-github]. Other tokenization and vocabulary schemes are also included, such as representing each coordinate as a pair of $i,j$ index tokens.
+
+## Extensibility
+
+The tokenizer architecture is purposefully designed such that adding and testing a wide variety of new tokenization algorithms is fast and minimizes disturbances to functioning code. This is enabled by the modular architecture and the automatic inclusion of any new tokenizers in integration tests. To create a new tokenizer, developers forking the library may simply create their own `_TokenizerElement` subclass and implement the abstract methods. If the behavior change is sufficiently small, simply adding a parameter to an existing `_TokenizerElement` subclass and updating its implementation will suffice. For small additions, simply adding new cases to existing unit tests will suffice.
+
+The breadth of tokenizers is also easily scaled in the opposite direction. Due to the exponential scaling of parameter combinations, adding a small number of new features can significantly slow certain procedures which rely on constructing all possible tokenizers, such as integration tests. If any existing subclass contains features which aren't needed, a developer tool decorator is provided which can be applied to the unneeded `_TokenizerElement` subclasses to prune those features and compact the available space of tokenizers.
 
 """
 
@@ -13807,6 +14326,17 @@ plot_grouped(
 	results_medium,
 	predict_fn=lambda x: x.success_fraction_estimate(),
 	prediction_density=100,
+	# for paper version
+	# figsize=(11, 4),
+	# save_fmt="pdf",
+	# save_dir=Path("../docs/paper/figures/ep"),
+	# minify_title=True,
+	# legend_kwargs=dict(loc="center right", ncol=1, bbox_to_anchor=(1.14, 0.5)),
+	# manual_titles=dict(
+	# 	x="percolation probability $p$",
+	# 	y="success fraction",
+	# 	title="",
+	# ),
 )
 ```
 
@@ -14055,6 +14585,58 @@ plt.imshow(_remove_isolated_cells(maze_bf.as_pixels()))
 
 
 ``````{ end_of_file="notebooks/iterated_backfilling.ipynb" }
+
+``````{ path="notebooks/output_formats.ipynb" processed_with="ipynb_to_md" }
+```python
+import matplotlib.pyplot as plt
+from IPython.display import SVG, display  # noqa: A004
+
+from maze_dataset import LatticeMazeGenerators, MazeDataset, MazeDatasetConfig
+from maze_dataset.plotting.plot_svg_fancy import plot_svg_fancy
+
+cfg = MazeDatasetConfig(
+	name="test",
+	grid_n=5,
+	n_mazes=5,
+	maze_ctor=LatticeMazeGenerators.gen_dfs,
+)
+ds = MazeDataset.from_config(cfg)
+maze = ds[0]
+pixels = maze.as_pixels()
+```
+
+```python
+plt.imshow(pixels)
+plt.axis("off")
+```
+
+```python
+svg_string: str = plot_svg_fancy(pixels)
+
+display(SVG(svg_string))
+```
+
+```python
+from maze_dataset.plotting import MazePlot
+
+MazePlot(maze).plot(plain=True)
+```
+
+```python
+print(maze.as_ascii())
+```
+
+```python
+from maze_dataset.plotting.print_tokens import (
+	color_maze_tokens_AOTP,
+)
+from maze_dataset.tokenization import MazeTokenizer
+
+print(color_maze_tokens_AOTP(maze.as_tokens(MazeTokenizer()), "html"))
+```
+
+
+``````{ end_of_file="notebooks/output_formats.ipynb" }
 
 ``````{ path="notebooks/profile_dataset_save_read.ipynb" processed_with="ipynb_to_md" }
 # Profiling of `maze_dataset` serializing/loading/saving/reading
@@ -14479,14 +15061,513 @@ SPEEDS["load_minimal:profiling"][len(SPEEDS) - 1].sort_stats("tottime").print_st
 
 ``````{ end_of_file="notebooks/profile_dataset_save_read.ipynb" }
 
+``````{ path="LICENSE.md"  }
+Attribution-ShareAlike 4.0 International
+
+=======================================================================
+
+Creative Commons Corporation ("Creative Commons") is not a law firm and
+does not provide legal services or legal advice. Distribution of
+Creative Commons public licenses does not create a lawyer-client or
+other relationship. Creative Commons makes its licenses and related
+information available on an "as-is" basis. Creative Commons gives no
+warranties regarding its licenses, any material licensed under their
+terms and conditions, or any related information. Creative Commons
+disclaims all liability for damages resulting from their use to the
+fullest extent possible.
+
+Using Creative Commons Public Licenses
+
+Creative Commons public licenses provide a standard set of terms and
+conditions that creators and other rights holders may use to share
+original works of authorship and other material subject to copyright
+and certain other rights specified in the public license below. The
+following considerations are for informational purposes only, are not
+exhaustive, and do not form part of our licenses.
+
+     Considerations for licensors: Our public licenses are
+     intended for use by those authorized to give the public
+     permission to use material in ways otherwise restricted by
+     copyright and certain other rights. Our licenses are
+     irrevocable. Licensors should read and understand the terms
+     and conditions of the license they choose before applying it.
+     Licensors should also secure all rights necessary before
+     applying our licenses so that the public can reuse the
+     material as expected. Licensors should clearly mark any
+     material not subject to the license. This includes other CC-
+     licensed material, or material used under an exception or
+     limitation to copyright. More considerations for licensors:
+	wiki.creativecommons.org/Considerations_for_licensors
+
+     Considerations for the public: By using one of our public
+     licenses, a licensor grants the public permission to use the
+     licensed material under specified terms and conditions. If
+     the licensor's permission is not necessary for any reason--for
+     example, because of any applicable exception or limitation to
+     copyright--then that use is not regulated by the license. Our
+     licenses grant only permissions under copyright and certain
+     other rights that a licensor has authority to grant. Use of
+     the licensed material may still be restricted for other
+     reasons, including because others have copyright or other
+     rights in the material. A licensor may make special requests,
+     such as asking that all changes be marked or described.
+     Although not required by our licenses, you are encouraged to
+     respect those requests where reasonable. More_considerations
+     for the public:
+	wiki.creativecommons.org/Considerations_for_licensees
+
+=======================================================================
+
+Creative Commons Attribution-ShareAlike 4.0 International Public
+License
+
+By exercising the Licensed Rights (defined below), You accept and agree
+to be bound by the terms and conditions of this Creative Commons
+Attribution-ShareAlike 4.0 International Public License ("Public
+License"). To the extent this Public License may be interpreted as a
+contract, You are granted the Licensed Rights in consideration of Your
+acceptance of these terms and conditions, and the Licensor grants You
+such rights in consideration of benefits the Licensor receives from
+making the Licensed Material available under these terms and
+conditions.
+
+
+Section 1 -- Definitions.
+
+  a. Adapted Material means material subject to Copyright and Similar
+     Rights that is derived from or based upon the Licensed Material
+     and in which the Licensed Material is translated, altered,
+     arranged, transformed, or otherwise modified in a manner requiring
+     permission under the Copyright and Similar Rights held by the
+     Licensor. For purposes of this Public License, where the Licensed
+     Material is a musical work, performance, or sound recording,
+     Adapted Material is always produced where the Licensed Material is
+     synched in timed relation with a moving image.
+
+  b. Adapter's License means the license You apply to Your Copyright
+     and Similar Rights in Your contributions to Adapted Material in
+     accordance with the terms and conditions of this Public License.
+
+  c. BY-SA Compatible License means a license listed at
+     creativecommons.org/compatiblelicenses, approved by Creative
+     Commons as essentially the equivalent of this Public License.
+
+  d. Copyright and Similar Rights means copyright and/or similar rights
+     closely related to copyright including, without limitation,
+     performance, broadcast, sound recording, and Sui Generis Database
+     Rights, without regard to how the rights are labeled or
+     categorized. For purposes of this Public License, the rights
+     specified in Section 2(b)(1)-(2) are not Copyright and Similar
+     Rights.
+
+  e. Effective Technological Measures means those measures that, in the
+     absence of proper authority, may not be circumvented under laws
+     fulfilling obligations under Article 11 of the WIPO Copyright
+     Treaty adopted on December 20, 1996, and/or similar international
+     agreements.
+
+  f. Exceptions and Limitations means fair use, fair dealing, and/or
+     any other exception or limitation to Copyright and Similar Rights
+     that applies to Your use of the Licensed Material.
+
+  g. License Elements means the license attributes listed in the name
+     of a Creative Commons Public License. The License Elements of this
+     Public License are Attribution and ShareAlike.
+
+  h. Licensed Material means the artistic or literary work, database,
+     or other material to which the Licensor applied this Public
+     License.
+
+  i. Licensed Rights means the rights granted to You subject to the
+     terms and conditions of this Public License, which are limited to
+     all Copyright and Similar Rights that apply to Your use of the
+     Licensed Material and that the Licensor has authority to license.
+
+  j. Licensor means the individual(s) or entity(ies) granting rights
+     under this Public License.
+
+  k. Share means to provide material to the public by any means or
+     process that requires permission under the Licensed Rights, such
+     as reproduction, public display, public performance, distribution,
+     dissemination, communication, or importation, and to make material
+     available to the public including in ways that members of the
+     public may access the material from a place and at a time
+     individually chosen by them.
+
+  l. Sui Generis Database Rights means rights other than copyright
+     resulting from Directive 96/9/EC of the European Parliament and of
+     the Council of 11 March 1996 on the legal protection of databases,
+     as amended and/or succeeded, as well as other essentially
+     equivalent rights anywhere in the world.
+
+  m. You means the individual or entity exercising the Licensed Rights
+     under this Public License. Your has a corresponding meaning.
+
+
+Section 2 -- Scope.
+
+  a. License grant.
+
+       1. Subject to the terms and conditions of this Public License,
+          the Licensor hereby grants You a worldwide, royalty-free,
+          non-sublicensable, non-exclusive, irrevocable license to
+          exercise the Licensed Rights in the Licensed Material to:
+
+            a. reproduce and Share the Licensed Material, in whole or
+               in part; and
+
+            b. produce, reproduce, and Share Adapted Material.
+
+       2. Exceptions and Limitations. For the avoidance of doubt, where
+          Exceptions and Limitations apply to Your use, this Public
+          License does not apply, and You do not need to comply with
+          its terms and conditions.
+
+       3. Term. The term of this Public License is specified in Section
+          6(a).
+
+       4. Media and formats; technical modifications allowed. The
+          Licensor authorizes You to exercise the Licensed Rights in
+          all media and formats whether now known or hereafter created,
+          and to make technical modifications necessary to do so. The
+          Licensor waives and/or agrees not to assert any right or
+          authority to forbid You from making technical modifications
+          necessary to exercise the Licensed Rights, including
+          technical modifications necessary to circumvent Effective
+          Technological Measures. For purposes of this Public License,
+          simply making modifications authorized by this Section 2(a)
+          (4) never produces Adapted Material.
+
+       5. Downstream recipients.
+
+            a. Offer from the Licensor -- Licensed Material. Every
+               recipient of the Licensed Material automatically
+               receives an offer from the Licensor to exercise the
+               Licensed Rights under the terms and conditions of this
+               Public License.
+
+            b. Additional offer from the Licensor -- Adapted Material.
+               Every recipient of Adapted Material from You
+               automatically receives an offer from the Licensor to
+               exercise the Licensed Rights in the Adapted Material
+               under the conditions of the Adapter's License You apply.
+
+            c. No downstream restrictions. You may not offer or impose
+               any additional or different terms or conditions on, or
+               apply any Effective Technological Measures to, the
+               Licensed Material if doing so restricts exercise of the
+               Licensed Rights by any recipient of the Licensed
+               Material.
+
+       6. No endorsement. Nothing in this Public License constitutes or
+          may be construed as permission to assert or imply that You
+          are, or that Your use of the Licensed Material is, connected
+          with, or sponsored, endorsed, or granted official status by,
+          the Licensor or others designated to receive attribution as
+          provided in Section 3(a)(1)(A)(i).
+
+  b. Other rights.
+
+       1. Moral rights, such as the right of integrity, are not
+          licensed under this Public License, nor are publicity,
+          privacy, and/or other similar personality rights; however, to
+          the extent possible, the Licensor waives and/or agrees not to
+          assert any such rights held by the Licensor to the limited
+          extent necessary to allow You to exercise the Licensed
+          Rights, but not otherwise.
+
+       2. Patent and trademark rights are not licensed under this
+          Public License.
+
+       3. To the extent possible, the Licensor waives any right to
+          collect royalties from You for the exercise of the Licensed
+          Rights, whether directly or through a collecting society
+          under any voluntary or waivable statutory or compulsory
+          licensing scheme. In all other cases the Licensor expressly
+          reserves any right to collect such royalties.
+
+
+Section 3 -- License Conditions.
+
+Your exercise of the Licensed Rights is expressly made subject to the
+following conditions.
+
+  a. Attribution.
+
+       1. If You Share the Licensed Material (including in modified
+          form), You must:
+
+            a. retain the following if it is supplied by the Licensor
+               with the Licensed Material:
+
+                 i. identification of the creator(s) of the Licensed
+                    Material and any others designated to receive
+                    attribution, in any reasonable manner requested by
+                    the Licensor (including by pseudonym if
+                    designated);
+
+                ii. a copyright notice;
+
+               iii. a notice that refers to this Public License;
+
+                iv. a notice that refers to the disclaimer of
+                    warranties;
+
+                 v. a URI or hyperlink to the Licensed Material to the
+                    extent reasonably practicable;
+
+            b. indicate if You modified the Licensed Material and
+               retain an indication of any previous modifications; and
+
+            c. indicate the Licensed Material is licensed under this
+               Public License, and include the text of, or the URI or
+               hyperlink to, this Public License.
+
+       2. You may satisfy the conditions in Section 3(a)(1) in any
+          reasonable manner based on the medium, means, and context in
+          which You Share the Licensed Material. For example, it may be
+          reasonable to satisfy the conditions by providing a URI or
+          hyperlink to a resource that includes the required
+          information.
+
+       3. If requested by the Licensor, You must remove any of the
+          information required by Section 3(a)(1)(A) to the extent
+          reasonably practicable.
+
+  b. ShareAlike.
+
+     In addition to the conditions in Section 3(a), if You Share
+     Adapted Material You produce, the following conditions also apply.
+
+       1. The Adapter's License You apply must be a Creative Commons
+          license with the same License Elements, this version or
+          later, or a BY-SA Compatible License.
+
+       2. You must include the text of, or the URI or hyperlink to, the
+          Adapter's License You apply. You may satisfy this condition
+          in any reasonable manner based on the medium, means, and
+          context in which You Share Adapted Material.
+
+       3. You may not offer or impose any additional or different terms
+          or conditions on, or apply any Effective Technological
+          Measures to, Adapted Material that restrict exercise of the
+          rights granted under the Adapter's License You apply.
+
+
+Section 4 -- Sui Generis Database Rights.
+
+Where the Licensed Rights include Sui Generis Database Rights that
+apply to Your use of the Licensed Material:
+
+  a. for the avoidance of doubt, Section 2(a)(1) grants You the right
+     to extract, reuse, reproduce, and Share all or a substantial
+     portion of the contents of the database;
+
+  b. if You include all or a substantial portion of the database
+     contents in a database in which You have Sui Generis Database
+     Rights, then the database in which You have Sui Generis Database
+     Rights (but not its individual contents) is Adapted Material,
+
+     including for purposes of Section 3(b); and
+  c. You must comply with the conditions in Section 3(a) if You Share
+     all or a substantial portion of the contents of the database.
+
+For the avoidance of doubt, this Section 4 supplements and does not
+replace Your obligations under this Public License where the Licensed
+Rights include other Copyright and Similar Rights.
+
+
+Section 5 -- Disclaimer of Warranties and Limitation of Liability.
+
+  a. UNLESS OTHERWISE SEPARATELY UNDERTAKEN BY THE LICENSOR, TO THE
+     EXTENT POSSIBLE, THE LICENSOR OFFERS THE LICENSED MATERIAL AS-IS
+     AND AS-AVAILABLE, AND MAKES NO REPRESENTATIONS OR WARRANTIES OF
+     ANY KIND CONCERNING THE LICENSED MATERIAL, WHETHER EXPRESS,
+     IMPLIED, STATUTORY, OR OTHER. THIS INCLUDES, WITHOUT LIMITATION,
+     WARRANTIES OF TITLE, MERCHANTABILITY, FITNESS FOR A PARTICULAR
+     PURPOSE, NON-INFRINGEMENT, ABSENCE OF LATENT OR OTHER DEFECTS,
+     ACCURACY, OR THE PRESENCE OR ABSENCE OF ERRORS, WHETHER OR NOT
+     KNOWN OR DISCOVERABLE. WHERE DISCLAIMERS OF WARRANTIES ARE NOT
+     ALLOWED IN FULL OR IN PART, THIS DISCLAIMER MAY NOT APPLY TO YOU.
+
+  b. TO THE EXTENT POSSIBLE, IN NO EVENT WILL THE LICENSOR BE LIABLE
+     TO YOU ON ANY LEGAL THEORY (INCLUDING, WITHOUT LIMITATION,
+     NEGLIGENCE) OR OTHERWISE FOR ANY DIRECT, SPECIAL, INDIRECT,
+     INCIDENTAL, CONSEQUENTIAL, PUNITIVE, EXEMPLARY, OR OTHER LOSSES,
+     COSTS, EXPENSES, OR DAMAGES ARISING OUT OF THIS PUBLIC LICENSE OR
+     USE OF THE LICENSED MATERIAL, EVEN IF THE LICENSOR HAS BEEN
+     ADVISED OF THE POSSIBILITY OF SUCH LOSSES, COSTS, EXPENSES, OR
+     DAMAGES. WHERE A LIMITATION OF LIABILITY IS NOT ALLOWED IN FULL OR
+     IN PART, THIS LIMITATION MAY NOT APPLY TO YOU.
+
+  c. The disclaimer of warranties and limitation of liability provided
+     above shall be interpreted in a manner that, to the extent
+     possible, most closely approximates an absolute disclaimer and
+     waiver of all liability.
+
+
+Section 6 -- Term and Termination.
+
+  a. This Public License applies for the term of the Copyright and
+     Similar Rights licensed here. However, if You fail to comply with
+     this Public License, then Your rights under this Public License
+     terminate automatically.
+
+  b. Where Your right to use the Licensed Material has terminated under
+     Section 6(a), it reinstates:
+
+       1. automatically as of the date the violation is cured, provided
+          it is cured within 30 days of Your discovery of the
+          violation; or
+
+       2. upon express reinstatement by the Licensor.
+
+     For the avoidance of doubt, this Section 6(b) does not affect any
+     right the Licensor may have to seek remedies for Your violations
+     of this Public License.
+
+  c. For the avoidance of doubt, the Licensor may also offer the
+     Licensed Material under separate terms or conditions or stop
+     distributing the Licensed Material at any time; however, doing so
+     will not terminate this Public License.
+
+  d. Sections 1, 5, 6, 7, and 8 survive termination of this Public
+     License.
+
+
+Section 7 -- Other Terms and Conditions.
+
+  a. The Licensor shall not be bound by any additional or different
+     terms or conditions communicated by You unless expressly agreed.
+
+  b. Any arrangements, understandings, or agreements regarding the
+     Licensed Material not stated herein are separate from and
+     independent of the terms and conditions of this Public License.
+
+
+Section 8 -- Interpretation.
+
+  a. For the avoidance of doubt, this Public License does not, and
+     shall not be interpreted to, reduce, limit, restrict, or impose
+     conditions on any use of the Licensed Material that could lawfully
+     be made without permission under this Public License.
+
+  b. To the extent possible, if any provision of this Public License is
+     deemed unenforceable, it shall be automatically reformed to the
+     minimum extent necessary to make it enforceable. If the provision
+     cannot be reformed, it shall be severed from this Public License
+     without affecting the enforceability of the remaining terms and
+     conditions.
+
+  c. No term or condition of this Public License will be waived and no
+     failure to comply consented to unless expressly agreed to by the
+     Licensor.
+
+  d. Nothing in this Public License constitutes or may be interpreted
+     as a limitation upon, or waiver of, any privileges and immunities
+     that apply to the Licensor or You, including from the legal
+     processes of any jurisdiction or authority.
+
+
+=======================================================================
+
+Creative Commons is not a party to its public
+licenses. Notwithstanding, Creative Commons may elect to apply one of
+its public licenses to material it publishes and in those instances
+will be considered the “Licensor.” The text of the Creative Commons
+public licenses is dedicated to the public domain under the CC0 Public
+Domain Dedication. Except for the limited purpose of indicating that
+material is shared under a Creative Commons public license or as
+otherwise permitted by the Creative Commons policies published at
+creativecommons.org/policies, Creative Commons does not authorize the
+use of the trademark "Creative Commons" or any other trademark or logo
+of Creative Commons without its prior written consent including,
+without limitation, in connection with any unauthorized modifications
+to any of its public licenses or any other arrangements,
+understandings, or agreements concerning use of licensed material. For
+the avoidance of doubt, this paragraph does not form part of the
+public licenses.
+
+Creative Commons may be contacted at creativecommons.org.
+``````{ end_of_file="LICENSE.md" }
+
 ``````{ path="README.md"  }
-[![PyPI](https://img.shields.io/pypi/v/maze-dataset)](https://pypi.org/project/maze-dataset/)
+<div align="center">
+
+  <!-- Header with logo to the left of the title -->
+  <table style="margin: 0 auto;">
+    <tr>
+      <td style="vertical-align: middle;">
+        <img src="docs/resources/logo.svg" alt="Maze Dataset Logo" width="50">
+      </td>
+      <td style="vertical-align: middle; padding-left: 10px;">
+        <h1 style="margin: 0;">maze-dataset</h1>
+      </td>
+    </tr>
+  </table>
+
+<!-- Top prominent badges -->
+  <p>
+    <a href="https://pypi.org/project/maze-dataset/">
+      <img src="https://img.shields.io/pypi/v/maze-dataset" alt="PyPI">
+    </a>
+    &nbsp;
+    <a href="https://understanding-search.github.io/maze-dataset/">
+      <img src="https://img.shields.io/badge/docs-available-brightgreen" alt="Docs">
+    </a>
+    &nbsp;
+    <a href="https://understanding-search.github.io/maze-dataset/examples/maze_examples.html">
+      <img src="https://img.shields.io/badge/examples-view-blue" alt="Examples">
+    </a>
+    &nbsp;
+    <a href="http://arxiv.org/abs/2309.10498">
+        <img src="https://img.shields.io/badge/arXiv-2309.10498-b31b1b.svg" alt="arXiv">
+    </a>
+  </p>
+
+  <!-- Diagram -->
+  <p>
+    <img src="docs/resources/diagram.svg" alt="Diagram">
+  </p>
+
+  <!-- Additional badges -->
+  <p>
+    <a href="https://pypi.org/project/maze-dataset/">
+      <img src="https://img.shields.io/pypi/v/maze-dataset" alt="PyPI">
+    </a>
+    &nbsp;
+    <img src="https://img.shields.io/badge/python-3.10%2B-blue?logo=python&logoColor=white" alt="Python Version">
+    &nbsp;
+    <a href="https://github.com/understanding-search/maze-dataset/actions/workflows/checks.yml">
+      <img src="https://github.com/understanding-search/maze-dataset/actions/workflows/checks.yml/badge.svg" alt="Checks">
+    </a>
+    &nbsp;
+    <a href="docs/coverage/coverage.txt">
+      <img src="docs/coverage/coverage.svg" alt="Coverage">
+    </a>
+    &nbsp;
+    <img src="https://img.shields.io/github/languages/code-size/understanding-search/maze-dataset" alt="code size, bytes">
+    &nbsp;
+    <img src="https://img.shields.io/github/commit-activity/t/understanding-search/maze-dataset" alt="GitHub commit activity">
+    &nbsp;
+    <img src="https://img.shields.io/github/issues-closed/understanding-search/maze-dataset" alt="GitHub closed issues">
+    &nbsp;
+    <img src="https://img.shields.io/github/issues-pr-closed/understanding-search/maze-dataset" alt="GitHub closed pull requests">
+    &nbsp;
+    <img src="https://img.shields.io/pypi/dm/maze-dataset" alt="PyPI - Downloads">
+  </p>
+
+</div>
+
+
+
+<!-- [![PyPI](https://img.shields.io/pypi/v/maze-dataset)](https://pypi.org/project/maze-dataset/)
 ![PyPI - Downloads](https://img.shields.io/pypi/dm/maze-dataset)
 [![Checks](https://github.com/understanding-search/maze-dataset/actions/workflows/checks.yml/badge.svg)](https://github.com/understanding-search/maze-dataset/actions/workflows/checks.yml)
 [![Coverage](docs/coverage/coverage.svg)](docs/coverage/coverage.txt)
 ![code size, bytes](https://img.shields.io/github/languages/code-size/understanding-search/maze-dataset)
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/t/understanding-search/maze-dataset)
-![GitHub closed pull requests](https://img.shields.io/github/issues-pr-closed/understanding-search/maze-dataset)
+![GitHub closed pull requests](https://img.shields.io/github/issues-pr-closed/understanding-search/maze-dataset) -->
 
 
 # `maze-dataset`
@@ -14497,7 +15578,7 @@ This package includes a variety of maze generation algorithms, including randomi
 
 |   |   |   |   |
 |---|---|---|---|
-| ![Maze generated via percolation](docs/assets/maze_perc.png) |  ![Maze generated via constrained randomized depth first search](docs/assets/maze_dfs_constrained.png)  |  ![Maze with random heatmap](docs/assets/mazeplot_heatmap.png)  |  ![MazePlot with solution](docs/assets/mazeplot_path.png)  |
+| <img src="docs/assets/maze_perc.png" alt="Maze generated via percolation" width="95%"/> | <img src="docs/assets/maze_dfs_constrained.png" alt="Maze generated via constrained randomized depth first search" width="95%"/> | <img src="docs/assets/mazeplot_heatmap.png" alt="Maze with random heatmap" width="95%"/> | <img src="docs/assets/mazeplot_path.png" alt="MazePlot with solution" width="95%"/> |
 
 
 You can view and search through a wide variety of example mazes here: [`understanding-search.github.io/maze-dataset/examples/maze_examples`](https://understanding-search.github.io/maze-dataset/examples/maze_examples.html)
@@ -14582,7 +15663,7 @@ from maze_dataset.plotting import MazePlot
 MazePlot(maze).plot()
 ```
 
-![textual and visual output formats](docs/assets/output_formats.png)
+<img src="docs/assets/output_formats.png" alt="textual and visual output formats" width="100%"/>
 
 
 # Development
@@ -14959,7 +16040,7 @@ paper: paper-clean paper-pdf paper-html
 ``````{ path="pyproject.toml"  }
 [project]
     name = "maze-dataset"
-    version = "1.3.1"
+    version = "1.3.2"
     description = "generating and working with datasets of mazes"
     authors = [
         { name = "Michael Ivanitskiy", email = "mivanits@umich.edu" },
@@ -15024,6 +16105,7 @@ paper: paper-clean paper-pdf paper-html
 		"mypy>=1.0.1",
         "types-tqdm",
         "pandas-stubs",
+		"types-psutil", # see https://github.com/understanding-search/maze-dataset/actions/runs/14327419830/job/40155509863
 		# docs
 		'pdoc>=14.6.0',
 		"nbconvert>=7.16.4", # for notebooks
@@ -15041,6 +16123,7 @@ paper: paper-clean paper-pdf paper-html
     benchmark = [
         # only used in `estimate_dataset_fractions.ipynb`
         "pysr>=1.4.0",
+		"seaborn",
     ]
 
 [project.urls]
@@ -15207,7 +16290,10 @@ paper: paper-clean paper-pdf paper-html
 				"PTH100",
 				"PTH118",
 			]
-			"docs/*" = ["ALL"] # not our problem
+			"docs/resources/make_docs.py" = ["ALL"] # not our problem
+			"docs/*" = [
+				"INP001", # scripts, not modules
+			]
 			"test.ipynb" = ["ALL"] # this is just a test notebook
 			"**/*.ipynb" = [
 				"D103", # dont need docstrings
@@ -15318,619 +16404,3 @@ paper: paper-clean paper-pdf paper-html
 		"DOC" = "documentation"
 
 ``````{ end_of_file="pyproject.toml" }
-
-``````{ path="temp.ipynb."  }
-{
- "cells": [
-  {
-   "cell_type": "code",
-   "execution_count": 3,
-   "metadata": {},
-   "outputs": [
-    {
-     "data": {
-      "image/svg+xml": [
-       "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"220\" height=\"220\" viewBox=\"0 0 220 220\">\n",
-       "<rect width=\"100%\" height=\"100%\" fill=\"#2c2c35\"/>\n",
-       "<rect x=\"0\" y=\"0\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#2c2c35\"/>\n",
-       "<rect x=\"20\" y=\"0\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#2c2c35\"/>\n",
-       "<rect x=\"40\" y=\"0\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#2c2c35\"/>\n",
-       "<rect x=\"60\" y=\"0\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#2c2c35\"/>\n",
-       "<rect x=\"80\" y=\"0\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#2c2c35\"/>\n",
-       "<rect x=\"100\" y=\"0\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#2c2c35\"/>\n",
-       "<rect x=\"120\" y=\"0\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#2c2c35\"/>\n",
-       "<rect x=\"140\" y=\"0\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#2c2c35\"/>\n",
-       "<rect x=\"160\" y=\"0\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#2c2c35\"/>\n",
-       "<rect x=\"180\" y=\"0\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#2c2c35\"/>\n",
-       "<rect x=\"200\" y=\"0\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#2c2c35\"/>\n",
-       "<rect x=\"0\" y=\"20\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#2c2c35\"/>\n",
-       "<rect x=\"20\" y=\"20\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#cccccc\"/>\n",
-       "<rect x=\"40\" y=\"20\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#cccccc\"/>\n",
-       "<rect x=\"60\" y=\"20\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#cccccc\"/>\n",
-       "<rect x=\"80\" y=\"20\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#cccccc\"/>\n",
-       "<rect x=\"100\" y=\"20\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#3AA0FF\"/>\n",
-       "<rect x=\"120\" y=\"20\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#3AA0FF\"/>\n",
-       "<rect x=\"140\" y=\"20\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#3AA0FF\"/>\n",
-       "<rect x=\"160\" y=\"20\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#2c2c35\"/>\n",
-       "<rect x=\"180\" y=\"20\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#cccccc\"/>\n",
-       "<rect x=\"200\" y=\"20\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#2c2c35\"/>\n",
-       "<rect x=\"0\" y=\"40\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#2c2c35\"/>\n",
-       "<rect x=\"20\" y=\"40\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#cccccc\"/>\n",
-       "<rect x=\"40\" y=\"40\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#2c2c35\"/>\n",
-       "<rect x=\"60\" y=\"40\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#2c2c35\"/>\n",
-       "<rect x=\"80\" y=\"40\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#2c2c35\"/>\n",
-       "<rect x=\"100\" y=\"40\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#3AA0FF\"/>\n",
-       "<rect x=\"120\" y=\"40\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#2c2c35\"/>\n",
-       "<rect x=\"140\" y=\"40\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#3AA0FF\"/>\n",
-       "<rect x=\"160\" y=\"40\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#2c2c35\"/>\n",
-       "<rect x=\"180\" y=\"40\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#cccccc\"/>\n",
-       "<rect x=\"200\" y=\"40\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#2c2c35\"/>\n",
-       "<rect x=\"0\" y=\"60\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#2c2c35\"/>\n",
-       "<rect x=\"20\" y=\"60\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#cccccc\"/>\n",
-       "<rect x=\"40\" y=\"60\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#cccccc\"/>\n",
-       "<rect x=\"60\" y=\"60\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#cccccc\"/>\n",
-       "<rect x=\"80\" y=\"60\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#2c2c35\"/>\n",
-       "<rect x=\"100\" y=\"60\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#3AA0FF\"/>\n",
-       "<rect x=\"120\" y=\"60\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#2c2c35\"/>\n",
-       "<rect x=\"140\" y=\"60\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#00cc66\"/>\n",
-       "<rect x=\"160\" y=\"60\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#cccccc\"/>\n",
-       "<rect x=\"180\" y=\"60\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#cccccc\"/>\n",
-       "<rect x=\"200\" y=\"60\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#2c2c35\"/>\n",
-       "<rect x=\"0\" y=\"80\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#2c2c35\"/>\n",
-       "<rect x=\"20\" y=\"80\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#2c2c35\"/>\n",
-       "<rect x=\"40\" y=\"80\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#2c2c35\"/>\n",
-       "<rect x=\"60\" y=\"80\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#2c2c35\"/>\n",
-       "<rect x=\"80\" y=\"80\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#2c2c35\"/>\n",
-       "<rect x=\"100\" y=\"80\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#3AA0FF\"/>\n",
-       "<rect x=\"120\" y=\"80\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#2c2c35\"/>\n",
-       "<rect x=\"140\" y=\"80\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#2c2c35\"/>\n",
-       "<rect x=\"160\" y=\"80\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#2c2c35\"/>\n",
-       "<rect x=\"180\" y=\"80\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#2c2c35\"/>\n",
-       "<rect x=\"200\" y=\"80\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#2c2c35\"/>\n",
-       "<rect x=\"0\" y=\"100\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#2c2c35\"/>\n",
-       "<rect x=\"20\" y=\"100\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#3AA0FF\"/>\n",
-       "<rect x=\"40\" y=\"100\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#3AA0FF\"/>\n",
-       "<rect x=\"60\" y=\"100\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#3AA0FF\"/>\n",
-       "<rect x=\"80\" y=\"100\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#3AA0FF\"/>\n",
-       "<rect x=\"100\" y=\"100\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#3AA0FF\"/>\n",
-       "<rect x=\"120\" y=\"100\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#2c2c35\"/>\n",
-       "<rect x=\"140\" y=\"100\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#ff4444\"/>\n",
-       "<rect x=\"160\" y=\"100\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#3AA0FF\"/>\n",
-       "<rect x=\"180\" y=\"100\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#3AA0FF\"/>\n",
-       "<rect x=\"200\" y=\"100\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#2c2c35\"/>\n",
-       "<rect x=\"0\" y=\"120\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#2c2c35\"/>\n",
-       "<rect x=\"20\" y=\"120\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#3AA0FF\"/>\n",
-       "<rect x=\"40\" y=\"120\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#2c2c35\"/>\n",
-       "<rect x=\"60\" y=\"120\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#2c2c35\"/>\n",
-       "<rect x=\"80\" y=\"120\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#2c2c35\"/>\n",
-       "<rect x=\"100\" y=\"120\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#cccccc\"/>\n",
-       "<rect x=\"120\" y=\"120\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#2c2c35\"/>\n",
-       "<rect x=\"140\" y=\"120\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#2c2c35\"/>\n",
-       "<rect x=\"160\" y=\"120\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#2c2c35\"/>\n",
-       "<rect x=\"180\" y=\"120\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#3AA0FF\"/>\n",
-       "<rect x=\"200\" y=\"120\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#2c2c35\"/>\n",
-       "<rect x=\"0\" y=\"140\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#2c2c35\"/>\n",
-       "<rect x=\"20\" y=\"140\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#3AA0FF\"/>\n",
-       "<rect x=\"40\" y=\"140\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#2c2c35\"/>\n",
-       "<rect x=\"60\" y=\"140\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#cccccc\"/>\n",
-       "<rect x=\"80\" y=\"140\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#cccccc\"/>\n",
-       "<rect x=\"100\" y=\"140\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#cccccc\"/>\n",
-       "<rect x=\"120\" y=\"140\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#cccccc\"/>\n",
-       "<rect x=\"140\" y=\"140\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#cccccc\"/>\n",
-       "<rect x=\"160\" y=\"140\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#2c2c35\"/>\n",
-       "<rect x=\"180\" y=\"140\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#3AA0FF\"/>\n",
-       "<rect x=\"200\" y=\"140\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#2c2c35\"/>\n",
-       "<rect x=\"0\" y=\"160\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#2c2c35\"/>\n",
-       "<rect x=\"20\" y=\"160\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#3AA0FF\"/>\n",
-       "<rect x=\"40\" y=\"160\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#2c2c35\"/>\n",
-       "<rect x=\"60\" y=\"160\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#2c2c35\"/>\n",
-       "<rect x=\"80\" y=\"160\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#2c2c35\"/>\n",
-       "<rect x=\"100\" y=\"160\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#2c2c35\"/>\n",
-       "<rect x=\"120\" y=\"160\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#2c2c35\"/>\n",
-       "<rect x=\"140\" y=\"160\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#2c2c35\"/>\n",
-       "<rect x=\"160\" y=\"160\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#2c2c35\"/>\n",
-       "<rect x=\"180\" y=\"160\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#3AA0FF\"/>\n",
-       "<rect x=\"200\" y=\"160\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#2c2c35\"/>\n",
-       "<rect x=\"0\" y=\"180\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#2c2c35\"/>\n",
-       "<rect x=\"20\" y=\"180\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#3AA0FF\"/>\n",
-       "<rect x=\"40\" y=\"180\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#3AA0FF\"/>\n",
-       "<rect x=\"60\" y=\"180\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#3AA0FF\"/>\n",
-       "<rect x=\"80\" y=\"180\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#3AA0FF\"/>\n",
-       "<rect x=\"100\" y=\"180\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#3AA0FF\"/>\n",
-       "<rect x=\"120\" y=\"180\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#3AA0FF\"/>\n",
-       "<rect x=\"140\" y=\"180\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#3AA0FF\"/>\n",
-       "<rect x=\"160\" y=\"180\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#3AA0FF\"/>\n",
-       "<rect x=\"180\" y=\"180\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#3AA0FF\"/>\n",
-       "<rect x=\"200\" y=\"180\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#2c2c35\"/>\n",
-       "<rect x=\"0\" y=\"200\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#2c2c35\"/>\n",
-       "<rect x=\"20\" y=\"200\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#2c2c35\"/>\n",
-       "<rect x=\"40\" y=\"200\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#2c2c35\"/>\n",
-       "<rect x=\"60\" y=\"200\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#2c2c35\"/>\n",
-       "<rect x=\"80\" y=\"200\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#2c2c35\"/>\n",
-       "<rect x=\"100\" y=\"200\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#2c2c35\"/>\n",
-       "<rect x=\"120\" y=\"200\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#2c2c35\"/>\n",
-       "<rect x=\"140\" y=\"200\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#2c2c35\"/>\n",
-       "<rect x=\"160\" y=\"200\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#2c2c35\"/>\n",
-       "<rect x=\"180\" y=\"200\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#2c2c35\"/>\n",
-       "<rect x=\"200\" y=\"200\" width=\"20\" height=\"20\" rx=\"6\" ry=\"6\" fill=\"#2c2c35\"/>\n",
-       "</svg>"
-      ],
-      "text/plain": [
-       "<IPython.core.display.SVG object>"
-      ]
-     },
-     "metadata": {},
-     "output_type": "display_data"
-    },
-    {
-     "data": {
-      "image/png": "iVBORw0KGgoAAAANSUhEUgAAAaAAAAGdCAYAAABU0qcqAAAAOnRFWHRTb2Z0d2FyZQBNYXRwbG90bGliIHZlcnNpb24zLjEwLjEsIGh0dHBzOi8vbWF0cGxvdGxpYi5vcmcvc2/+5QAAAAlwSFlzAAAPYQAAD2EBqD+naQAAFt1JREFUeJzt3V2MVPX5wPFngDJQA6NoWdgCujWmqCi1IkRp2vzDRmKI0TYxbYMN1YsmZi0gSau2AdJYXdHUNCrBlwu1qaK9KL4ltiFUMUTeFPAltoCR1I12QROdQayr2T3/C9vFFRAtszyzy+eT/C72zOyeJ4fZ882ZHWZKRVEUAQBH2ZDsAQA4NgkQACkECIAUAgRACgECIIUAAZBCgABIIUAApBiWPcBn9fT0xFtvvRWjRo2KUqmUPQ4AX1JRFLF3795obm6OIUMOfZ3TcAF66623YuLEidljAHCEOjo6YsKECYe8veGeghs1alT2CADUweHO5w0XIE+7AQwOhzufN1yAADg2CBAAKQQIgBQCBEAKAQIghQABkEKAAEghQACkECAAUvRbgJYvXx6nnHJKjBgxImbMmBGbNm3qr10BMAD1S4AeeeSRWLRoUSxdujS2bNkSU6dOjdmzZ8eePXv6Y3cADERFP5g+fXrR1tbW+3V3d3fR3NxctLe3H/Z7q9VqERGWZVnWAF/VavVzz/d1vwL66KOP4oUXXojW1tbebUOGDInW1tZYv379Affv6uqKWq3WZwEw+NU9QO+88050d3dHU1NTn+1NTU3R2dl5wP3b29ujUqn0Lp8FBHBsSH8V3PXXXx/VarV3dXR0ZI8EwFFQ909EPemkk2Lo0KGxe/fuPtt3794d48aNO+D+5XI5yuVyvccAoMHV/Qpo+PDhce6558aaNWt6t/X09MSaNWvi/PPPr/fuABig6n4FFBGxaNGimDdvXkybNi2mT58ev//972Pfvn1xxRVX9MfuABiA+iVAP/zhD+Ptt9+OJUuWRGdnZ3zrW9+Kv/zlLwe8MAGAY1epKIoie4hPq9VqUalUsscA4AhVq9UYPXr0IW9PfxUcAMcmAQIghQABkEKAAEghQACkECAAUggQACkECIAUAgRACgECIEW/vBfcYNFg71JEgyiVsifgQI3xj9II54zSAHqAugICIIUAAZBCgABIIUAApBAgAFIIEAApBAiAFAIEQAoBAiCFAAGQQoAASCFAAKQQIABSCBAAKQQIgBQCBEAKAQIghQABkEKAAEghQACkECAAUggQACkECIAUAgRACgECIIUAAZBCgABIIUAApBAgAFIIEAApBAiAFAIEQIph2QPw+UqlUvYIHKDIHuA/GuGx0SjHgoHIFRAAKQQIgBQCBEAKAQIghQABkEKAAEghQACkECAAUggQACkECIAUAgRACgECIIUAAZCi7gFqb2+P8847L0aNGhVjx46NSy+9NLZv317v3QAwwNU9QGvXro22trbYsGFDrF69Oj7++OO48MILY9++ffXeFQADWKkoin79QI+33347xo4dG2vXro3vfve7h71/rVaLSqXSnyN9Yf18aL4QnwfUiPIfF59ohMeGY/Fpzhl9VavVGD169CFv7/cPpKtWqxERMWbMmIPe3tXVFV1dXb1f12q1/h4JgAbQry9C6OnpiYULF8bMmTNjypQpB71Pe3t7VCqV3jVx4sT+HAmABtGvT8FdddVV8dRTT8W6detiwoQJB73Pwa6AGiVCLqc5uPzHxSca4bHhWHyac0ZfaU/BXX311fHkk0/Gs88+e8j4RESUy+Uol8v9NQYADaruASqKIn7+85/HqlWr4plnnomWlpZ67wKAQaDuAWpra4uHHnooHnvssRg1alR0dnZGRESlUomRI0fWe3cADFB1/xvQoZ5/vO++++KnP/3pYb/fy7D7aqTnc/mv/MfFJxrhseFYfJpzRl9H/W9AjfAPAEDj815wAKQQIABSCBAAKQQIgBQCBEAKAQIghQABkEKAAEghQACk6PcPpOPIeGeJ/RrpLUb4j6Ix/k2KhnlLIL4MV0AApBAgAFIIEAApBAiAFAIEQAoBAiCFAAGQQoAASCFAAKQQIABSCBAAKQQIgBQCBEAKAQIghQABkEKAAEghQACkECAAUggQACkECIAUAgRACgECIIUAAZBCgABIIUAApBAgAFIIEAApBAiAFAIEQAoBAiCFAAGQQoAASDEse4BGViqVskeAxtYgvyKlRhmEL8UVEAApBAiAFAIEQAoBAiCFAAGQQoAASCFAAKQQIABSCBAAKQQIgBQCBEAKAQIghQABkKLfA3TzzTdHqVSKhQsX9veuABhA+jVAmzdvjrvvvjvOPvvs/twNAANQvwXo/fffj7lz58a9994bJ5xwQn/tBoABqt8C1NbWFnPmzInW1tbPvV9XV1fUarU+C4DBr18+EfXhhx+OLVu2xObNmw973/b29vjNb37TH2MA0MDqfgXU0dERCxYsiAcffDBGjBhx2Ptff/31Ua1We1dHR0e9RwKgAZWKoijq+QMfffTR+P73vx9Dhw7t3dbd3R2lUimGDBkSXV1dfW77rFqtFpVKpZ4jQZ3V9VfmCJSyB4DPVa1WY/To0Ye8ve5Pwc2aNStefvnlPtuuuOKKmDx5clx77bWfGx8Ajh11D9CoUaNiypQpfbYdd9xxceKJJx6wHYBjl3dCACBF3f8GdKT8DYjG1yi/Mv4GRGM73N+AXAEBkEKAAEghQACkECAAUggQACkECIAUAgRACgECIIUAAZCiXz4PaPBolP/xDo2pUX5DSg0zSSMYOO+Q4QoIgBQCBEAKAQIghQABkEKAAEghQACkECAAUggQACkECIAUAgRACgECIIUAAZBCgABIIUAApBAgAFIIEAApBAiAFAIEQAoBAiCFAAGQQoAASCFAAKQQIABSCBAAKQQIgBQCBEAKAQIghQABkEKAAEghQACkECAAUggQACkECIAUw7IH4HBK2QPwGUVRZI8QERGlBnhoNMAI/9EokzTGY2OgcAUEQAoBAiCFAAGQQoAASCFAAKQQIABSCBAAKQQIgBQCBEAKAQIghQABkEKAAEjRLwF688034/LLL48TTzwxRo4cGWeddVY8//zz/bErAAaour8b9rvvvhszZ86M//u//4unnnoqvva1r8XOnTvjhBNOqPeuABjA6h6gZcuWxcSJE+O+++7r3dbS0lLv3QAwwNX9KbjHH388pk2bFpdddlmMHTs2zjnnnLj33nsPef+urq6o1Wp9FgCDX90D9Prrr8eKFSvitNNOi7/+9a9x1VVXxfz58+OBBx446P3b29ujUqn0rokTJ9Z7JAAaUKmo88c7Dh8+PKZNmxbPPfdc77b58+fH5s2bY/369Qfcv6urK7q6unq/rtVqDRShRvh0w0b5pEf+q3E+EdVjo/E0wmOjcR4X1Wo1Ro8efcjb634FNH78+DjjjDP6bDv99NPjjTfeOOj9y+VyjB49us8CYPCre4BmzpwZ27dv77Ntx44dcfLJJ9d7VwAMYHUP0DXXXBMbNmyIm266KV577bV46KGH4p577om2trZ67wqAgazoB0888UQxZcqUolwuF5MnTy7uueeeL/y91Wq1iE+eSG2AVTTAyj4G1mdXo8g+DtbBVvb5orEeF9Vq9XMfw3V/EcKRqtVqUalUssf4j0Y4NI3zB0U+0Si/Ml6E0Iga4bHROI+Lo/4iBAD4IgQIgBQCBEAKAQIghQABkEKAAEghQACkECAAUggQACnq/omoDE6N8r//2c+/yX7eFWJgcgUEQAoBAiCFAAGQQoAASCFAAKQQIABSCBAAKQQIgBQCBEAKAQIghQABkEKAAEghQACkECAAUggQACkECIAUAgRACgECIIUAAZBCgABIIUAApBAgAFIIEAApBAiAFAIEQAoBAiCFAAGQQoAASCFAAKQQIABSCBAAKQQIgBQCBECKYdkDMDCUSqXsEYBBxhUQACkECIAUAgRACgECIIUAAZBCgABIIUAApBAgAFIIEAApBAiAFAIEQAoBAiBF3QPU3d0dixcvjpaWlhg5cmSceuqpccMNN0RRFPXeFQADWN3fDXvZsmWxYsWKeOCBB+LMM8+M559/Pq644oqoVCoxf/78eu8OgAGq7gF67rnn4pJLLok5c+ZERMQpp5wSK1eujE2bNtV7VwAMYHV/Cu6CCy6INWvWxI4dOyIi4sUXX4x169bFRRdddND7d3V1Ra1W67MAOAYUddbd3V1ce+21RalUKoYNG1aUSqXipptuOuT9ly5dWkREg66iAVb2MbAs64uv7PNFY50zqtXq5/ai7gFauXJlMWHChGLlypXFSy+9VPzhD38oxowZU9x///0Hvf+HH35YVKvV3tXR0ZF+0DyYLMv631b2+aKxzhlHPUATJkwo7rzzzj7bbrjhhuKb3/zmF/r+arWaftA8mCzL+t9W9vmisc4ZhwtQ3f8G9MEHH8SQIX1/7NChQ6Onp6feuwJgAKv7q+AuvvjiuPHGG2PSpElx5plnxtatW+O2226LK6+8st67AmAAKxVFUdTzB+7duzcWL14cq1atij179kRzc3P8+Mc/jiVLlsTw4cMP+/21Wi0qlUo9RzoCdT00/6NS9gDAF+ac8WnVajVGjx59yNvrHqAjJUCf1TgPJuBwnDM+7XAB8l5wAKQQIABSCBAAKQQIgBQCBEAKAQIghQABkEKAAEghQACkECAAUtT9zUipt0Z4aw+A+nMFBEAKAQIghQABkEKAAEghQACkECAAUggQACkECIAUAgRACgECIIUAAZBCgABIIUAApBAgAFIIEAApBAiAFAIEQAoBAiCFAAGQQoAASCFAAKQQIABSCBAAKQQIgBQCBEAKAQIghQABkEKAAEghQACkECAAUggQACkECIAUw7IHaGyl7AEABi1XQACkECAAUggQACkECIAUAgRACgECIIUAAZBCgABIIUAApBAgAFIIEAApBAiAFF86QM8++2xcfPHF0dzcHKVSKR599NE+txdFEUuWLInx48fHyJEjo7W1NXbu3FmveQEYJL50gPbt2xdTp06N5cuXH/T2W265JW6//fa46667YuPGjXHcccfF7Nmz48MPPzziYQEYRIojEBHFqlWrer/u6ekpxo0bV9x666292957772iXC4XK1eu/EI/s1qtFhFhWZZlDfBVrVY/93xf178B7dq1Kzo7O6O1tbV3W6VSiRkzZsT69esP+j1dXV1Rq9X6LAAGv7oGqLOzMyIimpqa+mxvamrqve2z2tvbo1Kp9K6JEyfWcyQAGlT6q+Cuv/76qFarvaujoyN7JACOgroGaNy4cRERsXv37j7bd+/e3XvbZ5XL5Rg9enSfBcDgV9cAtbS0xLhx42LNmjW922q1WmzcuDHOP//8eu4KgAFu2Jf9hvfffz9ee+213q937doV27ZtizFjxsSkSZNi4cKF8dvf/jZOO+20aGlpicWLF0dzc3Nceuml9ZwbgIHuy770+umnnz7oy+3mzZvX+1LsxYsXF01NTUW5XC5mzZpVbN++/Qv/fC/DtizLGhzrcC/DLhVFUUQDqdVqUalUsscA4AhVq9XP/bt++qvgADg2CRAAKQQIgBQCBEAKAQIghQABkEKAAEghQACkECAAUjRcgBrsjRkA+B8d7nzecAHau3dv9ggA1MHhzucN915wPT098dZbb8WoUaOiVCr9Tz+jVqvFxIkTo6Oj45j/fCHHoi/HYz/HYj/HYr96HIuiKGLv3r3R3NwcQ4Yc+jrnS38cQ38bMmRITJgwoS4/ywfc7edY9OV47OdY7OdY7Hekx+KLvKl0wz0FB8CxQYAASDEoA1Qul2Pp0qVRLpezR0nnWPTleOznWOznWOx3NI9Fw70IAYBjw6C8AgKg8QkQACkECIAUAgRAikEZoOXLl8cpp5wSI0aMiBkzZsSmTZuyRzrq2tvb47zzzotRo0bF2LFj49JLL43t27dnj9UQbr755iiVSrFw4cLsUVK8+eabcfnll8eJJ54YI0eOjLPOOiuef/757LFSdHd3x+LFi6OlpSVGjhwZp556atxwww3HxHtSPvvss3HxxRdHc3NzlEqlePTRR/vcXhRFLFmyJMaPHx8jR46M1tbW2LlzZ11nGHQBeuSRR2LRokWxdOnS2LJlS0ydOjVmz54de/bsyR7tqFq7dm20tbXFhg0bYvXq1fHxxx/HhRdeGPv27cseLdXmzZvj7rvvjrPPPjt7lBTvvvtuzJw5M77yla/EU089Fa+++mr87ne/ixNOOCF7tBTLli2LFStWxJ133hl///vfY9myZXHLLbfEHXfckT1av9u3b19MnTo1li9fftDbb7nllrj99tvjrrvuio0bN8Zxxx0Xs2fPjg8//LB+QxSDzPTp04u2trber7u7u4vm5uaivb09cap8e/bsKSKiWLt2bfYoafbu3VucdtppxerVq4vvfe97xYIFC7JHOuquvfba4jvf+U72GA1jzpw5xZVXXtln2w9+8INi7ty5SRPliIhi1apVvV/39PQU48aNK2699dbebe+9915RLpeLlStX1m2/g+oK6KOPPooXXnghWltbe7cNGTIkWltbY/369YmT5atWqxERMWbMmORJ8rS1tcWcOXP6PD6ONY8//nhMmzYtLrvsshg7dmycc845ce+992aPleaCCy6INWvWxI4dOyIi4sUXX4x169bFRRddlDxZrl27dkVnZ2ef35VKpRIzZsyo67m04d6M9Ei888470d3dHU1NTX22NzU1xT/+8Y+kqfL19PTEwoULY+bMmTFlypTscVI8/PDDsWXLlti8eXP2KKlef/31WLFiRSxatCh+9atfxebNm2P+/PkxfPjwmDdvXvZ4R911110XtVotJk+eHEOHDo3u7u648cYbY+7cudmjpers7IyIOOi59L+31cOgChAH19bWFq+88kqsW7cue5QUHR0dsWDBgli9enWMGDEie5xUPT09MW3atLjpppsiIuKcc86JV155Je66665jMkB/+tOf4sEHH4yHHnoozjzzzNi2bVssXLgwmpubj8njcbQNqqfgTjrppBg6dGjs3r27z/bdu3fHuHHjkqbKdfXVV8eTTz4ZTz/9dN0+5mKgeeGFF2LPnj3x7W9/O4YNGxbDhg2LtWvXxu233x7Dhg2L7u7u7BGPmvHjx8cZZ5zRZ9vpp58eb7zxRtJEuX7xi1/EddddFz/60Y/irLPOip/85CdxzTXXRHt7e/Zoqf57vuzvc+mgCtDw4cPj3HPPjTVr1vRu6+npiTVr1sT555+fONnRVxRFXH311bFq1ar429/+Fi0tLdkjpZk1a1a8/PLLsW3btt41bdq0mDt3bmzbti2GDh2aPeJRM3PmzANejr9jx444+eSTkybK9cEHHxzwgWlDhw6Nnp6epIkaQ0tLS4wbN67PubRWq8XGjRvrey6t28sZGsTDDz9clMvl4v777y9effXV4mc/+1lx/PHHF52dndmjHVVXXXVVUalUimeeeab417/+1bs++OCD7NEawrH6KrhNmzYVw4YNK2688cZi586dxYMPPlh89atfLf74xz9mj5Zi3rx5xde//vXiySefLHbt2lX8+c9/Lk466aTil7/8ZfZo/W7v3r3F1q1bi61btxYRUdx2223F1q1bi3/+859FURTFzTffXBx//PHFY489Vrz00kvFJZdcUrS0tBT//ve/6zbDoAtQURTFHXfcUUyaNKkYPnx4MX369GLDhg3ZIx11EXHQdd9992WP1hCO1QAVRVE88cQTxZQpU4pyuVxMnjy5uOeee7JHSlOr1YoFCxYUkyZNKkaMGFF84xvfKH79618XXV1d2aP1u6effvqg54h58+YVRfHJS7EXL15cNDU1FeVyuZg1a1axffv2us7g4xgASDGo/gYEwMAhQACkECAAUggQACkECIAUAgRACgECIIUAAZBCgABIIUAApBAgAFIIEAAp/h8hQ0+zg4oNygAAAABJRU5ErkJggg==",
-      "text/plain": [
-       "<Figure size 640x480 with 1 Axes>"
-      ]
-     },
-     "metadata": {},
-     "output_type": "display_data"
-    }
-   ],
-   "source": [
-    "import io\n",
-    "\n",
-    "import numpy as np\n",
-    "from IPython.display import SVG, display\n",
-    "\n",
-    "\n",
-    "def render_maze_fancy_svg(pixel_grid: np.ndarray) -> SVG:\n",
-    "\t\"\"\"Render the pixel grid as an SVG with pill-style cells.\"\"\"\n",
-    "\th, w, _ = pixel_grid.shape\n",
-    "\tcell_size = 20\n",
-    "\tradius = 6\n",
-    "\n",
-    "\tsvg_buffer = io.StringIO()\n",
-    "\tsvg_buffer.write(\n",
-    "\t\tf'<svg width=\"{w * cell_size}\" height=\"{h * cell_size}\" '\n",
-    "\t\tf'xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 {w * cell_size} {h * cell_size}\">\\n'\n",
-    "\t\t'<rect width=\"100%\" height=\"100%\" fill=\"#2c2c35\"/>\\n'\n",
-    "\t)\n",
-    "\n",
-    "\tcolor_map = {\n",
-    "\t\t(0, 0, 0): \"#2c2c35\",  # wall\n",
-    "\t\t(255, 255, 255): \"#cccccc\",  # open\n",
-    "\t\t(0, 255, 0): \"#00cc66\",  # start\n",
-    "\t\t(255, 0, 0): \"#ff4444\",  # end\n",
-    "\t\t(0, 0, 255): \"#3AA0FF\",  # path\n",
-    "\t}\n",
-    "\n",
-    "\tfor y in range(h):\n",
-    "\t\tfor x in range(w):\n",
-    "\t\t\trgb = tuple(pixel_grid[y, x])\n",
-    "\t\t\thex_color = color_map.get(rgb)\n",
-    "\t\t\tif hex_color is None:\n",
-    "\t\t\t\tcontinue\n",
-    "\t\t\tcx = x * cell_size\n",
-    "\t\t\tcy = y * cell_size\n",
-    "\t\t\tsvg_buffer.write(\n",
-    "\t\t\t\tf'<rect x=\"{cx}\" y=\"{cy}\" width=\"{cell_size}\" height=\"{cell_size}\" '\n",
-    "\t\t\t\tf'rx=\"{radius}\" ry=\"{radius}\" fill=\"{hex_color}\"/>\\n'\n",
-    "\t\t\t)\n",
-    "\n",
-    "\tsvg_buffer.write(\"</svg>\")\n",
-    "\tsvg_data = svg_buffer.getvalue()\n",
-    "\treturn SVG(svg_data)\n",
-    "\n",
-    "\n",
-    "import matplotlib.pyplot as plt\n",
-    "\n",
-    "from maze_dataset import LatticeMazeGenerators, MazeDataset, MazeDatasetConfig\n",
-    "\n",
-    "cfg = MazeDatasetConfig(\n",
-    "\tname=\"test\", grid_n=5, n_mazes=5, maze_ctor=LatticeMazeGenerators.gen_dfs\n",
-    ")\n",
-    "ds = MazeDataset.from_config(cfg)\n",
-    "pixels = ds[0].as_pixels()\n",
-    "plt.imshow(pixels)\n",
-    "\n",
-    "svg_output = render_maze_fancy_svg(pixels)\n",
-    "display(svg_output)"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 4,
-   "metadata": {},
-   "outputs": [
-    {
-     "data": {
-      "image/svg+xml": [
-       "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"220\" height=\"220\" viewBox=\"0 0 220 220\">\n",
-       "<defs>\n",
-       "  <filter id=\"dropShadow\" x=\"-20%\" y=\"-20%\" width=\"140%\" height=\"140%\">\n",
-       "    <feGaussianBlur in=\"SourceAlpha\" stdDeviation=\"1\" result=\"blur\"/>\n",
-       "    <feOffset in=\"blur\" dx=\"1\" dy=\"1\" result=\"offsetBlur\"/>\n",
-       "    <feMerge>\n",
-       "      <feMergeNode in=\"offsetBlur\"/>\n",
-       "      <feMergeNode in=\"SourceGraphic\"/>\n",
-       "    </feMerge>\n",
-       "  </filter>\n",
-       "  <linearGradient id=\"grad-open\" x1=\"0%\" y1=\"0%\" x2=\"0%\" y2=\"100%\">\n",
-       "    <stop offset=\"0%\" stop-color=\"#dbdbdb\"/>\n",
-       "    <stop offset=\"100%\" stop-color=\"#cccccc\"/>\n",
-       "  </linearGradient>\n",
-       "  <linearGradient id=\"grad-start\" x1=\"0%\" y1=\"0%\" x2=\"0%\" y2=\"100%\">\n",
-       "    <stop offset=\"0%\" stop-color=\"#4cdb93\"/>\n",
-       "    <stop offset=\"100%\" stop-color=\"#00cc66\"/>\n",
-       "  </linearGradient>\n",
-       "  <linearGradient id=\"grad-path\" x1=\"0%\" y1=\"0%\" x2=\"0%\" y2=\"100%\">\n",
-       "    <stop offset=\"0%\" stop-color=\"#75bcff\"/>\n",
-       "    <stop offset=\"100%\" stop-color=\"#3AA0FF\"/>\n",
-       "  </linearGradient>\n",
-       "  <linearGradient id=\"grad-wall\" x1=\"0%\" y1=\"0%\" x2=\"0%\" y2=\"100%\">\n",
-       "    <stop offset=\"0%\" stop-color=\"#6b6b71\"/>\n",
-       "    <stop offset=\"100%\" stop-color=\"#2c2c35\"/>\n",
-       "  </linearGradient>\n",
-       "  <linearGradient id=\"grad-end\" x1=\"0%\" y1=\"0%\" x2=\"0%\" y2=\"100%\">\n",
-       "    <stop offset=\"0%\" stop-color=\"#ff7c7c\"/>\n",
-       "    <stop offset=\"100%\" stop-color=\"#ff4444\"/>\n",
-       "  </linearGradient>\n",
-       "</defs>\n",
-       "<path d=\"M 6 0 H 20 L 20 0 V 20 L 20 20 H 0 L 0 20 V 6 A 6 6 0 0 1 6 0 Z\" fill=\"url(#grad-wall)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 20 0 H 40 L 40 0 V 20 L 40 20 H 20 L 20 20 V 0 L 20 0 Z\" fill=\"url(#grad-wall)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 40 0 H 60 L 60 0 V 20 L 60 20 H 40 L 40 20 V 0 L 40 0 Z\" fill=\"url(#grad-wall)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 60 0 H 80 L 80 0 V 20 L 80 20 H 60 L 60 20 V 0 L 60 0 Z\" fill=\"url(#grad-wall)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 80 0 H 100 L 100 0 V 20 L 100 20 H 80 L 80 20 V 0 L 80 0 Z\" fill=\"url(#grad-wall)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 100 0 H 120 L 120 0 V 20 L 120 20 H 100 L 100 20 V 0 L 100 0 Z\" fill=\"url(#grad-wall)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 120 0 H 140 L 140 0 V 20 L 140 20 H 120 L 120 20 V 0 L 120 0 Z\" fill=\"url(#grad-wall)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 140 0 H 160 L 160 0 V 20 L 160 20 H 140 L 140 20 V 0 L 140 0 Z\" fill=\"url(#grad-wall)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 160 0 H 180 L 180 0 V 20 L 180 20 H 160 L 160 20 V 0 L 160 0 Z\" fill=\"url(#grad-wall)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 180 0 H 200 L 200 0 V 20 L 200 20 H 180 L 180 20 V 0 L 180 0 Z\" fill=\"url(#grad-wall)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 200 0 H 214 A 6 6 0 0 1 220 6 V 20 L 220 20 H 200 L 200 20 V 0 L 200 0 Z\" fill=\"url(#grad-wall)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 0 20 H 20 L 20 20 V 40 L 20 40 H 0 L 0 40 V 20 L 0 20 Z\" fill=\"url(#grad-wall)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 26 20 H 40 L 40 20 V 40 L 40 40 H 20 L 20 40 V 26 A 6 6 0 0 1 26 20 Z\" fill=\"url(#grad-open)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 40 20 H 60 L 60 20 V 40 L 60 40 H 40 L 40 40 V 20 L 40 20 Z\" fill=\"url(#grad-open)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 60 20 H 80 L 80 20 V 40 L 80 40 H 60 L 60 40 V 20 L 60 20 Z\" fill=\"url(#grad-open)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 80 20 H 94 A 6 6 0 0 1 100 26 V 34 A 6 6 0 0 1 94 40 H 80 L 80 40 V 20 L 80 20 Z\" fill=\"url(#grad-open)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 106 20 H 120 L 120 20 V 40 L 120 40 H 100 L 100 40 V 26 A 6 6 0 0 1 106 20 Z\" fill=\"url(#grad-path)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 120 20 H 140 L 140 20 V 40 L 140 40 H 120 L 120 40 V 20 L 120 20 Z\" fill=\"url(#grad-path)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 140 20 H 154 A 6 6 0 0 1 160 26 V 40 L 160 40 H 140 L 140 40 V 20 L 140 20 Z\" fill=\"url(#grad-path)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 160 20 H 180 L 180 20 V 40 L 180 40 H 160 L 160 40 V 20 L 160 20 Z\" fill=\"url(#grad-wall)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 186 20 H 194 A 6 6 0 0 1 200 26 V 40 L 200 40 H 180 L 180 40 V 26 A 6 6 0 0 1 186 20 Z\" fill=\"url(#grad-open)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 200 20 H 220 L 220 20 V 40 L 220 40 H 200 L 200 40 V 20 L 200 20 Z\" fill=\"url(#grad-wall)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 0 40 H 20 L 20 40 V 60 L 20 60 H 0 L 0 60 V 40 L 0 40 Z\" fill=\"url(#grad-wall)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 20 40 H 40 L 40 40 V 60 L 40 60 H 20 L 20 60 V 40 L 20 40 Z\" fill=\"url(#grad-open)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 46 40 H 60 L 60 40 V 60 L 60 60 H 46 A 6 6 0 0 1 40 54 V 46 A 6 6 0 0 1 46 40 Z\" fill=\"url(#grad-wall)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 60 40 H 80 L 80 40 V 60 L 80 60 H 60 L 60 60 V 40 L 60 40 Z\" fill=\"url(#grad-wall)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 80 40 H 94 A 6 6 0 0 1 100 46 V 60 L 100 60 H 80 L 80 60 V 40 L 80 40 Z\" fill=\"url(#grad-wall)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 100 40 H 120 L 120 40 V 60 L 120 60 H 100 L 100 60 V 40 L 100 40 Z\" fill=\"url(#grad-path)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 126 40 H 134 A 6 6 0 0 1 140 46 V 60 L 140 60 H 120 L 120 60 V 46 A 6 6 0 0 1 126 40 Z\" fill=\"url(#grad-wall)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 140 40 H 160 L 160 40 V 54 A 6 6 0 0 1 154 60 H 146 A 6 6 0 0 1 140 54 V 40 L 140 40 Z\" fill=\"url(#grad-path)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 160 40 H 180 L 180 40 V 54 A 6 6 0 0 1 174 60 H 166 A 6 6 0 0 1 160 54 V 40 L 160 40 Z\" fill=\"url(#grad-wall)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 180 40 H 200 L 200 40 V 60 L 200 60 H 180 L 180 60 V 40 L 180 40 Z\" fill=\"url(#grad-open)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 200 40 H 220 L 220 40 V 60 L 220 60 H 200 L 200 60 V 40 L 200 40 Z\" fill=\"url(#grad-wall)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 0 60 H 20 L 20 60 V 80 L 20 80 H 0 L 0 80 V 60 L 0 60 Z\" fill=\"url(#grad-wall)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 20 60 H 40 L 40 60 V 80 L 40 80 H 26 A 6 6 0 0 1 20 74 V 60 L 20 60 Z\" fill=\"url(#grad-open)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 40 60 H 60 L 60 60 V 80 L 60 80 H 40 L 40 80 V 60 L 40 60 Z\" fill=\"url(#grad-open)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 60 60 H 74 A 6 6 0 0 1 80 66 V 74 A 6 6 0 0 1 74 80 H 60 L 60 80 V 60 L 60 60 Z\" fill=\"url(#grad-open)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 80 60 H 100 L 100 60 V 80 L 100 80 H 80 L 80 80 V 60 L 80 60 Z\" fill=\"url(#grad-wall)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 100 60 H 120 L 120 60 V 80 L 120 80 H 100 L 100 80 V 60 L 100 60 Z\" fill=\"url(#grad-path)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 120 60 H 140 L 140 60 V 80 L 140 80 H 120 L 120 80 V 60 L 120 60 Z\" fill=\"url(#grad-wall)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 146 60 H 154 A 6 6 0 0 1 160 66 V 74 A 6 6 0 0 1 154 80 H 146 A 6 6 0 0 1 140 74 V 66 A 6 6 0 0 1 146 60 Z\" fill=\"url(#grad-start)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 166 60 H 180 L 180 60 V 80 L 180 80 H 166 A 6 6 0 0 1 160 74 V 66 A 6 6 0 0 1 166 60 Z\" fill=\"url(#grad-open)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 180 60 H 200 L 200 60 V 74 A 6 6 0 0 1 194 80 H 180 L 180 80 V 60 L 180 60 Z\" fill=\"url(#grad-open)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 200 60 H 220 L 220 60 V 80 L 220 80 H 200 L 200 80 V 60 L 200 60 Z\" fill=\"url(#grad-wall)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 0 80 H 20 L 20 80 V 100 L 20 100 H 0 L 0 100 V 80 L 0 80 Z\" fill=\"url(#grad-wall)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 20 80 H 40 L 40 80 V 100 L 40 100 H 20 L 20 100 V 80 L 20 80 Z\" fill=\"url(#grad-wall)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 40 80 H 60 L 60 80 V 100 L 60 100 H 40 L 40 100 V 80 L 40 80 Z\" fill=\"url(#grad-wall)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 60 80 H 80 L 80 80 V 100 L 80 100 H 60 L 60 100 V 80 L 60 80 Z\" fill=\"url(#grad-wall)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 80 80 H 100 L 100 80 V 94 A 6 6 0 0 1 94 100 H 80 L 80 100 V 80 L 80 80 Z\" fill=\"url(#grad-wall)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 100 80 H 120 L 120 80 V 100 L 120 100 H 100 L 100 100 V 80 L 100 80 Z\" fill=\"url(#grad-path)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 120 80 H 140 L 140 80 V 100 L 140 100 H 120 L 120 100 V 80 L 120 80 Z\" fill=\"url(#grad-wall)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 140 80 H 160 L 160 80 V 100 L 160 100 H 140 L 140 100 V 80 L 140 80 Z\" fill=\"url(#grad-wall)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 160 80 H 180 L 180 80 V 100 L 180 100 H 160 L 160 100 V 80 L 160 80 Z\" fill=\"url(#grad-wall)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 180 80 H 200 L 200 80 V 100 L 200 100 H 180 L 180 100 V 80 L 180 80 Z\" fill=\"url(#grad-wall)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 200 80 H 220 L 220 80 V 100 L 220 100 H 200 L 200 100 V 80 L 200 80 Z\" fill=\"url(#grad-wall)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 0 100 H 20 L 20 100 V 120 L 20 120 H 0 L 0 120 V 100 L 0 100 Z\" fill=\"url(#grad-wall)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 26 100 H 40 L 40 100 V 120 L 40 120 H 20 L 20 120 V 106 A 6 6 0 0 1 26 100 Z\" fill=\"url(#grad-path)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 40 100 H 60 L 60 100 V 120 L 60 120 H 40 L 40 120 V 100 L 40 100 Z\" fill=\"url(#grad-path)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 60 100 H 80 L 80 100 V 120 L 80 120 H 60 L 60 120 V 100 L 60 100 Z\" fill=\"url(#grad-path)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 80 100 H 100 L 100 100 V 120 L 100 120 H 80 L 80 120 V 100 L 80 100 Z\" fill=\"url(#grad-path)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 100 100 H 120 L 120 100 V 114 A 6 6 0 0 1 114 120 H 100 L 100 120 V 100 L 100 100 Z\" fill=\"url(#grad-path)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 120 100 H 140 L 140 100 V 120 L 140 120 H 120 L 120 120 V 100 L 120 100 Z\" fill=\"url(#grad-wall)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 146 100 H 154 A 6 6 0 0 1 160 106 V 114 A 6 6 0 0 1 154 120 H 146 A 6 6 0 0 1 140 114 V 106 A 6 6 0 0 1 146 100 Z\" fill=\"url(#grad-end)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 166 100 H 180 L 180 100 V 120 L 180 120 H 166 A 6 6 0 0 1 160 114 V 106 A 6 6 0 0 1 166 100 Z\" fill=\"url(#grad-path)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 180 100 H 194 A 6 6 0 0 1 200 106 V 120 L 200 120 H 180 L 180 120 V 100 L 180 100 Z\" fill=\"url(#grad-path)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 200 100 H 220 L 220 100 V 120 L 220 120 H 200 L 200 120 V 100 L 200 100 Z\" fill=\"url(#grad-wall)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 0 120 H 20 L 20 120 V 140 L 20 140 H 0 L 0 140 V 120 L 0 120 Z\" fill=\"url(#grad-wall)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 20 120 H 40 L 40 120 V 140 L 40 140 H 20 L 20 140 V 120 L 20 120 Z\" fill=\"url(#grad-path)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 46 120 H 60 L 60 120 V 140 L 60 140 H 40 L 40 140 V 126 A 6 6 0 0 1 46 120 Z\" fill=\"url(#grad-wall)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 60 120 H 80 L 80 120 V 140 L 80 140 H 60 L 60 140 V 120 L 60 120 Z\" fill=\"url(#grad-wall)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 80 120 H 94 A 6 6 0 0 1 100 126 V 134 A 6 6 0 0 1 94 140 H 80 L 80 140 V 120 L 80 120 Z\" fill=\"url(#grad-wall)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 106 120 H 114 A 6 6 0 0 1 120 126 V 140 L 120 140 H 100 L 100 140 V 126 A 6 6 0 0 1 106 120 Z\" fill=\"url(#grad-open)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 120 120 H 140 L 140 120 V 140 L 140 140 H 126 A 6 6 0 0 1 120 134 V 120 L 120 120 Z\" fill=\"url(#grad-wall)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 140 120 H 160 L 160 120 V 140 L 160 140 H 140 L 140 140 V 120 L 140 120 Z\" fill=\"url(#grad-wall)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 160 120 H 174 A 6 6 0 0 1 180 126 V 140 L 180 140 H 160 L 160 140 V 120 L 160 120 Z\" fill=\"url(#grad-wall)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 180 120 H 200 L 200 120 V 140 L 200 140 H 180 L 180 140 V 120 L 180 120 Z\" fill=\"url(#grad-path)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 200 120 H 220 L 220 120 V 140 L 220 140 H 200 L 200 140 V 120 L 200 120 Z\" fill=\"url(#grad-wall)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 0 140 H 20 L 20 140 V 160 L 20 160 H 0 L 0 160 V 140 L 0 140 Z\" fill=\"url(#grad-wall)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 20 140 H 40 L 40 140 V 160 L 40 160 H 20 L 20 160 V 140 L 20 140 Z\" fill=\"url(#grad-path)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 40 140 H 60 L 60 140 V 160 L 60 160 H 40 L 40 160 V 140 L 40 140 Z\" fill=\"url(#grad-wall)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 66 140 H 80 L 80 140 V 160 L 80 160 H 66 A 6 6 0 0 1 60 154 V 146 A 6 6 0 0 1 66 140 Z\" fill=\"url(#grad-open)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 80 140 H 100 L 100 140 V 160 L 100 160 H 80 L 80 160 V 140 L 80 140 Z\" fill=\"url(#grad-open)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 100 140 H 120 L 120 140 V 160 L 120 160 H 100 L 100 160 V 140 L 100 140 Z\" fill=\"url(#grad-open)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 120 140 H 140 L 140 140 V 160 L 140 160 H 120 L 120 160 V 140 L 120 140 Z\" fill=\"url(#grad-open)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 140 140 H 154 A 6 6 0 0 1 160 146 V 154 A 6 6 0 0 1 154 160 H 140 L 140 160 V 140 L 140 140 Z\" fill=\"url(#grad-open)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 160 140 H 180 L 180 140 V 160 L 180 160 H 160 L 160 160 V 140 L 160 140 Z\" fill=\"url(#grad-wall)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 180 140 H 200 L 200 140 V 160 L 200 160 H 180 L 180 160 V 140 L 180 140 Z\" fill=\"url(#grad-path)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 200 140 H 220 L 220 140 V 160 L 220 160 H 200 L 200 160 V 140 L 200 140 Z\" fill=\"url(#grad-wall)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 0 160 H 20 L 20 160 V 180 L 20 180 H 0 L 0 180 V 160 L 0 160 Z\" fill=\"url(#grad-wall)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 20 160 H 40 L 40 160 V 180 L 40 180 H 20 L 20 180 V 160 L 20 160 Z\" fill=\"url(#grad-path)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 40 160 H 60 L 60 160 V 180 L 60 180 H 46 A 6 6 0 0 1 40 174 V 160 L 40 160 Z\" fill=\"url(#grad-wall)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 60 160 H 80 L 80 160 V 180 L 80 180 H 60 L 60 180 V 160 L 60 160 Z\" fill=\"url(#grad-wall)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 80 160 H 100 L 100 160 V 180 L 100 180 H 80 L 80 180 V 160 L 80 160 Z\" fill=\"url(#grad-wall)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 100 160 H 120 L 120 160 V 180 L 120 180 H 100 L 100 180 V 160 L 100 160 Z\" fill=\"url(#grad-wall)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 120 160 H 140 L 140 160 V 180 L 140 180 H 120 L 120 180 V 160 L 120 160 Z\" fill=\"url(#grad-wall)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 140 160 H 160 L 160 160 V 180 L 160 180 H 140 L 140 180 V 160 L 140 160 Z\" fill=\"url(#grad-wall)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 160 160 H 180 L 180 160 V 174 A 6 6 0 0 1 174 180 H 160 L 160 180 V 160 L 160 160 Z\" fill=\"url(#grad-wall)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 180 160 H 200 L 200 160 V 180 L 200 180 H 180 L 180 180 V 160 L 180 160 Z\" fill=\"url(#grad-path)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 200 160 H 220 L 220 160 V 180 L 220 180 H 200 L 200 180 V 160 L 200 160 Z\" fill=\"url(#grad-wall)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 0 180 H 20 L 20 180 V 200 L 20 200 H 0 L 0 200 V 180 L 0 180 Z\" fill=\"url(#grad-wall)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 20 180 H 40 L 40 180 V 200 L 40 200 H 26 A 6 6 0 0 1 20 194 V 180 L 20 180 Z\" fill=\"url(#grad-path)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 40 180 H 60 L 60 180 V 200 L 60 200 H 40 L 40 200 V 180 L 40 180 Z\" fill=\"url(#grad-path)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 60 180 H 80 L 80 180 V 200 L 80 200 H 60 L 60 200 V 180 L 60 180 Z\" fill=\"url(#grad-path)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 80 180 H 100 L 100 180 V 200 L 100 200 H 80 L 80 200 V 180 L 80 180 Z\" fill=\"url(#grad-path)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 100 180 H 120 L 120 180 V 200 L 120 200 H 100 L 100 200 V 180 L 100 180 Z\" fill=\"url(#grad-path)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 120 180 H 140 L 140 180 V 200 L 140 200 H 120 L 120 200 V 180 L 120 180 Z\" fill=\"url(#grad-path)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 140 180 H 160 L 160 180 V 200 L 160 200 H 140 L 140 200 V 180 L 140 180 Z\" fill=\"url(#grad-path)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 160 180 H 180 L 180 180 V 200 L 180 200 H 160 L 160 200 V 180 L 160 180 Z\" fill=\"url(#grad-path)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 180 180 H 200 L 200 180 V 194 A 6 6 0 0 1 194 200 H 180 L 180 200 V 180 L 180 180 Z\" fill=\"url(#grad-path)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 200 180 H 220 L 220 180 V 200 L 220 200 H 200 L 200 200 V 180 L 200 180 Z\" fill=\"url(#grad-wall)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 0 200 H 20 L 20 200 V 220 L 20 220 H 6 A 6 6 0 0 1 0 214 V 200 L 0 200 Z\" fill=\"url(#grad-wall)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 20 200 H 40 L 40 200 V 220 L 40 220 H 20 L 20 220 V 200 L 20 200 Z\" fill=\"url(#grad-wall)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 40 200 H 60 L 60 200 V 220 L 60 220 H 40 L 40 220 V 200 L 40 200 Z\" fill=\"url(#grad-wall)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 60 200 H 80 L 80 200 V 220 L 80 220 H 60 L 60 220 V 200 L 60 200 Z\" fill=\"url(#grad-wall)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 80 200 H 100 L 100 200 V 220 L 100 220 H 80 L 80 220 V 200 L 80 200 Z\" fill=\"url(#grad-wall)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 100 200 H 120 L 120 200 V 220 L 120 220 H 100 L 100 220 V 200 L 100 200 Z\" fill=\"url(#grad-wall)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 120 200 H 140 L 140 200 V 220 L 140 220 H 120 L 120 220 V 200 L 120 200 Z\" fill=\"url(#grad-wall)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 140 200 H 160 L 160 200 V 220 L 160 220 H 140 L 140 220 V 200 L 140 200 Z\" fill=\"url(#grad-wall)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 160 200 H 180 L 180 200 V 220 L 180 220 H 160 L 160 220 V 200 L 160 200 Z\" fill=\"url(#grad-wall)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 180 200 H 200 L 200 200 V 220 L 200 220 H 180 L 180 220 V 200 L 180 200 Z\" fill=\"url(#grad-wall)\" filter=\"url(#dropShadow)\"/>\n",
-       "<path d=\"M 200 200 H 220 L 220 200 V 214 A 6 6 0 0 1 214 220 H 200 L 200 220 V 200 L 200 200 Z\" fill=\"url(#grad-wall)\" filter=\"url(#dropShadow)\"/>\n",
-       "</svg>"
-      ],
-      "text/plain": [
-       "<IPython.core.display.SVG object>"
-      ]
-     },
-     "metadata": {},
-     "output_type": "display_data"
-    },
-    {
-     "data": {
-      "image/png": "iVBORw0KGgoAAAANSUhEUgAAAaAAAAGdCAYAAABU0qcqAAAAOnRFWHRTb2Z0d2FyZQBNYXRwbG90bGliIHZlcnNpb24zLjEwLjEsIGh0dHBzOi8vbWF0cGxvdGxpYi5vcmcvc2/+5QAAAAlwSFlzAAAPYQAAD2EBqD+naQAAFt1JREFUeJzt3V2MVPX5wPFngDJQA6NoWdgCujWmqCi1IkRp2vzDRmKI0TYxbYMN1YsmZi0gSau2AdJYXdHUNCrBlwu1qaK9KL4ltiFUMUTeFPAltoCR1I12QROdQayr2T3/C9vFFRAtszyzy+eT/C72zOyeJ4fZ882ZHWZKRVEUAQBH2ZDsAQA4NgkQACkECIAUAgRACgECIIUAAZBCgABIIUAApBiWPcBn9fT0xFtvvRWjRo2KUqmUPQ4AX1JRFLF3795obm6OIUMOfZ3TcAF66623YuLEidljAHCEOjo6YsKECYe8veGeghs1alT2CADUweHO5w0XIE+7AQwOhzufN1yAADg2CBAAKQQIgBQCBEAKAQIghQABkEKAAEghQACkECAAUvRbgJYvXx6nnHJKjBgxImbMmBGbNm3qr10BMAD1S4AeeeSRWLRoUSxdujS2bNkSU6dOjdmzZ8eePXv6Y3cADERFP5g+fXrR1tbW+3V3d3fR3NxctLe3H/Z7q9VqERGWZVnWAF/VavVzz/d1vwL66KOP4oUXXojW1tbebUOGDInW1tZYv379Affv6uqKWq3WZwEw+NU9QO+88050d3dHU1NTn+1NTU3R2dl5wP3b29ujUqn0Lp8FBHBsSH8V3PXXXx/VarV3dXR0ZI8EwFFQ909EPemkk2Lo0KGxe/fuPtt3794d48aNO+D+5XI5yuVyvccAoMHV/Qpo+PDhce6558aaNWt6t/X09MSaNWvi/PPPr/fuABig6n4FFBGxaNGimDdvXkybNi2mT58ev//972Pfvn1xxRVX9MfuABiA+iVAP/zhD+Ptt9+OJUuWRGdnZ3zrW9+Kv/zlLwe8MAGAY1epKIoie4hPq9VqUalUsscA4AhVq9UYPXr0IW9PfxUcAMcmAQIghQABkEKAAEghQACkECAAUggQACkECIAUAgRACgECIEW/vBfcYNFg71JEgyiVsifgQI3xj9II54zSAHqAugICIIUAAZBCgABIIUAApBAgAFIIEAApBAiAFAIEQAoBAiCFAAGQQoAASCFAAKQQIABSCBAAKQQIgBQCBEAKAQIghQABkEKAAEghQACkECAAUggQACkECIAUAgRACgECIIUAAZBCgABIIUAApBAgAFIIEAApBAiAFAIEQIph2QPw+UqlUvYIHKDIHuA/GuGx0SjHgoHIFRAAKQQIgBQCBEAKAQIghQABkEKAAEghQACkECAAUggQACkECIAUAgRACgECIIUAAZCi7gFqb2+P8847L0aNGhVjx46NSy+9NLZv317v3QAwwNU9QGvXro22trbYsGFDrF69Oj7++OO48MILY9++ffXeFQADWKkoin79QI+33347xo4dG2vXro3vfve7h71/rVaLSqXSnyN9Yf18aL4QnwfUiPIfF59ohMeGY/Fpzhl9VavVGD169CFv7/cPpKtWqxERMWbMmIPe3tXVFV1dXb1f12q1/h4JgAbQry9C6OnpiYULF8bMmTNjypQpB71Pe3t7VCqV3jVx4sT+HAmABtGvT8FdddVV8dRTT8W6detiwoQJB73Pwa6AGiVCLqc5uPzHxSca4bHhWHyac0ZfaU/BXX311fHkk0/Gs88+e8j4RESUy+Uol8v9NQYADaruASqKIn7+85/HqlWr4plnnomWlpZ67wKAQaDuAWpra4uHHnooHnvssRg1alR0dnZGRESlUomRI0fWe3cADFB1/xvQoZ5/vO++++KnP/3pYb/fy7D7aqTnc/mv/MfFJxrhseFYfJpzRl9H/W9AjfAPAEDj815wAKQQIABSCBAAKQQIgBQCBEAKAQIghQABkEKAAEghQACk6PcPpOPIeGeJ/RrpLUb4j6Ix/k2KhnlLIL4MV0AApBAgAFIIEAApBAiAFAIEQAoBAiCFAAGQQoAASCFAAKQQIABSCBAAKQQIgBQCBEAKAQIghQABkEKAAEghQACkECAAUggQACkECIAUAgRACgECIIUAAZBCgABIIUAApBAgAFIIEAApBAiAFAIEQAoBAiCFAAGQQoAASDEse4BGViqVskeAxtYgvyKlRhmEL8UVEAApBAiAFAIEQAoBAiCFAAGQQoAASCFAAKQQIABSCBAAKQQIgBQCBEAKAQIghQABkKLfA3TzzTdHqVSKhQsX9veuABhA+jVAmzdvjrvvvjvOPvvs/twNAANQvwXo/fffj7lz58a9994bJ5xwQn/tBoABqt8C1NbWFnPmzInW1tbPvV9XV1fUarU+C4DBr18+EfXhhx+OLVu2xObNmw973/b29vjNb37TH2MA0MDqfgXU0dERCxYsiAcffDBGjBhx2Ptff/31Ua1We1dHR0e9RwKgAZWKoijq+QMfffTR+P73vx9Dhw7t3dbd3R2lUimGDBkSXV1dfW77rFqtFpVKpZ4jQZ3V9VfmCJSyB4DPVa1WY/To0Ye8ve5Pwc2aNStefvnlPtuuuOKKmDx5clx77bWfGx8Ajh11D9CoUaNiypQpfbYdd9xxceKJJx6wHYBjl3dCACBF3f8GdKT8DYjG1yi/Mv4GRGM73N+AXAEBkEKAAEghQACkECAAUggQACkECIAUAgRACgECIIUAAZCiXz4PaPBolP/xDo2pUX5DSg0zSSMYOO+Q4QoIgBQCBEAKAQIghQABkEKAAEghQACkECAAUggQACkECIAUAgRACgECIIUAAZBCgABIIUAApBAgAFIIEAApBAiAFAIEQAoBAiCFAAGQQoAASCFAAKQQIABSCBAAKQQIgBQCBEAKAQIghQABkEKAAEghQACkECAAUggQACkECIAUw7IH4HBK2QPwGUVRZI8QERGlBnhoNMAI/9EokzTGY2OgcAUEQAoBAiCFAAGQQoAASCFAAKQQIABSCBAAKQQIgBQCBEAKAQIghQABkEKAAEjRLwF688034/LLL48TTzwxRo4cGWeddVY8//zz/bErAAaour8b9rvvvhszZ86M//u//4unnnoqvva1r8XOnTvjhBNOqPeuABjA6h6gZcuWxcSJE+O+++7r3dbS0lLv3QAwwNX9KbjHH388pk2bFpdddlmMHTs2zjnnnLj33nsPef+urq6o1Wp9FgCDX90D9Prrr8eKFSvitNNOi7/+9a9x1VVXxfz58+OBBx446P3b29ujUqn0rokTJ9Z7JAAaUKmo88c7Dh8+PKZNmxbPPfdc77b58+fH5s2bY/369Qfcv6urK7q6unq/rtVqDRShRvh0w0b5pEf+q3E+EdVjo/E0wmOjcR4X1Wo1Ro8efcjb634FNH78+DjjjDP6bDv99NPjjTfeOOj9y+VyjB49us8CYPCre4BmzpwZ27dv77Ntx44dcfLJJ9d7VwAMYHUP0DXXXBMbNmyIm266KV577bV46KGH4p577om2trZ67wqAgazoB0888UQxZcqUolwuF5MnTy7uueeeL/y91Wq1iE+eSG2AVTTAyj4G1mdXo8g+DtbBVvb5orEeF9Vq9XMfw3V/EcKRqtVqUalUssf4j0Y4NI3zB0U+0Si/Ml6E0Iga4bHROI+Lo/4iBAD4IgQIgBQCBEAKAQIghQABkEKAAEghQACkECAAUggQACnq/omoDE6N8r//2c+/yX7eFWJgcgUEQAoBAiCFAAGQQoAASCFAAKQQIABSCBAAKQQIgBQCBEAKAQIghQABkEKAAEghQACkECAAUggQACkECIAUAgRACgECIIUAAZBCgABIIUAApBAgAFIIEAApBAiAFAIEQAoBAiCFAAGQQoAASCFAAKQQIABSCBAAKQQIgBQCBECKYdkDMDCUSqXsEYBBxhUQACkECIAUAgRACgECIIUAAZBCgABIIUAApBAgAFIIEAApBAiAFAIEQAoBAiBF3QPU3d0dixcvjpaWlhg5cmSceuqpccMNN0RRFPXeFQADWN3fDXvZsmWxYsWKeOCBB+LMM8+M559/Pq644oqoVCoxf/78eu8OgAGq7gF67rnn4pJLLok5c+ZERMQpp5wSK1eujE2bNtV7VwAMYHV/Cu6CCy6INWvWxI4dOyIi4sUXX4x169bFRRdddND7d3V1Ra1W67MAOAYUddbd3V1ce+21RalUKoYNG1aUSqXipptuOuT9ly5dWkREg66iAVb2MbAs64uv7PNFY50zqtXq5/ai7gFauXJlMWHChGLlypXFSy+9VPzhD38oxowZU9x///0Hvf+HH35YVKvV3tXR0ZF+0DyYLMv631b2+aKxzhlHPUATJkwo7rzzzj7bbrjhhuKb3/zmF/r+arWaftA8mCzL+t9W9vmisc4ZhwtQ3f8G9MEHH8SQIX1/7NChQ6Onp6feuwJgAKv7q+AuvvjiuPHGG2PSpElx5plnxtatW+O2226LK6+8st67AmAAKxVFUdTzB+7duzcWL14cq1atij179kRzc3P8+Mc/jiVLlsTw4cMP+/21Wi0qlUo9RzoCdT00/6NS9gDAF+ac8WnVajVGjx59yNvrHqAjJUCf1TgPJuBwnDM+7XAB8l5wAKQQIABSCBAAKQQIgBQCBEAKAQIghQABkEKAAEghQACkECAAUtT9zUipt0Z4aw+A+nMFBEAKAQIghQABkEKAAEghQACkECAAUggQACkECIAUAgRACgECIIUAAZBCgABIIUAApBAgAFIIEAApBAiAFAIEQAoBAiCFAAGQQoAASCFAAKQQIABSCBAAKQQIgBQCBEAKAQIghQABkEKAAEghQACkECAAUggQACkECIAUw7IHaGyl7AEABi1XQACkECAAUggQACkECIAUAgRACgECIIUAAZBCgABIIUAApBAgAFIIEAApBAiAFF86QM8++2xcfPHF0dzcHKVSKR599NE+txdFEUuWLInx48fHyJEjo7W1NXbu3FmveQEYJL50gPbt2xdTp06N5cuXH/T2W265JW6//fa46667YuPGjXHcccfF7Nmz48MPPzziYQEYRIojEBHFqlWrer/u6ekpxo0bV9x666292957772iXC4XK1eu/EI/s1qtFhFhWZZlDfBVrVY/93xf178B7dq1Kzo7O6O1tbV3W6VSiRkzZsT69esP+j1dXV1Rq9X6LAAGv7oGqLOzMyIimpqa+mxvamrqve2z2tvbo1Kp9K6JEyfWcyQAGlT6q+Cuv/76qFarvaujoyN7JACOgroGaNy4cRERsXv37j7bd+/e3XvbZ5XL5Rg9enSfBcDgV9cAtbS0xLhx42LNmjW922q1WmzcuDHOP//8eu4KgAFu2Jf9hvfffz9ee+213q937doV27ZtizFjxsSkSZNi4cKF8dvf/jZOO+20aGlpicWLF0dzc3Nceuml9ZwbgIHuy770+umnnz7oy+3mzZvX+1LsxYsXF01NTUW5XC5mzZpVbN++/Qv/fC/DtizLGhzrcC/DLhVFUUQDqdVqUalUsscA4AhVq9XP/bt++qvgADg2CRAAKQQIgBQCBEAKAQIghQABkEKAAEghQACkECAAUjRcgBrsjRkA+B8d7nzecAHau3dv9ggA1MHhzucN915wPT098dZbb8WoUaOiVCr9Tz+jVqvFxIkTo6Oj45j/fCHHoi/HYz/HYj/HYr96HIuiKGLv3r3R3NwcQ4Yc+jrnS38cQ38bMmRITJgwoS4/ywfc7edY9OV47OdY7OdY7Hekx+KLvKl0wz0FB8CxQYAASDEoA1Qul2Pp0qVRLpezR0nnWPTleOznWOznWOx3NI9Fw70IAYBjw6C8AgKg8QkQACkECIAUAgRAikEZoOXLl8cpp5wSI0aMiBkzZsSmTZuyRzrq2tvb47zzzotRo0bF2LFj49JLL43t27dnj9UQbr755iiVSrFw4cLsUVK8+eabcfnll8eJJ54YI0eOjLPOOiuef/757LFSdHd3x+LFi6OlpSVGjhwZp556atxwww3HxHtSPvvss3HxxRdHc3NzlEqlePTRR/vcXhRFLFmyJMaPHx8jR46M1tbW2LlzZ11nGHQBeuSRR2LRokWxdOnS2LJlS0ydOjVmz54de/bsyR7tqFq7dm20tbXFhg0bYvXq1fHxxx/HhRdeGPv27cseLdXmzZvj7rvvjrPPPjt7lBTvvvtuzJw5M77yla/EU089Fa+++mr87ne/ixNOOCF7tBTLli2LFStWxJ133hl///vfY9myZXHLLbfEHXfckT1av9u3b19MnTo1li9fftDbb7nllrj99tvjrrvuio0bN8Zxxx0Xs2fPjg8//LB+QxSDzPTp04u2trber7u7u4vm5uaivb09cap8e/bsKSKiWLt2bfYoafbu3VucdtppxerVq4vvfe97xYIFC7JHOuquvfba4jvf+U72GA1jzpw5xZVXXtln2w9+8INi7ty5SRPliIhi1apVvV/39PQU48aNK2699dbebe+9915RLpeLlStX1m2/g+oK6KOPPooXXnghWltbe7cNGTIkWltbY/369YmT5atWqxERMWbMmORJ8rS1tcWcOXP6PD6ONY8//nhMmzYtLrvsshg7dmycc845ce+992aPleaCCy6INWvWxI4dOyIi4sUXX4x169bFRRddlDxZrl27dkVnZ2ef35VKpRIzZsyo67m04d6M9Ei888470d3dHU1NTX22NzU1xT/+8Y+kqfL19PTEwoULY+bMmTFlypTscVI8/PDDsWXLlti8eXP2KKlef/31WLFiRSxatCh+9atfxebNm2P+/PkxfPjwmDdvXvZ4R911110XtVotJk+eHEOHDo3u7u648cYbY+7cudmjpers7IyIOOi59L+31cOgChAH19bWFq+88kqsW7cue5QUHR0dsWDBgli9enWMGDEie5xUPT09MW3atLjpppsiIuKcc86JV155Je66665jMkB/+tOf4sEHH4yHHnoozjzzzNi2bVssXLgwmpubj8njcbQNqqfgTjrppBg6dGjs3r27z/bdu3fHuHHjkqbKdfXVV8eTTz4ZTz/9dN0+5mKgeeGFF2LPnj3x7W9/O4YNGxbDhg2LtWvXxu233x7Dhg2L7u7u7BGPmvHjx8cZZ5zRZ9vpp58eb7zxRtJEuX7xi1/EddddFz/60Y/irLPOip/85CdxzTXXRHt7e/Zoqf57vuzvc+mgCtDw4cPj3HPPjTVr1vRu6+npiTVr1sT555+fONnRVxRFXH311bFq1ar429/+Fi0tLdkjpZk1a1a8/PLLsW3btt41bdq0mDt3bmzbti2GDh2aPeJRM3PmzANejr9jx444+eSTkybK9cEHHxzwgWlDhw6Nnp6epIkaQ0tLS4wbN67PubRWq8XGjRvrey6t28sZGsTDDz9clMvl4v777y9effXV4mc/+1lx/PHHF52dndmjHVVXXXVVUalUimeeeab417/+1bs++OCD7NEawrH6KrhNmzYVw4YNK2688cZi586dxYMPPlh89atfLf74xz9mj5Zi3rx5xde//vXiySefLHbt2lX8+c9/Lk466aTil7/8ZfZo/W7v3r3F1q1bi61btxYRUdx2223F1q1bi3/+859FURTFzTffXBx//PHFY489Vrz00kvFJZdcUrS0tBT//ve/6zbDoAtQURTFHXfcUUyaNKkYPnx4MX369GLDhg3ZIx11EXHQdd9992WP1hCO1QAVRVE88cQTxZQpU4pyuVxMnjy5uOeee7JHSlOr1YoFCxYUkyZNKkaMGFF84xvfKH79618XXV1d2aP1u6effvqg54h58+YVRfHJS7EXL15cNDU1FeVyuZg1a1axffv2us7g4xgASDGo/gYEwMAhQACkECAAUggQACkECIAUAgRACgECIIUAAZBCgABIIUAApBAgAFIIEAAp/h8hQ0+zg4oNygAAAABJRU5ErkJggg==",
-      "text/plain": [
-       "<Figure size 640x480 with 1 Axes>"
-      ]
-     },
-     "metadata": {},
-     "output_type": "display_data"
-    }
-   ],
-   "source": [
-    "import numpy as np\n",
-    "from IPython.display import SVG, display\n",
-    "\n",
-    "\n",
-    "def render_maze_fancy_svg_shaded(pixel_grid: np.ndarray) -> SVG:\n",
-    "\t\"\"\"Render a pixel grid as an SVG with selective corner rounding,\n",
-    "\tgradient shading, and drop shadows.\n",
-    "\n",
-    "\tParameters\n",
-    "\t----------\n",
-    "\t  - pixel_grid: np.ndarray of shape (h, w, 3), a uint8 grid of RGB values.\n",
-    "\n",
-    "\tReturns\n",
-    "\t-------\n",
-    "\t  - An IPython.display.SVG object.\n",
-    "\n",
-    "\t\"\"\"\n",
-    "\th, w, _ = pixel_grid.shape\n",
-    "\tcell_size = 20  # pixel size for each cell in the SVG\n",
-    "\tradius = 6  # maximum corner radius\n",
-    "\n",
-    "\t# Map exact RGB tuples to base hex colors.\n",
-    "\tcolor_map = {\n",
-    "\t\t(0, 0, 0): \"#2c2c35\",  # wall\n",
-    "\t\t(255, 255, 255): \"#cccccc\",  # open\n",
-    "\t\t(0, 255, 0): \"#00cc66\",  # start\n",
-    "\t\t(255, 0, 0): \"#ff4444\",  # end\n",
-    "\t\t(0, 0, 255): \"#3AA0FF\",  # path\n",
-    "\t}\n",
-    "\n",
-    "\tdef lighten_color(hex_color: str, factor: float = 0.3) -> str:\n",
-    "\t\t\"\"\"Return a lighter version of the hex color.\"\"\"\n",
-    "\t\thex_color = hex_color.lstrip(\"#\")\n",
-    "\t\tr = int(hex_color[0:2], 16)\n",
-    "\t\tg = int(hex_color[2:4], 16)\n",
-    "\t\tb = int(hex_color[4:6], 16)\n",
-    "\t\tr_new = int(r + (255 - r) * factor)\n",
-    "\t\tg_new = int(g + (255 - g) * factor)\n",
-    "\t\tb_new = int(b + (255 - b) * factor)\n",
-    "\t\treturn f\"#{r_new:02x}{g_new:02x}{b_new:02x}\"\n",
-    "\n",
-    "\t# Build gradients for each unique base color.\n",
-    "\tunique_colors = set(color_map.values())\n",
-    "\tgradients = {}\n",
-    "\tfor col in unique_colors:\n",
-    "\t\tlight = lighten_color(col)\n",
-    "\t\tif col == \"#2c2c35\":\n",
-    "\t\t\tgrad_id = \"grad-wall\"\n",
-    "\t\telif col == \"#cccccc\":\n",
-    "\t\t\tgrad_id = \"grad-open\"\n",
-    "\t\telif col == \"#00cc66\":\n",
-    "\t\t\tgrad_id = \"grad-start\"\n",
-    "\t\telif col == \"#ff4444\":\n",
-    "\t\t\tgrad_id = \"grad-end\"\n",
-    "\t\telif col == \"#3AA0FF\":\n",
-    "\t\t\tgrad_id = \"grad-path\"\n",
-    "\t\telse:\n",
-    "\t\t\tgrad_id = f\"grad-{col.lstrip('#')}\"\n",
-    "\t\tgradients[col] = (grad_id, light)\n",
-    "\n",
-    "\t# Start building the SVG.\n",
-    "\tsvg_width = w * cell_size\n",
-    "\tsvg_height = h * cell_size\n",
-    "\tsvg_buffer = io.StringIO()\n",
-    "\tsvg_buffer.write(\n",
-    "\t\tf'<svg width=\"{svg_width}\" height=\"{svg_height}\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 {svg_width} {svg_height}\">\\n'\n",
-    "\t)\n",
-    "\n",
-    "\t# Define filters and gradients in <defs>.\n",
-    "\tsvg_buffer.write(\"<defs>\\n\")\n",
-    "\t# Drop shadow filter.\n",
-    "\tsvg_buffer.write(\n",
-    "\t\t'  <filter id=\"dropShadow\" x=\"-20%\" y=\"-20%\" width=\"140%\" height=\"140%\">\\n'\n",
-    "\t)\n",
-    "\tsvg_buffer.write(\n",
-    "\t\t'    <feGaussianBlur in=\"SourceAlpha\" stdDeviation=\"1\" result=\"blur\"/>\\n'\n",
-    "\t)\n",
-    "\tsvg_buffer.write('    <feOffset in=\"blur\" dx=\"1\" dy=\"1\" result=\"offsetBlur\"/>\\n')\n",
-    "\tsvg_buffer.write(\"    <feMerge>\\n\")\n",
-    "\tsvg_buffer.write('      <feMergeNode in=\"offsetBlur\"/>\\n')\n",
-    "\tsvg_buffer.write('      <feMergeNode in=\"SourceGraphic\"/>\\n')\n",
-    "\tsvg_buffer.write(\"    </feMerge>\\n\")\n",
-    "\tsvg_buffer.write(\"  </filter>\\n\")\n",
-    "\t# Gradients.\n",
-    "\tfor col, (grad_id, light) in gradients.items():\n",
-    "\t\tsvg_buffer.write(\n",
-    "\t\t\tf'  <linearGradient id=\"{grad_id}\" x1=\"0%\" y1=\"0%\" x2=\"0%\" y2=\"100%\">\\n'\n",
-    "\t\t)\n",
-    "\t\tsvg_buffer.write(f'    <stop offset=\"0%\" stop-color=\"{light}\" />\\n')\n",
-    "\t\tsvg_buffer.write(f'    <stop offset=\"100%\" stop-color=\"{col}\" />\\n')\n",
-    "\t\tsvg_buffer.write(\"  </linearGradient>\\n\")\n",
-    "\tsvg_buffer.write(\"</defs>\\n\")\n",
-    "\n",
-    "\t# Helper: Check if neighbor at (ny, nx) has the same color.\n",
-    "\tdef same_color(ny: int, nx: int, col_tuple: tuple) -> bool:\n",
-    "\t\tif ny < 0 or ny >= h or nx < 0 or nx >= w:\n",
-    "\t\t\treturn False\n",
-    "\t\treturn tuple(pixel_grid[ny, nx]) == col_tuple\n",
-    "\n",
-    "\t# For each cell, generate a custom path.\n",
-    "\tfor y in range(h):\n",
-    "\t\tfor x in range(w):\n",
-    "\t\t\tcol_tuple = tuple(pixel_grid[y, x])\n",
-    "\t\t\thex_color = color_map.get(col_tuple)\n",
-    "\t\t\tif hex_color is None:\n",
-    "\t\t\t\tcontinue\n",
-    "\t\t\t# Determine whether each corner should be rounded.\n",
-    "\t\t\tr_tl = (\n",
-    "\t\t\t\tradius\n",
-    "\t\t\t\tif (\n",
-    "\t\t\t\t\tnot same_color(y - 1, x, col_tuple)\n",
-    "\t\t\t\t\tand not same_color(y, x - 1, col_tuple)\n",
-    "\t\t\t\t)\n",
-    "\t\t\t\telse 0\n",
-    "\t\t\t)\n",
-    "\t\t\tr_tr = (\n",
-    "\t\t\t\tradius\n",
-    "\t\t\t\tif (\n",
-    "\t\t\t\t\tnot same_color(y - 1, x, col_tuple)\n",
-    "\t\t\t\t\tand not same_color(y, x + 1, col_tuple)\n",
-    "\t\t\t\t)\n",
-    "\t\t\t\telse 0\n",
-    "\t\t\t)\n",
-    "\t\t\tr_br = (\n",
-    "\t\t\t\tradius\n",
-    "\t\t\t\tif (\n",
-    "\t\t\t\t\tnot same_color(y + 1, x, col_tuple)\n",
-    "\t\t\t\t\tand not same_color(y, x + 1, col_tuple)\n",
-    "\t\t\t\t)\n",
-    "\t\t\t\telse 0\n",
-    "\t\t\t)\n",
-    "\t\t\tr_bl = (\n",
-    "\t\t\t\tradius\n",
-    "\t\t\t\tif (\n",
-    "\t\t\t\t\tnot same_color(y + 1, x, col_tuple)\n",
-    "\t\t\t\t\tand not same_color(y, x - 1, col_tuple)\n",
-    "\t\t\t\t)\n",
-    "\t\t\t\telse 0\n",
-    "\t\t\t)\n",
-    "\n",
-    "\t\t\tX = x * cell_size\n",
-    "\t\t\tY = y * cell_size\n",
-    "\t\t\t# Build the SVG path using independent corner radii.\n",
-    "\t\t\tpath_d = f\"M {X + r_tl} {Y} \"  # Start at top edge.\n",
-    "\t\t\tpath_d += f\"H {X + cell_size - r_tr} \"  # Top edge.\n",
-    "\t\t\tif r_tr > 0:\n",
-    "\t\t\t\tpath_d += f\"A {r_tr} {r_tr} 0 0 1 {X + cell_size} {Y + r_tr} \"  # Top-right corner.\n",
-    "\t\t\telse:\n",
-    "\t\t\t\tpath_d += f\"L {X + cell_size} {Y} \"\n",
-    "\t\t\tpath_d += f\"V {Y + cell_size - r_br} \"  # Right edge.\n",
-    "\t\t\tif r_br > 0:\n",
-    "\t\t\t\tpath_d += f\"A {r_br} {r_br} 0 0 1 {X + cell_size - r_br} {Y + cell_size} \"  # Bottom-right.\n",
-    "\t\t\telse:\n",
-    "\t\t\t\tpath_d += f\"L {X + cell_size} {Y + cell_size} \"\n",
-    "\t\t\tpath_d += f\"H {X + r_bl} \"  # Bottom edge.\n",
-    "\t\t\tif r_bl > 0:\n",
-    "\t\t\t\tpath_d += (\n",
-    "\t\t\t\t\tf\"A {r_bl} {r_bl} 0 0 1 {X} {Y + cell_size - r_bl} \"  # Bottom-left.\n",
-    "\t\t\t\t)\n",
-    "\t\t\telse:\n",
-    "\t\t\t\tpath_d += f\"L {X} {Y + cell_size} \"\n",
-    "\t\t\tpath_d += f\"V {Y + r_tl} \"  # Left edge.\n",
-    "\t\t\tif r_tl > 0:\n",
-    "\t\t\t\tpath_d += f\"A {r_tl} {r_tl} 0 0 1 {X + r_tl} {Y} \"\n",
-    "\t\t\telse:\n",
-    "\t\t\t\tpath_d += f\"L {X} {Y} \"\n",
-    "\t\t\tpath_d += \"Z\"\n",
-    "\n",
-    "\t\t\t# Use the gradient fill and drop shadow filter.\n",
-    "\t\t\tgrad_id = gradients[hex_color][0]\n",
-    "\t\t\tsvg_buffer.write(\n",
-    "\t\t\t\tf'<path d=\"{path_d}\" fill=\"url(#{grad_id})\" filter=\"url(#dropShadow)\"/>\\n'\n",
-    "\t\t\t)\n",
-    "\n",
-    "\tsvg_buffer.write(\"</svg>\")\n",
-    "\tsvg_data = svg_buffer.getvalue()\n",
-    "\treturn SVG(svg_data)\n",
-    "\n",
-    "\n",
-    "import matplotlib.pyplot as plt\n",
-    "\n",
-    "from maze_dataset import LatticeMazeGenerators, MazeDataset, MazeDatasetConfig\n",
-    "\n",
-    "cfg = MazeDatasetConfig(\n",
-    "\tname=\"test\", grid_n=5, n_mazes=5, maze_ctor=LatticeMazeGenerators.gen_dfs\n",
-    ")\n",
-    "ds = MazeDataset.from_config(cfg)\n",
-    "pixels = ds[0].as_pixels()\n",
-    "plt.imshow(pixels)\n",
-    "\n",
-    "svg_shaded = render_maze_fancy_svg_shaded(pixels)\n",
-    "display(svg_shaded)"
-   ]
-  }
- ],
- "metadata": {
-  "kernelspec": {
-   "display_name": ".venv",
-   "language": "python",
-   "name": "python3"
-  },
-  "language_info": {
-   "codemirror_mode": {
-    "name": "ipython",
-    "version": 3
-   },
-   "file_extension": ".py",
-   "mimetype": "text/x-python",
-   "name": "python",
-   "nbconvert_exporter": "python",
-   "pygments_lexer": "ipython3",
-   "version": "3.12.7"
-  }
- },
- "nbformat": 4,
- "nbformat_minor": 2
-}
-
-``````{ end_of_file="temp.ipynb." }

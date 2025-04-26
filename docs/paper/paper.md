@@ -176,7 +176,7 @@ We provide approximate benchmarks for relative generation time across various al
 \input{figures/tex/tab1_benchmarks.tex}
 
 
-![Plot of maze generation time. Generation time scales exponentially with maze size for all algorithms. Generation time per maze does not depend on the number of mazes being generated, and there is minimal overhead to initializing the generation process for a small dataset. Wilson's algorithm is notably less efficient than others and has high variance. Note that values are averaged across all parameter sets for that algorithm. More information can be found on the [benchmarks page](https://understanding-search.github.io/maze-dataset/benchmarks/).](figures/benchmarks/gridsize-vs-gentime.pdf){#fig:benchmarks width=95%}
+![Plot of maze generation time. Generation time scales exponentially with maze size for all algorithms. Generation time per maze does not depend on the number of mazes being generated, and there is minimal overhead to initializing the generation process for a small dataset. Wilson's algorithm is notably less efficient than others and has high variance. Note that values are averaged across all parameter sets for that algorithm. More information can be found on the [benchmarks page](https://understanding-search.github.io/maze-dataset/benchmarks/).](figures/benchmarks/gridsize-vs-gentime.pdf){#fig:benchmarks width=90%}
 
 ## Success Rate Estimation {#sec:success-rate-estimation}
 
