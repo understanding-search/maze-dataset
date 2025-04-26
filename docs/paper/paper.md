@@ -147,16 +147,12 @@ Internally, mazes are [`SolvedMaze`](https://understanding-search.github.io/maze
 
 In previous work, maze tasks have been used with Recurrent Convolutional Neural Network (RCNN) derived architectures [@deepthinking]. To facilitate the use of our package in this context, we replicate the format of [@easy_to_hard] and provide the [`RasterizedMazeDataset`](https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/rasterized.html#RasterizedMazeDataset) class which returns rasterized pairs of (input, target) mazes as shown in \autoref{fig:e2h-raster} below.
 
-![Input is the rasterized maze without the path marked (left), and provide as a target the maze with all but the correct path removed (right). Configuration options exist to adjust whether endpoints are included and if empty cells should be filled in.](figures/maze-raster-input-target.pdf){#fig:e2h-raster width=30%}
+\input{figures/tex/fig3_raster.tex}
 
 
 ## Tokenized Output Formats {#sec:tokenized-output-formats}
 
-Autoregressive transformer models can be quite sensitive to the exact format of input data, and may even use delimiter tokens to perform reasoning steps [@pfau2024dotbydot; @spies2024causalworldmodels]. To facilitate systematic investigation of the effects of different representations of data on text model performance, we provide a variety of tokenized text output formats.
-
-We convert mazes to token sequences in two steps. First, the maze is stringified using [`as_tokens()`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#MazeDataset.as_tokens). The [`MazeTokenizerModular`](https://understanding-search.github.io/maze-dataset/maze_dataset/tokenization.html#MazeTokenizerModular) class provides a powerful interface for configuring maze stringification behavior. Second, the sequence of strings is tokenized into integers using `encode()`. Tokenization uses a fixed vocabulary for simplicity. Mazes up to $50 \times 50$ are supported when using a unique token for each position, and up to $128 \times 128$ are supported when positions in the maze are represented as a pair of coordinates.
-
-There are many algorithms by which one might tokenize a 2D maze into a 1D format usable by autoregressive text models. Training multiple models on the encodings output from each of these algorithms may produce very different internal representations, learned solution algorithms, and levels of performance. To allow exploration of how different maze tokenization algorithms affect these models, the [`MazeTokenizerModular`](https://understanding-search.github.io/maze-dataset/maze_dataset/tokenization.html#MazeTokenizerModular) class contains a rich set of options to customize how mazes are stringified. This class contains 19 discrete parameters, resulting in over 5.8 million unique tokenizers. There are 6 additional parameters available whose functionality is not verified via automated testing, but further expand the the number of tokenizers by a factor of $44/3$ to 86 million.
+Autoregressive transformer models can be quite sensitive to the exact format of input data, and may even use delimiter tokens to perform reasoning steps [@pfau2024dotbydot; @spies2024causalworldmodels]. To facilitate systematic investigation of the effects of different representations of data on text model performance, we provide a variety of text output formats. By passing an instance of [`MazeTokenizerModular`](https://understanding-search.github.io/maze-dataset/maze_dataset/tokenization.html#MazeTokenizerModular) to [`as_tokens(...)`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#MazeDataset.as_tokens), a maze can be converted to a text sequence. The [`MazeTokenizerModular`](https://understanding-search.github.io/maze-dataset/maze_dataset/tokenization.html#MazeTokenizerModular) class contains a rich set of options with class contains 19 discrete parameters, resulting in over 5.8 million unique possible tokenizers.
 
 All output sequences consist of four token regions representing different features of the maze; an example output sequence is shown in \autoref{fig:token-regions}.
 
@@ -166,17 +162,13 @@ Each [`MazeTokenizerModular`](https://understanding-search.github.io/maze-datase
 
 \input{figures/tex/fig5_mmt.tex}
 
-The tokenizer architecture is purposefully designed such that adding and testing a wide variety of new tokenization algorithms is fast and minimizes disturbances to functioning code. This is enabled by the modular architecture and the automatic inclusion of any new tokenizers in integration tests. To create a new variety of tokenizer, developers forking the library may simply create their own \docslinkcode{maze_dataset/tokenization.html#_TokenizerElement}{\_TokenizerElement} subclass and implement the abstract methods. If the behavior change is sufficiently small, simply adding a parameter to an existing \docslinkcode{maze_dataset/tokenization.html#_TokenizerElement}{\_TokenizerElement} subclass and updating its implementation will suffice.
-
-The breadth of tokenizers is also easily scaled in the opposite direction. Due to the exponential scaling of parameter combinations, adding a small number of new features can significantly slow certain procedures which rely on constructing all possible tokenizers, such as integration tests. If any existing subclass contains features which aren't needed, a developer tool decorator [`@mark_as_unsupported`](https://understanding-search.github.io/maze-dataset/maze_dataset/tokenization/modular/element_base.html#mark_as_unsupported) is provided which can be applied to the unneeded \docslinkcode{maze_dataset/tokenization.html#_TokenizerElement}{\_TokenizerElement} subclasses to prune those features and compact the available space of tokenizers.
-
 ## Benchmarks of Generation Speed {#benchmarks}
 
 We provide approximate benchmarks for relative generation time across various algorithms, parameter choices, maze sizes, and dataset sizes in \autoref{tab:benchmarks} and \autoref{fig:benchmarks}. Experiments were performed on a \href{https://docs.github.com/en/actions/using-github-hosted-runners/using-github-hosted-runners/about-github-hosted-runners#standard-github-hosted-runners-for-public-repositories}{standard GitHub runner} without parallelism.
 
 \input{figures/tex/tab1_benchmarks.tex}
 
-\input{figures/tex/fig6_benchmarks.tex}
+\input{figures/tex/fig6_benchmarks.tex}   
 
 ## Success Rate Estimation {#sec:success-rate-estimation}
 
