@@ -86,11 +86,11 @@ A multitude of public and open-source software packages exist for generating maz
   - [`MazePlot`](https://understanding-search.github.io/maze-dataset/maze_dataset/plotting.html#MazePlot) provides a feature-rich plotting utility with support for multiple paths, heatmaps over positions, and more. This is similar to the outputs of [@mdl-suite; @mathematica-maze; @mazegenerator-net; @gh_Ehsan_2022]
 
 
-- The text format provided by [`SolvedMaze(...).as_tokens()`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#MazeDataset.as_tokens) is similar to that of [@eval-LLM-graphs], but provides over 5.8 million unique formats for converting mazes to a text stream, detailed in \secref{sec:tokenized-output-formats}.
+- The text format provided by [`SolvedMaze(...).as_tokens()`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#MazeDataset.as_tokens) is similar to that of [@eval-LLM-graphs] but with many more options, detailed \secref{sec:tokenized-output-formats}.
 
-- For rigorous investigations of the response of a model to various distributional shifts, preserving metadata about the generation algorithm with the dataset itself is essential. To this end, our package efficiently stores the dataset along with its metadata in a single human-readable file [@zanj]. As far as we are aware, no existing packages do this reliably.
+- Preserving metadata about the generation algorithm with the dataset itself is essential for studying the effects of distributional shifts. Our package efficiently stores the dataset along with its metadata in a single human-readable file [@zanj]. As far as we are aware, no existing packages do this reliably.
 
-- Storing mazes as images is not only difficult to work with, but also inefficient. We use a highly efficient method detailed in \secref{sec:implementation}.
+- Storing mazes as images or adjacency matrices is not only difficult to work with, but also inefficient. We use a highly efficient method detailed in \secref{sec:implementation}.
 
 - Our package is easily installable with source code freely available. It is extensively tested, type hinted, benchmarked, and documented. Many other maze generation packages lack this level of rigor and scope, and some [@ayaz2008maze] appear to simply no longer be accessible.
 
@@ -168,11 +168,14 @@ We provide approximate benchmarks for relative generation time across various al
 
 \input{figures/tex/tab1_benchmarks.tex}
 
-\input{figures/tex/fig6_benchmarks.tex}   
+\input{figures/tex/fig6_benchmarks.tex}
 
 ## Success Rate Estimation {#sec:success-rate-estimation}
 
-In order to replicate the exact dataset distribution of [@easy_to_hard], the parameter [`MazeDatasetConfig.endpoint_kwargs:`](https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/maze_dataset_config.html#MazeDatasetConfig.endpoint_kwargs) [`EndpointKwargsType`](https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/maze_dataset_config.html#EndpointKwargsType) allows for additional constraints such as enforcing that the start or end point be in a "dead end" with only one accessible neighbor cell. However, combining these constraints with cyclic mazes (such as those generated with percolation), as was required for the work in [@knutson2024logicalextrapolation], can lead to an absence of valid start and end points. Placing theoretical bounds on this success rate is difficult, as it depends on the exact maze generation algorithm and parameters used. To deal with this, our package provides a way to estimate the success rate of a given configuration using a symbolic regression model trained with PySR [@pysr]. More details on this can be found in [`estimate_dataset_fractions.ipynb`](https://understanding-search.github.io/maze-dataset/notebooks/estimate_dataset_fractions.html).
+In order to replicate the exact dataset distribution of [@easy_to_hard], the parameter [`MazeDatasetConfig.endpoint_kwargs:`](https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/maze_dataset_config.html#MazeDatasetConfig.endpoint_kwargs) [`EndpointKwargsType`](https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/maze_dataset_config.html#EndpointKwargsType) allows for additional constraints, such as enforcing that the start or end point be in a "dead end" with only one accessible neighbor cell. However, combining these constraints with cyclic mazes[^lemsn_cstr] can lead to an absence of valid start and end points. To deal with this, our package provides a way to estimate the success rate of a given configuration using a symbolic regression model trained with PySR [@pysr]. More details on this can be found in [`estimate_dataset_fractions.ipynb`](https://understanding-search.github.io/maze-dataset/notebooks/estimate_dataset_fractions.html).
+
+
+[^lemsn_cstr]: Such as those generated with percolation, as was required for the work in [@knutson2024logicalextrapolation].
 
 \input{figures/tex/fig7_sre.tex}
 
@@ -184,7 +187,7 @@ We describe mazes with the following representation: for a $2$-dimensional latti
 $$
   A = \{0, 1\}^{2 \times r \times c}
 $$
-which we refer to in the code as a [`connection_list`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#LatticeMaze.connection_list). The value at $A[0,i,j]$ determines whether a *downward* connection exists from node $[i,j]$ to $[i+1, j]$. Likewise, the value at $A[1,i,j]$ determines whether a *rightward* connection to $[i, j+1]$ exists. Thus, we avoid duplication of data about the existence of connections and facilitate fast lookup time, at the cost of requiring additional care with indexing. Note that this setup allows for a periodic lattice. Generation of mazes is detailed in [`LatticeMazeGenerators`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#LatticeMazeGenerators).
+which we refer to in the code as a [`connection_list`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#LatticeMaze.connection_list). The value at $A[0,i,j]$ determines whether a *downward* connection exists from node $[i,j]$ to $[i+1, j]$. Likewise, the value at $A[1,i,j]$ determines whether a *rightward* connection to $[i, j+1]$ exists. Thus, we avoid duplication of data about the existence of connections and facilitate fast lookup time, at the cost of requiring additional care with indexing.
 
 \newpage
 
