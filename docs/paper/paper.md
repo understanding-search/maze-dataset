@@ -95,7 +95,7 @@ In previous work, maze tasks have been used with Recurrent Convolutional Neural 
 
 ## Tokenized Output Formats {#sec:tokenized-output-formats}
 
-Autoregressive transformer models can be quite sensitive to the exact format of input data, and may even use delimiter tokens to perform reasoning steps [@pfau2024dotbydot; @spies2024causalworldmodels]. To facilitate systematic investigation of the effects of different representations of data on text model performance, we provide a variety of text output formats. By passing an instance of [`MazeTokenizerModular`](https://understanding-search.github.io/maze-dataset/maze_dataset/tokenization.html#MazeTokenizerModular) to [`as_tokens(...)`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#MazeDataset.as_tokens), a maze can be converted to a text sequence. The [`MazeTokenizerModular`](https://understanding-search.github.io/maze-dataset/maze_dataset/tokenization.html#MazeTokenizerModular) class contains a rich set of options with class contains 19 discrete parameters, resulting in over 5.8 million unique possible tokenizers. All output sequences consist of four token regions representing different features of the maze; an example output sequence is shown in \autoref{fig:token-regions}.
+Autoregressive transformer models can be quite sensitive to the exact format of input data, and may even use delimiter tokens to perform reasoning steps [@pfau2024dotbydot; @spies2024causalworldmodels]. To facilitate systematic investigation of the effects of different representations of data on text model performance, we provide a variety of text output formats, with an example given in \autoref{fig:token-regions}.
 
 \input{figures/tex/fig4_tokenfmt.tex}
 

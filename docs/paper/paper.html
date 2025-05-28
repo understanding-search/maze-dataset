@@ -369,18 +369,8 @@ href="#ref-pfau2024dotbydot" role="doc-biblioref">Pfau et al., 2024</a>;
 <a href="#ref-spies2024causalworldmodels" role="doc-biblioref">Spies et
 al., 2024</a>)</span>. To facilitate systematic investigation of the
 effects of different representations of data on text model performance,
-we provide a variety of text output formats. By passing an instance of
-<a
-href="https://understanding-search.github.io/maze-dataset/maze_dataset/tokenization.html#MazeTokenizerModular"><code>MazeTokenizerModular</code></a>
-to <a
-href="https://understanding-search.github.io/maze-dataset/maze_dataset.html#MazeDataset.as_tokens"><code>as_tokens(...)</code></a>,
-a maze can be converted to a text sequence. The <a
-href="https://understanding-search.github.io/maze-dataset/maze_dataset/tokenization.html#MazeTokenizerModular"><code>MazeTokenizerModular</code></a>
-class contains a rich set of options with class contains 19 discrete
-parameters, resulting in over 5.8 million unique possible tokenizers.
-All output sequences consist of four token regions representing
-different features of the maze; an example output sequence is shown in
-<a href="#fig:token-regions" data-reference-type="autoref"
+we provide a variety of text output formats, with an example given in <a
+href="#fig:token-regions" data-reference-type="autoref"
 data-reference="fig:token-regions">[fig:token-regions]</a>.</p>
 <h2 id="benchmarks">Benchmarks</h2>
 <p>We benchmarks for generation time across various configurations in <a
