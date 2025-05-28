@@ -521,6 +521,8 @@ with these datasets.
   2008}) appear to simply no longer be accessible.
 \end{itemize}
 
+\newpage
+
 \hypertarget{features}{%
 \section{Features}\label{features}}
 
@@ -551,9 +553,8 @@ Internally, mazes are
 \href{https://understanding-search.github.io/maze-dataset/maze_dataset.html\#SolvedMaze}{\texttt{SolvedMaze}}
 objects, which have path information and a tensor optimized for storing
 sub-graphs of a lattice. These objects can be converted to and from
-several formats to maximize their utility in different contexts.
-
-\input{figures/tex/fig2_formats.tex}
+several formats, shown in \autoref{fig:output-fmts}, to maximize their
+utility in different contexts.
 
 In previous work, maze tasks have been used with Recurrent Convolutional
 Neural Network (RCNN) derived architectures
@@ -564,9 +565,13 @@ context, we replicate the format of
 Bansal, et al., 2021}) and provide the
 \href{https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/rasterized.html\#RasterizedMazeDataset}{\texttt{RasterizedMazeDataset}}
 class which returns rasterized pairs of (input, target) mazes as shown
-in \autoref{fig:e2h-raster} below.
+in \autoref{fig:e2h-raster}.
+
+\input{figures/tex/fig2_formats.tex}
 
 \input{figures/tex/fig3_raster.tex}
+
+\newpage
 
 \hypertarget{sec:tokenized-output-formats}{%
 \subsection{Tokenized Output
@@ -586,7 +591,6 @@ a maze can be converted to a text sequence. The
 \href{https://understanding-search.github.io/maze-dataset/maze_dataset/tokenization.html\#MazeTokenizerModular}{\texttt{MazeTokenizerModular}}
 class contains a rich set of options with class contains 19 discrete
 parameters, resulting in over 5.8 million unique possible tokenizers.
-
 All output sequences consist of four token regions representing
 different features of the maze; an example output sequence is shown in
 \autoref{fig:token-regions}.
@@ -594,24 +598,20 @@ different features of the maze; an example output sequence is shown in
 \input{figures/tex/fig4_tokenfmt.tex}
 
 \hypertarget{benchmarks}{%
-\subsection{Benchmarks of Generation Speed}\label{benchmarks}}
+\subsection{Benchmarks}\label{benchmarks}}
 
 We benchmarks for generation time across various configurations in
 \autoref{tab:benchmarks} and \autoref{fig:benchmarks}. Experiments were
 performed on a
 \href{https://docs.github.com/en/actions/using-github-hosted-runners/using-github-hosted-runners/about-github-hosted-runners\#standard-github-hosted-runners-for-public-repositories}{standard
-GitHub runner} without parallelism.
+GitHub runner} without parallelism. Additionally, maze generation under
+certain constraints may not always be successful, and for this we
+provide a way to estimate the success rate of a given configuration,
+described in \autoref{fig:sre}.
 
 \input{figures/tex/tab1_benchmarks.tex}
 
 \input{figures/tex/fig6_benchmarks.tex}
-
-\hypertarget{sec:success-rate-estimation}{%
-\subsection{Success Rate Estimation}\label{sec:success-rate-estimation}}
-
-Maze generation under certain constraints may not always be successful,
-and for this we provide a way to estimate the success rate of a given
-configuration, described in \autoref{fig:sre}.
 
 \input{figures/tex/fig7_sre.tex}
 
@@ -622,12 +622,10 @@ Using an adjacency matrix for storing mazes would be memory inefficient
 by failing to exploit the highly sparse structure, while using an
 adjacency list could lead to a poor lookup time. This package utilizes a
 simple, efficient representation of mazes as subgraphs of a finite
-lattice, which we call a
+lattice, detailed in \autoref{fig:maze-impl}, which we call a
 \href{https://understanding-search.github.io/maze-dataset/maze_dataset.html\#LatticeMaze}{\texttt{LatticeMaze}}.
 
 \input{figures/tex/fig8_impl.tex}
-
-\newpage
 
 \hypertarget{usage-in-research}{%
 \section{Usage in Research}\label{usage-in-research}}

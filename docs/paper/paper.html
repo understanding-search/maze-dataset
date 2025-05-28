@@ -343,7 +343,10 @@ href="https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/f
 href="https://understanding-search.github.io/maze-dataset/maze_dataset.html#SolvedMaze"><code>SolvedMaze</code></a>
 objects, which have path information and a tensor optimized for storing
 sub-graphs of a lattice. These objects can be converted to and from
-several formats to maximize their utility in different contexts.</p>
+several formats, shown in <a href="#fig:output-fmts"
+data-reference-type="autoref"
+data-reference="fig:output-fmts">[fig:output-fmts]</a>, to maximize
+their utility in different contexts.</p>
 <p>In previous work, maze tasks have been used with Recurrent
 Convolutional Neural Network (RCNN) derived architectures <span
 class="citation" data-cites="deepthinking">(<a href="#ref-deepthinking"
@@ -356,7 +359,7 @@ role="doc-biblioref">Schwarzschild, Borgnia, Gupta, Bansal, et al.,
 href="https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/rasterized.html#RasterizedMazeDataset"><code>RasterizedMazeDataset</code></a>
 class which returns rasterized pairs of (input, target) mazes as shown
 in <a href="#fig:e2h-raster" data-reference-type="autoref"
-data-reference="fig:e2h-raster">[fig:e2h-raster]</a> below.</p>
+data-reference="fig:e2h-raster">[fig:e2h-raster]</a>.</p>
 <h2 id="sec:tokenized-output-formats">Tokenized Output Formats</h2>
 <p>Autoregressive transformer models can be quite sensitive to the exact
 format of input data, and may even use delimiter tokens to perform
@@ -374,13 +377,12 @@ href="https://understanding-search.github.io/maze-dataset/maze_dataset.html#Maze
 a maze can be converted to a text sequence. The <a
 href="https://understanding-search.github.io/maze-dataset/maze_dataset/tokenization.html#MazeTokenizerModular"><code>MazeTokenizerModular</code></a>
 class contains a rich set of options with class contains 19 discrete
-parameters, resulting in over 5.8 million unique possible
-tokenizers.</p>
-<p>All output sequences consist of four token regions representing
+parameters, resulting in over 5.8 million unique possible tokenizers.
+All output sequences consist of four token regions representing
 different features of the maze; an example output sequence is shown in
 <a href="#fig:token-regions" data-reference-type="autoref"
 data-reference="fig:token-regions">[fig:token-regions]</a>.</p>
-<h2 id="benchmarks">Benchmarks of Generation Speed</h2>
+<h2 id="benchmarks">Benchmarks</h2>
 <p>We benchmarks for generation time across various configurations in <a
 href="#tab:benchmarks" data-reference-type="autoref"
 data-reference="tab:benchmarks">[tab:benchmarks]</a> and <a
@@ -388,19 +390,19 @@ href="#fig:benchmarks" data-reference-type="autoref"
 data-reference="fig:benchmarks">[fig:benchmarks]</a>. Experiments were
 performed on a <a
 href="https://docs.github.com/en/actions/using-github-hosted-runners/using-github-hosted-runners/about-github-hosted-runners#standard-github-hosted-runners-for-public-repositories">standard
-GitHub runner</a> without parallelism.</p>
-<h2 id="sec:success-rate-estimation">Success Rate Estimation</h2>
-<p>Maze generation under certain constraints may not always be
-successful, and for this we provide a way to estimate the success rate
-of a given configuration, described in <a href="#fig:sre"
-data-reference-type="autoref"
+GitHub runner</a> without parallelism. Additionally, maze generation
+under certain constraints may not always be successful, and for this we
+provide a way to estimate the success rate of a given configuration,
+described in <a href="#fig:sre" data-reference-type="autoref"
 data-reference="fig:sre">[fig:sre]</a>.</p>
 <h1 id="sec:implementation">Implementation</h1>
 <p>Using an adjacency matrix for storing mazes would be memory
 inefficient by failing to exploit the highly sparse structure, while
 using an adjacency list could lead to a poor lookup time. This package
 utilizes a simple, efficient representation of mazes as subgraphs of a
-finite lattice, which we call a <a
+finite lattice, detailed in <a href="#fig:maze-impl"
+data-reference-type="autoref"
+data-reference="fig:maze-impl">[fig:maze-impl]</a>, which we call a <a
 href="https://understanding-search.github.io/maze-dataset/maze_dataset.html#LatticeMaze"><code>LatticeMaze</code></a>.</p>
 <h1 id="usage-in-research">Usage in Research</h1>
 <p>This package was originally built for the needs of the <span

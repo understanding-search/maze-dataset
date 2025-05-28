@@ -73,7 +73,7 @@ A multitude of public and open-source software packages exist for generating maz
 
 - Our package is easily installable with source code freely available. It is extensively tested, type hinted, benchmarked, and documented. Many other maze generation packages lack this level of rigor and scope, and some [@ayaz2008maze] appear to simply no longer be accessible.
 
-
+\newpage
 # Features
 
 We direct readers to our [examples](https://understanding-search.github.io/maze-dataset/examples/maze_examples.html), [docs](https://understanding-search.github.io/maze-dataset/maze_dataset.html), and [notebooks](https://understanding-search.github.io/maze-dataset/notebooks/) for more information. Our package can be installed from [PyPi](https://pypi.org/project/maze-dataset/) via `pip install maze-dataset`, or directly from the [git repository](https://github.com/understanding-search/maze-dataset) [@maze-dataset-github].
@@ -83,44 +83,38 @@ Datasets of mazes are created from a \docslinkcodemain{MazeDatasetConfig} config
 
 ## Visual Output Formats {#visual-output-formats}
 
-Internally, mazes are [`SolvedMaze`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#SolvedMaze) objects, which have path information and a tensor optimized for storing sub-graphs of a lattice. These objects can be converted to and from several formats to maximize their utility in different contexts.
+Internally, mazes are [`SolvedMaze`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#SolvedMaze) objects, which have path information and a tensor optimized for storing sub-graphs of a lattice. These objects can be converted to and from several formats, shown in \autoref{fig:output-fmts}, to maximize their utility in different contexts.
+
+In previous work, maze tasks have been used with Recurrent Convolutional Neural Network (RCNN) derived architectures [@deepthinking]. To facilitate the use of our package in this context, we replicate the format of [@easy_to_hard] and provide the [`RasterizedMazeDataset`](https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/rasterized.html#RasterizedMazeDataset) class which returns rasterized pairs of (input, target) mazes as shown in \autoref{fig:e2h-raster}.
 
 \input{figures/tex/fig2_formats.tex}
 
-In previous work, maze tasks have been used with Recurrent Convolutional Neural Network (RCNN) derived architectures [@deepthinking]. To facilitate the use of our package in this context, we replicate the format of [@easy_to_hard] and provide the [`RasterizedMazeDataset`](https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/rasterized.html#RasterizedMazeDataset) class which returns rasterized pairs of (input, target) mazes as shown in \autoref{fig:e2h-raster} below.
-
 \input{figures/tex/fig3_raster.tex}
 
+\newpage
 
 ## Tokenized Output Formats {#sec:tokenized-output-formats}
 
-Autoregressive transformer models can be quite sensitive to the exact format of input data, and may even use delimiter tokens to perform reasoning steps [@pfau2024dotbydot; @spies2024causalworldmodels]. To facilitate systematic investigation of the effects of different representations of data on text model performance, we provide a variety of text output formats. By passing an instance of [`MazeTokenizerModular`](https://understanding-search.github.io/maze-dataset/maze_dataset/tokenization.html#MazeTokenizerModular) to [`as_tokens(...)`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#MazeDataset.as_tokens), a maze can be converted to a text sequence. The [`MazeTokenizerModular`](https://understanding-search.github.io/maze-dataset/maze_dataset/tokenization.html#MazeTokenizerModular) class contains a rich set of options with class contains 19 discrete parameters, resulting in over 5.8 million unique possible tokenizers.
-
-All output sequences consist of four token regions representing different features of the maze; an example output sequence is shown in \autoref{fig:token-regions}.
+Autoregressive transformer models can be quite sensitive to the exact format of input data, and may even use delimiter tokens to perform reasoning steps [@pfau2024dotbydot; @spies2024causalworldmodels]. To facilitate systematic investigation of the effects of different representations of data on text model performance, we provide a variety of text output formats. By passing an instance of [`MazeTokenizerModular`](https://understanding-search.github.io/maze-dataset/maze_dataset/tokenization.html#MazeTokenizerModular) to [`as_tokens(...)`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#MazeDataset.as_tokens), a maze can be converted to a text sequence. The [`MazeTokenizerModular`](https://understanding-search.github.io/maze-dataset/maze_dataset/tokenization.html#MazeTokenizerModular) class contains a rich set of options with class contains 19 discrete parameters, resulting in over 5.8 million unique possible tokenizers. All output sequences consist of four token regions representing different features of the maze; an example output sequence is shown in \autoref{fig:token-regions}.
 
 \input{figures/tex/fig4_tokenfmt.tex}
 
-## Benchmarks of Generation Speed {#benchmarks}
+## Benchmarks {#benchmarks}
 
-We benchmarks for generation time across various configurations in \autoref{tab:benchmarks} and \autoref{fig:benchmarks}. Experiments were performed on a [standard GitHub runner](https://docs.github.com/en/actions/using-github-hosted-runners/using-github-hosted-runners/about-github-hosted-runners#standard-github-hosted-runners-for-public-repositories) without parallelism.
+We benchmarks for generation time across various configurations in \autoref{tab:benchmarks} and \autoref{fig:benchmarks}. Experiments were performed on a [standard GitHub runner](https://docs.github.com/en/actions/using-github-hosted-runners/using-github-hosted-runners/about-github-hosted-runners#standard-github-hosted-runners-for-public-repositories) without parallelism. Additionally, maze generation under certain constraints may not always be successful, and for this we provide a way to estimate the success rate of a given configuration, described in \autoref{fig:sre}.
 
 \input{figures/tex/tab1_benchmarks.tex}
 
 \input{figures/tex/fig6_benchmarks.tex}
 
-## Success Rate Estimation {#sec:success-rate-estimation}
-
-Maze generation under certain constraints may not always be successful, and for this we provide a way to estimate the success rate of a given configuration, described in \autoref{fig:sre}.
-
 \input{figures/tex/fig7_sre.tex}
 
 # Implementation {#sec:implementation}
 
-Using an adjacency matrix for storing mazes would be memory inefficient by failing to exploit the highly sparse structure, while using an adjacency list could lead to a poor lookup time. This package utilizes a simple, efficient representation of mazes as subgraphs of a finite lattice, which we call a [`LatticeMaze`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#LatticeMaze).
+Using an adjacency matrix for storing mazes would be memory inefficient by failing to exploit the highly sparse structure, while using an adjacency list could lead to a poor lookup time. This package utilizes a simple, efficient representation of mazes as subgraphs of a finite lattice, detailed in \autoref{fig:maze-impl}, which we call a [`LatticeMaze`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#LatticeMaze).
 
 \input{figures/tex/fig8_impl.tex}
 
-\newpage
 
 # Usage in Research
 
