@@ -277,44 +277,6 @@ Software}, \emph{¿VOL?}(¿ISSUE?), ¿PAGE? \url{https://doi.org/N/A}}.}}
 % get rid of language-specific shorthands (see #6817):
 \let\LanguageShortHands\languageshorthands
 \def\languageshorthands#1{}
-\usepackage{color}
-\usepackage{fancyvrb}
-\newcommand{\VerbBar}{|}
-\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
-\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
-% Add ',fontsize=\small' for more characters per line
-\newenvironment{Shaded}{}{}
-\newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{#1}}}
-\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
-\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{#1}}
-\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{#1}}
-\newcommand{\BuiltInTok}[1]{\textcolor[rgb]{0.00,0.50,0.00}{#1}}
-\newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
-\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{#1}}}
-\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
-\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{#1}}
-\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{#1}}}
-\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{#1}}
-\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{#1}}
-\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{#1}}}
-\newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{#1}}}
-\newcommand{\ExtensionTok}[1]{#1}
-\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{#1}}
-\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{#1}}
-\newcommand{\ImportTok}[1]{\textcolor[rgb]{0.00,0.50,0.00}{\textbf{#1}}}
-\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
-\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{#1}}}
-\newcommand{\NormalTok}[1]{#1}
-\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{#1}}
-\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{#1}}
-\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{#1}}
-\newcommand{\RegionMarkerTok}[1]{#1}
-\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
-\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{#1}}
-\newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
-\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{#1}}
-\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
-\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
 
 \IfFileExists{parskip.sty}{%
 \usepackage{parskip}
@@ -335,27 +297,7 @@ Software}, \emph{¿VOL?}(¿ISSUE?), ¿PAGE? \url{https://doi.org/N/A}}.}}
 \let\oldsubparagraph\subparagraph
 \renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
 \fi
-\usepackage{graphicx}
-\usepackage{tikz}
-\usetikzlibrary{calc}
-\tikzset{ % Define a TikZ style for an external hyperlink node.
-  hyperlink node url/.style={
-    alias=sourcenode,
-    append after command={
-      let \p1 = (sourcenode.north west),
-          \p2 = (sourcenode.south east),
-          \n1 = {\x2-\x1},
-          \n2 = {\y1-\y2} in
-      node[inner sep=0pt, outer sep=0pt, anchor=north west, at=(\p1)]
-          {\href{#1}{\XeTeXLinkBox{\phantom{\rule{\n1}{\n2}}}}}
-    }
-  }
-}
-\providecommand{\XeTeXLinkBox}[1]{#1}
-\newcommand{\docslink}[2]{\href{https://understanding-search.github.io/maze-dataset/#1}{#2}}
-\newcommand{\docslinkcode}[2]{\href{https://understanding-search.github.io/maze-dataset/#1}{\texttt{#2}}}
-\newcommand{\docslinkcodemain}[1]{\href{https://understanding-search.github.io/maze-dataset/maze_dataset.html\##1}{\texttt{#1}}}
-\newcommand{\secref}[1]{\hyperref[#1]{section: \textit{\nameref{#1}}}}
+\input{preamble.tex}
 \ifLuaTeX
   \usepackage{selnolig}  % disable illegal ligatures
 \fi
@@ -559,7 +501,7 @@ with these datasets.
   \href{https://understanding-search.github.io/maze-dataset/maze_dataset.html\#MazeDataset.as_tokens}{\texttt{SolvedMaze(...).as\_tokens()}}
   is similar to that of (\protect\hyperlink{ref-eval-LLM-graphs}{Liu \&
   Wu, 2023}) but with many more options, detailed
-  \hyperref[sec:tokenized-output-formats]{section: \textit{\nameref{sec:tokenized-output-formats}}}.
+  \secref{sec:tokenized-output-formats}.
 \item
   Preserving metadata about the generation algorithm with the dataset
   itself is essential for studying the effects of distributional shifts.
@@ -570,8 +512,7 @@ with these datasets.
 \item
   Storing mazes as images or adjacency matrices is not only difficult to
   work with, but also inefficient. We use a highly efficient method
-  detailed in
-  \hyperref[sec:implementation]{section: \textit{\nameref{sec:implementation}}}.
+  detailed in \secref{sec:implementation}.
 \item
   Our package is easily installable with source code freely available.
   It is extensively tested, type hinted, benchmarked, and documented.
@@ -588,99 +529,20 @@ We direct readers to our
 \href{https://understanding-search.github.io/maze-dataset/maze_dataset.html}{docs},
 and
 \href{https://understanding-search.github.io/maze-dataset/notebooks/}{notebooks}
-for more information.
-
-\hypertarget{generation}{%
-\subsection{Generation and Basic Usage}\label{generation}}
-
-Our package can be installed from
+for more information. Our package can be installed from
 \href{https://pypi.org/project/maze-dataset/}{PyPi} via
 \texttt{pip\ install\ maze-dataset}, or directly from the
 \href{https://github.com/understanding-search/maze-dataset}{git
 repository} (\protect\hyperlink{ref-maze-dataset-github}{Michael I.
 Ivanitskiy et al., 2023a}).
 
-To create a dataset, we first create a
-\href{https://understanding-search.github.io/maze-dataset/maze_dataset.html\#MazeDatasetConfig}{\texttt{MazeDatasetConfig}}
-configuration object, which specifies the seed, number, and size of
-mazes, as well as the generation algorithm and its corresponding
-parameters. This object is passed to a
-\href{https://understanding-search.github.io/maze-dataset/maze_dataset.html\#MazeDataset}{\texttt{MazeDataset}}
-class to create a dataset. Crucially, this
-\href{https://understanding-search.github.io/maze-dataset/maze_dataset.html\#MazeDataset}{\texttt{MazeDataset}}
-mimics the interface of a PyTorch
-(\protect\hyperlink{ref-pytorch}{Paszke et al., 2019})
-\href{https://pytorch.org/docs/stable/data.html}{\texttt{Dataset}}, and
-can thus be easily incorporated into existing data pre-processing and
-training pipelines, e.g., through the use of a \texttt{DataLoader}
-class.
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\ImportTok{from}\NormalTok{ maze\_dataset }\ImportTok{import}\NormalTok{ (}
-\NormalTok{  MazeDataset, MazeDatasetConfig, LatticeMazeGenerators}
-\NormalTok{)}
-\CommentTok{\# create a config}
-\NormalTok{cfg: MazeDatasetConfig }\OperatorTok{=}\NormalTok{ MazeDatasetConfig(}
-\NormalTok{    name}\OperatorTok{=}\StringTok{"example"}\NormalTok{, }\CommentTok{\# names need not be unique}
-\NormalTok{    grid\_n}\OperatorTok{=}\DecValTok{3}\NormalTok{,   }\CommentTok{\# size of the maze}
-\NormalTok{    n\_mazes}\OperatorTok{=}\DecValTok{32}\NormalTok{, }\CommentTok{\# number of mazes in the dataset}
-\NormalTok{    maze\_ctor}\OperatorTok{=}\NormalTok{LatticeMazeGenerators.gen\_dfs, }\CommentTok{\# many algorithms available}
-    \CommentTok{\# (optional) algorithm{-}specific parameters}
-\NormalTok{    maze\_ctor\_kwargs}\OperatorTok{=}\NormalTok{\{}\StringTok{"do\_forks"}\NormalTok{: }\VariableTok{True}\NormalTok{, ...\}, }
-    \CommentTok{\# (optional) many options for restricting start/end points}
-\NormalTok{    endpoint\_kwargs}\OperatorTok{=}\NormalTok{\{}\StringTok{"deadend\_start"}\NormalTok{: }\VariableTok{True}\NormalTok{, ...\},}
-\NormalTok{)}
-\CommentTok{\# create a dataset}
-\NormalTok{dataset: MazeDataset }\OperatorTok{=}\NormalTok{ MazeDataset.from\_config(}
-\NormalTok{  cfg, }\CommentTok{\# pass the config}
-\NormalTok{  ..., }\CommentTok{\# other options for disk loading, parallelization, etc.}
-\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-When initializing a dataset, options which do not affect the mazes
-themselves can be specified through the
-\href{https://understanding-search.github.io/maze-dataset/maze_dataset.html\#MazeDataset.from_config}{\texttt{from\_config()}}
-factory method as necessary. These options allow for saving/loading
-existing datasets instead of re-generating, parallelization options for
-generation, and more. Available maze generation algorithms are static
-methods of the
-\href{https://understanding-search.github.io/maze-dataset/maze_dataset.html\#LatticeMazeGenerators}{\texttt{LatticeMazeGenerators}}
-namespace class and include generation algorithms based on randomized
-depth-first search, Wilson's algorithm
-(\protect\hyperlink{ref-wilson}{Wilson, 1996}), percolation
-(\protect\hyperlink{ref-percolation}{Duminil-Copin, 2017};
-\protect\hyperlink{ref-percolation-clustersize}{Fisher \& Essam, 2004}),
-Kruskal's algorithm
-(\protect\hyperlink{ref-kruskal1956shortest}{Kruskal, 1956}), and
-others.
-
-Furthermore, a dataset of mazes can be filtered to satisfy certain
-properties. Custom filters can be specified, and some filters are
-included in
-\href{https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/filters.html\#MazeDatasetFilters}{\texttt{MazeDatasetFilters}}.
-For example, we can require a minimum path length of three steps from
-the origin to the target:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{dataset\_filtered: MazeDataset }\OperatorTok{=}\NormalTok{ dataset.filter\_by.path\_length(min\_length}\OperatorTok{=}\DecValTok{3}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-All implemented maze generation algorithms are stochastic by nature. For
-reproducibility, the \texttt{seed} parameter of
-\href{https://understanding-search.github.io/maze-dataset/maze_dataset.html\#MazeDatasetConfig}{\texttt{MazeDatasetConfig}}
-may be set. In practice, using provided deduplication filters, we find
-that exact duplicate mazes are generated very infrequently, even when
-generating very large datasets.
-
-For use cases where mazes of different sizes, generation algorithms, or
-other parameter variations are required, we provide the
-\href{https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/collected_dataset.html\#MazeDatasetCollection}{\texttt{MazeDatasetCollection}}
-class, which allows for creating a single iterable dataset from multiple
-independent configurations.
+Datasets of mazes are created from a
+\docslinkcodemain{MazeDatasetConfig} configuration object, which allows
+specifying the number of mazes, their size, the generation algorithm,
+and various parameters for the generation algorithm. Datasets can also
+be filtered after generation to satisfy certain properties. Custom
+filters can be specified, and some filters are included in
+\href{https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/filters.html\#MazeDatasetFilters}{\texttt{MazeDatasetFilters}}
 
 \hypertarget{visual-output-formats}{%
 \subsection{Visual Output Formats}\label{visual-output-formats}}
@@ -731,24 +593,14 @@ different features of the maze; an example output sequence is shown in
 
 \input{figures/tex/fig4_tokenfmt.tex}
 
-Each
-\href{https://understanding-search.github.io/maze-dataset/maze_dataset/tokenization.html\#MazeTokenizerModular}{\texttt{MazeTokenizerModular}}
-is constructed from a set of several
-\href{https://understanding-search.github.io/maze-dataset/maze_dataset/tokenization.html#_TokenizerElement}{\texttt{\_TokenizerElement}}
-objects, each of which specifies how different token regions or other
-elements of the stringification are produced.
-
-\input{figures/tex/fig5_mmt.tex}
-
 \hypertarget{benchmarks}{%
 \subsection{Benchmarks of Generation Speed}\label{benchmarks}}
 
-We provide approximate benchmarks for relative generation time across
-various algorithms, parameter choices, maze sizes, and dataset sizes in
+We benchmarks for generation time across various configurations in
 \autoref{tab:benchmarks} and \autoref{fig:benchmarks}. Experiments were
 performed on a
-\href{https://docs.github.com/en/actions/using-github-hosted-runners/using-github-hosted-runners/about-github-hosted-runners#standard-github-hosted-runners-for-public-repositories}{standard GitHub runner}
-without parallelism.
+\href{https://docs.github.com/en/actions/using-github-hosted-runners/using-github-hosted-runners/about-github-hosted-runners\#standard-github-hosted-runners-for-public-repositories}{standard
+GitHub runner} without parallelism.
 
 \input{figures/tex/tab1_benchmarks.tex}
 
@@ -757,22 +609,9 @@ without parallelism.
 \hypertarget{sec:success-rate-estimation}{%
 \subsection{Success Rate Estimation}\label{sec:success-rate-estimation}}
 
-In order to replicate the exact dataset distribution of
-(\protect\hyperlink{ref-easy_to_hard}{Schwarzschild, Borgnia, Gupta,
-Bansal, et al., 2021}), the parameter
-\href{https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/maze_dataset_config.html\#MazeDatasetConfig.endpoint_kwargs}{\texttt{MazeDatasetConfig.endpoint\_kwargs:}}
-\href{https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/maze_dataset_config.html\#EndpointKwargsType}{\texttt{EndpointKwargsType}}
-allows for additional constraints, such as enforcing that the start or
-end point be in a ``dead end'' with only one accessible neighbor cell.
-However, combining these constraints with cyclic mazes\footnote{Such as
-  those generated with percolation, as was required for the work in
-  (\protect\hyperlink{ref-knutson2024logicalextrapolation}{Knutson et
-  al., 2024}).} can lead to an absence of valid start and end points. To
-deal with this, our package provides a way to estimate the success rate
-of a given configuration using a symbolic regression model trained with
-PySR (\protect\hyperlink{ref-pysr}{Cranmer, 2023}). More details on this
-can be found in
-\href{https://understanding-search.github.io/maze-dataset/notebooks/estimate_dataset_fractions.html}{\texttt{estimate\_dataset\_fractions.ipynb}}.
+Maze generation under certain constraints may not always be successful,
+and for this we provide a way to estimate the success rate of a given
+configuration, described in \autoref{fig:sre}.
 
 \input{figures/tex/fig7_sre.tex}
 
@@ -786,18 +625,7 @@ simple, efficient representation of mazes as subgraphs of a finite
 lattice, which we call a
 \href{https://understanding-search.github.io/maze-dataset/maze_dataset.html\#LatticeMaze}{\texttt{LatticeMaze}}.
 
-We describe mazes with the following representation: for a
-\(2\)-dimensional lattice with \(r\) rows and \(c\) columns, we
-initialize a boolean array \[
-  A = \{0, 1\}^{2 \times r \times c}
-\] which we refer to in the code as a
-\href{https://understanding-search.github.io/maze-dataset/maze_dataset.html\#LatticeMaze.connection_list}{\texttt{connection\_list}}.
-The value at \(A[0,i,j]\) determines whether a \emph{downward}
-connection exists from node \([i,j]\) to \([i+1, j]\). Likewise, the
-value at \(A[1,i,j]\) determines whether a \emph{rightward} connection
-to \([i, j+1]\) exists. Thus, we avoid duplication of data about the
-existence of connections and facilitate fast lookup time, at the cost of
-requiring additional care with indexing.
+\input{figures/tex/fig8_impl.tex}
 
 \newpage
 
@@ -879,26 +707,13 @@ Cobbe, K., Hesse, C., Hilton, J., \& Schulman, J. (2019). Leveraging
 procedural generation to benchmark reinforcement learning. \emph{arXiv
 Preprint arXiv:1912.01588}.
 
-\leavevmode\vadjust pre{\hypertarget{ref-pysr}{}}%
-Cranmer, M. (2023). Interpretable machine learning for science with PySR
-and SymbolicRegression. jl. \emph{arXiv Preprint arXiv:2305.01582}.
-
 \leavevmode\vadjust pre{\hypertarget{ref-dao2025alphamaze}{}}%
 Dao, A., \& Vu, D. B. (2025). AlphaMaze: Enhancing large language
 models' spatial intelligence via GRPO. \emph{arXiv Preprint
 arXiv:2502.14669}.
 
-\leavevmode\vadjust pre{\hypertarget{ref-percolation}{}}%
-Duminil-Copin, H. (2017). \emph{Sixty years of percolation} (No.
-arXiv:1712.04651). {arXiv}. \url{http://arxiv.org/abs/1712.04651}
-
 \leavevmode\vadjust pre{\hypertarget{ref-gh_Ehsan_2022}{}}%
 Ehsan, E. (2022). \emph{Maze}. \url{https://github.com/emadehsan/maze}
-
-\leavevmode\vadjust pre{\hypertarget{ref-percolation-clustersize}{}}%
-Fisher, M. E., \& Essam, J. W. (2004). Some {Cluster Size} and
-{Percolation Problems}. \emph{Journal of Mathematical Physics},
-\emph{2}(4), 609--619. \url{https://doi.org/10.1063/1.1703745}
 
 \leavevmode\vadjust pre{\hypertarget{ref-fung2022jfb}{}}%
 Fung, S. W., Heaton, H., Li, Q., McKenzie, D., Osher, S., \& Yin, W.
@@ -957,11 +772,6 @@ Diniz-Behn, C., Fung, S. W., \& McKenzie, D. (2024). On logical
 extrapolation for mazes with recurrent and implicit networks.
 \emph{arXiv Preprint arXiv:2410.03020}.
 
-\leavevmode\vadjust pre{\hypertarget{ref-kruskal1956shortest}{}}%
-Kruskal, J. B. (1956). On the shortest spanning subtree of a graph and
-the traveling salesman problem. \emph{Proceedings of the American
-Mathematical Society}, \emph{7}(1), 48--50.
-
 \leavevmode\vadjust pre{\hypertarget{ref-eval-LLM-graphs}{}}%
 Liu, C., \& Wu, B. (2023). Evaluating large language models on graphs:
 Performance insights and comparative analysis. \emph{arXiv Preprint
@@ -985,17 +795,6 @@ Preprint arXiv:2412.05117}.
 Oppenheim, J. (2018). \emph{Maze-generator: Generate a random maze
 represented as a 2D array using depth-first search}.
 \url{https://github.com/oppenheimj/maze-generator/}; GitHub.
-
-\leavevmode\vadjust pre{\hypertarget{ref-pytorch}{}}%
-Paszke, A., Gross, S., Massa, F., Lerer, A., Bradbury, J., Chanan, G.,
-Killeen, T., Lin, Z., Gimelshein, N., Antiga, L., Desmaison, A., Kopf,
-A., Yang, E., DeVito, Z., Raison, M., Tejani, A., Chilamkurthy, S.,
-Steiner, B., Fang, L., \ldots{} Chintala, S. (2019). {PyTorch: An
-Imperative Style, High-Performance Deep Learning Library}. In H.
-Wallach, H. Larochelle, A. Beygelzimer, F. d'Alché-Buc, E. Fox, \& R.
-Garnett (Eds.), \emph{Advances in neural information processing systems
-32} (pp. 8024--8035). Curran Associates, Inc.
-\url{http://papers.neurips.cc/paper/9015-pytorch-an-imperative-style-high-performance-deep-learning-library.pdf}
 
 \leavevmode\vadjust pre{\hypertarget{ref-pfau2024dotbydot}{}}%
 Pfau, J., Merrill, W., \& Bowman, S. R. (2024). Let's think dot by dot:
@@ -1036,12 +835,6 @@ Wang, C., Ji, K., Geng, J., Ren, Z., Fu, T., Yang, F., Guo, Y., He, H.,
 Chen, X., Zhan, Z., \& others. (2024). Imperative learning: A
 self-supervised neural-symbolic learning framework for robot autonomy.
 \emph{arXiv Preprint arXiv:2406.16087}.
-
-\leavevmode\vadjust pre{\hypertarget{ref-wilson}{}}%
-Wilson, D. B. (1996). Generating random spanning trees more quickly than
-the cover time. \emph{Proceedings of the Twenty-Eighth Annual {ACM}
-Symposium on {Theory} of Computing - {STOC} '96}, 296--303.
-\url{https://doi.org/10.1145/237814.237880}
 
 \leavevmode\vadjust pre{\hypertarget{ref-zhang2025tscend}{}}%
 Zhang, T., Pan, J.-S., Feng, R., \& Wu, T. (2025). T-SCEND: Test-time

@@ -40,28 +40,7 @@ affiliations:
     index: 4
 date: 9 April 2025
 bibliography: refs.bib
-header-includes: |
-  \usepackage{graphicx}
-  \usepackage{tikz}
-  \usetikzlibrary{calc}
-  \tikzset{ % Define a TikZ style for an external hyperlink node.
-    hyperlink node url/.style={
-      alias=sourcenode,
-      append after command={
-        let \p1 = (sourcenode.north west),
-            \p2 = (sourcenode.south east),
-            \n1 = {\x2-\x1},
-            \n2 = {\y1-\y2} in
-        node[inner sep=0pt, outer sep=0pt, anchor=north west, at=(\p1)]
-            {\href{#1}{\XeTeXLinkBox{\phantom{\rule{\n1}{\n2}}}}}
-      }
-    }
-  }
-  \providecommand{\XeTeXLinkBox}[1]{#1}
-  \newcommand{\docslink}[2]{\href{https://understanding-search.github.io/maze-dataset/#1}{#2}}
-  \newcommand{\docslinkcode}[2]{\href{https://understanding-search.github.io/maze-dataset/#1}{\texttt{#2}}}
-  \newcommand{\docslinkcodemain}[1]{\href{https://understanding-search.github.io/maze-dataset/maze_dataset.html\##1}{\texttt{#1}}}
-  \newcommand{\secref}[1]{\hyperref[#1]{section: \textit{\nameref{#1}}}}
+header-includes: \input{preamble.tex}
 ---
 
 # Summary
@@ -97,47 +76,10 @@ A multitude of public and open-source software packages exist for generating maz
 
 # Features
 
-We direct readers to our [examples](https://understanding-search.github.io/maze-dataset/examples/maze_examples.html), [docs](https://understanding-search.github.io/maze-dataset/maze_dataset.html), and [notebooks](https://understanding-search.github.io/maze-dataset/notebooks/) for more information.
+We direct readers to our [examples](https://understanding-search.github.io/maze-dataset/examples/maze_examples.html), [docs](https://understanding-search.github.io/maze-dataset/maze_dataset.html), and [notebooks](https://understanding-search.github.io/maze-dataset/notebooks/) for more information. Our package can be installed from [PyPi](https://pypi.org/project/maze-dataset/) via `pip install maze-dataset`, or directly from the [git repository](https://github.com/understanding-search/maze-dataset) [@maze-dataset-github].
 
-## Generation and Basic Usage {#generation}
+Datasets of mazes are created from a \docslinkcodemain{MazeDatasetConfig} configuration object, which allows specifying the number of mazes, their size, the generation algorithm, and various parameters for the generation algorithm. Datasets can also be filtered after generation to satisfy certain properties. Custom filters can be specified, and some filters are included in [`MazeDatasetFilters`](https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/filters.html#MazeDatasetFilters)
 
-Our package can be installed from [PyPi](https://pypi.org/project/maze-dataset/) via `pip install maze-dataset`, or directly from the [git repository](https://github.com/understanding-search/maze-dataset) [@maze-dataset-github].
-
-To create a dataset, we first create a \docslinkcodemain{MazeDatasetConfig} configuration object, which specifies the seed, number, and size of mazes, as well as the generation algorithm and its corresponding parameters. This object is passed to a \docslinkcodemain{MazeDataset} class to create a dataset. Crucially, this \docslinkcodemain{MazeDataset} mimics the interface of a PyTorch [@pytorch] [`Dataset`](https://pytorch.org/docs/stable/data.html), and can thus be easily incorporated into existing data pre-processing and training pipelines, e.g., through the use of a `DataLoader` class.
-
-```python
-from maze_dataset import (
-  MazeDataset, MazeDatasetConfig, LatticeMazeGenerators
-)
-# create a config
-cfg: MazeDatasetConfig = MazeDatasetConfig(
-    name="example", # names need not be unique
-    grid_n=3,   # size of the maze
-    n_mazes=32, # number of mazes in the dataset
-    maze_ctor=LatticeMazeGenerators.gen_dfs, # many algorithms available
-    # (optional) algorithm-specific parameters
-    maze_ctor_kwargs={"do_forks": True, ...}, 
-    # (optional) many options for restricting start/end points
-    endpoint_kwargs={"deadend_start": True, ...},
-)
-# create a dataset
-dataset: MazeDataset = MazeDataset.from_config(
-  cfg, # pass the config
-  ..., # other options for disk loading, parallelization, etc.
-)
-``` 
-
-When initializing a dataset, options which do not affect the mazes themselves can be specified through the [`from_config()`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#MazeDataset.from_config) factory method as necessary. These options allow for saving/loading existing datasets instead of re-generating, parallelization options for generation, and more. Available maze generation algorithms are static methods of the [`LatticeMazeGenerators`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#LatticeMazeGenerators) namespace class and include generation algorithms based on randomized depth-first search, Wilson's algorithm [@wilson], percolation [@percolation; @percolation-clustersize], Kruskal's algorithm [@kruskal1956shortest], and others.
-
-Furthermore, a dataset of mazes can be filtered to satisfy certain properties. Custom filters can be specified, and some filters are included in [`MazeDatasetFilters`](https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/filters.html#MazeDatasetFilters). For example, we can require a minimum path length of three steps from the origin to the target:
-
-```python
-dataset_filtered: MazeDataset = dataset.filter_by.path_length(min_length=3)
-```
-
-All implemented maze generation algorithms are stochastic by nature. For reproducibility, the `seed` parameter of \docslinkcodemain{MazeDatasetConfig} may be set. In practice, using provided deduplication filters, we find that exact duplicate mazes are generated very infrequently, even when generating very large datasets.
-
-For use cases where mazes of different sizes, generation algorithms, or other parameter variations are required, we provide the [`MazeDatasetCollection`](https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/collected_dataset.html#MazeDatasetCollection) class, which allows for creating a single iterable dataset from multiple independent configurations.
 
 ## Visual Output Formats {#visual-output-formats}
 
@@ -158,13 +100,9 @@ All output sequences consist of four token regions representing different featur
 
 \input{figures/tex/fig4_tokenfmt.tex}
 
-Each [`MazeTokenizerModular`](https://understanding-search.github.io/maze-dataset/maze_dataset/tokenization.html#MazeTokenizerModular) is constructed from a set of several \docslinkcode{maze_dataset/tokenization.html#_TokenizerElement}{\_TokenizerElement} objects, each of which specifies how different token regions or other elements of the stringification are produced.
-
-\input{figures/tex/fig5_mmt.tex}
-
 ## Benchmarks of Generation Speed {#benchmarks}
 
-We provide approximate benchmarks for relative generation time across various algorithms, parameter choices, maze sizes, and dataset sizes in \autoref{tab:benchmarks} and \autoref{fig:benchmarks}. Experiments were performed on a \href{https://docs.github.com/en/actions/using-github-hosted-runners/using-github-hosted-runners/about-github-hosted-runners#standard-github-hosted-runners-for-public-repositories}{standard GitHub runner} without parallelism.
+We benchmarks for generation time across various configurations in \autoref{tab:benchmarks} and \autoref{fig:benchmarks}. Experiments were performed on a [standard GitHub runner](https://docs.github.com/en/actions/using-github-hosted-runners/using-github-hosted-runners/about-github-hosted-runners#standard-github-hosted-runners-for-public-repositories) without parallelism.
 
 \input{figures/tex/tab1_benchmarks.tex}
 
@@ -172,10 +110,7 @@ We provide approximate benchmarks for relative generation time across various al
 
 ## Success Rate Estimation {#sec:success-rate-estimation}
 
-In order to replicate the exact dataset distribution of [@easy_to_hard], the parameter [`MazeDatasetConfig.endpoint_kwargs:`](https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/maze_dataset_config.html#MazeDatasetConfig.endpoint_kwargs) [`EndpointKwargsType`](https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/maze_dataset_config.html#EndpointKwargsType) allows for additional constraints, such as enforcing that the start or end point be in a "dead end" with only one accessible neighbor cell. However, combining these constraints with cyclic mazes[^lemsn_cstr] can lead to an absence of valid start and end points. To deal with this, our package provides a way to estimate the success rate of a given configuration using a symbolic regression model trained with PySR [@pysr]. More details on this can be found in [`estimate_dataset_fractions.ipynb`](https://understanding-search.github.io/maze-dataset/notebooks/estimate_dataset_fractions.html).
-
-
-[^lemsn_cstr]: Such as those generated with percolation, as was required for the work in [@knutson2024logicalextrapolation].
+Maze generation under certain constraints may not always be successful, and for this we provide a way to estimate the success rate of a given configuration, described in \autoref{fig:sre}.
 
 \input{figures/tex/fig7_sre.tex}
 
@@ -183,11 +118,7 @@ In order to replicate the exact dataset distribution of [@easy_to_hard], the par
 
 Using an adjacency matrix for storing mazes would be memory inefficient by failing to exploit the highly sparse structure, while using an adjacency list could lead to a poor lookup time. This package utilizes a simple, efficient representation of mazes as subgraphs of a finite lattice, which we call a [`LatticeMaze`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#LatticeMaze).
 
-We describe mazes with the following representation: for a $2$-dimensional lattice with $r$ rows and $c$ columns, we initialize a boolean array
-$$
-  A = \{0, 1\}^{2 \times r \times c}
-$$
-which we refer to in the code as a [`connection_list`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#LatticeMaze.connection_list). The value at $A[0,i,j]$ determines whether a *downward* connection exists from node $[i,j]$ to $[i+1, j]$. Likewise, the value at $A[1,i,j]$ determines whether a *rightward* connection to $[i, j+1]$ exists. Thus, we avoid duplication of data about the existence of connections and facilitate fast lookup time, at the cost of requiring additional care with indexing.
+\input{figures/tex/fig8_impl.tex}
 
 \newpage
 

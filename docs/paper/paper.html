@@ -166,70 +166,6 @@ Behn, Samy Wu Fung" />
       vertical-align: middle;
     }
     .display.math{display: block; text-align: center; margin: 0.5rem auto;}
-    /* CSS for syntax highlighting */
-    pre > code.sourceCode { white-space: pre; position: relative; }
-    pre > code.sourceCode > span { line-height: 1.25; }
-    pre > code.sourceCode > span:empty { height: 1.2em; }
-    .sourceCode { overflow: visible; }
-    code.sourceCode > span { color: inherit; text-decoration: inherit; }
-    div.sourceCode { margin: 1em 0; }
-    pre.sourceCode { margin: 0; }
-    @media screen {
-    div.sourceCode { overflow: auto; }
-    }
-    @media print {
-    pre > code.sourceCode { white-space: pre-wrap; }
-    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-    }
-    pre.numberSource code
-      { counter-reset: source-line 0; }
-    pre.numberSource code > span
-      { position: relative; left: -4em; counter-increment: source-line; }
-    pre.numberSource code > span > a:first-child::before
-      { content: counter(source-line);
-        position: relative; left: -1em; text-align: right; vertical-align: baseline;
-        border: none; display: inline-block;
-        -webkit-touch-callout: none; -webkit-user-select: none;
-        -khtml-user-select: none; -moz-user-select: none;
-        -ms-user-select: none; user-select: none;
-        padding: 0 4px; width: 4em;
-        color: #aaaaaa;
-      }
-    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-    div.sourceCode
-      {   }
-    @media screen {
-    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-    }
-    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-    code span.at { color: #7d9029; } /* Attribute */
-    code span.bn { color: #40a070; } /* BaseN */
-    code span.bu { color: #008000; } /* BuiltIn */
-    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-    code span.ch { color: #4070a0; } /* Char */
-    code span.cn { color: #880000; } /* Constant */
-    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-    code span.dt { color: #902000; } /* DataType */
-    code span.dv { color: #40a070; } /* DecVal */
-    code span.er { color: #ff0000; font-weight: bold; } /* Error */
-    code span.ex { } /* Extension */
-    code span.fl { color: #40a070; } /* Float */
-    code span.fu { color: #06287e; } /* Function */
-    code span.im { color: #008000; font-weight: bold; } /* Import */
-    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-    code span.op { color: #666666; } /* Operator */
-    code span.ot { color: #007020; } /* Other */
-    code span.pp { color: #bc7a00; } /* Preprocessor */
-    code span.sc { color: #4070a0; } /* SpecialChar */
-    code span.ss { color: #bb6688; } /* SpecialString */
-    code span.st { color: #4070a0; } /* String */
-    code span.va { color: #19177c; } /* Variable */
-    code span.vs { color: #4070a0; } /* VerbatimString */
-    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
     /* CSS for citations */
     div.csl-bib-body { }
     div.csl-entry {
@@ -363,8 +299,7 @@ href="https://understanding-search.github.io/maze-dataset/maze_dataset.html#Maze
 is similar to that of <span class="citation"
 data-cites="eval-LLM-graphs">(<a href="#ref-eval-LLM-graphs"
 role="doc-biblioref">Liu &amp; Wu, 2023</a>)</span> but with many more
-options, detailed <a href="#sec:tokenized-output-formats">section:
-<em></em></a>.</p></li>
+options, detailed .</p></li>
 <li><p>Preserving metadata about the generation algorithm with the
 dataset itself is essential for studying the effects of distributional
 shifts. Our package efficiently stores the dataset along with its
@@ -374,8 +309,7 @@ Ivanitskiy, n.d.</a>)</span>. As far as we are aware, no existing
 packages do this reliably.</p></li>
 <li><p>Storing mazes as images or adjacency matrices is not only
 difficult to work with, but also inefficient. We use a highly efficient
-method detailed in <a href="#sec:implementation">section:
-<em></em></a>.</p></li>
+method detailed in .</p></li>
 <li><p>Our package is easily installable with source code freely
 available. It is extensively tested, type hinted, benchmarked, and
 documented. Many other maze generation packages lack this level of rigor
@@ -390,9 +324,7 @@ href="https://understanding-search.github.io/maze-dataset/examples/maze_examples
 href="https://understanding-search.github.io/maze-dataset/maze_dataset.html">docs</a>,
 and <a
 href="https://understanding-search.github.io/maze-dataset/notebooks/">notebooks</a>
-for more information.</p>
-<h2 id="generation">Generation and Basic Usage</h2>
-<p>Our package can be installed from <a
+for more information. Our package can be installed from <a
 href="https://pypi.org/project/maze-dataset/">PyPi</a> via
 <code>pip install maze-dataset</code>, or directly from the <a
 href="https://github.com/understanding-search/maze-dataset">git
@@ -400,78 +332,12 @@ repository</a> <span class="citation"
 data-cites="maze-dataset-github">(<a href="#ref-maze-dataset-github"
 role="doc-biblioref">Michael I. Ivanitskiy et al.,
 2023a</a>)</span>.</p>
-<p>To create a dataset, we first create a <a
-href="https://understanding-search.github.io/maze-dataset/maze_dataset.html#MazeDatasetConfig"><code>MazeDatasetConfig</code></a>
-configuration object, which specifies the seed, number, and size of
-mazes, as well as the generation algorithm and its corresponding
-parameters. This object is passed to a <a
-href="https://understanding-search.github.io/maze-dataset/maze_dataset.html#MazeDataset"><code>MazeDataset</code></a>
-class to create a dataset. Crucially, this <a
-href="https://understanding-search.github.io/maze-dataset/maze_dataset.html#MazeDataset"><code>MazeDataset</code></a>
-mimics the interface of a PyTorch <span class="citation"
-data-cites="pytorch">(<a href="#ref-pytorch" role="doc-biblioref">Paszke
-et al., 2019</a>)</span> <a
-href="https://pytorch.org/docs/stable/data.html"><code>Dataset</code></a>,
-and can thus be easily incorporated into existing data pre-processing
-and training pipelines, e.g., through the use of a
-<code>DataLoader</code> class.</p>
-<div class="sourceCode" id="cb1"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> maze_dataset <span class="im">import</span> (</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  MazeDataset, MazeDatasetConfig, LatticeMazeGenerators</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># create a config</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>cfg: MazeDatasetConfig <span class="op">=</span> MazeDatasetConfig(</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    name<span class="op">=</span><span class="st">&quot;example&quot;</span>, <span class="co"># names need not be unique</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    grid_n<span class="op">=</span><span class="dv">3</span>,   <span class="co"># size of the maze</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    n_mazes<span class="op">=</span><span class="dv">32</span>, <span class="co"># number of mazes in the dataset</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    maze_ctor<span class="op">=</span>LatticeMazeGenerators.gen_dfs, <span class="co"># many algorithms available</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># (optional) algorithm-specific parameters</span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    maze_ctor_kwargs<span class="op">=</span>{<span class="st">&quot;do_forks&quot;</span>: <span class="va">True</span>, ...}, </span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># (optional) many options for restricting start/end points</span></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    endpoint_kwargs<span class="op">=</span>{<span class="st">&quot;deadend_start&quot;</span>: <span class="va">True</span>, ...},</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="co"># create a dataset</span></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>dataset: MazeDataset <span class="op">=</span> MazeDataset.from_config(</span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>  cfg, <span class="co"># pass the config</span></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>  ..., <span class="co"># other options for disk loading, parallelization, etc.</span></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
-<p>When initializing a dataset, options which do not affect the mazes
-themselves can be specified through the <a
-href="https://understanding-search.github.io/maze-dataset/maze_dataset.html#MazeDataset.from_config"><code>from_config()</code></a>
-factory method as necessary. These options allow for saving/loading
-existing datasets instead of re-generating, parallelization options for
-generation, and more. Available maze generation algorithms are static
-methods of the <a
-href="https://understanding-search.github.io/maze-dataset/maze_dataset.html#LatticeMazeGenerators"><code>LatticeMazeGenerators</code></a>
-namespace class and include generation algorithms based on randomized
-depth-first search, Wilson’s algorithm <span class="citation"
-data-cites="wilson">(<a href="#ref-wilson" role="doc-biblioref">Wilson,
-1996</a>)</span>, percolation <span class="citation"
-data-cites="percolation percolation-clustersize">(<a
-href="#ref-percolation" role="doc-biblioref">Duminil-Copin, 2017</a>; <a
-href="#ref-percolation-clustersize" role="doc-biblioref">Fisher &amp;
-Essam, 2004</a>)</span>, Kruskal’s algorithm <span class="citation"
-data-cites="kruskal1956shortest">(<a href="#ref-kruskal1956shortest"
-role="doc-biblioref">Kruskal, 1956</a>)</span>, and others.</p>
-<p>Furthermore, a dataset of mazes can be filtered to satisfy certain
-properties. Custom filters can be specified, and some filters are
-included in <a
-href="https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/filters.html#MazeDatasetFilters"><code>MazeDatasetFilters</code></a>.
-For example, we can require a minimum path length of three steps from
-the origin to the target:</p>
-<div class="sourceCode" id="cb2"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>dataset_filtered: MazeDataset <span class="op">=</span> dataset.filter_by.path_length(min_length<span class="op">=</span><span class="dv">3</span>)</span></code></pre></div>
-<p>All implemented maze generation algorithms are stochastic by nature.
-For reproducibility, the <code>seed</code> parameter of <a
-href="https://understanding-search.github.io/maze-dataset/maze_dataset.html#MazeDatasetConfig"><code>MazeDatasetConfig</code></a>
-may be set. In practice, using provided deduplication filters, we find
-that exact duplicate mazes are generated very infrequently, even when
-generating very large datasets.</p>
-<p>For use cases where mazes of different sizes, generation algorithms,
-or other parameter variations are required, we provide the <a
-href="https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/collected_dataset.html#MazeDatasetCollection"><code>MazeDatasetCollection</code></a>
-class, which allows for creating a single iterable dataset from multiple
-independent configurations.</p>
+<p>Datasets of mazes are created from a configuration object, which
+allows specifying the number of mazes, their size, the generation
+algorithm, and various parameters for the generation algorithm. Datasets
+can also be filtered after generation to satisfy certain properties.
+Custom filters can be specified, and some filters are included in <a
+href="https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/filters.html#MazeDatasetFilters"><code>MazeDatasetFilters</code></a></p>
 <h2 id="visual-output-formats">Visual Output Formats</h2>
 <p>Internally, mazes are <a
 href="https://understanding-search.github.io/maze-dataset/maze_dataset.html#SolvedMaze"><code>SolvedMaze</code></a>
@@ -514,16 +380,9 @@ tokenizers.</p>
 different features of the maze; an example output sequence is shown in
 <a href="#fig:token-regions" data-reference-type="autoref"
 data-reference="fig:token-regions">[fig:token-regions]</a>.</p>
-<p>Each <a
-href="https://understanding-search.github.io/maze-dataset/maze_dataset/tokenization.html#MazeTokenizerModular"><code>MazeTokenizerModular</code></a>
-is constructed from a set of several <a
-href="https://understanding-search.github.io/maze-dataset/maze_dataset/tokenization.html#_TokenizerElement"><code>_TokenizerElement</code></a>
-objects, each of which specifies how different token regions or other
-elements of the stringification are produced.</p>
 <h2 id="benchmarks">Benchmarks of Generation Speed</h2>
-<p>We provide approximate benchmarks for relative generation time across
-various algorithms, parameter choices, maze sizes, and dataset sizes in
-<a href="#tab:benchmarks" data-reference-type="autoref"
+<p>We benchmarks for generation time across various configurations in <a
+href="#tab:benchmarks" data-reference-type="autoref"
 data-reference="tab:benchmarks">[tab:benchmarks]</a> and <a
 href="#fig:benchmarks" data-reference-type="autoref"
 data-reference="fig:benchmarks">[fig:benchmarks]</a>. Experiments were
@@ -531,24 +390,11 @@ performed on a <a
 href="https://docs.github.com/en/actions/using-github-hosted-runners/using-github-hosted-runners/about-github-hosted-runners#standard-github-hosted-runners-for-public-repositories">standard
 GitHub runner</a> without parallelism.</p>
 <h2 id="sec:success-rate-estimation">Success Rate Estimation</h2>
-<p>In order to replicate the exact dataset distribution of <span
-class="citation" data-cites="easy_to_hard">(<a href="#ref-easy_to_hard"
-role="doc-biblioref">Schwarzschild, Borgnia, Gupta, Bansal, et al.,
-2021</a>)</span>, the parameter <a
-href="https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/maze_dataset_config.html#MazeDatasetConfig.endpoint_kwargs"><code>MazeDatasetConfig.endpoint_kwargs:</code></a>
-<a
-href="https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/maze_dataset_config.html#EndpointKwargsType"><code>EndpointKwargsType</code></a>
-allows for additional constraints, such as enforcing that the start or
-end point be in a “dead end” with only one accessible neighbor cell.
-However, combining these constraints with cyclic mazes<a href="#fn1"
-class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> can
-lead to an absence of valid start and end points. To deal with this, our
-package provides a way to estimate the success rate of a given
-configuration using a symbolic regression model trained with PySR <span
-class="citation" data-cites="pysr">(<a href="#ref-pysr"
-role="doc-biblioref">Cranmer, 2023</a>)</span>. More details on this can
-be found in <a
-href="https://understanding-search.github.io/maze-dataset/notebooks/estimate_dataset_fractions.html"><code>estimate_dataset_fractions.ipynb</code></a>.</p>
+<p>Maze generation under certain constraints may not always be
+successful, and for this we provide a way to estimate the success rate
+of a given configuration, described in <a href="#fig:sre"
+data-reference-type="autoref"
+data-reference="fig:sre">[fig:sre]</a>.</p>
 <h1 id="sec:implementation">Implementation</h1>
 <p>Using an adjacency matrix for storing mazes would be memory
 inefficient by failing to exploit the highly sparse structure, while
@@ -556,26 +402,6 @@ using an adjacency list could lead to a poor lookup time. This package
 utilizes a simple, efficient representation of mazes as subgraphs of a
 finite lattice, which we call a <a
 href="https://understanding-search.github.io/maze-dataset/maze_dataset.html#LatticeMaze"><code>LatticeMaze</code></a>.</p>
-<p>We describe mazes with the following representation: for a <span
-class="math inline">2</span>-dimensional lattice with <span
-class="math inline"><em>r</em></span> rows and <span
-class="math inline"><em>c</em></span> columns, we initialize a boolean
-array <span
-class="math display"><em>A</em> = {0, 1}<sup>2 × <em>r</em> × <em>c</em></sup></span>
-which we refer to in the code as a <a
-href="https://understanding-search.github.io/maze-dataset/maze_dataset.html#LatticeMaze.connection_list"><code>connection_list</code></a>.
-The value at <span
-class="math inline"><em>A</em>[0,<em>i</em>,<em>j</em>]</span>
-determines whether a <em>downward</em> connection exists from node <span
-class="math inline">[<em>i</em>,<em>j</em>]</span> to <span
-class="math inline">[<em>i</em>+1,<em>j</em>]</span>. Likewise, the
-value at <span
-class="math inline"><em>A</em>[1,<em>i</em>,<em>j</em>]</span>
-determines whether a <em>rightward</em> connection to <span
-class="math inline">[<em>i</em>,<em>j</em>+1]</span> exists. Thus, we
-avoid duplication of data about the existence of connections and
-facilitate fast lookup time, at the cost of requiring additional care
-with indexing.</p>
 <h1 id="usage-in-research">Usage in Research</h1>
 <p>This package was originally built for the needs of the <span
 class="citation" data-cites="maze-transformer-github">(<a
@@ -655,29 +481,14 @@ Cobbe, K., Hesse, C., Hilton, J., &amp; Schulman, J. (2019). Leveraging
 procedural generation to benchmark reinforcement learning. <em>arXiv
 Preprint arXiv:1912.01588</em>.
 </div>
-<div id="ref-pysr" class="csl-entry" role="listitem">
-Cranmer, M. (2023). Interpretable machine learning for science with PySR
-and SymbolicRegression. jl. <em>arXiv Preprint arXiv:2305.01582</em>.
-</div>
 <div id="ref-dao2025alphamaze" class="csl-entry" role="listitem">
 Dao, A., &amp; Vu, D. B. (2025). AlphaMaze: Enhancing large language
 models’ spatial intelligence via GRPO. <em>arXiv Preprint
 arXiv:2502.14669</em>.
 </div>
-<div id="ref-percolation" class="csl-entry" role="listitem">
-Duminil-Copin, H. (2017). <em>Sixty years of percolation</em> (No.
-arXiv:1712.04651). <span>arXiv</span>. <a
-href="http://arxiv.org/abs/1712.04651">http://arxiv.org/abs/1712.04651</a>
-</div>
 <div id="ref-gh_Ehsan_2022" class="csl-entry" role="listitem">
 Ehsan, E. (2022). <em>Maze</em>. <a
 href="https://github.com/emadehsan/maze">https://github.com/emadehsan/maze</a>
-</div>
-<div id="ref-percolation-clustersize" class="csl-entry" role="listitem">
-Fisher, M. E., &amp; Essam, J. W. (2004). Some <span>Cluster Size</span>
-and <span>Percolation Problems</span>. <em>Journal of Mathematical
-Physics</em>, <em>2</em>(4), 609–619. <a
-href="https://doi.org/10.1063/1.1703745">https://doi.org/10.1063/1.1703745</a>
 </div>
 <div id="ref-fung2022jfb" class="csl-entry" role="listitem">
 Fung, S. W., Heaton, H., Li, Q., McKenzie, D., Osher, S., &amp; Yin, W.
@@ -742,11 +553,6 @@ Diniz-Behn, C., Fung, S. W., &amp; McKenzie, D. (2024). On logical
 extrapolation for mazes with recurrent and implicit networks. <em>arXiv
 Preprint arXiv:2410.03020</em>.
 </div>
-<div id="ref-kruskal1956shortest" class="csl-entry" role="listitem">
-Kruskal, J. B. (1956). On the shortest spanning subtree of a graph and
-the traveling salesman problem. <em>Proceedings of the American
-Mathematical Society</em>, <em>7</em>(1), 48–50.
-</div>
 <div id="ref-eval-LLM-graphs" class="csl-entry" role="listitem">
 Liu, C., &amp; Wu, B. (2023). Evaluating large language models on
 graphs: Performance insights and comparative analysis. <em>arXiv
@@ -771,17 +577,6 @@ Oppenheim, J. (2018). <em>Maze-generator: Generate a random maze
 represented as a 2D array using depth-first search</em>. <a
 href="https://github.com/oppenheimj/maze-generator/"
 class="uri">https://github.com/oppenheimj/maze-generator/</a>; GitHub.
-</div>
-<div id="ref-pytorch" class="csl-entry" role="listitem">
-Paszke, A., Gross, S., Massa, F., Lerer, A., Bradbury, J., Chanan, G.,
-Killeen, T., Lin, Z., Gimelshein, N., Antiga, L., Desmaison, A., Kopf,
-A., Yang, E., DeVito, Z., Raison, M., Tejani, A., Chilamkurthy, S.,
-Steiner, B., Fang, L., … Chintala, S. (2019). <span>PyTorch: An
-Imperative Style, High-Performance Deep Learning Library</span>. In H.
-Wallach, H. Larochelle, A. Beygelzimer, F. d’Alché-Buc, E. Fox, &amp; R.
-Garnett (Eds.), <em>Advances in neural information processing systems
-32</em> (pp. 8024–8035). Curran Associates, Inc. <a
-href="http://papers.neurips.cc/paper/9015-pytorch-an-imperative-style-high-performance-deep-learning-library.pdf">http://papers.neurips.cc/paper/9015-pytorch-an-imperative-style-high-performance-deep-learning-library.pdf</a>
 </div>
 <div id="ref-pfau2024dotbydot" class="csl-entry" role="listitem">
 Pfau, J., Merrill, W., &amp; Bowman, S. R. (2024). Let’s think dot by
@@ -827,30 +622,11 @@ Chen, X., Zhan, Z., &amp; others. (2024). Imperative learning: A
 self-supervised neural-symbolic learning framework for robot autonomy.
 <em>arXiv Preprint arXiv:2406.16087</em>.
 </div>
-<div id="ref-wilson" class="csl-entry" role="listitem">
-Wilson, D. B. (1996). Generating random spanning trees more quickly than
-the cover time. <em>Proceedings of the Twenty-Eighth Annual
-<span>ACM</span> Symposium on <span>Theory</span> of Computing -
-<span>STOC</span> ’96</em>, 296–303. <a
-href="https://doi.org/10.1145/237814.237880">https://doi.org/10.1145/237814.237880</a>
-</div>
 <div id="ref-zhang2025tscend" class="csl-entry" role="listitem">
 Zhang, T., Pan, J.-S., Feng, R., &amp; Wu, T. (2025). T-SCEND: Test-time
 scalable MCTS-enhanced diffusion model. <em>arXiv Preprint
 arXiv:2502.01989</em>.
 </div>
 </div>
-<aside id="footnotes" class="footnotes footnotes-end-of-document"
-role="doc-endnotes">
-<hr />
-<ol>
-<li id="fn1"><p>Such as those generated with percolation, as was
-required for the work in <span class="citation"
-data-cites="knutson2024logicalextrapolation">(<a
-href="#ref-knutson2024logicalextrapolation" role="doc-biblioref">Knutson
-et al., 2024</a>)</span>.<a href="#fnref1" class="footnote-back"
-role="doc-backlink">↩︎</a></p></li>
-</ol>
-</aside>
 </body>
 </html>
