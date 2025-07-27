@@ -17,7 +17,7 @@ authors:
   - name: Alex F. Spies
     orcid: 0000-0002-8708-1530
     affiliation: 2
-  - name: Tilman Räuker
+  - name: Tilman R\"auker
     orcid: 0009-0009-6321-4413
     affiliation: 3
   - name: Brandon Knutson
