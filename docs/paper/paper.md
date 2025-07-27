@@ -17,7 +17,7 @@ authors:
   - name: Alex F. Spies
     orcid: 0000-0002-8708-1530
     affiliation: 2
-  - name: Tilman R\"auker
+  - name: Tilman Räuker
     orcid: 0009-0009-6321-4413
     affiliation: 3
   - name: Brandon Knutson
@@ -53,7 +53,7 @@ Solving mazes is a classic problem in computer science and artificial intelligen
 
 While maze generation itself is straightforward, the architectural challenge comes from building a system supporting many algorithms with configurable parameters, property filtering, and representation transformation. This library aims to greatly streamline the process of generating and working with datasets of mazes that can be described as subgraphs of an $n \times n$ lattice with boolean connections and, optionally, start and end points that are nodes in the graph. Furthermore, we place emphasis on a wide variety of possible text output formats aimed at evaluating the spatial reasoning capabilities of Large Language Models (LLMs) and other text-based transformer models.
 
-For interpretability and behavioral research, algorithmic tasks offer benefits by allowing systematic data generation and task decomposition, as well as simplifying the process of circuit discovery [@interpretability-survery]. Although mazes are well suited for these investigations, we found that existing maze generation packages [@cobbe2019procgen; @harriesMazeExplorerCustomisable3D2019; @gh_Ehsan_2022; @gh_Nemeth_2019; @easy_to_hard] lack support for transforming between multiple representations and provide limited control over the maze generation process.
+For interpretability and behavioral research, algorithmic tasks offer benefits by allowing systematic data generation and task decomposition, as well as simplifying the process of circuit discovery [@interpretability-survey]. Although mazes are well suited for these investigations, we found that existing maze generation packages [@cobbe2019procgen; @harriesMazeExplorerCustomisable3D2019; @gh_Ehsan_2022; @gh_Nemeth_2019; @easy_to_hard] lack support for transforming between multiple representations and provide limited control over the maze generation process.
 
 ## Related Works
 
