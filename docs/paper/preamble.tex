@@ -25,5 +25,7 @@
 \def\maxheight{\ifdim\Gin@nat@height>0.8\textheight 0.8\textheight\else\Gin@nat@height\fi}
 \setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
 \makeatother
-\usepackage{textcomp}
-\providecommand{\mathparagraph}{\textparagraph}
+
+\pdfstringdefDisableCommands{%
+  \def\href#1#2{#2}%  % keep the visible text, drop the URL
+}
