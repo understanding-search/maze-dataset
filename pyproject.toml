@@ -61,13 +61,6 @@
         "types-tqdm",
         "pandas-stubs",
 		"types-psutil", # see https://github.com/understanding-search/maze-dataset/actions/runs/14327419830/job/40155509863
-		# docs
-		'pdoc>=14.6.0',
-		"nbconvert>=7.16.4", # for notebooks
-		# lmcat -- a custom library. not exactly docs, but lets an LLM see all the code
-		"lmcat>=0.2.0; python_version >= '3.11'",
-		# tomli since no tomlib in python < 3.11
-		"tomli>=2.1.0; python_version < '3.11'",
 		# uploading
 		"twine",
 	]
@@ -75,11 +68,35 @@
 		# lint
 		"ruff>=0.4.8",
 	]
+	docs = [
+		'pdoc>=14.6.0',
+		"nbconvert>=7.16.4", # for notebooks
+		# lmcat -- a custom library. not exactly docs, but lets an LLM see all the code
+		"lmcat>=0.2.0; python_version >= '3.11'",
+		# tomli since no tomlib in python < 3.11
+		"tomli>=2.1.0; python_version < '3.11'",
+	]
     benchmark = [
         # only used in `estimate_dataset_fractions.ipynb`
         "pysr>=1.4.0",
 		"seaborn",
     ]
+	# copied from the extras, to make sure devs have them
+	extra-tokenization = [
+		"frozendict>=2.4.4",
+		# storing valid tokenizers
+		# doesn't appear to work on macos
+		"rust_fst>=0.1.2; platform_system != 'darwin'",
+	]
+
+[tool.uv]
+	default-groups = [
+		"dev",
+		"docs",
+		"lint",
+		"benchmark",
+		"extra-tokenization",
+	]
 
 [project.urls]
     Homepage = "https://github.com/understanding-search/maze-dataset"
@@ -325,8 +342,10 @@
 	exports = [
 		# no groups, no extras, just the base dependencies
 		{ name = "base", groups = false, extras = false },
-		# all groups
-		{ name = "groups", groups = true, extras = false },
+		# dev (basically everything)
+		{ name = "dev", groups = true, extras = true },
+		# all extras (everything a user might want)
+		{ name = "user", groups = false, extras = true },
 		# only the lint group -- custom options for this
 		{ name = "lint", options = ["--only-group", "lint"] },
 		# # all groups and extras
