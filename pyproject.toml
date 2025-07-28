@@ -17,13 +17,8 @@
     readme = "README.md"
     requires-python = ">=3.10"
 
-    # source info
-    # packages = [{include = "maze_dataset"}]
-    # exclude = ["maze_dataset/tokenization/MazeTokenizerModular_hashes.npz"] # don't ship the hashes
-
     # informational metadata
     keywords = ["maze", "mazes", "labyrinth", "dataset", "procedural", "pathfinding", "tokenization"]
-
 
     dependencies = [
         # custom packages
@@ -95,9 +90,6 @@
 [build-system]
 	requires = ["hatchling"]
 	build-backend = "hatchling.build"
-
-[tool.hatch.build.targets.wheel]
-	exclude = ["maze_dataset/tokenization/MazeTokenizerModular_hashes.npz"]
 
 [tool.pytest.ini_options]
     # Ignore numpy deprecation warnings triggered by muutils
