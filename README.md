@@ -117,6 +117,8 @@ This package is [available on PyPI](https://pypi.org/project/maze-dataset/), and
 pip install maze-dataset
 ```
 
+> Please note that due to an issue with the `rust-fst` package, some tokenization features are not available on macOS. Please see [#57](https://github.com/understanding-search/maze-dataset/issues/57)
+
 # Docs
 
 The full hosted documentation is available at [https://understanding-search.github.io/maze-dataset/](https://understanding-search.github.io/maze-dataset/).
