@@ -7,6 +7,7 @@ tests/_temp/**
 .coverage
 notebooks/data/**
 notebooks/tests/**
+media/**
 # pysr outputs
 notebooks/outputs/**
 outputs/**

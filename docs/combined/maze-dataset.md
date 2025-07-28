@@ -8,7 +8,7 @@
   <table style="margin: 0 auto;">
     <tr>
       <td style="vertical-align: middle;">
-        <img src="docs/resources/logo.svg" alt="Maze Dataset Logo" width="50">
+        <img src="https://understanding-search.github.io/maze-dataset/resources/logo.svg" alt="Maze Dataset Logo" width="50">
       </td>
       <td style="vertical-align: middle; padding-left: 10px;">
         <h1 style="margin: 0;">maze-dataset</h1>
@@ -34,10 +34,11 @@
         <img src="https://img.shields.io/badge/arXiv-2309.10498-b31b1b.svg" alt="arXiv">
     </a>
   </p>
+  
 
   <!-- Diagram -->
   <p>
-    <img src="docs/resources/diagram.svg" alt="Diagram">
+    <img src="https://understanding-search.github.io/maze-dataset/resources/diagram.svg" alt="Diagram">
   </p>
 
   <!-- Additional badges -->
@@ -52,8 +53,8 @@
       <img src="https://github.com/understanding-search/maze-dataset/actions/workflows/checks.yml/badge.svg" alt="Checks">
     </a>
     &nbsp;
-    <a href="docs/coverage/coverage.txt">
-      <img src="docs/coverage/coverage.svg" alt="Coverage">
+    <a href="https://understanding-search.github.io/maze-dataset/coverage/coverage.txt">
+      <img src="https://understanding-search.github.io/maze-dataset/coverage/coverage.svg" alt="Coverage">
     </a>
     &nbsp;
     <img src="https://img.shields.io/github/languages/code-size/understanding-search/maze-dataset" alt="code size, bytes">
@@ -65,6 +66,10 @@
     <img src="https://img.shields.io/github/issues-pr-closed/understanding-search/maze-dataset" alt="GitHub closed pull requests">
     &nbsp;
     <img src="https://img.shields.io/pypi/dm/maze-dataset" alt="PyPI - Downloads">
+    &nbsp;
+    <a href="https://juleskreuer.eu/projects/citation-badge">
+         <img alt="Citation Badge" src="https://api.juleskreuer.eu/citation-badge.php?doi=10.48550/arxiv.2309.10498">
+    </a>
   </p>
 
 </div>
@@ -74,7 +79,7 @@
 <!-- [![PyPI](https://img.shields.io/pypi/v/maze-dataset)](https://pypi.org/project/maze-dataset/)
 ![PyPI - Downloads](https://img.shields.io/pypi/dm/maze-dataset)
 [![Checks](https://github.com/understanding-search/maze-dataset/actions/workflows/checks.yml/badge.svg)](https://github.com/understanding-search/maze-dataset/actions/workflows/checks.yml)
-[![Coverage](data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI5OSIgaGVpZ2h0PSIyMCI+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImIiIHgyPSIwIiB5Mj0iMTAwJSI+CiAgICAgICAgPHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjYmJiIiBzdG9wLW9wYWNpdHk9Ii4xIi8+CiAgICAgICAgPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLW9wYWNpdHk9Ii4xIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogICAgPG1hc2sgaWQ9ImEiPgogICAgICAgIDxyZWN0IHdpZHRoPSI5OSIgaGVpZ2h0PSIyMCIgcng9IjMiIGZpbGw9IiNmZmYiLz4KICAgIDwvbWFzaz4KICAgIDxnIG1hc2s9InVybCgjYSkiPgogICAgICAgIDxwYXRoIGZpbGw9IiM1NTUiIGQ9Ik0wIDBoNjN2MjBIMHoiLz4KICAgICAgICA8cGF0aCBmaWxsPSIjZGZiMzE3IiBkPSJNNjMgMGgzNnYyMEg2M3oiLz4KICAgICAgICA8cGF0aCBmaWxsPSJ1cmwoI2IpIiBkPSJNMCAwaDk5djIwSDB6Ii8+CiAgICA8L2c+CiAgICA8ZyBmaWxsPSIjZmZmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iRGVqYVZ1IFNhbnMsVmVyZGFuYSxHZW5ldmEsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMSI+CiAgICAgICAgPHRleHQgeD0iMzEuNSIgeT0iMTUiIGZpbGw9IiMwMTAxMDEiIGZpbGwtb3BhY2l0eT0iLjMiPmNvdmVyYWdlPC90ZXh0PgogICAgICAgIDx0ZXh0IHg9IjMxLjUiIHk9IjE0Ij5jb3ZlcmFnZTwvdGV4dD4KICAgICAgICA8dGV4dCB4PSI4MCIgeT0iMTUiIGZpbGw9IiMwMTAxMDEiIGZpbGwtb3BhY2l0eT0iLjMiPjY3JTwvdGV4dD4KICAgICAgICA8dGV4dCB4PSI4MCIgeT0iMTQiPjY3JTwvdGV4dD4KICAgIDwvZz4KPC9zdmc+Cg==)](docs/coverage/coverage.txt)
+[![Coverage](data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI5OSIgaGVpZ2h0PSIyMCI+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImIiIHgyPSIwIiB5Mj0iMTAwJSI+CiAgICAgICAgPHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjYmJiIiBzdG9wLW9wYWNpdHk9Ii4xIi8+CiAgICAgICAgPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLW9wYWNpdHk9Ii4xIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogICAgPG1hc2sgaWQ9ImEiPgogICAgICAgIDxyZWN0IHdpZHRoPSI5OSIgaGVpZ2h0PSIyMCIgcng9IjMiIGZpbGw9IiNmZmYiLz4KICAgIDwvbWFzaz4KICAgIDxnIG1hc2s9InVybCgjYSkiPgogICAgICAgIDxwYXRoIGZpbGw9IiM1NTUiIGQ9Ik0wIDBoNjN2MjBIMHoiLz4KICAgICAgICA8cGF0aCBmaWxsPSIjZGZiMzE3IiBkPSJNNjMgMGgzNnYyMEg2M3oiLz4KICAgICAgICA8cGF0aCBmaWxsPSJ1cmwoI2IpIiBkPSJNMCAwaDk5djIwSDB6Ii8+CiAgICA8L2c+CiAgICA8ZyBmaWxsPSIjZmZmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iRGVqYVZ1IFNhbnMsVmVyZGFuYSxHZW5ldmEsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMSI+CiAgICAgICAgPHRleHQgeD0iMzEuNSIgeT0iMTUiIGZpbGw9IiMwMTAxMDEiIGZpbGwtb3BhY2l0eT0iLjMiPmNvdmVyYWdlPC90ZXh0PgogICAgICAgIDx0ZXh0IHg9IjMxLjUiIHk9IjE0Ij5jb3ZlcmFnZTwvdGV4dD4KICAgICAgICA8dGV4dCB4PSI4MCIgeT0iMTUiIGZpbGw9IiMwMTAxMDEiIGZpbGwtb3BhY2l0eT0iLjMiPjY0JTwvdGV4dD4KICAgICAgICA8dGV4dCB4PSI4MCIgeT0iMTQiPjY0JTwvdGV4dD4KICAgIDwvZz4KPC9zdmc+Cg==)](docs/coverage/coverage.txt)
 ![code size, bytes](https://img.shields.io/github/languages/code-size/understanding-search/maze-dataset)
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/t/understanding-search/maze-dataset)
 ![GitHub closed pull requests](https://img.shields.io/github/issues-pr-closed/understanding-search/maze-dataset) -->
@@ -88,7 +93,7 @@ This package includes a variety of maze generation algorithms, including randomi
 
 |   |   |   |   |
 |---|---|---|---|
-| <img src="docs/assets/maze_perc.png" alt="Maze generated via percolation" width="95%"/> | <img src="docs/assets/maze_dfs_constrained.png" alt="Maze generated via constrained randomized depth first search" width="95%"/> | <img src="docs/assets/mazeplot_heatmap.png" alt="Maze with random heatmap" width="95%"/> | <img src="docs/assets/mazeplot_path.png" alt="MazePlot with solution" width="95%"/> |
+| <img src="https://understanding-search.github.io/maze-dataset/assets/maze_perc.png" alt="Maze generated via percolation" width="95%"/> | <img src="https://understanding-search.github.io/maze-dataset/assets/maze_dfs_constrained.png" alt="Maze generated via constrained randomized depth first search" width="95%"/> | <img src="https://understanding-search.github.io/maze-dataset/assets/mazeplot_heatmap.png" alt="Maze with random heatmap" width="95%"/> | <img src="https://understanding-search.github.io/maze-dataset/assets/mazeplot_path.png" alt="MazePlot with solution" width="95%"/> |
 
 
 You can view and search through a wide variety of example mazes here: [`understanding-search.github.io/maze-dataset/examples/maze_examples`](https://understanding-search.github.io/maze-dataset/examples/maze_examples.html)
@@ -173,7 +178,7 @@ from maze_dataset.plotting import MazePlot
 MazePlot(maze).plot()
 ```
 
-<img src="docs/assets/output_formats.png" alt="textual and visual output formats" width="100%"/>
+<img src="https://understanding-search.github.io/maze-dataset/assets/output_formats.png" alt="textual and visual output formats" width="100%"/>
 
 
 # Development
@@ -241,7 +246,7 @@ we use this [makefile template](https://github.com/mivanit/python-project-makefi
   <table style="margin: 0 auto;">
     <tr>
       <td style="vertical-align: middle;">
-        <img src="docs/resources/logo.svg" alt="Maze Dataset Logo" width="50">
+        <img src="https://understanding-search.github.io/maze-dataset/resources/logo.svg" alt="Maze Dataset Logo" width="50">
       </td>
       <td style="vertical-align: middle; padding-left: 10px;">
         <h1 style="margin: 0;">maze-dataset</h1>
@@ -267,10 +272,11 @@ we use this [makefile template](https://github.com/mivanit/python-project-makefi
         <img src="https://img.shields.io/badge/arXiv-2309.10498-b31b1b.svg" alt="arXiv">
     </a>
   </p>
+  
 
   <!-- Diagram -->
   <p>
-    <img src="docs/resources/diagram.svg" alt="Diagram">
+    <img src="https://understanding-search.github.io/maze-dataset/resources/diagram.svg" alt="Diagram">
   </p>
 
   <!-- Additional badges -->
@@ -285,8 +291,8 @@ we use this [makefile template](https://github.com/mivanit/python-project-makefi
       <img src="https://github.com/understanding-search/maze-dataset/actions/workflows/checks.yml/badge.svg" alt="Checks">
     </a>
     &nbsp;
-    <a href="docs/coverage/coverage.txt">
-      <img src="docs/coverage/coverage.svg" alt="Coverage">
+    <a href="https://understanding-search.github.io/maze-dataset/coverage/coverage.txt">
+      <img src="https://understanding-search.github.io/maze-dataset/coverage/coverage.svg" alt="Coverage">
     </a>
     &nbsp;
     <img src="https://img.shields.io/github/languages/code-size/understanding-search/maze-dataset" alt="code size, bytes">
@@ -298,6 +304,10 @@ we use this [makefile template](https://github.com/mivanit/python-project-makefi
     <img src="https://img.shields.io/github/issues-pr-closed/understanding-search/maze-dataset" alt="GitHub closed pull requests">
     &nbsp;
     <img src="https://img.shields.io/pypi/dm/maze-dataset" alt="PyPI - Downloads">
+    &nbsp;
+    <a href="https://juleskreuer.eu/projects/citation-badge">
+         <img alt="Citation Badge" src="https://api.juleskreuer.eu/citation-badge.php?doi=10.48550/arxiv.2309.10498">
+    </a>
   </p>
 
 </div>
@@ -307,7 +317,7 @@ we use this [makefile template](https://github.com/mivanit/python-project-makefi
 <!-- [![PyPI](https://img.shields.io/pypi/v/maze-dataset)](https://pypi.org/project/maze-dataset/)
 ![PyPI - Downloads](https://img.shields.io/pypi/dm/maze-dataset)
 [![Checks](https://github.com/understanding-search/maze-dataset/actions/workflows/checks.yml/badge.svg)](https://github.com/understanding-search/maze-dataset/actions/workflows/checks.yml)
-[![Coverage](data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI5OSIgaGVpZ2h0PSIyMCI+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImIiIHgyPSIwIiB5Mj0iMTAwJSI+CiAgICAgICAgPHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjYmJiIiBzdG9wLW9wYWNpdHk9Ii4xIi8+CiAgICAgICAgPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLW9wYWNpdHk9Ii4xIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogICAgPG1hc2sgaWQ9ImEiPgogICAgICAgIDxyZWN0IHdpZHRoPSI5OSIgaGVpZ2h0PSIyMCIgcng9IjMiIGZpbGw9IiNmZmYiLz4KICAgIDwvbWFzaz4KICAgIDxnIG1hc2s9InVybCgjYSkiPgogICAgICAgIDxwYXRoIGZpbGw9IiM1NTUiIGQ9Ik0wIDBoNjN2MjBIMHoiLz4KICAgICAgICA8cGF0aCBmaWxsPSIjZGZiMzE3IiBkPSJNNjMgMGgzNnYyMEg2M3oiLz4KICAgICAgICA8cGF0aCBmaWxsPSJ1cmwoI2IpIiBkPSJNMCAwaDk5djIwSDB6Ii8+CiAgICA8L2c+CiAgICA8ZyBmaWxsPSIjZmZmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iRGVqYVZ1IFNhbnMsVmVyZGFuYSxHZW5ldmEsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMSI+CiAgICAgICAgPHRleHQgeD0iMzEuNSIgeT0iMTUiIGZpbGw9IiMwMTAxMDEiIGZpbGwtb3BhY2l0eT0iLjMiPmNvdmVyYWdlPC90ZXh0PgogICAgICAgIDx0ZXh0IHg9IjMxLjUiIHk9IjE0Ij5jb3ZlcmFnZTwvdGV4dD4KICAgICAgICA8dGV4dCB4PSI4MCIgeT0iMTUiIGZpbGw9IiMwMTAxMDEiIGZpbGwtb3BhY2l0eT0iLjMiPjY3JTwvdGV4dD4KICAgICAgICA8dGV4dCB4PSI4MCIgeT0iMTQiPjY3JTwvdGV4dD4KICAgIDwvZz4KPC9zdmc+Cg==)](docs/coverage/coverage.txt)
+[![Coverage](data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI5OSIgaGVpZ2h0PSIyMCI+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImIiIHgyPSIwIiB5Mj0iMTAwJSI+CiAgICAgICAgPHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjYmJiIiBzdG9wLW9wYWNpdHk9Ii4xIi8+CiAgICAgICAgPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLW9wYWNpdHk9Ii4xIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogICAgPG1hc2sgaWQ9ImEiPgogICAgICAgIDxyZWN0IHdpZHRoPSI5OSIgaGVpZ2h0PSIyMCIgcng9IjMiIGZpbGw9IiNmZmYiLz4KICAgIDwvbWFzaz4KICAgIDxnIG1hc2s9InVybCgjYSkiPgogICAgICAgIDxwYXRoIGZpbGw9IiM1NTUiIGQ9Ik0wIDBoNjN2MjBIMHoiLz4KICAgICAgICA8cGF0aCBmaWxsPSIjZGZiMzE3IiBkPSJNNjMgMGgzNnYyMEg2M3oiLz4KICAgICAgICA8cGF0aCBmaWxsPSJ1cmwoI2IpIiBkPSJNMCAwaDk5djIwSDB6Ii8+CiAgICA8L2c+CiAgICA8ZyBmaWxsPSIjZmZmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iRGVqYVZ1IFNhbnMsVmVyZGFuYSxHZW5ldmEsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMSI+CiAgICAgICAgPHRleHQgeD0iMzEuNSIgeT0iMTUiIGZpbGw9IiMwMTAxMDEiIGZpbGwtb3BhY2l0eT0iLjMiPmNvdmVyYWdlPC90ZXh0PgogICAgICAgIDx0ZXh0IHg9IjMxLjUiIHk9IjE0Ij5jb3ZlcmFnZTwvdGV4dD4KICAgICAgICA8dGV4dCB4PSI4MCIgeT0iMTUiIGZpbGw9IiMwMTAxMDEiIGZpbGwtb3BhY2l0eT0iLjMiPjY0JTwvdGV4dD4KICAgICAgICA8dGV4dCB4PSI4MCIgeT0iMTQiPjY0JTwvdGV4dD4KICAgIDwvZz4KPC9zdmc+Cg==)](docs/coverage/coverage.txt)
 ![code size, bytes](https://img.shields.io/github/languages/code-size/understanding-search/maze-dataset)
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/t/understanding-search/maze-dataset)
 ![GitHub closed pull requests](https://img.shields.io/github/issues-pr-closed/understanding-search/maze-dataset) -->
@@ -321,7 +331,7 @@ This package includes a variety of maze generation algorithms, including randomi
 
 |   |   |   |   |
 |---|---|---|---|
-| <img src="docs/assets/maze_perc.png" alt="Maze generated via percolation" width="95%"/> | <img src="docs/assets/maze_dfs_constrained.png" alt="Maze generated via constrained randomized depth first search" width="95%"/> | <img src="docs/assets/mazeplot_heatmap.png" alt="Maze with random heatmap" width="95%"/> | <img src="docs/assets/mazeplot_path.png" alt="MazePlot with solution" width="95%"/> |
+| <img src="https://understanding-search.github.io/maze-dataset/assets/maze_perc.png" alt="Maze generated via percolation" width="95%"/> | <img src="https://understanding-search.github.io/maze-dataset/assets/maze_dfs_constrained.png" alt="Maze generated via constrained randomized depth first search" width="95%"/> | <img src="https://understanding-search.github.io/maze-dataset/assets/mazeplot_heatmap.png" alt="Maze with random heatmap" width="95%"/> | <img src="https://understanding-search.github.io/maze-dataset/assets/mazeplot_path.png" alt="MazePlot with solution" width="95%"/> |
 
 
 You can view and search through a wide variety of example mazes here: [`understanding-search.github.io/maze-dataset/examples/maze_examples`](https://understanding-search.github.io/maze-dataset/examples/maze_examples.html)
@@ -406,7 +416,7 @@ from <a href="maze_dataset/plotting.html">maze_dataset.plotting</a> import MazeP
 MazePlot(maze).plot()
 ```
 
-<img src="docs/assets/output_formats.png" alt="textual and visual output formats" width="100%"/>
+<img src="https://understanding-search.github.io/maze-dataset/assets/output_formats.png" alt="textual and visual output formats" width="100%"/>
 
 
 ### Development
@@ -6397,7 +6407,7 @@ maze = gen_recursive_division((10, 10))
 helper function to get a maze already with a solution
 
 
-- `numpy_rng = Generator(PCG64) at 0x7E5CA41D5460`
+- `numpy_rng = Generator(PCG64) at 0x7CDA962D5620`
 
 
 
@@ -6463,7 +6473,7 @@ generation functions have signature `(grid_shape: Coord, **kwargs) -> LatticeMaz
 
 
 
-- `numpy_rng = Generator(PCG64) at 0x7E5CA41D5460`
+- `numpy_rng = Generator(PCG64) at 0x7CDA962D5620`
 
 
 

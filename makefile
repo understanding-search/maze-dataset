@@ -1849,3 +1849,26 @@ paper-html:
 .PHONY: paper
 paper: paper-clean paper-pdf paper-html
 	@echo "paper compiled to tex, pdf and html"
+
+
+DOCKER_IMAGE  := openjournals/inara:latest
+
+paper-docker:
+	@echo "Compile the paper inside the Inara container"
+	@echo "Requires docker to be installed, and may need to be run with sudo"
+	@if [ -z "$$(docker images -q $(DOCKER_IMAGE))" ]; then \
+		echo "Pulling $(DOCKER_IMAGE) ..."; \
+		docker pull $(DOCKER_IMAGE); \
+	fi
+	@echo "Generating LaTeX with $(DOCKER_IMAGE)..."
+	docker run --rm \
+		-v "$$(pwd)":/data \
+		-w /data \
+		$(DOCKER_IMAGE) -o tex $(PAPER_PATH)/paper.md
+
+	@echo "Building PDF with $(DOCKER_IMAGE)..."
+	docker run --rm \
+		-v "$$(pwd)":/data \
+		-w /data \
+		$(DOCKER_IMAGE) -o pdf $(PAPER_PATH)/paper.md; \
+		cat /tmp/tex2pdf.-ecd8dd71ca53cc32/input.log

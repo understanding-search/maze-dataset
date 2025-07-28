@@ -4,7 +4,7 @@
   <table style="margin: 0 auto;">
     <tr>
       <td style="vertical-align: middle;">
-        <img src="docs/resources/logo.svg" alt="Maze Dataset Logo" width="50">
+        <img src="https://understanding-search.github.io/maze-dataset/resources/logo.svg" alt="Maze Dataset Logo" width="50">
       </td>
       <td style="vertical-align: middle; padding-left: 10px;">
         <h1 style="margin: 0;">maze-dataset</h1>
@@ -34,7 +34,7 @@
 
   <!-- Diagram -->
   <p>
-    <img src="docs/resources/diagram.svg" alt="Diagram">
+    <img src="https://understanding-search.github.io/maze-dataset/resources/diagram.svg" alt="Diagram">
   </p>
 
   <!-- Additional badges -->
@@ -49,8 +49,8 @@
       <img src="https://github.com/understanding-search/maze-dataset/actions/workflows/checks.yml/badge.svg" alt="Checks">
     </a>
     &nbsp;
-    <a href="docs/coverage/coverage.txt">
-      <img src="docs/coverage/coverage.svg" alt="Coverage">
+    <a href="https://understanding-search.github.io/maze-dataset/coverage/coverage.txt">
+      <img src="https://understanding-search.github.io/maze-dataset/coverage/coverage.svg" alt="Coverage">
     </a>
     &nbsp;
     <img src="https://img.shields.io/github/languages/code-size/understanding-search/maze-dataset" alt="code size, bytes">
@@ -89,7 +89,7 @@ This package includes a variety of maze generation algorithms, including randomi
 
 |   |   |   |   |
 |---|---|---|---|
-| <img src="docs/assets/maze_perc.png" alt="Maze generated via percolation" width="95%"/> | <img src="docs/assets/maze_dfs_constrained.png" alt="Maze generated via constrained randomized depth first search" width="95%"/> | <img src="docs/assets/mazeplot_heatmap.png" alt="Maze with random heatmap" width="95%"/> | <img src="docs/assets/mazeplot_path.png" alt="MazePlot with solution" width="95%"/> |
+| <img src="https://understanding-search.github.io/maze-dataset/assets/maze_perc.png" alt="Maze generated via percolation" width="95%"/> | <img src="https://understanding-search.github.io/maze-dataset/assets/maze_dfs_constrained.png" alt="Maze generated via constrained randomized depth first search" width="95%"/> | <img src="https://understanding-search.github.io/maze-dataset/assets/mazeplot_heatmap.png" alt="Maze with random heatmap" width="95%"/> | <img src="https://understanding-search.github.io/maze-dataset/assets/mazeplot_path.png" alt="MazePlot with solution" width="95%"/> |
 
 
 You can view and search through a wide variety of example mazes here: [`understanding-search.github.io/maze-dataset/examples/maze_examples`](https://understanding-search.github.io/maze-dataset/examples/maze_examples.html)
@@ -174,7 +174,7 @@ from maze_dataset.plotting import MazePlot
 MazePlot(maze).plot()
 ```
 
-<img src="docs/assets/output_formats.png" alt="textual and visual output formats" width="100%"/>
+<img src="https://understanding-search.github.io/maze-dataset/assets/output_formats.png" alt="textual and visual output formats" width="100%"/>
 
 
 # Development
