@@ -163,6 +163,7 @@
 
 	[tool.ruff.lint]
 		ignore = [
+			"PLC0415", # generally, if we are not importing at the top of a file, there is a reason for it
 			"TC002", # fine to normally import jaxtyping and others not in a TYPE_CHECKING block
 			"F722", # doesn't like jaxtyping
 			"W191", # we like tabs
