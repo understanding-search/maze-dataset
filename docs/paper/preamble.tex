@@ -1,3 +1,4 @@
+\RequirePackage{xstring}
 \usepackage{graphicx}
 \usepackage{array}
 \usepackage{tikz}
@@ -17,15 +18,9 @@
 }
 \providecommand{\XeTeXLinkBox}[1]{#1}
 \newcommand{\docslink}[2]{\href{https://understanding-search.github.io/maze-dataset/#1}{#2}}
-\newcommand{\docslinkcode}[2]{\href{https://understanding-search.github.io/maze-dataset/#1}{\texttt{#2}}}
-\newcommand{\docslinkcodemain}[1]{\href{https://understanding-search.github.io/maze-dataset/maze_dataset.html\##1}{\texttt{#1}}}
-\newcommand{\secref}[1]{\hyperref[#1]{section: \textit{\nameref{#1}}}}
-\makeatletter
-\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
-\def\maxheight{\ifdim\Gin@nat@height>0.8\textheight 0.8\textheight\else\Gin@nat@height\fi}
-\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
-\makeatother
-
-\pdfstringdefDisableCommands{%
-  \def\href##1##2{##2}%  % keep visible text, drop the URL
-}
+% \newcommand{\secref}[1]{\hyperref[#1]{section: \textit{\nameref{#1}}}}
+% \makeatletter
+% \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+% \def\maxheight{\ifdim\Gin@nat@height>0.8\textheight 0.8\textheight\else\Gin@nat@height\fi}
+% \setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% \makeatother
