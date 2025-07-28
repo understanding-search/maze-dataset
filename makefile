@@ -1327,7 +1327,7 @@ dep-check-torch:
 
 define SCRIPT_MACOS_DEP
 import platform, warnings;
-if platform.system().lower() == 'linux':
+if platform.system().lower() == 'darwin':
 	warnings.warn(
 		'\033[91m' + '\n' + '!'*70 + '\n'
 		+ 'WARNING: some tokenization features do not work on macOS, see https://github.com/understanding-search/maze-dataset/issues/57'
