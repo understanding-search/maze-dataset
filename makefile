@@ -1323,13 +1323,30 @@ dep-check-torch:
 	@echo "see if torch is installed, and which CUDA version and devices it sees"
 	$(PYTHON) -c "$$SCRIPT_CHECK_TORCH"
 
+
+
+define SCRIPT_MACOS_DEP
+import platform, warnings;
+if platform.system().lower() == 'linux':
+	warnings.warn(
+		'\033[91m' + '\n' + '!'*70 + '\n'
+		+ 'WARNING: some tokenization features do not work on macOS, see https://github.com/understanding-search/maze-dataset/issues/57'
+		+ '\n' + '!'*70 + '\033[0m'
+	)
+endef
+
+export SCRIPT_MACOS_DEP
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# added checks for when on macos/darwin
 .PHONY: dep
 dep:
 	@echo "Exporting dependencies as per $(PYPROJECT) section 'tool.uv-exports.exports'"
+	@$(PYTHON) -c "$$SCRIPT_MACOS_DEP"
 	uv sync --all-extras --all-groups --compile-bytecode
-	mkdir -p $(REQUIREMENTS_DIR)
-	$(PYTHON) -c "$$SCRIPT_EXPORT_REQUIREMENTS" $(PYPROJECT) $(REQUIREMENTS_DIR) | sh -x
-	
+	@mkdir -p $(REQUIREMENTS_DIR)
+	@$(PYTHON) -c "$$SCRIPT_EXPORT_REQUIREMENTS" $(PYPROJECT) $(REQUIREMENTS_DIR) | sh -x
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .PHONY: dep-check
 dep-check:
