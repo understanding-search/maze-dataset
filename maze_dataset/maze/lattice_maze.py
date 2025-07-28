@@ -1215,6 +1215,16 @@ class TargetedLatticeMaze(LatticeMaze):  # type: ignore[misc]
 		"check equality, calls parent class equality check"
 		return super().__eq__(other)
 
+	def __hash__(self) -> int:
+		"hash the `TargetedLatticeMaze` by hashing a tuple of the connection list and start and end positions as bytes"
+		return hash(
+			(
+				self.connection_list.tobytes(),
+				self.start_pos.tobytes(),
+				self.end_pos.tobytes(),
+			)
+		)
+
 	def _get_start_pos_tokens(self) -> list[str | CoordTup]:
 		return [
 			SPECIAL_TOKENS.ORIGIN_START,

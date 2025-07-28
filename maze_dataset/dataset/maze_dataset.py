@@ -109,7 +109,8 @@ def _maze_gen_init_worker(config: MazeDatasetConfig) -> None:
 		)
 
 
-class MazeDataset(GPTDataset[MazeDatasetConfig]):
+# TODO: we probably don't need to hash datasets, right?
+class MazeDataset(GPTDataset[MazeDatasetConfig]):  # noqa: PLW1641
 	"""a maze dataset class. This is a collection of solved mazes, and should be initialized via `MazeDataset.from_config`"""
 
 	def __init__(
