@@ -127,7 +127,7 @@ Additionally, our [notebooks](https://understanding-search.github.io/maze-datase
 
 ## Creating a dataset
 
-To create a `MazeDataset`, which inherits from `torch.utils.data.Dataset`, you first create a `MazeDatasetConfig`:
+To create a `MazeDataset`, you first create a `MazeDatasetConfig`:
 
 ```python
 from maze_dataset import MazeDataset, MazeDatasetConfig
@@ -161,17 +161,18 @@ maze_dataset.maze.lattice_maze.SolvedMaze
 Which can be converted to a variety of formats:
 ```python
 # visual representation as ascii art
-m.as_ascii() 
+print(m.as_ascii()) 
 # RGB image, optionally without solution or endpoints, suitable for CNNs
-m.as_pixels() 
+import matplotlib.pyplot as plt
+plt.imshow(m.as_pixels())
 # text format for autoreregressive transformers
-from maze_dataset.tokenization import MazeTokenizerModular, TokenizationMode
+from maze_dataset.tokenization import MazeTokenizerModular, TokenizationMode, PromptSequencers
 m.as_tokens(maze_tokenizer=MazeTokenizerModular(
-    tokenization_mode=TokenizationMode.AOTP_UT_rasterized, max_grid_size=100,
+	prompt_sequencer=PromptSequencers.AOTP(), # many options here
 ))
 # advanced visualization with many features
 from maze_dataset.plotting import MazePlot
-MazePlot(maze).plot()
+MazePlot(m).plot()
 ```
 
 <img src="https://understanding-search.github.io/maze-dataset/assets/output_formats.png" alt="textual and visual output formats" width="100%"/>
