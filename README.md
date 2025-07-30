@@ -189,6 +189,8 @@ we use this [makefile template](https://github.com/mivanit/python-project-makefi
 - `make dep` to install all dependencies
 - `make help` will print all available commands
 - `make test` will run basic tests to ensure the package is working
+  - run just the unit tests with `make test-unit`
+  - see all tests with explanations using `make help` or `make help | grep test`
 - `make format` will run ruff to format and check the code
 
 
