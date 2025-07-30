@@ -270,6 +270,10 @@
 				"PLR2004", # magic variables are fine
 				"N806", # uppercase vars are fine
 			]
+			"notebooks/estimate_dataset_fractions.ipynb" = [
+				# this is a weird one with the imports
+				"E402",
+			]
 
 [tool.lmcat]
 	output = "docs/other/lmcat.txt" # changing this might mean it wont be accessible from the docs
