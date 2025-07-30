@@ -458,7 +458,7 @@ rpds-py==0.26.0
     #   jsonschema
     #   referencing
 ruff==0.12.5
-rust-fst==0.1.2 ; platform_system != 'darwin'
+rust-fst==0.1.2 ; sys_platform != 'darwin'
     # via maze-dataset
 scikit-learn==1.7.1
     # via pysr
