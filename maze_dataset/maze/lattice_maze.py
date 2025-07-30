@@ -413,7 +413,7 @@ class LatticeMaze(SerializableDataclass):
 		deadend_end: bool = False,
 		endpoints_not_equal: bool = False,
 		except_on_no_valid_endpoint: typing.Literal[False] = False,
-	) -> typing.Optional[CoordArray]: ...
+	) -> CoordArray | None: ...
 	def generate_random_path(  # noqa: C901
 		self,
 		allowed_start: CoordList | None = None,
@@ -422,7 +422,7 @@ class LatticeMaze(SerializableDataclass):
 		deadend_end: bool = False,
 		endpoints_not_equal: bool = False,
 		except_on_no_valid_endpoint: bool = True,
-	) -> typing.Optional[CoordArray]:
+	) -> CoordArray | None:
 		"""return a path between randomly chosen start and end nodes within the connected component
 
 		Note that setting special conditions on start and end positions might cause the same position to be selected as both start and end.
@@ -1214,6 +1214,16 @@ class TargetedLatticeMaze(LatticeMaze):  # type: ignore[misc]
 	def __eq__(self, other: object) -> bool:
 		"check equality, calls parent class equality check"
 		return super().__eq__(other)
+
+	def __hash__(self) -> int:
+		"hash the `TargetedLatticeMaze` by hashing a tuple of the connection list and start and end positions as bytes"
+		return hash(
+			(
+				self.connection_list.tobytes(),
+				self.start_pos.tobytes(),
+				self.end_pos.tobytes(),
+			)
+		)
 
 	def _get_start_pos_tokens(self) -> list[str | CoordTup]:
 		return [

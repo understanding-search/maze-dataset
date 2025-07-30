@@ -299,7 +299,8 @@ href="https://understanding-search.github.io/maze-dataset/maze_dataset.html#Maze
 is similar to that of <span class="citation"
 data-cites="eval-LLM-graphs">(<a href="#ref-eval-LLM-graphs"
 role="doc-biblioref">Liu &amp; Wu, 2023</a>)</span> but with many more
-options, detailed .</p></li>
+options, detailed in <a href="#sec:tokenized-output-formats">section:
+<em></em></a>.</p></li>
 <li><p>Preserving metadata about the generation algorithm with the
 dataset itself is essential for studying the effects of distributional
 shifts. Our package efficiently stores the dataset along with its
@@ -309,7 +310,8 @@ Ivanitskiy, n.d.</a>)</span>. As far as we are aware, no existing
 packages do this reliably.</p></li>
 <li><p>Storing mazes as images or adjacency matrices is not only
 difficult to work with, but also inefficient. We use a highly efficient
-method detailed in .</p></li>
+method detailed in <a href="#sec:implementation">section:
+<em></em></a>.</p></li>
 <li><p>Our package is easily installable with source code freely
 available. It is extensively tested, type hinted, benchmarked, and
 documented. Many other maze generation packages lack this level of rigor
@@ -332,12 +334,14 @@ repository</a> <span class="citation"
 data-cites="maze-dataset-github">(<a href="#ref-maze-dataset-github"
 role="doc-biblioref">Michael I. Ivanitskiy et al.,
 2023a</a>)</span>.</p>
-<p>Datasets of mazes are created from a configuration object, which
-allows specifying the number of mazes, their size, the generation
-algorithm, and various parameters for the generation algorithm. Datasets
-can also be filtered after generation to satisfy certain properties.
-Custom filters can be specified, and some filters are included in <a
-href="https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/filters.html#MazeDatasetFilters"><code>MazeDatasetFilters</code></a></p>
+<p>Datasets of mazes are created from a <a
+href="https://understanding-search.github.io/maze-dataset/maze_dataset.html#MazeDatasetConfig"><code>MazeDatasetConfig</code></a>
+configuration object, which allows specifying the number of mazes, their
+size, the generation algorithm, and various parameters for the
+generation algorithm. Datasets can also be filtered after generation to
+satisfy certain properties. Custom filters can be specified, and some
+filters are included in <a
+href="https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/filters.html#MazeDatasetFilters"><code>MazeDatasetFilters</code></a>.</p>
 <h2 id="visual-output-formats">Visual Output Formats</h2>
 <p>Internally, mazes are <a
 href="https://understanding-search.github.io/maze-dataset/maze_dataset.html#SolvedMaze"><code>SolvedMaze</code></a>
@@ -371,7 +375,11 @@ al., 2024</a>)</span>. To facilitate systematic investigation of the
 effects of different representations of data on text model performance,
 we provide a variety of text output formats, with an example given in <a
 href="#fig:token-regions" data-reference-type="autoref"
-data-reference="fig:token-regions">[fig:token-regions]</a>.</p>
+data-reference="fig:token-regions">[fig:token-regions]</a>. We utilize
+Finite State Transducers <span class="citation"
+data-cites="Gallant2015Transducers">(<a
+href="#ref-Gallant2015Transducers" role="doc-biblioref">Gallant,
+2015</a>)</span> for efficiently storing valid tokenizers.</p>
 <h2 id="benchmarks">Benchmarks</h2>
 <p>We benchmarks for generation time across various configurations in <a
 href="#tab:benchmarks" data-reference-type="autoref"
@@ -394,6 +402,19 @@ finite lattice, detailed in <a href="#fig:maze-impl"
 data-reference-type="autoref"
 data-reference="fig:maze-impl">[fig:maze-impl]</a>, which we call a <a
 href="https://understanding-search.github.io/maze-dataset/maze_dataset.html#LatticeMaze"><code>LatticeMaze</code></a>.</p>
+<p>Our package is implemented in Python<span class="citation"
+data-cites="python">(<a href="#ref-python" role="doc-biblioref">Rossum,
+1995</a>)</span>, and makes use of the extensive scientific computing
+ecosystem, including NumPy <span class="citation" data-cites="numpy">(<a
+href="#ref-numpy" role="doc-biblioref">Harris et al., 2020</a>)</span>
+for array manipulation, plotting tools <span class="citation"
+data-cites="matplotlib">Waskom (<a href="#ref-seaborn"
+role="doc-biblioref">2021</a>)</span>, Jupyter notebooks <span
+class="citation" data-cites="jupyter">(<a href="#ref-jupyter"
+role="doc-biblioref">Kluyver et al., 2016</a>)</span>, and PySR <span
+class="citation" data-cites="pysr">(<a href="#ref-pysr"
+role="doc-biblioref">Cranmer, 2023</a>)</span> for symbolic
+regression.</p>
 <h1 id="usage-in-research">Usage in Research</h1>
 <p>This package was originally built for the needs of the <span
 class="citation" data-cites="maze-transformer-github">(<a
@@ -476,6 +497,11 @@ procedural generation to benchmark reinforcement learning. <em>arXiv
 Preprint arXiv:1912.01588</em>. <a
 href="https://doi.org/10.48550/arXiv.1912.01588">https://doi.org/10.48550/arXiv.1912.01588</a>
 </div>
+<div id="ref-pysr" class="csl-entry" role="listitem">
+Cranmer, M. (2023). Interpretable machine learning for science with PySR
+and SymbolicRegression. jl. <em>arXiv Preprint arXiv:2305.01582</em>. <a
+href="https://doi.org/10.48550/arXiv.2305.01582">https://doi.org/10.48550/arXiv.2305.01582</a>
+</div>
 <div id="ref-dao2025alphamaze" class="csl-entry" role="listitem">
 Dao, A., &amp; Vu, D. B. (2025). AlphaMaze: Enhancing large language
 models’ spatial intelligence via GRPO. <em>arXiv Preprint
@@ -493,6 +519,11 @@ Fung, S. W., Heaton, H., Li, Q., McKenzie, D., Osher, S., &amp; Yin, W.
 <em>36</em>, 6648–6656. <a
 href="https://doi.org/10.1609/aaai.v36i6.20619">https://doi.org/10.1609/aaai.v36i6.20619</a>
 </div>
+<div id="ref-Gallant2015Transducers" class="csl-entry" role="listitem">
+Gallant, A. (2015). <em>Index 1,600,000,000 keys with automata and
+rust</em>. <a href="https://burntsushi.net/transducers/"
+class="uri">https://burntsushi.net/transducers/</a>.
+</div>
 <div id="ref-mathematica-maze" class="csl-entry" role="listitem">
 Guo, C., Barthelet, L., &amp; Morris, R. (2011). <em>Maze generator and
 solver</em>. Wolfram Demonstrations Project, <a
@@ -507,6 +538,17 @@ Benchmark</span> for <span>Assessing Generalisation</span> in
 <span>Reinforcement Learning</span>. <em>2019 <span>IEEE Conf</span>.
 <span>Games CoG</span></em>, 1–4. <a
 href="https://doi.org/10.1109/cig.2019.8848048">https://doi.org/10.1109/cig.2019.8848048</a>
+</div>
+<div id="ref-numpy" class="csl-entry" role="listitem">
+Harris, C. R., Millman, K. J., Walt, S. J. van der, Gommers, R.,
+Virtanen, P., &amp; al., et. (2020). Array programming with NumPy.
+<em>Nature</em>, <em>585</em>, 357–362. <a
+href="https://doi.org/10.1038/s41586-020-2649-2">https://doi.org/10.1038/s41586-020-2649-2</a>
+</div>
+<div id="ref-matplotlib" class="csl-entry" role="listitem">
+Hunter, J. D. (2007). Matplotlib: A 2D graphics environment.
+<em>Computing in Science and Engineering</em>, <em>9</em>(3), 90–95. <a
+href="https://doi.org/10.1109/MCSE.2007.55">https://doi.org/10.1109/MCSE.2007.55</a>
 </div>
 <div id="ref-zanj" class="csl-entry" role="listitem">
 Ivanitskiy, M. (n.d.). <em>ZANJ</em>. <a
@@ -546,6 +588,15 @@ Kitouni, O., Nolte, N. S., Williams, A., Rabbat, M., Bouchacourt, D.,
 predict underlie the reversal curse and more. <em>Advances in Neural
 Information Processing Systems</em>, <em>37</em>, 112329–112355. <a
 href="https://doi.org/10.48550/arXiv.2406.05183">https://doi.org/10.48550/arXiv.2406.05183</a>
+</div>
+<div id="ref-jupyter" class="csl-entry" role="listitem">
+Kluyver, T., Ragan-Kelley, B., Perez, F., Granger, B., Bussonnier, M.,
+Frederic, J., Kelley, K., Hamrick, J., Grout, J., Corlay, S., Ivanov,
+P., Avila, D., Abdalla, S., &amp; Willing, C. (2016). Jupyter notebooks
+- a publishing format for reproducible computational workflows.
+<em>Proceedings of the 20th International Conference on Electronic
+Publishing</em>, 87–90. <a
+href="https://doi.org/10.3233/978-1-61499-649-1-87">https://doi.org/10.3233/978-1-61499-649-1-87</a>
 </div>
 <div id="ref-knutson2024logicalextrapolation" class="csl-entry"
 role="listitem">
@@ -596,6 +647,11 @@ neural networks. <em>2023 IEEE Conference on Secure and Trustworthy
 Machine Learning (SaTML)</em>, 464–483. <a
 href="https://doi.org/10.1109/satml54575.2023.00039">https://doi.org/10.1109/satml54575.2023.00039</a>
 </div>
+<div id="ref-python" class="csl-entry" role="listitem">
+Rossum, G. van. (1995). <em>Python reference manual</em> (CS-R9525).
+Centrum voor Wiskunde; Informatica (CWI). <a
+href="https://ir.cwi.nl/pub/5008/05008D.pdf">https://ir.cwi.nl/pub/5008/05008D.pdf</a>
+</div>
 <div id="ref-easy_to_hard" class="csl-entry" role="listitem">
 Schwarzschild, A., Borgnia, E., Gupta, A., Bansal, A., Emam, Z., Huang,
 F., Goldblum, M., &amp; Goldstein, T. (2021). <em>Datasets for
@@ -631,6 +687,12 @@ Chen, X., Zhan, Z., &amp; others. (2024). Imperative learning: A
 self-supervised neural-symbolic learning framework for robot autonomy.
 <em>arXiv Preprint arXiv:2406.16087</em>. <a
 href="https://doi.org/10.48550/arXiv.2406.16087">https://doi.org/10.48550/arXiv.2406.16087</a>
+</div>
+<div id="ref-seaborn" class="csl-entry" role="listitem">
+Waskom, M. L. (2021). <span class="nocase">seaborn</span>: Statistical
+data visualization. <em>Journal of Open Source Software</em>,
+<em>6</em>(60), 3021. <a
+href="https://doi.org/10.21105/joss.03021">https://doi.org/10.21105/joss.03021</a>
 </div>
 <div id="ref-zhang2025tscend" class="csl-entry" role="listitem">
 Zhang, T., Pan, J.-S., Feng, R., &amp; Wu, T. (2025). T-SCEND: Test-time

@@ -78,7 +78,7 @@ A multitude of public and open-source software packages exist for generating maz
 
 We direct readers to our [examples](https://understanding-search.github.io/maze-dataset/examples/maze_examples.html), [docs](https://understanding-search.github.io/maze-dataset/maze_dataset.html), and [notebooks](https://understanding-search.github.io/maze-dataset/notebooks/) for more information. Our package can be installed from [PyPi](https://pypi.org/project/maze-dataset/) via `pip install maze-dataset`, or directly from the [git repository](https://github.com/understanding-search/maze-dataset) [@maze-dataset-github].
 
-Datasets of mazes are created from a [`MazeDatasetConfig`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#MazeDatasetConfig) configuration object, which allows specifying the number of mazes, their size, the generation algorithm, and various parameters for the generation algorithm. Datasets can also be filtered after generation to satisfy certain properties. Custom filters can be specified, and some filters are included in [`MazeDatasetFilters`](https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/filters.html#MazeDatasetFilters)
+Datasets of mazes are created from a [`MazeDatasetConfig`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#MazeDatasetConfig) configuration object, which allows specifying the number of mazes, their size, the generation algorithm, and various parameters for the generation algorithm. Datasets can also be filtered after generation to satisfy certain properties. Custom filters can be specified, and some filters are included in [`MazeDatasetFilters`](https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/filters.html#MazeDatasetFilters).
 
 
 ## Visual Output Formats {#visual-output-formats}
@@ -95,7 +95,7 @@ In previous work, maze tasks have been used with Recurrent Convolutional Neural 
 
 ## Tokenized Output Formats {#sec:tokenized-output-formats}
 
-Autoregressive transformer models can be quite sensitive to the exact format of input data, and may even use delimiter tokens to perform reasoning steps [@pfau2024dotbydot; @spies2024causalworldmodels]. To facilitate systematic investigation of the effects of different representations of data on text model performance, we provide a variety of text output formats, with an example given in \autoref{fig:token-regions}.
+Autoregressive transformer models can be quite sensitive to the exact format of input data, and may even use delimiter tokens to perform reasoning steps [@pfau2024dotbydot; @spies2024causalworldmodels]. To facilitate systematic investigation of the effects of different representations of data on text model performance, we provide a variety of text output formats, with an example given in \autoref{fig:token-regions}. We utilize Finite State Transducers [@Gallant2015Transducers] for efficiently storing valid tokenizers.
 
 \input{figures/tex/fig4_tokenfmt.tex}
 
@@ -114,6 +114,8 @@ We benchmarks for generation time across various configurations in \autoref{tab:
 Using an adjacency matrix for storing mazes would be memory inefficient by failing to exploit the highly sparse structure, while using an adjacency list could lead to a poor lookup time. This package utilizes a simple, efficient representation of mazes as subgraphs of a finite lattice, detailed in \autoref{fig:maze-impl}, which we call a [`LatticeMaze`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#LatticeMaze).
 
 \input{figures/tex/fig8_impl.tex}
+
+Our package is implemented in Python[@python], and makes use of the extensive scientific computing ecosystem, including NumPy [@numpy] for array manipulation, plotting tools [@matplotlib, @seaborn], Jupyter notebooks [@jupyter], and PySR [@pysr] for symbolic regression.
 
 
 # Usage in Research

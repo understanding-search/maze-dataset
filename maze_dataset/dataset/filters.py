@@ -242,14 +242,14 @@ class MazeDatasetFilters:
 					"generation meta is not present in a maze, cannot collect generation meta",
 				)
 			for key, value in maze.generation_meta.items():
-				if isinstance(value, (bool, int, float, str)):  # noqa: UP038
+				if isinstance(value, (bool, int, float, str)):
 					gen_meta_lists[key][value] += 1
 
 				elif isinstance(value, set):
 					# special case for visited_cells
 					gen_meta_lists[key].update(value)
 
-				elif isinstance(value, (list, np.ndarray)):  # noqa: UP038
+				elif isinstance(value, (list, np.ndarray)):
 					if isinstance(value, list):
 						# TODO: `for` loop variable `value` overwritten by assignment target (Ruff PLW2901)
 						try:

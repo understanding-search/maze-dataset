@@ -555,7 +555,7 @@ maze_dataset    </h1>
 
   <!-- Diagram -->
   <p>
-    <img src="https://understanding-search.github.io/maze-dataset/resources/diagram.svg" alt="Diagram">
+    <img src="https://understanding-search.github.io/maze-dataset/resources/diagram.svg" alt="Diagram" width="95%">
   </p>
 
   <!-- Additional badges -->
@@ -715,10 +715,11 @@ maze_dataset    </h1>
 
 <h1 id="development">Development</h1>
 
-<p>we use this <a href="https://github.com/mivanit/python-project-makefile-template">makefile template</a> with slight modifications for our development workflow.</p>
+<p>we use this <a href="https://github.com/mivanit/python-project-makefile-template">makefile template</a> with slight modifications for our development workflow. This project uses <a href="https://docs.astral.sh/uv/">uv</a> for dependency and virtual environment management.</p>
 
 <ul>
 <li>clone with <code>git clone https://github.com/understanding-search/maze-dataset</code></li>
+<li>if you don't already have uv, <a href="https://docs.astral.sh/uv/getting-started/installation/">install it</a>. We only guarantee compatibility with <code>uv</code> newer than <code>0.8.0</code></li>
 <li><code>make dep</code> to install all dependencies</li>
 <li><code>make help</code> will print all available commands</li>
 <li><code>make test</code> will run basic tests to ensure the package is working</li>

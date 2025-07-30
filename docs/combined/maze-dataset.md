@@ -38,7 +38,7 @@
 
   <!-- Diagram -->
   <p>
-    <img src="https://understanding-search.github.io/maze-dataset/resources/diagram.svg" alt="Diagram">
+    <img src="https://understanding-search.github.io/maze-dataset/resources/diagram.svg" alt="Diagram" width="95%">
   </p>
 
   <!-- Additional badges -->
@@ -183,9 +183,10 @@ MazePlot(maze).plot()
 
 # Development
 
-we use this [makefile template](https://github.com/mivanit/python-project-makefile-template) with slight modifications for our development workflow.
+we use this [makefile template](https://github.com/mivanit/python-project-makefile-template) with slight modifications for our development workflow. This project uses [uv](https://docs.astral.sh/uv/) for dependency and virtual environment management.
 
 - clone with `git clone https://github.com/understanding-search/maze-dataset`
+- if you don't already have uv, [install it](https://docs.astral.sh/uv/getting-started/installation/). We only guarantee compatibility with `uv` newer than `0.8.0`
 - `make dep` to install all dependencies
 - `make help` will print all available commands
 - `make test` will run basic tests to ensure the package is working
@@ -276,7 +277,7 @@ we use this [makefile template](https://github.com/mivanit/python-project-makefi
 
   <!-- Diagram -->
   <p>
-    <img src="https://understanding-search.github.io/maze-dataset/resources/diagram.svg" alt="Diagram">
+    <img src="https://understanding-search.github.io/maze-dataset/resources/diagram.svg" alt="Diagram" width="95%">
   </p>
 
   <!-- Additional badges -->
@@ -421,9 +422,10 @@ MazePlot(maze).plot()
 
 ### Development
 
-we use this [makefile template](https://github.com/mivanit/python-project-makefile-template) with slight modifications for our development workflow.
+we use this [makefile template](https://github.com/mivanit/python-project-makefile-template) with slight modifications for our development workflow. This project uses [uv](https://docs.astral.sh/uv/) for dependency and virtual environment management.
 
 - clone with `git clone https://github.com/understanding-search/maze-dataset`
+- if you don't already have uv, [install it](https://docs.astral.sh/uv/getting-started/installation/). We only guarantee compatibility with `uv` newer than `0.8.0`
 - `make dep` to install all dependencies
 - `make help` will print all available commands
 - `make test` will run basic tests to ensure the package is working
@@ -6407,7 +6409,7 @@ maze = gen_recursive_division((10, 10))
 helper function to get a maze already with a solution
 
 
-- `numpy_rng = Generator(PCG64) at 0x7CDA962D5620`
+- `numpy_rng = Generator(PCG64) at 0x734D4335D620`
 
 
 
@@ -6473,7 +6475,7 @@ generation functions have signature `(grid_shape: Coord, **kwargs) -> LatticeMaz
 
 
 
-- `numpy_rng = Generator(PCG64) at 0x7CDA962D5620`
+- `numpy_rng = Generator(PCG64) at 0x734D4335D620`
 
 
 

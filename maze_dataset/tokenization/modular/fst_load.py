@@ -85,7 +85,8 @@ def _check_tokenizer_in_fst_mock(tokenizer_name: str, do_except: bool = False) -
 		_RUST_FST_ERR_MSG
 		+ "you are seeing this warning probably because you tried to run"
 		"`MazeTokenizerModular(...).is_tested_tokenizer()` on a mac or without `rust_fst` installed"
-		+ "this is fine, but note that the tokenizer will be checked for validity, but is not part of the tested set"
+		+ "this is fine, but note that the tokenizer will be checked for validity, but is not part of the tested set\n"
+		+ "see: https://github.com/understanding-search/maze-dataset/issues/57"
 	)
 	return True
 

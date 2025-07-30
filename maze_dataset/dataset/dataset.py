@@ -25,6 +25,7 @@ from muutils.json_serialize.util import (
 	JSONdict,
 )
 from muutils.misc import sanitize_fname, shorten_numerical_to_str, stable_hash
+from typing_extensions import Self
 from zanj import ZANJ
 
 from maze_dataset.generation.seed import GLOBAL_SEED
@@ -221,7 +222,7 @@ class GPTDataset(typing.Generic[T_DatasetConfig]):
 
 	@classmethod
 	def from_config(  # noqa: C901, PLR0912
-		cls: "type[T_Dataset]",
+		cls,
 		cfg: "T_DatasetConfig",
 		do_generate: bool = True,
 		load_local: bool = True,
@@ -233,7 +234,7 @@ class GPTDataset(typing.Generic[T_DatasetConfig]):
 		allow_generation_metadata_filter_mismatch: bool = True,
 		verbose: bool = False,
 		**kwargs,
-	) -> "T_Dataset":
+	) -> "Self":
 		"""base class for gpt datasets
 
 		priority of loading:
@@ -246,7 +247,7 @@ class GPTDataset(typing.Generic[T_DatasetConfig]):
 
 		local_base_path = Path(local_base_path)
 		fname: Path = Path(f"{cfg.to_fname()}.zanj")
-		output: T_Dataset | None = None
+		output: Self | None = None
 		did_load_local: bool = False
 		if zanj is None:
 			zanj = ZANJ()
@@ -331,39 +332,33 @@ class GPTDataset(typing.Generic[T_DatasetConfig]):
 
 	# serialization & loading
 	@classmethod
-	def read(
-		cls: "type[T_Dataset]", file_path: str | Path, zanj: ZANJ | None = None
-	) -> "T_Dataset":
+	def read(cls, file_path: str | Path, zanj: ZANJ | None = None) -> "Self":
 		"read dataset from a file with zanj"
 		if zanj is None:
 			zanj = ZANJ()
 		return zanj.read(file_path)
 
-	def serialize(self: "T_Dataset") -> JSONdict:
+	def serialize(self) -> JSONdict:
 		"(implement in subclass!) serialize to something we can save with zanj"
 		raise NotImplementedError
 
-	def data_hash(self: "T_Dataset") -> int:
+	def data_hash(self) -> int:
 		"(implement in subclass!) return a hash of the data"
 		raise NotImplementedError
 
 	@classmethod
-	def load(cls: "type[T_Dataset]", data: JSONdict) -> "T_Dataset":
+	def load(cls, data: JSONdict) -> "Self":
 		"(implement in subclass!) load a dataset from what we made with `.serialize()`"
 		raise NotImplementedError
 
 	# generating & downloading
 	@classmethod
-	def generate(
-		cls: "type[T_Dataset]", cfg: "T_DatasetConfig", **kwargs
-	) -> "T_Dataset":
+	def generate(cls, cfg: "T_DatasetConfig", **kwargs) -> "Self":
 		"(implement in subclass!) generative given the config"
 		raise NotImplementedError
 
 	@classmethod
-	def download(
-		cls: "type[T_Dataset]", cfg: "T_DatasetConfig", **kwargs
-	) -> "T_Dataset":
+	def download(cls, cfg: "T_DatasetConfig", **kwargs) -> "Self":
 		"(implement in subclass!) download the dataset given the config"
 		raise NotImplementedError
 
@@ -403,9 +398,9 @@ class GPTDataset(typing.Generic[T_DatasetConfig]):
 		"can call `my_dataset.filter_by.some_registered_filter()` to filter the dataset"
 		return self.FilterBy(self)
 
-	def _apply_filters_from_config(self: "T_Dataset") -> "T_Dataset":
+	def _apply_filters_from_config(self) -> "Self":
 		"""apply filters to the dataset, as specified in the config. used in `from_config()`"""
-		output: T_Dataset = self
+		output: Self = self
 		# copy the list, and then clear it in the config. we do this because each time we apply a filter it will update config.applied_filters
 		applied_filters_old: list[
 			dict[typing.Literal["name", "args", "kwargs"], typing.Any]

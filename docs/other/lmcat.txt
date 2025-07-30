@@ -1,8 +1,8 @@
 # Stats
 - 64 files
-- 16144 (16K) lines
-- 520579 (521K) chars
-- 58499 (58K) `whitespace-split` tokens
+- 16137 (16K) lines
+- 520582 (521K) chars
+- 58506 (59K) `whitespace-split` tokens
 
 # File Tree
 
@@ -81,9 +81,9 @@ maze-dataset
 │   └── profile_dataset_save_read.ipynb    [1,133L   269,709C 3,406T]
 ├── templates                              
 ├── LICENSE.md                             [  165L     7,652C 1,234T]
-├── README.md                              [  191L     8,680C   704T]
-├── makefile                               [1,851L    57,868C 6,652T]
-├── pyproject.toml                         [  364L    12,919C 1,470T]
+├── README.md                              [  192L     8,958C   733T]
+├── makefile                               [1,874L    58,545C 6,739T]
+├── pyproject.toml                         [  356L    12,644C 1,448T]
 ```
 
 # File Contents
@@ -15267,7 +15267,7 @@ Library.
 
   <!-- Diagram -->
   <p>
-    <img src="https://understanding-search.github.io/maze-dataset/resources/diagram.svg" alt="Diagram">
+    <img src="https://understanding-search.github.io/maze-dataset/resources/diagram.svg" alt="Diagram" width="95%">
   </p>
 
   <!-- Additional badges -->
@@ -15412,9 +15412,10 @@ MazePlot(maze).plot()
 
 # Development
 
-we use this [makefile template](https://github.com/mivanit/python-project-makefile-template) with slight modifications for our development workflow.
+we use this [makefile template](https://github.com/mivanit/python-project-makefile-template) with slight modifications for our development workflow. This project uses [uv](https://docs.astral.sh/uv/) for dependency and virtual environment management.
 
 - clone with `git clone https://github.com/understanding-search/maze-dataset`
+- if you don't already have uv, [install it](https://docs.astral.sh/uv/getting-started/installation/). We only guarantee compatibility with `uv` newer than `0.8.0`
 - `make dep` to install all dependencies
 - `make help` will print all available commands
 - `make test` will run basic tests to ensure the package is working
@@ -15801,13 +15802,8 @@ paper: paper-clean paper-pdf paper-html
     readme = "README.md"
     requires-python = ">=3.10"
 
-    # source info
-    # packages = [{include = "maze_dataset"}]
-    # exclude = ["maze_dataset/tokenization/MazeTokenizerModular_hashes.npz"] # don't ship the hashes
-
     # informational metadata
     keywords = ["maze", "mazes", "labyrinth", "dataset", "procedural", "pathfinding", "tokenization"]
-
 
     dependencies = [
         # custom packages
@@ -15879,9 +15875,6 @@ paper: paper-clean paper-pdf paper-html
 [build-system]
 	requires = ["hatchling"]
 	build-backend = "hatchling.build"
-
-[tool.hatch.build.targets.wheel]
-	exclude = ["maze_dataset/tokenization/MazeTokenizerModular_hashes.npz"]
 
 [tool.pytest.ini_options]
     # Ignore numpy deprecation warnings triggered by muutils

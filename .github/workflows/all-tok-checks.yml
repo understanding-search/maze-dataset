@@ -34,12 +34,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-python@v5
+      - name: Install uv and set the python version
+        uses: astral-sh/setup-uv@v6
         with:
-          python-version: "3.11"
-        
-      - name: set up uv
-        run: curl -LsSf https://astral.sh/uv/install.sh | sh
+          python-version: '3.11'
 
       - name: install dependencies
         run: make dep

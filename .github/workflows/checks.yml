@@ -49,14 +49,10 @@ jobs:
         with: 
           fetch-depth: 1
 
-      - name: Set up python
-        uses: actions/setup-python@v5
+      - name: Install uv and set the python version
+        uses: astral-sh/setup-uv@v6
         with:
           python-version: ${{ matrix.python }}
-
-
-      - name: set up uv
-        run: curl -LsSf https://astral.sh/uv/install.sh | sh
   
       - name: check dependencies
         run: make dep-check
