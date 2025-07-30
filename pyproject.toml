@@ -41,7 +41,7 @@
 			"frozendict>=2.4.4",
 			# storing valid tokenizers
 			# doesn't appear to work on macos
-			"rust_fst>=0.1.2; platform_system != 'darwin'",
+			"rust_fst>=0.1.2; platform_system != 'Darwin'",
 		]
 
 [dependency-groups]
@@ -86,7 +86,7 @@
 		"frozendict>=2.4.4",
 		# storing valid tokenizers
 		# doesn't appear to work on macos
-		"rust_fst>=0.1.2; platform_system != 'darwin'",
+		"rust_fst>=0.1.2; platform_system != 'Darwin'",
 	]
 
 [tool.uv]
