@@ -182,7 +182,7 @@ MazePlot(m).plot()
 
 # Development
 
-we use this [makefile template](https://github.com/mivanit/python-project-makefile-template) with slight modifications for our development workflow. This project uses [uv](https://docs.astral.sh/uv/) for dependency and virtual environment management.
+We use this [makefile template](https://github.com/mivanit/python-project-makefile-template) with slight modifications for our development workflow. This project uses [uv](https://docs.astral.sh/uv/) for dependency and virtual environment management.
 
 - clone with `git clone https://github.com/understanding-search/maze-dataset`
 - if you don't already have uv, [install it](https://docs.astral.sh/uv/getting-started/installation/). We only guarantee compatibility with `uv` newer than `0.8.0`
@@ -193,6 +193,7 @@ we use this [makefile template](https://github.com/mivanit/python-project-makefi
   - see all tests with explanations using `make help` or `make help | grep test`
 - `make format` will run ruff to format and check the code
 
+> Note: due to compatibility issues between the `rust_fst` package and Darwin/macOS systems, not all tests will pass on these systems. However, `make test-unit` and `make test-notebooks-muutils` should still pass. Please see [#57](https://github.com/understanding-search/maze-dataset/issues/57) for updates on resolving this problem.
 
 ## Contributing
 

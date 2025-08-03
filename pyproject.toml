@@ -40,7 +40,7 @@
 		tokenization = [
 			"frozendict>=2.4.4",
 			# storing valid tokenizers
-			# doesn't appear to work on macos
+			# doesn't appear to work on macos, see https://github.com/understanding-search/maze-dataset/issues/57
 			"rust_fst>=0.1.2; platform_system != 'Darwin'",
 		]
 
