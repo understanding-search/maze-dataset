@@ -636,6 +636,7 @@ this variable is primarily used in `MazeDatasetConfig._to_ps_array` and `MazeDat
 """
 
 
+# TODO: we should deprecate this, always get a dataset when you want a maze with a solution
 def get_maze_with_solution(
 	gen_name: str,
 	grid_shape: Coord | CoordTup,
