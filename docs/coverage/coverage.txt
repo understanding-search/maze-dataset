@@ -35,16 +35,17 @@ maze_dataset/tokenization/common.py                               2      0   100
 maze_dataset/tokenization/maze_tokenizer.py                       3      3     0%   3-11
 maze_dataset/tokenization/maze_tokenizer_legacy.py              162     38    77%   120-124, 218-219, 239-240, 267-270, 307, 312-314, 368-369, 402, 404-408, 418-422, 424, 435-449, 459-466
 maze_dataset/tokenization/modular/__init__.py                     1      0   100%
-maze_dataset/tokenization/modular/all_instances.py               64      3    95%   21-22, 147
-maze_dataset/tokenization/modular/all_tokenizers.py              65     65     0%   25-219
-maze_dataset/tokenization/modular/element_base.py                79     19    76%   62, 92, 97, 167-172, 183, 210, 218, 250, 259-263, 305-314
-maze_dataset/tokenization/modular/elements.py                   370     49    87%   58, 62, 120, 131, 143, 192, 200-210, 224, 245, 298, 306, 348, 401, 405, 423, 446-450, 514-518, 624, 628, 678, 683, 722-729, 753, 776, 793, 919, 923, 1045, 1078, 1110, 1209, 1282
+maze_dataset/tokenization/modular/all_instances.py               64      2    97%   21-22
+maze_dataset/tokenization/modular/all_tokenizers.py              65     28    57%   94, 120, 129, 150-219
+maze_dataset/tokenization/modular/element_base.py                79      9    89%   62, 92, 97, 183, 210, 218, 250, 259-263
+maze_dataset/tokenization/modular/elements.py                   370     38    90%   58, 131, 143, 192, 200-210, 245, 306, 348, 405, 423, 446-450, 514-518, 624, 683, 722-729, 753, 793, 919, 1045, 1110, 1209
 maze_dataset/tokenization/modular/fst.py                         60     60     0%   12-200
 maze_dataset/tokenization/modular/fst_load.py                    36     20    44%   37-39, 47, 55-76, 84-91, 96
-maze_dataset/tokenization/modular/hashing.py                     44     26    41%   26-30, 49-63, 69-79, 86-95
-maze_dataset/tokenization/modular/maze_tokenizer_modular.py     122     43    65%   74, 78, 83-91, 106, 119, 123, 132, 144-145, 156, 173, 181, 197-204, 224, 243, 250, 255, 260, 265-266, 271, 327-333, 341-349
+maze_dataset/tokenization/modular/hashing.py                     44     24    45%   49-63, 69-79, 86-95
+maze_dataset/tokenization/modular/maze_tokenizer_modular.py     122     23    81%   123, 144-145, 181, 197-204, 224, 243, 255, 265-266, 329, 331-333, 343-345, 347
 maze_dataset/tokenization/modular/save_hashes.py                 32     32     0%   27-124
 maze_dataset/utils.py                                            36     13    64%   3-12, 54, 74-101, 116-120, 128, 174
+tests/all_tokenizers/test_all_tokenizers.py                      91      1    99%   50
 tests/unit/dataset/test_collected_dataset.py                     46      0   100%
 tests/unit/dataset/test_collected_dataset_2.py                  111      0   100%
 tests/unit/dataset/test_configs.py                               13      0   100%
@@ -70,4 +71,4 @@ tests/unit/tokenization/test_token_utils.py                     175      5    97
 tests/unit/tokenization/test_tokenizer.py                       254     32    87%   261-267, 465-468, 477-489, 531-532, 625-643, 690-692, 712-719, 735
 tests/unit/tokenization/test_vocab.py                            21      0   100%
 -------------------------------------------------------------------------------------------
-TOTAL                                                          5221   1816    65%
+TOTAL                                                          5312   1736    67%
