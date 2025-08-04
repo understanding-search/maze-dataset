@@ -124,7 +124,7 @@ We benchmarks for generation time across various configurations in \autoref{tab:
 
 Using an adjacency matrix for storing mazes would be memory inefficient by failing to exploit the highly sparse structure, while using an adjacency list could lead to a poor lookup time. This package utilizes a simple, efficient representation of mazes as subgraphs of a finite lattice, detailed in \autoref{fig:maze-impl}, which we call a [`LatticeMaze`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#LatticeMaze).
 
-<!-- \input{figures/tex/fig8_impl.tex} -->
+\input{figures/tex/fig8_impl.tex}
 
 Our package is implemented in Python[@python], and makes use of the extensive scientific computing ecosystem, including NumPy [@numpy] for array manipulation, plotting tools [@matplotlib; @seaborn], Jupyter notebooks [@jupyter], and PySR [@pysr] for symbolic regression.
 
