@@ -1,14 +1,17 @@
 """Registration system for custom maze generators"""
 
 import inspect
-from typing import Callable, Union, get_args, get_origin
+from typing import TypeVar, Union, get_args, get_origin
 
 from maze_dataset.constants import Coord, CoordTup
-from maze_dataset.generation.generators import GENERATORS_MAP, LatticeMazeGenerators
+from maze_dataset.generation.generators import (
+	GENERATORS_MAP,
+	LatticeMazeGenerators,
+	MazeGeneratorFunc,
+)
 from maze_dataset.maze import LatticeMaze
 
-# Type for maze generator functions
-MazeGeneratorFunc = Callable[[Union[Coord, CoordTup], ...], LatticeMaze]
+F_MazeGeneratorFunc = TypeVar("F_MazeGeneratorFunc", bound=MazeGeneratorFunc)
 
 
 class MazeGeneratorRegistrationError(TypeError):
@@ -50,7 +53,7 @@ def _check_grid_shape_annotation(
 
 
 def validate_MazeGeneratorFunc(
-	func: MazeGeneratorFunc,
+	func: F_MazeGeneratorFunc,
 ) -> None:
 	"""validate the signature of a maze generator function
 
@@ -110,7 +113,7 @@ def validate_MazeGeneratorFunc(
 		raise MazeGeneratorRegistrationError(err_msg)
 
 
-def register_maze_generator(func: MazeGeneratorFunc) -> MazeGeneratorFunc:
+def register_maze_generator(func: F_MazeGeneratorFunc) -> F_MazeGeneratorFunc:
 	"""Decorator to register a custom maze generator function.
 
 	This decorator allows users to register their own maze generation functions

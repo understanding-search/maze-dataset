@@ -181,6 +181,10 @@ def test_maze_dataset_with_custom_generator():
 		assert np.array_equal(original.connection_list, loaded.connection_list)
 
 
+# bunch of type ignores here, because we are testing to make sure that
+# the registration system raises errors for invalid function signatures
+
+
 def test_registration_error_missing_grid_shape():
 	"""Test error when function is missing grid_shape parameter"""
 
@@ -192,7 +196,7 @@ def test_registration_error_missing_grid_shape():
 		MazeGeneratorRegistrationError,
 		match="must have 'grid_shape' as its first parameter",
 	):
-		register_maze_generator(invalid_missing_grid_shape)
+		register_maze_generator(invalid_missing_grid_shape)  # type: ignore[type-var]
 
 
 def test_registration_error_wrong_param_name():
@@ -206,7 +210,7 @@ def test_registration_error_wrong_param_name():
 		MazeGeneratorRegistrationError,
 		match="must have 'grid_shape' as its first parameter",
 	):
-		register_maze_generator(invalid_wrong_param_name)
+		register_maze_generator(invalid_wrong_param_name)  # type: ignore[type-var]
 
 
 def test_registration_error_missing_type_annotation():
@@ -220,7 +224,7 @@ def test_registration_error_missing_type_annotation():
 		MazeGeneratorRegistrationError,
 		match=r"must be typed as 'Coord \| CoordTup' or compatible type",
 	):
-		register_maze_generator(invalid_missing_type_annotation)
+		register_maze_generator(invalid_missing_type_annotation)  # type: ignore[type-var]
 
 
 def test_registration_error_missing_return_annotation():
@@ -234,7 +238,7 @@ def test_registration_error_missing_return_annotation():
 		MazeGeneratorRegistrationError,
 		match="must have a return type annotation of LatticeMaze",
 	):
-		register_maze_generator(invalid_missing_return_annotation)
+		register_maze_generator(invalid_missing_return_annotation)  # type: ignore[type-var]
 
 
 def test_registration_error_wrong_return_type():
@@ -245,7 +249,7 @@ def test_registration_error_wrong_return_type():
 		return "wrong"
 
 	with pytest.raises(MazeGeneratorRegistrationError, match="must return LatticeMaze"):
-		register_maze_generator(invalid_wrong_return_type)
+		register_maze_generator(invalid_wrong_return_type)  # type: ignore[type-var]
 
 
 def test_registration_error_invalid_grid_shape_type():
@@ -259,7 +263,7 @@ def test_registration_error_invalid_grid_shape_type():
 		MazeGeneratorRegistrationError,
 		match=r"must be typed as 'Coord \| CoordTup' or compatible type",
 	):
-		register_maze_generator(invalid_grid_shape_type)
+		register_maze_generator(invalid_grid_shape_type)  # type: ignore[type-var]
 
 
 def test_duplicate_registration_error():
@@ -280,7 +284,8 @@ def test_duplicate_registration_error():
 		)
 
 	# Try to register another function with the same name
-	def gen_test_duplicate_unique(  # noqa: F811
+	# type ignore because we are intentionally using the same name
+	def gen_test_duplicate_unique(  # type: ignore[no-redef] # noqa: F811
 		grid_shape: Coord | CoordTup,
 	) -> LatticeMaze:
 		"""Second registration attempt with same name"""

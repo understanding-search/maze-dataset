@@ -2,7 +2,7 @@
 
 import random
 import warnings
-from typing import Any, Callable
+from typing import Callable, Concatenate, ParamSpec
 
 import numpy as np
 from jaxtyping import Bool
@@ -60,6 +60,7 @@ class LatticeMazeGenerators:
 	@staticmethod
 	def gen_dfs(
 		grid_shape: Coord | CoordTup,
+		*,
 		lattice_dim: int = 2,
 		accessible_cells: float | None = None,
 		max_tree_depth: float | None = None,
@@ -609,8 +610,15 @@ class LatticeMazeGenerators:
 		)
 
 
+P_GeneratorKwargs = ParamSpec("P_GeneratorKwargs")
+MazeGeneratorFunc = Callable[
+	Concatenate[Coord | CoordTup, P_GeneratorKwargs],
+	LatticeMaze,
+]
+
+
 # cant automatically populate this because it messes with pickling :(
-GENERATORS_MAP: dict[str, Callable[[Coord | CoordTup, Any], "LatticeMaze"]] = {
+GENERATORS_MAP: dict[str, MazeGeneratorFunc] = {
 	"gen_dfs": LatticeMazeGenerators.gen_dfs,
 	# TYPING: error: Dict entry 1 has incompatible type
 	# "str": "Callable[[ndarray[Any, Any] | tuple[int, int], KwArg(Any)], LatticeMaze]";
