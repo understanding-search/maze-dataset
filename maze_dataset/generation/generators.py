@@ -12,7 +12,7 @@ from maze_dataset.generation.seed import GLOBAL_SEED
 from maze_dataset.maze import ConnectionList, Coord, LatticeMaze, SolvedMaze
 from maze_dataset.maze.lattice_maze import NEIGHBORS_MASK, _fill_edges_with_walls
 
-numpy_rng = np.random.default_rng(GLOBAL_SEED)
+_NUMPY_RNG: np.random.Generator = np.random.default_rng(GLOBAL_SEED)
 random.seed(GLOBAL_SEED)
 
 

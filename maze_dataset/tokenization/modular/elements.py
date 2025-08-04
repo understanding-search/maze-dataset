@@ -25,7 +25,7 @@ from maze_dataset.constants import (
 	Coord,
 	CoordTup,
 )
-from maze_dataset.generation import numpy_rng
+from maze_dataset.generation import _NUMPY_RNG
 from maze_dataset.maze.lattice_maze import LatticeMaze, SolvedMaze
 from maze_dataset.token_utils import (
 	connection_list_to_adj_list,
@@ -206,7 +206,7 @@ class EdgeGroupings(__TokenizerElementNamespace):
 				np.unique(sorted_edges[:, 0, :], return_index=True, axis=0)[1][1:],
 			)
 			if self.shuffle_group:
-				[numpy_rng.shuffle(g, axis=0) for g in groups]
+				[_NUMPY_RNG.shuffle(g, axis=0) for g in groups]
 			return groups
 
 
@@ -268,7 +268,7 @@ class EdgePermuters(__TokenizerElementNamespace):
 
 		@staticmethod
 		def _permute(lattice_edges: ConnectionArray) -> ConnectionArray:
-			numpy_rng.permuted(lattice_edges, axis=1, out=lattice_edges)
+			_NUMPY_RNG.permuted(lattice_edges, axis=1, out=lattice_edges)
 			return lattice_edges
 
 	@serializable_dataclass(frozen=True, kw_only=True)
@@ -510,7 +510,7 @@ class AdjListTokenizers(__TokenizerElementNamespace):
 			# shuffle the groups if specified
 			if self.shuffle_d0:
 				if isinstance(groups, np.ndarray):
-					numpy_rng.shuffle(groups, axis=0)
+					_NUMPY_RNG.shuffle(groups, axis=0)
 				elif isinstance(groups, list):
 					random.shuffle(groups)
 				else:

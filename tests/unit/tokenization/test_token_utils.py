@@ -8,7 +8,7 @@ from jaxtyping import Int
 
 from maze_dataset import LatticeMaze
 from maze_dataset.constants import VOCAB, Connection, ConnectionArray
-from maze_dataset.generation import numpy_rng
+from maze_dataset.generation import _NUMPY_RNG
 from maze_dataset.testing_utils import GRID_N, MAZE_DATASET
 from maze_dataset.token_utils import (
 	_coord_to_strings_UT,
@@ -1692,12 +1692,12 @@ def test_lattice_connection_arrray(n):
 					lambda: lattice_connection_array(GRID_N),
 					lambda: np.flip(lattice_connection_array(GRID_N), axis=1),
 					lambda: lattice_connection_array(GRID_N - 1),
-					lambda: numpy_rng.choice(
+					lambda: _NUMPY_RNG.choice(
 						lattice_connection_array(GRID_N),
 						2 * GRID_N,
 						axis=0,
 					),
-					lambda: numpy_rng.choice(
+					lambda: _NUMPY_RNG.choice(
 						lattice_connection_array(GRID_N),
 						1,
 						axis=0,
