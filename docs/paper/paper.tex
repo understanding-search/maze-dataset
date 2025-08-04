@@ -603,6 +603,8 @@ described in \autoref{fig:sre}.
 
 \input{figures/tex/fig7_sre.tex}
 
+\newpage
+
 \section{Implementation}\label{sec:implementation}
 
 Using an adjacency matrix for storing mazes would be memory inefficient
@@ -643,7 +645,8 @@ Borgnia, Gupta, Bansal, et al., 2021}). Ongoing work using
 tokenization format on the performance of pretrained LLMs on spatial
 reasoning.
 
-This package has also been utilized in work by other groups:
+At the time of writing, this software package has been actively used in
+work by other groups:
 
 \begin{itemize}
 \item
@@ -654,21 +657,34 @@ This package has also been utilized in work by other groups:
   training for multi-step planning on our maze task.
 \item
   By (\citeproc{ref-wang2024imperative}{Wang et al., 2024}) and
-  (\citeproc{ref-chen2024iaimperative}{Chen et al., 2024}) to study the
-  effectiveness of imperative learning.
+  (\citeproc{ref-chen2024iaimperative}{Chen et al., 2024}) to study
+  imperative learning.
 \item
-  By (\citeproc{ref-zhang2025tscend}{Zhang et al., 2025}) to introduce a
-  novel framework for reasoning diffusion models.
+  By (\citeproc{ref-zhang2025tscend}{Zhang et al., 2025a}) to introduce
+  a novel framework for reasoning diffusion models.
 \item
   By (\citeproc{ref-dao2025alphamaze}{Dao \& Vu, 2025}) to improve
   spatial reasoning in LLMs with GRPO.
+\item
+  By (\citeproc{ref-cai2025morse}{Cai et al., 2025}) to create a
+  multimodal reasoning benchmark, via mazes in videos.
+\item
+  By (\citeproc{ref-xu2025visual}{Xu et al., 2025}) to study visual
+  planning in LLMs.
+\item
+  By (\citeproc{ref-lee2025adaptive}{Lee et al., 2025}) to evaluate
+  adaptive inference-time scaling with diffusion models on maze
+  navigation tasks.
+\item
+  By (\citeproc{ref-zhang2025vfscale}{Zhang et al., 2025b}) to test
+  verifier-free diffusion models.
 \end{itemize}
+
+\newpage
 
 \section{Acknowledgements}\label{acknowledgements}
 
 \input{figures/tex/acknowledgements.tex}
-
-\newpage
 
 \section*{References}\label{references}
 \addcontentsline{toc}{section}{References}
@@ -685,6 +701,13 @@ Ayaz, H., Allen, S. L., Platek, S. M., \& Onaral, B. (2008). Maze suite
 navigational and spatial cognitive neuroscience experiments.
 \emph{Behavior Research Methods}, \emph{40}, 353--359.
 \url{https://doi.org/10.3758/brm.40.1.353}
+
+\bibitem[\citeproctext]{ref-cai2025morse}
+Cai, Z., Wang, A., Satheesh, A., Nakhawa, A., Jae, H., Powell, K., Liu,
+M., Jay, N., Oh, S., Wang, X., \& others. (2025). MORSE-500: A
+programmatically controllable video benchmark to stress-test multimodal
+reasoning. \emph{arXiv Preprint arXiv:2506.05523}.
+\url{https://doi.org/10.48550/arXiv.2506.05523}
 
 \bibitem[\citeproctext]{ref-chen2024iaimperative}
 Chen, X., Yang, F., \& Wang, C. (2024). {iA*}: Imperative learning-based
@@ -793,6 +816,12 @@ extrapolation for mazes with recurrent and implicit networks.
 \emph{arXiv Preprint arXiv:2410.03020}.
 \url{https://doi.org/10.48550/arXiv.2410.03020}
 
+\bibitem[\citeproctext]{ref-lee2025adaptive}
+Lee, G., Bao, T. N. N., Yoon, J., Lee, D., Kim, M., Bengio, Y., \& Ahn,
+S. (2025). Adaptive cyclic diffusion for inference scaling. \emph{arXiv
+Preprint arXiv:2505.14036}.
+\url{https://doi.org/10.48550/arXiv.2505.14036}
+
 \bibitem[\citeproctext]{ref-eval-LLM-graphs}
 Liu, C., \& Wu, B. (2023). Evaluating large language models on graphs:
 Performance insights and comparative analysis. \emph{arXiv Preprint
@@ -871,10 +900,22 @@ Waskom, M. L. (2021). {seaborn}: Statistical data visualization.
 \emph{Journal of Open Source Software}, \emph{6}(60), 3021.
 \url{https://doi.org/10.21105/joss.03021}
 
+\bibitem[\citeproctext]{ref-xu2025visual}
+Xu, Y., Li, C., Zhou, H., Wan, X., Zhang, C., Korhonen, A., \& Vulić, I.
+(2025). Visual planning: Let's think only with images. \emph{arXiv
+Preprint arXiv:2505.11409}.
+\url{https://doi.org/10.48550/arXiv.2505.11409}
+
 \bibitem[\citeproctext]{ref-zhang2025tscend}
-Zhang, T., Pan, J.-S., Feng, R., \& Wu, T. (2025). T-SCEND: Test-time
+Zhang, T., Pan, J.-S., Feng, R., \& Wu, T. (2025a). T-SCEND: Test-time
 scalable MCTS-enhanced diffusion model. \emph{arXiv Preprint
 arXiv:2502.01989}. \url{https://doi.org/10.48550/arXiv.2502.01989}
+
+\bibitem[\citeproctext]{ref-zhang2025vfscale}
+Zhang, T., Pan, J.-S., Feng, R., \& Wu, T. (2025b). VFScale: Intrinsic
+reasoning through verifier-free test-time scalable diffusion model.
+\emph{arXiv Preprint arXiv:2502.01989}.
+\url{https://doi.org/10.48550/arXiv.2502.01989}
 
 \end{CSLReferences}
 

@@ -120,6 +120,9 @@ We benchmarks for generation time across various configurations in \autoref{tab:
 
 \input{figures/tex/fig7_sre.tex}
 
+
+\newpage
+
 # Implementation {#sec:implementation}
 
 Using an adjacency matrix for storing mazes would be memory inefficient by failing to exploit the highly sparse structure, while using an adjacency list could lead to a poor lookup time. This package utilizes a simple, efficient representation of mazes as subgraphs of a finite lattice, detailed in \autoref{fig:maze-impl}, which we call a [`LatticeMaze`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#LatticeMaze).
@@ -137,21 +140,29 @@ Our package is implemented in Python[@python], and makes use of the extensive sc
 
 This package was originally built for the needs of the [@maze-transformer-github] project, which aims to investigate spatial planning and world models in autoregressive transformer models trained on mazes [@ivanitskiy2023structuredworldreps; @spies2024causalworldmodels; @maze-dataset-arxiv-2023]. It was extended for work on understanding the mechanisms by which recurrent convolutional and implicit networks [@fung2022jfb] solve mazes given a rasterized view [@knutson2024logicalextrapolation], which required matching the pixel-padded and endpoint constrained output format of [@easy_to_hard]. Ongoing work using `maze-dataset` aims to investigate the effects of varying the tokenization format on the performance of pretrained LLMs on spatial reasoning.
 
-This package has also been utilized in work by other groups:
+At the time of writing, this software package has been actively used in work by other groups:
 
 - By [@nolte2024multistep] to compare the effectiveness of transformers trained with the MLM-$\mathcal{U}$ [@MLMU-kitouni2024factorization] multistep prediction objective against standard autoregressive training for multi-step planning on our maze task.
 
-- By [@wang2024imperative] and [@chen2024iaimperative] to study the effectiveness of imperative learning.
+- By [@wang2024imperative] and [@chen2024iaimperative] to study imperative learning.
 
 - By [@zhang2025tscend] to introduce a novel framework for reasoning diffusion models.
 
 - By [@dao2025alphamaze] to improve spatial reasoning in LLMs with GRPO.
 
+- By [@cai2025morse] to create a multimodal reasoning benchmark, via mazes in videos.
+
+- By [@xu2025visual] to study visual planning in LLMs.
+
+- By [@lee2025adaptive] to evaluate adaptive inference-time scaling with diffusion models on maze navigation tasks.
+
+- By [@zhang2025vfscale] to test verifier-free diffusion models.
+
+\newpage
 
 # Acknowledgements
 
 \input{figures/tex/acknowledgements.tex}
 
-\newpage
 
 # References
