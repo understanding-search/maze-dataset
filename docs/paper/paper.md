@@ -106,7 +106,7 @@ In previous work, maze tasks have been used with Recurrent Convolutional Neural 
 
 Autoregressive transformer models can be quite sensitive to the exact format of input data, and may even use delimiter tokens to perform reasoning steps [@pfau2024dotbydot; @spies2024causalworldmodels]. To facilitate systematic investigation of the effects of different representations of data on text model performance, we provide a variety of text output formats, with an example given in \autoref{fig:token-regions}. We utilize Finite State Transducers [@Gallant2015Transducers] for efficiently storing valid tokenizers.
 
-<!-- \input{figures/tex/fig4_tokenfmt.tex} -->
+\input{figures/tex/fig4_tokenfmt.tex}
 
 ## Benchmarks {#benchmarks}
 
