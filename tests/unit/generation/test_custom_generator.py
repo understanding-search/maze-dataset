@@ -57,7 +57,7 @@ def test_register_valid_function():
 
 	# Test function works
 	maze = get_maze_with_solution("gen_test_valid", (5, 5))
-	assert maze.maze.grid_shape == (5, 5)
+	assert maze.grid_shape == (5, 5)
 
 	# Test via LatticeMazeGenerators
 	maze2 = LatticeMazeGenerators.gen_test_valid((4, 4))
@@ -165,7 +165,7 @@ def test_maze_dataset_with_custom_generator():
 	# Test dataset properties
 	assert len(dataset) == 2
 	for maze in dataset:
-		assert maze.maze.grid_shape == (4, 4)
+		assert maze.grid_shape == (4, 4)
 
 	# Test save/load dataset
 	TEMP_PATH.mkdir(parents=True, exist_ok=True)
@@ -177,10 +177,8 @@ def test_maze_dataset_with_custom_generator():
 	assert len(loaded_dataset) == len(dataset)
 	assert loaded_dataset.cfg.name == dataset.cfg.name
 	for original, loaded in zip(dataset, loaded_dataset, strict=True):
-		assert original.maze.grid_shape == loaded.maze.grid_shape
-		assert np.array_equal(
-			original.maze.connection_list, loaded.maze.connection_list
-		)
+		assert original.grid_shape == loaded.grid_shape
+		assert np.array_equal(original.connection_list, loaded.connection_list)
 
 
 def test_registration_error_missing_grid_shape():
