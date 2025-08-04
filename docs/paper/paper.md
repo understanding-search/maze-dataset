@@ -49,6 +49,7 @@ Solving mazes is a classic problem in computer science and artificial intelligen
 
 \input{figures/tex/fig1_diagram.tex}
 
+
 # Statement of Need
 
 While maze generation itself is straightforward, the architectural challenge comes from building a system supporting many algorithms with configurable parameters, property filtering, and representation transformation. This library aims to greatly streamline the process of generating and working with datasets of mazes that can be described as subgraphs of an $n \times n$ lattice with boolean connections and, optionally, start and end points that are nodes in the graph. Furthermore, we place emphasis on a wide variety of possible text output formats aimed at evaluating the spatial reasoning capabilities of Large Language Models (LLMs) and other text-based transformer models.
@@ -73,7 +74,10 @@ A multitude of public and open-source software packages exist for generating maz
 
 - Our package is easily installable with source code freely available. It is extensively tested, type hinted, benchmarked, and documented. Many other maze generation packages lack this level of rigor and scope, and some [@ayaz2008maze] appear to simply no longer be accessible.
 
+
+
 \newpage
+
 # Features
 
 We direct readers to our [examples](https://understanding-search.github.io/maze-dataset/examples/maze_examples.html), [docs](https://understanding-search.github.io/maze-dataset/maze_dataset.html), and [notebooks](https://understanding-search.github.io/maze-dataset/notebooks/) for more information. Our package can be installed from [PyPi](https://pypi.org/project/maze-dataset/) via `pip install maze-dataset`, or directly from the [git repository](https://github.com/understanding-search/maze-dataset) [@maze-dataset-github].
@@ -91,31 +95,42 @@ In previous work, maze tasks have been used with Recurrent Convolutional Neural 
 
 \input{figures/tex/fig3_raster.tex}
 
+
+
+
+
+
 \newpage
 
 ## Tokenized Output Formats {#sec:tokenized-output-formats}
 
 Autoregressive transformer models can be quite sensitive to the exact format of input data, and may even use delimiter tokens to perform reasoning steps [@pfau2024dotbydot; @spies2024causalworldmodels]. To facilitate systematic investigation of the effects of different representations of data on text model performance, we provide a variety of text output formats, with an example given in \autoref{fig:token-regions}. We utilize Finite State Transducers [@Gallant2015Transducers] for efficiently storing valid tokenizers.
 
-\input{figures/tex/fig4_tokenfmt.tex}
+<!-- \input{figures/tex/fig4_tokenfmt.tex} -->
 
 ## Benchmarks {#benchmarks}
 
 We benchmarks for generation time across various configurations in \autoref{tab:benchmarks} and \autoref{fig:benchmarks}. Experiments were performed on a [standard GitHub runner](https://docs.github.com/en/actions/using-github-hosted-runners/using-github-hosted-runners/about-github-hosted-runners#standard-github-hosted-runners-for-public-repositories) without parallelism. Additionally, maze generation under certain constraints may not always be successful, and for this we provide a way to estimate the success rate of a given configuration, described in \autoref{fig:sre}.
 
-\input{figures/tex/tab1_benchmarks.tex}
 
-\input{figures/tex/fig6_benchmarks.tex}
 
-\input{figures/tex/fig7_sre.tex}
+<!-- \input{figures/tex/tab1_benchmarks.tex} -->
+
+<!-- \input{figures/tex/fig6_benchmarks.tex} -->
+
+<!-- \input{figures/tex/fig7_sre.tex} -->
 
 # Implementation {#sec:implementation}
 
 Using an adjacency matrix for storing mazes would be memory inefficient by failing to exploit the highly sparse structure, while using an adjacency list could lead to a poor lookup time. This package utilizes a simple, efficient representation of mazes as subgraphs of a finite lattice, detailed in \autoref{fig:maze-impl}, which we call a [`LatticeMaze`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#LatticeMaze).
 
-\input{figures/tex/fig8_impl.tex}
+<!-- \input{figures/tex/fig8_impl.tex} -->
 
-Our package is implemented in Python[@python], and makes use of the extensive scientific computing ecosystem, including NumPy [@numpy] for array manipulation, plotting tools [@matplotlib, @seaborn], Jupyter notebooks [@jupyter], and PySR [@pysr] for symbolic regression.
+Our package is implemented in Python[@python], and makes use of the extensive scientific computing ecosystem, including NumPy [@numpy] for array manipulation, plotting tools [@matplotlib; @seaborn], Jupyter notebooks [@jupyter], and PySR [@pysr] for symbolic regression.
+
+
+
+
 
 
 # Usage in Research
@@ -131,6 +146,7 @@ This package has also been utilized in work by other groups:
 - By [@zhang2025tscend] to introduce a novel framework for reasoning diffusion models.
 
 - By [@dao2025alphamaze] to improve spatial reasoning in LLMs with GRPO.
+
 
 # Acknowledgements
 
