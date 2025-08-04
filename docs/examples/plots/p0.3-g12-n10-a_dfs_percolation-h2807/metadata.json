@@ -82,7 +82,7 @@
     "fname": "p0.3-g12-n10-a_dfs_percolation-h2807",
     "versions": {
       "config": "1.0",
-      "maze_dataset": "1.3.0"
+      "maze_dataset": "1.3.2"
     }
   },
   "fname": "p0.3-g12-n10-a_dfs_percolation-h2807"
