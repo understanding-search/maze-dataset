@@ -116,7 +116,7 @@ We benchmarks for generation time across various configurations in \autoref{tab:
 
 <!-- \input{figures/tex/tab1_benchmarks.tex} -->
 
-<!-- \input{figures/tex/fig6_benchmarks.tex} -->
+\input{figures/tex/fig6_benchmarks.tex}
 
 <!-- \input{figures/tex/fig7_sre.tex} -->
 
