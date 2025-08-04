@@ -34,7 +34,7 @@
 
   <!-- Diagram -->
   <p>
-    <img src="https://understanding-search.github.io/maze-dataset/resources/diagram.svg" alt="Diagram">
+    <img src="https://understanding-search.github.io/maze-dataset/resources/diagram.svg" alt="Diagram" width="95%">
   </p>
 
   <!-- Additional badges -->
@@ -117,6 +117,8 @@ This package is [available on PyPI](https://pypi.org/project/maze-dataset/), and
 pip install maze-dataset
 ```
 
+> Please note that due to an issue with the `rust-fst` package, some tokenization features are not available on macOS. Please see [#57](https://github.com/understanding-search/maze-dataset/issues/57)
+
 # Docs
 
 The full hosted documentation is available at [https://understanding-search.github.io/maze-dataset/](https://understanding-search.github.io/maze-dataset/).
@@ -127,7 +129,7 @@ Additionally, our [notebooks](https://understanding-search.github.io/maze-datase
 
 ## Creating a dataset
 
-To create a `MazeDataset`, which inherits from `torch.utils.data.Dataset`, you first create a `MazeDatasetConfig`:
+To create a `MazeDataset`, you first create a `MazeDatasetConfig`:
 
 ```python
 from maze_dataset import MazeDataset, MazeDatasetConfig
@@ -161,17 +163,18 @@ maze_dataset.maze.lattice_maze.SolvedMaze
 Which can be converted to a variety of formats:
 ```python
 # visual representation as ascii art
-m.as_ascii() 
+print(m.as_ascii()) 
 # RGB image, optionally without solution or endpoints, suitable for CNNs
-m.as_pixels() 
+import matplotlib.pyplot as plt
+plt.imshow(m.as_pixels())
 # text format for autoreregressive transformers
-from maze_dataset.tokenization import MazeTokenizerModular, TokenizationMode
+from maze_dataset.tokenization import MazeTokenizerModular, TokenizationMode, PromptSequencers
 m.as_tokens(maze_tokenizer=MazeTokenizerModular(
-    tokenization_mode=TokenizationMode.AOTP_UT_rasterized, max_grid_size=100,
+	prompt_sequencer=PromptSequencers.AOTP(), # many options here
 ))
 # advanced visualization with many features
 from maze_dataset.plotting import MazePlot
-MazePlot(maze).plot()
+MazePlot(m).plot()
 ```
 
 <img src="https://understanding-search.github.io/maze-dataset/assets/output_formats.png" alt="textual and visual output formats" width="100%"/>
@@ -179,13 +182,24 @@ MazePlot(maze).plot()
 
 # Development
 
-we use this [makefile template](https://github.com/mivanit/python-project-makefile-template) with slight modifications for our development workflow.
+We use this [makefile template](https://github.com/mivanit/python-project-makefile-template) with slight modifications for our development workflow. This project uses [uv](https://docs.astral.sh/uv/) for dependency and virtual environment management.
 
 - clone with `git clone https://github.com/understanding-search/maze-dataset`
+- if you don't already have uv, [install it](https://docs.astral.sh/uv/getting-started/installation/). We only guarantee compatibility with `uv` newer than `0.8.0`
 - `make dep` to install all dependencies
 - `make help` will print all available commands
 - `make test` will run basic tests to ensure the package is working
+  - run just the unit tests with `make test-unit`
+  - see all tests with explanations using `make help` or `make help | grep test`
 - `make format` will run ruff to format and check the code
 
+> Note: due to compatibility issues between the `rust_fst` package and Darwin/macOS systems, not all tests will pass on these systems. However, `make test-unit` and `make test-notebooks-muutils` should still pass. Please see [#57](https://github.com/understanding-search/maze-dataset/issues/57) for updates on resolving this problem.
 
+## Contributing
+
+We welcome contributions! We use [GitHub issues](https://github.com/understanding-search/maze-dataset/issues) to track bugs and feature requests. If you have a bug fix or a new feature to contribute, please open a [pull request](https://github.com/understanding-search/maze-dataset/pulls). We are also happy to provide usage support and answer questions about the package via issues!
+
+While we expect that the core interface of the package is stable, we are very open to adding new features. We're particularly excited about adding [new maze generation algorithms](https://github.com/understanding-search/maze-dataset/issues?q=is%3Aissue%20state%3Aopen%20label%3Ageneration) and [new output formats](https://github.com/understanding-search/maze-dataset/issues?q=is%3Aissue%20state%3Aopen%20label%3Aexporting). Please feel free to both suggest new formats or algorithms, and to implement them and open PRs! For more info on how to add a new maze generation algorithm, see the [documentation on generators](https://understanding-search.github.io/maze-dataset/maze_dataset/generation.html).
+
+We are also aware that like any piece of software, `maze-dataset` is not without bugs. If something isn't working as expected, please open an issue and we will do our best to fix it. It helps us keep things tidy if you first search [existing bug reports](https://github.com/understanding-search/maze-dataset/issues?q=label%3Abug) to see if your issue has already been reported.
 

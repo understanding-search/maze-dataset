@@ -10,7 +10,7 @@ import multiprocessing
 import typing
 import warnings
 from pathlib import Path
-from typing import Literal, Optional, cast, overload
+from typing import Literal, cast, overload
 
 import numpy as np
 import tqdm
@@ -41,7 +41,7 @@ from maze_dataset.maze import LatticeMaze, SolvedMaze
 _GLOBAL_WORKER_CONFIG: MazeDatasetConfig
 
 
-def _generate_maze_helper(index: int) -> Optional[SolvedMaze]:  # noqa: ARG001
+def _generate_maze_helper(index: int) -> SolvedMaze | None:  # noqa: ARG001
 	"""Helper function for generating mazes in parallel.
 
 	> [!CAUTION]
@@ -59,7 +59,7 @@ def _generate_maze_helper(index: int) -> Optional[SolvedMaze]:  # noqa: ARG001
 	# Generate the solution
 	# mypy doesnt realize EndpointKwargsType has only string keys: `Keywords must be strings  [misc]`
 	# TYPING: error: No overload variant of "generate_random_path" of "LatticeMaze" matches argument type "dict[Literal['allowed_start', 'allowed_end', 'deadend_start', 'deadend_end', 'endpoints_not_equal', 'except_on_no_valid_endpoint'], bool | list[tuple[int, int]] | None]"  [call-overload]
-	solution: Optional[CoordArray] = maze.generate_random_path(**endpoint_kwargs)  # type: ignore[misc, call-overload]
+	solution: CoordArray | None = maze.generate_random_path(**endpoint_kwargs)  # type: ignore[misc, call-overload]
 
 	# Validate the solution
 	if (
@@ -109,7 +109,8 @@ def _maze_gen_init_worker(config: MazeDatasetConfig) -> None:
 		)
 
 
-class MazeDataset(GPTDataset[MazeDatasetConfig]):
+# TODO: we probably don't need to hash datasets, right?
+class MazeDataset(GPTDataset[MazeDatasetConfig]):  # noqa: PLW1641
 	"""a maze dataset class. This is a collection of solved mazes, and should be initialized via `MazeDataset.from_config`"""
 
 	def __init__(
@@ -150,7 +151,7 @@ class MazeDataset(GPTDataset[MazeDatasetConfig]):
 
 		"""
 		return cast(
-			MazeDataset,
+			"MazeDataset",
 			super().from_config(
 				cfg=cfg,
 				do_generate=do_generate,

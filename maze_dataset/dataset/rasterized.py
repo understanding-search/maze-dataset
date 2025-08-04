@@ -189,7 +189,7 @@ class RasterizedMazeDataset(MazeDataset):
 
 		"""
 		return typing.cast(
-			RasterizedMazeDataset,
+			"RasterizedMazeDataset",
 			super().from_config(
 				cfg=cfg,
 				do_generate=do_generate,

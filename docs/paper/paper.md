@@ -45,9 +45,10 @@ header-includes: \input{preamble.tex}
 
 # Summary
 
-Solving mazes is a classic problem in computer science and artificial intelligence, and humans have been constructing mazes for thousands of years. Although finding the shortest path through a maze is a solved problem, this very fact makes it an excellent testbed for studying how machine learning algorithms solve problems and represent spatial information. We introduce `maze-dataset`, a user-friendly Python library for generating, processing, and visualizing datasets of mazes. This library supports a variety of maze generation algorithms providing mazes with or without loops, mazes that are connected or not, and many other variations. These generation algorithms can be configured with various parameters, and the resulting mazes can be filtered to satisfy desired properties. Also provided are tools for converting mazes to and from various formats suitable for a variety of neural network architectures, such as rasterized images, tokenized text sequences, and various visualizations. As well as providing a simple interface for generating, storing, and loading these datasets, `maze-dataset` is extensively tested, type hinted, benchmarked, and documented.
+Solving mazes is a classic problem in computer science and artificial intelligence, and humans have been constructing mazes for thousands of years. Although finding the shortest path through a maze is a solved problem, this very fact makes it an excellent testbed for studying how machine learning algorithms solve problems and represent spatial information. We introduce `maze-dataset`, a user-friendly Python library for generating, processing, and visualizing datasets of mazes. This library supports a variety of maze generation algorithms which can be configured with various parameters, and the resulting mazes can be filtered to satisfy desired properties. Also provided are tools for converting mazes to and from various formats suitable for a variety of neural network architectures, such as rasterized images, tokenized text sequences, and various visualizations. As well as providing a simple interface for generating, storing, and loading these datasets, `maze-dataset` is extensively tested, type hinted, benchmarked, and documented.
 
 \input{figures/tex/fig1_diagram.tex}
+
 
 # Statement of Need
 
@@ -73,12 +74,15 @@ A multitude of public and open-source software packages exist for generating maz
 
 - Our package is easily installable with source code freely available. It is extensively tested, type hinted, benchmarked, and documented. Many other maze generation packages lack this level of rigor and scope, and some [@ayaz2008maze] appear to simply no longer be accessible.
 
+
+
 \newpage
+
 # Features
 
 We direct readers to our [examples](https://understanding-search.github.io/maze-dataset/examples/maze_examples.html), [docs](https://understanding-search.github.io/maze-dataset/maze_dataset.html), and [notebooks](https://understanding-search.github.io/maze-dataset/notebooks/) for more information. Our package can be installed from [PyPi](https://pypi.org/project/maze-dataset/) via `pip install maze-dataset`, or directly from the [git repository](https://github.com/understanding-search/maze-dataset) [@maze-dataset-github].
 
-Datasets of mazes are created from a [`MazeDatasetConfig`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#MazeDatasetConfig) configuration object, which allows specifying the number of mazes, their size, the generation algorithm, and various parameters for the generation algorithm. Datasets can also be filtered after generation to satisfy certain properties. Custom filters can be specified, and some filters are included in [`MazeDatasetFilters`](https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/filters.html#MazeDatasetFilters)
+Datasets of mazes are created from a [`MazeDatasetConfig`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#MazeDatasetConfig) configuration object, which allows specifying the number of mazes, their size, the generation algorithm, and various parameters for the generation algorithm. Datasets can also be filtered after generation to satisfy certain properties. Custom filters can be specified, and some filters are included in [`MazeDatasetFilters`](https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/filters.html#MazeDatasetFilters).
 
 
 ## Visual Output Formats {#visual-output-formats}
@@ -91,11 +95,16 @@ In previous work, maze tasks have been used with Recurrent Convolutional Neural 
 
 \input{figures/tex/fig3_raster.tex}
 
+
+
+
+
+
 \newpage
 
 ## Tokenized Output Formats {#sec:tokenized-output-formats}
 
-Autoregressive transformer models can be quite sensitive to the exact format of input data, and may even use delimiter tokens to perform reasoning steps [@pfau2024dotbydot; @spies2024causalworldmodels]. To facilitate systematic investigation of the effects of different representations of data on text model performance, we provide a variety of text output formats, with an example given in \autoref{fig:token-regions}.
+Autoregressive transformer models can be quite sensitive to the exact format of input data, and may even use delimiter tokens to perform reasoning steps [@pfau2024dotbydot; @spies2024causalworldmodels]. To facilitate systematic investigation of the effects of different representations of data on text model performance, we provide a variety of text output formats, with an example given in \autoref{fig:token-regions}. We utilize Finite State Transducers [@Gallant2015Transducers] for efficiently storing valid tokenizers.
 
 \input{figures/tex/fig4_tokenfmt.tex}
 
@@ -103,11 +112,16 @@ Autoregressive transformer models can be quite sensitive to the exact format of 
 
 We benchmarks for generation time across various configurations in \autoref{tab:benchmarks} and \autoref{fig:benchmarks}. Experiments were performed on a [standard GitHub runner](https://docs.github.com/en/actions/using-github-hosted-runners/using-github-hosted-runners/about-github-hosted-runners#standard-github-hosted-runners-for-public-repositories) without parallelism. Additionally, maze generation under certain constraints may not always be successful, and for this we provide a way to estimate the success rate of a given configuration, described in \autoref{fig:sre}.
 
+
+
 \input{figures/tex/tab1_benchmarks.tex}
 
 \input{figures/tex/fig6_benchmarks.tex}
 
 \input{figures/tex/fig7_sre.tex}
+
+
+\newpage
 
 # Implementation {#sec:implementation}
 
@@ -115,25 +129,40 @@ Using an adjacency matrix for storing mazes would be memory inefficient by faili
 
 \input{figures/tex/fig8_impl.tex}
 
+Our package is implemented in Python[@python], and makes use of the extensive scientific computing ecosystem, including NumPy [@numpy] for array manipulation, plotting tools [@matplotlib; @seaborn], Jupyter notebooks [@jupyter], and PySR [@pysr] for symbolic regression.
+
+
+
+
+
 
 # Usage in Research
 
 This package was originally built for the needs of the [@maze-transformer-github] project, which aims to investigate spatial planning and world models in autoregressive transformer models trained on mazes [@ivanitskiy2023structuredworldreps; @spies2024causalworldmodels; @maze-dataset-arxiv-2023]. It was extended for work on understanding the mechanisms by which recurrent convolutional and implicit networks [@fung2022jfb] solve mazes given a rasterized view [@knutson2024logicalextrapolation], which required matching the pixel-padded and endpoint constrained output format of [@easy_to_hard]. Ongoing work using `maze-dataset` aims to investigate the effects of varying the tokenization format on the performance of pretrained LLMs on spatial reasoning.
 
-This package has also been utilized in work by other groups:
+At the time of writing, this software package has been actively used in work by other groups:
 
 - By [@nolte2024multistep] to compare the effectiveness of transformers trained with the MLM-$\mathcal{U}$ [@MLMU-kitouni2024factorization] multistep prediction objective against standard autoregressive training for multi-step planning on our maze task.
 
-- By [@wang2024imperative] and [@chen2024iaimperative] to study the effectiveness of imperative learning.
+- By [@wang2024imperative] and [@chen2024iaimperative] to study imperative learning.
 
 - By [@zhang2025tscend] to introduce a novel framework for reasoning diffusion models.
 
 - By [@dao2025alphamaze] to improve spatial reasoning in LLMs with GRPO.
 
+- By [@cai2025morse] to create a multimodal reasoning benchmark, via mazes in videos.
+
+- By [@xu2025visual] to study visual planning in LLMs.
+
+- By [@lee2025adaptive] to evaluate adaptive inference-time scaling with diffusion models on maze navigation tasks.
+
+- By [@zhang2025vfscale] to test verifier-free diffusion models.
+
+\newpage
+
 # Acknowledgements
 
 \input{figures/tex/acknowledgements.tex}
 
-\newpage
 
 # References

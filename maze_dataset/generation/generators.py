@@ -2,7 +2,7 @@
 
 import random
 import warnings
-from typing import Any, Callable
+from typing import Callable, Concatenate, ParamSpec
 
 import numpy as np
 from jaxtyping import Bool
@@ -12,7 +12,7 @@ from maze_dataset.generation.seed import GLOBAL_SEED
 from maze_dataset.maze import ConnectionList, Coord, LatticeMaze, SolvedMaze
 from maze_dataset.maze.lattice_maze import NEIGHBORS_MASK, _fill_edges_with_walls
 
-numpy_rng = np.random.default_rng(GLOBAL_SEED)
+_NUMPY_RNG: np.random.Generator = np.random.default_rng(GLOBAL_SEED)
 random.seed(GLOBAL_SEED)
 
 
@@ -60,6 +60,7 @@ class LatticeMazeGenerators:
 	@staticmethod
 	def gen_dfs(
 		grid_shape: Coord | CoordTup,
+		*,
 		lattice_dim: int = 2,
 		accessible_cells: float | None = None,
 		max_tree_depth: float | None = None,
@@ -609,8 +610,15 @@ class LatticeMazeGenerators:
 		)
 
 
+P_GeneratorKwargs = ParamSpec("P_GeneratorKwargs")
+MazeGeneratorFunc = Callable[
+	Concatenate[Coord | CoordTup, P_GeneratorKwargs],
+	LatticeMaze,
+]
+
+
 # cant automatically populate this because it messes with pickling :(
-GENERATORS_MAP: dict[str, Callable[[Coord | CoordTup, Any], "LatticeMaze"]] = {
+GENERATORS_MAP: dict[str, MazeGeneratorFunc] = {
 	"gen_dfs": LatticeMazeGenerators.gen_dfs,
 	# TYPING: error: Dict entry 1 has incompatible type
 	# "str": "Callable[[ndarray[Any, Any] | tuple[int, int], KwArg(Any)], LatticeMaze]";
@@ -636,6 +644,7 @@ this variable is primarily used in `MazeDatasetConfig._to_ps_array` and `MazeDat
 """
 
 
+# TODO: we should deprecate this, always get a dataset when you want a maze with a solution
 def get_maze_with_solution(
 	gen_name: str,
 	grid_shape: Coord | CoordTup,

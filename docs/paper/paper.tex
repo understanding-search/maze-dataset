@@ -415,16 +415,15 @@ problem, this very fact makes it an excellent testbed for studying how
 machine learning algorithms solve problems and represent spatial
 information. We introduce \texttt{maze-dataset}, a user-friendly Python
 library for generating, processing, and visualizing datasets of mazes.
-This library supports a variety of maze generation algorithms providing
-mazes with or without loops, mazes that are connected or not, and many
-other variations. These generation algorithms can be configured with
-various parameters, and the resulting mazes can be filtered to satisfy
-desired properties. Also provided are tools for converting mazes to and
-from various formats suitable for a variety of neural network
-architectures, such as rasterized images, tokenized text sequences, and
-various visualizations. As well as providing a simple interface for
-generating, storing, and loading these datasets, \texttt{maze-dataset}
-is extensively tested, type hinted, benchmarked, and documented.
+This library supports a variety of maze generation algorithms which can
+be configured with various parameters, and the resulting mazes can be
+filtered to satisfy desired properties. Also provided are tools for
+converting mazes to and from various formats suitable for a variety of
+neural network architectures, such as rasterized images, tokenized text
+sequences, and various visualizations. As well as providing a simple
+interface for generating, storing, and loading these datasets,
+\texttt{maze-dataset} is extensively tested, type hinted, benchmarked,
+and documented.
 
 \input{figures/tex/fig1_diagram.tex}
 
@@ -544,7 +543,7 @@ size, the generation algorithm, and various parameters for the
 generation algorithm. Datasets can also be filtered after generation to
 satisfy certain properties. Custom filters can be specified, and some
 filters are included in
-\href{https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/filters.html\#MazeDatasetFilters}{\texttt{MazeDatasetFilters}}
+\href{https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/filters.html\#MazeDatasetFilters}{\texttt{MazeDatasetFilters}}.
 
 \subsection{Visual Output Formats}\label{visual-output-formats}
 
@@ -581,7 +580,9 @@ reasoning steps (\citeproc{ref-pfau2024dotbydot}{Pfau et al., 2024};
 facilitate systematic investigation of the effects of different
 representations of data on text model performance, we provide a variety
 of text output formats, with an example given in
-\autoref{fig:token-regions}.
+\autoref{fig:token-regions}. We utilize Finite State Transducers
+(\citeproc{ref-Gallant2015Transducers}{Gallant, 2015}) for efficiently
+storing valid tokenizers.
 
 \input{figures/tex/fig4_tokenfmt.tex}
 
@@ -602,6 +603,8 @@ described in \autoref{fig:sre}.
 
 \input{figures/tex/fig7_sre.tex}
 
+\newpage
+
 \section{Implementation}\label{sec:implementation}
 
 Using an adjacency matrix for storing mazes would be memory inefficient
@@ -612,6 +615,14 @@ lattice, detailed in \autoref{fig:maze-impl}, which we call a
 \href{https://understanding-search.github.io/maze-dataset/maze_dataset.html\#LatticeMaze}{\texttt{LatticeMaze}}.
 
 \input{figures/tex/fig8_impl.tex}
+
+Our package is implemented in Python(\citeproc{ref-python}{Rossum,
+1995}), and makes use of the extensive scientific computing ecosystem,
+including NumPy (\citeproc{ref-numpy}{Harris et al., 2020}) for array
+manipulation, plotting tools (\citeproc{ref-matplotlib}{Hunter, 2007};
+\citeproc{ref-seaborn}{Waskom, 2021}), Jupyter notebooks
+(\citeproc{ref-jupyter}{Kluyver et al., 2016}), and PySR
+(\citeproc{ref-pysr}{Cranmer, 2023}) for symbolic regression.
 
 \section{Usage in Research}\label{usage-in-research}
 
@@ -634,7 +645,8 @@ Borgnia, Gupta, Bansal, et al., 2021}). Ongoing work using
 tokenization format on the performance of pretrained LLMs on spatial
 reasoning.
 
-This package has also been utilized in work by other groups:
+At the time of writing, this software package has been actively used in
+work by other groups:
 
 \begin{itemize}
 \item
@@ -645,21 +657,34 @@ This package has also been utilized in work by other groups:
   training for multi-step planning on our maze task.
 \item
   By (\citeproc{ref-wang2024imperative}{Wang et al., 2024}) and
-  (\citeproc{ref-chen2024iaimperative}{Chen et al., 2024}) to study the
-  effectiveness of imperative learning.
+  (\citeproc{ref-chen2024iaimperative}{Chen et al., 2024}) to study
+  imperative learning.
 \item
-  By (\citeproc{ref-zhang2025tscend}{Zhang et al., 2025}) to introduce a
-  novel framework for reasoning diffusion models.
+  By (\citeproc{ref-zhang2025tscend}{Zhang et al., 2025a}) to introduce
+  a novel framework for reasoning diffusion models.
 \item
   By (\citeproc{ref-dao2025alphamaze}{Dao \& Vu, 2025}) to improve
   spatial reasoning in LLMs with GRPO.
+\item
+  By (\citeproc{ref-cai2025morse}{Cai et al., 2025}) to create a
+  multimodal reasoning benchmark, via mazes in videos.
+\item
+  By (\citeproc{ref-xu2025visual}{Xu et al., 2025}) to study visual
+  planning in LLMs.
+\item
+  By (\citeproc{ref-lee2025adaptive}{Lee et al., 2025}) to evaluate
+  adaptive inference-time scaling with diffusion models on maze
+  navigation tasks.
+\item
+  By (\citeproc{ref-zhang2025vfscale}{Zhang et al., 2025b}) to test
+  verifier-free diffusion models.
 \end{itemize}
+
+\newpage
 
 \section{Acknowledgements}\label{acknowledgements}
 
 \input{figures/tex/acknowledgements.tex}
-
-\newpage
 
 \section*{References}\label{references}
 \addcontentsline{toc}{section}{References}
@@ -677,6 +702,13 @@ navigational and spatial cognitive neuroscience experiments.
 \emph{Behavior Research Methods}, \emph{40}, 353--359.
 \url{https://doi.org/10.3758/brm.40.1.353}
 
+\bibitem[\citeproctext]{ref-cai2025morse}
+Cai, Z., Wang, A., Satheesh, A., Nakhawa, A., Jae, H., Powell, K., Liu,
+M., Jay, N., Oh, S., Wang, X., \& others. (2025). MORSE-500: A
+programmatically controllable video benchmark to stress-test multimodal
+reasoning. \emph{arXiv Preprint arXiv:2506.05523}.
+\url{https://doi.org/10.48550/arXiv.2506.05523}
+
 \bibitem[\citeproctext]{ref-chen2024iaimperative}
 Chen, X., Yang, F., \& Wang, C. (2024). {iA*}: Imperative learning-based
 {A*} search for pathfinding. \emph{arXiv Preprint arXiv:2403.15870}.
@@ -687,6 +719,11 @@ Cobbe, K., Hesse, C., Hilton, J., \& Schulman, J. (2019). Leveraging
 procedural generation to benchmark reinforcement learning. \emph{arXiv
 Preprint arXiv:1912.01588}.
 \url{https://doi.org/10.48550/arXiv.1912.01588}
+
+\bibitem[\citeproctext]{ref-pysr}
+Cranmer, M. (2023). Interpretable machine learning for science with PySR
+and SymbolicRegression. jl. \emph{arXiv Preprint arXiv:2305.01582}.
+\url{https://doi.org/10.48550/arXiv.2305.01582}
 
 \bibitem[\citeproctext]{ref-dao2025alphamaze}
 Dao, A., \& Vu, D. B. (2025). AlphaMaze: Enhancing large language
@@ -702,6 +739,10 @@ Fung, S. W., Heaton, H., Li, Q., McKenzie, D., Osher, S., \& Yin, W.
 \emph{Proceedings of the AAAI Conference on Artificial Intelligence},
 \emph{36}, 6648--6656. \url{https://doi.org/10.1609/aaai.v36i6.20619}
 
+\bibitem[\citeproctext]{ref-Gallant2015Transducers}
+Gallant, A. (2015). \emph{Index 1,600,000,000 keys with automata and
+rust}. \url{https://burntsushi.net/transducers/}.
+
 \bibitem[\citeproctext]{ref-mathematica-maze}
 Guo, C., Barthelet, L., \& Morris, R. (2011). \emph{Maze generator and
 solver}. Wolfram Demonstrations Project,
@@ -712,6 +753,17 @@ Harries, L., Lee, S., Rzepecki, J., Hofmann, K., \& Devlin, S. (n.d.).
 {MazeExplorer}: {A Customisable 3D Benchmark} for {Assessing
 Generalisation} in {Reinforcement Learning}. \emph{2019 {IEEE Conf}.
 {Games CoG}}, 1--4. \url{https://doi.org/10.1109/cig.2019.8848048}
+
+\bibitem[\citeproctext]{ref-numpy}
+Harris, C. R., Millman, K. J., Walt, S. J. van der, Gommers, R.,
+Virtanen, P., \& al., et. (2020). Array programming with NumPy.
+\emph{Nature}, \emph{585}, 357--362.
+\url{https://doi.org/10.1038/s41586-020-2649-2}
+
+\bibitem[\citeproctext]{ref-matplotlib}
+Hunter, J. D. (2007). Matplotlib: A 2D graphics environment.
+\emph{Computing in Science and Engineering}, \emph{9}(3), 90--95.
+\url{https://doi.org/10.1109/MCSE.2007.55}
 
 \bibitem[\citeproctext]{ref-zanj}
 Ivanitskiy, M. (n.d.). \emph{ZANJ}.
@@ -749,12 +801,26 @@ underlie the reversal curse and more. \emph{Advances in Neural
 Information Processing Systems}, \emph{37}, 112329--112355.
 \url{https://doi.org/10.48550/arXiv.2406.05183}
 
+\bibitem[\citeproctext]{ref-jupyter}
+Kluyver, T., Ragan-Kelley, B., Perez, F., Granger, B., Bussonnier, M.,
+Frederic, J., Kelley, K., Hamrick, J., Grout, J., Corlay, S., Ivanov,
+P., Avila, D., Abdalla, S., \& Willing, C. (2016). Jupyter notebooks - a
+publishing format for reproducible computational workflows.
+\emph{Proceedings of the 20th International Conference on Electronic
+Publishing}, 87--90. \url{https://doi.org/10.3233/978-1-61499-649-1-87}
+
 \bibitem[\citeproctext]{ref-knutson2024logicalextrapolation}
 Knutson, B., Rabeendran, A. C., Ivanitskiy, M., Pettyjohn, J.,
 Diniz-Behn, C., Fung, S. W., \& McKenzie, D. (2024). On logical
 extrapolation for mazes with recurrent and implicit networks.
 \emph{arXiv Preprint arXiv:2410.03020}.
 \url{https://doi.org/10.48550/arXiv.2410.03020}
+
+\bibitem[\citeproctext]{ref-lee2025adaptive}
+Lee, G., Bao, T. N. N., Yoon, J., Lee, D., Kim, M., Bengio, Y., \& Ahn,
+S. (2025). Adaptive cyclic diffusion for inference scaling. \emph{arXiv
+Preprint arXiv:2505.14036}.
+\url{https://doi.org/10.48550/arXiv.2505.14036}
 
 \bibitem[\citeproctext]{ref-eval-LLM-graphs}
 Liu, C., \& Wu, B. (2023). Evaluating large language models on graphs:
@@ -793,6 +859,11 @@ neural networks. \emph{2023 IEEE Conference on Secure and Trustworthy
 Machine Learning (SaTML)}, 464--483.
 \url{https://doi.org/10.1109/satml54575.2023.00039}
 
+\bibitem[\citeproctext]{ref-python}
+Rossum, G. van. (1995). \emph{Python reference manual} (CS-R9525).
+Centrum voor Wiskunde; Informatica (CWI).
+\url{https://ir.cwi.nl/pub/5008/05008D.pdf}
+
 \bibitem[\citeproctext]{ref-easy_to_hard}
 Schwarzschild, A., Borgnia, E., Gupta, A., Bansal, A., Emam, Z., Huang,
 F., Goldblum, M., \& Goldstein, T. (2021). \emph{Datasets for {Studying
@@ -824,10 +895,27 @@ self-supervised neural-symbolic learning framework for robot autonomy.
 \emph{arXiv Preprint arXiv:2406.16087}.
 \url{https://doi.org/10.48550/arXiv.2406.16087}
 
+\bibitem[\citeproctext]{ref-seaborn}
+Waskom, M. L. (2021). {seaborn}: Statistical data visualization.
+\emph{Journal of Open Source Software}, \emph{6}(60), 3021.
+\url{https://doi.org/10.21105/joss.03021}
+
+\bibitem[\citeproctext]{ref-xu2025visual}
+Xu, Y., Li, C., Zhou, H., Wan, X., Zhang, C., Korhonen, A., \& Vulić, I.
+(2025). Visual planning: Let's think only with images. \emph{arXiv
+Preprint arXiv:2505.11409}.
+\url{https://doi.org/10.48550/arXiv.2505.11409}
+
 \bibitem[\citeproctext]{ref-zhang2025tscend}
-Zhang, T., Pan, J.-S., Feng, R., \& Wu, T. (2025). T-SCEND: Test-time
+Zhang, T., Pan, J.-S., Feng, R., \& Wu, T. (2025a). T-SCEND: Test-time
 scalable MCTS-enhanced diffusion model. \emph{arXiv Preprint
 arXiv:2502.01989}. \url{https://doi.org/10.48550/arXiv.2502.01989}
+
+\bibitem[\citeproctext]{ref-zhang2025vfscale}
+Zhang, T., Pan, J.-S., Feng, R., \& Wu, T. (2025b). VFScale: Intrinsic
+reasoning through verifier-free test-time scalable diffusion model.
+\emph{arXiv Preprint arXiv:2502.01989}.
+\url{https://doi.org/10.48550/arXiv.2502.01989}
 
 \end{CSLReferences}
 

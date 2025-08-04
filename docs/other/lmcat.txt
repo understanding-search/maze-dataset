@@ -1,8 +1,8 @@
 # Stats
-- 64 files
-- 16144 (16K) lines
-- 520579 (521K) chars
-- 58499 (58K) `whitespace-split` tokens
+- 66 files
+- 16637 (17K) lines
+- 533593 (534K) chars
+- 60014 (60K) `whitespace-split` tokens
 
 # File Tree
 
@@ -10,11 +10,11 @@
 maze-dataset                               
 ├── .github                                
 │   └── workflows                          
-│    ├── all-tok-checks.yml                [   55L     1,728C   155T]
+│    ├── all-tok-checks.yml                [   53L     1,684C   152T]
 │    ├── build-paper.yml                   [   28L       785C    85T]
-│    ├── checks.yml                        [   94L     2,164C   224T]
-│    ├── make-docs.yml                     [   47L     1,262C   141T]
-│    └── speed-benchmark.yml               [   48L     1,261C   109T]
+│    ├── checks.yml                        [   90L     2,099C   217T]
+│    ├── make-docs.yml                     [   44L     1,198C   134T]
+│    └── speed-benchmark.yml               [   45L     1,191C   102T]
 ├── maze_dataset                           
 │   ├── benchmark                          
 │   │   ├── __init__.py                    [    9L       220C    24T]
@@ -25,20 +25,21 @@ maze-dataset
 │   │   ├── __init__.py                    [   45L     2,111C   243T]
 │   │   ├── collected_dataset.py           [  241L     8,113C   848T]
 │   │   ├── configs.py                     [  285L     8,000C   668T]
-│   │   ├── dataset.py                     [  553L    18,539C 2,133T]
-│   │   ├── filters.py                     [  295L     9,571C 1,100T]
-│   │   ├── maze_dataset.py                [  632L    20,310C 2,073T]
+│   │   ├── dataset.py                     [  548L    18,385C 2,123T]
+│   │   ├── filters.py                     [  295L     9,541C 1,094T]
+│   │   ├── maze_dataset.py                [  633L    20,369C 2,089T]
 │   │   ├── maze_dataset_config.py         [  496L    17,917C 2,019T]
-│   │   ├── rasterized.py                  [  330L     9,476C 1,001T]
+│   │   ├── rasterized.py                  [  330L     9,478C 1,001T]
 │   │   └── success_predict_math.py        [  106L     2,809C   460T]
 │   ├── generation                         
-│   │   ├── __init__.py                    [   23L       534C    54T]
+│   │   ├── __init__.py                    [   30L     1,109C   126T]
 │   │   ├── default_generators.py          [   23L       817C    72T]
-│   │   ├── generators.py                  [  651L    23,337C 2,932T]
+│   │   ├── generators.py                  [  660L    23,594C 2,961T]
+│   │   ├── registration.py                [  176L     5,731C   678T]
 │   │   └── seed.py                        [    3L        45C     7T]
 │   ├── maze                               
 │   │   ├── __init__.py                    [   34L     1,905C   272T]
-│   │   └── lattice_maze.py                [1,532L    49,541C 5,753T]
+│   │   └── lattice_maze.py                [1,542L    49,787C 5,787T]
 │   ├── plotting                           
 │   │   ├── __init__.py                    [   33L     1,008C   110T]
 │   │   ├── plot_dataset.py                [   64L     1,635C   200T]
@@ -52,9 +53,9 @@ maze-dataset
 │   │   │   ├── all_instances.py           [  263L    10,748C 1,388T]
 │   │   │   ├── all_tokenizers.py          [  219L     8,375C   855T]
 │   │   │   ├── element_base.py            [  314L    11,410C 1,396T]
-│   │   │   ├── elements.py                [1,294L    41,681C 4,161T]
+│   │   │   ├── elements.py                [1,294L    41,685C 4,161T]
 │   │   │   ├── fst.py                     [  200L     5,706C   619T]
-│   │   │   ├── fst_load.py                [   95L     3,718C   485T]
+│   │   │   ├── fst_load.py                [   96L     3,794C   488T]
 │   │   │   ├── hashing.py                 [   95L     3,359C   390T]
 │   │   │   ├── maze_tokenizer_modular.py  [  349L    11,291C 1,189T]
 │   │   │   └── save_hashes.py             [  124L     3,399C   294T]
@@ -69,21 +70,22 @@ maze-dataset
 │   ├── token_utils.py                     [  540L    17,351C 2,009T]
 │   └── utils.py                           [  184L     5,237C   699T]
 ├── notebooks                              
-│   ├── demo_dataset.ipynb                 [1,037L   507,898C 2,974T]
+│   ├── demo_dataset.ipynb                 [1,089L   589,569C 3,091T]
 │   ├── demo_generator.ipynb               [  197L    56,358C   356T]
 │   ├── demo_latticemaze.ipynb             [  751L   293,508C 2,318T]
-│   ├── demo_mazetokenizermodular.ipynb    [1,788L    92,501C 7,020T]
-│   ├── demo_tokenization.ipynb            [  434L   145,864C 9,259T]
-│   ├── estimate_dataset_fractions.ipynb   [  503L 3,265,942C 1,368T]
+│   ├── demo_mazetokenizermodular.ipynb    [1,781L    92,485C 7,017T]
+│   ├── demo_readme.ipynb                  [  313L    24,242C   702T]
+│   ├── demo_tokenization.ipynb            [  612L   148,682C 9,259T]
+│   ├── estimate_dataset_fractions.ipynb   [  499L 2,155,259C 1,399T]
 │   ├── forking_points.ipynb               [  221L    28,462C   621T]
 │   ├── iterated_backfilling.ipynb         [  207L    30,509C   547T]
 │   ├── output_formats.ipynb               [  235L    20,199C 1,348T]
 │   └── profile_dataset_save_read.ipynb    [1,133L   269,709C 3,406T]
 ├── templates                              
 ├── LICENSE.md                             [  165L     7,652C 1,234T]
-├── README.md                              [  191L     8,680C   704T]
-├── makefile                               [1,851L    57,868C 6,652T]
-├── pyproject.toml                         [  364L    12,919C 1,470T]
+├── README.md                              [  205L    11,110C   994T]
+├── makefile                               [1,891L    59,070C 6,792T]
+├── pyproject.toml                         [  382L    13,391C 1,552T]
 ```
 
 # File Contents
@@ -125,12 +127,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-python@v5
+      - name: Install uv and set the python version
+        uses: astral-sh/setup-uv@v6
         with:
-          python-version: "3.11"
-        
-      - name: set up uv
-        run: curl -LsSf https://astral.sh/uv/install.sh | sh
+          python-version: '3.11'
 
       - name: install dependencies
         run: make dep
@@ -229,14 +229,10 @@ jobs:
         with: 
           fetch-depth: 1
 
-      - name: Set up python
-        uses: actions/setup-python@v5
+      - name: Install uv and set the python version
+        uses: astral-sh/setup-uv@v6
         with:
           python-version: ${{ matrix.python }}
-
-
-      - name: set up uv
-        run: curl -LsSf https://astral.sh/uv/install.sh | sh
   
       - name: check dependencies
         run: make dep-check
@@ -309,13 +305,10 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - name: Install uv and set the python version
+        uses: astral-sh/setup-uv@v6
         with:
           python-version: '3.11'
-
-      - name: set up uv
-        run: curl -LsSf https://astral.sh/uv/install.sh | sh
 
       - name: Install package and deps
         run: make dep
@@ -350,13 +343,10 @@ jobs:
         with:
           fetch-depth: 1
       
-      - name: Set up python
-        uses: actions/setup-python@v5
+      - name: Install uv and set the python version
+        uses: astral-sh/setup-uv@v6
         with:
           python-version: '3.11'
-      
-      - name: Set up uv
-        run: curl -LsSf https://astral.sh/uv/install.sh | sh
       
       - name: Install dependencies and package
         run: make dep
@@ -2114,6 +2104,7 @@ from muutils.json_serialize.util import (
 	JSONdict,
 )
 from muutils.misc import sanitize_fname, shorten_numerical_to_str, stable_hash
+from typing_extensions import Self
 from zanj import ZANJ
 
 from maze_dataset.generation.seed import GLOBAL_SEED
@@ -2310,7 +2301,7 @@ class GPTDataset(typing.Generic[T_DatasetConfig]):
 
 	@classmethod
 	def from_config(  # noqa: C901, PLR0912
-		cls: "type[T_Dataset]",
+		cls,
 		cfg: "T_DatasetConfig",
 		do_generate: bool = True,
 		load_local: bool = True,
@@ -2322,7 +2313,7 @@ class GPTDataset(typing.Generic[T_DatasetConfig]):
 		allow_generation_metadata_filter_mismatch: bool = True,
 		verbose: bool = False,
 		**kwargs,
-	) -> "T_Dataset":
+	) -> "Self":
 		"""base class for gpt datasets
 
 		priority of loading:
@@ -2335,7 +2326,7 @@ class GPTDataset(typing.Generic[T_DatasetConfig]):
 
 		local_base_path = Path(local_base_path)
 		fname: Path = Path(f"{cfg.to_fname()}.zanj")
-		output: T_Dataset | None = None
+		output: Self | None = None
 		did_load_local: bool = False
 		if zanj is None:
 			zanj = ZANJ()
@@ -2420,39 +2411,33 @@ class GPTDataset(typing.Generic[T_DatasetConfig]):
 
 	# serialization & loading
 	@classmethod
-	def read(
-		cls: "type[T_Dataset]", file_path: str | Path, zanj: ZANJ | None = None
-	) -> "T_Dataset":
+	def read(cls, file_path: str | Path, zanj: ZANJ | None = None) -> "Self":
 		"read dataset from a file with zanj"
 		if zanj is None:
 			zanj = ZANJ()
 		return zanj.read(file_path)
 
-	def serialize(self: "T_Dataset") -> JSONdict:
+	def serialize(self) -> JSONdict:
 		"(implement in subclass!) serialize to something we can save with zanj"
 		raise NotImplementedError
 
-	def data_hash(self: "T_Dataset") -> int:
+	def data_hash(self) -> int:
 		"(implement in subclass!) return a hash of the data"
 		raise NotImplementedError
 
 	@classmethod
-	def load(cls: "type[T_Dataset]", data: JSONdict) -> "T_Dataset":
+	def load(cls, data: JSONdict) -> "Self":
 		"(implement in subclass!) load a dataset from what we made with `.serialize()`"
 		raise NotImplementedError
 
 	# generating & downloading
 	@classmethod
-	def generate(
-		cls: "type[T_Dataset]", cfg: "T_DatasetConfig", **kwargs
-	) -> "T_Dataset":
+	def generate(cls, cfg: "T_DatasetConfig", **kwargs) -> "Self":
 		"(implement in subclass!) generative given the config"
 		raise NotImplementedError
 
 	@classmethod
-	def download(
-		cls: "type[T_Dataset]", cfg: "T_DatasetConfig", **kwargs
-	) -> "T_Dataset":
+	def download(cls, cfg: "T_DatasetConfig", **kwargs) -> "Self":
 		"(implement in subclass!) download the dataset given the config"
 		raise NotImplementedError
 
@@ -2492,9 +2477,9 @@ class GPTDataset(typing.Generic[T_DatasetConfig]):
 		"can call `my_dataset.filter_by.some_registered_filter()` to filter the dataset"
 		return self.FilterBy(self)
 
-	def _apply_filters_from_config(self: "T_Dataset") -> "T_Dataset":
+	def _apply_filters_from_config(self) -> "Self":
 		"""apply filters to the dataset, as specified in the config. used in `from_config()`"""
-		output: T_Dataset = self
+		output: Self = self
 		# copy the list, and then clear it in the config. we do this because each time we apply a filter it will update config.applied_filters
 		applied_filters_old: list[
 			dict[typing.Literal["name", "args", "kwargs"], typing.Any]
@@ -2888,14 +2873,14 @@ class MazeDatasetFilters:
 					"generation meta is not present in a maze, cannot collect generation meta",
 				)
 			for key, value in maze.generation_meta.items():
-				if isinstance(value, (bool, int, float, str)):  # noqa: UP038
+				if isinstance(value, (bool, int, float, str)):
 					gen_meta_lists[key][value] += 1
 
 				elif isinstance(value, set):
 					# special case for visited_cells
 					gen_meta_lists[key].update(value)
 
-				elif isinstance(value, (list, np.ndarray)):  # noqa: UP038
+				elif isinstance(value, (list, np.ndarray)):
 					if isinstance(value, list):
 						# TODO: `for` loop variable `value` overwritten by assignment target (Ruff PLW2901)
 						try:
@@ -2955,7 +2940,7 @@ import multiprocessing
 import typing
 import warnings
 from pathlib import Path
-from typing import Literal, Optional, cast, overload
+from typing import Literal, cast, overload
 
 import numpy as np
 import tqdm
@@ -2986,7 +2971,7 @@ from maze_dataset.maze import LatticeMaze, SolvedMaze
 _GLOBAL_WORKER_CONFIG: MazeDatasetConfig
 
 
-def _generate_maze_helper(index: int) -> Optional[SolvedMaze]:  # noqa: ARG001
+def _generate_maze_helper(index: int) -> SolvedMaze | None:  # noqa: ARG001
 	"""Helper function for generating mazes in parallel.
 
 	> [!CAUTION]
@@ -3004,7 +2989,7 @@ def _generate_maze_helper(index: int) -> Optional[SolvedMaze]:  # noqa: ARG001
 	# Generate the solution
 	# mypy doesnt realize EndpointKwargsType has only string keys: `Keywords must be strings  [misc]`
 	# TYPING: error: No overload variant of "generate_random_path" of "LatticeMaze" matches argument type "dict[Literal['allowed_start', 'allowed_end', 'deadend_start', 'deadend_end', 'endpoints_not_equal', 'except_on_no_valid_endpoint'], bool | list[tuple[int, int]] | None]"  [call-overload]
-	solution: Optional[CoordArray] = maze.generate_random_path(**endpoint_kwargs)  # type: ignore[misc, call-overload]
+	solution: CoordArray | None = maze.generate_random_path(**endpoint_kwargs)  # type: ignore[misc, call-overload]
 
 	# Validate the solution
 	if (
@@ -3054,7 +3039,8 @@ def _maze_gen_init_worker(config: MazeDatasetConfig) -> None:
 		)
 
 
-class MazeDataset(GPTDataset[MazeDatasetConfig]):
+# TODO: we probably don't need to hash datasets, right?
+class MazeDataset(GPTDataset[MazeDatasetConfig]):  # noqa: PLW1641
 	"""a maze dataset class. This is a collection of solved mazes, and should be initialized via `MazeDataset.from_config`"""
 
 	def __init__(
@@ -3095,7 +3081,7 @@ class MazeDataset(GPTDataset[MazeDatasetConfig]):
 
 		"""
 		return cast(
-			MazeDataset,
+			"MazeDataset",
 			super().from_config(
 				cfg=cfg,
 				do_generate=do_generate,
@@ -4270,7 +4256,7 @@ class RasterizedMazeDataset(MazeDataset):
 
 		"""
 		return typing.cast(
-			RasterizedMazeDataset,
+			"RasterizedMazeDataset",
 			super().from_config(
 				cfg=cfg,
 				do_generate=do_generate,
@@ -4526,25 +4512,32 @@ def cfg_success_predict_fn(cfg) -> float:  # noqa: ANN001
 """generation functions have signature `(grid_shape: Coord, **kwargs) -> LatticeMaze` and are methods in `LatticeMazeGenerators`
 
 `DEFAULT_GENERATORS` is a list of generator name, generator kwargs pairs used in tests and demos
+
+you can add your own maze generators by:
+- adding a static method implementing your generation function to `LatticeMazeGenerators`, with the signature `(grid_shape: Coord, **kwargs) -> LatticeMaze` and adding the `(name, func)` pair to `GENERATORS_MAP`
+- using the `@register_maze_generator` decorator on your generation function. However, this is only for testing purposes where modifying the original package is not possible.
+
+If you implement a new generation function, please make a pull request!
+https://github.com/understanding-search/maze-dataset/pulls
 """
 
 from maze_dataset.generation.generators import (
+	_NUMPY_RNG,
 	GENERATORS_MAP,
 	LatticeMazeGenerators,
 	get_maze_with_solution,
-	numpy_rng,
 )
 
 __all__ = [
 	# submodules
 	"default_generators",
 	"generators",
-	"seed",
+	"registrationseed",
 	# imports
 	"LatticeMazeGenerators",
 	"GENERATORS_MAP",
 	"get_maze_with_solution",
-	"numpy_rng",
+	"_NUMPY_RNG",
 ]
 
 ``````{ end_of_file="maze_dataset/generation/__init__.py" }
@@ -4581,7 +4574,7 @@ DEFAULT_GENERATORS: list[tuple[str, dict]] = [
 
 import random
 import warnings
-from typing import Any, Callable
+from typing import Callable, Concatenate, ParamSpec
 
 import numpy as np
 from jaxtyping import Bool
@@ -4591,7 +4584,7 @@ from maze_dataset.generation.seed import GLOBAL_SEED
 from maze_dataset.maze import ConnectionList, Coord, LatticeMaze, SolvedMaze
 from maze_dataset.maze.lattice_maze import NEIGHBORS_MASK, _fill_edges_with_walls
 
-numpy_rng = np.random.default_rng(GLOBAL_SEED)
+_NUMPY_RNG: np.random.Generator = np.random.default_rng(GLOBAL_SEED)
 random.seed(GLOBAL_SEED)
 
 
@@ -4639,6 +4632,7 @@ class LatticeMazeGenerators:
 	@staticmethod
 	def gen_dfs(
 		grid_shape: Coord | CoordTup,
+		*,
 		lattice_dim: int = 2,
 		accessible_cells: float | None = None,
 		max_tree_depth: float | None = None,
@@ -5188,8 +5182,15 @@ class LatticeMazeGenerators:
 		)
 
 
+P_GeneratorKwargs = ParamSpec("P_GeneratorKwargs")
+MazeGeneratorFunc = Callable[
+	Concatenate[Coord | CoordTup, P_GeneratorKwargs],
+	LatticeMaze,
+]
+
+
 # cant automatically populate this because it messes with pickling :(
-GENERATORS_MAP: dict[str, Callable[[Coord | CoordTup, Any], "LatticeMaze"]] = {
+GENERATORS_MAP: dict[str, MazeGeneratorFunc] = {
 	"gen_dfs": LatticeMazeGenerators.gen_dfs,
 	# TYPING: error: Dict entry 1 has incompatible type
 	# "str": "Callable[[ndarray[Any, Any] | tuple[int, int], KwArg(Any)], LatticeMaze]";
@@ -5215,6 +5216,7 @@ this variable is primarily used in `MazeDatasetConfig._to_ps_array` and `MazeDat
 """
 
 
+# TODO: we should deprecate this, always get a dataset when you want a maze with a solution
 def get_maze_with_solution(
 	gen_name: str,
 	grid_shape: Coord | CoordTup,
@@ -5230,6 +5232,186 @@ def get_maze_with_solution(
 	return SolvedMaze.from_lattice_maze(lattice_maze=maze, solution=solution)
 
 ``````{ end_of_file="maze_dataset/generation/generators.py" }
+
+``````{ path="maze_dataset/generation/registration.py"  }
+"""Registration system for custom maze generators"""
+
+import inspect
+from typing import TypeVar, Union, get_args, get_origin
+
+from maze_dataset.constants import Coord, CoordTup
+from maze_dataset.generation.generators import (
+	GENERATORS_MAP,
+	LatticeMazeGenerators,
+	MazeGeneratorFunc,
+)
+from maze_dataset.maze import LatticeMaze
+
+F_MazeGeneratorFunc = TypeVar("F_MazeGeneratorFunc", bound=MazeGeneratorFunc)
+
+
+class MazeGeneratorRegistrationError(TypeError):
+	"""error for maze generator registration issues"""
+
+	pass
+
+
+def _check_grid_shape_annotation(
+	annotation: Union[type, str],
+	func_name: str,
+) -> None:
+	"""Check if the annotation for grid_shape is valid
+
+	# Parameters:
+	- `annotation` : Union[type, str] the type annotation of the grid_shape parameter
+
+	# Raises:
+	- `MazeGeneratorRegistrationError` if the annotation is not compatible
+	"""
+	annotation_str: str = str(annotation)
+
+	if not any(
+		[
+			annotation == Coord,
+			annotation == CoordTup,
+			annotation_str.lower() == "tuple[int, int]",
+			# TODO: these are pretty loose checks, would be better to make this more robust
+			"ndarray" in annotation_str,
+			"Int8" in annotation_str,
+		]
+	):
+		err_msg = (
+			f"Maze generator function '{func_name}' first parameter 'grid_shape' "
+			f"must be typed as 'Coord | CoordTup' or compatible type, "
+			f"got {annotation = }, {annotation_str = }"
+		)
+		raise MazeGeneratorRegistrationError(err_msg)
+
+
+def validate_MazeGeneratorFunc(
+	func: F_MazeGeneratorFunc,
+) -> None:
+	"""validate the signature of a maze generator function
+
+	return `None` if valid, otherwise raises `MazeGeneratorRegistrationError`
+	(which is a subclass of `TypeError`)
+
+	# Parameters:
+	- `func : MazeGeneratorFunc` function to validate
+
+	# Raises:
+	- `MazeGeneratorRegistrationError` : type error describing the issue with the function signature
+	"""
+	func_name: str = func.__name__
+	sig: inspect.Signature = inspect.signature(func)
+	params: list[str] = list(sig.parameters.keys())
+
+	if not params or params[0] != "grid_shape":
+		err_msg = (
+			f"Maze generator function '{func_name}' must have 'grid_shape' "
+			"as its first parameter. Please ensure the function signature starts with 'grid_shape: Coord | CoordTup'."
+			f"{params = }"
+		)
+		raise MazeGeneratorRegistrationError(err_msg)
+
+	# Check first parameter type annotation if present
+	first_param_annotation = sig.parameters["grid_shape"].annotation
+	if first_param_annotation == inspect.Parameter.empty:
+		err_msg = (
+			f"Maze generator function '{func_name}' must have a type annotation for 'grid_shape'. "
+			"Please add `grid_shape: Coord | CoordTup` to the function signature."
+		)
+
+	# Check if it's a Union type
+	if get_origin(first_param_annotation) in (Union, type(Union[int, str])):
+		args: tuple = get_args(first_param_annotation)
+		# Check all of the args look like Coord or CoordTup
+		for arg in args:
+			_check_grid_shape_annotation(arg, func_name)
+	else:
+		# Check if the annotation is a single type
+		_check_grid_shape_annotation(first_param_annotation, func_name)
+
+	# Check return type annotation - must be present and correct
+	if sig.return_annotation == inspect.Signature.empty:
+		err_msg = (
+			f"Maze generator function '{func_name}' must have a return type annotation "
+			"of LatticeMaze. Please add `-> LatticeMaze` to the function signature."
+		)
+		raise MazeGeneratorRegistrationError(err_msg)
+
+	if sig.return_annotation != LatticeMaze:
+		err_msg = (
+			f"Maze generator function '{func_name}' must return LatticeMaze, "
+			f"got return type annotation: {sig.return_annotation}. "
+			"Please ensure the function returns a valid LatticeMaze instance."
+		)
+		raise MazeGeneratorRegistrationError(err_msg)
+
+
+def register_maze_generator(func: F_MazeGeneratorFunc) -> F_MazeGeneratorFunc:
+	"""Decorator to register a custom maze generator function.
+
+	This decorator allows users to register their own maze generation functions
+	without modifying the core library code. The registered function will be:
+	1. Added to `GENERATORS_MAP`
+	2. Added as a static method to `LatticeMazeGenerators` (for compatibility)
+
+	# NOTE:
+	In general, you should avoid using this decorator! instead, just add your function
+	to the GENERATORS_MAP dictionary directly and to `LatticeMazeGenerators` as a static method.
+	If you add a new function, please make a pull request!
+	https://github.com/understanding-search/maze-dataset/pulls
+
+	# Usage:
+	```python
+	@register_maze_generator
+	def gen_my_custom(
+		grid_shape: Coord | CoordTup,
+		**kwargs, # this can be anything you like
+	) -> LatticeMaze:
+		# Your custom maze generation logic here
+		connection_list = ...  # Create your maze structure
+
+		# Important: If your maze is not fully connected, you must include
+		# `visited_cells` in `generation_meta`, or mark it as `fully_connected=True`
+		return LatticeMaze(
+			connection_list=connection_list,
+			generation_meta=dict(
+				func_name="gen_my_custom",
+				grid_shape=np.array(grid_shape),
+				fully_connected=True,  # or provide visited_cells
+			),
+		)
+	```
+
+	note that to properly create **or load** a maze dataset with your custom generator,
+	you must be importing the file in which you register the generator
+
+	# Returns:
+	The decorated function, unchanged.
+	"""
+	# Validate function signature
+	validate_MazeGeneratorFunc(func)
+
+	# Check if name already exists
+	func_name: str = func.__name__
+	if func_name in GENERATORS_MAP:
+		err_msg = (
+			f"Generator with name '{func_name}' already exists in GENERATORS_MAP. "
+			"Please choose a different name."
+		)
+		raise ValueError(err_msg)
+
+	# Register the function
+	GENERATORS_MAP[func_name] = func
+
+	# Also add as a static method to LatticeMazeGenerators
+	setattr(LatticeMazeGenerators, func_name, staticmethod(func))
+
+	return func
+
+``````{ end_of_file="maze_dataset/generation/registration.py" }
 
 ``````{ path="maze_dataset/generation/seed.py"  }
 "global default seed"
@@ -5692,7 +5874,7 @@ class LatticeMaze(SerializableDataclass):
 		deadend_end: bool = False,
 		endpoints_not_equal: bool = False,
 		except_on_no_valid_endpoint: typing.Literal[False] = False,
-	) -> typing.Optional[CoordArray]: ...
+	) -> CoordArray | None: ...
 	def generate_random_path(  # noqa: C901
 		self,
 		allowed_start: CoordList | None = None,
@@ -5701,7 +5883,7 @@ class LatticeMaze(SerializableDataclass):
 		deadend_end: bool = False,
 		endpoints_not_equal: bool = False,
 		except_on_no_valid_endpoint: bool = True,
-	) -> typing.Optional[CoordArray]:
+	) -> CoordArray | None:
 		"""return a path between randomly chosen start and end nodes within the connected component
 
 		Note that setting special conditions on start and end positions might cause the same position to be selected as both start and end.
@@ -6493,6 +6675,16 @@ class TargetedLatticeMaze(LatticeMaze):  # type: ignore[misc]
 	def __eq__(self, other: object) -> bool:
 		"check equality, calls parent class equality check"
 		return super().__eq__(other)
+
+	def __hash__(self) -> int:
+		"hash the `TargetedLatticeMaze` by hashing a tuple of the connection list and start and end positions as bytes"
+		return hash(
+			(
+				self.connection_list.tobytes(),
+				self.start_pos.tobytes(),
+				self.end_pos.tobytes(),
+			)
+		)
 
 	def _get_start_pos_tokens(self) -> list[str | CoordTup]:
 		return [
@@ -9005,7 +9197,7 @@ from maze_dataset.constants import (
 	Coord,
 	CoordTup,
 )
-from maze_dataset.generation import numpy_rng
+from maze_dataset.generation import _NUMPY_RNG
 from maze_dataset.maze.lattice_maze import LatticeMaze, SolvedMaze
 from maze_dataset.token_utils import (
 	connection_list_to_adj_list,
@@ -9186,7 +9378,7 @@ class EdgeGroupings(__TokenizerElementNamespace):
 				np.unique(sorted_edges[:, 0, :], return_index=True, axis=0)[1][1:],
 			)
 			if self.shuffle_group:
-				[numpy_rng.shuffle(g, axis=0) for g in groups]
+				[_NUMPY_RNG.shuffle(g, axis=0) for g in groups]
 			return groups
 
 
@@ -9248,7 +9440,7 @@ class EdgePermuters(__TokenizerElementNamespace):
 
 		@staticmethod
 		def _permute(lattice_edges: ConnectionArray) -> ConnectionArray:
-			numpy_rng.permuted(lattice_edges, axis=1, out=lattice_edges)
+			_NUMPY_RNG.permuted(lattice_edges, axis=1, out=lattice_edges)
 			return lattice_edges
 
 	@serializable_dataclass(frozen=True, kw_only=True)
@@ -9490,7 +9682,7 @@ class AdjListTokenizers(__TokenizerElementNamespace):
 			# shuffle the groups if specified
 			if self.shuffle_d0:
 				if isinstance(groups, np.ndarray):
-					numpy_rng.shuffle(groups, axis=0)
+					_NUMPY_RNG.shuffle(groups, axis=0)
 				elif isinstance(groups, list):
 					random.shuffle(groups)
 				else:
@@ -10567,7 +10759,8 @@ def _check_tokenizer_in_fst_mock(tokenizer_name: str, do_except: bool = False) -
 		_RUST_FST_ERR_MSG
 		+ "you are seeing this warning probably because you tried to run"
 		"`MazeTokenizerModular(...).is_tested_tokenizer()` on a mac or without `rust_fst` installed"
-		+ "this is fine, but note that the tokenizer will be checked for validity, but is not part of the tested set"
+		+ "this is fine, but note that the tokenizer will be checked for validity, but is not part of the tested set\n"
+		+ "see: https://github.com/understanding-search/maze-dataset/issues/57"
 	)
 	return True
 
@@ -13079,7 +13272,7 @@ def pprint_summary(summary: dict) -> None:
 	print(json.dumps(summary, indent=2))
 ```
 
-You should always see `test-g3-n5-a_dfs-h84385` in the list of available dataset configs above.
+You should always see `test-g3-n5-a_dfs-h92479` in the list of available dataset configs above.
 
 Now, let's set up our initial config and dataset:
 
@@ -13764,7 +13957,7 @@ print(
 )
 ```
 
-Other possible tokenizers which aren't in `get_all_tokenizers` are not guaranteed to function. Instead of running the expensive call to `get_all_tokenizers` yourself, you can check if a tokenizer is tested using `MazeTokenizerModular.is_tested_tokenizer` or `MazeTokenizerModular.is_valid`.
+Other possible tokenizers which aren't in `get_all_tokenizers` are not guaranteed to function. Instead of running the expensive call to `get_all_tokenizers` yourself, you can check if a tokenizer is tested using `MazeTokenizerModular.is_tested_tokenizer` or `MazeTokenizerModular.is_valid`. note that this won't work on macOS, see https://github.com/understanding-search/maze-dataset/issues/57
 
 ```python
 assert mt_default.is_tested_tokenizer(do_except=True)
@@ -14067,12 +14260,89 @@ pd.set_option("display.max_colwidth", 50)
 df
 ```
 
-```python
 
+``````{ end_of_file="notebooks/demo_mazetokenizermodular.ipynb" }
+
+``````{ path="notebooks/demo_readme.ipynb" processed_with="ipynb_to_md" }
+# testing readme.md examples
+
+if anything here breaks, be sure to adjust the `README.md` (but you probably should not break the functionality demonstrated here)
+
+```python
+import matplotlib.pyplot as plt
+
+from maze_dataset import MazeDataset, MazeDatasetConfig
+from maze_dataset.generation import LatticeMazeGenerators
+from maze_dataset.plotting import MazePlot
+from maze_dataset.tokenization import (
+	MazeTokenizerModular,
+	PromptSequencers,
+)
+```
+
+To create a `MazeDataset`, you first create a `MazeDatasetConfig`:
+
+```python
+cfg: MazeDatasetConfig = MazeDatasetConfig(
+	name="test",  # name is only for you to keep track of things
+	grid_n=5,  # number of rows/columns in the lattice
+	n_mazes=4,  # number of mazes to generate
+	maze_ctor=LatticeMazeGenerators.gen_dfs,  # algorithm to generate the maze
+	maze_ctor_kwargs=dict(
+		do_forks=False
+	),  # additional parameters to pass to the maze generation algorithm
+)
+```
+
+and then pass this config to the `MazeDataset.from_config` method:
+
+```python
+dataset: MazeDataset = MazeDataset.from_config(cfg)
+```
+
+This method can search for whether a dataset with matching config hash already exists on your filesystem in the expected location, and load it if so. It can also generate a dataset on the fly if needed.
+
+## Conversions to useful formats
+
+The elements of the dataset are [`SolvedMaze`](maze_dataset/maze/lattice_maze.py) objects:
+
+```python
+m = dataset[0]
+type(m)
+```
+
+Which can be converted to a variety of formats:
+
+```python
+# visual representation as ascii art
+print(m.as_ascii())
+```
+
+```python
+# RGB image, optionally without solution or endpoints, suitable for CNNs
+
+plt.imshow(m.as_pixels())
+```
+
+```python
+# text format for autoreregressive transformers
+
+
+m.as_tokens(
+	maze_tokenizer=MazeTokenizerModular(
+		prompt_sequencer=PromptSequencers.AOTP(),  # many options here
+	)
+)
+```
+
+```python
+# advanced visualization with many features
+
+MazePlot(m).plot()
 ```
 
 
-``````{ end_of_file="notebooks/demo_mazetokenizermodular.ipynb" }
+``````{ end_of_file="notebooks/demo_readme.ipynb" }
 
 ``````{ path="notebooks/demo_tokenization.ipynb" processed_with="ipynb_to_md" }
 ```python
@@ -14159,9 +14429,54 @@ display_color_maze_tokens_AOTP(x)
 now let's see how we can take the actual tokenized data to a `SolvedMaze`. This is only possible with legacy tokenizers or their `MazeTokenizerModular` equivalents.
 
 ```python
-maze_toks: list[str] = (
-	"""<ADJLIST_START> (1,1) <--> (2,1) ; (2,0) <--> (1,0) ; (0,1) <--> (0,0) ; (2,2) <--> (2,1) ; (2,0) <--> (2,1) ; (0,2) <--> (1,2) ; (0,0) <--> (1,0) ; (0,2) <--> (0,1) ; <ADJLIST_END> <ORIGIN_START> (0,0) <ORIGIN_END> <TARGET_START> (2,1) <TARGET_END> <PATH_START> (0,0) (1,0) (2,0) (2,1) <PATH_END>""".split()
-)
+maze_toks: list[str] = [
+	"<ADJLIST_START>",
+	"(1,1)",
+	"<-->",
+	"(2,1)",
+	";",
+	"(2,0)",
+	"<-->",
+	"(1,0)",
+	";",
+	"(0,1)",
+	"<-->",
+	"(0,0)",
+	";",
+	"(2,2)",
+	"<-->",
+	"(2,1)",
+	";",
+	"(2,0)",
+	"<-->",
+	"(2,1)",
+	";",
+	"(0,2)",
+	"<-->",
+	"(1,2)",
+	";",
+	"(0,0)",
+	"<-->",
+	"(1,0)",
+	";",
+	"(0,2)",
+	"<-->",
+	"(0,1)",
+	";",
+	"<ADJLIST_END>",
+	"<ORIGIN_START>",
+	"(0,0)",
+	"<ORIGIN_END>",
+	"<TARGET_START>",
+	"(2,1)",
+	"<TARGET_END>",
+	"<PATH_START>",
+	"(0,0)",
+	"(1,0)",
+	"(2,0)",
+	"(2,1)",
+	"<PATH_END>",
+]
 maze_encoded: list[int] = TOKENIZER.encode(maze_toks)
 maze_tok_roundtrip: list[str] = TOKENIZER.decode(maze_encoded)
 assert maze_toks == maze_tok_roundtrip
@@ -14175,9 +14490,142 @@ print(" ".join(maze_from_toks.as_tokens(TOKENIZER)))
 Now do the same for the the `CTT` tokenizer.
 
 ```python
-maze_toks_indexed: list[str] = (
-	"""<ADJLIST_START> ( 1 , 1 ) <--> ( 2 , 1 ) ; ( 2 , 0 ) <--> ( 1 , 0 ) ; ( 0 , 1 ) <--> ( 0 , 0 ) ; ( 2 , 2 ) <--> ( 2 , 1 ) ; ( 2 , 0 ) <--> ( 2 , 1 ) ; ( 0 , 2 ) <--> ( 1 , 2 ) ; ( 0 , 0 ) <--> ( 1 , 0 ) ; ( 0 , 2 ) <--> ( 0 , 1 ) ; <ADJLIST_END> <ORIGIN_START> ( 0 , 0 ) <ORIGIN_END> <TARGET_START> ( 2 , 1 ) <TARGET_END> <PATH_START> ( 0 , 0 ) ( 1 , 0 ) ( 2 , 0 ) ( 2 , 1 ) <PATH_END>""".split()
-)
+maze_toks_indexed: list[str] = [
+	"<ADJLIST_START>",
+	"(",
+	"1",
+	",",
+	"1",
+	")",
+	"<-->",
+	"(",
+	"2",
+	",",
+	"1",
+	")",
+	";",
+	"(",
+	"2",
+	",",
+	"0",
+	")",
+	"<-->",
+	"(",
+	"1",
+	",",
+	"0",
+	")",
+	";",
+	"(",
+	"0",
+	",",
+	"1",
+	")",
+	"<-->",
+	"(",
+	"0",
+	",",
+	"0",
+	")",
+	";",
+	"(",
+	"2",
+	",",
+	"2",
+	")",
+	"<-->",
+	"(",
+	"2",
+	",",
+	"1",
+	")",
+	";",
+	"(",
+	"2",
+	",",
+	"0",
+	")",
+	"<-->",
+	"(",
+	"2",
+	",",
+	"1",
+	")",
+	";",
+	"(",
+	"0",
+	",",
+	"2",
+	")",
+	"<-->",
+	"(",
+	"1",
+	",",
+	"2",
+	")",
+	";",
+	"(",
+	"0",
+	",",
+	"0",
+	")",
+	"<-->",
+	"(",
+	"1",
+	",",
+	"0",
+	")",
+	";",
+	"(",
+	"0",
+	",",
+	"2",
+	")",
+	"<-->",
+	"(",
+	"0",
+	",",
+	"1",
+	")",
+	";",
+	"<ADJLIST_END>",
+	"<ORIGIN_START>",
+	"(",
+	"0",
+	",",
+	"0",
+	")",
+	"<ORIGIN_END>",
+	"<TARGET_START>",
+	"(",
+	"2",
+	",",
+	"1",
+	")",
+	"<TARGET_END>",
+	"<PATH_START>",
+	"(",
+	"0",
+	",",
+	"0",
+	")",
+	"(",
+	"1",
+	",",
+	"0",
+	")",
+	"(",
+	"2",
+	",",
+	"0",
+	")",
+	"(",
+	"2",
+	",",
+	"1",
+	")",
+	"<PATH_END>",
+]
 maze_encoded: list[int] = TOKENIZER_INDEXED.encode(maze_toks_indexed)
 maze_tok_roundtrip: list[str] = TOKENIZER_INDEXED.decode(maze_encoded)
 assert maze_toks_indexed == maze_tok_roundtrip
@@ -14245,11 +14693,17 @@ plot_corner_first_ndindex(5)
 ```python
 from pathlib import Path
 
+import matplotlib.pyplot as plt
 import numpy as np
+
+IN_NOTEBOOK: bool = "__vsc_ipynb_file__" in globals()
 
 # import pysr before torch to avoid
 # UserWarning: torch was imported before juliacall. This may cause a segfault. To avoid this, import juliacall before importing torch. For updates, see https://github.com/pytorch/pytorch/issues/78829.
-import pysr  # noqa: F401
+# doing the PYSR fit is expensive and takes *forever* in CI and tests, so we only do it in the notebook itself
+if IN_NOTEBOOK:
+	import pysr  # noqa: F401
+
 from zanj import ZANJ
 
 from maze_dataset import LatticeMazeGenerators, MazeDataset, MazeDatasetConfig
@@ -14260,6 +14714,10 @@ from maze_dataset.benchmark.config_sweep import (
 	plot_grouped,
 )
 from maze_dataset.benchmark.sweep_fit import sweep_fit
+
+# we want to ensure matplotlib is imported at the top and the formatter doesn't remove it
+# so that figures are not created during notebook tests
+assert plt
 ```
 
 # run a basic analysis
@@ -14306,9 +14764,9 @@ ZANJ().read(path).plot(cfg_keys=["n_mazes", "endpoint_kwargs"])
 
 ```python
 results_sweep: SweepResult = full_percolation_analysis(
-	n_mazes=16,
+	n_mazes=8,
 	p_val_count=11,
-	grid_sizes=[2, 4, 6],
+	grid_sizes=[2, 4],
 	parallel=False,
 	save_dir=Path("tests/_temp/dataset_frac_sweep"),
 )
@@ -14319,14 +14777,14 @@ results_medium: SweepResult = SweepResult.read(
 	"../docs/benchmarks/percolation_fractions/medium/result-n128-c42-p50.zanj",
 	# "../docs/benchmarks/percolation_fractions/large/result-n256-c54-p100.zanj"
 )
-```
 
-```python
 plot_grouped(
 	results_medium,
 	predict_fn=lambda x: x.success_fraction_estimate(),
-	prediction_density=100,
+	prediction_density=10,
+	figsize=(10, 4),
 	# for paper version
+	# prediction_density=100,
 	# figsize=(11, 4),
 	# save_fmt="pdf",
 	# save_dir=Path("../docs/paper/figures/ep"),
@@ -14349,18 +14807,19 @@ DATA_PATH_DIR: Path = Path("../docs/benchmarks/percolation_fractions/")
 DATA_PATH: str = DATA_PATH_DIR / "small/result-n64-c30-p25.zanj"
 # DATA_PATH: str = DATA_PATH_DIR / "test/result-n16-c12-p16.zanj"
 
-sweep_fit(
-	DATA_PATH,
-	Path("tests/_temp/fit_plots/"),
-	niterations=3,
-)
+if IN_NOTEBOOK:
+	sweep_fit(
+		DATA_PATH,
+		Path("tests/_temp/fit_plots/"),
+		niterations=3,
+	)
 ```
 
 # interactive plots for figuring out `maze_dataset.math.soft_step()`
 
 ```python
 # Run the interactive visualization if in a Jupyter notebook
-if "__vsc_ipynb_file__" in globals():
+if IN_NOTEBOOK:
 	from maze_dataset.benchmark.sweep_fit import create_interactive_plot
 
 	create_interactive_plot(True)
@@ -15267,7 +15726,7 @@ Library.
 
   <!-- Diagram -->
   <p>
-    <img src="https://understanding-search.github.io/maze-dataset/resources/diagram.svg" alt="Diagram">
+    <img src="https://understanding-search.github.io/maze-dataset/resources/diagram.svg" alt="Diagram" width="95%">
   </p>
 
   <!-- Additional badges -->
@@ -15350,6 +15809,8 @@ This package is [available on PyPI](https://pypi.org/project/maze-dataset/), and
 pip install maze-dataset
 ```
 
+> Please note that due to an issue with the `rust-fst` package, some tokenization features are not available on macOS. Please see [#57](https://github.com/understanding-search/maze-dataset/issues/57)
+
 # Docs
 
 The full hosted documentation is available at [https://understanding-search.github.io/maze-dataset/](https://understanding-search.github.io/maze-dataset/).
@@ -15360,7 +15821,7 @@ Additionally, our [notebooks](https://understanding-search.github.io/maze-datase
 
 ## Creating a dataset
 
-To create a `MazeDataset`, which inherits from `torch.utils.data.Dataset`, you first create a `MazeDatasetConfig`:
+To create a `MazeDataset`, you first create a `MazeDatasetConfig`:
 
 ```python
 from maze_dataset import MazeDataset, MazeDatasetConfig
@@ -15394,17 +15855,18 @@ maze_dataset.maze.lattice_maze.SolvedMaze
 Which can be converted to a variety of formats:
 ```python
 # visual representation as ascii art
-m.as_ascii() 
+print(m.as_ascii()) 
 # RGB image, optionally without solution or endpoints, suitable for CNNs
-m.as_pixels() 
+import matplotlib.pyplot as plt
+plt.imshow(m.as_pixels())
 # text format for autoreregressive transformers
-from maze_dataset.tokenization import MazeTokenizerModular, TokenizationMode
+from maze_dataset.tokenization import MazeTokenizerModular, TokenizationMode, PromptSequencers
 m.as_tokens(maze_tokenizer=MazeTokenizerModular(
-    tokenization_mode=TokenizationMode.AOTP_UT_rasterized, max_grid_size=100,
+	prompt_sequencer=PromptSequencers.AOTP(), # many options here
 ))
 # advanced visualization with many features
 from maze_dataset.plotting import MazePlot
-MazePlot(maze).plot()
+MazePlot(m).plot()
 ```
 
 <img src="https://understanding-search.github.io/maze-dataset/assets/output_formats.png" alt="textual and visual output formats" width="100%"/>
@@ -15412,15 +15874,26 @@ MazePlot(maze).plot()
 
 # Development
 
-we use this [makefile template](https://github.com/mivanit/python-project-makefile-template) with slight modifications for our development workflow.
+We use this [makefile template](https://github.com/mivanit/python-project-makefile-template) with slight modifications for our development workflow. This project uses [uv](https://docs.astral.sh/uv/) for dependency and virtual environment management.
 
 - clone with `git clone https://github.com/understanding-search/maze-dataset`
+- if you don't already have uv, [install it](https://docs.astral.sh/uv/getting-started/installation/). We only guarantee compatibility with `uv` newer than `0.8.0`
 - `make dep` to install all dependencies
 - `make help` will print all available commands
 - `make test` will run basic tests to ensure the package is working
+  - run just the unit tests with `make test-unit`
+  - see all tests with explanations using `make help` or `make help | grep test`
 - `make format` will run ruff to format and check the code
 
+> Note: due to compatibility issues between the `rust_fst` package and Darwin/macOS systems, not all tests will pass on these systems. However, `make test-unit` and `make test-notebooks-muutils` should still pass. Please see [#57](https://github.com/understanding-search/maze-dataset/issues/57) for updates on resolving this problem.
 
+## Contributing
+
+We welcome contributions! We use [GitHub issues](https://github.com/understanding-search/maze-dataset/issues) to track bugs and feature requests. If you have a bug fix or a new feature to contribute, please open a [pull request](https://github.com/understanding-search/maze-dataset/pulls). We are also happy to provide usage support and answer questions about the package via issues!
+
+While we expect that the core interface of the package is stable, we are very open to adding new features. We're particularly excited about adding [new maze generation algorithms](https://github.com/understanding-search/maze-dataset/issues?q=is%3Aissue%20state%3Aopen%20label%3Ageneration) and [new output formats](https://github.com/understanding-search/maze-dataset/issues?q=is%3Aissue%20state%3Aopen%20label%3Aexporting). Please feel free to both suggest new formats or algorithms, and to implement them and open PRs! For more info on how to add a new maze generation algorithm, see the [documentation on generators](https://understanding-search.github.io/maze-dataset/maze_dataset/generation.html).
+
+We are also aware that like any piece of software, `maze-dataset` is not without bugs. If something isn't working as expected, please open an issue and we will do our best to fix it. It helps us keep things tidy if you first search [existing bug reports](https://github.com/understanding-search/maze-dataset/issues?q=label%3Abug) to see if your issue has already been reported.
 
 
 ``````{ end_of_file="README.md" }
@@ -15471,6 +15944,8 @@ dep-check-torch:
 	@echo "see if torch is installed, and which CUDA version and devices it sees"
 	...
 
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# added checks for when on macos/darwin
 .PHONY: dep
 dep:
 	@echo "Exporting dependencies as per $(PYPROJECT) section 'tool.uv-exports.exports'"
@@ -15784,7 +16259,7 @@ paper: paper-clean paper-pdf paper-html
 ``````{ path="pyproject.toml"  }
 [project]
     name = "maze-dataset"
-    version = "1.3.2"
+    version = "1.4.0"
     description = "generating and working with datasets of mazes"
     authors = [
         { name = "Michael Ivanitskiy", email = "mivanits@umich.edu" },
@@ -15801,13 +16276,8 @@ paper: paper-clean paper-pdf paper-html
     readme = "README.md"
     requires-python = ">=3.10"
 
-    # source info
-    # packages = [{include = "maze_dataset"}]
-    # exclude = ["maze_dataset/tokenization/MazeTokenizerModular_hashes.npz"] # don't ship the hashes
-
     # informational metadata
     keywords = ["maze", "mazes", "labyrinth", "dataset", "procedural", "pathfinding", "tokenization"]
-
 
     dependencies = [
         # custom packages
@@ -15829,8 +16299,8 @@ paper: paper-clean paper-pdf paper-html
 		tokenization = [
 			"frozendict>=2.4.4",
 			# storing valid tokenizers
-			# doesn't appear to work on macos
-			"rust_fst>=0.1.2; platform_system != 'darwin'",
+			# doesn't appear to work on macos, see https://github.com/understanding-search/maze-dataset/issues/57
+			"rust_fst>=0.1.2; platform_system != 'Darwin'",
 		]
 
 [dependency-groups]
@@ -15850,13 +16320,6 @@ paper: paper-clean paper-pdf paper-html
         "types-tqdm",
         "pandas-stubs",
 		"types-psutil", # see https://github.com/understanding-search/maze-dataset/actions/runs/14327419830/job/40155509863
-		# docs
-		'pdoc>=14.6.0',
-		"nbconvert>=7.16.4", # for notebooks
-		# lmcat -- a custom library. not exactly docs, but lets an LLM see all the code
-		"lmcat>=0.2.0; python_version >= '3.11'",
-		# tomli since no tomlib in python < 3.11
-		"tomli>=2.1.0; python_version < '3.11'",
 		# uploading
 		"twine",
 	]
@@ -15864,11 +16327,35 @@ paper: paper-clean paper-pdf paper-html
 		# lint
 		"ruff>=0.4.8",
 	]
+	docs = [
+		'pdoc>=14.6.0',
+		"nbconvert>=7.16.4", # for notebooks
+		# lmcat -- a custom library. not exactly docs, but lets an LLM see all the code
+		"lmcat>=0.2.0; python_version >= '3.11'",
+		# tomli since no tomlib in python < 3.11
+		"tomli>=2.1.0; python_version < '3.11'",
+	]
     benchmark = [
         # only used in `estimate_dataset_fractions.ipynb`
         "pysr>=1.4.0",
 		"seaborn",
     ]
+	# copied from the extras, to make sure devs have them
+	extra-tokenization = [
+		"frozendict>=2.4.4",
+		# storing valid tokenizers
+		# doesn't appear to work on macos
+		"rust_fst>=0.1.2; platform_system != 'Darwin'",
+	]
+
+[tool.uv]
+	default-groups = [
+		"dev",
+		"docs",
+		"lint",
+		"benchmark",
+		"extra-tokenization",
+	]
 
 [project.urls]
     Homepage = "https://github.com/understanding-search/maze-dataset"
@@ -15879,9 +16366,6 @@ paper: paper-clean paper-pdf paper-html
 [build-system]
 	requires = ["hatchling"]
 	build-backend = "hatchling.build"
-
-[tool.hatch.build.targets.wheel]
-	exclude = ["maze_dataset/tokenization/MazeTokenizerModular_hashes.npz"]
 
 [tool.pytest.ini_options]
     # Ignore numpy deprecation warnings triggered by muutils
@@ -15921,6 +16405,8 @@ paper: paper-clean paper-pdf paper-html
 		"tests/unit/processing/test_get_forking_path_points.py", # 58
 		# extra low priority (test temp, generated from notebooks)
 		"tests/_temp/*",
+		# don't check docs
+		"docs/*",
     ]
     check_untyped_defs = true
 
@@ -15938,6 +16424,7 @@ paper: paper-clean paper-pdf paper-html
 
 	[tool.ruff.lint]
 		ignore = [
+			"PLC0415", # generally, if we are not importing at the top of a file, there is a reason for it
 			"TC002", # fine to normally import jaxtyping and others not in a TYPE_CHECKING block
 			"F722", # doesn't like jaxtyping
 			"W191", # we like tabs
@@ -16044,6 +16531,10 @@ paper: paper-clean paper-pdf paper-html
 				"PLR2004", # magic variables are fine
 				"N806", # uppercase vars are fine
 			]
+			"notebooks/estimate_dataset_fractions.ipynb" = [
+				# this is a weird one with the imports
+				"E402",
+			]
 
 [tool.lmcat]
 	output = "docs/other/lmcat.txt" # changing this might mean it wont be accessible from the docs
@@ -16117,8 +16608,10 @@ paper: paper-clean paper-pdf paper-html
 	exports = [
 		# no groups, no extras, just the base dependencies
 		{ name = "base", groups = false, extras = false },
-		# all groups
-		{ name = "groups", groups = true, extras = false },
+		# dev (basically everything)
+		{ name = "dev", groups = true, extras = true },
+		# all extras (everything a user might want)
+		{ name = "user", groups = false, extras = true },
 		# only the lint group -- custom options for this
 		{ name = "lint", options = ["--only-group", "lint"] },
 		# # all groups and extras

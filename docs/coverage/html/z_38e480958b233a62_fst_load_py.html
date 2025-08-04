@@ -4,7 +4,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>Coverage for maze_dataset/tokenization/modular/fst_load.py: 44%</title>
     <link rel="icon" sizes="32x32" href="favicon_32_cb_58284776.png">
-    <link rel="stylesheet" href="style_cb_8e611ae1.css" type="text/css">
+    <link rel="stylesheet" href="style_cb_6b508a39.css" type="text/css">
     <script src="coverage_html_cb_6fb7b396.js" defer></script>
 </head>
 <body class="pyfile">
@@ -64,8 +64,8 @@
             <a id="indexLink" class="nav" href="index.html">&Hat; index</a> &nbsp; &nbsp;
             <a id="nextFileLink" class="nav" href="z_38e480958b233a62_hashing_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
-            <a class="nav" href="https://coverage.readthedocs.io/en/7.6.12">coverage.py v7.6.12</a>,
-            created at 2025-03-27 23:43 -0600
+            <a class="nav" href="https://coverage.readthedocs.io/en/7.10.1">coverage.py v7.10.1</a>,
+            created at 2025-08-03 21:38 -0700
         </p>
         <aside class="hidden">
             <button type="button" class="button_next_chunk" data-shortcut="j"></button>
@@ -101,11 +101,11 @@
     <p class="run"><span class="n"><a id="t19" href="#t19">19</a></span><span class="t"><span class="str">"""if the rust_fst module was loaded successfully"""</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t20" href="#t20">20</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t21" href="#t21">21</a></span><span class="t"><span class="nam">_RUST_FST_ERR_MSG</span><span class="op">:</span> <span class="nam">str</span> <span class="op">=</span> <span class="op">(</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t22" href="#t22">22</a></span><span class="t">        <span class="str">"you need the `rust_fst` package to use `maze_dataset.tokenization.modular` properly. installing `maze-dataset[tokenization]` will install it\n"</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t23" href="#t23">23</a></span><span class="t">        <span class="str">"Note that rust-fst doesn't work on mac, see https://github.com/understanding-search/maze-dataset/issues/57\n"</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t24" href="#t24">24</a></span><span class="t">        <span class="str">"and this makes modular tokenizers not checkable on mac. Things should still work, but you will have no guarantee that a tokenizer is tested.\n"</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t25" href="#t25">25</a></span><span class="t">        <span class="str">"If you can find away around this, please let us know!\n"</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t26" href="#t26">26</a></span><span class="t"><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run run2"><span class="n"><a id="t22" href="#t22">22</a></span><span class="t">        <span class="str">"you need the `rust_fst` package to use `maze_dataset.tokenization.modular` properly. installing `maze-dataset[tokenization]` will install it\n"</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run run2"><span class="n"><a id="t23" href="#t23">23</a></span><span class="t">        <span class="str">"Note that rust-fst doesn't work on mac, see https://github.com/understanding-search/maze-dataset/issues/57\n"</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run run2"><span class="n"><a id="t24" href="#t24">24</a></span><span class="t">        <span class="str">"and this makes modular tokenizers not checkable on mac. Things should still work, but you will have no guarantee that a tokenizer is tested.\n"</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run run2"><span class="n"><a id="t25" href="#t25">25</a></span><span class="t">        <span class="str">"If you can find away around this, please let us know!\n"</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run run2"><span class="n"><a id="t26" href="#t26">26</a></span><span class="t"><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t27" href="#t27">27</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t28" href="#t28">28</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t29" href="#t29">29</a></span><span class="t"><span class="key">class</span> <span class="nam">RustFstNotLoadedWarning</span><span class="op">(</span><span class="nam">UserWarning</span><span class="op">)</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
@@ -148,11 +148,11 @@
     <p class="mis show_mis"><span class="n"><a id="t66" href="#t66">66</a></span><span class="t">                        <span class="key">pass</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t67" href="#t67">67</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="mis show_mis"><span class="n"><a id="t68" href="#t68">68</a></span><span class="t">                <span class="nam">err_msg</span><span class="op">:</span> <span class="nam">str</span> <span class="op">=</span> <span class="op">(</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t69" href="#t69">69</a></span><span class="t">                        <span class="fst">f"</span><span class="fst">Tokenizer `</span><span class="op">{</span><span class="nam">tokenizer_name</span><span class="op">}</span><span class="fst">` not found in the list of tested tokenizers, and </span><span class="op">{</span><span class="nam">do_except</span> <span class="op">=</span> <span class="op">}</span><span class="fst">. We found the following matches based on edit distance:</span><span class="fst">"</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t70" href="#t70">70</a></span><span class="t">                        <span class="fst">f"</span><span class="fst">\nedit dist 0 (should be empty?): </span><span class="op">{</span><span class="nam">search_0</span><span class="op">}</span><span class="fst">"</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t71" href="#t71">71</a></span><span class="t">                        <span class="op">+</span> <span class="op">(</span><span class="fst">f"</span><span class="fst">\nedit dist 1: </span><span class="op">{</span><span class="nam">search_1</span><span class="op">}</span><span class="fst">"</span> <span class="key">if</span> <span class="nam">search_1</span> <span class="key">is</span> <span class="key">not</span> <span class="key">None</span> <span class="key">else</span> <span class="str">""</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t72" href="#t72">72</a></span><span class="t">                        <span class="op">+</span> <span class="op">(</span><span class="fst">f"</span><span class="fst">\nedit dist 2: </span><span class="op">{</span><span class="nam">search_2</span><span class="op">}</span><span class="fst">"</span> <span class="key">if</span> <span class="nam">search_2</span> <span class="key">is</span> <span class="key">not</span> <span class="key">None</span> <span class="key">else</span> <span class="str">""</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t73" href="#t73">73</a></span><span class="t">                <span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="mis mis2 show_mis"><span class="n"><a id="t69" href="#t69">69</a></span><span class="t">                        <span class="fst">f"</span><span class="fst">Tokenizer `</span><span class="op">{</span><span class="nam">tokenizer_name</span><span class="op">}</span><span class="fst">` not found in the list of tested tokenizers, and </span><span class="op">{</span><span class="nam">do_except</span> <span class="op">=</span> <span class="op">}</span><span class="fst">. We found the following matches based on edit distance:</span><span class="fst">"</span>&nbsp;</span><span class="r"></span></p>
+    <p class="mis mis2 show_mis"><span class="n"><a id="t70" href="#t70">70</a></span><span class="t">                        <span class="fst">f"</span><span class="fst">\nedit dist 0 (should be empty?): </span><span class="op">{</span><span class="nam">search_0</span><span class="op">}</span><span class="fst">"</span>&nbsp;</span><span class="r"></span></p>
+    <p class="mis mis2 show_mis"><span class="n"><a id="t71" href="#t71">71</a></span><span class="t">                        <span class="op">+</span> <span class="op">(</span><span class="fst">f"</span><span class="fst">\nedit dist 1: </span><span class="op">{</span><span class="nam">search_1</span><span class="op">}</span><span class="fst">"</span> <span class="key">if</span> <span class="nam">search_1</span> <span class="key">is</span> <span class="key">not</span> <span class="key">None</span> <span class="key">else</span> <span class="str">""</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="mis mis2 show_mis"><span class="n"><a id="t72" href="#t72">72</a></span><span class="t">                        <span class="op">+</span> <span class="op">(</span><span class="fst">f"</span><span class="fst">\nedit dist 2: </span><span class="op">{</span><span class="nam">search_2</span><span class="op">}</span><span class="fst">"</span> <span class="key">if</span> <span class="nam">search_2</span> <span class="key">is</span> <span class="key">not</span> <span class="key">None</span> <span class="key">else</span> <span class="str">""</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="mis mis2 show_mis"><span class="n"><a id="t73" href="#t73">73</a></span><span class="t">                <span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="mis show_mis"><span class="n"><a id="t74" href="#t74">74</a></span><span class="t">                <span class="key">raise</span> <span class="nam">ValueError</span><span class="op">(</span><span class="nam">err_msg</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t75" href="#t75">75</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="mis show_mis"><span class="n"><a id="t76" href="#t76">76</a></span><span class="t">        <span class="key">return</span> <span class="nam">in_fst</span>&nbsp;</span><span class="r"></span></p>
@@ -164,17 +164,18 @@
     <p class="pln"><span class="n"><a id="t82" href="#t82">82</a></span><span class="t"><span class="str">        runs when we cant import `rust_fst` which sets `_RUST_FST_LOADED` to `False`</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t83" href="#t83">83</a></span><span class="t"><span class="str">        """</span>&nbsp;</span><span class="r"></span></p>
     <p class="mis show_mis"><span class="n"><a id="t84" href="#t84">84</a></span><span class="t">        <span class="nam">warnings</span><span class="op">.</span><span class="nam">warn</span><span class="op">(</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t85" href="#t85">85</a></span><span class="t">                <span class="nam">_RUST_FST_ERR_MSG</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t86" href="#t86">86</a></span><span class="t">                <span class="op">+</span> <span class="str">"you are seeing this warning probably because you tried to run"</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t87" href="#t87">87</a></span><span class="t">                <span class="str">"`MazeTokenizerModular(...).is_tested_tokenizer()` on a mac or without `rust_fst` installed"</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t88" href="#t88">88</a></span><span class="t">                <span class="op">+</span> <span class="str">"this is fine, but note that the tokenizer will be checked for validity, but is not part of the tested set"</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t89" href="#t89">89</a></span><span class="t">        <span class="op">)</span>&nbsp;</span><span class="r"></span></p>
-    <p class="mis show_mis"><span class="n"><a id="t90" href="#t90">90</a></span><span class="t">        <span class="key">return</span> <span class="key">True</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t91" href="#t91">91</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
+    <p class="mis mis2 show_mis"><span class="n"><a id="t85" href="#t85">85</a></span><span class="t">                <span class="nam">_RUST_FST_ERR_MSG</span>&nbsp;</span><span class="r"></span></p>
+    <p class="mis mis2 show_mis"><span class="n"><a id="t86" href="#t86">86</a></span><span class="t">                <span class="op">+</span> <span class="str">"you are seeing this warning probably because you tried to run"</span>&nbsp;</span><span class="r"></span></p>
+    <p class="mis mis2 show_mis"><span class="n"><a id="t87" href="#t87">87</a></span><span class="t">                <span class="str">"`MazeTokenizerModular(...).is_tested_tokenizer()` on a mac or without `rust_fst` installed"</span>&nbsp;</span><span class="r"></span></p>
+    <p class="mis mis2 show_mis"><span class="n"><a id="t88" href="#t88">88</a></span><span class="t">                <span class="op">+</span> <span class="str">"this is fine, but note that the tokenizer will be checked for validity, but is not part of the tested set\n"</span>&nbsp;</span><span class="r"></span></p>
+    <p class="mis mis2 show_mis"><span class="n"><a id="t89" href="#t89">89</a></span><span class="t">                <span class="op">+</span> <span class="str">"see: https://github.com/understanding-search/maze-dataset/issues/57"</span>&nbsp;</span><span class="r"></span></p>
+    <p class="mis mis2 show_mis"><span class="n"><a id="t90" href="#t90">90</a></span><span class="t">        <span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="mis show_mis"><span class="n"><a id="t91" href="#t91">91</a></span><span class="t">        <span class="key">return</span> <span class="key">True</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t92" href="#t92">92</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t93" href="#t93">93</a></span><span class="t"><span class="com"># override the function if we can't load rust_fst</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t94" href="#t94">94</a></span><span class="t"><span class="key">if</span> <span class="key">not</span> <span class="nam">_RUST_FST_LOADED</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
-    <p class="mis show_mis"><span class="n"><a id="t95" href="#t95">95</a></span><span class="t">        <span class="nam">check_tokenizer_in_fst</span> <span class="op">=</span> <span class="nam">_check_tokenizer_in_fst_mock</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t93" href="#t93">93</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t94" href="#t94">94</a></span><span class="t"><span class="com"># override the function if we can't load rust_fst</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t95" href="#t95">95</a></span><span class="t"><span class="key">if</span> <span class="key">not</span> <span class="nam">_RUST_FST_LOADED</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
+    <p class="mis show_mis"><span class="n"><a id="t96" href="#t96">96</a></span><span class="t">        <span class="nam">check_tokenizer_in_fst</span> <span class="op">=</span> <span class="nam">_check_tokenizer_in_fst_mock</span>&nbsp;</span><span class="r"></span></p>
 </main>
 <footer>
     <div class="content">
@@ -183,8 +184,8 @@
             <a class="nav" href="index.html">&Hat; index</a> &nbsp; &nbsp;
             <a class="nav" href="z_38e480958b233a62_hashing_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
-            <a class="nav" href="https://coverage.readthedocs.io/en/7.6.12">coverage.py v7.6.12</a>,
-            created at 2025-03-27 23:43 -0600
+            <a class="nav" href="https://coverage.readthedocs.io/en/7.10.1">coverage.py v7.10.1</a>,
+            created at 2025-08-03 21:38 -0700
         </p>
     </div>
 </footer>

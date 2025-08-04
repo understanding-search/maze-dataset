@@ -88,7 +88,7 @@
     "fname": "p0.5-g20-n10-a_percolation-h81421",
     "versions": {
       "config": "1.0",
-      "maze_dataset": "1.3.0"
+      "maze_dataset": "1.3.2"
     }
   },
   "fname": "p0.5-g20-n10-a_percolation-h81421"
