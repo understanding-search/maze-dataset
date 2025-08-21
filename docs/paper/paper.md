@@ -108,6 +108,16 @@ Autoregressive transformer models can be quite sensitive to the exact format of 
 
 \input{figures/tex/fig4_tokenfmt.tex}
 
+
+# Implementation {#sec:implementation}
+
+Using an adjacency matrix for storing mazes would be memory inefficient by failing to exploit the highly sparse structure, while using an adjacency list could lead to a poor lookup time. This package utilizes a simple, efficient representation of mazes as subgraphs of a finite lattice, detailed in \autoref{fig:maze-impl}, which we call a [`LatticeMaze`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#LatticeMaze).
+
+\input{figures/tex/fig8_impl.tex}
+
+Our package is implemented in Python[@python], and makes use of the extensive scientific computing ecosystem, including NumPy [@numpy] for array manipulation, plotting tools [@matplotlib; @seaborn], Jupyter notebooks [@jupyter], and PySR [@pysr] for symbolic regression.
+
+
 ## Benchmarks {#benchmarks}
 
 We benchmarks for generation time across various configurations in \autoref{tab:benchmarks} and \autoref{fig:benchmarks}. Experiments were performed on a [standard GitHub runner](https://docs.github.com/en/actions/using-github-hosted-runners/using-github-hosted-runners/about-github-hosted-runners#standard-github-hosted-runners-for-public-repositories) without parallelism. Additionally, maze generation under certain constraints may not always be successful, and for this we provide a way to estimate the success rate of a given configuration, described in \autoref{fig:sre}.
@@ -119,18 +129,6 @@ We benchmarks for generation time across various configurations in \autoref{tab:
 \input{figures/tex/fig6_benchmarks.tex}
 
 \input{figures/tex/fig7_sre.tex}
-
-
-\newpage
-
-# Implementation {#sec:implementation}
-
-Using an adjacency matrix for storing mazes would be memory inefficient by failing to exploit the highly sparse structure, while using an adjacency list could lead to a poor lookup time. This package utilizes a simple, efficient representation of mazes as subgraphs of a finite lattice, detailed in \autoref{fig:maze-impl}, which we call a [`LatticeMaze`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#LatticeMaze).
-
-\input{figures/tex/fig8_impl.tex}
-
-Our package is implemented in Python[@python], and makes use of the extensive scientific computing ecosystem, including NumPy [@numpy] for array manipulation, plotting tools [@matplotlib; @seaborn], Jupyter notebooks [@jupyter], and PySR [@pysr] for symbolic regression.
-
 
 
 

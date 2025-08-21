@@ -587,25 +587,6 @@ storing valid tokenizers.
 
 \input{figures/tex/fig4_tokenfmt.tex}
 
-\subsection{Benchmarks}\label{benchmarks}
-
-We benchmarks for generation time across various configurations in
-\autoref{tab:benchmarks} and \autoref{fig:benchmarks}. Experiments were
-performed on a
-\href{https://docs.github.com/en/actions/using-github-hosted-runners/using-github-hosted-runners/about-github-hosted-runners\#standard-github-hosted-runners-for-public-repositories}{standard
-GitHub runner} without parallelism. Additionally, maze generation under
-certain constraints may not always be successful, and for this we
-provide a way to estimate the success rate of a given configuration,
-described in \autoref{fig:sre}.
-
-\input{figures/tex/tab1_benchmarks.tex}
-
-\input{figures/tex/fig6_benchmarks.tex}
-
-\input{figures/tex/fig7_sre.tex}
-
-\newpage
-
 \section{Implementation}\label{sec:implementation}
 
 Using an adjacency matrix for storing mazes would be memory inefficient
@@ -624,6 +605,23 @@ manipulation, plotting tools (\citeproc{ref-matplotlib}{Hunter, 2007};
 \citeproc{ref-seaborn}{Waskom, 2021}), Jupyter notebooks
 (\citeproc{ref-jupyter}{Kluyver et al., 2016}), and PySR
 (\citeproc{ref-pysr}{Cranmer, 2023}) for symbolic regression.
+
+\subsection{Benchmarks}\label{benchmarks}
+
+We benchmarks for generation time across various configurations in
+\autoref{tab:benchmarks} and \autoref{fig:benchmarks}. Experiments were
+performed on a
+\href{https://docs.github.com/en/actions/using-github-hosted-runners/using-github-hosted-runners/about-github-hosted-runners\#standard-github-hosted-runners-for-public-repositories}{standard
+GitHub runner} without parallelism. Additionally, maze generation under
+certain constraints may not always be successful, and for this we
+provide a way to estimate the success rate of a given configuration,
+described in \autoref{fig:sre}.
+
+\input{figures/tex/tab1_benchmarks.tex}
+
+\input{figures/tex/fig6_benchmarks.tex}
+
+\input{figures/tex/fig7_sre.tex}
 
 \section{Usage in Research}\label{usage-in-research}
 
