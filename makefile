@@ -1870,6 +1870,7 @@ paper: paper-clean paper-pdf paper-html
 
 DOCKER_IMAGE  := openjournals/inara:latest
 
+.PHONY: paper-docker
 paper-docker:
 	@echo "Compile the paper inside the Inara container"
 	@echo "Requires docker to be installed, and may need to be run with sudo"
@@ -1887,5 +1888,4 @@ paper-docker:
 	docker run --rm \
 		-v "$$(pwd)":/data \
 		-w /data \
-		$(DOCKER_IMAGE) -o pdf $(PAPER_PATH)/paper.md; \
-		cat /tmp/tex2pdf.-ecd8dd71ca53cc32/input.log
+		$(DOCKER_IMAGE) -o pdf $(PAPER_PATH)/paper.md;
