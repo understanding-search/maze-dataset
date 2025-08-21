@@ -431,14 +431,15 @@ and documented.
 
 While maze generation itself is straightforward, the architectural
 challenge comes from building a system supporting many algorithms with
-configurable parameters, property filtering, and representation
-transformation. This library aims to greatly streamline the process of
-generating and working with datasets of mazes that can be described as
-subgraphs of an \(n \times n\) lattice with boolean connections and,
-optionally, start and end points that are nodes in the graph.
-Furthermore, we place emphasis on a wide variety of possible text output
-formats aimed at evaluating the spatial reasoning capabilities of Large
-Language Models (LLMs) and other text-based transformer models.
+configurable parameters, property filtering, representation
+transformation, and reproducibility. This library aims to greatly
+streamline the process of generating and working with datasets of mazes
+that can be described as subgraphs of an \(n \times n\) lattice with
+boolean connections and, optionally, start and end points that are nodes
+in the graph. Furthermore, we place emphasis on a wide variety of
+possible text output formats aimed at evaluating the spatial reasoning
+capabilities of Large Language Models (LLMs) and other text-based
+transformer models.
 
 For interpretability and behavioral research, algorithmic tasks offer
 benefits by allowing systematic data generation and task decomposition,
@@ -549,7 +550,7 @@ filters are included in
 
 Internally, mazes are
 \href{https://understanding-search.github.io/maze-dataset/maze_dataset.html\#SolvedMaze}{\texttt{SolvedMaze}}
-objects, which have path information and a tensor optimized for storing
+objects, which have path information and an array optimized for storing
 sub-graphs of a lattice. These objects can be converted to and from
 several formats, shown in \autoref{fig:output-fmts}, to maximize their
 utility in different contexts.
@@ -627,9 +628,10 @@ manipulation, plotting tools (\citeproc{ref-matplotlib}{Hunter, 2007};
 \section{Usage in Research}\label{usage-in-research}
 
 This package was originally built for the needs of the
+\texttt{maze-transformer} project
 (\citeproc{ref-maze-transformer-github}{Michael I. Ivanitskiy et al.,
-2023b}) project, which aims to investigate spatial planning and world
-models in autoregressive transformer models trained on mazes
+2023b}), which aims to investigate spatial planning and world models in
+autoregressive transformer models trained on mazes
 (\citeproc{ref-ivanitskiy2023structuredworldreps}{Michael Igorevich
 Ivanitskiy, Spies, et al., 2023};
 \citeproc{ref-maze-dataset-arxiv-2023}{Michael Igorevich Ivanitskiy,
