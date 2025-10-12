@@ -14,7 +14,7 @@ authors:
   - name: Aaron Sandoval
     orcid: 0009-0002-8380-6140
     affiliation: 4
-  - name: Alex F. Spies
+  - name: Alexander F. Spies
     orcid: 0000-0002-8708-1530
     affiliation: 2
   - name: Tilman Räuker

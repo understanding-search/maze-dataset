@@ -14,7 +14,7 @@ authors:
   - name: Aaron Sandoval
     orcid: 0009-0002-8380-6140
     affiliation: 4
-  - name: Alex F. Spies
+  - name: Alexander F. Spies
     orcid: 0000-0002-8708-1530
     affiliation: 2
   - name: Tilman Räuker
@@ -63,7 +63,7 @@ A multitude of public and open-source software packages exist for generating maz
 - Most prior works provide mazes in visual or raster formats, and we provide a variety of similar output formats:
   - [`RasterizedMazeDataset`](https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/rasterized.html#RasterizedMazeDataset), utilizing [`as_pixels()`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#LatticeMaze.as_pixels), which can exactly mimic the outputs provided in `easy-to-hard-data` [@easy_to_hard] and can be configured to be similar to the outputs of @gh_Nemeth_2019
   - [`as_ascii()`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#LatticeMaze.as_ascii) provides a format similar to [@eval-gpt-visual; @gh-oppenheimj2018maze]
-  - [`MazePlot`](https://understanding-search.github.io/maze-dataset/maze_dataset/plotting.html#MazePlot) provides a feature‑rich plotting utility with support for multiple paths, heatmaps over positions, and more. This is similar to the outputs of [@mdl-suite; @mathematica-maze; @mazegenerator-net; @gh_Ehsan_2022]
+  - [`MazePlot`](https://understanding-search.github.io/maze-dataset/maze_dataset/plotting.html#MazePlot) provides a feature-rich plotting utility with support for multiple paths, heatmaps over positions, and more. This is similar to the outputs of [@mdl-suite; @mathematica-maze; @mazegenerator-net; @gh_Ehsan_2022]
 
 
 - The text format provided by [`SolvedMaze(...).as_tokens()`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#MazeDataset.as_tokens) is similar to that of [@eval-LLM-graphs] but with many more options, detailed in \hyperref[sec:tokenized-output-formats]{section: \textit{\nameref{sec:tokenized-output-formats}}}.

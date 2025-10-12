@@ -558,7 +558,7 @@ def plot_grouped(  # noqa: C901
 			)
 			print(f"Saving plot to {save_path.as_posix()}")
 			save_path.parent.mkdir(exist_ok=True, parents=True)
-			plt.savefig(save_path)
+			plt.savefig(save_path, bbox_inches="tight")
 
 		if show:
 			plt.show()
