@@ -1,8 +1,8 @@
 # Stats
 - 66 files
-- 16637 (17K) lines
-- 533593 (534K) chars
-- 60014 (60K) `whitespace-split` tokens
+- 16646 (17K) lines
+- 533765 (534K) chars
+- 60034 (60K) `whitespace-split` tokens
 
 # File Tree
 
@@ -18,7 +18,7 @@ maze-dataset
 ├── maze_dataset                           
 │   ├── benchmark                          
 │   │   ├── __init__.py                    [    9L       220C    24T]
-│   │   ├── config_sweep.py                [  564L    17,188C 1,819T]
+│   │   ├── config_sweep.py                [  564L    17,209C 1,820T]
 │   │   ├── speed.py                       [  132L     3,053C   327T]
 │   │   └── sweep_fit.py                   [  407L    11,569C 1,369T]
 │   ├── dataset                            
@@ -76,7 +76,7 @@ maze-dataset
 │   ├── demo_mazetokenizermodular.ipynb    [1,781L    92,485C 7,017T]
 │   ├── demo_readme.ipynb                  [  313L    24,242C   702T]
 │   ├── demo_tokenization.ipynb            [  612L   148,682C 9,259T]
-│   ├── estimate_dataset_fractions.ipynb   [  499L 2,155,259C 1,399T]
+│   ├── estimate_dataset_fractions.ipynb   [  499L 2,324,867C 1,352T]
 │   ├── forking_points.ipynb               [  221L    28,462C   621T]
 │   ├── iterated_backfilling.ipynb         [  207L    30,509C   547T]
 │   ├── output_formats.ipynb               [  235L    20,199C 1,348T]
@@ -84,7 +84,7 @@ maze-dataset
 ├── templates                              
 ├── LICENSE.md                             [  165L     7,652C 1,234T]
 ├── README.md                              [  205L    11,110C   994T]
-├── makefile                               [1,891L    59,070C 6,792T]
+├── makefile                               [1,891L    59,042C 6,791T]
 ├── pyproject.toml                         [  382L    13,391C 1,552T]
 ```
 
@@ -939,7 +939,7 @@ def plot_grouped(  # noqa: C901
 			)
 			print(f"Saving plot to {save_path.as_posix()}")
 			save_path.parent.mkdir(exist_ok=True, parents=True)
-			plt.savefig(save_path)
+			plt.savefig(save_path, bbox_inches="tight")
 
 		if show:
 			plt.show()
@@ -14778,6 +14778,10 @@ results_medium: SweepResult = SweepResult.read(
 	# "../docs/benchmarks/percolation_fractions/large/result-n256-c54-p100.zanj"
 )
 
+# magic autoreload
+%load_ext autoreload
+%autoreload 2
+
 plot_grouped(
 	results_medium,
 	predict_fn=lambda x: x.success_fraction_estimate(),
@@ -14789,7 +14793,7 @@ plot_grouped(
 	# save_fmt="pdf",
 	# save_dir=Path("../docs/paper/figures/ep"),
 	# minify_title=True,
-	# legend_kwargs=dict(loc="center right", ncol=1, bbox_to_anchor=(1.14, 0.5)),
+	# legend_kwargs=dict(loc="center right", ncol=1, bbox_to_anchor=(1.175, 0.5)),
 	# manual_titles=dict(
 	# 	x="percolation probability $p$",
 	# 	y="success fraction",
@@ -16254,12 +16258,17 @@ paper: paper-clean paper-pdf paper-html
 	@echo "paper compiled to tex, pdf and html"
 	...
 
+.PHONY: paper-docker
+paper-docker:
+	@echo "Compile the paper inside the Inara container"
+	...
+
 ``````{ end_of_file="makefile" }
 
 ``````{ path="pyproject.toml"  }
 [project]
     name = "maze-dataset"
-    version = "1.4.0"
+    version = "1.4.1"
     description = "generating and working with datasets of mazes"
     authors = [
         { name = "Michael Ivanitskiy", email = "mivanits@umich.edu" },
