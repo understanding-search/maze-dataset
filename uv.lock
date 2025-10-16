@@ -1669,7 +1669,7 @@ wheels = [
 
 [[package]]
 name = "maze-dataset"
-version = "1.4.0"
+version = "1.4.1"
 source = { editable = "." }
 dependencies = [
     { name = "ipykernel" },
