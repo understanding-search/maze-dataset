@@ -1692,7 +1692,7 @@ publish: gen-commit-log check build verify-git version gen-version-info
 	git commit -m "Auto update to $(PROJ_VERSION)"; \
 	git tag -a $(PROJ_VERSION) -F $(COMMIT_LOG_FILE); \
 	git push origin $(PROJ_VERSION); \
-	twine upload dist/* --verbose
+	uv run twine upload dist/* --verbose
 
 # ==================================================
 # cleanup of temp files
