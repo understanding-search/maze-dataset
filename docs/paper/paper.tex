@@ -484,23 +484,23 @@ these datasets.
     Németh (\citeproc{ref-gh_Nemeth_2019}{2019})
   \item
     \href{https://understanding-search.github.io/maze-dataset/maze_dataset.html\#LatticeMaze.as_ascii}{\texttt{as\_ascii()}}
-    provides a format similar to
-    (\citeproc{ref-gh-oppenheimj2018maze}{Oppenheim, 2018};
-    \citeproc{ref-eval-gpt-visual}{Singla, 2023})
+    provides a format similar to Singla
+    (\citeproc{ref-eval-gpt-visual}{2023}) and Oppenheim
+    (\citeproc{ref-gh-oppenheimj2018maze}{2018})
   \item
     \href{https://understanding-search.github.io/maze-dataset/maze_dataset/plotting.html\#MazePlot}{\texttt{MazePlot}}
     provides a feature-rich plotting utility with support for multiple
     paths, heatmaps over positions, and more. This is similar to the
-    outputs of (\citeproc{ref-mazegenerator-net}{Alance AB, 2019};
-    \citeproc{ref-gh_Ehsan_2022}{Ehsan, 2022};
+    outputs of many packages (\citeproc{ref-mazegenerator-net}{Alance
+    AB, 2019}; \citeproc{ref-gh_Ehsan_2022}{Ehsan, 2022};
     \citeproc{ref-mathematica-maze}{Guo et al., 2011};
-    \citeproc{ref-mdl-suite}{Nag, 2020})
+    \citeproc{ref-mdl-suite}{Nag, 2020}).
   \end{itemize}
 \item
   The text format provided by
   \href{https://understanding-search.github.io/maze-dataset/maze_dataset.html\#MazeDataset.as_tokens}{\texttt{SolvedMaze(...).as\_tokens()}}
-  is similar to that of (\citeproc{ref-eval-LLM-graphs}{Liu \& Wu,
-  2023}) but with many more options, detailed in
+  is similar to that of Liu \& Wu (\citeproc{ref-eval-LLM-graphs}{2023})
+  but with many more options, detailed in
   \hyperref[sec:tokenized-output-formats]{section: \textit{\nameref{sec:tokenized-output-formats}}}.
 \item
   Preserving metadata about the generation algorithm with the dataset
@@ -559,8 +559,8 @@ In previous work, maze tasks have been used with Recurrent Convolutional
 Neural Network (RCNN) derived architectures
 (\citeproc{ref-deepthinking}{Schwarzschild, Borgnia, Gupta, Huang, et
 al., 2021}). To facilitate the use of our package in this context, we
-replicate the format of (\citeproc{ref-easy_to_hard}{Schwarzschild,
-Borgnia, Gupta, Bansal, et al., 2021}) and provide the
+replicate the format of Schwarzschild, Borgnia, Gupta, Bansal, et al.
+(\citeproc{ref-easy_to_hard}{2021}) and provide the
 \href{https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/rasterized.html\#RasterizedMazeDataset}{\texttt{RasterizedMazeDataset}}
 class which returns rasterized pairs of (input, target) mazes as shown
 in \autoref{fig:e2h-raster}.
@@ -598,7 +598,7 @@ lattice, detailed in \autoref{fig:maze-impl}, which we call a
 
 \input{figures/tex/fig8_impl.tex}
 
-Our package is implemented in Python(\citeproc{ref-python}{Rossum,
+Our package is implemented in Python (\citeproc{ref-python}{Rossum,
 1995}), and makes use of the extensive scientific computing ecosystem,
 including NumPy (\citeproc{ref-numpy}{Harris et al., 2020}) for array
 manipulation, plotting tools (\citeproc{ref-matplotlib}{Hunter, 2007};
@@ -639,8 +639,8 @@ which recurrent convolutional and implicit networks
 (\citeproc{ref-fung2022jfb}{Fung et al., 2022}) solve mazes given a
 rasterized view (\citeproc{ref-knutson2024logicalextrapolation}{Knutson
 et al., 2024}), which required matching the pixel-padded and endpoint
-constrained output format of (\citeproc{ref-easy_to_hard}{Schwarzschild,
-Borgnia, Gupta, Bansal, et al., 2021}). Ongoing work using
+constrained output format of Schwarzschild, Borgnia, Gupta, Bansal, et
+al. (\citeproc{ref-easy_to_hard}{2021}). Ongoing work using
 \texttt{maze-dataset} aims to investigate the effects of varying the
 tokenization format on the performance of pretrained LLMs on spatial
 reasoning.
@@ -650,33 +650,33 @@ work by other groups:
 
 \begin{itemize}
 \item
-  By (\citeproc{ref-nolte2024multistep}{Nolte et al., 2024}) to compare
+  By Nolte et al. (\citeproc{ref-nolte2024multistep}{2024}) to compare
   the effectiveness of transformers trained with the MLM-\(\mathcal{U}\)
   (\citeproc{ref-MLMU-kitouni2024factorization}{Kitouni et al., 2024})
   multistep prediction objective against standard autoregressive
   training for multi-step planning on our maze task.
 \item
-  By (\citeproc{ref-wang2024imperative}{Wang et al., 2024}) and
-  (\citeproc{ref-chen2024iaimperative}{Chen et al., 2024}) to study
-  imperative learning.
+  By Wang et al. (\citeproc{ref-wang2024imperative}{2024}) and Chen et
+  al. (\citeproc{ref-chen2024iaimperative}{2024}) to study imperative
+  learning.
 \item
-  By (\citeproc{ref-zhang2025tscend}{Zhang et al., 2025a}) to introduce
-  a novel framework for reasoning diffusion models.
+  By Zhang et al. (\citeproc{ref-zhang2025tscend}{2025a}) to introduce a
+  novel framework for reasoning diffusion models.
 \item
-  By (\citeproc{ref-dao2025alphamaze}{Dao \& Vu, 2025}) to improve
+  By Dao \& Vu (\citeproc{ref-dao2025alphamaze}{2025}) to improve
   spatial reasoning in LLMs with GRPO.
 \item
-  By (\citeproc{ref-cai2025morse}{Cai et al., 2025}) to create a
+  By Cai et al. (\citeproc{ref-cai2025morse}{2025}) to create a
   multimodal reasoning benchmark, via mazes in videos.
 \item
-  By (\citeproc{ref-xu2025visual}{Xu et al., 2025}) to study visual
+  By Xu et al. (\citeproc{ref-xu2025visual}{2025}) to study visual
   planning in LLMs.
 \item
-  By (\citeproc{ref-lee2025adaptive}{Lee et al., 2025}) to evaluate
+  By Lee et al. (\citeproc{ref-lee2025adaptive}{2025}) to evaluate
   adaptive inference-time scaling with diffusion models on maze
   navigation tasks.
 \item
-  By (\citeproc{ref-zhang2025vfscale}{Zhang et al., 2025b}) to test
+  By Zhang et al. (\citeproc{ref-zhang2025vfscale}{2025b}) to test
   verifier-free diffusion models.
 \end{itemize}
 
@@ -722,7 +722,7 @@ Preprint arXiv:1912.01588}.
 
 \bibitem[\citeproctext]{ref-pysr}
 Cranmer, M. (2023). Interpretable machine learning for science with PySR
-and SymbolicRegression. jl. \emph{arXiv Preprint arXiv:2305.01582}.
+and SymbolicRegression.jl. \emph{arXiv Preprint arXiv:2305.01582}.
 \url{https://doi.org/10.48550/arXiv.2305.01582}
 
 \bibitem[\citeproctext]{ref-dao2025alphamaze}
