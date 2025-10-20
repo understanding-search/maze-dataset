@@ -62,11 +62,11 @@ A multitude of public and open-source software packages exist for generating maz
 
 - Most prior works provide mazes in visual or raster formats, and we provide a variety of similar output formats:
   - [`RasterizedMazeDataset`](https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/rasterized.html#RasterizedMazeDataset), utilizing [`as_pixels()`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#LatticeMaze.as_pixels), which can exactly mimic the outputs provided in `easy-to-hard-data` [@easy_to_hard] and can be configured to be similar to the outputs of @gh_Nemeth_2019
-  - [`as_ascii()`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#LatticeMaze.as_ascii) provides a format similar to [@eval-gpt-visual; @gh-oppenheimj2018maze]
-  - [`MazePlot`](https://understanding-search.github.io/maze-dataset/maze_dataset/plotting.html#MazePlot) provides a feature-rich plotting utility with support for multiple paths, heatmaps over positions, and more. This is similar to the outputs of [@mdl-suite; @mathematica-maze; @mazegenerator-net; @gh_Ehsan_2022]
+  - [`as_ascii()`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#LatticeMaze.as_ascii) provides a format similar to @eval-gpt-visual and @gh-oppenheimj2018maze
+  - [`MazePlot`](https://understanding-search.github.io/maze-dataset/maze_dataset/plotting.html#MazePlot) provides a feature-rich plotting utility with support for multiple paths, heatmaps over positions, and more. This is similar to the outputs of many packages [@mdl-suite; @mathematica-maze; @mazegenerator-net; @gh_Ehsan_2022].
 
 
-- The text format provided by [`SolvedMaze(...).as_tokens()`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#MazeDataset.as_tokens) is similar to that of [@eval-LLM-graphs] but with many more options, detailed in \hyperref[sec:tokenized-output-formats]{section: \textit{\nameref{sec:tokenized-output-formats}}}.
+- The text format provided by [`SolvedMaze(...).as_tokens()`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#MazeDataset.as_tokens) is similar to that of @eval-LLM-graphs but with many more options, detailed in \hyperref[sec:tokenized-output-formats]{section: \textit{\nameref{sec:tokenized-output-formats}}}.
 
 - Preserving metadata about the generation algorithm with the dataset itself is essential for studying the effects of distributional shifts. Our package efficiently stores the dataset along with its metadata in a single human-readable file [@zanj]. As far as we are aware, no existing packages do this reliably.
 
@@ -89,7 +89,7 @@ Datasets of mazes are created from a [`MazeDatasetConfig`](https://understanding
 
 Internally, mazes are [`SolvedMaze`](https://understanding-search.github.io/maze-dataset/maze_dataset.html#SolvedMaze) objects, which have path information and an array optimized for storing sub-graphs of a lattice. These objects can be converted to and from several formats, shown in \autoref{fig:output-fmts}, to maximize their utility in different contexts.
 
-In previous work, maze tasks have been used with Recurrent Convolutional Neural Network (RCNN) derived architectures [@deepthinking]. To facilitate the use of our package in this context, we replicate the format of [@easy_to_hard] and provide the [`RasterizedMazeDataset`](https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/rasterized.html#RasterizedMazeDataset) class which returns rasterized pairs of (input, target) mazes as shown in \autoref{fig:e2h-raster}.
+In previous work, maze tasks have been used with Recurrent Convolutional Neural Network (RCNN) derived architectures [@deepthinking]. To facilitate the use of our package in this context, we replicate the format of @easy_to_hard and provide the [`RasterizedMazeDataset`](https://understanding-search.github.io/maze-dataset/maze_dataset/dataset/rasterized.html#RasterizedMazeDataset) class which returns rasterized pairs of (input, target) mazes as shown in \autoref{fig:e2h-raster}.
 
 \input{figures/tex/fig2_formats.tex}
 
@@ -136,25 +136,25 @@ We benchmarks for generation time across various configurations in \autoref{tab:
 
 # Usage in Research
 
-This package was originally built for the needs of the `maze-transformer` project [@maze-transformer-github], which aims to investigate spatial planning and world models in autoregressive transformer models trained on mazes [@ivanitskiy2023structuredworldreps; @spies2024causalworldmodels; @maze-dataset-arxiv-2023]. It was extended for work on understanding the mechanisms by which recurrent convolutional and implicit networks [@fung2022jfb] solve mazes given a rasterized view [@knutson2024logicalextrapolation], which required matching the pixel-padded and endpoint constrained output format of [@easy_to_hard]. Ongoing work using `maze-dataset` aims to investigate the effects of varying the tokenization format on the performance of pretrained LLMs on spatial reasoning.
+This package was originally built for the needs of the `maze-transformer` project [@maze-transformer-github], which aims to investigate spatial planning and world models in autoregressive transformer models trained on mazes [@ivanitskiy2023structuredworldreps; @spies2024causalworldmodels; @maze-dataset-arxiv-2023]. It was extended for work on understanding the mechanisms by which recurrent convolutional and implicit networks [@fung2022jfb] solve mazes given a rasterized view [@knutson2024logicalextrapolation], which required matching the pixel-padded and endpoint constrained output format of @easy_to_hard. Ongoing work using `maze-dataset` aims to investigate the effects of varying the tokenization format on the performance of pretrained LLMs on spatial reasoning.
 
 At the time of writing, this software package has been actively used in work by other groups:
 
-- By [@nolte2024multistep] to compare the effectiveness of transformers trained with the MLM-$\mathcal{U}$ [@MLMU-kitouni2024factorization] multistep prediction objective against standard autoregressive training for multi-step planning on our maze task.
+- By @nolte2024multistep to compare the effectiveness of transformers trained with the MLM-$\mathcal{U}$ [@MLMU-kitouni2024factorization] multistep prediction objective against standard autoregressive training for multi-step planning on our maze task.
 
-- By [@wang2024imperative] and [@chen2024iaimperative] to study imperative learning.
+- By @wang2024imperative and @chen2024iaimperative to study imperative learning.
 
-- By [@zhang2025tscend] to introduce a novel framework for reasoning diffusion models.
+- By @zhang2025tscend to introduce a novel framework for reasoning diffusion models.
 
-- By [@dao2025alphamaze] to improve spatial reasoning in LLMs with GRPO.
+- By @dao2025alphamaze to improve spatial reasoning in LLMs with GRPO.
 
-- By [@cai2025morse] to create a multimodal reasoning benchmark, via mazes in videos.
+- By @cai2025morse to create a multimodal reasoning benchmark, via mazes in videos.
 
-- By [@xu2025visual] to study visual planning in LLMs.
+- By @xu2025visual to study visual planning in LLMs.
 
-- By [@lee2025adaptive] to evaluate adaptive inference-time scaling with diffusion models on maze navigation tasks.
+- By @lee2025adaptive to evaluate adaptive inference-time scaling with diffusion models on maze navigation tasks.
 
-- By [@zhang2025vfscale] to test verifier-free diffusion models.
+- By @zhang2025vfscale to test verifier-free diffusion models.
 
 \newpage
 
