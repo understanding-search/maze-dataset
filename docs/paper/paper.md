@@ -115,7 +115,7 @@ Using an adjacency matrix for storing mazes would be memory inefficient by faili
 
 \input{figures/tex/fig8_impl.tex}
 
-Our package is implemented in Python[@python], and makes use of the extensive scientific computing ecosystem, including NumPy [@numpy] for array manipulation, plotting tools [@matplotlib; @seaborn], Jupyter notebooks [@jupyter], and PySR [@pysr] for symbolic regression.
+Our package is implemented in Python [@python], and makes use of the extensive scientific computing ecosystem, including NumPy [@numpy] for array manipulation, plotting tools [@matplotlib; @seaborn], Jupyter notebooks [@jupyter], and PySR [@pysr] for symbolic regression.
 
 
 ## Benchmarks {#benchmarks}
