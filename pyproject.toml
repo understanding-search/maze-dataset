@@ -43,6 +43,10 @@
 			# doesn't appear to work on macos, see https://github.com/understanding-search/maze-dataset/issues/57
 			"rust_fst>=0.1.2; platform_system != 'Darwin'",
 		]
+		video = [
+			"imageio>=2.9.0",
+			"imageio-ffmpeg>=0.4.8",
+		]
 
 [dependency-groups]
 	dev = [

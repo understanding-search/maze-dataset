@@ -45,6 +45,12 @@ try:
 except ModuleNotFoundError:  # pragma: no cover - optional dependency
 	iio = None  # type: ignore[assignment]
 
+try:
+	# ffmpeg plugin for imageio video writing
+	import imageio_ffmpeg  # noqa: F401
+except ModuleNotFoundError:  # pragma: no cover - optional dependency
+	imageio_ffmpeg = None
+
 from maze_dataset.generation import GENERATORS_MAP
 from maze_dataset.maze import LatticeMaze, SolvedMaze
 from maze_dataset.maze.lattice_maze import PixelColors
@@ -249,7 +255,7 @@ def _render_frame(
 	if step_count > 0:
 		path = solved_maze.solution[:step_count]
 		base = _draw_path_on_pixels(base, path)
-	img = Image.fromarray(base, mode="RGB")
+	img = Image.fromarray(base)
 	if resolution != base.shape[0]:
 		img = img.resize((resolution, resolution), resample=Image.NEAREST)
 	draw_ctx = ImageDraw.Draw(img)
@@ -308,14 +314,14 @@ def _save_video(
 	if not frames:
 		return
 	if iio is None:
-		err_msg = "imageio is required for video export; install imageio or disable --write-video"
+		err_msg = "imageio is required for video export; install with: pip install imageio imageio-ffmpeg"
 		raise RuntimeError(err_msg)
 	np_frames = [np.array(frame) for frame in frames]
-	kwargs: dict = dict(fps=fps)
 	if video_format == "gif":
 		iio.imwrite(path, np_frames, duration=1 / max(fps, 1))
 	else:
-		iio.imwrite(path, np_frames, plugin="pyav", fps=fps)
+		# Use FFMPEG backend for MP4 encoding with imageio-ffmpeg
+		iio.imwrite(path, np_frames, fps=fps)
 
 
 def main() -> None:
