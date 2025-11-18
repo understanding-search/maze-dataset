@@ -421,11 +421,11 @@ def main() -> None:
 					"seed": args.seed,
 					"maze_index": sample_index,
 				}
-					with (sample_dir / "metadata.json").open("w", encoding="utf-8") as fp:
-						json.dump(metadata, fp, indent=2)
+				with (sample_dir / "metadata.json").open("w", encoding="utf-8") as fp:
+					json.dump(metadata, fp, indent=2)
 
-					if progress is not None:
-						progress.update(1)
+				if progress is not None:
+					progress.update(1)
 
 	if sample_index == 0:
 		print("No mazes were generated. Check --total-mazes or --grid-sizes.")
