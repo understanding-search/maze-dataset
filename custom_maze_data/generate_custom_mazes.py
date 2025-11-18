@@ -10,6 +10,7 @@ Features
 * Produces intermediate frames (default 24) following the solution path, and can optionally
   assemble those frames into an mp4/gif clip.
 * Stores per-sample metadata (grid size, generator, seed, marker styles, etc.) for auditing.
+* Displays a tqdm progress bar so you can track dataset generation at a glance.
 
 The heavy lifting (maze generation/path solving) is CPU-bound and already optimized in the
 underlying maze-dataset package; there is no GPU code path here, but you can run multiple copies
@@ -44,6 +45,11 @@ try:
 	import imageio.v3 as iio
 except ModuleNotFoundError:  # pragma: no cover - optional dependency
 	iio = None  # type: ignore[assignment]
+
+try:
+	from tqdm import tqdm
+except ModuleNotFoundError:  # pragma: no cover - optional dependency
+	tqdm = None  # type: ignore[assignment]
 
 try:
 	# ffmpeg plugin for imageio video writing
@@ -343,6 +349,12 @@ def main() -> None:
 
 	grid_sizes = sorted(set(args.grid_sizes))
 	per_grid_counts = _split_counts(args.total_mazes, len(grid_sizes))
+	total_target = sum(per_grid_counts)
+	progress = (
+		tqdm(total=total_target, desc="Generating mazes", unit="maze")
+		if (tqdm is not None and total_target > 0)
+		else None
+	)
 
 	sample_index: int = 0
 	for grid_n, size_target in zip(grid_sizes, per_grid_counts, strict=False):
@@ -409,13 +421,18 @@ def main() -> None:
 					"seed": args.seed,
 					"maze_index": sample_index,
 				}
-				with (sample_dir / "metadata.json").open("w", encoding="utf-8") as fp:
-					json.dump(metadata, fp, indent=2)
+					with (sample_dir / "metadata.json").open("w", encoding="utf-8") as fp:
+						json.dump(metadata, fp, indent=2)
+
+					if progress is not None:
+						progress.update(1)
 
 	if sample_index == 0:
 		print("No mazes were generated. Check --total-mazes or --grid-sizes.")
 	else:
 		print(f"Generated {sample_index} mazes in {output_dir}")
+	if progress is not None:
+		progress.close()
 
 
 if __name__ == "__main__":
