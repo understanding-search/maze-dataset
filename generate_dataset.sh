@@ -21,11 +21,13 @@ GRID_SIZES="3 5 7 9"
 
 # Maze generation algorithms to use
 # Available generators from maze_dataset.generation.GENERATORS_MAP:
-#   - gen_dfs: Depth-first search
-#   - gen_wilson: Wilson's algorithm
-#   - gen_kruskal: Kruskal's algorithm
-#   - gen_prim: Prim's algorithm
-#   - gen_binary_tree: Binary tree algorithm
+#   - gen_dfs
+#   - gen_wilson
+#   - gen_percolation
+#   - gen_dfs_percolation
+#   - gen_prim
+#   - gen_kruskal
+#   - gen_recursive_division
 # You can list multiple generators (space-separated), and they will be cycled through
 GENERATORS="gen_dfs"
 
