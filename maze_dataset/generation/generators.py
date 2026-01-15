@@ -440,8 +440,8 @@ class LatticeMazeGenerators:
 		assert lattice_dim == 2, (  # noqa: PLR2004
 			"Kruskal's algorithm is only implemented for 2D lattices."
 		)
-		# Convert grid_shape to a tuple of ints
-		grid_shape_: CoordTup = tuple(int(x) for x in grid_shape)  # type: ignore[assignment]
+		import numpy as np
+		grid_shape_: Coord = np.array([int(x) for x in grid_shape])
 		n_rows, n_cols = grid_shape_
 
 		# Initialize union-find data structure.
@@ -482,8 +482,6 @@ class LatticeMazeGenerators:
 		# Initialize connection_list with no connections.
 		# connection_list[0] stores downward connections (from cell (i,j) to (i+1,j)).
 		# connection_list[1] stores rightward connections (from cell (i,j) to (i,j+1)).
-		import numpy as np
-
 		connection_list = np.zeros((2, n_rows, n_cols), dtype=bool)
 
 		# Process each edge; if it connects two different trees, union them and carve the passage.
@@ -498,7 +496,7 @@ class LatticeMazeGenerators:
 					connection_list[1, cell1[0], cell1[1]] = True
 
 		if start_coord is None:
-			start_coord = tuple(np.random.randint(0, n) for n in grid_shape_)  # type: ignore[assignment]
+			start_coord = np.array([np.random.randint(0, n) for n in grid_shape_])  # type: ignore[assignment]
 
 		generation_meta: dict = dict(
 			func_name="gen_kruskal",
