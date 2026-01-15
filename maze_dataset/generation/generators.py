@@ -498,11 +498,11 @@ class LatticeMazeGenerators:
 					connection_list[1, cell1[0], cell1[1]] = True
 
 		if start_coord is None:
-			start_coord = tuple(np.random.randint(0, n) for n in grid_shape_)  # type: ignore[assignment]
+			start_coord = np.array([np.random.randint(0, n) for n in grid_shape_])
 
 		generation_meta: dict = dict(
 			func_name="gen_kruskal",
-			grid_shape=grid_shape_,
+			grid_shape=np.array(grid_shape_),
 			start_coord=start_coord,
 			algorithm="kruskal",
 			fully_connected=True,
@@ -596,11 +596,11 @@ class LatticeMazeGenerators:
 		divide(0, 0, n_cols, n_rows)
 
 		if start_coord is None:
-			start_coord = tuple(np.random.randint(0, n) for n in grid_shape_)  # type: ignore[assignment]
+			start_coord = np.array([np.random.randint(0, n) for n in grid_shape_])
 
 		generation_meta: dict = dict(
 			func_name="gen_recursive_division",
-			grid_shape=grid_shape_,
+			grid_shape=np.array(grid_shape_),
 			start_coord=start_coord,
 			algorithm="recursive_division",
 			fully_connected=True,
