@@ -163,8 +163,8 @@ def test_find_start_end_points_in_rgb_pixel_grid():
 	}
 
 	(
-		connection_list,
-		grid_shape,
+		_connection_list,
+		_grid_shape,
 		out_positions,
 	) = LatticeMaze._from_pixel_grid_with_positions(
 		rgb_pixel_grid_with_positions,

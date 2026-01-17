@@ -25,7 +25,7 @@ def test_maze_plot():
 	)
 	solved_maze: SolvedMaze = SolvedMaze.from_targeted_lattice_maze(tgt_maze)
 
-	fig, ax = plt.subplots(1, 3, figsize=(15, 5))
+	_fig, ax = plt.subplots(1, 3, figsize=(15, 5))
 
 	for ax_i, temp_maze in zip(ax, [maze, tgt_maze, solved_maze], strict=False):
 		ax_i.set_title(temp_maze.as_ascii(), fontfamily="monospace")
