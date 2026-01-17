@@ -73,6 +73,11 @@ jobs:
       - name: Unit tests
         run: make test-unit
 
+      - name: Install Julia 1.10 for PySR
+        uses: julia-actions/setup-julia@v2
+        with:
+          version: '1.10'
+
       - name: Notebook tests (nbmake)
         run: make test-notebooks-nbmake  
       
