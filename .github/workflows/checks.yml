@@ -73,7 +73,7 @@ jobs:
       - name: Unit tests
         run: make test-unit
 
-      - name: Hide system Julia so PySR installs its own
+      - name: Remove system Julia so juliapkg installs compatible version
         run: sudo rm -f /usr/bin/julia /usr/local/bin/julia
 
       - name: Notebook tests (nbmake)
