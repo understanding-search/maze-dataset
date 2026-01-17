@@ -3,21 +3,21 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>Coverage for maze_dataset/maze/lattice_maze.py: 65%</title>
-    <link rel="icon" sizes="32x32" href="favicon_32_cb_58284776.png">
-    <link rel="stylesheet" href="style_cb_6b508a39.css" type="text/css">
-    <script src="coverage_html_cb_6fb7b396.js" defer></script>
+    <link rel="icon" sizes="32x32" href="favicon_32_cb_c827f16f.png">
+    <link rel="stylesheet" href="style_cb_9ff733b0.css" type="text/css">
+    <script src="coverage_html_cb_dd2e7eb5.js" defer></script>
 </head>
 <body class="pyfile">
 <header>
     <div class="content">
         <h1>
-            <span class="text">Coverage for </span><b>maze_dataset/maze/lattice_maze.py</b>:
+            <span class="text">Coverage for </span><b>maze_dataset&#8201;/&#8201;maze&#8201;/&#8201;lattice_maze.py</b>:
             <span class="pc_cov">65%</span>
         </h1>
         <aside id="help_panel_wrapper">
             <input id="help_panel_state" type="checkbox">
             <label for="help_panel_state">
-                <img id="keyboard_icon" src="keybd_closed_cb_ce680311.png" alt="Show/hide keyboard shortcuts">
+                <img id="keyboard_icon" src="keybd_closed_cb_900cfef5.png" alt="Show/hide keyboard shortcuts">
             </label>
             <div id="help_panel">
                 <p class="legend">Shortcuts on this page</p>
@@ -64,8 +64,8 @@
             <a id="indexLink" class="nav" href="index.html">&Hat; index</a> &nbsp; &nbsp;
             <a id="nextFileLink" class="nav" href="z_461dfd9ae01b93fa___init___py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
-            <a class="nav" href="https://coverage.readthedocs.io/en/7.10.1">coverage.py v7.10.1</a>,
-            created at 2025-08-03 22:20 -0700
+            <a class="nav" href="https://coverage.readthedocs.io/en/7.13.1">coverage.py v7.13.1</a>,
+            created at 2026-01-17 16:16 -0700
         </p>
         <aside class="hidden">
             <button type="button" class="button_next_chunk" data-shortcut="j"></button>
@@ -1068,11 +1068,11 @@
     <p class="pln"><span class="n"><a id="t986" href="#t986">986</a></span><span class="t"><span class="str">                - `ValueError` : if the pixel grid cannot be cast to a `LatticeMaze` -- it's probably a `TargetedLatticeMaze` or `SolvedMaze`</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t987" href="#t987">987</a></span><span class="t"><span class="str">                """</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t988" href="#t988">988</a></span><span class="t">                <span class="nam">connection_list</span><span class="op">:</span> <span class="nam">ConnectionList</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t989" href="#t989">989</a></span><span class="t">                <span class="nam">grid_shape</span><span class="op">:</span> <span class="nam">tuple</span><span class="op">[</span><span class="nam">int</span><span class="op">,</span> <span class="nam">int</span><span class="op">]</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t989" href="#t989">989</a></span><span class="t">                <span class="nam">_grid_shape</span><span class="op">:</span> <span class="nam">tuple</span><span class="op">[</span><span class="nam">int</span><span class="op">,</span> <span class="nam">int</span><span class="op">]</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t990" href="#t990">990</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t991" href="#t991">991</a></span><span class="t">                <span class="com"># if a binary pixel grid, return regular LatticeMaze</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t992" href="#t992">992</a></span><span class="t">                <span class="key">if</span> <span class="nam">len</span><span class="op">(</span><span class="nam">pixel_grid</span><span class="op">.</span><span class="nam">shape</span><span class="op">)</span> <span class="op">==</span> <span class="num">2</span><span class="op">:</span>  <span class="com"># noqa: PLR2004</span>&nbsp;</span><span class="r"></span></p>
-    <p class="mis show_mis"><span class="n"><a id="t993" href="#t993">993</a></span><span class="t">                        <span class="nam">connection_list</span><span class="op">,</span> <span class="nam">grid_shape</span> <span class="op">=</span> <span class="nam">cls</span><span class="op">.</span><span class="nam">_from_pixel_grid_bw</span><span class="op">(</span><span class="nam">pixel_grid</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="mis show_mis"><span class="n"><a id="t993" href="#t993">993</a></span><span class="t">                        <span class="nam">connection_list</span><span class="op">,</span> <span class="nam">_grid_shape</span> <span class="op">=</span> <span class="nam">cls</span><span class="op">.</span><span class="nam">_from_pixel_grid_bw</span><span class="op">(</span><span class="nam">pixel_grid</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="mis show_mis"><span class="n"><a id="t994" href="#t994">994</a></span><span class="t">                        <span class="key">return</span> <span class="nam">LatticeMaze</span><span class="op">(</span><span class="nam">connection_list</span><span class="op">=</span><span class="nam">connection_list</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t995" href="#t995">995</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t996" href="#t996">996</a></span><span class="t">                <span class="com"># otherwise, detect and check it's valid</span>&nbsp;</span><span class="r"></span></p>
@@ -1085,7 +1085,7 @@
     <p class="pln"><span class="n"><a id="t1003" href="#t1003">1003</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t1004" href="#t1004">1004</a></span><span class="t">                <span class="op">(</span>&nbsp;</span><span class="r"></span></p>
     <p class="run run2"><span class="n"><a id="t1005" href="#t1005">1005</a></span><span class="t">                        <span class="nam">connection_list</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run run2"><span class="n"><a id="t1006" href="#t1006">1006</a></span><span class="t">                        <span class="nam">grid_shape</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run run2"><span class="n"><a id="t1006" href="#t1006">1006</a></span><span class="t">                        <span class="nam">_grid_shape</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
     <p class="run run2"><span class="n"><a id="t1007" href="#t1007">1007</a></span><span class="t">                        <span class="nam">marked_pos</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
     <p class="run run2"><span class="n"><a id="t1008" href="#t1008">1008</a></span><span class="t">                <span class="op">)</span> <span class="op">=</span> <span class="nam">cls</span><span class="op">.</span><span class="nam">_from_pixel_grid_with_positions</span><span class="op">(</span>&nbsp;</span><span class="r"></span></p>
     <p class="run run2"><span class="n"><a id="t1009" href="#t1009">1009</a></span><span class="t">                        <span class="nam">pixel_grid</span><span class="op">=</span><span class="nam">pixel_grid</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
@@ -1630,8 +1630,8 @@
             <a class="nav" href="index.html">&Hat; index</a> &nbsp; &nbsp;
             <a class="nav" href="z_461dfd9ae01b93fa___init___py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
-            <a class="nav" href="https://coverage.readthedocs.io/en/7.10.1">coverage.py v7.10.1</a>,
-            created at 2025-08-03 22:20 -0700
+            <a class="nav" href="https://coverage.readthedocs.io/en/7.13.1">coverage.py v7.13.1</a>,
+            created at 2026-01-17 16:16 -0700
         </p>
     </div>
 </footer>

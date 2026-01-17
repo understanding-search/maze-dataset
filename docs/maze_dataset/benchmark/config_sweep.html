@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="generator" content="pdoc 15.0.4"/>
+    <meta name="generator" content="pdoc 16.0.0"/>
     <title>maze_dataset.benchmark.config_sweep API documentation</title>
     <link rel="icon" href="../../resources/favicon.png"/>
 <link rel="stylesheet" href="../../resources/css/bootstrap-reboot.min.css"><link rel="stylesheet" href="../../resources/css/syntax-highlighting.css"><link rel="stylesheet" href="../../resources/css/theme.css"><link rel="stylesheet" href="../../resources/css/layout.css"><link rel="stylesheet" href="../../resources/css/content.css"><link rel="stylesheet" href="../../resources/css/custom.css"><script>
@@ -47,7 +47,7 @@
 </script></head>
 <body>
 <div class="package-version">
-    docs for <a href="https://github.com/understanding-search/maze-dataset">maze-dataset</a> v1.4.1<br>
+    docs for <a href="https://github.com/understanding-search/maze-dataset">maze-dataset</a> v1.4.2<br>
 </div>
     <nav class="pdoc">
         <label id="navtoggle" for="togglestate" class="pdoc-button">
@@ -173,7 +173,7 @@
     </nav>
     <main class="pdoc">
             <section class="module-info">
-                        <a class="pdoc-button git-button" href="https://github.com/understanding-search/maze-dataset/blob/1.4.1maze_dataset/benchmark/config_sweep.py">View Source on GitHub</a>
+                        <a class="pdoc-button git-button" href="https://github.com/understanding-search/maze-dataset/blob/1.4.2maze_dataset/benchmark/config_sweep.py">View Source on GitHub</a>
                     <h1 class="modulename">
 <a href="./../../maze_dataset.html">maze_dataset</a><wbr>.<a href="./../benchmark.html">benchmark</a><wbr>.config_sweep    </h1>
 
@@ -185,7 +185,7 @@
                         <div class="source-button-container">
             <label class="pdoc-button view-source-button" for="mod-config_sweep-view-source"><span>View Source</span></label>
             <div class="github-button-wrapper">
-                <a class="pdoc-button github-link-button" href="https://github.com/understanding-search/maze-dataset/blob/1.4.1maze_dataset/benchmark/config_sweep.py#L0-L563" target="_blank">
+                <a class="pdoc-button github-link-button" href="https://github.com/understanding-search/maze-dataset/blob/1.4.2maze_dataset/benchmark/config_sweep.py#L0-L563" target="_blank">
                     <span>View on GitHub</span>
                 </a>
             </div>
@@ -461,9 +461,9 @@
 </span><span id="L-267"><a href="#L-267"><span class="linenos">267</span></a><span class="w">		</span><span class="sd">&quot;&quot;&quot;Plot the results of percolation analysis&quot;&quot;&quot;</span>
 </span><span id="L-268"><a href="#L-268"><span class="linenos">268</span></a>		<span class="c1"># set up figure</span>
 </span><span id="L-269"><a href="#L-269"><span class="linenos">269</span></a>		<span class="k">if</span> <span class="ow">not</span> <span class="n">ax</span><span class="p">:</span>
-</span><span id="L-270"><a href="#L-270"><span class="linenos">270</span></a>			<span class="n">fig</span><span class="p">:</span> <span class="n">plt</span><span class="o">.</span><span class="n">Figure</span>
+</span><span id="L-270"><a href="#L-270"><span class="linenos">270</span></a>			<span class="n">_fig</span><span class="p">:</span> <span class="n">plt</span><span class="o">.</span><span class="n">Figure</span>
 </span><span id="L-271"><a href="#L-271"><span class="linenos">271</span></a>			<span class="n">ax_</span><span class="p">:</span> <span class="n">plt</span><span class="o">.</span><span class="n">Axes</span>
-</span><span id="L-272"><a href="#L-272"><span class="linenos">272</span></a>			<span class="n">fig</span><span class="p">,</span> <span class="n">ax_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">22</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+</span><span id="L-272"><a href="#L-272"><span class="linenos">272</span></a>			<span class="n">_fig</span><span class="p">,</span> <span class="n">ax_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">22</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
 </span><span id="L-273"><a href="#L-273"><span class="linenos">273</span></a>		<span class="k">else</span><span class="p">:</span>
 </span><span id="L-274"><a href="#L-274"><span class="linenos">274</span></a>			<span class="n">ax_</span> <span class="o">=</span> <span class="n">ax</span>
 </span><span id="L-275"><a href="#L-275"><span class="linenos">275</span></a>
@@ -696,7 +696,7 @@
 </span><span id="L-502"><a href="#L-502"><span class="linenos">502</span></a>		<span class="p">)</span>
 </span><span id="L-503"><a href="#L-503"><span class="linenos">503</span></a>		<span class="n">shared_keys</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">results_epkw</span><span class="o">.</span><span class="n">configs_shared</span><span class="p">()</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
 </span><span id="L-504"><a href="#L-504"><span class="linenos">504</span></a>		<span class="n">cfg_keys</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">shared_keys</span><span class="o">.</span><span class="n">intersection</span><span class="p">({</span><span class="s2">&quot;n_mazes&quot;</span><span class="p">,</span> <span class="s2">&quot;endpoint_kwargs&quot;</span><span class="p">})</span>
-</span><span id="L-505"><a href="#L-505"><span class="linenos">505</span></a>		<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="n">figsize</span><span class="p">)</span>
+</span><span id="L-505"><a href="#L-505"><span class="linenos">505</span></a>		<span class="n">_fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="n">figsize</span><span class="p">)</span>
 </span><span id="L-506"><a href="#L-506"><span class="linenos">506</span></a>		<span class="k">for</span> <span class="n">gf_idx</span><span class="p">,</span> <span class="n">gen_func</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">generator_funcs_names</span><span class="p">):</span>
 </span><span id="L-507"><a href="#L-507"><span class="linenos">507</span></a>			<span class="n">results_filtered</span><span class="p">:</span> <span class="n">SweepResult</span> <span class="o">=</span> <span class="n">results_epkw</span><span class="o">.</span><span class="n">get_where</span><span class="p">(</span>
 </span><span id="L-508"><a href="#L-508"><span class="linenos">508</span></a>				<span class="s2">&quot;maze_ctor&quot;</span><span class="p">,</span>
@@ -783,7 +783,7 @@
                 <div class="source-button-container">
             <label class="pdoc-button view-source-button" for="dataset_success_fraction-view-source"><span>View Source</span></label>
             <div class="github-button-wrapper">
-                <a class="pdoc-button github-link-button" href="https://github.com/understanding-search/maze-dataset/blob/1.4.1maze_dataset/benchmark/config_sweep.py#L31-L44" target="_blank">
+                <a class="pdoc-button github-link-button" href="https://github.com/understanding-search/maze-dataset/blob/1.4.2maze_dataset/benchmark/config_sweep.py#L31-L44" target="_blank">
                     <span>View on GitHub</span>
                 </a>
             </div>
@@ -837,7 +837,7 @@
                 <div class="source-button-container">
             <label class="pdoc-button view-source-button" for="sweep-view-source"><span>View Source</span></label>
             <div class="github-button-wrapper">
-                <a class="pdoc-button github-link-button" href="https://github.com/understanding-search/maze-dataset/blob/1.4.1maze_dataset/benchmark/config_sweep.py#L52-L87" target="_blank">
+                <a class="pdoc-button github-link-button" href="https://github.com/understanding-search/maze-dataset/blob/1.4.2maze_dataset/benchmark/config_sweep.py#L52-L87" target="_blank">
                     <span>View on GitHub</span>
                 </a>
             </div>
@@ -920,7 +920,7 @@ _description_</li>
                 <div class="source-button-container">
             <label class="pdoc-button view-source-button" for="SweepResult-view-source"><span>View Source</span></label>
             <div class="github-button-wrapper">
-                <a class="pdoc-button github-link-button" href="https://github.com/understanding-search/maze-dataset/blob/1.4.1maze_dataset/benchmark/config_sweep.py#L90-L348" target="_blank">
+                <a class="pdoc-button github-link-button" href="https://github.com/understanding-search/maze-dataset/blob/1.4.2maze_dataset/benchmark/config_sweep.py#L90-L348" target="_blank">
                     <span>View on GitHub</span>
                 </a>
             </div>
@@ -1108,9 +1108,9 @@ _description_</li>
 </span><span id="SweepResult-268"><a href="#SweepResult-268"><span class="linenos">268</span></a><span class="w">		</span><span class="sd">&quot;&quot;&quot;Plot the results of percolation analysis&quot;&quot;&quot;</span>
 </span><span id="SweepResult-269"><a href="#SweepResult-269"><span class="linenos">269</span></a>		<span class="c1"># set up figure</span>
 </span><span id="SweepResult-270"><a href="#SweepResult-270"><span class="linenos">270</span></a>		<span class="k">if</span> <span class="ow">not</span> <span class="n">ax</span><span class="p">:</span>
-</span><span id="SweepResult-271"><a href="#SweepResult-271"><span class="linenos">271</span></a>			<span class="n">fig</span><span class="p">:</span> <span class="n">plt</span><span class="o">.</span><span class="n">Figure</span>
+</span><span id="SweepResult-271"><a href="#SweepResult-271"><span class="linenos">271</span></a>			<span class="n">_fig</span><span class="p">:</span> <span class="n">plt</span><span class="o">.</span><span class="n">Figure</span>
 </span><span id="SweepResult-272"><a href="#SweepResult-272"><span class="linenos">272</span></a>			<span class="n">ax_</span><span class="p">:</span> <span class="n">plt</span><span class="o">.</span><span class="n">Axes</span>
-</span><span id="SweepResult-273"><a href="#SweepResult-273"><span class="linenos">273</span></a>			<span class="n">fig</span><span class="p">,</span> <span class="n">ax_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">22</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+</span><span id="SweepResult-273"><a href="#SweepResult-273"><span class="linenos">273</span></a>			<span class="n">_fig</span><span class="p">,</span> <span class="n">ax_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">22</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
 </span><span id="SweepResult-274"><a href="#SweepResult-274"><span class="linenos">274</span></a>		<span class="k">else</span><span class="p">:</span>
 </span><span id="SweepResult-275"><a href="#SweepResult-275"><span class="linenos">275</span></a>			<span class="n">ax_</span> <span class="o">=</span> <span class="n">ax</span>
 </span><span id="SweepResult-276"><a href="#SweepResult-276"><span class="linenos">276</span></a>
@@ -1271,7 +1271,7 @@ _description_</li>
                 <div class="source-button-container">
             <label class="pdoc-button view-source-button" for="SweepResult.summary-view-source"><span>View Source</span></label>
             <div class="github-button-wrapper">
-                <a class="pdoc-button github-link-button" href="https://github.com/understanding-search/maze-dataset/blob/1.4.1maze_dataset/benchmark/config_sweep.py#L115-L123" target="_blank">
+                <a class="pdoc-button github-link-button" href="https://github.com/understanding-search/maze-dataset/blob/1.4.2maze_dataset/benchmark/config_sweep.py#L115-L123" target="_blank">
                     <span>View on GitHub</span>
                 </a>
             </div>
@@ -1306,7 +1306,7 @@ _description_</li>
                 <div class="source-button-container">
             <label class="pdoc-button view-source-button" for="SweepResult.save-view-source"><span>View Source</span></label>
             <div class="github-button-wrapper">
-                <a class="pdoc-button github-link-button" href="https://github.com/understanding-search/maze-dataset/blob/1.4.1maze_dataset/benchmark/config_sweep.py#L125-L130" target="_blank">
+                <a class="pdoc-button github-link-button" href="https://github.com/understanding-search/maze-dataset/blob/1.4.2maze_dataset/benchmark/config_sweep.py#L125-L130" target="_blank">
                     <span>View on GitHub</span>
                 </a>
             </div>
@@ -1339,7 +1339,7 @@ _description_</li>
                 <div class="source-button-container">
             <label class="pdoc-button view-source-button" for="SweepResult.read-view-source"><span>View Source</span></label>
             <div class="github-button-wrapper">
-                <a class="pdoc-button github-link-button" href="https://github.com/understanding-search/maze-dataset/blob/1.4.1maze_dataset/benchmark/config_sweep.py#L132-L138" target="_blank">
+                <a class="pdoc-button github-link-button" href="https://github.com/understanding-search/maze-dataset/blob/1.4.2maze_dataset/benchmark/config_sweep.py#L132-L138" target="_blank">
                     <span>View on GitHub</span>
                 </a>
             </div>
@@ -1372,7 +1372,7 @@ _description_</li>
                 <div class="source-button-container">
             <label class="pdoc-button view-source-button" for="SweepResult.configs_by_name-view-source"><span>View Source</span></label>
             <div class="github-button-wrapper">
-                <a class="pdoc-button github-link-button" href="https://github.com/understanding-search/maze-dataset/blob/1.4.1maze_dataset/benchmark/config_sweep.py#L140-L142" target="_blank">
+                <a class="pdoc-button github-link-button" href="https://github.com/understanding-search/maze-dataset/blob/1.4.2maze_dataset/benchmark/config_sweep.py#L140-L142" target="_blank">
                     <span>View on GitHub</span>
                 </a>
             </div>
@@ -1401,7 +1401,7 @@ _description_</li>
                 <div class="source-button-container">
             <label class="pdoc-button view-source-button" for="SweepResult.configs_by_key-view-source"><span>View Source</span></label>
             <div class="github-button-wrapper">
-                <a class="pdoc-button github-link-button" href="https://github.com/understanding-search/maze-dataset/blob/1.4.1maze_dataset/benchmark/config_sweep.py#L144-L146" target="_blank">
+                <a class="pdoc-button github-link-button" href="https://github.com/understanding-search/maze-dataset/blob/1.4.2maze_dataset/benchmark/config_sweep.py#L144-L146" target="_blank">
                     <span>View on GitHub</span>
                 </a>
             </div>
@@ -1430,7 +1430,7 @@ _description_</li>
                 <div class="source-button-container">
             <label class="pdoc-button view-source-button" for="SweepResult.configs_shared-view-source"><span>View Source</span></label>
             <div class="github-button-wrapper">
-                <a class="pdoc-button github-link-button" href="https://github.com/understanding-search/maze-dataset/blob/1.4.1maze_dataset/benchmark/config_sweep.py#L148-L166" target="_blank">
+                <a class="pdoc-button github-link-button" href="https://github.com/understanding-search/maze-dataset/blob/1.4.2maze_dataset/benchmark/config_sweep.py#L148-L166" target="_blank">
                     <span>View on GitHub</span>
                 </a>
             </div>
@@ -1475,7 +1475,7 @@ _description_</li>
                 <div class="source-button-container">
             <label class="pdoc-button view-source-button" for="SweepResult.configs_differing_keys-view-source"><span>View Source</span></label>
             <div class="github-button-wrapper">
-                <a class="pdoc-button github-link-button" href="https://github.com/understanding-search/maze-dataset/blob/1.4.1maze_dataset/benchmark/config_sweep.py#L168-L177" target="_blank">
+                <a class="pdoc-button github-link-button" href="https://github.com/understanding-search/maze-dataset/blob/1.4.2maze_dataset/benchmark/config_sweep.py#L168-L177" target="_blank">
                     <span>View on GitHub</span>
                 </a>
             </div>
@@ -1511,7 +1511,7 @@ _description_</li>
                 <div class="source-button-container">
             <label class="pdoc-button view-source-button" for="SweepResult.configs_value_set-view-source"><span>View Source</span></label>
             <div class="github-button-wrapper">
-                <a class="pdoc-button github-link-button" href="https://github.com/understanding-search/maze-dataset/blob/1.4.1maze_dataset/benchmark/config_sweep.py#L179-L186" target="_blank">
+                <a class="pdoc-button github-link-button" href="https://github.com/understanding-search/maze-dataset/blob/1.4.2maze_dataset/benchmark/config_sweep.py#L179-L186" target="_blank">
                     <span>View on GitHub</span>
                 </a>
             </div>
@@ -1545,7 +1545,7 @@ _description_</li>
                 <div class="source-button-container">
             <label class="pdoc-button view-source-button" for="SweepResult.get_where-view-source"><span>View Source</span></label>
             <div class="github-button-wrapper">
-                <a class="pdoc-button github-link-button" href="https://github.com/understanding-search/maze-dataset/blob/1.4.1maze_dataset/benchmark/config_sweep.py#L188-L204" target="_blank">
+                <a class="pdoc-button github-link-button" href="https://github.com/understanding-search/maze-dataset/blob/1.4.2maze_dataset/benchmark/config_sweep.py#L188-L204" target="_blank">
                     <span>View on GitHub</span>
                 </a>
             </div>
@@ -1589,7 +1589,7 @@ _description_</li>
                 <div class="source-button-container">
             <label class="pdoc-button view-source-button" for="SweepResult.analyze-view-source"><span>View Source</span></label>
             <div class="github-button-wrapper">
-                <a class="pdoc-button github-link-button" href="https://github.com/understanding-search/maze-dataset/blob/1.4.1maze_dataset/benchmark/config_sweep.py#L206-L254" target="_blank">
+                <a class="pdoc-button github-link-button" href="https://github.com/understanding-search/maze-dataset/blob/1.4.2maze_dataset/benchmark/config_sweep.py#L206-L254" target="_blank">
                     <span>View on GitHub</span>
                 </a>
             </div>
@@ -1679,7 +1679,7 @@ numpy array of values to try</li>
                 <div class="source-button-container">
             <label class="pdoc-button view-source-button" for="SweepResult.plot-view-source"><span>View Source</span></label>
             <div class="github-button-wrapper">
-                <a class="pdoc-button github-link-button" href="https://github.com/understanding-search/maze-dataset/blob/1.4.1maze_dataset/benchmark/config_sweep.py#L256-L348" target="_blank">
+                <a class="pdoc-button github-link-button" href="https://github.com/understanding-search/maze-dataset/blob/1.4.2maze_dataset/benchmark/config_sweep.py#L256-L348" target="_blank">
                     <span>View on GitHub</span>
                 </a>
             </div>
@@ -1701,9 +1701,9 @@ numpy array of values to try</li>
 </span><span id="SweepResult.plot-268"><a href="#SweepResult.plot-268"><span class="linenos">268</span></a><span class="w">		</span><span class="sd">&quot;&quot;&quot;Plot the results of percolation analysis&quot;&quot;&quot;</span>
 </span><span id="SweepResult.plot-269"><a href="#SweepResult.plot-269"><span class="linenos">269</span></a>		<span class="c1"># set up figure</span>
 </span><span id="SweepResult.plot-270"><a href="#SweepResult.plot-270"><span class="linenos">270</span></a>		<span class="k">if</span> <span class="ow">not</span> <span class="n">ax</span><span class="p">:</span>
-</span><span id="SweepResult.plot-271"><a href="#SweepResult.plot-271"><span class="linenos">271</span></a>			<span class="n">fig</span><span class="p">:</span> <span class="n">plt</span><span class="o">.</span><span class="n">Figure</span>
+</span><span id="SweepResult.plot-271"><a href="#SweepResult.plot-271"><span class="linenos">271</span></a>			<span class="n">_fig</span><span class="p">:</span> <span class="n">plt</span><span class="o">.</span><span class="n">Figure</span>
 </span><span id="SweepResult.plot-272"><a href="#SweepResult.plot-272"><span class="linenos">272</span></a>			<span class="n">ax_</span><span class="p">:</span> <span class="n">plt</span><span class="o">.</span><span class="n">Axes</span>
-</span><span id="SweepResult.plot-273"><a href="#SweepResult.plot-273"><span class="linenos">273</span></a>			<span class="n">fig</span><span class="p">,</span> <span class="n">ax_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">22</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+</span><span id="SweepResult.plot-273"><a href="#SweepResult.plot-273"><span class="linenos">273</span></a>			<span class="n">_fig</span><span class="p">,</span> <span class="n">ax_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">22</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
 </span><span id="SweepResult.plot-274"><a href="#SweepResult.plot-274"><span class="linenos">274</span></a>		<span class="k">else</span><span class="p">:</span>
 </span><span id="SweepResult.plot-275"><a href="#SweepResult.plot-275"><span class="linenos">275</span></a>			<span class="n">ax_</span> <span class="o">=</span> <span class="n">ax</span>
 </span><span id="SweepResult.plot-276"><a href="#SweepResult.plot-276"><span class="linenos">276</span></a>
@@ -1826,7 +1826,7 @@ numpy array of values to try</li>
                 <div class="source-button-container">
             <label class="pdoc-button view-source-button" for="endpoint_kwargs_to_name-view-source"><span>View Source</span></label>
             <div class="github-button-wrapper">
-                <a class="pdoc-button github-link-button" href="https://github.com/understanding-search/maze-dataset/blob/1.4.1maze_dataset/benchmark/config_sweep.py#L377-L385" target="_blank">
+                <a class="pdoc-button github-link-button" href="https://github.com/understanding-search/maze-dataset/blob/1.4.2maze_dataset/benchmark/config_sweep.py#L377-L385" target="_blank">
                     <span>View on GitHub</span>
                 </a>
             </div>
@@ -1861,7 +1861,7 @@ numpy array of values to try</li>
                 <div class="source-button-container">
             <label class="pdoc-button view-source-button" for="full_percolation_analysis-view-source"><span>View Source</span></label>
             <div class="github-button-wrapper">
-                <a class="pdoc-button github-link-button" href="https://github.com/understanding-search/maze-dataset/blob/1.4.1maze_dataset/benchmark/config_sweep.py#L388-L443" target="_blank">
+                <a class="pdoc-button github-link-button" href="https://github.com/understanding-search/maze-dataset/blob/1.4.2maze_dataset/benchmark/config_sweep.py#L388-L443" target="_blank">
                     <span>View on GitHub</span>
                 </a>
             </div>
@@ -1943,7 +1943,7 @@ numpy array of values to try</li>
                 <div class="source-button-container">
             <label class="pdoc-button view-source-button" for="plot_grouped-view-source"><span>View Source</span></label>
             <div class="github-button-wrapper">
-                <a class="pdoc-button github-link-button" href="https://github.com/understanding-search/maze-dataset/blob/1.4.1maze_dataset/benchmark/config_sweep.py#L451-L564" target="_blank">
+                <a class="pdoc-button github-link-button" href="https://github.com/understanding-search/maze-dataset/blob/1.4.2maze_dataset/benchmark/config_sweep.py#L451-L564" target="_blank">
                     <span>View on GitHub</span>
                 </a>
             </div>
@@ -2005,7 +2005,7 @@ numpy array of values to try</li>
 </span><span id="plot_grouped-503"><a href="#plot_grouped-503"><span class="linenos">503</span></a>		<span class="p">)</span>
 </span><span id="plot_grouped-504"><a href="#plot_grouped-504"><span class="linenos">504</span></a>		<span class="n">shared_keys</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">results_epkw</span><span class="o">.</span><span class="n">configs_shared</span><span class="p">()</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
 </span><span id="plot_grouped-505"><a href="#plot_grouped-505"><span class="linenos">505</span></a>		<span class="n">cfg_keys</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">shared_keys</span><span class="o">.</span><span class="n">intersection</span><span class="p">({</span><span class="s2">&quot;n_mazes&quot;</span><span class="p">,</span> <span class="s2">&quot;endpoint_kwargs&quot;</span><span class="p">})</span>
-</span><span id="plot_grouped-506"><a href="#plot_grouped-506"><span class="linenos">506</span></a>		<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="n">figsize</span><span class="p">)</span>
+</span><span id="plot_grouped-506"><a href="#plot_grouped-506"><span class="linenos">506</span></a>		<span class="n">_fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="n">figsize</span><span class="p">)</span>
 </span><span id="plot_grouped-507"><a href="#plot_grouped-507"><span class="linenos">507</span></a>		<span class="k">for</span> <span class="n">gf_idx</span><span class="p">,</span> <span class="n">gen_func</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">generator_funcs_names</span><span class="p">):</span>
 </span><span id="plot_grouped-508"><a href="#plot_grouped-508"><span class="linenos">508</span></a>			<span class="n">results_filtered</span><span class="p">:</span> <span class="n">SweepResult</span> <span class="o">=</span> <span class="n">results_epkw</span><span class="o">.</span><span class="n">get_where</span><span class="p">(</span>
 </span><span id="plot_grouped-509"><a href="#plot_grouped-509"><span class="linenos">509</span></a>				<span class="s2">&quot;maze_ctor&quot;</span><span class="p">,</span>
