@@ -986,11 +986,11 @@ class LatticeMaze(SerializableDataclass):
 		- `ValueError` : if the pixel grid cannot be cast to a `LatticeMaze` -- it's probably a `TargetedLatticeMaze` or `SolvedMaze`
 		"""
 		connection_list: ConnectionList
-		grid_shape: tuple[int, int]
+		_grid_shape: tuple[int, int]
 
 		# if a binary pixel grid, return regular LatticeMaze
 		if len(pixel_grid.shape) == 2:  # noqa: PLR2004
-			connection_list, grid_shape = cls._from_pixel_grid_bw(pixel_grid)
+			connection_list, _grid_shape = cls._from_pixel_grid_bw(pixel_grid)
 			return LatticeMaze(connection_list=connection_list)
 
 		# otherwise, detect and check it's valid
@@ -1003,7 +1003,7 @@ class LatticeMaze(SerializableDataclass):
 
 		(
 			connection_list,
-			grid_shape,
+			_grid_shape,
 			marked_pos,
 		) = cls._from_pixel_grid_with_positions(
 			pixel_grid=pixel_grid,

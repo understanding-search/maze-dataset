@@ -267,9 +267,9 @@ class SweepResult(SerializableDataclass, Generic[ParamType, SweepReturnType]):
 		"""Plot the results of percolation analysis"""
 		# set up figure
 		if not ax:
-			fig: plt.Figure
+			_fig: plt.Figure
 			ax_: plt.Axes
-			fig, ax_ = plt.subplots(1, 1, figsize=(22, 10))
+			_fig, ax_ = plt.subplots(1, 1, figsize=(22, 10))
 		else:
 			ax_ = ax
 
@@ -502,7 +502,7 @@ def plot_grouped(  # noqa: C901
 		)
 		shared_keys: set[str] = set(results_epkw.configs_shared().keys())
 		cfg_keys: set[str] = shared_keys.intersection({"n_mazes", "endpoint_kwargs"})
-		fig, ax = plt.subplots(1, 1, figsize=figsize)
+		_fig, ax = plt.subplots(1, 1, figsize=figsize)
 		for gf_idx, gen_func in enumerate(generator_funcs_names):
 			results_filtered: SweepResult = results_epkw.get_where(
 				"maze_ctor",
