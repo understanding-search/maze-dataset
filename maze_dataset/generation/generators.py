@@ -440,7 +440,6 @@ class LatticeMazeGenerators:
 		assert lattice_dim == 2, (  # noqa: PLR2004
 			"Kruskal's algorithm is only implemented for 2D lattices."
 		)
-		import numpy as np
 		grid_shape_: Coord = np.array([int(x) for x in grid_shape])
 		n_rows, n_cols = grid_shape_
 
@@ -545,7 +544,7 @@ class LatticeMazeGenerators:
 			"Recursive division algorithm is only implemented for 2D lattices."
 		)
 		# Convert grid_shape to a tuple of ints.
-		grid_shape_: CoordTup = tuple(int(x) for x in grid_shape)  # type: ignore[assignment]
+		grid_shape_: Coord = np.array([int(x) for x in grid_shape])
 		n_rows, n_cols = grid_shape_
 
 		# Initialize connection_list as a fully connected grid.
@@ -594,7 +593,7 @@ class LatticeMazeGenerators:
 		divide(0, 0, n_cols, n_rows)
 
 		if start_coord is None:
-			start_coord = tuple(np.random.randint(0, n) for n in grid_shape_)  # type: ignore[assignment]
+			start_coord = np.array([np.random.randint(0, n) for n in grid_shape_])  # type: ignore[assignment]
 
 		generation_meta: dict = dict(
 			func_name="gen_recursive_division",
