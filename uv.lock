@@ -1739,7 +1739,7 @@ provides-extras = ["tokenization"]
 
 [package.metadata.requires-dev]
 benchmark = [
-    { name = "pysr", specifier = ">=1.4.0" },
+    { name = "pysr", specifier = ">=1.5.9" },
     { name = "seaborn" },
 ]
 dev = [
