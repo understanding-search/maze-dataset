@@ -26,7 +26,7 @@ from maze_dataset.token_utils import tokens_between
 RGBArray = UInt8[np.ndarray, "n 3"]
 "1D array of RGB values"
 
-FormatType = Literal["html", "latex", "terminal", None]
+FormatType = Literal["html", "latex", "terminal"] | None
 "output format for the tokens"
 
 TEMPLATES: dict[FormatType, str] = {

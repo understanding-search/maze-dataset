@@ -1,8 +1,8 @@
 # Stats
 - 66 files
-- 16646 (17K) lines
-- 533765 (534K) chars
-- 60034 (60K) `whitespace-split` tokens
+- 16656 (17K) lines
+- 534250 (534K) chars
+- 60074 (60K) `whitespace-split` tokens
 
 # File Tree
 
@@ -12,13 +12,13 @@ maze-dataset
 │   └── workflows                          
 │    ├── all-tok-checks.yml                [   53L     1,684C   152T]
 │    ├── build-paper.yml                   [   28L       785C    85T]
-│    ├── checks.yml                        [   90L     2,099C   217T]
+│    ├── checks.yml                        [   93L     2,234C   233T]
 │    ├── make-docs.yml                     [   44L     1,198C   134T]
 │    └── speed-benchmark.yml               [   45L     1,191C   102T]
 ├── maze_dataset                           
 │   ├── benchmark                          
 │   │   ├── __init__.py                    [    9L       220C    24T]
-│   │   ├── config_sweep.py                [  564L    17,209C 1,820T]
+│   │   ├── config_sweep.py                [  564L    17,212C 1,820T]
 │   │   ├── speed.py                       [  132L     3,053C   327T]
 │   │   └── sweep_fit.py                   [  407L    11,569C 1,369T]
 │   ├── dataset                            
@@ -39,14 +39,14 @@ maze-dataset
 │   │   └── seed.py                        [    3L        45C     7T]
 │   ├── maze                               
 │   │   ├── __init__.py                    [   34L     1,905C   272T]
-│   │   └── lattice_maze.py                [1,542L    49,787C 5,787T]
+│   │   └── lattice_maze.py                [1,542L    49,790C 5,787T]
 │   ├── plotting                           
 │   │   ├── __init__.py                    [   33L     1,008C   110T]
 │   │   ├── plot_dataset.py                [   64L     1,635C   200T]
 │   │   ├── plot_maze.py                   [  603L    16,819C 1,950T]
 │   │   ├── plot_svg_fancy.py              [  199L     5,617C   863T]
-│   │   ├── plot_tokens.py                 [   90L     2,127C   280T]
-│   │   └── print_tokens.py                [  250L     6,431C   799T]
+│   │   ├── plot_tokens.py                 [   90L     2,128C   280T]
+│   │   └── print_tokens.py                [  250L     6,432C   800T]
 │   ├── tokenization                       
 │   │   ├── modular                        
 │   │   │   ├── __init__.py                [   90L     5,930C   797T]
@@ -75,17 +75,17 @@ maze-dataset
 │   ├── demo_latticemaze.ipynb             [  751L   293,508C 2,318T]
 │   ├── demo_mazetokenizermodular.ipynb    [1,781L    92,485C 7,017T]
 │   ├── demo_readme.ipynb                  [  313L    24,242C   702T]
-│   ├── demo_tokenization.ipynb            [  612L   148,682C 9,259T]
+│   ├── demo_tokenization.ipynb            [  612L   148,685C 9,259T]
 │   ├── estimate_dataset_fractions.ipynb   [  499L 2,324,867C 1,352T]
 │   ├── forking_points.ipynb               [  221L    28,462C   621T]
 │   ├── iterated_backfilling.ipynb         [  207L    30,509C   547T]
 │   ├── output_formats.ipynb               [  235L    20,199C 1,348T]
-│   └── profile_dataset_save_read.ipynb    [1,133L   269,709C 3,406T]
+│   └── profile_dataset_save_read.ipynb    [1,133L   269,712C 3,406T]
 ├── templates                              
 ├── LICENSE.md                             [  165L     7,652C 1,234T]
-├── README.md                              [  205L    11,110C   994T]
-├── makefile                               [1,891L    59,042C 6,791T]
-├── pyproject.toml                         [  382L    13,391C 1,552T]
+├── README.md                              [  209L    11,272C 1,001T]
+├── makefile                               [1,891L    59,049C 6,793T]
+├── pyproject.toml                         [  385L    13,569C 1,568T]
 ```
 
 # File Contents
@@ -252,6 +252,9 @@ jobs:
 
       - name: Unit tests
         run: make test-unit
+
+      - name: Remove system Julia so juliapkg installs compatible version
+        run: sudo rm -f /usr/bin/julia /usr/local/bin/julia
 
       - name: Notebook tests (nbmake)
         run: make test-notebooks-nbmake  
@@ -648,9 +651,9 @@ class SweepResult(SerializableDataclass, Generic[ParamType, SweepReturnType]):
 		"""Plot the results of percolation analysis"""
 		# set up figure
 		if not ax:
-			fig: plt.Figure
+			_fig: plt.Figure
 			ax_: plt.Axes
-			fig, ax_ = plt.subplots(1, 1, figsize=(22, 10))
+			_fig, ax_ = plt.subplots(1, 1, figsize=(22, 10))
 		else:
 			ax_ = ax
 
@@ -883,7 +886,7 @@ def plot_grouped(  # noqa: C901
 		)
 		shared_keys: set[str] = set(results_epkw.configs_shared().keys())
 		cfg_keys: set[str] = shared_keys.intersection({"n_mazes", "endpoint_kwargs"})
-		fig, ax = plt.subplots(1, 1, figsize=figsize)
+		_fig, ax = plt.subplots(1, 1, figsize=figsize)
 		for gf_idx, gen_func in enumerate(generator_funcs_names):
 			results_filtered: SweepResult = results_epkw.get_where(
 				"maze_ctor",
@@ -6447,11 +6450,11 @@ class LatticeMaze(SerializableDataclass):
 		- `ValueError` : if the pixel grid cannot be cast to a `LatticeMaze` -- it's probably a `TargetedLatticeMaze` or `SolvedMaze`
 		"""
 		connection_list: ConnectionList
-		grid_shape: tuple[int, int]
+		_grid_shape: tuple[int, int]
 
 		# if a binary pixel grid, return regular LatticeMaze
 		if len(pixel_grid.shape) == 2:  # noqa: PLR2004
-			connection_list, grid_shape = cls._from_pixel_grid_bw(pixel_grid)
+			connection_list, _grid_shape = cls._from_pixel_grid_bw(pixel_grid)
 			return LatticeMaze(connection_list=connection_list)
 
 		# otherwise, detect and check it's valid
@@ -6464,7 +6467,7 @@ class LatticeMaze(SerializableDataclass):
 
 		(
 			connection_list,
-			grid_shape,
+			_grid_shape,
 			marked_pos,
 		) = cls._from_pixel_grid_with_positions(
 			pixel_grid=pixel_grid,
@@ -7953,7 +7956,7 @@ def plot_colored_text(
 	total_len_estimate: float = sum([max(len(tok), char_min) for tok in tokens])
 	# set up figure if needed
 	if ax is None:
-		fig, ax = plt.subplots(
+		_fig, ax = plt.subplots(
 			figsize=(total_len_estimate * fig_width_scale, fig_height),
 		)
 	ax.axis("off")
@@ -8042,7 +8045,7 @@ from maze_dataset.token_utils import tokens_between
 RGBArray = UInt8[np.ndarray, "n 3"]
 "1D array of RGB values"
 
-FormatType = Literal["html", "latex", "terminal", None]
+FormatType = Literal["html", "latex", "terminal"] | None
 "output format for the tokens"
 
 TEMPLATES: dict[FormatType, str] = {
@@ -14663,7 +14666,7 @@ def plot_corner_first_ndindex(n: int, ndim: int = 2) -> None:
 	for order, (x, y) in enumerate(indices):
 		grid[x, y] = order + 1  # Adding 1 to start the order from 1 instead of 0
 
-	fig, ax = plt.subplots(figsize=(2, 2))
+	_fig, ax = plt.subplots(figsize=(2, 2))
 
 	# Plot the grid
 	cax = ax.matshow(grid, cmap=plt.cm.Blues)
@@ -15433,7 +15436,7 @@ def plot_speeds(
 	column_measurement_prefixes: Sequence[str] = ("serialize", "load", "save", "read"),
 ) -> None:
 	n_measurements: int = len(column_measurement_prefixes)
-	fig, axs = plt.subplots(2, n_measurements, figsize=(n_measurements * 5, 10))
+	_fig, axs = plt.subplots(2, n_measurements, figsize=(n_measurements * 5, 10))
 
 	unique_grid_ns: list[int] = speeds["grid_n"].unique().tolist()
 
@@ -15720,6 +15723,10 @@ Library.
     &nbsp;
     <a href="https://understanding-search.github.io/maze-dataset/examples/maze_examples.html">
       <img src="https://img.shields.io/badge/examples-view-blue" alt="Examples">
+    </a>
+    &nbsp;
+    <a href="https://doi.org/10.21105/joss.08633">
+        <img src="https://img.shields.io/badge/DOI-10.21105%2Fjoss.08633-blue" alt="JOSS">
     </a>
     &nbsp;
     <a href="http://arxiv.org/abs/2309.10498">
@@ -16268,7 +16275,7 @@ paper-docker:
 ``````{ path="pyproject.toml"  }
 [project]
     name = "maze-dataset"
-    version = "1.4.1"
+    version = "1.4.2"
     description = "generating and working with datasets of mazes"
     authors = [
         { name = "Michael Ivanitskiy", email = "mivanits@umich.edu" },
@@ -16346,7 +16353,10 @@ paper-docker:
 	]
     benchmark = [
         # only used in `estimate_dataset_fractions.ipynb`
-        "pysr>=1.4.0",
+        "pysr>=1.5.9",
+        # juliapkg>=0.1.21 fixes Julia 1.12 OpenSSL conflict
+        # can be removed once https://github.com/MilesCranmer/PySR/issues/1053 is closed
+        "juliapkg>=0.1.21",
 		"seaborn",
     ]
 	# copied from the extras, to make sure devs have them

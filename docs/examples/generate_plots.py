@@ -121,7 +121,7 @@ def main() -> None:
 		desc="Generating maze examples",
 		total=len(configs_sources),
 	):
-		fname, metadata = generate_maze_plots(cfg_src)
+		_fname, metadata = generate_maze_plots(cfg_src)
 
 		# Update the set of all tags
 		all_tags.update(metadata["tags"])

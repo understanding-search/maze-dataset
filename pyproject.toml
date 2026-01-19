@@ -1,6 +1,6 @@
 [project]
     name = "maze-dataset"
-    version = "1.4.1"
+    version = "1.4.2"
     description = "generating and working with datasets of mazes"
     authors = [
         { name = "Michael Ivanitskiy", email = "mivanits@umich.edu" },
@@ -78,7 +78,10 @@
 	]
     benchmark = [
         # only used in `estimate_dataset_fractions.ipynb`
-        "pysr>=1.4.0",
+        "pysr>=1.5.9",
+        # juliapkg>=0.1.21 fixes Julia 1.12 OpenSSL conflict
+        # can be removed once https://github.com/MilesCranmer/PySR/issues/1053 is closed
+        "juliapkg>=0.1.21",
 		"seaborn",
     ]
 	# copied from the extras, to make sure devs have them

@@ -31,7 +31,7 @@ def plot_colored_text(
 	total_len_estimate: float = sum([max(len(tok), char_min) for tok in tokens])
 	# set up figure if needed
 	if ax is None:
-		fig, ax = plt.subplots(
+		_fig, ax = plt.subplots(
 			figsize=(total_len_estimate * fig_width_scale, fig_height),
 		)
 	ax.axis("off")

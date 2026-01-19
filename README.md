@@ -26,6 +26,10 @@
       <img src="https://img.shields.io/badge/examples-view-blue" alt="Examples">
     </a>
     &nbsp;
+    <a href="https://doi.org/10.21105/joss.08633">
+        <img src="https://img.shields.io/badge/DOI-10.21105%2Fjoss.08633-blue" alt="JOSS">
+    </a>
+    &nbsp;
     <a href="http://arxiv.org/abs/2309.10498">
         <img src="https://img.shields.io/badge/arXiv-2309.10498-b31b1b.svg" alt="arXiv">
     </a>
